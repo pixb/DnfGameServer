@@ -1,0 +1,30 @@
+# DNF Go Server Configuration
+
+# Server configuration
+server:
+  port: 8081
+  host: "0.0.0.0"
+
+# Database configuration
+database:
+  driver: "mysql"  # mysql, sqlite, postgres
+  host: "localhost"
+  port: 3306
+  username: "root"
+  password: "password"
+  database: "dnf_game"
+  # Or use DSN: "user:password@tcp(localhost:3306)/dnf_game?charset=utf8mb4&parseTime=True&loc=Local"
+
+# Server mode: dev, prod
+mode: "dev"
+
+# Log configuration
+log:
+  level: "info"  # debug, info, warn, error
+  format: "json" # json, console
+
+# Game configuration
+game:
+  max_players: 10000
+  max_channels: 10
+  world_id: 1

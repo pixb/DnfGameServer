@@ -33,3 +33,11 @@ Thumbs.db
 configs/local/
 .env
 .env.local
+
+# SQLite databases (development/testing)
+data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3

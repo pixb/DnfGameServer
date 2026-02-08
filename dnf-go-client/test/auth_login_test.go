@@ -3,9 +3,9 @@ package test
 import (
 	"testing"
 
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 
-dnfv1 "dnf-go-client/gen/go/dnf/v1"
+	dnfv1 "dnf-go-client/gen/go/dnf/v1"
 )
 
 func TestChannelInfo_Serialization(t *testing.T) {

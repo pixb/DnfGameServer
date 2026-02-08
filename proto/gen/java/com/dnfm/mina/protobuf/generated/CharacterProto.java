@@ -37,10 +37,30 @@ public final class CharacterProto extends com.google.protobuf.GeneratedFile {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_CharacterEquipIndex_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_EquipIndexSlot_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_EquipIndexSlot_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_AvatarIndexSlot_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_AvatarIndexSlot_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_CharacterEquipIndexList_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_CharacterEquipIndexList_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dnf_v1_Character_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_Character_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_CharacterWithEquipList_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_CharacterWithEquipList_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dnf_v1_CharacterDetailInfo_descriptor;
   static final 
@@ -202,97 +222,118 @@ public final class CharacterProto extends com.google.protobuf.GeneratedFile {
       "(\005R\010necklace\022\032\n\010bracelet\030\n \001(\005R\010bracelet" +
       "\022#\n\rsub_equipment\030\013 \001(\005R\014subEquipment\022\037\n" +
       "\013magic_stone\030\014 \001(\005R\nmagicStone\022\030\n\007earrin" +
-      "g\030\r \001(\005R\007earring\"\241\004\n\tCharacter\022\033\n\tchar_g" +
-      "uid\030\001 \001(\003R\010charGuid\022\037\n\013last_logout\030\002 \001(\003" +
-      "R\nlastLogout\022\033\n\tgrow_type\030\003 \001(\005R\010growTyp" +
-      "e\022\"\n\rsec_grow_type\030\004 \001(\005R\013secGrowType\022\020\n" +
-      "\003job\030\005 \001(\005R\003job\022\024\n\005level\030\006 \001(\005R\005level\022\022\n" +
-      "\004name\030\007 \001(\tR\004name\022\030\n\007fatigue\030\010 \001(\005R\007fati" +
-      "gue\022\037\n\013equip_score\030\t \001(\005R\nequipScore\022\'\n\017" +
-      "character_frame\030\n \001(\005R\016characterFrame\0223\n" +
-      "\006equips\030\013 \001(\0132\033.dnf.v1.CharacterEquipInd" +
-      "exR\006equips\0220\n\024avatar_visible_flags\030\014 \001(\r" +
-      "R\022avatarVisibleFlags\022\'\n\017deletion_status\030" +
-      "\r \001(\005R\016deletionStatus\022#\n\rdeletion_time\030\016" +
-      " \001(\003R\014deletionTime\022\037\n\013create_time\030\017 \001(\003R" +
-      "\ncreateTime\022\037\n\013change_name\030\020 \001(\010R\nchange" +
-      "Name\"\252\003\n\023CharacterDetailInfo\022\033\n\tchar_gui" +
-      "d\030\001 \001(\003R\010charGuid\022\024\n\005money\030\002 \001(\003R\005money\022" +
-      "\022\n\004coin\030\003 \001(\003R\004coin\022\020\n\003exp\030\004 \001(\005R\003exp\022\031\n" +
-      "\010stat_str\030\005 \001(\005R\007statStr\022\031\n\010stat_int\030\006 \001" +
-      "(\005R\007statInt\022\031\n\010stat_vit\030\007 \001(\005R\007statVit\022\031" +
-      "\n\010stat_spr\030\010 \001(\005R\007statSpr\022\016\n\002hp\030\t \001(\005R\002h" +
-      "p\022\025\n\006max_hp\030\n \001(\005R\005maxHp\022\016\n\002mp\030\013 \001(\005R\002mp" +
-      "\022\025\n\006max_mp\030\014 \001(\005R\005maxMp\022\016\n\002sp\030\r \001(\005R\002sp\022" +
-      "\025\n\006max_sp\030\016 \001(\005R\005maxSp\022\027\n\007pos_map\030\017 \001(\005R" +
-      "\006posMap\022\023\n\005pos_x\030\020 \001(\002R\004posX\022\023\n\005pos_y\030\021 " +
-      "\001(\002R\004posY\022\026\n\006status\030\022 \001(\005R\006status\"\204\001\n\tSk" +
-      "illInfo\022\031\n\010skill_id\030\001 \001(\005R\007skillId\022\024\n\005le" +
-      "vel\030\002 \001(\005R\005level\022\027\n\007sp_cost\030\003 \001(\005R\006spCos" +
-      "t\022-\n\022cooldown_remaining\030\004 \001(\005R\021cooldownR" +
-      "emaining\"\026\n\024CharacterListRequest\"\223\001\n\026Cre" +
-      "ateCharacterRequest\022\022\n\004name\030\001 \001(\tR\004name\022" +
-      "\020\n\003job\030\002 \001(\005R\003job\022\033\n\tgrow_type\030\003 \001(\005R\010gr" +
-      "owType\022\"\n\rsec_grow_type\030\004 \001(\005R\013secGrowTy" +
-      "pe\022\022\n\004slot\030\005 \001(\005R\004slot\"5\n\026DeleteCharacte" +
-      "rRequest\022\033\n\tchar_guid\030\001 \001(\003R\010charGuid\"6\n" +
-      "\027RestoreCharacterRequest\022\033\n\tchar_guid\030\001 " +
-      "\001(\003R\010charGuid\"0\n\032ExitCharacterSelectRequ" +
-      "est\022\022\n\004type\030\001 \001(\005R\004type\"6\n\027GetCharacterI" +
-      "nfoRequest\022\033\n\tchar_guid\030\001 \001(\003R\010charGuid\"" +
-      "$\n\020ChangeJobRequest\022\020\n\003job\030\001 \001(\005R\003job\"!\n" +
-      "\rAwakenRequest\022\020\n\003job\030\001 \001(\005R\003job\"/\n\020Skil" +
-      "lListRequest\022\033\n\tchar_guid\030\001 \001(\003R\010charGui" +
-      "d\".\n\021LearnSkillRequest\022\031\n\010skill_id\030\001 \001(\005" +
-      "R\007skillId\"0\n\023UpgradeSkillRequest\022\031\n\010skil" +
-      "l_id\030\001 \001(\005R\007skillId\"d\n\031AllocateStatPoint" +
-      "sRequest\022\020\n\003str\030\001 \001(\005R\003str\022\021\n\004int_\030\002 \001(\005" +
-      "R\003int\022\020\n\003vit\030\003 \001(\005R\003vit\022\020\n\003spr\030\004 \001(\005R\003sp" +
-      "r\"4\n\027CompleteJobQuestRequest\022\031\n\010quest_id" +
-      "\030\001 \001(\005R\007questId\"\242\004\n\025CharacterListRespons" +
-      "e\022\024\n\005error\030\001 \001(\005R\005error\022\030\n\007version\030\002 \001(\005" +
-      "R\007version\022,\n\006limits\030\003 \003(\0132\024.dnf.v1.JobLi" +
-      "mitInfoR\006limits\0221\n\ncharacters\030\004 \003(\0132\021.dn" +
-      "f.v1.CharacterR\ncharacters\022\024\n\005count\030\005 \001(" +
-      "\005R\005count\0222\n\025adventure_union_level\030\006 \001(\005R" +
-      "\023adventureUnionLevel\022.\n\023adventure_union_" +
-      "exp\030\007 \001(\003R\021adventureUnionExp\0225\n\027daily_cr" +
-      "eate_char_count\030\010 \001(\005R\024dailyCreateCharCo" +
-      "unt\022<\n\033daily_create_char_max_count\030\t \001(\005" +
-      "R\027dailyCreateCharMaxCount\0220\n\024adventure_u" +
-      "nion_name\030\n \001(\tR\022adventureUnionName\022\033\n\tm" +
-      "ax_count\030\013 \001(\005R\010maxCount\022:\n\031ignore_conte" +
-      "nts_blacklist\030\014 \001(\tR\027ignoreContentsBlack" +
-      "list\"`\n\027CreateCharacterResponse\022\024\n\005error" +
-      "\030\001 \001(\005R\005error\022/\n\tcharacter\030\002 \001(\0132\021.dnf.v" +
-      "1.CharacterR\tcharacter\"V\n\027DeleteCharacte" +
-      "rResponse\022\024\n\005error\030\001 \001(\005R\005error\022%\n\016remai" +
-      "n_seconds\030\002 \001(\005R\rremainSeconds\"0\n\030Restor" +
-      "eCharacterResponse\022\024\n\005error\030\001 \001(\005R\005error" +
-      "\"3\n\033ExitCharacterSelectResponse\022\024\n\005error" +
-      "\030\001 \001(\005R\005error\"e\n\030GetCharacterInfoRespons" +
-      "e\022\024\n\005error\030\001 \001(\005R\005error\0223\n\006detail\030\002 \001(\0132" +
-      "\033.dnf.v1.CharacterDetailInfoR\006detail\"B\n\021" +
-      "ChangeJobResponse\022\024\n\005error\030\001 \001(\005R\005error\022" +
-      "\027\n\007new_job\030\002 \001(\005R\006newJob\"?\n\016AwakenRespon" +
-      "se\022\024\n\005error\030\001 \001(\005R\005error\022\027\n\007new_job\030\002 \001(" +
-      "\005R\006newJob\"T\n\021SkillListResponse\022\024\n\005error\030" +
-      "\001 \001(\005R\005error\022)\n\006skills\030\002 \003(\0132\021.dnf.v1.Sk" +
-      "illInfoR\006skills\"S\n\022LearnSkillResponse\022\024\n" +
-      "\005error\030\001 \001(\005R\005error\022\'\n\005skill\030\002 \001(\0132\021.dnf" +
-      ".v1.SkillInfoR\005skill\"U\n\024UpgradeSkillResp" +
-      "onse\022\024\n\005error\030\001 \001(\005R\005error\022\'\n\005skill\030\002 \001(" +
-      "\0132\021.dnf.v1.SkillInfoR\005skill\"\311\001\n\032Allocate" +
-      "StatPointsResponse\022\024\n\005error\030\001 \001(\005R\005error" +
-      "\022\031\n\010stat_str\030\002 \001(\005R\007statStr\022\031\n\010stat_int\030" +
-      "\003 \001(\005R\007statInt\022\031\n\010stat_vit\030\004 \001(\005R\007statVi" +
-      "t\022\031\n\010stat_spr\030\005 \001(\005R\007statSpr\022)\n\020availabl" +
-      "e_points\030\006 \001(\005R\017availablePoints\"0\n\030Compl" +
-      "eteJobQuestResponse\022\024\n\005error\030\001 \001(\005R\005erro" +
-      "rB}\n com.dnfm.mina.protobuf.generatedB\016C" +
-      "haracterProtoP\001Z\020gen/dnf/v1;dnfv1\242\002\003DXX\252" +
-      "\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002" +
-      "\007Dnf::V1b\006proto3"
+      "g\030\r \001(\005R\007earring\"\216\001\n\016EquipIndexSlot\022\024\n\005i" +
+      "ndex\030\001 \001(\005R\005index\022\022\n\004slot\030\002 \001(\005R\004slot\022\030\n" +
+      "\007reforge\030\003 \001(\005R\007reforge\022\036\n\nreforgeexp\030\004 " +
+      "\001(\005R\nreforgeexp\022\030\n\007upgrade\030\005 \001(\005R\007upgrad" +
+      "e\";\n\017AvatarIndexSlot\022\024\n\005index\030\001 \001(\005R\005ind" +
+      "ex\022\022\n\004slot\030\002 \001(\005R\004slot\"\210\001\n\027CharacterEqui" +
+      "pIndexList\0224\n\tequiplist\030\001 \003(\0132\026.dnf.v1.E" +
+      "quipIndexSlotR\tequiplist\0227\n\navatarlist\030\002" +
+      " \003(\0132\027.dnf.v1.AvatarIndexSlotR\navatarlis" +
+      "t\"\241\004\n\tCharacter\022\033\n\tchar_guid\030\001 \001(\003R\010char" +
+      "Guid\022\037\n\013last_logout\030\002 \001(\003R\nlastLogout\022\033\n" +
+      "\tgrow_type\030\003 \001(\005R\010growType\022\"\n\rsec_grow_t" +
+      "ype\030\004 \001(\005R\013secGrowType\022\020\n\003job\030\005 \001(\005R\003job" +
+      "\022\024\n\005level\030\006 \001(\005R\005level\022\022\n\004name\030\007 \001(\tR\004na" +
+      "me\022\030\n\007fatigue\030\010 \001(\005R\007fatigue\022\037\n\013equip_sc" +
+      "ore\030\t \001(\005R\nequipScore\022\'\n\017character_frame" +
+      "\030\n \001(\005R\016characterFrame\0223\n\006equips\030\013 \001(\0132\033" +
+      ".dnf.v1.CharacterEquipIndexR\006equips\0220\n\024a" +
+      "vatar_visible_flags\030\014 \001(\rR\022avatarVisible" +
+      "Flags\022\'\n\017deletion_status\030\r \001(\005R\016deletion" +
+      "Status\022#\n\rdeletion_time\030\016 \001(\003R\014deletionT" +
+      "ime\022\037\n\013create_time\030\017 \001(\003R\ncreateTime\022\037\n\013" +
+      "change_name\030\020 \001(\010R\nchangeName\"\262\004\n\026Charac" +
+      "terWithEquipList\022\033\n\tchar_guid\030\001 \001(\003R\010cha" +
+      "rGuid\022\037\n\013last_logout\030\002 \001(\003R\nlastLogout\022\033" +
+      "\n\tgrow_type\030\003 \001(\005R\010growType\022\"\n\rsec_grow_" +
+      "type\030\004 \001(\005R\013secGrowType\022\020\n\003job\030\005 \001(\005R\003jo" +
+      "b\022\024\n\005level\030\006 \001(\005R\005level\022\022\n\004name\030\007 \001(\tR\004n" +
+      "ame\022\030\n\007fatigue\030\010 \001(\005R\007fatigue\022\037\n\013equip_s" +
+      "core\030\t \001(\005R\nequipScore\022\'\n\017character_fram" +
+      "e\030\n \001(\005R\016characterFrame\0227\n\006equips\030\013 \001(\0132" +
+      "\037.dnf.v1.CharacterEquipIndexListR\006equips" +
+      "\0220\n\024avatar_visible_flags\030\014 \001(\rR\022avatarVi" +
+      "sibleFlags\022\'\n\017deletion_status\030\r \001(\005R\016del" +
+      "etionStatus\022#\n\rdeletion_time\030\016 \001(\003R\014dele" +
+      "tionTime\022\037\n\013create_time\030\017 \001(\003R\ncreateTim" +
+      "e\022\037\n\013change_name\030\020 \001(\010R\nchangeName\"\252\003\n\023C" +
+      "haracterDetailInfo\022\033\n\tchar_guid\030\001 \001(\003R\010c" +
+      "harGuid\022\024\n\005money\030\002 \001(\003R\005money\022\022\n\004coin\030\003 " +
+      "\001(\003R\004coin\022\020\n\003exp\030\004 \001(\005R\003exp\022\031\n\010stat_str\030" +
+      "\005 \001(\005R\007statStr\022\031\n\010stat_int\030\006 \001(\005R\007statIn" +
+      "t\022\031\n\010stat_vit\030\007 \001(\005R\007statVit\022\031\n\010stat_spr" +
+      "\030\010 \001(\005R\007statSpr\022\016\n\002hp\030\t \001(\005R\002hp\022\025\n\006max_h" +
+      "p\030\n \001(\005R\005maxHp\022\016\n\002mp\030\013 \001(\005R\002mp\022\025\n\006max_mp" +
+      "\030\014 \001(\005R\005maxMp\022\016\n\002sp\030\r \001(\005R\002sp\022\025\n\006max_sp\030" +
+      "\016 \001(\005R\005maxSp\022\027\n\007pos_map\030\017 \001(\005R\006posMap\022\023\n" +
+      "\005pos_x\030\020 \001(\002R\004posX\022\023\n\005pos_y\030\021 \001(\002R\004posY\022" +
+      "\026\n\006status\030\022 \001(\005R\006status\"\204\001\n\tSkillInfo\022\031\n" +
+      "\010skill_id\030\001 \001(\005R\007skillId\022\024\n\005level\030\002 \001(\005R" +
+      "\005level\022\027\n\007sp_cost\030\003 \001(\005R\006spCost\022-\n\022coold" +
+      "own_remaining\030\004 \001(\005R\021cooldownRemaining\"\026" +
+      "\n\024CharacterListRequest\">\n\026CreateCharacte" +
+      "rRequest\022\020\n\003job\030\001 \001(\005R\003job\022\022\n\004name\030\002 \001(\t" +
+      "R\004name\"5\n\026DeleteCharacterRequest\022\033\n\tchar" +
+      "_guid\030\001 \001(\003R\010charGuid\"6\n\027RestoreCharacte" +
+      "rRequest\022\033\n\tchar_guid\030\001 \001(\003R\010charGuid\"0\n" +
+      "\032ExitCharacterSelectRequest\022\022\n\004type\030\001 \001(" +
+      "\005R\004type\"6\n\027GetCharacterInfoRequest\022\033\n\tch" +
+      "ar_guid\030\001 \001(\003R\010charGuid\"$\n\020ChangeJobRequ" +
+      "est\022\020\n\003job\030\001 \001(\005R\003job\"!\n\rAwakenRequest\022\020" +
+      "\n\003job\030\001 \001(\005R\003job\"/\n\020SkillListRequest\022\033\n\t" +
+      "char_guid\030\001 \001(\003R\010charGuid\".\n\021LearnSkillR" +
+      "equest\022\031\n\010skill_id\030\001 \001(\005R\007skillId\"0\n\023Upg" +
+      "radeSkillRequest\022\031\n\010skill_id\030\001 \001(\005R\007skil" +
+      "lId\"d\n\031AllocateStatPointsRequest\022\020\n\003str\030" +
+      "\001 \001(\005R\003str\022\021\n\004int_\030\002 \001(\005R\003int\022\020\n\003vit\030\003 \001" +
+      "(\005R\003vit\022\020\n\003spr\030\004 \001(\005R\003spr\"4\n\027CompleteJob" +
+      "QuestRequest\022\031\n\010quest_id\030\001 \001(\005R\007questId\"" +
+      "\257\004\n\025CharacterListResponse\022\024\n\005error\030\001 \001(\005" +
+      "R\005error\022\030\n\007version\030\002 \001(\005R\007version\022,\n\006lim" +
+      "its\030\003 \003(\0132\024.dnf.v1.JobLimitInfoR\006limits\022" +
+      ">\n\ncharacters\030\004 \003(\0132\036.dnf.v1.CharacterWi" +
+      "thEquipListR\ncharacters\022\024\n\005count\030\005 \001(\005R\005" +
+      "count\0222\n\025adventure_union_level\030\006 \001(\005R\023ad" +
+      "ventureUnionLevel\022.\n\023adventure_union_exp" +
+      "\030\007 \001(\003R\021adventureUnionExp\0225\n\027daily_creat" +
+      "e_char_count\030\010 \001(\005R\024dailyCreateCharCount" +
+      "\022<\n\033daily_create_char_max_count\030\t \001(\005R\027d" +
+      "ailyCreateCharMaxCount\0220\n\024adventure_unio" +
+      "n_name\030\n \001(\tR\022adventureUnionName\022\033\n\tmax_" +
+      "count\030\013 \001(\005R\010maxCount\022:\n\031ignore_contents" +
+      "_blacklist\030\014 \001(\tR\027ignoreContentsBlacklis" +
+      "t\"q\n\027CreateCharacterResponse\022\024\n\005error\030\001 " +
+      "\001(\005R\005error\022\032\n\010charguid\030\002 \001(\004R\010charguid\022\020" +
+      "\n\003job\030\003 \001(\005R\003job\022\022\n\004name\030\004 \001(\tR\004name\"V\n\027" +
+      "DeleteCharacterResponse\022\024\n\005error\030\001 \001(\005R\005" +
+      "error\022%\n\016remain_seconds\030\002 \001(\005R\rremainSec" +
+      "onds\"0\n\030RestoreCharacterResponse\022\024\n\005erro" +
+      "r\030\001 \001(\005R\005error\"3\n\033ExitCharacterSelectRes" +
+      "ponse\022\024\n\005error\030\001 \001(\005R\005error\"e\n\030GetCharac" +
+      "terInfoResponse\022\024\n\005error\030\001 \001(\005R\005error\0223\n" +
+      "\006detail\030\002 \001(\0132\033.dnf.v1.CharacterDetailIn" +
+      "foR\006detail\"B\n\021ChangeJobResponse\022\024\n\005error" +
+      "\030\001 \001(\005R\005error\022\027\n\007new_job\030\002 \001(\005R\006newJob\"?" +
+      "\n\016AwakenResponse\022\024\n\005error\030\001 \001(\005R\005error\022\027" +
+      "\n\007new_job\030\002 \001(\005R\006newJob\"T\n\021SkillListResp" +
+      "onse\022\024\n\005error\030\001 \001(\005R\005error\022)\n\006skills\030\002 \003" +
+      "(\0132\021.dnf.v1.SkillInfoR\006skills\"S\n\022LearnSk" +
+      "illResponse\022\024\n\005error\030\001 \001(\005R\005error\022\'\n\005ski" +
+      "ll\030\002 \001(\0132\021.dnf.v1.SkillInfoR\005skill\"U\n\024Up" +
+      "gradeSkillResponse\022\024\n\005error\030\001 \001(\005R\005error" +
+      "\022\'\n\005skill\030\002 \001(\0132\021.dnf.v1.SkillInfoR\005skil" +
+      "l\"\311\001\n\032AllocateStatPointsResponse\022\024\n\005erro" +
+      "r\030\001 \001(\005R\005error\022\031\n\010stat_str\030\002 \001(\005R\007statSt" +
+      "r\022\031\n\010stat_int\030\003 \001(\005R\007statInt\022\031\n\010stat_vit" +
+      "\030\004 \001(\005R\007statVit\022\031\n\010stat_spr\030\005 \001(\005R\007statS" +
+      "pr\022)\n\020available_points\030\006 \001(\005R\017availableP" +
+      "oints\"0\n\030CompleteJobQuestResponse\022\024\n\005err" +
+      "or\030\001 \001(\005R\005errorB}\n com.dnfm.mina.protobu" +
+      "f.generatedB\016CharacterProtoP\001Z\020gen/dnf/v" +
+      "1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1" +
+      "\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -311,176 +352,200 @@ public final class CharacterProto extends com.google.protobuf.GeneratedFile {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CharacterEquipIndex_descriptor,
         new java.lang.String[] { "Weapon", "Shoulder", "Armor", "Belt", "Pants", "Shoes", "Ring1", "Ring2", "Necklace", "Bracelet", "SubEquipment", "MagicStone", "Earring", });
-    internal_static_dnf_v1_Character_descriptor =
+    internal_static_dnf_v1_EquipIndexSlot_descriptor =
       getDescriptor().getMessageType(2);
+    internal_static_dnf_v1_EquipIndexSlot_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_EquipIndexSlot_descriptor,
+        new java.lang.String[] { "Index", "Slot", "Reforge", "Reforgeexp", "Upgrade", });
+    internal_static_dnf_v1_AvatarIndexSlot_descriptor =
+      getDescriptor().getMessageType(3);
+    internal_static_dnf_v1_AvatarIndexSlot_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_AvatarIndexSlot_descriptor,
+        new java.lang.String[] { "Index", "Slot", });
+    internal_static_dnf_v1_CharacterEquipIndexList_descriptor =
+      getDescriptor().getMessageType(4);
+    internal_static_dnf_v1_CharacterEquipIndexList_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_CharacterEquipIndexList_descriptor,
+        new java.lang.String[] { "Equiplist", "Avatarlist", });
+    internal_static_dnf_v1_Character_descriptor =
+      getDescriptor().getMessageType(5);
     internal_static_dnf_v1_Character_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_Character_descriptor,
         new java.lang.String[] { "CharGuid", "LastLogout", "GrowType", "SecGrowType", "Job", "Level", "Name", "Fatigue", "EquipScore", "CharacterFrame", "Equips", "AvatarVisibleFlags", "DeletionStatus", "DeletionTime", "CreateTime", "ChangeName", });
+    internal_static_dnf_v1_CharacterWithEquipList_descriptor =
+      getDescriptor().getMessageType(6);
+    internal_static_dnf_v1_CharacterWithEquipList_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_CharacterWithEquipList_descriptor,
+        new java.lang.String[] { "CharGuid", "LastLogout", "GrowType", "SecGrowType", "Job", "Level", "Name", "Fatigue", "EquipScore", "CharacterFrame", "Equips", "AvatarVisibleFlags", "DeletionStatus", "DeletionTime", "CreateTime", "ChangeName", });
     internal_static_dnf_v1_CharacterDetailInfo_descriptor =
-      getDescriptor().getMessageType(3);
+      getDescriptor().getMessageType(7);
     internal_static_dnf_v1_CharacterDetailInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CharacterDetailInfo_descriptor,
         new java.lang.String[] { "CharGuid", "Money", "Coin", "Exp", "StatStr", "StatInt", "StatVit", "StatSpr", "Hp", "MaxHp", "Mp", "MaxMp", "Sp", "MaxSp", "PosMap", "PosX", "PosY", "Status", });
     internal_static_dnf_v1_SkillInfo_descriptor =
-      getDescriptor().getMessageType(4);
+      getDescriptor().getMessageType(8);
     internal_static_dnf_v1_SkillInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_SkillInfo_descriptor,
         new java.lang.String[] { "SkillId", "Level", "SpCost", "CooldownRemaining", });
     internal_static_dnf_v1_CharacterListRequest_descriptor =
-      getDescriptor().getMessageType(5);
+      getDescriptor().getMessageType(9);
     internal_static_dnf_v1_CharacterListRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CharacterListRequest_descriptor,
         new java.lang.String[] { });
     internal_static_dnf_v1_CreateCharacterRequest_descriptor =
-      getDescriptor().getMessageType(6);
+      getDescriptor().getMessageType(10);
     internal_static_dnf_v1_CreateCharacterRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CreateCharacterRequest_descriptor,
-        new java.lang.String[] { "Name", "Job", "GrowType", "SecGrowType", "Slot", });
+        new java.lang.String[] { "Job", "Name", });
     internal_static_dnf_v1_DeleteCharacterRequest_descriptor =
-      getDescriptor().getMessageType(7);
+      getDescriptor().getMessageType(11);
     internal_static_dnf_v1_DeleteCharacterRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_DeleteCharacterRequest_descriptor,
         new java.lang.String[] { "CharGuid", });
     internal_static_dnf_v1_RestoreCharacterRequest_descriptor =
-      getDescriptor().getMessageType(8);
+      getDescriptor().getMessageType(12);
     internal_static_dnf_v1_RestoreCharacterRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_RestoreCharacterRequest_descriptor,
         new java.lang.String[] { "CharGuid", });
     internal_static_dnf_v1_ExitCharacterSelectRequest_descriptor =
-      getDescriptor().getMessageType(9);
+      getDescriptor().getMessageType(13);
     internal_static_dnf_v1_ExitCharacterSelectRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ExitCharacterSelectRequest_descriptor,
         new java.lang.String[] { "Type", });
     internal_static_dnf_v1_GetCharacterInfoRequest_descriptor =
-      getDescriptor().getMessageType(10);
+      getDescriptor().getMessageType(14);
     internal_static_dnf_v1_GetCharacterInfoRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GetCharacterInfoRequest_descriptor,
         new java.lang.String[] { "CharGuid", });
     internal_static_dnf_v1_ChangeJobRequest_descriptor =
-      getDescriptor().getMessageType(11);
+      getDescriptor().getMessageType(15);
     internal_static_dnf_v1_ChangeJobRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ChangeJobRequest_descriptor,
         new java.lang.String[] { "Job", });
     internal_static_dnf_v1_AwakenRequest_descriptor =
-      getDescriptor().getMessageType(12);
+      getDescriptor().getMessageType(16);
     internal_static_dnf_v1_AwakenRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AwakenRequest_descriptor,
         new java.lang.String[] { "Job", });
     internal_static_dnf_v1_SkillListRequest_descriptor =
-      getDescriptor().getMessageType(13);
+      getDescriptor().getMessageType(17);
     internal_static_dnf_v1_SkillListRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_SkillListRequest_descriptor,
         new java.lang.String[] { "CharGuid", });
     internal_static_dnf_v1_LearnSkillRequest_descriptor =
-      getDescriptor().getMessageType(14);
+      getDescriptor().getMessageType(18);
     internal_static_dnf_v1_LearnSkillRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_LearnSkillRequest_descriptor,
         new java.lang.String[] { "SkillId", });
     internal_static_dnf_v1_UpgradeSkillRequest_descriptor =
-      getDescriptor().getMessageType(15);
+      getDescriptor().getMessageType(19);
     internal_static_dnf_v1_UpgradeSkillRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_UpgradeSkillRequest_descriptor,
         new java.lang.String[] { "SkillId", });
     internal_static_dnf_v1_AllocateStatPointsRequest_descriptor =
-      getDescriptor().getMessageType(16);
+      getDescriptor().getMessageType(20);
     internal_static_dnf_v1_AllocateStatPointsRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AllocateStatPointsRequest_descriptor,
         new java.lang.String[] { "Str", "Int", "Vit", "Spr", });
     internal_static_dnf_v1_CompleteJobQuestRequest_descriptor =
-      getDescriptor().getMessageType(17);
+      getDescriptor().getMessageType(21);
     internal_static_dnf_v1_CompleteJobQuestRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CompleteJobQuestRequest_descriptor,
         new java.lang.String[] { "QuestId", });
     internal_static_dnf_v1_CharacterListResponse_descriptor =
-      getDescriptor().getMessageType(18);
+      getDescriptor().getMessageType(22);
     internal_static_dnf_v1_CharacterListResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CharacterListResponse_descriptor,
         new java.lang.String[] { "Error", "Version", "Limits", "Characters", "Count", "AdventureUnionLevel", "AdventureUnionExp", "DailyCreateCharCount", "DailyCreateCharMaxCount", "AdventureUnionName", "MaxCount", "IgnoreContentsBlacklist", });
     internal_static_dnf_v1_CreateCharacterResponse_descriptor =
-      getDescriptor().getMessageType(19);
+      getDescriptor().getMessageType(23);
     internal_static_dnf_v1_CreateCharacterResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CreateCharacterResponse_descriptor,
-        new java.lang.String[] { "Error", "Character", });
+        new java.lang.String[] { "Error", "Charguid", "Job", "Name", });
     internal_static_dnf_v1_DeleteCharacterResponse_descriptor =
-      getDescriptor().getMessageType(20);
+      getDescriptor().getMessageType(24);
     internal_static_dnf_v1_DeleteCharacterResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_DeleteCharacterResponse_descriptor,
         new java.lang.String[] { "Error", "RemainSeconds", });
     internal_static_dnf_v1_RestoreCharacterResponse_descriptor =
-      getDescriptor().getMessageType(21);
+      getDescriptor().getMessageType(25);
     internal_static_dnf_v1_RestoreCharacterResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_RestoreCharacterResponse_descriptor,
         new java.lang.String[] { "Error", });
     internal_static_dnf_v1_ExitCharacterSelectResponse_descriptor =
-      getDescriptor().getMessageType(22);
+      getDescriptor().getMessageType(26);
     internal_static_dnf_v1_ExitCharacterSelectResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ExitCharacterSelectResponse_descriptor,
         new java.lang.String[] { "Error", });
     internal_static_dnf_v1_GetCharacterInfoResponse_descriptor =
-      getDescriptor().getMessageType(23);
+      getDescriptor().getMessageType(27);
     internal_static_dnf_v1_GetCharacterInfoResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GetCharacterInfoResponse_descriptor,
         new java.lang.String[] { "Error", "Detail", });
     internal_static_dnf_v1_ChangeJobResponse_descriptor =
-      getDescriptor().getMessageType(24);
+      getDescriptor().getMessageType(28);
     internal_static_dnf_v1_ChangeJobResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ChangeJobResponse_descriptor,
         new java.lang.String[] { "Error", "NewJob", });
     internal_static_dnf_v1_AwakenResponse_descriptor =
-      getDescriptor().getMessageType(25);
+      getDescriptor().getMessageType(29);
     internal_static_dnf_v1_AwakenResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AwakenResponse_descriptor,
         new java.lang.String[] { "Error", "NewJob", });
     internal_static_dnf_v1_SkillListResponse_descriptor =
-      getDescriptor().getMessageType(26);
+      getDescriptor().getMessageType(30);
     internal_static_dnf_v1_SkillListResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_SkillListResponse_descriptor,
         new java.lang.String[] { "Error", "Skills", });
     internal_static_dnf_v1_LearnSkillResponse_descriptor =
-      getDescriptor().getMessageType(27);
+      getDescriptor().getMessageType(31);
     internal_static_dnf_v1_LearnSkillResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_LearnSkillResponse_descriptor,
         new java.lang.String[] { "Error", "Skill", });
     internal_static_dnf_v1_UpgradeSkillResponse_descriptor =
-      getDescriptor().getMessageType(28);
+      getDescriptor().getMessageType(32);
     internal_static_dnf_v1_UpgradeSkillResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_UpgradeSkillResponse_descriptor,
         new java.lang.String[] { "Error", "Skill", });
     internal_static_dnf_v1_AllocateStatPointsResponse_descriptor =
-      getDescriptor().getMessageType(29);
+      getDescriptor().getMessageType(33);
     internal_static_dnf_v1_AllocateStatPointsResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AllocateStatPointsResponse_descriptor,
         new java.lang.String[] { "Error", "StatStr", "StatInt", "StatVit", "StatSpr", "AvailablePoints", });
     internal_static_dnf_v1_CompleteJobQuestResponse_descriptor =
-      getDescriptor().getMessageType(30);
+      getDescriptor().getMessageType(34);
     internal_static_dnf_v1_CompleteJobQuestResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CompleteJobQuestResponse_descriptor,

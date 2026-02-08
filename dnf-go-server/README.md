@@ -1,22 +1,57 @@
 # DNF Go Server
 
-DNF 游戏服务器的 Go 语言实现版本，从 Java + Spring Boot + Apache MINA + jprotobuf 迁移而来。
+DNF 游戏服务器的 Go 语言实现版本，采用现代化的 Go 架构设计，从 Java + Spring Boot + Apache MINA + jprotobuf 迁移而来。
+
+## 架构概览
+
+本项目采用分层的 Go 架构设计：
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        DNF Go Server                            │
+├─────────────────────────────────────────────────────────────────┤
+│  Main Layer                                                     │
+│  ├── Cobra CLI (serve, migrate, version)                       │
+│  └── Viper Configuration                                       │
+├─────────────────────────────────────────────────────────────────┤
+│  Server Layer                                                   │
+│  ├── Echo + cmux (单端口多协议)                                 │
+│  ├── gRPC-Gateway (REST API)                                   │
+│  ├── Connect RPC (浏览器客户端)                                │
+│  └── 原生 gRPC (HTTP/2)                                        │
+├─────────────────────────────────────────────────────────────────┤
+│  Store Layer                                                    │
+│  ├── Driver Interface (MySQL/SQLite/PostgreSQL)               │
+│  ├── Cache Layer (go-cache)                                    │
+│  └── Migration System                                          │
+├─────────────────────────────────────────────────────────────────┤
+│  Legacy Layer (保持运行)                                        │
+│  ├── TCP Server (替代 Apache MINA)                             │
+│  ├── Message Dispatcher                                        │
+│  └── Game Handlers                                             │
+└─────────────────────────────────────────────────────────────────┘
+```
 
 ## 迁移状态
 
-**当前状态**: 基础设施已完成，游戏逻辑待实现
+**当前状态**: 新架构基础设施已完成 (约75%)
 
-- ✅ ProtoBuf 协议定义 (100+ 消息类型)
-- ✅ TCP 服务器框架 (替代 Apache MINA)
-- ✅ 消息编解码器 (替代 jprotobuf)
-- ✅ 消息分发器
-- ✅ 配置系统 (替代 Spring Properties)
-- ✅ 日志系统 (替代 SLF4J)
-- ✅ 数据库层 (GORM 替代 Nutz ORM)
-- ✅ 登录认证处理器 (示例)
-- ⏳ 其他游戏逻辑处理器
+### 已完成 ✅
+- ProtoBuf 协议定义 (100+ 消息类型)
+- Store层架构 (Driver接口、缓存、迁移)
+- Server层架构 (Echo + cmux + 三协议支持)
+- Main层架构 (Cobra CLI + Viper)
+- 认证模块 (JWT、PAT支持)
+- 数据库模型 (18张表)
+- TCP网络层框架 (替代 MINA)
+- 消息编解码器 (替代 jprotobuf)
 
-详细进度见: [MIGRATION_PROGRESS.md](docs/MIGRATION_PROGRESS.md)
+### 进行中 ⏳
+- Connect RPC拦截器链完善
+- 剩余Store方法实现
+- 服务层完整实现
+
+详细进度见: [docs/architecture/05-migration-plan.md](docs/architecture/05-migration-plan.md)
 
 ## 项目结构
 
@@ -24,72 +59,91 @@ DNF 游戏服务器的 Go 语言实现版本，从 Java + Spring Boot + Apache M
 dnf-go-server/
 ├── cmd/
 │   └── server/              # 主程序入口
-│       └── main.go
-├── internal/
-│   ├── server/
-│   │   └── http/            # HTTP服务器 (Echo框架)
-│   ├── network/             # TCP网络层 (替代MINA)
-│   │   ├── server.go        # TCP服务器
-│   │   ├── session.go       # 会话管理
-│   │   ├── codec.go         # ProtoBuf编解码器
-│   │   ├── dispatcher.go    # 消息分发器
-│   │   └── message_registry.go  # 消息注册表
-│   ├── game/                # 游戏逻辑
-│   │   ├── player_service.go
-│   │   └── handlers/        # 消息处理器
-│   │       ├── auth.go      # 认证处理器
-│   │       └── register.go  # 处理器注册
-│   ├── db/                  # 数据库层
-│   │   ├── db.go
-│   │   └── models/
-│   │       └── base.go
+│       ├── main.go          # 入口 (5行)
+│       └── cmd/             # Cobra子命令
+│           ├── root.go      # 根命令
+│           ├── serve.go     # serve子命令
+│           ├── migrate.go   # migrate子命令
+│           └── version.go   # version子命令
+├── server/                  # 服务器核心 (新架构)
+│   ├── server.go            # Echo + cmux + gRPC
+│   ├── auth/                # 认证模块
+│   │   ├── authenticator.go
+│   │   ├── token.go
+│   │   └── extract.go
+│   └── router/api/v1/       # API v1
+│       ├── v1.go            # 服务注册
+│       ├── acl_config.go    # 公开端点
+│       ├── connect_interceptors.go
+│       └── services.go
+├── store/                   # 数据层 (新架构)
+│   ├── driver.go            # Driver接口
+│   ├── store.go             # Store包装器 (带缓存)
+│   ├── cache.go             # 缓存实现
+│   ├── *.go                 # 模型定义
+│   ├── db/
+│   │   ├── db.go            # Driver工厂
+│   │   └── mysql/           # MySQL实现
+│   └── migration/           # 数据库迁移
+│       └── mysql/
+│           └── LATEST.sql
+├── internal/                # 内部模块
+│   ├── profile/             # 配置结构
+│   │   └── profile.go
+│   ├── server/http/         # HTTP服务器 (旧)
+│   ├── network/             # TCP网络层 (旧)
+│   ├── game/                # 游戏逻辑 (旧)
+│   ├── db/                  # GORM模型 (旧)
 │   └── utils/               # 工具包
-│       ├── config/          # 配置管理 (Viper)
-│       └── logger/          # 日志 (Zap)
-├── proto/                   # ProtoBuf协议定义
+├── proto/                   # ProtoBuf协议
 │   ├── dnf/v1/              # 协议文件
-│   │   ├── auth.proto       # 认证协议
-│   │   ├── role.proto       # 角色协议
-│   │   ├── item.proto       # 物品协议
-│   │   ├── dungeon.proto    # 副本协议
-│   │   ├── chat.proto       # 聊天协议
-│   │   ├── shop.proto       # 商店协议
-│   │   ├── quest.proto      # 任务协议
-│   │   ├── guild.proto      # 公会协议
-│   │   └── service.proto    # gRPC服务定义
-│   └── gen/                 # 生成的Go代码
-│       └── dnf/v1/
-├── configs/
-│   └── config.yaml          # 配置文件
-├── scripts/
-│   ├── build.sh             # 构建脚本
-│   └── start.sh             # 启动脚本
-└── docs/                    # 文档
-    ├── README.md            # 架构设计文档
-    ├── MIGRATION_PROGRESS.md  # 迁移进度
-    └── problems/            # 迁移问题记录
+│   └── gen/                 # 生成代码
+├── configs/                 # 配置文件
+│   ├── config.yaml          # 开发配置
+│   ├── config.prod.yaml     # 生产配置
+│   └── config.docker.yaml   # Docker配置
+├── scripts/                 # 脚本
+│   └── build.sh             # 构建脚本
+├── docs/                    # 文档
+│   ├── README.md
+│   ├── MIGRATION_PROGRESS.md
+│   └── architecture/        # 架构文档
+│       ├── 01-overview.md
+│       ├── 02-store-layer-design.md
+│       ├── 03-server-layer-design.md
+│       ├── 04-main-layer-design.md
+│       └── 05-migration-plan.md
+├── Makefile                 # 构建命令
+├── Dockerfile               # Docker镜像
+├── docker-compose.yml       # Docker编排
+└── .env.example             # 环境变量示例
 ```
 
-## 技术栈
+## 技术栈对比
 
 | 功能 | Java (原) | Go (新) |
 |------|-----------|---------|
-| 网络层 | Apache MINA 2.0.19 | 原生 net + 自定义 |
+| CLI框架 | - | Cobra |
+| 配置管理 | Spring Properties | Viper |
 | HTTP框架 | Spring Boot | Echo v4 |
+| RPC框架 | - | Connect RPC + gRPC-Gateway |
+| 端口复用 | - | cmux |
+| 网络层 | Apache MINA 2.0.19 | 原生 net + 自定义 |
 | 序列化 | jprotobuf | 官方 protobuf |
-| ORM | Nutz | GORM |
+| ORM | Nutz | GORM + Driver模式 |
 | 缓存 | Guava Cache | go-cache |
-| 配置 | Spring Properties | Viper |
 | 日志 | SLF4J | Zap |
-| 数据库 | MySQL 5.7 | MySQL 5.7 |
+| 数据库 | MySQL 5.7 | MySQL 5.7 / SQLite (开发) |
 
 ## 快速开始
 
 ### 1. 环境要求
 
-- Go 1.21+
-- MySQL 5.7+
+- Go 1.24+
+- **SQLite** - 用于开发/测试 (无需安装，内置)
+- **MySQL 5.7+** - 用于生产 (可选)
 - buf (用于生成 protobuf)
+- Docker & Docker Compose (可选)
 
 ### 2. 安装依赖
 
@@ -98,165 +152,122 @@ cd dnf-go-server
 go mod tidy
 ```
 
-### 3. 生成 ProtoBuf 代码
+### 3. 开发环境运行 (SQLite) - 推荐
+
+开发环境默认使用 SQLite，无需安装 MySQL，数据库文件保存在 `data/dnf_game.db`：
 
 ```bash
-cd proto
-buf generate
+# 查看所有可用命令
+make help
+
+# 启动开发服务器 (SQLite)
+make dev
+
+# 重置 SQLite 数据库
+make dev-reset
+
+# 运行测试
+make dev-test
 ```
 
-### 4. 配置数据库
+### 4. 生产环境运行 (MySQL)
 
-编辑 `configs/config.yaml`:
-
-```yaml
-database:
-  host: "127.0.0.1"
-  port: 3306
-  username: "root"
-  password: "your_password"
-  database: "dnf_game"
-```
-
-### 5. 构建
+生产环境使用 MySQL 数据库：
 
 ```bash
-./scripts/build.sh
+# 复制环境变量示例
+cp .env.example .env
+# 编辑 .env 配置数据库连接
+
+# 构建
+make build
+
+# 运行数据库迁移
+make migrate
+
+# 启动服务器
+make run
 ```
 
-### 6. 运行
+### 5. 常用命令
 
 ```bash
-./scripts/start.sh
-# 或指定配置文件
-./scripts/start.sh configs/config.yaml
+# 显示版本
+make version
+
+# 查看项目信息
+make info
+
+# 清理构建文件和数据库
+make clean
 ```
 
-## 协议格式
+### 5. 使用 Docker
 
-### 消息结构
+```bash
+# 启动所有服务 (MySQL + Server)
+docker-compose up -d
 
+# 查看日志
+docker-compose logs -f server
+
+# 停止服务
+docker-compose down
 ```
-[2字节长度][2字节模块][2字节命令][Protobuf消息体]
-```
 
-- 长度: 大端序 uint16，包含模块+命令+消息体的总长度
-- 模块: 大端序 uint16，表示功能模块 (10000-10007)
-- 命令: 大端序 uint16，表示具体操作 (0-255)
-- 消息体: Protobuf 序列化后的数据
+## 架构设计文档
 
-### 模块划分
+详细设计文档位于 `docs/architecture/`：
 
-| 模块ID | 功能 |
-|--------|------|
-| 10000 | 认证 (登录、创建角色、角色列表、选择角色) |
-| 10001 | 角色系统 (属性、技能、疲劳值) |
-| 10002 | 背包系统 (物品、装备、货币) |
-| 10003 | 副本系统 (进入、退出、复活) |
-| 10004 | 聊天系统 (频道、好友) |
-| 10005 | 商店系统 (NPC商店、拍卖行、个人商店) |
-| 10006 | 任务系统 (接受、完成、奖励) |
-| 10007 | 公会系统 (创建、加入、技能) |
+1. [01-overview.md](docs/architecture/01-overview.md) - 重构概述
+2. [02-store-layer-design.md](docs/architecture/02-store-layer-design.md) - Store层设计
+3. [03-server-layer-design.md](docs/architecture/03-server-layer-design.md) - Server层设计
+4. [04-main-layer-design.md](docs/architecture/04-main-layer-design.md) - Main层设计
+5. [05-migration-plan.md](docs/architecture/05-migration-plan.md) - 迁移执行计划
+
+## 多协议支持
+
+服务器同时支持三种协议，共享同一个端口 (8081)：
+
+| 协议 | 端点 | 用途 |
+|------|------|------|
+| REST API | `/api/v1/*` | 第三方集成、管理后台 |
+| Connect RPC | `/dnf.api.v1.*` | Web客户端、浏览器应用 |
+| gRPC | HTTP/2 | 服务间通信、高性能场景 |
 
 ## 开发指南
 
-### 添加新的消息处理器
+### 添加新的 API 端点
 
-1. 在 `internal/game/handlers/` 下创建处理器文件
+1. **定义 Proto 服务** (proto/dnf/v1/*.proto)
+2. **生成代码** (`cd proto && buf generate`)
+3. **实现服务** (server/router/api/v1/*_service.go)
+4. **注册服务** (server/router/api/v1/v1.go)
 
-```go
-// handlers/role.go
-package handlers
+### 添加新的数据模型
 
-import (
-    dnfv1 "dnf-go-server/proto/gen/dnf/v1"
-    "dnf-go-server/internal/network"
-    "google.golang.org/protobuf/proto"
-)
-
-func GetRoleInfoHandler(session *network.Session, msg proto.Message) {
-    req := msg.(*dnfv1.GetRoleInfoRequest)
-    // 处理逻辑...
-    
-    resp := &dnfv1.GetRoleInfoResponse{
-        Error: 0,
-        // ...
-    }
-    session.WriteResponse(10001, 1, resp)
-}
-```
-
-2. 在 `handlers/register.go` 中注册
-
-```go
-func RegisterAllHandlers(dispatcher *network.MessageDispatcher) {
-    // ...
-    dispatcher.RegisterHandler(10001, 0, GetRoleInfoHandler)
-}
-```
-
-### 添加 ProtoBuf 消息
-
-1. 在 `proto/dnf/v1/` 下编辑对应的 .proto 文件
-2. 运行 `buf generate` 生成 Go 代码
-3. 在 `message_registry.go` 中注册消息
-4. 在处理器中使用新消息
-
-### HTTP API
-
-在 `internal/server/http/server.go` 中添加:
-
-```go
-func (s *Server) registerRoutes() {
-    s.echo.GET("/api/your-endpoint", s.yourHandler)
-}
-
-func (s *Server) yourHandler(c echo.Context) error {
-    return c.JSON(http.StatusOK, Success(data))
-}
-```
-
-## Java vs Go 关键差异
-
-| Java (Spring/MINA) | Go |
-|-------------------|-----|
-| @MessageMeta(module, cmd) | ProtoCodec.RegisterMessage |
-| IoHandler | ConnectionHandler 接口 |
-| IoSession | Session 结构体 |
-| ProtocolCodecFilter | ProtoCodec |
-| ConcurrentHashMap | map + sync.RWMutex |
-| ThreadPool | Goroutine |
-| @Autowired | 构造函数注入 |
-| Spring Properties | Viper |
-| SLF4J | Zap |
-| Nutz ORM | GORM |
-
-## 测试
-
-```bash
-# 运行所有测试
-go test ./...
-
-# 运行特定包测试
-go test ./internal/network/... -v
-
-# 运行基准测试
-go test ./internal/network/... -bench=.
-```
+1. **定义模型** (store/*.go)
+2. **更新 Driver 接口** (store/driver.go)
+3. **实现 CRUD** (store/db/mysql/*.go)
+4. **添加缓存** (store/store.go)
+5. **创建迁移** (store/migration/mysql/)
 
 ## 性能优化
 
 1. 使用 `sync.Pool` 复用对象
 2. 避免内存分配 (零拷贝)
-3. 使用 atomic 替代锁
+3. 使用 atomic 替代锁 (计数器场景)
 4. 合理设置 GOMAXPROCS
-5. 启用连接池复用
+5. 启用数据库连接池
+6. 使用缓存层减少数据库查询
 
-## 文档
+## 监控指标
 
-- [架构设计文档](docs/README.md)
-- [迁移进度](docs/MIGRATION_PROGRESS.md)
-- [迁移问题记录](docs/problems/)
+- Goroutine 数量
+- 内存使用
+- 数据库连接池状态
+- 缓存命中率
+- API 响应时间
 
 ## 许可证
 

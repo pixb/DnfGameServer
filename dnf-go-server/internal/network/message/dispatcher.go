@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"sync"
 
-	"dnf-go-server/internal/network"
-	"dnf-go-server/internal/utils/logger"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 )
 
 // Message 消息接口

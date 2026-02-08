@@ -10,7 +10,7 @@ description: This skill should be used when user asks to migrate from JProtobuf 
 | 属性 | 值 |
 | :--- | :--- |
 | **名称** | pix-jptotobuf-to-proto |
-| **版本** | 1.0.0 |
+| **版本** | 1.2.0 |
 | **类型** | 工具技能 (Tool Skill) |
 | **核心功能** | JProtobuf 到标准 Protobuf 迁移 |
 | **适用环境** | Trae |
@@ -49,156 +49,218 @@ pix-jptotobuf-to-proto 会提供：
 4. 跨语言测试策略和验证方法
 5. 经验总结和问题解决方案
 
-## 🌟 功能示例
+## 📚 迁移批次
 
-### 示例 1: 单文件迁移
+### 批次01: AUTH_LOGIN (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_LOGIN.java, RES_LOGIN.java
+- **状态**: ✅ 完成
+- **文档**: [批次01文档](../../devdoc/protobuf/batch_01/)
+- **成果**: 成功实现跨语言通信，验证了双模式编解码器
 
-**用户请求**："迁移 LOGIN.java 文件到标准 Protobuf"
+### 批次02: PING (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_PING.java, RES_PING.java
+- **状态**: ✅ 完成
+- **文档**: [批次02文档](../../devdoc/protobuf/batch_02/)
+- **成果**: 
+  - 成功迁移PING消息
+  - SESSION_LOGOUT和HEARTBEAT暂未迁移（缺乏实际使用场景）
+  - 验证了跨语言通信正确性
 
-**响应**：
+### 批次03: CHARACTER (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_CHARAC_LIST.java, RES_CHARAC_LIST.java
+- **状态**: ✅ 完成
+- **文档**: [批次03文档](../../devdoc/protobuf/batch_03/)
+- **成果**: 
+  - 成功迁移CHARAC_LIST消息
+  - 新增CharacterWithEquipList消息类型解决结构不匹配问题
+  - 处理复杂嵌套结构（角色、职业限制、装备列表）
+  - 验证了跨语言通信正确性
+  - Go单元测试7个测试用例全部通过
+  - Java编译成功，无错误
 
-```markdown
-# LOGIN.java 迁移计划
+### 批次04: CHANNEL (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_CREATE_CHARACTER.java, RES_CREATE_CHARACTER.java, REQ_CHANNEL_LIST.java, RES_CHANNEL_LIST.java, REQ_ENTER_CHANNEL.java
+- **状态**: ✅ 完成
+- **文档**: [批次04文档](../../devdoc/protobuf/batch_04/)
+- **成果**: 
+  - 成功迁移创建角色、频道列表、进入频道消息
+  - 修复CreateCharacter消息的CMD值和字段定义
+  - 新增channel.proto文件定义频道相关消息
+  - 处理复杂嵌套结构（ClientInfo包含枚举类型）
+  - 验证了跨语言通信正确性
+  - Go单元测试9个测试用例全部通过
+  - 编解码测试验证了跨语言通信
 
-## 一、分析阶段
-- 分析 LOGIN.java 的字段定义
-- 确认 @Protobuf 注解的字段类型和顺序
-- 映射到标准 Protobuf 类型
+## 🌟 功能实现
 
-## 二、生成 Proto 文件
-- 在 proto/dnf/v1/auth.proto 中定义对应消息
-- 保持字段序号和类型一致性
-- 验证 Proto 文件语法正确
+### 核心功能
 
-## 三、生成 Go 代码
-- 执行 `buf generate` 生成 Go 代码
-- 生成路径：`dnf-go-client/gen/go/dnf/v1/auth.pb.go`
-- 验证生成的 Go 代码编译通过
+#### 1. 迁移流程管理
 
-## 四、编写 Go 测试用例
-- 创建测试文件：`dnf-go-client/test/auth_test.go`
-- 测试序列化/反序列化
-- 测试通过
+提供完整的 7 步迁移流程，从分析到测试的全过程。
 
-## 五、生成 Java 代码
-- 执行 `buf generate` 生成 Java 代码
-- 替换到 Java 工程
-- 验证 Java 代码编译通过
+**详细文档**：[01_迁移流程.md](./01_迁移流程.md)
 
-## 六、调试 Java 服务端
-- 修改 Java 代码使用新协议
-- 编译并启动服务
-- 验证服务启动成功
+#### 2. 类型映射
 
-## 七、运行 Go 测试用例
-- 再次运行 Go 测试用例
-- 验证跨语言通信正常
-- 本次重构完毕
+提供 JProtobuf 到标准 Protobuf 的完整类型映射表，包括基本类型、复杂类型和特殊类型。
 
-## 八、经验总结
-- 记录遇到的问题和解决方案
-- 更新迁移最佳实践
-- 为下一批迁移做准备
+**详细文档**：[02_类型映射.md](./02_类型映射.md)
+
+#### 3. 问题解决
+
+提供 16 个常见问题的解决方案，涵盖代码生成、编译错误、运行时错误和配置问题。
+
+**详细文档**：[03_常见问题.md](./03_常见问题.md)
+
+#### 4. 双模式编解码器
+
+提供双模式编解码器的完整实现，支持渐进式迁移和灰度发布。
+
+**详细文档**：[04_双模式编解码器.md](./04_双模式编解码器.md)
+
+#### 5. 跨语言通信测试
+
+提供跨语言通信测试的完整指南，包括测试环境准备、消息头结构、测试验证要点。
+
+**详细文档**：[05_跨语言通信测试.md](./05_跨语言通信测试.md)
+
+#### 6. 经验总结
+
+提供经验总结模板，用于记录迁移过程中遇到的问题、解决方案和最佳实践。
+
+**详细文档**：[06_经验总结模板.md](./06_经验总结模板.md)
+
+#### 7. Proto文件选项说明
+
+提供Proto文件选项的详细说明，特别是`java_multiple_files`选项的重要性。
+
+**详细文档**：[07_Proto文件选项说明.md](./07_Proto文件选项说明.md)
+
+### 代码示例
+
+#### 示例 1: Proto 文件选项配置
+
+```protobuf
+syntax = "proto3";
+
+package dnf.v1;
+
+// Go代码生成选项
+option go_package = "dnf/proto/v1;sessionv1";
+
+// Java代码生成选项（重要）
+option java_multiple_files = true;  // 为每个消息生成独立的Java文件
+option java_package = "com.dnfm.mina.protobuf.generated";  // 指定Java包名
+option java_outer_classname = "SessionProto";  // 指定外层类名
+
+message PingRequest {
+}
 ```
 
-### 示例 2: 批次迁移计划
+#### 示例 2: 消息适配方法
 
-**用户请求**："为第一批迁移创建计划"
-
-**响应**：
-
-```markdown
-# 批次 01 迁移计划
-
-## 一、迁移概览
-**批次编号**：batch_01
-**迁移时间**：2026-02-08
-**迁移文件数**：1个
-**迁移状态**：计划中
-
-## 二、迁移文件
-### Java文件
-- `src/main/java/com/dnfm/mina/protobuf/LOGIN.java`
-
-### 对应Proto文件
-- `proto/dnf/v1/auth.proto`
-
-## 三、迁移步骤
-1. 分析Java文件
-2. 生成Proto文件
-3. 生成Go代码
-4. 编写Go测试用例
-5. 生成Java代码
-6. 调试Java服务端
-7. 运行Go测试用例
-
-## 四、测试规划
-- Go测试用例：序列化/反序列化测试
-- Java测试用例：消息转换测试
-- 集成测试：跨语言通信测试
-
-## 五、经验总结模板
-- 问题记录
-- 解决方案
-- 最佳实践
-- 改进建议
+```java
+private byte[] adaptLoginResponse(Message msg) throws Exception {
+    RES_LOGIN oldResponse = (RES_LOGIN) msg;
+    
+    LoginResponse.Builder builder = LoginResponse.newBuilder();
+    
+    if (oldResponse.error != null) {
+        builder.setError(oldResponse.error);
+    }
+    if (oldResponse.authkey != null) {
+        builder.setAuthkey(oldResponse.authkey);
+    }
+    
+    return builder.build().toByteArray();
+}
 ```
 
-## 📋 迁移流程
+#### 示例 3: Go 客户端消息头构建
 
-### 阶段 1: 分析 Java 文件
-1. **字段分析**：分析 `@Protobuf` 注解的字段定义
-2. **类型映射**：映射到标准 Protobuf 类型
-3. **顺序确认**：确认字段序号和必填性
-4. **依赖分析**：分析消息间的依赖关系
-
-### 阶段 2: 生成 Proto 文件
-1. **文件创建**：在 `proto` 目录创建对应文件
-2. **消息定义**：定义与 Java 对应的消息结构
-3. **字段映射**：保持字段序号和类型一致
-4. **语法验证**：验证 Proto 文件语法正确
-
-### 阶段 3: 生成 Go 代码
-1. **执行生成**：运行 `buf generate` 生成 Go 代码
-2. **路径验证**：确认代码生成到正确路径
-3. **编译检查**：验证生成的 Go 代码编译通过
-4. **代码审查**：审查生成的代码结构
-
-### 阶段 4: 编写 Go 测试用例
-1. **测试文件创建**：创建对应的测试文件
-2. **序列化测试**：测试消息序列化功能
-3. **反序列化测试**：测试消息反序列化功能
-4. **边界值测试**：测试边界值和异常情况
-
-### 阶段 5: 生成 Java 代码
-1. **执行生成**：运行 `buf generate` 生成 Java 代码
-2. **代码集成**：将生成的代码集成到 Java 工程
-3. **编译检查**：验证 Java 代码编译通过
-4. **冲突解决**：解决可能的代码冲突
-
-### 阶段 6: 调试 Java 服务端
-1. **代码修改**：修改 Java 代码使用新协议
-2. **编译构建**：编译整个项目
-3. **服务启动**：启动 Java 服务端
-4. **错误调试**：解决启动过程中的错误
-
-### 阶段 7: 运行 Go 测试用例
-1. **测试执行**：再次运行 Go 测试用例
-2. **跨语言验证**：验证 Java 与 Go 通信正常
-3. **问题解决**：解决跨语言通信问题
-4. **经验总结**：记录本次迁移的经验
-
-## 📁 批次文档结构
-
-每次迁移都应该创建以下文档结构：
-
+```go
+func buildMessageHeader(moduleID uint16, seq uint8, transactionID uint8, body []byte) []byte {
+    totalLen := uint16(len(body) + 8)
+    
+    buf := new(bytes.Buffer)
+    binary.Write(&buf, binary.LittleEndian, totalLen)
+    binary.Write(&buf, binary.LittleEndian, moduleID)
+    buf.WriteByte(seq)
+    buf.WriteByte(transactionID)
+    binary.Write(&buf, binary.LittleEndian, uint16(0))
+    buf.Write(body)
+    
+    return buf.Bytes()
+}
 ```
-devdoc/protobuf/batch_XX/
-├── 01_迁移计划.md      # 迁移概览和步骤
-├── 02_文件映射.md      # Java到Proto的映射
-├── 03_测试规划.md      # 测试策略和用例
-└── 04_经验总结.md      # 问题和解决方案
+
+#### 示例 3: 类型转换工具
+
+```java
+public class TypeConverter {
+    public static String toProtoType(FieldType fieldType) {
+        switch (fieldType) {
+            case INT32:
+                return "int32";
+            case INT64:
+                return "int64";
+            case STRING:
+                return "string";
+            default:
+                return "unknown";
+        }
+    }
+}
 ```
+
+## 📋 最佳实践
+
+### 迁移策略
+
+- **渐进式迁移**：每次只迁移 1-2 个文件，降低风险
+- **充分测试**：每个步骤都要测试通过，确保质量
+- **文档化**：详细记录迁移过程和经验，便于后续参考
+- **跨语言验证**：确保 Java 和 Go 通信正常，验证兼容性
+- **批次化管理**：按批次组织迁移工作，便于跟踪和回顾
+
+### 代码质量
+
+- **Null 检查**：在消息适配方法中为所有字段添加 null 检查
+- **模块化设计**：将功能拆分为独立的模块，便于维护
+- **错误处理**：全面的错误捕获和处理，提供友好的错误信息
+- **代码注释**：详细的代码注释和文档，便于理解和维护
+
+### 性能优化
+
+- **缓存策略**：合理使用缓存减少重复计算
+- **异步处理**：使用异步操作提高性能
+- **资源管理**：及时释放不需要的资源
+- **代码优化**：减少不必要的计算和操作
+
+### 用户体验
+
+- **清晰的输出**：结构化、易读的输出格式
+- **友好的错误信息**：详细、有用的错误提示
+- **进度反馈**：长时间操作的进度提示
+- **合理的默认值**：为参数提供合理的默认值
+
+### 风险控制
+
+- **回退方案**：保留旧的 JProtobuf 实现，便于快速回退
+- **灰度发布**：逐步切换到新协议，降低风险
+- **监控**：添加日志监控协议使用情况
+- **测试覆盖**：确保测试覆盖所有场景
+
+### 端口管理
+
+- **明确区分**：HTTP端口和游戏服务器端口要明确区分
+- **配置管理**：在配置文件中统一管理端口配置
+- **日志记录**：启动时记录监听的端口，便于调试
 
 ## 🛠️ 工具和命令
 
@@ -219,120 +281,19 @@ devdoc/protobuf/batch_XX/
 | `proto/buf.gen.yaml` | 代码生成配置 | 主项目根目录 |
 | `proto/dnf/v1/*.proto` | Proto 协议文件 | 按包结构组织 |
 
-## 📚 类型映射指南
+## 📁 文档索引
 
-### 基本类型映射
+本技能采用总-分结构，主文档提供索引和概览，详细内容在子文档中：
 
-| JProtobuf 类型 | 标准 Protobuf 类型 | Go 类型 | Java 类型 |
-| :--- | :--- | :--- | :--- |
-| `FieldType.UINT64` | `uint64` | `uint64` | `long` |
-| `FieldType.UINT32` | `uint32` | `uint32` | `int` |
-| `FieldType.INT64` | `int64` | `int64` | `long` |
-| `FieldType.INT32` | `int32` | `int32` | `int` |
-| `FieldType.STRING` | `string` | `string` | `String` |
-| `FieldType.BOOL` | `bool` | `bool` | `boolean` |
-| `FieldType.FLOAT` | `float` | `float32` | `float` |
-| `FieldType.DOUBLE` | `double` | `float64` | `double` |
-
-### 复杂类型映射
-
-| JProtobuf 类型 | 标准 Protobuf 类型 | Go 类型 | Java 类型 |
-| :--- | :--- | :--- | :--- |
-| `List<T>` | `repeated T` | `[]T` | `List<T>` |
-| `Map<K,V>` | `map<K,V>` | `map[K]V` | `Map<K,V>` |
-| 嵌套消息 | 嵌套消息 | 结构体 | 内部类 |
-| 枚举类型 | `enum` | 枚举 | 枚举 |
-
-## 🔍 常见问题与解决方案
-
-### 1. Proto 文件错误
-
-**问题**：`buf generate` 失败，提示字段 tag 重复
-
-**解决方案**：
-- 检查 Proto 文件中的字段序号
-- 确保每个字段都有唯一的序号
-- 从 1 开始连续编号
-
-### 2. Java 插件配置错误
-
-**问题**：`Unknown generator option: paths`
-
-**解决方案**：
-- Java 插件不支持 `paths` 选项
-- 从 Java 插件配置中移除 `opt: paths=source_relative`
-
-### 3. 类型映射错误
-
-**问题**：跨语言类型不兼容
-
-**解决方案**：
-- 严格按照类型映射表进行映射
-- 测试边界值和最大值
-- 确保无符号类型正确处理
-
-### 4. 序列化不兼容
-
-**问题**：新旧协议序列化结果不兼容
-
-**解决方案**：
-- 保持字段序号一致
-- 保持字段类型兼容
-- 测试序列化/反序列化兼容性
-
-### 5. 服务启动失败
-
-**问题**：Java 服务启动失败
-
-**解决方案**：
-- 检查依赖是否正确
-- 检查代码是否正确集成
-- 查看详细的错误日志
-
-## 📝 经验总结模板
-
-每次迁移完成后，应该记录以下内容：
-
-### 1. 问题记录
-- **问题描述**：详细描述遇到的问题
-- **发生阶段**：在哪个迁移步骤发生
-- **影响范围**：影响了哪些功能
-
-### 2. 解决方案
-- **解决方法**：详细的解决方案
-- **实施步骤**：具体的操作步骤
-- **验证结果**：解决后的验证结果
-
-### 3. 最佳实践
-- **推荐做法**：经过验证的最佳实践
-- **避免事项**：应该避免的错误做法
-- **优化建议**：进一步优化的建议
-
-### 4. 改进建议
-- **流程改进**：迁移流程的改进建议
-- **工具改进**：工具使用的改进建议
-- **文档改进**：文档编写的改进建议
-
-## 🎯 迁移成功标准
-
-### Go 侧验证
-- ✅ 所有 Go 测试用例通过
-- ✅ Go 代码编译无错误
-- ✅ 序列化/反序列化正确
-- ✅ 边界值测试通过
-
-### Java 侧验证
-- ✅ 所有 Java 测试用例通过
-- ✅ Java 代码编译无错误
-- ✅ 服务启动成功
-- ✅ 消息处理正确
-
-### 集成验证
-- ✅ Go 客户端能发送请求
-- ✅ Java 服务端能接收请求
-- ✅ Java 服务端能发送响应
-- ✅ Go 客户端能接收响应
-- ✅ 跨语言通信正常
+| 文档 | 描述 | 适用场景 |
+| :--- | :--- | :--- |
+| [01_迁移流程.md](./01_迁移流程.md) | 7步迁移流程详解 | 开始迁移前了解完整流程 |
+| [02_类型映射.md](./02_类型映射.md) | JProtobuf到标准Protobuf类型映射 | 查找类型转换规则 |
+| [03_常见问题.md](./03_常见问题.md) | 16个常见问题与解决方案 | 遇到问题时查找解决方案 |
+| [04_双模式编解码器.md](./04_双模式编解码器.md) | 双模式编解码器实现 | 实现渐进式迁移 |
+| [05_跨语言通信测试.md](./05_跨语言通信测试.md) | 跨语言通信测试指南 | 验证跨语言通信 |
+| [06_经验总结模板.md](./06_经验总结模板.md) | 经验总结模板 | 记录迁移经验 |
+| [07_Proto文件选项说明.md](./07_Proto文件选项说明.md) | Proto文件选项详细说明 | 配置Proto文件选项 |
 
 ## 📚 参考资源
 
@@ -341,17 +302,13 @@ devdoc/protobuf/batch_XX/
 - [Protobuf 官方文档](https://protobuf.dev)
 - [Go Protobuf 文档](https://pkg.go.dev/google.golang.org/protobuf)
 
-### 最佳实践
-- **渐进式迁移**：每次只迁移 1-2 个文件
-- **充分测试**：每个步骤都要测试通过
-- **文档化**：详细记录迁移过程和经验
-- **跨语言验证**：确保 Java 和 Go 通信正常
-
-### 风险控制
-- **回退方案**：保留旧的 JProtobuf 实现
-- **灰度发布**：逐步切换到新协议
-- **监控**：添加日志监控协议使用情况
-- **测试覆盖**：确保测试覆盖所有场景
+### 技能文档
+- [01_迁移流程.md](./01_迁移流程.md) - 7 步迁移流程详解
+- [02_类型映射.md](./02_类型映射.md) - JProtobuf 到标准 Protobuf 类型映射
+- [03_常见问题.md](./03_常见问题.md) - 常见问题与解决方案
+- [04_双模式编解码器.md](./04_双模式编解码器.md) - 双模式编解码器实现
+- [05_跨语言通信测试.md](./05_跨语言通信测试.md) - 跨语言通信测试指南
+- [06_经验总结模板.md](./06_经验总结模板.md) - 经验总结模板
 
 ## 🌟 总结
 

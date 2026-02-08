@@ -11,7 +11,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"dnf-go-server/internal/utils/logger"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 )
 
 // TCPServer TCP服务器 (替代 Apache MINA)

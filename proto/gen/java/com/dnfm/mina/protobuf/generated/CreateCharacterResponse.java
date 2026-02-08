@@ -7,7 +7,7 @@ package com.dnfm.mina.protobuf.generated;
 
 /**
  * <pre>
- * 创建角色响应 (module=10003, cmd=2)
+ * 创建角色响应 (module=10003, cmd=1)
  * </pre>
  *
  * Protobuf type {@code dnf.v1.CreateCharacterResponse}
@@ -32,6 +32,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private CreateCharacterResponse() {
+    name_ = "";
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
@@ -47,7 +48,6 @@ private static final long serialVersionUID = 0L;
             com.dnfm.mina.protobuf.generated.CreateCharacterResponse.class, com.dnfm.mina.protobuf.generated.CreateCharacterResponse.Builder.class);
   }
 
-  private int bitField0_;
   public static final int ERROR_FIELD_NUMBER = 1;
   private int error_ = 0;
   /**
@@ -59,30 +59,65 @@ private static final long serialVersionUID = 0L;
     return error_;
   }
 
-  public static final int CHARACTER_FIELD_NUMBER = 2;
-  private com.dnfm.mina.protobuf.generated.Character character_;
+  public static final int CHARGUID_FIELD_NUMBER = 2;
+  private long charguid_ = 0L;
   /**
-   * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
-   * @return Whether the character field is set.
+   * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
+   * @return The charguid.
    */
   @java.lang.Override
-  public boolean hasCharacter() {
-    return ((bitField0_ & 0x00000001) != 0);
+  public long getCharguid() {
+    return charguid_;
+  }
+
+  public static final int JOB_FIELD_NUMBER = 3;
+  private int job_ = 0;
+  /**
+   * <code>int32 job = 3 [json_name = "job"];</code>
+   * @return The job.
+   */
+  @java.lang.Override
+  public int getJob() {
+    return job_;
+  }
+
+  public static final int NAME_FIELD_NUMBER = 4;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object name_ = "";
+  /**
+   * <code>string name = 4 [json_name = "name"];</code>
+   * @return The name.
+   */
+  @java.lang.Override
+  public java.lang.String getName() {
+    java.lang.Object ref = name_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      name_ = s;
+      return s;
+    }
   }
   /**
-   * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
-   * @return The character.
+   * <code>string name = 4 [json_name = "name"];</code>
+   * @return The bytes for name.
    */
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.Character getCharacter() {
-    return character_ == null ? com.dnfm.mina.protobuf.generated.Character.getDefaultInstance() : character_;
-  }
-  /**
-   * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
-   */
-  @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.CharacterOrBuilder getCharacterOrBuilder() {
-    return character_ == null ? com.dnfm.mina.protobuf.generated.Character.getDefaultInstance() : character_;
+  public com.google.protobuf.ByteString
+      getNameBytes() {
+    java.lang.Object ref = name_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      name_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -102,8 +137,14 @@ private static final long serialVersionUID = 0L;
     if (error_ != 0) {
       output.writeInt32(1, error_);
     }
-    if (((bitField0_ & 0x00000001) != 0)) {
-      output.writeMessage(2, getCharacter());
+    if (charguid_ != 0L) {
+      output.writeUInt64(2, charguid_);
+    }
+    if (job_ != 0) {
+      output.writeInt32(3, job_);
+    }
+    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
+      com.google.protobuf.GeneratedMessage.writeString(output, 4, name_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -118,9 +159,16 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(1, error_);
     }
-    if (((bitField0_ & 0x00000001) != 0)) {
+    if (charguid_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(2, getCharacter());
+        .computeUInt64Size(2, charguid_);
+    }
+    if (job_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(3, job_);
+    }
+    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
+      size += com.google.protobuf.GeneratedMessage.computeStringSize(4, name_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -139,11 +187,12 @@ private static final long serialVersionUID = 0L;
 
     if (getError()
         != other.getError()) return false;
-    if (hasCharacter() != other.hasCharacter()) return false;
-    if (hasCharacter()) {
-      if (!getCharacter()
-          .equals(other.getCharacter())) return false;
-    }
+    if (getCharguid()
+        != other.getCharguid()) return false;
+    if (getJob()
+        != other.getJob()) return false;
+    if (!getName()
+        .equals(other.getName())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -157,10 +206,13 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + ERROR_FIELD_NUMBER;
     hash = (53 * hash) + getError();
-    if (hasCharacter()) {
-      hash = (37 * hash) + CHARACTER_FIELD_NUMBER;
-      hash = (53 * hash) + getCharacter().hashCode();
-    }
+    hash = (37 * hash) + CHARGUID_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+        getCharguid());
+    hash = (37 * hash) + JOB_FIELD_NUMBER;
+    hash = (53 * hash) + getJob();
+    hash = (37 * hash) + NAME_FIELD_NUMBER;
+    hash = (53 * hash) + getName().hashCode();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -260,7 +312,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * 创建角色响应 (module=10003, cmd=2)
+   * 创建角色响应 (module=10003, cmd=1)
    * </pre>
    *
    * Protobuf type {@code dnf.v1.CreateCharacterResponse}
@@ -284,30 +336,22 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.dnfm.mina.protobuf.generated.CreateCharacterResponse.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessage.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessage
-              .alwaysUseFieldBuilders) {
-        internalGetCharacterFieldBuilder();
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
       error_ = 0;
-      character_ = null;
-      if (characterBuilder_ != null) {
-        characterBuilder_.dispose();
-        characterBuilder_ = null;
-      }
+      charguid_ = 0L;
+      job_ = 0;
+      name_ = "";
       return this;
     }
 
@@ -344,14 +388,15 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000001) != 0)) {
         result.error_ = error_;
       }
-      int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.character_ = characterBuilder_ == null
-            ? character_
-            : characterBuilder_.build();
-        to_bitField0_ |= 0x00000001;
+        result.charguid_ = charguid_;
       }
-      result.bitField0_ |= to_bitField0_;
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.job_ = job_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.name_ = name_;
+      }
     }
 
     @java.lang.Override
@@ -369,8 +414,16 @@ private static final long serialVersionUID = 0L;
       if (other.getError() != 0) {
         setError(other.getError());
       }
-      if (other.hasCharacter()) {
-        mergeCharacter(other.getCharacter());
+      if (other.getCharguid() != 0L) {
+        setCharguid(other.getCharguid());
+      }
+      if (other.getJob() != 0) {
+        setJob(other.getJob());
+      }
+      if (!other.getName().isEmpty()) {
+        name_ = other.name_;
+        bitField0_ |= 0x00000008;
+        onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -403,13 +456,21 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000001;
               break;
             } // case 8
-            case 18: {
-              input.readMessage(
-                  internalGetCharacterFieldBuilder().getBuilder(),
-                  extensionRegistry);
+            case 16: {
+              charguid_ = input.readUInt64();
               bitField0_ |= 0x00000002;
               break;
-            } // case 18
+            } // case 16
+            case 24: {
+              job_ = input.readInt32();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
+            case 34: {
+              name_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 34
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -459,125 +520,140 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private com.dnfm.mina.protobuf.generated.Character character_;
-    private com.google.protobuf.SingleFieldBuilder<
-        com.dnfm.mina.protobuf.generated.Character, com.dnfm.mina.protobuf.generated.Character.Builder, com.dnfm.mina.protobuf.generated.CharacterOrBuilder> characterBuilder_;
+    private long charguid_ ;
     /**
-     * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
-     * @return Whether the character field is set.
+     * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
+     * @return The charguid.
      */
-    public boolean hasCharacter() {
-      return ((bitField0_ & 0x00000002) != 0);
+    @java.lang.Override
+    public long getCharguid() {
+      return charguid_;
     }
     /**
-     * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
-     * @return The character.
+     * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
+     * @param value The charguid to set.
+     * @return This builder for chaining.
      */
-    public com.dnfm.mina.protobuf.generated.Character getCharacter() {
-      if (characterBuilder_ == null) {
-        return character_ == null ? com.dnfm.mina.protobuf.generated.Character.getDefaultInstance() : character_;
-      } else {
-        return characterBuilder_.getMessage();
-      }
-    }
-    /**
-     * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
-     */
-    public Builder setCharacter(com.dnfm.mina.protobuf.generated.Character value) {
-      if (characterBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        character_ = value;
-      } else {
-        characterBuilder_.setMessage(value);
-      }
+    public Builder setCharguid(long value) {
+
+      charguid_ = value;
       bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
-     * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
+     * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
+     * @return This builder for chaining.
      */
-    public Builder setCharacter(
-        com.dnfm.mina.protobuf.generated.Character.Builder builderForValue) {
-      if (characterBuilder_ == null) {
-        character_ = builderForValue.build();
-      } else {
-        characterBuilder_.setMessage(builderForValue.build());
-      }
-      bitField0_ |= 0x00000002;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
-     */
-    public Builder mergeCharacter(com.dnfm.mina.protobuf.generated.Character value) {
-      if (characterBuilder_ == null) {
-        if (((bitField0_ & 0x00000002) != 0) &&
-          character_ != null &&
-          character_ != com.dnfm.mina.protobuf.generated.Character.getDefaultInstance()) {
-          getCharacterBuilder().mergeFrom(value);
-        } else {
-          character_ = value;
-        }
-      } else {
-        characterBuilder_.mergeFrom(value);
-      }
-      if (character_ != null) {
-        bitField0_ |= 0x00000002;
-        onChanged();
-      }
-      return this;
-    }
-    /**
-     * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
-     */
-    public Builder clearCharacter() {
+    public Builder clearCharguid() {
       bitField0_ = (bitField0_ & ~0x00000002);
-      character_ = null;
-      if (characterBuilder_ != null) {
-        characterBuilder_.dispose();
-        characterBuilder_ = null;
-      }
+      charguid_ = 0L;
+      onChanged();
+      return this;
+    }
+
+    private int job_ ;
+    /**
+     * <code>int32 job = 3 [json_name = "job"];</code>
+     * @return The job.
+     */
+    @java.lang.Override
+    public int getJob() {
+      return job_;
+    }
+    /**
+     * <code>int32 job = 3 [json_name = "job"];</code>
+     * @param value The job to set.
+     * @return This builder for chaining.
+     */
+    public Builder setJob(int value) {
+
+      job_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
     /**
-     * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
+     * <code>int32 job = 3 [json_name = "job"];</code>
+     * @return This builder for chaining.
      */
-    public com.dnfm.mina.protobuf.generated.Character.Builder getCharacterBuilder() {
-      bitField0_ |= 0x00000002;
+    public Builder clearJob() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      job_ = 0;
       onChanged();
-      return internalGetCharacterFieldBuilder().getBuilder();
+      return this;
     }
+
+    private java.lang.Object name_ = "";
     /**
-     * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
+     * <code>string name = 4 [json_name = "name"];</code>
+     * @return The name.
      */
-    public com.dnfm.mina.protobuf.generated.CharacterOrBuilder getCharacterOrBuilder() {
-      if (characterBuilder_ != null) {
-        return characterBuilder_.getMessageOrBuilder();
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
       } else {
-        return character_ == null ?
-            com.dnfm.mina.protobuf.generated.Character.getDefaultInstance() : character_;
+        return (java.lang.String) ref;
       }
     }
     /**
-     * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
+     * <code>string name = 4 [json_name = "name"];</code>
+     * @return The bytes for name.
      */
-    private com.google.protobuf.SingleFieldBuilder<
-        com.dnfm.mina.protobuf.generated.Character, com.dnfm.mina.protobuf.generated.Character.Builder, com.dnfm.mina.protobuf.generated.CharacterOrBuilder> 
-        internalGetCharacterFieldBuilder() {
-      if (characterBuilder_ == null) {
-        characterBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-            com.dnfm.mina.protobuf.generated.Character, com.dnfm.mina.protobuf.generated.Character.Builder, com.dnfm.mina.protobuf.generated.CharacterOrBuilder>(
-                getCharacter(),
-                getParentForChildren(),
-                isClean());
-        character_ = null;
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
       }
-      return characterBuilder_;
+    }
+    /**
+     * <code>string name = 4 [json_name = "name"];</code>
+     * @param value The name to set.
+     * @return This builder for chaining.
+     */
+    public Builder setName(
+        java.lang.String value) {
+      if (value == null) { throw new NullPointerException(); }
+      name_ = value;
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string name = 4 [json_name = "name"];</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearName() {
+      name_ = getDefaultInstance().getName();
+      bitField0_ = (bitField0_ & ~0x00000008);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>string name = 4 [json_name = "name"];</code>
+     * @param value The bytes for name to set.
+     * @return This builder for chaining.
+     */
+    public Builder setNameBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
+      name_ = value;
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
     }
 
     // @@protoc_insertion_point(builder_scope:dnf.v1.CreateCharacterResponse)

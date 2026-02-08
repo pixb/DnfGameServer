@@ -5,7 +5,7 @@ import (
 	"runtime/debug"
 	"sync"
 
-	"dnf-go-server/internal/utils/logger"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	"google.golang.org/protobuf/proto"
 )
 

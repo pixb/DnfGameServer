@@ -3,6 +3,7 @@ syntax = "proto3";
 package dnf.v1;
 
 option go_package = "gen/dnf/v1";
+option java_multiple_files = true;
 option java_package = "com.dnfm.mina.protobuf.generated";
 option java_outer_classname = "CharacterProto";
 
@@ -34,6 +35,27 @@ message CharacterEquipIndex {
   int32 earring = 13;
 }
 
+// 装备索引槽位
+message EquipIndexSlot {
+  int32 index = 1;
+  int32 slot = 2;
+  int32 reforge = 3;
+  int32 reforgeexp = 4;
+  int32 upgrade = 5;
+}
+
+// 头像索引槽位
+message AvatarIndexSlot {
+  int32 index = 1;
+  int32 slot = 2;
+}
+
+// 角色装备索引（列表形式）
+message CharacterEquipIndexList {
+  repeated EquipIndexSlot equiplist = 1;
+  repeated AvatarIndexSlot avatarlist = 2;
+}
+
 // 角色信息
 message Character {
   int64 char_guid = 1;
@@ -47,6 +69,26 @@ message Character {
   int32 equip_score = 9;
   int32 character_frame = 10;
   CharacterEquipIndex equips = 11;
+  uint32 avatar_visible_flags = 12;
+  int32 deletion_status = 13;
+  int64 deletion_time = 14;
+  int64 create_time = 15;
+  bool change_name = 16;
+}
+
+// 角色信息（带装备列表）
+message CharacterWithEquipList {
+  int64 char_guid = 1;
+  int64 last_logout = 2;
+  int32 grow_type = 3;
+  int32 sec_grow_type = 4;
+  int32 job = 5;
+  int32 level = 6;
+  string name = 7;
+  int32 fatigue = 8;
+  int32 equip_score = 9;
+  int32 character_frame = 10;
+  CharacterEquipIndexList equips = 11;
   uint32 avatar_visible_flags = 12;
   int32 deletion_status = 13;
   int64 deletion_time = 14;
@@ -91,13 +133,10 @@ message CharacterListRequest {
 
 }
 
-// 创建角色请求 (module=10003, cmd=1)
+// 创建角色请求 (module=10003, cmd=0)
 message CreateCharacterRequest {
-  string name = 1;
-  int32 job = 2;
-  int32 grow_type = 3;
-  int32 sec_grow_type = 4;
-  int32 slot = 5;
+  int32 job = 1;
+  string name = 2;
 }
 
 // 删除角色请求 (module=10004, cmd=1)
@@ -165,7 +204,7 @@ message CharacterListResponse {
   int32 error = 1;
   int32 version = 2;
   repeated JobLimitInfo limits = 3;
-  repeated Character characters = 4;
+  repeated CharacterWithEquipList characters = 4;
   int32 count = 5;
   int32 adventure_union_level = 6;
   int64 adventure_union_exp = 7;
@@ -176,10 +215,12 @@ message CharacterListResponse {
   string ignore_contents_blacklist = 12;
 }
 
-// 创建角色响应 (module=10003, cmd=2)
+// 创建角色响应 (module=10003, cmd=1)
 message CreateCharacterResponse {
   int32 error = 1;
-  Character character = 2;
+  uint64 charguid = 2;
+  int32 job = 3;
+  string name = 4;
 }
 
 // 删除角色响应 (module=10004, cmd=2)

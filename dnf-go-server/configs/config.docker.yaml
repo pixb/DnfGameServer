@@ -1,0 +1,30 @@
+# DNF Go Server Docker环境配置
+
+version: "1.0.0"
+mode: prod
+
+# 服务器配置
+addr: "0.0.0.0"
+port: 8081
+
+# 数据库配置
+driver: mysql
+dsn: "root:${MYSQL_ROOT_PASSWORD}@tcp(mysql:3306)/dnf?charset=utf8mb4&parseTime=True&loc=Local"
+
+# 日志配置
+log:
+  level: info
+  is_development: false
+  output: stdout
+
+# 游戏配置
+game:
+  max_connections: 5000
+  idle_timeout: 300
+  daily_max_fatigue: 100
+  fatigue_recovery: 10
+  exp_multiplier: 1.0
+  gold_multiplier: 1.0
+
+# 数据目录
+data: "/data"

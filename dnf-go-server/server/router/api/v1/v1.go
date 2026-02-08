@@ -1,0 +1,109 @@
+package v1
+
+import (
+	"context"
+	"net/http"
+
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"google.golang.org/grpc"
+
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/profile"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
+	"github.com/pixb/DnfGameServer/dnf-go-server/server/auth"
+	"github.com/pixb/DnfGameServer/dnf-go-server/store"
+)
+
+// APIV1Service API v1服务集合
+type APIV1Service struct {
+	// 嵌入所有服务的UnimplementedServer
+	dnfv1.UnimplementedGameServiceServer
+	dnfv1.UnimplementedAuthServiceServer
+
+	Secret  string
+	Profile *profile.Profile
+	Store   *store.Store
+}
+
+// NewAPIV1Service 创建服务实例
+func NewAPIV1Service(secret string, profile *profile.Profile, s *store.Store) *APIV1Service {
+	return &APIV1Service{
+		Secret:  secret,
+		Profile: profile,
+		Store:   s,
+	}
+}
+
+// RegisterGRPCServices 注册gRPC服务
+func (s *APIV1Service) RegisterGRPCServices(grpcServer *grpc.Server) {
+	dnfv1.RegisterGameServiceServer(grpcServer, s)
+	dnfv1.RegisterAuthServiceServer(grpcServer, s)
+}
+
+// RegisterGateway 注册网关处理器
+func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Echo) error {
+	// 1. 网关认证中间件
+	authenticator := auth.NewAuthenticator(s.Store, s.Secret)
+	gatewayAuthMiddleware := func(next runtime.HandlerFunc) runtime.HandlerFunc {
+		return func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+			ctx := r.Context()
+
+			// 获取RPC方法名
+			rpcMethod, ok := runtime.RPCMethod(ctx)
+
+			// 提取认证头
+			authHeader := r.Header.Get("Authorization")
+
+			// 执行认证
+			result := authenticator.Authenticate(ctx, authHeader)
+
+			// 非公开方法需要认证
+			if result == nil && ok && !IsPublicMethod(rpcMethod) {
+				http.Error(w, `{"code": 16, "message": "authentication required"}`, http.StatusUnauthorized)
+				return
+			}
+
+			// 设置用户上下文
+			if result != nil {
+				if result.Claims != nil {
+					ctx = auth.SetUserClaimsInContext(ctx, result.Claims)
+					ctx = context.WithValue(ctx, auth.UserIDContextKey, result.Claims.UserID)
+				} else if result.User != nil {
+					ctx = auth.SetUserClaimsInContext(ctx, &auth.UserClaims{
+						UserID: result.User.ID,
+					})
+				}
+				r = r.WithContext(ctx)
+			}
+
+			next(w, r, pathParams)
+		}
+	}
+
+	// 2. 创建gRPC-Gateway mux
+	gwMux := runtime.NewServeMux(
+		runtime.WithMiddlewares(gatewayAuthMiddleware),
+	)
+
+	// 3. 注册所有服务 (GameService没有HTTP注解，只能通过gRPC访问)
+	if err := dnfv1.RegisterAuthServiceHandlerServer(ctx, gwMux, s); err != nil {
+		return err
+	}
+
+	// 4. 创建网关路由组
+	gwGroup := echoServer.Group("")
+	gwGroup.Use(middleware.CORS())
+	handler := echo.WrapHandler(gwMux)
+
+	// 5. 注册网关路由
+	gwGroup.Any("/api/v1/*", handler)
+
+	return nil
+}
+
+// IsPublicMethod 检查方法是否为公开端点
+func IsPublicMethod(procedure string) bool {
+	_, ok := PublicMethods[procedure]
+	return ok
+}

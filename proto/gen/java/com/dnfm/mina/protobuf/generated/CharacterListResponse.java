@@ -116,41 +116,41 @@ private static final long serialVersionUID = 0L;
 
   public static final int CHARACTERS_FIELD_NUMBER = 4;
   @SuppressWarnings("serial")
-  private java.util.List<com.dnfm.mina.protobuf.generated.Character> characters_;
+  private java.util.List<com.dnfm.mina.protobuf.generated.CharacterWithEquipList> characters_;
   /**
-   * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+   * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
    */
   @java.lang.Override
-  public java.util.List<com.dnfm.mina.protobuf.generated.Character> getCharactersList() {
+  public java.util.List<com.dnfm.mina.protobuf.generated.CharacterWithEquipList> getCharactersList() {
     return characters_;
   }
   /**
-   * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+   * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
    */
   @java.lang.Override
-  public java.util.List<? extends com.dnfm.mina.protobuf.generated.CharacterOrBuilder> 
+  public java.util.List<? extends com.dnfm.mina.protobuf.generated.CharacterWithEquipListOrBuilder> 
       getCharactersOrBuilderList() {
     return characters_;
   }
   /**
-   * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+   * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
    */
   @java.lang.Override
   public int getCharactersCount() {
     return characters_.size();
   }
   /**
-   * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+   * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
    */
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.Character getCharacters(int index) {
+  public com.dnfm.mina.protobuf.generated.CharacterWithEquipList getCharacters(int index) {
     return characters_.get(index);
   }
   /**
-   * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+   * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
    */
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.CharacterOrBuilder getCharactersOrBuilder(
+  public com.dnfm.mina.protobuf.generated.CharacterWithEquipListOrBuilder getCharactersOrBuilder(
       int index) {
     return characters_.get(index);
   }
@@ -877,9 +877,9 @@ private static final long serialVersionUID = 0L;
               break;
             } // case 26
             case 34: {
-              com.dnfm.mina.protobuf.generated.Character m =
+              com.dnfm.mina.protobuf.generated.CharacterWithEquipList m =
                   input.readMessage(
-                      com.dnfm.mina.protobuf.generated.Character.parser(),
+                      com.dnfm.mina.protobuf.generated.CharacterWithEquipList.parser(),
                       extensionRegistry);
               if (charactersBuilder_ == null) {
                 ensureCharactersIsMutable();
@@ -1250,22 +1250,22 @@ private static final long serialVersionUID = 0L;
       return limitsBuilder_;
     }
 
-    private java.util.List<com.dnfm.mina.protobuf.generated.Character> characters_ =
+    private java.util.List<com.dnfm.mina.protobuf.generated.CharacterWithEquipList> characters_ =
       java.util.Collections.emptyList();
     private void ensureCharactersIsMutable() {
       if (!((bitField0_ & 0x00000008) != 0)) {
-        characters_ = new java.util.ArrayList<com.dnfm.mina.protobuf.generated.Character>(characters_);
+        characters_ = new java.util.ArrayList<com.dnfm.mina.protobuf.generated.CharacterWithEquipList>(characters_);
         bitField0_ |= 0x00000008;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilder<
-        com.dnfm.mina.protobuf.generated.Character, com.dnfm.mina.protobuf.generated.Character.Builder, com.dnfm.mina.protobuf.generated.CharacterOrBuilder> charactersBuilder_;
+        com.dnfm.mina.protobuf.generated.CharacterWithEquipList, com.dnfm.mina.protobuf.generated.CharacterWithEquipList.Builder, com.dnfm.mina.protobuf.generated.CharacterWithEquipListOrBuilder> charactersBuilder_;
 
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
-    public java.util.List<com.dnfm.mina.protobuf.generated.Character> getCharactersList() {
+    public java.util.List<com.dnfm.mina.protobuf.generated.CharacterWithEquipList> getCharactersList() {
       if (charactersBuilder_ == null) {
         return java.util.Collections.unmodifiableList(characters_);
       } else {
@@ -1273,7 +1273,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
     public int getCharactersCount() {
       if (charactersBuilder_ == null) {
@@ -1283,9 +1283,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.Character getCharacters(int index) {
+    public com.dnfm.mina.protobuf.generated.CharacterWithEquipList getCharacters(int index) {
       if (charactersBuilder_ == null) {
         return characters_.get(index);
       } else {
@@ -1293,10 +1293,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
     public Builder setCharacters(
-        int index, com.dnfm.mina.protobuf.generated.Character value) {
+        int index, com.dnfm.mina.protobuf.generated.CharacterWithEquipList value) {
       if (charactersBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1310,10 +1310,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
     public Builder setCharacters(
-        int index, com.dnfm.mina.protobuf.generated.Character.Builder builderForValue) {
+        int index, com.dnfm.mina.protobuf.generated.CharacterWithEquipList.Builder builderForValue) {
       if (charactersBuilder_ == null) {
         ensureCharactersIsMutable();
         characters_.set(index, builderForValue.build());
@@ -1324,9 +1324,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
-    public Builder addCharacters(com.dnfm.mina.protobuf.generated.Character value) {
+    public Builder addCharacters(com.dnfm.mina.protobuf.generated.CharacterWithEquipList value) {
       if (charactersBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1340,10 +1340,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
     public Builder addCharacters(
-        int index, com.dnfm.mina.protobuf.generated.Character value) {
+        int index, com.dnfm.mina.protobuf.generated.CharacterWithEquipList value) {
       if (charactersBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1357,10 +1357,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
     public Builder addCharacters(
-        com.dnfm.mina.protobuf.generated.Character.Builder builderForValue) {
+        com.dnfm.mina.protobuf.generated.CharacterWithEquipList.Builder builderForValue) {
       if (charactersBuilder_ == null) {
         ensureCharactersIsMutable();
         characters_.add(builderForValue.build());
@@ -1371,10 +1371,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
     public Builder addCharacters(
-        int index, com.dnfm.mina.protobuf.generated.Character.Builder builderForValue) {
+        int index, com.dnfm.mina.protobuf.generated.CharacterWithEquipList.Builder builderForValue) {
       if (charactersBuilder_ == null) {
         ensureCharactersIsMutable();
         characters_.add(index, builderForValue.build());
@@ -1385,10 +1385,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
     public Builder addAllCharacters(
-        java.lang.Iterable<? extends com.dnfm.mina.protobuf.generated.Character> values) {
+        java.lang.Iterable<? extends com.dnfm.mina.protobuf.generated.CharacterWithEquipList> values) {
       if (charactersBuilder_ == null) {
         ensureCharactersIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -1400,7 +1400,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
     public Builder clearCharacters() {
       if (charactersBuilder_ == null) {
@@ -1413,7 +1413,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
     public Builder removeCharacters(int index) {
       if (charactersBuilder_ == null) {
@@ -1426,16 +1426,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.Character.Builder getCharactersBuilder(
+    public com.dnfm.mina.protobuf.generated.CharacterWithEquipList.Builder getCharactersBuilder(
         int index) {
       return internalGetCharactersFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.CharacterOrBuilder getCharactersOrBuilder(
+    public com.dnfm.mina.protobuf.generated.CharacterWithEquipListOrBuilder getCharactersOrBuilder(
         int index) {
       if (charactersBuilder_ == null) {
         return characters_.get(index);  } else {
@@ -1443,9 +1443,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
-    public java.util.List<? extends com.dnfm.mina.protobuf.generated.CharacterOrBuilder> 
+    public java.util.List<? extends com.dnfm.mina.protobuf.generated.CharacterWithEquipListOrBuilder> 
          getCharactersOrBuilderList() {
       if (charactersBuilder_ != null) {
         return charactersBuilder_.getMessageOrBuilderList();
@@ -1454,33 +1454,33 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.Character.Builder addCharactersBuilder() {
+    public com.dnfm.mina.protobuf.generated.CharacterWithEquipList.Builder addCharactersBuilder() {
       return internalGetCharactersFieldBuilder().addBuilder(
-          com.dnfm.mina.protobuf.generated.Character.getDefaultInstance());
+          com.dnfm.mina.protobuf.generated.CharacterWithEquipList.getDefaultInstance());
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.Character.Builder addCharactersBuilder(
+    public com.dnfm.mina.protobuf.generated.CharacterWithEquipList.Builder addCharactersBuilder(
         int index) {
       return internalGetCharactersFieldBuilder().addBuilder(
-          index, com.dnfm.mina.protobuf.generated.Character.getDefaultInstance());
+          index, com.dnfm.mina.protobuf.generated.CharacterWithEquipList.getDefaultInstance());
     }
     /**
-     * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+     * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
      */
-    public java.util.List<com.dnfm.mina.protobuf.generated.Character.Builder> 
+    public java.util.List<com.dnfm.mina.protobuf.generated.CharacterWithEquipList.Builder> 
          getCharactersBuilderList() {
       return internalGetCharactersFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilder<
-        com.dnfm.mina.protobuf.generated.Character, com.dnfm.mina.protobuf.generated.Character.Builder, com.dnfm.mina.protobuf.generated.CharacterOrBuilder> 
+        com.dnfm.mina.protobuf.generated.CharacterWithEquipList, com.dnfm.mina.protobuf.generated.CharacterWithEquipList.Builder, com.dnfm.mina.protobuf.generated.CharacterWithEquipListOrBuilder> 
         internalGetCharactersFieldBuilder() {
       if (charactersBuilder_ == null) {
         charactersBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-            com.dnfm.mina.protobuf.generated.Character, com.dnfm.mina.protobuf.generated.Character.Builder, com.dnfm.mina.protobuf.generated.CharacterOrBuilder>(
+            com.dnfm.mina.protobuf.generated.CharacterWithEquipList, com.dnfm.mina.protobuf.generated.CharacterWithEquipList.Builder, com.dnfm.mina.protobuf.generated.CharacterWithEquipListOrBuilder>(
                 characters_,
                 ((bitField0_ & 0x00000008) != 0),
                 getParentForChildren(),

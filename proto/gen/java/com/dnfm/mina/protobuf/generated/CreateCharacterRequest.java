@@ -7,7 +7,7 @@ package com.dnfm.mina.protobuf.generated;
 
 /**
  * <pre>
- * 创建角色请求 (module=10003, cmd=1)
+ * 创建角色请求 (module=10003, cmd=0)
  * </pre>
  *
  * Protobuf type {@code dnf.v1.CreateCharacterRequest}
@@ -48,11 +48,22 @@ private static final long serialVersionUID = 0L;
             com.dnfm.mina.protobuf.generated.CreateCharacterRequest.class, com.dnfm.mina.protobuf.generated.CreateCharacterRequest.Builder.class);
   }
 
-  public static final int NAME_FIELD_NUMBER = 1;
+  public static final int JOB_FIELD_NUMBER = 1;
+  private int job_ = 0;
+  /**
+   * <code>int32 job = 1 [json_name = "job"];</code>
+   * @return The job.
+   */
+  @java.lang.Override
+  public int getJob() {
+    return job_;
+  }
+
+  public static final int NAME_FIELD_NUMBER = 2;
   @SuppressWarnings("serial")
   private volatile java.lang.Object name_ = "";
   /**
-   * <code>string name = 1 [json_name = "name"];</code>
+   * <code>string name = 2 [json_name = "name"];</code>
    * @return The name.
    */
   @java.lang.Override
@@ -69,7 +80,7 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
-   * <code>string name = 1 [json_name = "name"];</code>
+   * <code>string name = 2 [json_name = "name"];</code>
    * @return The bytes for name.
    */
   @java.lang.Override
@@ -87,50 +98,6 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int JOB_FIELD_NUMBER = 2;
-  private int job_ = 0;
-  /**
-   * <code>int32 job = 2 [json_name = "job"];</code>
-   * @return The job.
-   */
-  @java.lang.Override
-  public int getJob() {
-    return job_;
-  }
-
-  public static final int GROW_TYPE_FIELD_NUMBER = 3;
-  private int growType_ = 0;
-  /**
-   * <code>int32 grow_type = 3 [json_name = "growType"];</code>
-   * @return The growType.
-   */
-  @java.lang.Override
-  public int getGrowType() {
-    return growType_;
-  }
-
-  public static final int SEC_GROW_TYPE_FIELD_NUMBER = 4;
-  private int secGrowType_ = 0;
-  /**
-   * <code>int32 sec_grow_type = 4 [json_name = "secGrowType"];</code>
-   * @return The secGrowType.
-   */
-  @java.lang.Override
-  public int getSecGrowType() {
-    return secGrowType_;
-  }
-
-  public static final int SLOT_FIELD_NUMBER = 5;
-  private int slot_ = 0;
-  /**
-   * <code>int32 slot = 5 [json_name = "slot"];</code>
-   * @return The slot.
-   */
-  @java.lang.Override
-  public int getSlot() {
-    return slot_;
-  }
-
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -145,20 +112,11 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
-      com.google.protobuf.GeneratedMessage.writeString(output, 1, name_);
-    }
     if (job_ != 0) {
-      output.writeInt32(2, job_);
+      output.writeInt32(1, job_);
     }
-    if (growType_ != 0) {
-      output.writeInt32(3, growType_);
-    }
-    if (secGrowType_ != 0) {
-      output.writeInt32(4, secGrowType_);
-    }
-    if (slot_ != 0) {
-      output.writeInt32(5, slot_);
+    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
+      com.google.protobuf.GeneratedMessage.writeString(output, 2, name_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -169,24 +127,12 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
-      size += com.google.protobuf.GeneratedMessage.computeStringSize(1, name_);
-    }
     if (job_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(2, job_);
+        .computeInt32Size(1, job_);
     }
-    if (growType_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(3, growType_);
-    }
-    if (secGrowType_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(4, secGrowType_);
-    }
-    if (slot_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(5, slot_);
+    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
+      size += com.google.protobuf.GeneratedMessage.computeStringSize(2, name_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -203,16 +149,10 @@ private static final long serialVersionUID = 0L;
     }
     com.dnfm.mina.protobuf.generated.CreateCharacterRequest other = (com.dnfm.mina.protobuf.generated.CreateCharacterRequest) obj;
 
-    if (!getName()
-        .equals(other.getName())) return false;
     if (getJob()
         != other.getJob()) return false;
-    if (getGrowType()
-        != other.getGrowType()) return false;
-    if (getSecGrowType()
-        != other.getSecGrowType()) return false;
-    if (getSlot()
-        != other.getSlot()) return false;
+    if (!getName()
+        .equals(other.getName())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -224,16 +164,10 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + NAME_FIELD_NUMBER;
-    hash = (53 * hash) + getName().hashCode();
     hash = (37 * hash) + JOB_FIELD_NUMBER;
     hash = (53 * hash) + getJob();
-    hash = (37 * hash) + GROW_TYPE_FIELD_NUMBER;
-    hash = (53 * hash) + getGrowType();
-    hash = (37 * hash) + SEC_GROW_TYPE_FIELD_NUMBER;
-    hash = (53 * hash) + getSecGrowType();
-    hash = (37 * hash) + SLOT_FIELD_NUMBER;
-    hash = (53 * hash) + getSlot();
+    hash = (37 * hash) + NAME_FIELD_NUMBER;
+    hash = (53 * hash) + getName().hashCode();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -333,7 +267,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * 创建角色请求 (module=10003, cmd=1)
+   * 创建角色请求 (module=10003, cmd=0)
    * </pre>
    *
    * Protobuf type {@code dnf.v1.CreateCharacterRequest}
@@ -369,11 +303,8 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      name_ = "";
       job_ = 0;
-      growType_ = 0;
-      secGrowType_ = 0;
-      slot_ = 0;
+      name_ = "";
       return this;
     }
 
@@ -408,19 +339,10 @@ private static final long serialVersionUID = 0L;
     private void buildPartial0(com.dnfm.mina.protobuf.generated.CreateCharacterRequest result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.name_ = name_;
-      }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
         result.job_ = job_;
       }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.growType_ = growType_;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        result.secGrowType_ = secGrowType_;
-      }
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        result.slot_ = slot_;
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.name_ = name_;
       }
     }
 
@@ -436,22 +358,13 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.dnfm.mina.protobuf.generated.CreateCharacterRequest other) {
       if (other == com.dnfm.mina.protobuf.generated.CreateCharacterRequest.getDefaultInstance()) return this;
-      if (!other.getName().isEmpty()) {
-        name_ = other.name_;
-        bitField0_ |= 0x00000001;
-        onChanged();
-      }
       if (other.getJob() != 0) {
         setJob(other.getJob());
       }
-      if (other.getGrowType() != 0) {
-        setGrowType(other.getGrowType());
-      }
-      if (other.getSecGrowType() != 0) {
-        setSecGrowType(other.getSecGrowType());
-      }
-      if (other.getSlot() != 0) {
-        setSlot(other.getSlot());
+      if (!other.getName().isEmpty()) {
+        name_ = other.name_;
+        bitField0_ |= 0x00000002;
+        onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -479,31 +392,16 @@ private static final long serialVersionUID = 0L;
             case 0:
               done = true;
               break;
-            case 10: {
-              name_ = input.readStringRequireUtf8();
+            case 8: {
+              job_ = input.readInt32();
               bitField0_ |= 0x00000001;
               break;
-            } // case 10
-            case 16: {
-              job_ = input.readInt32();
+            } // case 8
+            case 18: {
+              name_ = input.readStringRequireUtf8();
               bitField0_ |= 0x00000002;
               break;
-            } // case 16
-            case 24: {
-              growType_ = input.readInt32();
-              bitField0_ |= 0x00000004;
-              break;
-            } // case 24
-            case 32: {
-              secGrowType_ = input.readInt32();
-              bitField0_ |= 0x00000008;
-              break;
-            } // case 32
-            case 40: {
-              slot_ = input.readInt32();
-              bitField0_ |= 0x00000010;
-              break;
-            } // case 40
+            } // case 18
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -521,9 +419,41 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
+    private int job_ ;
+    /**
+     * <code>int32 job = 1 [json_name = "job"];</code>
+     * @return The job.
+     */
+    @java.lang.Override
+    public int getJob() {
+      return job_;
+    }
+    /**
+     * <code>int32 job = 1 [json_name = "job"];</code>
+     * @param value The job to set.
+     * @return This builder for chaining.
+     */
+    public Builder setJob(int value) {
+
+      job_ = value;
+      bitField0_ |= 0x00000001;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 job = 1 [json_name = "job"];</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearJob() {
+      bitField0_ = (bitField0_ & ~0x00000001);
+      job_ = 0;
+      onChanged();
+      return this;
+    }
+
     private java.lang.Object name_ = "";
     /**
-     * <code>string name = 1 [json_name = "name"];</code>
+     * <code>string name = 2 [json_name = "name"];</code>
      * @return The name.
      */
     public java.lang.String getName() {
@@ -539,7 +469,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string name = 1 [json_name = "name"];</code>
+     * <code>string name = 2 [json_name = "name"];</code>
      * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
@@ -556,7 +486,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>string name = 1 [json_name = "name"];</code>
+     * <code>string name = 2 [json_name = "name"];</code>
      * @param value The name to set.
      * @return This builder for chaining.
      */
@@ -564,22 +494,22 @@ private static final long serialVersionUID = 0L;
         java.lang.String value) {
       if (value == null) { throw new NullPointerException(); }
       name_ = value;
-      bitField0_ |= 0x00000001;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
-     * <code>string name = 1 [json_name = "name"];</code>
+     * <code>string name = 2 [json_name = "name"];</code>
      * @return This builder for chaining.
      */
     public Builder clearName() {
       name_ = getDefaultInstance().getName();
-      bitField0_ = (bitField0_ & ~0x00000001);
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
     /**
-     * <code>string name = 1 [json_name = "name"];</code>
+     * <code>string name = 2 [json_name = "name"];</code>
      * @param value The bytes for name to set.
      * @return This builder for chaining.
      */
@@ -588,135 +518,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) { throw new NullPointerException(); }
       checkByteStringIsUtf8(value);
       name_ = value;
-      bitField0_ |= 0x00000001;
-      onChanged();
-      return this;
-    }
-
-    private int job_ ;
-    /**
-     * <code>int32 job = 2 [json_name = "job"];</code>
-     * @return The job.
-     */
-    @java.lang.Override
-    public int getJob() {
-      return job_;
-    }
-    /**
-     * <code>int32 job = 2 [json_name = "job"];</code>
-     * @param value The job to set.
-     * @return This builder for chaining.
-     */
-    public Builder setJob(int value) {
-
-      job_ = value;
       bitField0_ |= 0x00000002;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 job = 2 [json_name = "job"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearJob() {
-      bitField0_ = (bitField0_ & ~0x00000002);
-      job_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private int growType_ ;
-    /**
-     * <code>int32 grow_type = 3 [json_name = "growType"];</code>
-     * @return The growType.
-     */
-    @java.lang.Override
-    public int getGrowType() {
-      return growType_;
-    }
-    /**
-     * <code>int32 grow_type = 3 [json_name = "growType"];</code>
-     * @param value The growType to set.
-     * @return This builder for chaining.
-     */
-    public Builder setGrowType(int value) {
-
-      growType_ = value;
-      bitField0_ |= 0x00000004;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 grow_type = 3 [json_name = "growType"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearGrowType() {
-      bitField0_ = (bitField0_ & ~0x00000004);
-      growType_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private int secGrowType_ ;
-    /**
-     * <code>int32 sec_grow_type = 4 [json_name = "secGrowType"];</code>
-     * @return The secGrowType.
-     */
-    @java.lang.Override
-    public int getSecGrowType() {
-      return secGrowType_;
-    }
-    /**
-     * <code>int32 sec_grow_type = 4 [json_name = "secGrowType"];</code>
-     * @param value The secGrowType to set.
-     * @return This builder for chaining.
-     */
-    public Builder setSecGrowType(int value) {
-
-      secGrowType_ = value;
-      bitField0_ |= 0x00000008;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 sec_grow_type = 4 [json_name = "secGrowType"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearSecGrowType() {
-      bitField0_ = (bitField0_ & ~0x00000008);
-      secGrowType_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private int slot_ ;
-    /**
-     * <code>int32 slot = 5 [json_name = "slot"];</code>
-     * @return The slot.
-     */
-    @java.lang.Override
-    public int getSlot() {
-      return slot_;
-    }
-    /**
-     * <code>int32 slot = 5 [json_name = "slot"];</code>
-     * @param value The slot to set.
-     * @return This builder for chaining.
-     */
-    public Builder setSlot(int value) {
-
-      slot_ = value;
-      bitField0_ |= 0x00000010;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 slot = 5 [json_name = "slot"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearSlot() {
-      bitField0_ = (bitField0_ & ~0x00000010);
-      slot_ = 0;
       onChanged();
       return this;
     }

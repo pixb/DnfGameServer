@@ -10,7 +10,7 @@ import (
 
 	dnfv1 "dnf-go-client/gen/go/dnf/v1"
 
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 const (

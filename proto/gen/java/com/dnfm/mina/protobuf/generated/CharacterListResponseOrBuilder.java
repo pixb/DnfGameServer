@@ -47,27 +47,27 @@ public interface CharacterListResponseOrBuilder extends
       int index);
 
   /**
-   * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+   * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
    */
-  java.util.List<com.dnfm.mina.protobuf.generated.Character> 
+  java.util.List<com.dnfm.mina.protobuf.generated.CharacterWithEquipList> 
       getCharactersList();
   /**
-   * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+   * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
    */
-  com.dnfm.mina.protobuf.generated.Character getCharacters(int index);
+  com.dnfm.mina.protobuf.generated.CharacterWithEquipList getCharacters(int index);
   /**
-   * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+   * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
    */
   int getCharactersCount();
   /**
-   * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+   * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
    */
-  java.util.List<? extends com.dnfm.mina.protobuf.generated.CharacterOrBuilder> 
+  java.util.List<? extends com.dnfm.mina.protobuf.generated.CharacterWithEquipListOrBuilder> 
       getCharactersOrBuilderList();
   /**
-   * <code>repeated .dnf.v1.Character characters = 4 [json_name = "characters"];</code>
+   * <code>repeated .dnf.v1.CharacterWithEquipList characters = 4 [json_name = "characters"];</code>
    */
-  com.dnfm.mina.protobuf.generated.CharacterOrBuilder getCharactersOrBuilder(
+  com.dnfm.mina.protobuf.generated.CharacterWithEquipListOrBuilder getCharactersOrBuilder(
       int index);
 
   /**

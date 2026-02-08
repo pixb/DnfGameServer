@@ -79,6 +79,16 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
                 return adaptLoginRequest(body);
             case 10001:
                 return adaptLoginResponse(body);
+            case 10006:
+                return adaptPingRequest(body);
+            case 10002:
+                return adaptCharacterListRequest(body);
+            case 10003:
+                return adaptCreateCharacterRequest(body);
+            case 10008:
+                return adaptChannelListRequest(body);
+            case 10011:
+                return adaptEnterChannelRequest(body);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -177,5 +187,135 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
         }
         
         return oldResponse;
+    }
+    
+    private Message adaptPingRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptPingRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.PingRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.PingRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptPingRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_PING oldRequest = new com.dnfm.mina.protobuf.REQ_PING();
+        
+        System.out.println("===== StandardProtobufDecoder.adaptPingRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptCharacterListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptCharacterListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.CharacterListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.CharacterListRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptCharacterListRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_CHARAC_LIST oldRequest = new com.dnfm.mina.protobuf.REQ_CHARAC_LIST();
+        
+        System.out.println("===== StandardProtobufDecoder.adaptCharacterListRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptCreateCharacterRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptCreateCharacterRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.CreateCharacterRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.CreateCharacterRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptCreateCharacterRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_CREATE_CHARACTER oldRequest = new com.dnfm.mina.protobuf.REQ_CREATE_CHARACTER();
+        oldRequest.job = newRequest.getJob();
+        oldRequest.name = newRequest.getName();
+        
+        System.out.println("===== StandardProtobufDecoder.adaptCreateCharacterRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptChannelListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptChannelListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.ChannelListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.ChannelListRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptChannelListRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_CHANNEL_LIST oldRequest = new com.dnfm.mina.protobuf.REQ_CHANNEL_LIST();
+        oldRequest.type = newRequest.getType();
+        oldRequest.worldid = newRequest.getWorldid();
+        
+        System.out.println("===== StandardProtobufDecoder.adaptChannelListRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptEnterChannelRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptEnterChannelRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.EnterChannelRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.EnterChannelRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptEnterChannelRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_ENTER_CHANNEL oldRequest = new com.dnfm.mina.protobuf.REQ_ENTER_CHANNEL();
+        oldRequest.openid = newRequest.getOpenid();
+        oldRequest.charguid = newRequest.getCharguid();
+        oldRequest.authkey = newRequest.getAuthkey();
+        oldRequest.version = newRequest.getVersion();
+        oldRequest.accesstoken = newRequest.getAccesstoken();
+        oldRequest.launchinfo = newRequest.getLaunchinfo();
+        oldRequest.dungeonguid = newRequest.getDungeonguid();
+        oldRequest.registeredchannelid = newRequest.getRegisteredchannelid();
+        oldRequest.installchannelid = newRequest.getInstallchannelid();
+        oldRequest.isexternpackage = newRequest.getIsexternpackage();
+        oldRequest.validusercheckcode = newRequest.getValidusercheckcode();
+        oldRequest.toyPlatID = newRequest.getToyPlatID();
+        oldRequest.countrycode = newRequest.getCountrycode();
+        oldRequest.language = newRequest.getLanguage();
+        oldRequest.adid = newRequest.getAdid();
+        oldRequest.idfv = newRequest.getIdfv();
+        oldRequest.isadult = newRequest.getIsadult();
+        
+        if (newRequest.hasDeviceinfo()) {
+            com.dnfm.mina.protobuf.generated.ClientInfo newClientInfo = newRequest.getDeviceinfo();
+            com.dnfm.mina.protobuf.PT_CLIENTINFO oldClientInfo = new com.dnfm.mina.protobuf.PT_CLIENTINFO();
+            oldClientInfo.platID = (int) newClientInfo.getPlatID();
+            oldClientInfo.deviceSoft = newClientInfo.getDeviceSoft();
+            oldClientInfo.deviceHard = newClientInfo.getDeviceHard();
+            oldClientInfo.teleOper = newClientInfo.getTeleOper();
+            oldClientInfo.network = newClientInfo.getNetwork();
+            oldClientInfo.scrWidth = newClientInfo.getScrWidth();
+            oldClientInfo.scrHeight = newClientInfo.getScrHeight();
+            oldClientInfo.density = newClientInfo.getDensity();
+            oldClientInfo.cpu = newClientInfo.getCpu();
+            oldClientInfo.memory = newClientInfo.getMemory();
+            oldClientInfo.glRender = newClientInfo.getGlRender();
+            oldClientInfo.glVersion = newClientInfo.getGlVersion();
+            oldClientInfo.deviceID = newClientInfo.getDeviceID();
+            oldClientInfo.clientIP = newClientInfo.getClientIP();
+            oldClientInfo.type = (int) newClientInfo.getType();
+            oldClientInfo.oAID = newClientInfo.getOAID();
+            oldClientInfo.deviceLanguage = newClientInfo.getDeviceLanguage();
+            oldClientInfo.deviceUTC = newClientInfo.getDeviceUTC();
+            
+            if (newClientInfo.hasBuildType()) {
+                switch (newClientInfo.getBuildType()) {
+                    case NONE:
+                        oldClientInfo.buildType = com.dnfm.mina.protobuf.ENUM_CLIENT_BUILD_TYPE.T.NONE;
+                        break;
+                    case TEEN:
+                        oldClientInfo.buildType = com.dnfm.mina.protobuf.ENUM_CLIENT_BUILD_TYPE.T.TEEN;
+                        break;
+                    case ADULT:
+                        oldClientInfo.buildType = com.dnfm.mina.protobuf.ENUM_CLIENT_BUILD_TYPE.T.ADULT;
+                        break;
+                }
+            }
+            
+            oldRequest.deviceinfo = oldClientInfo;
+        }
+        
+        System.out.println("===== StandardProtobufDecoder.adaptEnterChannelRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
     }
 }

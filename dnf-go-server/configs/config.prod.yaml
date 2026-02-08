@@ -1,0 +1,31 @@
+# DNF Go Server 生产环境配置
+
+version: "1.0.0"
+mode: prod
+
+# 服务器配置
+addr: "0.0.0.0"
+port: 8081
+
+# 数据库配置
+driver: mysql
+dsn: "${DNF_DSN}"
+
+# 日志配置
+log:
+  level: info
+  is_development: false
+  output: file
+  file_path: "/var/log/dnf-server/server.log"
+
+# 游戏配置
+game:
+  max_connections: 10000
+  idle_timeout: 300
+  daily_max_fatigue: 100
+  fatigue_recovery: 10
+  exp_multiplier: 1.0
+  gold_multiplier: 1.0
+
+# 数据目录
+data: "/var/lib/dnf-server"

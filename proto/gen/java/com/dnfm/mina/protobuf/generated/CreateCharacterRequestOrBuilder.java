@@ -11,38 +11,20 @@ public interface CreateCharacterRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string name = 1 [json_name = "name"];</code>
-   * @return The name.
-   */
-  java.lang.String getName();
-  /**
-   * <code>string name = 1 [json_name = "name"];</code>
-   * @return The bytes for name.
-   */
-  com.google.protobuf.ByteString
-      getNameBytes();
-
-  /**
-   * <code>int32 job = 2 [json_name = "job"];</code>
+   * <code>int32 job = 1 [json_name = "job"];</code>
    * @return The job.
    */
   int getJob();
 
   /**
-   * <code>int32 grow_type = 3 [json_name = "growType"];</code>
-   * @return The growType.
+   * <code>string name = 2 [json_name = "name"];</code>
+   * @return The name.
    */
-  int getGrowType();
-
+  java.lang.String getName();
   /**
-   * <code>int32 sec_grow_type = 4 [json_name = "secGrowType"];</code>
-   * @return The secGrowType.
+   * <code>string name = 2 [json_name = "name"];</code>
+   * @return The bytes for name.
    */
-  int getSecGrowType();
-
-  /**
-   * <code>int32 slot = 5 [json_name = "slot"];</code>
-   * @return The slot.
-   */
-  int getSlot();
+  com.google.protobuf.ByteString
+      getNameBytes();
 }

@@ -5,9 +5,9 @@ import (
 	"sync"
 	"time"
 
-	"dnf-go-server/internal/db"
-	"dnf-go-server/internal/db/models"
-	"dnf-go-server/internal/utils/logger"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/db"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/db/models"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 
 	"github.com/patrickmn/go-cache"
 	"gorm.io/gorm"
@@ -62,7 +62,7 @@ func (s *PlayerService) LoadAllPlayerProfiles() error {
 	for _, role := range roles {
 		profile := &models.PlayerProfile{
 			OpenID:   role.OpenID,
-			RoleID:   role.RoleID,
+			RoleID:   role.RoleId,
 			UID:      role.UID,
 			Name:     role.Name,
 			DistName: role.DistName,

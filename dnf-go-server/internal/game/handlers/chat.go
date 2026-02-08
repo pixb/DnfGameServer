@@ -3,9 +3,9 @@ package handlers
 import (
 	"time"
 
-	"dnf-go-server/internal/network"
-	"dnf-go-server/internal/utils/logger"
-	dnfv1 "dnf-go-server/proto/gen/dnf/v1"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"google.golang.org/protobuf/proto"
 )
 

@@ -223,6 +223,189 @@ func (x *CharacterEquipIndex) GetEarring() int32 {
 	return 0
 }
 
+// 装备索引槽位
+type EquipIndexSlot struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Index         int32                  `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
+	Slot          int32                  `protobuf:"varint,2,opt,name=slot,proto3" json:"slot,omitempty"`
+	Reforge       int32                  `protobuf:"varint,3,opt,name=reforge,proto3" json:"reforge,omitempty"`
+	Reforgeexp    int32                  `protobuf:"varint,4,opt,name=reforgeexp,proto3" json:"reforgeexp,omitempty"`
+	Upgrade       int32                  `protobuf:"varint,5,opt,name=upgrade,proto3" json:"upgrade,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EquipIndexSlot) Reset() {
+	*x = EquipIndexSlot{}
+	mi := &file_dnf_v1_character_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EquipIndexSlot) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EquipIndexSlot) ProtoMessage() {}
+
+func (x *EquipIndexSlot) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_character_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EquipIndexSlot.ProtoReflect.Descriptor instead.
+func (*EquipIndexSlot) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *EquipIndexSlot) GetIndex() int32 {
+	if x != nil {
+		return x.Index
+	}
+	return 0
+}
+
+func (x *EquipIndexSlot) GetSlot() int32 {
+	if x != nil {
+		return x.Slot
+	}
+	return 0
+}
+
+func (x *EquipIndexSlot) GetReforge() int32 {
+	if x != nil {
+		return x.Reforge
+	}
+	return 0
+}
+
+func (x *EquipIndexSlot) GetReforgeexp() int32 {
+	if x != nil {
+		return x.Reforgeexp
+	}
+	return 0
+}
+
+func (x *EquipIndexSlot) GetUpgrade() int32 {
+	if x != nil {
+		return x.Upgrade
+	}
+	return 0
+}
+
+// 头像索引槽位
+type AvatarIndexSlot struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Index         int32                  `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
+	Slot          int32                  `protobuf:"varint,2,opt,name=slot,proto3" json:"slot,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AvatarIndexSlot) Reset() {
+	*x = AvatarIndexSlot{}
+	mi := &file_dnf_v1_character_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AvatarIndexSlot) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AvatarIndexSlot) ProtoMessage() {}
+
+func (x *AvatarIndexSlot) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_character_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AvatarIndexSlot.ProtoReflect.Descriptor instead.
+func (*AvatarIndexSlot) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *AvatarIndexSlot) GetIndex() int32 {
+	if x != nil {
+		return x.Index
+	}
+	return 0
+}
+
+func (x *AvatarIndexSlot) GetSlot() int32 {
+	if x != nil {
+		return x.Slot
+	}
+	return 0
+}
+
+// 角色装备索引（列表形式）
+type CharacterEquipIndexList struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Equiplist     []*EquipIndexSlot      `protobuf:"bytes,1,rep,name=equiplist,proto3" json:"equiplist,omitempty"`
+	Avatarlist    []*AvatarIndexSlot     `protobuf:"bytes,2,rep,name=avatarlist,proto3" json:"avatarlist,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CharacterEquipIndexList) Reset() {
+	*x = CharacterEquipIndexList{}
+	mi := &file_dnf_v1_character_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CharacterEquipIndexList) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CharacterEquipIndexList) ProtoMessage() {}
+
+func (x *CharacterEquipIndexList) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_character_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CharacterEquipIndexList.ProtoReflect.Descriptor instead.
+func (*CharacterEquipIndexList) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *CharacterEquipIndexList) GetEquiplist() []*EquipIndexSlot {
+	if x != nil {
+		return x.Equiplist
+	}
+	return nil
+}
+
+func (x *CharacterEquipIndexList) GetAvatarlist() []*AvatarIndexSlot {
+	if x != nil {
+		return x.Avatarlist
+	}
+	return nil
+}
+
 // 角色信息
 type Character struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
@@ -248,7 +431,7 @@ type Character struct {
 
 func (x *Character) Reset() {
 	*x = Character{}
-	mi := &file_dnf_v1_character_proto_msgTypes[2]
+	mi := &file_dnf_v1_character_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -260,7 +443,7 @@ func (x *Character) String() string {
 func (*Character) ProtoMessage() {}
 
 func (x *Character) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[2]
+	mi := &file_dnf_v1_character_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -273,7 +456,7 @@ func (x *Character) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Character.ProtoReflect.Descriptor instead.
 func (*Character) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{2}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Character) GetCharGuid() int64 {
@@ -388,6 +571,171 @@ func (x *Character) GetChangeName() bool {
 	return false
 }
 
+// 角色信息（带装备列表）
+type CharacterWithEquipList struct {
+	state              protoimpl.MessageState   `protogen:"open.v1"`
+	CharGuid           int64                    `protobuf:"varint,1,opt,name=char_guid,json=charGuid,proto3" json:"char_guid,omitempty"`
+	LastLogout         int64                    `protobuf:"varint,2,opt,name=last_logout,json=lastLogout,proto3" json:"last_logout,omitempty"`
+	GrowType           int32                    `protobuf:"varint,3,opt,name=grow_type,json=growType,proto3" json:"grow_type,omitempty"`
+	SecGrowType        int32                    `protobuf:"varint,4,opt,name=sec_grow_type,json=secGrowType,proto3" json:"sec_grow_type,omitempty"`
+	Job                int32                    `protobuf:"varint,5,opt,name=job,proto3" json:"job,omitempty"`
+	Level              int32                    `protobuf:"varint,6,opt,name=level,proto3" json:"level,omitempty"`
+	Name               string                   `protobuf:"bytes,7,opt,name=name,proto3" json:"name,omitempty"`
+	Fatigue            int32                    `protobuf:"varint,8,opt,name=fatigue,proto3" json:"fatigue,omitempty"`
+	EquipScore         int32                    `protobuf:"varint,9,opt,name=equip_score,json=equipScore,proto3" json:"equip_score,omitempty"`
+	CharacterFrame     int32                    `protobuf:"varint,10,opt,name=character_frame,json=characterFrame,proto3" json:"character_frame,omitempty"`
+	Equips             *CharacterEquipIndexList `protobuf:"bytes,11,opt,name=equips,proto3" json:"equips,omitempty"`
+	AvatarVisibleFlags uint32                   `protobuf:"varint,12,opt,name=avatar_visible_flags,json=avatarVisibleFlags,proto3" json:"avatar_visible_flags,omitempty"`
+	DeletionStatus     int32                    `protobuf:"varint,13,opt,name=deletion_status,json=deletionStatus,proto3" json:"deletion_status,omitempty"`
+	DeletionTime       int64                    `protobuf:"varint,14,opt,name=deletion_time,json=deletionTime,proto3" json:"deletion_time,omitempty"`
+	CreateTime         int64                    `protobuf:"varint,15,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
+	ChangeName         bool                     `protobuf:"varint,16,opt,name=change_name,json=changeName,proto3" json:"change_name,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *CharacterWithEquipList) Reset() {
+	*x = CharacterWithEquipList{}
+	mi := &file_dnf_v1_character_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CharacterWithEquipList) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CharacterWithEquipList) ProtoMessage() {}
+
+func (x *CharacterWithEquipList) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_character_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CharacterWithEquipList.ProtoReflect.Descriptor instead.
+func (*CharacterWithEquipList) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *CharacterWithEquipList) GetCharGuid() int64 {
+	if x != nil {
+		return x.CharGuid
+	}
+	return 0
+}
+
+func (x *CharacterWithEquipList) GetLastLogout() int64 {
+	if x != nil {
+		return x.LastLogout
+	}
+	return 0
+}
+
+func (x *CharacterWithEquipList) GetGrowType() int32 {
+	if x != nil {
+		return x.GrowType
+	}
+	return 0
+}
+
+func (x *CharacterWithEquipList) GetSecGrowType() int32 {
+	if x != nil {
+		return x.SecGrowType
+	}
+	return 0
+}
+
+func (x *CharacterWithEquipList) GetJob() int32 {
+	if x != nil {
+		return x.Job
+	}
+	return 0
+}
+
+func (x *CharacterWithEquipList) GetLevel() int32 {
+	if x != nil {
+		return x.Level
+	}
+	return 0
+}
+
+func (x *CharacterWithEquipList) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CharacterWithEquipList) GetFatigue() int32 {
+	if x != nil {
+		return x.Fatigue
+	}
+	return 0
+}
+
+func (x *CharacterWithEquipList) GetEquipScore() int32 {
+	if x != nil {
+		return x.EquipScore
+	}
+	return 0
+}
+
+func (x *CharacterWithEquipList) GetCharacterFrame() int32 {
+	if x != nil {
+		return x.CharacterFrame
+	}
+	return 0
+}
+
+func (x *CharacterWithEquipList) GetEquips() *CharacterEquipIndexList {
+	if x != nil {
+		return x.Equips
+	}
+	return nil
+}
+
+func (x *CharacterWithEquipList) GetAvatarVisibleFlags() uint32 {
+	if x != nil {
+		return x.AvatarVisibleFlags
+	}
+	return 0
+}
+
+func (x *CharacterWithEquipList) GetDeletionStatus() int32 {
+	if x != nil {
+		return x.DeletionStatus
+	}
+	return 0
+}
+
+func (x *CharacterWithEquipList) GetDeletionTime() int64 {
+	if x != nil {
+		return x.DeletionTime
+	}
+	return 0
+}
+
+func (x *CharacterWithEquipList) GetCreateTime() int64 {
+	if x != nil {
+		return x.CreateTime
+	}
+	return 0
+}
+
+func (x *CharacterWithEquipList) GetChangeName() bool {
+	if x != nil {
+		return x.ChangeName
+	}
+	return false
+}
+
 // 角色详细信息
 type CharacterDetailInfo struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -415,7 +763,7 @@ type CharacterDetailInfo struct {
 
 func (x *CharacterDetailInfo) Reset() {
 	*x = CharacterDetailInfo{}
-	mi := &file_dnf_v1_character_proto_msgTypes[3]
+	mi := &file_dnf_v1_character_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -427,7 +775,7 @@ func (x *CharacterDetailInfo) String() string {
 func (*CharacterDetailInfo) ProtoMessage() {}
 
 func (x *CharacterDetailInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[3]
+	mi := &file_dnf_v1_character_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -440,7 +788,7 @@ func (x *CharacterDetailInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CharacterDetailInfo.ProtoReflect.Descriptor instead.
 func (*CharacterDetailInfo) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{3}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *CharacterDetailInfo) GetCharGuid() int64 {
@@ -582,7 +930,7 @@ type SkillInfo struct {
 
 func (x *SkillInfo) Reset() {
 	*x = SkillInfo{}
-	mi := &file_dnf_v1_character_proto_msgTypes[4]
+	mi := &file_dnf_v1_character_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -594,7 +942,7 @@ func (x *SkillInfo) String() string {
 func (*SkillInfo) ProtoMessage() {}
 
 func (x *SkillInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[4]
+	mi := &file_dnf_v1_character_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -607,7 +955,7 @@ func (x *SkillInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SkillInfo.ProtoReflect.Descriptor instead.
 func (*SkillInfo) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{4}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *SkillInfo) GetSkillId() int32 {
@@ -647,7 +995,7 @@ type CharacterListRequest struct {
 
 func (x *CharacterListRequest) Reset() {
 	*x = CharacterListRequest{}
-	mi := &file_dnf_v1_character_proto_msgTypes[5]
+	mi := &file_dnf_v1_character_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -659,7 +1007,7 @@ func (x *CharacterListRequest) String() string {
 func (*CharacterListRequest) ProtoMessage() {}
 
 func (x *CharacterListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[5]
+	mi := &file_dnf_v1_character_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -672,24 +1020,21 @@ func (x *CharacterListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CharacterListRequest.ProtoReflect.Descriptor instead.
 func (*CharacterListRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{5}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{9}
 }
 
-// 创建角色请求 (module=10003, cmd=1)
+// 创建角色请求 (module=10003, cmd=0)
 type CreateCharacterRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Job           int32                  `protobuf:"varint,2,opt,name=job,proto3" json:"job,omitempty"`
-	GrowType      int32                  `protobuf:"varint,3,opt,name=grow_type,json=growType,proto3" json:"grow_type,omitempty"`
-	SecGrowType   int32                  `protobuf:"varint,4,opt,name=sec_grow_type,json=secGrowType,proto3" json:"sec_grow_type,omitempty"`
-	Slot          int32                  `protobuf:"varint,5,opt,name=slot,proto3" json:"slot,omitempty"`
+	Job           int32                  `protobuf:"varint,1,opt,name=job,proto3" json:"job,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateCharacterRequest) Reset() {
 	*x = CreateCharacterRequest{}
-	mi := &file_dnf_v1_character_proto_msgTypes[6]
+	mi := &file_dnf_v1_character_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -701,7 +1046,7 @@ func (x *CreateCharacterRequest) String() string {
 func (*CreateCharacterRequest) ProtoMessage() {}
 
 func (x *CreateCharacterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[6]
+	mi := &file_dnf_v1_character_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -714,14 +1059,7 @@ func (x *CreateCharacterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCharacterRequest.ProtoReflect.Descriptor instead.
 func (*CreateCharacterRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *CreateCharacterRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CreateCharacterRequest) GetJob() int32 {
@@ -731,25 +1069,11 @@ func (x *CreateCharacterRequest) GetJob() int32 {
 	return 0
 }
 
-func (x *CreateCharacterRequest) GetGrowType() int32 {
+func (x *CreateCharacterRequest) GetName() string {
 	if x != nil {
-		return x.GrowType
+		return x.Name
 	}
-	return 0
-}
-
-func (x *CreateCharacterRequest) GetSecGrowType() int32 {
-	if x != nil {
-		return x.SecGrowType
-	}
-	return 0
-}
-
-func (x *CreateCharacterRequest) GetSlot() int32 {
-	if x != nil {
-		return x.Slot
-	}
-	return 0
+	return ""
 }
 
 // 删除角色请求 (module=10004, cmd=1)
@@ -762,7 +1086,7 @@ type DeleteCharacterRequest struct {
 
 func (x *DeleteCharacterRequest) Reset() {
 	*x = DeleteCharacterRequest{}
-	mi := &file_dnf_v1_character_proto_msgTypes[7]
+	mi := &file_dnf_v1_character_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -774,7 +1098,7 @@ func (x *DeleteCharacterRequest) String() string {
 func (*DeleteCharacterRequest) ProtoMessage() {}
 
 func (x *DeleteCharacterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[7]
+	mi := &file_dnf_v1_character_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -787,7 +1111,7 @@ func (x *DeleteCharacterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCharacterRequest.ProtoReflect.Descriptor instead.
 func (*DeleteCharacterRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{7}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *DeleteCharacterRequest) GetCharGuid() int64 {
@@ -807,7 +1131,7 @@ type RestoreCharacterRequest struct {
 
 func (x *RestoreCharacterRequest) Reset() {
 	*x = RestoreCharacterRequest{}
-	mi := &file_dnf_v1_character_proto_msgTypes[8]
+	mi := &file_dnf_v1_character_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -819,7 +1143,7 @@ func (x *RestoreCharacterRequest) String() string {
 func (*RestoreCharacterRequest) ProtoMessage() {}
 
 func (x *RestoreCharacterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[8]
+	mi := &file_dnf_v1_character_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -832,7 +1156,7 @@ func (x *RestoreCharacterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestoreCharacterRequest.ProtoReflect.Descriptor instead.
 func (*RestoreCharacterRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{8}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *RestoreCharacterRequest) GetCharGuid() int64 {
@@ -852,7 +1176,7 @@ type ExitCharacterSelectRequest struct {
 
 func (x *ExitCharacterSelectRequest) Reset() {
 	*x = ExitCharacterSelectRequest{}
-	mi := &file_dnf_v1_character_proto_msgTypes[9]
+	mi := &file_dnf_v1_character_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -864,7 +1188,7 @@ func (x *ExitCharacterSelectRequest) String() string {
 func (*ExitCharacterSelectRequest) ProtoMessage() {}
 
 func (x *ExitCharacterSelectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[9]
+	mi := &file_dnf_v1_character_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -877,7 +1201,7 @@ func (x *ExitCharacterSelectRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExitCharacterSelectRequest.ProtoReflect.Descriptor instead.
 func (*ExitCharacterSelectRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{9}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ExitCharacterSelectRequest) GetType() int32 {
@@ -897,7 +1221,7 @@ type GetCharacterInfoRequest struct {
 
 func (x *GetCharacterInfoRequest) Reset() {
 	*x = GetCharacterInfoRequest{}
-	mi := &file_dnf_v1_character_proto_msgTypes[10]
+	mi := &file_dnf_v1_character_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -909,7 +1233,7 @@ func (x *GetCharacterInfoRequest) String() string {
 func (*GetCharacterInfoRequest) ProtoMessage() {}
 
 func (x *GetCharacterInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[10]
+	mi := &file_dnf_v1_character_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -922,7 +1246,7 @@ func (x *GetCharacterInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCharacterInfoRequest.ProtoReflect.Descriptor instead.
 func (*GetCharacterInfoRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{10}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *GetCharacterInfoRequest) GetCharGuid() int64 {
@@ -942,7 +1266,7 @@ type ChangeJobRequest struct {
 
 func (x *ChangeJobRequest) Reset() {
 	*x = ChangeJobRequest{}
-	mi := &file_dnf_v1_character_proto_msgTypes[11]
+	mi := &file_dnf_v1_character_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -954,7 +1278,7 @@ func (x *ChangeJobRequest) String() string {
 func (*ChangeJobRequest) ProtoMessage() {}
 
 func (x *ChangeJobRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[11]
+	mi := &file_dnf_v1_character_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -967,7 +1291,7 @@ func (x *ChangeJobRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangeJobRequest.ProtoReflect.Descriptor instead.
 func (*ChangeJobRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{11}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ChangeJobRequest) GetJob() int32 {
@@ -987,7 +1311,7 @@ type AwakenRequest struct {
 
 func (x *AwakenRequest) Reset() {
 	*x = AwakenRequest{}
-	mi := &file_dnf_v1_character_proto_msgTypes[12]
+	mi := &file_dnf_v1_character_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -999,7 +1323,7 @@ func (x *AwakenRequest) String() string {
 func (*AwakenRequest) ProtoMessage() {}
 
 func (x *AwakenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[12]
+	mi := &file_dnf_v1_character_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1012,7 +1336,7 @@ func (x *AwakenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AwakenRequest.ProtoReflect.Descriptor instead.
 func (*AwakenRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{12}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *AwakenRequest) GetJob() int32 {
@@ -1032,7 +1356,7 @@ type SkillListRequest struct {
 
 func (x *SkillListRequest) Reset() {
 	*x = SkillListRequest{}
-	mi := &file_dnf_v1_character_proto_msgTypes[13]
+	mi := &file_dnf_v1_character_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1044,7 +1368,7 @@ func (x *SkillListRequest) String() string {
 func (*SkillListRequest) ProtoMessage() {}
 
 func (x *SkillListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[13]
+	mi := &file_dnf_v1_character_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1057,7 +1381,7 @@ func (x *SkillListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SkillListRequest.ProtoReflect.Descriptor instead.
 func (*SkillListRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{13}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *SkillListRequest) GetCharGuid() int64 {
@@ -1077,7 +1401,7 @@ type LearnSkillRequest struct {
 
 func (x *LearnSkillRequest) Reset() {
 	*x = LearnSkillRequest{}
-	mi := &file_dnf_v1_character_proto_msgTypes[14]
+	mi := &file_dnf_v1_character_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1089,7 +1413,7 @@ func (x *LearnSkillRequest) String() string {
 func (*LearnSkillRequest) ProtoMessage() {}
 
 func (x *LearnSkillRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[14]
+	mi := &file_dnf_v1_character_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1102,7 +1426,7 @@ func (x *LearnSkillRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LearnSkillRequest.ProtoReflect.Descriptor instead.
 func (*LearnSkillRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{14}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *LearnSkillRequest) GetSkillId() int32 {
@@ -1122,7 +1446,7 @@ type UpgradeSkillRequest struct {
 
 func (x *UpgradeSkillRequest) Reset() {
 	*x = UpgradeSkillRequest{}
-	mi := &file_dnf_v1_character_proto_msgTypes[15]
+	mi := &file_dnf_v1_character_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1134,7 +1458,7 @@ func (x *UpgradeSkillRequest) String() string {
 func (*UpgradeSkillRequest) ProtoMessage() {}
 
 func (x *UpgradeSkillRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[15]
+	mi := &file_dnf_v1_character_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1147,7 +1471,7 @@ func (x *UpgradeSkillRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpgradeSkillRequest.ProtoReflect.Descriptor instead.
 func (*UpgradeSkillRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{15}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *UpgradeSkillRequest) GetSkillId() int32 {
@@ -1170,7 +1494,7 @@ type AllocateStatPointsRequest struct {
 
 func (x *AllocateStatPointsRequest) Reset() {
 	*x = AllocateStatPointsRequest{}
-	mi := &file_dnf_v1_character_proto_msgTypes[16]
+	mi := &file_dnf_v1_character_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1182,7 +1506,7 @@ func (x *AllocateStatPointsRequest) String() string {
 func (*AllocateStatPointsRequest) ProtoMessage() {}
 
 func (x *AllocateStatPointsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[16]
+	mi := &file_dnf_v1_character_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1195,7 +1519,7 @@ func (x *AllocateStatPointsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AllocateStatPointsRequest.ProtoReflect.Descriptor instead.
 func (*AllocateStatPointsRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{16}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *AllocateStatPointsRequest) GetStr() int32 {
@@ -1236,7 +1560,7 @@ type CompleteJobQuestRequest struct {
 
 func (x *CompleteJobQuestRequest) Reset() {
 	*x = CompleteJobQuestRequest{}
-	mi := &file_dnf_v1_character_proto_msgTypes[17]
+	mi := &file_dnf_v1_character_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1248,7 +1572,7 @@ func (x *CompleteJobQuestRequest) String() string {
 func (*CompleteJobQuestRequest) ProtoMessage() {}
 
 func (x *CompleteJobQuestRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[17]
+	mi := &file_dnf_v1_character_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1261,7 +1585,7 @@ func (x *CompleteJobQuestRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CompleteJobQuestRequest.ProtoReflect.Descriptor instead.
 func (*CompleteJobQuestRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{17}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *CompleteJobQuestRequest) GetQuestId() int32 {
@@ -1273,26 +1597,26 @@ func (x *CompleteJobQuestRequest) GetQuestId() int32 {
 
 // 角色列表响应 (module=10002, cmd=2)
 type CharacterListResponse struct {
-	state                   protoimpl.MessageState `protogen:"open.v1"`
-	Error                   int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
-	Version                 int32                  `protobuf:"varint,2,opt,name=version,proto3" json:"version,omitempty"`
-	Limits                  []*JobLimitInfo        `protobuf:"bytes,3,rep,name=limits,proto3" json:"limits,omitempty"`
-	Characters              []*Character           `protobuf:"bytes,4,rep,name=characters,proto3" json:"characters,omitempty"`
-	Count                   int32                  `protobuf:"varint,5,opt,name=count,proto3" json:"count,omitempty"`
-	AdventureUnionLevel     int32                  `protobuf:"varint,6,opt,name=adventure_union_level,json=adventureUnionLevel,proto3" json:"adventure_union_level,omitempty"`
-	AdventureUnionExp       int64                  `protobuf:"varint,7,opt,name=adventure_union_exp,json=adventureUnionExp,proto3" json:"adventure_union_exp,omitempty"`
-	DailyCreateCharCount    int32                  `protobuf:"varint,8,opt,name=daily_create_char_count,json=dailyCreateCharCount,proto3" json:"daily_create_char_count,omitempty"`
-	DailyCreateCharMaxCount int32                  `protobuf:"varint,9,opt,name=daily_create_char_max_count,json=dailyCreateCharMaxCount,proto3" json:"daily_create_char_max_count,omitempty"`
-	AdventureUnionName      string                 `protobuf:"bytes,10,opt,name=adventure_union_name,json=adventureUnionName,proto3" json:"adventure_union_name,omitempty"`
-	MaxCount                int32                  `protobuf:"varint,11,opt,name=max_count,json=maxCount,proto3" json:"max_count,omitempty"`
-	IgnoreContentsBlacklist string                 `protobuf:"bytes,12,opt,name=ignore_contents_blacklist,json=ignoreContentsBlacklist,proto3" json:"ignore_contents_blacklist,omitempty"`
+	state                   protoimpl.MessageState    `protogen:"open.v1"`
+	Error                   int32                     `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	Version                 int32                     `protobuf:"varint,2,opt,name=version,proto3" json:"version,omitempty"`
+	Limits                  []*JobLimitInfo           `protobuf:"bytes,3,rep,name=limits,proto3" json:"limits,omitempty"`
+	Characters              []*CharacterWithEquipList `protobuf:"bytes,4,rep,name=characters,proto3" json:"characters,omitempty"`
+	Count                   int32                     `protobuf:"varint,5,opt,name=count,proto3" json:"count,omitempty"`
+	AdventureUnionLevel     int32                     `protobuf:"varint,6,opt,name=adventure_union_level,json=adventureUnionLevel,proto3" json:"adventure_union_level,omitempty"`
+	AdventureUnionExp       int64                     `protobuf:"varint,7,opt,name=adventure_union_exp,json=adventureUnionExp,proto3" json:"adventure_union_exp,omitempty"`
+	DailyCreateCharCount    int32                     `protobuf:"varint,8,opt,name=daily_create_char_count,json=dailyCreateCharCount,proto3" json:"daily_create_char_count,omitempty"`
+	DailyCreateCharMaxCount int32                     `protobuf:"varint,9,opt,name=daily_create_char_max_count,json=dailyCreateCharMaxCount,proto3" json:"daily_create_char_max_count,omitempty"`
+	AdventureUnionName      string                    `protobuf:"bytes,10,opt,name=adventure_union_name,json=adventureUnionName,proto3" json:"adventure_union_name,omitempty"`
+	MaxCount                int32                     `protobuf:"varint,11,opt,name=max_count,json=maxCount,proto3" json:"max_count,omitempty"`
+	IgnoreContentsBlacklist string                    `protobuf:"bytes,12,opt,name=ignore_contents_blacklist,json=ignoreContentsBlacklist,proto3" json:"ignore_contents_blacklist,omitempty"`
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
 
 func (x *CharacterListResponse) Reset() {
 	*x = CharacterListResponse{}
-	mi := &file_dnf_v1_character_proto_msgTypes[18]
+	mi := &file_dnf_v1_character_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1304,7 +1628,7 @@ func (x *CharacterListResponse) String() string {
 func (*CharacterListResponse) ProtoMessage() {}
 
 func (x *CharacterListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[18]
+	mi := &file_dnf_v1_character_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1317,7 +1641,7 @@ func (x *CharacterListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CharacterListResponse.ProtoReflect.Descriptor instead.
 func (*CharacterListResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{18}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *CharacterListResponse) GetError() int32 {
@@ -1341,7 +1665,7 @@ func (x *CharacterListResponse) GetLimits() []*JobLimitInfo {
 	return nil
 }
 
-func (x *CharacterListResponse) GetCharacters() []*Character {
+func (x *CharacterListResponse) GetCharacters() []*CharacterWithEquipList {
 	if x != nil {
 		return x.Characters
 	}
@@ -1404,18 +1728,20 @@ func (x *CharacterListResponse) GetIgnoreContentsBlacklist() string {
 	return ""
 }
 
-// 创建角色响应 (module=10003, cmd=2)
+// 创建角色响应 (module=10003, cmd=1)
 type CreateCharacterResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
-	Character     *Character             `protobuf:"bytes,2,opt,name=character,proto3" json:"character,omitempty"`
+	Charguid      uint64                 `protobuf:"varint,2,opt,name=charguid,proto3" json:"charguid,omitempty"`
+	Job           int32                  `protobuf:"varint,3,opt,name=job,proto3" json:"job,omitempty"`
+	Name          string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateCharacterResponse) Reset() {
 	*x = CreateCharacterResponse{}
-	mi := &file_dnf_v1_character_proto_msgTypes[19]
+	mi := &file_dnf_v1_character_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1427,7 +1753,7 @@ func (x *CreateCharacterResponse) String() string {
 func (*CreateCharacterResponse) ProtoMessage() {}
 
 func (x *CreateCharacterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[19]
+	mi := &file_dnf_v1_character_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1440,7 +1766,7 @@ func (x *CreateCharacterResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCharacterResponse.ProtoReflect.Descriptor instead.
 func (*CreateCharacterResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{19}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *CreateCharacterResponse) GetError() int32 {
@@ -1450,11 +1776,25 @@ func (x *CreateCharacterResponse) GetError() int32 {
 	return 0
 }
 
-func (x *CreateCharacterResponse) GetCharacter() *Character {
+func (x *CreateCharacterResponse) GetCharguid() uint64 {
 	if x != nil {
-		return x.Character
+		return x.Charguid
 	}
-	return nil
+	return 0
+}
+
+func (x *CreateCharacterResponse) GetJob() int32 {
+	if x != nil {
+		return x.Job
+	}
+	return 0
+}
+
+func (x *CreateCharacterResponse) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
 }
 
 // 删除角色响应 (module=10004, cmd=2)
@@ -1468,7 +1808,7 @@ type DeleteCharacterResponse struct {
 
 func (x *DeleteCharacterResponse) Reset() {
 	*x = DeleteCharacterResponse{}
-	mi := &file_dnf_v1_character_proto_msgTypes[20]
+	mi := &file_dnf_v1_character_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1480,7 +1820,7 @@ func (x *DeleteCharacterResponse) String() string {
 func (*DeleteCharacterResponse) ProtoMessage() {}
 
 func (x *DeleteCharacterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[20]
+	mi := &file_dnf_v1_character_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1493,7 +1833,7 @@ func (x *DeleteCharacterResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCharacterResponse.ProtoReflect.Descriptor instead.
 func (*DeleteCharacterResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{20}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *DeleteCharacterResponse) GetError() int32 {
@@ -1520,7 +1860,7 @@ type RestoreCharacterResponse struct {
 
 func (x *RestoreCharacterResponse) Reset() {
 	*x = RestoreCharacterResponse{}
-	mi := &file_dnf_v1_character_proto_msgTypes[21]
+	mi := &file_dnf_v1_character_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1532,7 +1872,7 @@ func (x *RestoreCharacterResponse) String() string {
 func (*RestoreCharacterResponse) ProtoMessage() {}
 
 func (x *RestoreCharacterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[21]
+	mi := &file_dnf_v1_character_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1545,7 +1885,7 @@ func (x *RestoreCharacterResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RestoreCharacterResponse.ProtoReflect.Descriptor instead.
 func (*RestoreCharacterResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{21}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *RestoreCharacterResponse) GetError() int32 {
@@ -1565,7 +1905,7 @@ type ExitCharacterSelectResponse struct {
 
 func (x *ExitCharacterSelectResponse) Reset() {
 	*x = ExitCharacterSelectResponse{}
-	mi := &file_dnf_v1_character_proto_msgTypes[22]
+	mi := &file_dnf_v1_character_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1577,7 +1917,7 @@ func (x *ExitCharacterSelectResponse) String() string {
 func (*ExitCharacterSelectResponse) ProtoMessage() {}
 
 func (x *ExitCharacterSelectResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[22]
+	mi := &file_dnf_v1_character_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1590,7 +1930,7 @@ func (x *ExitCharacterSelectResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExitCharacterSelectResponse.ProtoReflect.Descriptor instead.
 func (*ExitCharacterSelectResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{22}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *ExitCharacterSelectResponse) GetError() int32 {
@@ -1611,7 +1951,7 @@ type GetCharacterInfoResponse struct {
 
 func (x *GetCharacterInfoResponse) Reset() {
 	*x = GetCharacterInfoResponse{}
-	mi := &file_dnf_v1_character_proto_msgTypes[23]
+	mi := &file_dnf_v1_character_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1623,7 +1963,7 @@ func (x *GetCharacterInfoResponse) String() string {
 func (*GetCharacterInfoResponse) ProtoMessage() {}
 
 func (x *GetCharacterInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[23]
+	mi := &file_dnf_v1_character_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1636,7 +1976,7 @@ func (x *GetCharacterInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCharacterInfoResponse.ProtoReflect.Descriptor instead.
 func (*GetCharacterInfoResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{23}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *GetCharacterInfoResponse) GetError() int32 {
@@ -1664,7 +2004,7 @@ type ChangeJobResponse struct {
 
 func (x *ChangeJobResponse) Reset() {
 	*x = ChangeJobResponse{}
-	mi := &file_dnf_v1_character_proto_msgTypes[24]
+	mi := &file_dnf_v1_character_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1676,7 +2016,7 @@ func (x *ChangeJobResponse) String() string {
 func (*ChangeJobResponse) ProtoMessage() {}
 
 func (x *ChangeJobResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[24]
+	mi := &file_dnf_v1_character_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1689,7 +2029,7 @@ func (x *ChangeJobResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangeJobResponse.ProtoReflect.Descriptor instead.
 func (*ChangeJobResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{24}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ChangeJobResponse) GetError() int32 {
@@ -1717,7 +2057,7 @@ type AwakenResponse struct {
 
 func (x *AwakenResponse) Reset() {
 	*x = AwakenResponse{}
-	mi := &file_dnf_v1_character_proto_msgTypes[25]
+	mi := &file_dnf_v1_character_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1729,7 +2069,7 @@ func (x *AwakenResponse) String() string {
 func (*AwakenResponse) ProtoMessage() {}
 
 func (x *AwakenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[25]
+	mi := &file_dnf_v1_character_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1742,7 +2082,7 @@ func (x *AwakenResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AwakenResponse.ProtoReflect.Descriptor instead.
 func (*AwakenResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{25}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *AwakenResponse) GetError() int32 {
@@ -1770,7 +2110,7 @@ type SkillListResponse struct {
 
 func (x *SkillListResponse) Reset() {
 	*x = SkillListResponse{}
-	mi := &file_dnf_v1_character_proto_msgTypes[26]
+	mi := &file_dnf_v1_character_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1782,7 +2122,7 @@ func (x *SkillListResponse) String() string {
 func (*SkillListResponse) ProtoMessage() {}
 
 func (x *SkillListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[26]
+	mi := &file_dnf_v1_character_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1795,7 +2135,7 @@ func (x *SkillListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SkillListResponse.ProtoReflect.Descriptor instead.
 func (*SkillListResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{26}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *SkillListResponse) GetError() int32 {
@@ -1823,7 +2163,7 @@ type LearnSkillResponse struct {
 
 func (x *LearnSkillResponse) Reset() {
 	*x = LearnSkillResponse{}
-	mi := &file_dnf_v1_character_proto_msgTypes[27]
+	mi := &file_dnf_v1_character_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1835,7 +2175,7 @@ func (x *LearnSkillResponse) String() string {
 func (*LearnSkillResponse) ProtoMessage() {}
 
 func (x *LearnSkillResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[27]
+	mi := &file_dnf_v1_character_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1848,7 +2188,7 @@ func (x *LearnSkillResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LearnSkillResponse.ProtoReflect.Descriptor instead.
 func (*LearnSkillResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{27}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *LearnSkillResponse) GetError() int32 {
@@ -1876,7 +2216,7 @@ type UpgradeSkillResponse struct {
 
 func (x *UpgradeSkillResponse) Reset() {
 	*x = UpgradeSkillResponse{}
-	mi := &file_dnf_v1_character_proto_msgTypes[28]
+	mi := &file_dnf_v1_character_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1888,7 +2228,7 @@ func (x *UpgradeSkillResponse) String() string {
 func (*UpgradeSkillResponse) ProtoMessage() {}
 
 func (x *UpgradeSkillResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[28]
+	mi := &file_dnf_v1_character_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1901,7 +2241,7 @@ func (x *UpgradeSkillResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpgradeSkillResponse.ProtoReflect.Descriptor instead.
 func (*UpgradeSkillResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{28}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *UpgradeSkillResponse) GetError() int32 {
@@ -1933,7 +2273,7 @@ type AllocateStatPointsResponse struct {
 
 func (x *AllocateStatPointsResponse) Reset() {
 	*x = AllocateStatPointsResponse{}
-	mi := &file_dnf_v1_character_proto_msgTypes[29]
+	mi := &file_dnf_v1_character_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1945,7 +2285,7 @@ func (x *AllocateStatPointsResponse) String() string {
 func (*AllocateStatPointsResponse) ProtoMessage() {}
 
 func (x *AllocateStatPointsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[29]
+	mi := &file_dnf_v1_character_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1958,7 +2298,7 @@ func (x *AllocateStatPointsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AllocateStatPointsResponse.ProtoReflect.Descriptor instead.
 func (*AllocateStatPointsResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{29}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *AllocateStatPointsResponse) GetError() int32 {
@@ -2013,7 +2353,7 @@ type CompleteJobQuestResponse struct {
 
 func (x *CompleteJobQuestResponse) Reset() {
 	*x = CompleteJobQuestResponse{}
-	mi := &file_dnf_v1_character_proto_msgTypes[30]
+	mi := &file_dnf_v1_character_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2025,7 +2365,7 @@ func (x *CompleteJobQuestResponse) String() string {
 func (*CompleteJobQuestResponse) ProtoMessage() {}
 
 func (x *CompleteJobQuestResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_character_proto_msgTypes[30]
+	mi := &file_dnf_v1_character_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2038,7 +2378,7 @@ func (x *CompleteJobQuestResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CompleteJobQuestResponse.ProtoReflect.Descriptor instead.
 func (*CompleteJobQuestResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_character_proto_rawDescGZIP(), []int{30}
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *CompleteJobQuestResponse) GetError() int32 {
@@ -2072,7 +2412,23 @@ const file_dnf_v1_character_proto_rawDesc = "" +
 	"\rsub_equipment\x18\v \x01(\x05R\fsubEquipment\x12\x1f\n" +
 	"\vmagic_stone\x18\f \x01(\x05R\n" +
 	"magicStone\x12\x18\n" +
-	"\aearring\x18\r \x01(\x05R\aearring\"\xa1\x04\n" +
+	"\aearring\x18\r \x01(\x05R\aearring\"\x8e\x01\n" +
+	"\x0eEquipIndexSlot\x12\x14\n" +
+	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x12\n" +
+	"\x04slot\x18\x02 \x01(\x05R\x04slot\x12\x18\n" +
+	"\areforge\x18\x03 \x01(\x05R\areforge\x12\x1e\n" +
+	"\n" +
+	"reforgeexp\x18\x04 \x01(\x05R\n" +
+	"reforgeexp\x12\x18\n" +
+	"\aupgrade\x18\x05 \x01(\x05R\aupgrade\";\n" +
+	"\x0fAvatarIndexSlot\x12\x14\n" +
+	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x12\n" +
+	"\x04slot\x18\x02 \x01(\x05R\x04slot\"\x88\x01\n" +
+	"\x17CharacterEquipIndexList\x124\n" +
+	"\tequiplist\x18\x01 \x03(\v2\x16.dnf.v1.EquipIndexSlotR\tequiplist\x127\n" +
+	"\n" +
+	"avatarlist\x18\x02 \x03(\v2\x17.dnf.v1.AvatarIndexSlotR\n" +
+	"avatarlist\"\xa1\x04\n" +
 	"\tCharacter\x12\x1b\n" +
 	"\tchar_guid\x18\x01 \x01(\x03R\bcharGuid\x12\x1f\n" +
 	"\vlast_logout\x18\x02 \x01(\x03R\n" +
@@ -2088,6 +2444,28 @@ const file_dnf_v1_character_proto_rawDesc = "" +
 	"\x0fcharacter_frame\x18\n" +
 	" \x01(\x05R\x0echaracterFrame\x123\n" +
 	"\x06equips\x18\v \x01(\v2\x1b.dnf.v1.CharacterEquipIndexR\x06equips\x120\n" +
+	"\x14avatar_visible_flags\x18\f \x01(\rR\x12avatarVisibleFlags\x12'\n" +
+	"\x0fdeletion_status\x18\r \x01(\x05R\x0edeletionStatus\x12#\n" +
+	"\rdeletion_time\x18\x0e \x01(\x03R\fdeletionTime\x12\x1f\n" +
+	"\vcreate_time\x18\x0f \x01(\x03R\n" +
+	"createTime\x12\x1f\n" +
+	"\vchange_name\x18\x10 \x01(\bR\n" +
+	"changeName\"\xb2\x04\n" +
+	"\x16CharacterWithEquipList\x12\x1b\n" +
+	"\tchar_guid\x18\x01 \x01(\x03R\bcharGuid\x12\x1f\n" +
+	"\vlast_logout\x18\x02 \x01(\x03R\n" +
+	"lastLogout\x12\x1b\n" +
+	"\tgrow_type\x18\x03 \x01(\x05R\bgrowType\x12\"\n" +
+	"\rsec_grow_type\x18\x04 \x01(\x05R\vsecGrowType\x12\x10\n" +
+	"\x03job\x18\x05 \x01(\x05R\x03job\x12\x14\n" +
+	"\x05level\x18\x06 \x01(\x05R\x05level\x12\x12\n" +
+	"\x04name\x18\a \x01(\tR\x04name\x12\x18\n" +
+	"\afatigue\x18\b \x01(\x05R\afatigue\x12\x1f\n" +
+	"\vequip_score\x18\t \x01(\x05R\n" +
+	"equipScore\x12'\n" +
+	"\x0fcharacter_frame\x18\n" +
+	" \x01(\x05R\x0echaracterFrame\x127\n" +
+	"\x06equips\x18\v \x01(\v2\x1f.dnf.v1.CharacterEquipIndexListR\x06equips\x120\n" +
 	"\x14avatar_visible_flags\x18\f \x01(\rR\x12avatarVisibleFlags\x12'\n" +
 	"\x0fdeletion_status\x18\r \x01(\x05R\x0edeletionStatus\x12#\n" +
 	"\rdeletion_time\x18\x0e \x01(\x03R\fdeletionTime\x12\x1f\n" +
@@ -2120,13 +2498,10 @@ const file_dnf_v1_character_proto_rawDesc = "" +
 	"\x05level\x18\x02 \x01(\x05R\x05level\x12\x17\n" +
 	"\asp_cost\x18\x03 \x01(\x05R\x06spCost\x12-\n" +
 	"\x12cooldown_remaining\x18\x04 \x01(\x05R\x11cooldownRemaining\"\x16\n" +
-	"\x14CharacterListRequest\"\x93\x01\n" +
-	"\x16CreateCharacterRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
-	"\x03job\x18\x02 \x01(\x05R\x03job\x12\x1b\n" +
-	"\tgrow_type\x18\x03 \x01(\x05R\bgrowType\x12\"\n" +
-	"\rsec_grow_type\x18\x04 \x01(\x05R\vsecGrowType\x12\x12\n" +
-	"\x04slot\x18\x05 \x01(\x05R\x04slot\"5\n" +
+	"\x14CharacterListRequest\">\n" +
+	"\x16CreateCharacterRequest\x12\x10\n" +
+	"\x03job\x18\x01 \x01(\x05R\x03job\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"5\n" +
 	"\x16DeleteCharacterRequest\x12\x1b\n" +
 	"\tchar_guid\x18\x01 \x01(\x03R\bcharGuid\"6\n" +
 	"\x17RestoreCharacterRequest\x12\x1b\n" +
@@ -2151,13 +2526,13 @@ const file_dnf_v1_character_proto_rawDesc = "" +
 	"\x03vit\x18\x03 \x01(\x05R\x03vit\x12\x10\n" +
 	"\x03spr\x18\x04 \x01(\x05R\x03spr\"4\n" +
 	"\x17CompleteJobQuestRequest\x12\x19\n" +
-	"\bquest_id\x18\x01 \x01(\x05R\aquestId\"\xa2\x04\n" +
+	"\bquest_id\x18\x01 \x01(\x05R\aquestId\"\xaf\x04\n" +
 	"\x15CharacterListResponse\x12\x14\n" +
 	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\x05R\aversion\x12,\n" +
-	"\x06limits\x18\x03 \x03(\v2\x14.dnf.v1.JobLimitInfoR\x06limits\x121\n" +
+	"\x06limits\x18\x03 \x03(\v2\x14.dnf.v1.JobLimitInfoR\x06limits\x12>\n" +
 	"\n" +
-	"characters\x18\x04 \x03(\v2\x11.dnf.v1.CharacterR\n" +
+	"characters\x18\x04 \x03(\v2\x1e.dnf.v1.CharacterWithEquipListR\n" +
 	"characters\x12\x14\n" +
 	"\x05count\x18\x05 \x01(\x05R\x05count\x122\n" +
 	"\x15adventure_union_level\x18\x06 \x01(\x05R\x13adventureUnionLevel\x12.\n" +
@@ -2167,10 +2542,12 @@ const file_dnf_v1_character_proto_rawDesc = "" +
 	"\x14adventure_union_name\x18\n" +
 	" \x01(\tR\x12adventureUnionName\x12\x1b\n" +
 	"\tmax_count\x18\v \x01(\x05R\bmaxCount\x12:\n" +
-	"\x19ignore_contents_blacklist\x18\f \x01(\tR\x17ignoreContentsBlacklist\"`\n" +
+	"\x19ignore_contents_blacklist\x18\f \x01(\tR\x17ignoreContentsBlacklist\"q\n" +
 	"\x17CreateCharacterResponse\x12\x14\n" +
-	"\x05error\x18\x01 \x01(\x05R\x05error\x12/\n" +
-	"\tcharacter\x18\x02 \x01(\v2\x11.dnf.v1.CharacterR\tcharacter\"V\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x1a\n" +
+	"\bcharguid\x18\x02 \x01(\x04R\bcharguid\x12\x10\n" +
+	"\x03job\x18\x03 \x01(\x05R\x03job\x12\x12\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\"V\n" +
 	"\x17DeleteCharacterResponse\x12\x14\n" +
 	"\x05error\x18\x01 \x01(\x05R\x05error\x12%\n" +
 	"\x0eremain_seconds\x18\x02 \x01(\x05R\rremainSeconds\"0\n" +
@@ -2219,54 +2596,60 @@ func file_dnf_v1_character_proto_rawDescGZIP() []byte {
 	return file_dnf_v1_character_proto_rawDescData
 }
 
-var file_dnf_v1_character_proto_msgTypes = make([]protoimpl.MessageInfo, 31)
+var file_dnf_v1_character_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
 var file_dnf_v1_character_proto_goTypes = []any{
 	(*JobLimitInfo)(nil),                // 0: dnf.v1.JobLimitInfo
 	(*CharacterEquipIndex)(nil),         // 1: dnf.v1.CharacterEquipIndex
-	(*Character)(nil),                   // 2: dnf.v1.Character
-	(*CharacterDetailInfo)(nil),         // 3: dnf.v1.CharacterDetailInfo
-	(*SkillInfo)(nil),                   // 4: dnf.v1.SkillInfo
-	(*CharacterListRequest)(nil),        // 5: dnf.v1.CharacterListRequest
-	(*CreateCharacterRequest)(nil),      // 6: dnf.v1.CreateCharacterRequest
-	(*DeleteCharacterRequest)(nil),      // 7: dnf.v1.DeleteCharacterRequest
-	(*RestoreCharacterRequest)(nil),     // 8: dnf.v1.RestoreCharacterRequest
-	(*ExitCharacterSelectRequest)(nil),  // 9: dnf.v1.ExitCharacterSelectRequest
-	(*GetCharacterInfoRequest)(nil),     // 10: dnf.v1.GetCharacterInfoRequest
-	(*ChangeJobRequest)(nil),            // 11: dnf.v1.ChangeJobRequest
-	(*AwakenRequest)(nil),               // 12: dnf.v1.AwakenRequest
-	(*SkillListRequest)(nil),            // 13: dnf.v1.SkillListRequest
-	(*LearnSkillRequest)(nil),           // 14: dnf.v1.LearnSkillRequest
-	(*UpgradeSkillRequest)(nil),         // 15: dnf.v1.UpgradeSkillRequest
-	(*AllocateStatPointsRequest)(nil),   // 16: dnf.v1.AllocateStatPointsRequest
-	(*CompleteJobQuestRequest)(nil),     // 17: dnf.v1.CompleteJobQuestRequest
-	(*CharacterListResponse)(nil),       // 18: dnf.v1.CharacterListResponse
-	(*CreateCharacterResponse)(nil),     // 19: dnf.v1.CreateCharacterResponse
-	(*DeleteCharacterResponse)(nil),     // 20: dnf.v1.DeleteCharacterResponse
-	(*RestoreCharacterResponse)(nil),    // 21: dnf.v1.RestoreCharacterResponse
-	(*ExitCharacterSelectResponse)(nil), // 22: dnf.v1.ExitCharacterSelectResponse
-	(*GetCharacterInfoResponse)(nil),    // 23: dnf.v1.GetCharacterInfoResponse
-	(*ChangeJobResponse)(nil),           // 24: dnf.v1.ChangeJobResponse
-	(*AwakenResponse)(nil),              // 25: dnf.v1.AwakenResponse
-	(*SkillListResponse)(nil),           // 26: dnf.v1.SkillListResponse
-	(*LearnSkillResponse)(nil),          // 27: dnf.v1.LearnSkillResponse
-	(*UpgradeSkillResponse)(nil),        // 28: dnf.v1.UpgradeSkillResponse
-	(*AllocateStatPointsResponse)(nil),  // 29: dnf.v1.AllocateStatPointsResponse
-	(*CompleteJobQuestResponse)(nil),    // 30: dnf.v1.CompleteJobQuestResponse
+	(*EquipIndexSlot)(nil),              // 2: dnf.v1.EquipIndexSlot
+	(*AvatarIndexSlot)(nil),             // 3: dnf.v1.AvatarIndexSlot
+	(*CharacterEquipIndexList)(nil),     // 4: dnf.v1.CharacterEquipIndexList
+	(*Character)(nil),                   // 5: dnf.v1.Character
+	(*CharacterWithEquipList)(nil),      // 6: dnf.v1.CharacterWithEquipList
+	(*CharacterDetailInfo)(nil),         // 7: dnf.v1.CharacterDetailInfo
+	(*SkillInfo)(nil),                   // 8: dnf.v1.SkillInfo
+	(*CharacterListRequest)(nil),        // 9: dnf.v1.CharacterListRequest
+	(*CreateCharacterRequest)(nil),      // 10: dnf.v1.CreateCharacterRequest
+	(*DeleteCharacterRequest)(nil),      // 11: dnf.v1.DeleteCharacterRequest
+	(*RestoreCharacterRequest)(nil),     // 12: dnf.v1.RestoreCharacterRequest
+	(*ExitCharacterSelectRequest)(nil),  // 13: dnf.v1.ExitCharacterSelectRequest
+	(*GetCharacterInfoRequest)(nil),     // 14: dnf.v1.GetCharacterInfoRequest
+	(*ChangeJobRequest)(nil),            // 15: dnf.v1.ChangeJobRequest
+	(*AwakenRequest)(nil),               // 16: dnf.v1.AwakenRequest
+	(*SkillListRequest)(nil),            // 17: dnf.v1.SkillListRequest
+	(*LearnSkillRequest)(nil),           // 18: dnf.v1.LearnSkillRequest
+	(*UpgradeSkillRequest)(nil),         // 19: dnf.v1.UpgradeSkillRequest
+	(*AllocateStatPointsRequest)(nil),   // 20: dnf.v1.AllocateStatPointsRequest
+	(*CompleteJobQuestRequest)(nil),     // 21: dnf.v1.CompleteJobQuestRequest
+	(*CharacterListResponse)(nil),       // 22: dnf.v1.CharacterListResponse
+	(*CreateCharacterResponse)(nil),     // 23: dnf.v1.CreateCharacterResponse
+	(*DeleteCharacterResponse)(nil),     // 24: dnf.v1.DeleteCharacterResponse
+	(*RestoreCharacterResponse)(nil),    // 25: dnf.v1.RestoreCharacterResponse
+	(*ExitCharacterSelectResponse)(nil), // 26: dnf.v1.ExitCharacterSelectResponse
+	(*GetCharacterInfoResponse)(nil),    // 27: dnf.v1.GetCharacterInfoResponse
+	(*ChangeJobResponse)(nil),           // 28: dnf.v1.ChangeJobResponse
+	(*AwakenResponse)(nil),              // 29: dnf.v1.AwakenResponse
+	(*SkillListResponse)(nil),           // 30: dnf.v1.SkillListResponse
+	(*LearnSkillResponse)(nil),          // 31: dnf.v1.LearnSkillResponse
+	(*UpgradeSkillResponse)(nil),        // 32: dnf.v1.UpgradeSkillResponse
+	(*AllocateStatPointsResponse)(nil),  // 33: dnf.v1.AllocateStatPointsResponse
+	(*CompleteJobQuestResponse)(nil),    // 34: dnf.v1.CompleteJobQuestResponse
 }
 var file_dnf_v1_character_proto_depIdxs = []int32{
-	1, // 0: dnf.v1.Character.equips:type_name -> dnf.v1.CharacterEquipIndex
-	0, // 1: dnf.v1.CharacterListResponse.limits:type_name -> dnf.v1.JobLimitInfo
-	2, // 2: dnf.v1.CharacterListResponse.characters:type_name -> dnf.v1.Character
-	2, // 3: dnf.v1.CreateCharacterResponse.character:type_name -> dnf.v1.Character
-	3, // 4: dnf.v1.GetCharacterInfoResponse.detail:type_name -> dnf.v1.CharacterDetailInfo
-	4, // 5: dnf.v1.SkillListResponse.skills:type_name -> dnf.v1.SkillInfo
-	4, // 6: dnf.v1.LearnSkillResponse.skill:type_name -> dnf.v1.SkillInfo
-	4, // 7: dnf.v1.UpgradeSkillResponse.skill:type_name -> dnf.v1.SkillInfo
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	2,  // 0: dnf.v1.CharacterEquipIndexList.equiplist:type_name -> dnf.v1.EquipIndexSlot
+	3,  // 1: dnf.v1.CharacterEquipIndexList.avatarlist:type_name -> dnf.v1.AvatarIndexSlot
+	1,  // 2: dnf.v1.Character.equips:type_name -> dnf.v1.CharacterEquipIndex
+	4,  // 3: dnf.v1.CharacterWithEquipList.equips:type_name -> dnf.v1.CharacterEquipIndexList
+	0,  // 4: dnf.v1.CharacterListResponse.limits:type_name -> dnf.v1.JobLimitInfo
+	6,  // 5: dnf.v1.CharacterListResponse.characters:type_name -> dnf.v1.CharacterWithEquipList
+	7,  // 6: dnf.v1.GetCharacterInfoResponse.detail:type_name -> dnf.v1.CharacterDetailInfo
+	8,  // 7: dnf.v1.SkillListResponse.skills:type_name -> dnf.v1.SkillInfo
+	8,  // 8: dnf.v1.LearnSkillResponse.skill:type_name -> dnf.v1.SkillInfo
+	8,  // 9: dnf.v1.UpgradeSkillResponse.skill:type_name -> dnf.v1.SkillInfo
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_dnf_v1_character_proto_init() }
@@ -2281,7 +2664,7 @@ func file_dnf_v1_character_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dnf_v1_character_proto_rawDesc), len(file_dnf_v1_character_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   31,
+			NumMessages:   35,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

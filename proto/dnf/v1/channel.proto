@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+option java_multiple_files = true;
+option java_package = "com.dnfm.mina.protobuf.generated";
+option java_outer_classname = "ChannelProto";
+
+// ========== 数据结构 ==========
+
+// 频道信息
+message Channel {
+  int32 world = 1;
+  int32 channel = 2;
+  string ip = 3;
+  int32 port = 4;
+  int32 saturation = 5;
+  bool integration = 6;
+}
+
+// 集成世界
+message IntegrationWorld {
+  int32 world = 1;
+}
+
+// 客户端构建类型
+enum ClientBuildType {
+  NONE = 0;
+  TEEN = 1;
+  ADULT = 2;
+}
+
+// 客户端信息
+message ClientInfo {
+  uint32 platID = 1;
+  string deviceSoft = 2;
+  string deviceHard = 3;
+  string teleOper = 4;
+  string network = 5;
+  int32 scrWidth = 6;
+  int32 scrHeight = 7;
+  float density = 8;
+  string cpu = 9;
+  int32 memory = 10;
+  string glRender = 11;
+  string glVersion = 12;
+  string deviceID = 13;
+  string clientIP = 14;
+  uint32 type = 15;
+  string oAID = 16;
+  ClientBuildType buildType = 17;
+  string deviceLanguage = 18;
+  int32 deviceUTC = 19;
+}
+
+// ========== 请求消息 ==========
+
+// 频道列表请求 (module=10008, cmd=0)
+message ChannelListRequest {
+  int32 type = 1;
+  int32 worldid = 2;
+}
+
+// 进入频道请求 (module=10011, cmd=0)
+message EnterChannelRequest {
+  string openid = 1;
+  uint64 charguid = 2;
+  string authkey = 3;
+  string version = 4;
+  string accesstoken = 5;
+  int32 launchinfo = 6;
+  uint64 dungeonguid = 7;
+  ClientInfo deviceinfo = 8;
+  string registeredchannelid = 9;
+  string installchannelid = 10;
+  bool isexternpackage = 11;
+  string validusercheckcode = 12;
+  int32 toyPlatID = 13;
+  string countrycode = 14;
+  string language = 15;
+  string adid = 16;
+  string idfv = 17;
+  bool isadult = 18;
+}
+
+// ========== 响应消息 ==========
+
+// 频道列表响应 (module=10008, cmd=1)
+message ChannelListResponse {
+  int32 error = 1;
+  repeated Channel list = 2;
+  int32 count = 3;
+  repeated IntegrationWorld integrations = 4;
+  int32 type = 5;
+  repeated Channel integrationrecommands = 6;
+  repeated Channel worldrecommands = 7;
+}

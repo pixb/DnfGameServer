@@ -1,0 +1,22 @@
+# DNF Go Server Production Configuration
+# 使用MySQL用于生产环境
+
+# 服务器配置
+port: 8080
+
+# 数据库配置
+driver: mysql
+dsn: user:password@tcp(localhost:3306)/dnf_game?charset=utf8mb4&parseTime=True&loc=Local
+mode: prod
+
+# 日志配置
+log:
+  level: info
+  format: json
+
+# 游戏配置
+game:
+  max_players: 10000
+  max_roles_per_account: 4
+  default_map_id: 1
+  default_channel: 1

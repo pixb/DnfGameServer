@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"dnf-go-server/internal/utils/config"
-	"dnf-go-server/internal/utils/logger"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/config"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"

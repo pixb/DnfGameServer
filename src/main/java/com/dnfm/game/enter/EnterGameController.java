@@ -1008,8 +1008,8 @@ public class EnterGameController {
       resLogin.transId = reqLogin.transId;
       resLogin.seeds = new ArrayList();
       MessagePusher.pushMessage((IoSession)session, resLogin);
-      RES_PING resPing = new RES_PING();
-      MessagePusher.pushMessage((IoSession)session, resPing);
+      // RES_PING resPing = new RES_PING();
+      // MessagePusher.pushMessage((IoSession)session, resPing);
    }
 
    @RequestMapping
@@ -1851,6 +1851,11 @@ public class EnterGameController {
 
    @RequestMapping
    public void ReqPing(IoSession session, REQ_PING reqPing) {
+      RES_PING resPing = new RES_PING();
+      resPing.error = 0;
+      resPing.responsetime = (int)(System.currentTimeMillis() % 1000);
+      resPing.transId = reqPing.transId;
+      MessagePusher.pushMessage((IoSession)session, resPing);
    }
 
    @RequestMapping

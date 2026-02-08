@@ -17,17 +17,26 @@ public interface CreateCharacterResponseOrBuilder extends
   int getError();
 
   /**
-   * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
-   * @return Whether the character field is set.
+   * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
+   * @return The charguid.
    */
-  boolean hasCharacter();
+  long getCharguid();
+
   /**
-   * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
-   * @return The character.
+   * <code>int32 job = 3 [json_name = "job"];</code>
+   * @return The job.
    */
-  com.dnfm.mina.protobuf.generated.Character getCharacter();
+  int getJob();
+
   /**
-   * <code>.dnf.v1.Character character = 2 [json_name = "character"];</code>
+   * <code>string name = 4 [json_name = "name"];</code>
+   * @return The name.
    */
-  com.dnfm.mina.protobuf.generated.CharacterOrBuilder getCharacterOrBuilder();
+  java.lang.String getName();
+  /**
+   * <code>string name = 4 [json_name = "name"];</code>
+   * @return The bytes for name.
+   */
+  com.google.protobuf.ByteString
+      getNameBytes();
 }

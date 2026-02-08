@@ -1,7 +1,7 @@
 package network
 
 import (
-	dnfv1 "dnf-go-server/proto/gen/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"google.golang.org/protobuf/proto"
 )
 

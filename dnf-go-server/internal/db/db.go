@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"dnf-go-server/internal/db/models"
-	"dnf-go-server/internal/utils/config"
-	"dnf-go-server/internal/utils/logger"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/db/models"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/config"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"dnf-go-server/internal/network"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 )
 
 // RegisterAllHandlers 注册所有消息处理器

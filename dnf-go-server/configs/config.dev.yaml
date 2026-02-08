@@ -1,0 +1,20 @@
+# DNF Go Server - 开发环境配置 (SQLite)
+# 使用 SQLite 避免污染 MySQL 数据库
+
+# 服务器配置
+port: 8081
+mode: dev
+
+# 数据库配置 - SQLite (开发环境)
+driver: sqlite
+dsn: ./data/dnf_game.db
+
+# 缓存配置
+cache:
+  default_expiration: 300
+  cleanup_interval: 600
+
+# 日志配置
+log:
+  level: debug
+  is_development: true
