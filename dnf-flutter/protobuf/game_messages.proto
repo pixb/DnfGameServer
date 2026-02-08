@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+package dnf;
+
+message BaseMessage {
+  string msgId = 1;
+  int64 timestamp = 2;
+  int32 msgType = 3;
+  bytes data = 4;
+}
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+  string deviceId = 3;
+}
+
+message LoginResponse {
+  bool success = 1;
+  string message = 2;
+  string token = 3;
+  int64 userId = 4;
+  repeated RoleInfo roles = 5;
+}
+
+message RoleInfo {
+  int64 uid = 1;
+  string name = 2;
+  int32 level = 3;
+  int32 job = 4;
+  int64 exp = 5;
+  int64 gold = 6;
+}
+
+message CreateRoleRequest {
+  int64 userId = 1;
+  string roleName = 2;
+  int32 jobClass = 3;
+}
+
+message CreateRoleResponse {
+  bool success = 1;
+  string message = 2;
+  int64 roleId = 3;
+}
+
+message DeleteRoleRequest {
+  int64 userId = 1;
+  int64 roleId = 2;
+}
+
+message DeleteRoleResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message MoveRequest {
+  int64 uid = 1;
+  double x = 2;
+  double y = 3;
+  int32 direction = 4;
+}
+
+message MoveResponse {
+  bool success = 1;
+  string message = 2;
+  int64 uid = 3;
+  double x = 4;
+  double y = 5;
+  int32 direction = 6;
+}
+
+message AttackRequest {
+  int64 uid = 1;
+  int32 skillId = 2;
+  int32 direction = 3;
+}
+
+message AttackResponse {
+  bool success = 1;
+  string message = 2;
+  int64 attackerUid = 3;
+  int64 targetUid = 4;
+  int32 damage = 5;
+  bool isCritical = 6;
+}
+
+message PlayerState {
+  int64 uid = 1;
+  double x = 2;
+  double y = 3;
+  int32 direction = 4;
+  int32 action = 5;
+  int32 hp = 6;
+  int32 maxHp = 7;
+  int32 mp = 8;
+  int32 maxMp = 9;
+}
+
+message GameStateSync {
+  repeated PlayerState players = 1;
+  int64 timestamp = 2;
+}
+
+message HeartbeatRequest {
+  int64 timestamp = 1;
+}
+
+message HeartbeatResponse {
+  int64 timestamp = 1;
+  int64 serverTime = 2;
+}
+
+message ErrorMessage {
+  int32 errorCode = 1;
+  string errorMessage = 2;
+}

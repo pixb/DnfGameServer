@@ -1,0 +1,930 @@
+package com.dnfm.game.role.service;
+
+import com.alibaba.fastjson.JSON;
+import com.dnfm.common.thread.IdGenerator;
+import com.dnfm.game.adventure.model.AdventureReapInfo;
+import com.dnfm.game.bag.model.AccountMoneyBox;
+import com.dnfm.game.bag.model.ClearDungeonBox;
+import com.dnfm.game.bag.model.CreatureBox;
+import com.dnfm.game.bag.model.CreatureErrandBox;
+import com.dnfm.game.bag.model.DungeonTicketsBox;
+import com.dnfm.game.bag.model.EquippedBox;
+import com.dnfm.game.bag.model.MaterialBox;
+import com.dnfm.game.bag.model.MoneyBox;
+import com.dnfm.game.bag.model.QuestInfoBox;
+import com.dnfm.game.bag.model.TowerInfoBox;
+import com.dnfm.game.bag.model.TutoBox;
+import com.dnfm.game.config.ServerSimpleData;
+import com.dnfm.game.config.ServerSimpleDataBox;
+import com.dnfm.game.equip.EquipDataPool;
+import com.dnfm.game.mail.MailBox;
+import com.dnfm.game.role.model.TonicBox;
+import com.dnfm.game.skill.model.SkillBox;
+import com.dnfm.game.skill.model.SkillslotBox;
+import com.dnfm.game.utils.TimeUtil;
+import com.dnfm.mina.protobuf.PT_CLEAR_DUNGEON_INFO;
+import com.dnfm.mina.protobuf.PT_CLEAR_DUNGEON_INFO_LIST;
+import com.dnfm.mina.protobuf.PT_CREATURE;
+import com.dnfm.mina.protobuf.PT_CREATURE_ERRAND;
+import com.dnfm.mina.protobuf.PT_CREATURE_SKILL;
+import com.dnfm.mina.protobuf.PT_EQUIPPED;
+import com.dnfm.mina.protobuf.PT_ERRAND_INFO;
+import com.dnfm.mina.protobuf.PT_MONEY_ITEM;
+import com.dnfm.mina.protobuf.PT_QUEST_INFO;
+import com.dnfm.mina.protobuf.PT_SKILL;
+import com.dnfm.mina.protobuf.PT_SKILL_SLOT;
+import com.dnfm.mina.protobuf.PT_TICKET;
+import com.dnfm.mina.protobuf.PT_TONIC_INFO;
+import com.dnfm.mina.protobuf.PT_TONIC_MATERIAL_USAGE;
+import com.dnfm.mina.protobuf.PT_TUTORIAL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class BoxGenerator {
+   private static final Logger logger = LoggerFactory.getLogger(BoxGenerator.class);
+
+   public static TowerInfoBox getTowerInfoBox() {
+      String jsonStr = "{\"type\": 3, \"clearrate\": [{\"floor\": 1, \"percent\": 100.0}, {\"floor\": 2, \"percent\": 95.41773}, {\"floor\": 3, \"percent\": 94.07863}, {\"floor\": 4, \"percent\": 92.6194}, {\"floor\": 5, \"percent\": 91.614296}, {\"floor\": 6, \"percent\": 90.196915}, {\"floor\": 7, \"percent\": 89.62345}, {\"floor\": 8, \"percent\": 88.69274}, {\"floor\": 9, \"percent\": 88.4773}, {\"floor\": 10, \"percent\": 87.57449}, {\"floor\": 11, \"percent\": 87.142845}, {\"floor\": 12, \"percent\": 86.94369}, {\"floor\": 13, \"percent\": 86.40277}, {\"floor\": 14, \"percent\": 85.69912}, {\"floor\": 15, \"percent\": 82.89691}, {\"floor\": 16, \"percent\": 82.79849}, {\"floor\": 17, \"percent\": 82.65513}, {\"floor\": 18, \"percent\": 82.50091}, {\"floor\": 19, \"percent\": 82.18706}, {\"floor\": 20, \"percent\": 81.9817}, {\"floor\": 21, \"percent\": 80.79215}, {\"floor\": 22, \"percent\": 80.011}, {\"floor\": 23, \"percent\": 79.78007}, {\"floor\": 24, \"percent\": 79.49256}, {\"floor\": 25, \"percent\": 79.17251}, {\"floor\": 26, \"percent\": 78.26582}, {\"floor\": 27, \"percent\": 77.971344}, {\"floor\": 28, \"percent\": 75.61473}, {\"floor\": 29, \"percent\": 75.2629}, {\"floor\": 30, \"percent\": 72.51106}, {\"floor\": 31, \"percent\": 71.00456}, {\"floor\": 32, \"percent\": 69.699554}, {\"floor\": 33, \"percent\": 68.582855}, {\"floor\": 34, \"percent\": 67.2112}, {\"floor\": 35, \"percent\": 62.179462}, {\"floor\": 36, \"percent\": 61.27665}, {\"floor\": 37, \"percent\": 60.524174}, {\"floor\": 38, \"percent\": 59.839123}, {\"floor\": 39, \"percent\": 54.66712}, {\"floor\": 40, \"percent\": 48.04442}, {\"floor\": 41, \"percent\": 46.315514}, {\"floor\": 42, \"percent\": 42.819725}, {\"floor\": 43, \"percent\": 40.5902}, {\"floor\": 44, \"percent\": 40.18723}, {\"floor\": 45, \"percent\": 39.82068}, {\"floor\": 46, \"percent\": 39.14337}, {\"floor\": 47, \"percent\": 29.024109}, {\"floor\": 48, \"percent\": 26.86278}, {\"floor\": 49, \"percent\": 26.585348}, {\"floor\": 50, \"percent\": 26.167652}, {\"floor\": 51, \"percent\": 25.457026}, {\"floor\": 52, \"percent\": 21.98681}, {\"floor\": 53, \"percent\": 21.876768}, {\"floor\": 54, \"percent\": 21.591587}, {\"floor\": 55, \"percent\": 21.475346}, {\"floor\": 56, \"percent\": 20.934431}, {\"floor\": 57, \"percent\": 20.638401}, {\"floor\": 58, \"percent\": 17.485916}, {\"floor\": 59, \"percent\": 17.365799}, {\"floor\": 60, \"percent\": 17.166637}, {\"floor\": 61, \"percent\": 15.813579}, {\"floor\": 62, \"percent\": 15.72136}, {\"floor\": 63, \"percent\": 15.419906}, {\"floor\": 64, \"percent\": 14.883641}, {\"floor\": 65, \"percent\": 14.336529}, {\"floor\": 66, \"percent\": 14.259809}, {\"floor\": 67, \"percent\": 14.122643}, {\"floor\": 68, \"percent\": 13.920382}, {\"floor\": 69, \"percent\": 13.358545}, {\"floor\": 70, \"percent\": 12.76881}, {\"floor\": 71, \"percent\": 11.259987}, {\"floor\": 72, \"percent\": 9.88368}, {\"floor\": 73, \"percent\": 9.638797}, {\"floor\": 74, \"percent\": 9.593075}, {\"floor\": 75, \"percent\": 9.032013}, {\"floor\": 76, \"percent\": 8.835952}, {\"floor\": 77, \"percent\": 8.333785}, {\"floor\": 78, \"percent\": 8.300463}, {\"floor\": 79, \"percent\": 7.425547}, {\"floor\": 80, \"percent\": 4.4396744}]}";
+      TowerInfoBox towerInfoBox = (TowerInfoBox)JSON.parseObject(jsonStr, TowerInfoBox.class);
+      towerInfoBox.setClearfloor(0);
+      return towerInfoBox;
+   }
+
+   public static DungeonTicketsBox getDungeonTicketsBox() {
+      int hellGauge = 0;
+      String jsonStr = "{\"ticket\": [{\"dungeontype\": \"pvp_1vs1\"}, {\"dungeontype\": \"tower_of_illusion\", \"sweepticket\": 1}, {\"dungeontype\": \"dungeon_of_guardian\"}, {\"dungeontype\": \"pvp_3vs3_relay\"}, {\"dungeontype\": \"ancient_of_kings_ruins\", \"freeticket\": 1}, {\"dungeontype\": \"ancient_of_noirpera\"}, {\"dungeontype\": \"class_change_dungeon\"}, {\"dungeontype\": \"dragon_road\"}, {\"dungeontype\": \"gold_goblin\", \"dailyticket\": 1}, {\"dungeontype\": \"trap_escape\"}, {\"dungeontype\": \"world_raid\"}, {\"dungeontype\": \"pvp_sd_battleroyale\"}, {\"dungeontype\": \"hell_party\"}, {\"dungeontype\": \"ancient_of_screaming_cave\", \"freeticket\": 1}, {\"dungeontype\": \"ancient_of_vilmark\", \"freeticket\": 1}, {\"dungeontype\": \"tutorial\"}, {\"dungeontype\": \"week_castle\", \"dailyticket\": 1}, {\"dungeontype\": \"week_timespiral\", \"dailyticket\": 1, \"weeklyticket\": 3}, {\"dungeontype\": \"week_southerndale\", \"dailyticket\": 1, \"weeklyticket\": 3}, {\"dungeontype\": \"week_circus\"}, {\"dungeontype\": \"altar_of_destroy_giantreinforcement\"}, {\"dungeontype\": \"altar_of_destroy_glasstree\", \"dailyticket\": 1, \"weeklyticket\": 2}, {\"dungeontype\": \"altar_of_destroy_meteorite\", \"dailyticket\": 1, \"weeklyticket\": 2}, {\"dungeontype\": \"training_room\"}, {\"dungeontype\": \"world_boss\", \"dailyticket\": 1, \"weeklyticket\": 1}, {\"dungeontype\": \"pvp_custom\"}, {\"dungeontype\": \"pvp_2vs2\"}, {\"dungeontype\": \"pvp_sd_battleroyale_duo\"}, {\"dungeontype\": \"pvp_sd_deathmatch_single\"}, {\"dungeontype\": \"pvp_sd_deathmatch_team\"}, {\"dungeontype\": \"pvp_1vsCPU\"}, {\"dungeontype\": \"another_hell_party\", \"dailyticket\": 3}, {\"dungeontype\": \"historicsite_dungeon\"}, {\"dungeontype\": \"historicsite_pvp_1vs1\"}, {\"dungeontype\": \"historicsite_pvp_2vs2\"}, {\"dungeontype\": \"historicsite_pvp_sd_deathmatch_3vs3\"}, {\"dungeontype\": \"historicsite_pvp_sd_team_3vs3\"}, {\"dungeontype\": \"raid\"}, {\"dungeontype\": \"first_awakening\"}, {\"dungeontype\": \"dream_maze\", \"dailyticket\": 5}, {\"dungeontype\": \"pvp_arcade\", \"dailyticket\": 6}, {\"dungeontype\": \"illusion_troupe\", \"freeticket\": 1}, {\"dungeontype\": \"black_crack\", \"dailyticket\": 2}, {\"dungeontype\": \"ranking_ancient_of_kings_ruins\"}, {\"dungeontype\": \"ranking_ancient_of_vilmark\"}, {\"dungeontype\": \"ranking_ancient_of_screaming_cave\"}, {\"dungeontype\": \"ranking_illusion_troupe\"}, {\"dungeontype\": \"aos\"}, {\"dungeontype\": \"event_boss_kill\", \"dailyticket\": 3}, {\"dungeontype\": \"event_collect\"}, {\"dungeontype\": \"event_time_attack\", \"dailyticket\": 1}, {\"dungeontype\": \"historicsite_garrison\"}, {\"dungeontype\": \"event_boss_kill_2\"}, {\"dungeontype\": \"event_kill_monster_clear\"}, {\"dungeontype\": \"event_hold_time_clear\"}, {\"dungeontype\": \"event_tournament\", \"dailyticket\": 1}, {\"dungeontype\": \"single_quest\"}, {\"dungeontype\": \"pvp_1vs1_practice\"}, {\"dungeontype\": \"black_crack_backside\", \"dailyticket\": 5, \"dailyrewardticket\": 2}, {\"dungeontype\": \"custom_pvp_1vs1\"}, {\"dungeontype\": \"custom_pvp_2vs2\"}, {\"dungeontype\": \"custom_pvp_3vs3_relay\"}, {\"dungeontype\": \"custom_pvp_sd_deathmatch_team\"}, {\"dungeontype\": \"ancient_of_naxheim\", \"dailyticket\": 5, \"dailyrewardticket\": 2}, {\"dungeontype\": \"ranking_ancient_of_naxheim\"}, {\"dungeontype\": \"ancient_of_lufthafen_chase\"}, {\"dungeontype\": \"black_crack_quest\"}, {\"dungeontype\": \"battleleague_pve_wave\", \"dailyrewardticket\": 7}, {\"dungeontype\": \"battleleague_pvp_arena\"}, {\"dungeontype\": \"marriage\", \"dailyticket\": 1}, {\"dungeontype\": \"dragon_board\", \"dailyticket\": 1}, {\"dungeontype\": \"pvp_1vs1_fair\"}, {\"dungeontype\": \"pvp_3vs3_relay_fair\"}, {\"dungeontype\": \"custom_pvp_1vs1_fair\"}, {\"dungeontype\": \"custom_pvp_3vs3_relay_fair\"}, {\"dungeontype\": \"pvp_1vsCPU_fair\"}, {\"dungeontype\": \"event_week_dungeon\"}, {\"dungeontype\": \"custom_pvp_1vsN\"}, {\"dungeontype\": \"custom_pvp_1vsN_fair\"}, {\"dungeontype\": \"guild_agit_ccg\"}, {\"dungeontype\": \"pvp_kofmod\"}, {\"dungeontype\": \"pvp_kofmod_fair\"}, {\"dungeontype\": \"guild_agit_minigame_upper\"}, {\"dungeontype\": \"season_book_of_evil\"}, {\"dungeontype\": \"guild_agit_minigame_mine\", \"dailyrewardticket\": 3}, {\"dungeontype\": \"event_stage_select\"}, {\"dungeontype\": \"guildbingo_castle\"}, {\"dungeontype\": \"guildbingo_glasstree\"}, {\"dungeontype\": \"guildbingo_meteorite\"}, {\"dungeontype\": \"guildbingo_goldgoblin\"}, {\"dungeontype\": \"guildbingo_dream_maze\"}, {\"dungeontype\": \"guildbingo_tower_of_illusion\"}, {\"dungeontype\": \"guild_agit_minigame_fish\", \"dailyrewardticket\": 3}, {\"dungeontype\": \"real_ancient_of_kings_ruins\", \"freeticket\": 1}, {\"dungeontype\": \"real_ancient_of_screaming_cave\", \"freeticket\": 1}, {\"dungeontype\": \"real_ancient_of_vilmark\", \"freeticket\": 1}, {\"dungeontype\": \"real_illusion_troupe\"}, {\"dungeontype\": \"hell_bound\"}, {\"dungeontype\": \"guildbingo_single\"}, {\"dungeontype\": \"special_package_dungeon\", \"dailyticket\": 1}], \"jarofgreed\": 1, \"lotteryfreecount\": 1, \"recvfriendcount\": 10, \"sendfriendcount\": 10, \"recvplatformfriendcount\": 10, \"sendplatformfriendcount\": 10, \"guildredpacketrecvcount\": 10, \"guildredpacketsendcount\": 5, \"battleleaguerewardlimit\": 1, \"clearsweepdungeonlist\": [109953, 2002111001, 109952, 109959, 2002111003, 101901, 109955, 2002111004, 101964, 109962, 101965, 109956, 101963, 2002111012, 109968, 109961, 109965, 109958, 2002111011, 2002111002], \"gauges\": [{\"gauge\": " + hellGauge + "}, {\"type\": \"RANDOMHELL\"}], \"battleleagueguildrewardlimit\": 1, \"bingoticketcount\": 1}";
+      DungeonTicketsBox dungeonTicketsBox = (DungeonTicketsBox)JSON.parseObject(jsonStr, DungeonTicketsBox.class);
+      dungeonTicketsBox.hellGauge = 0;
+      Map<String, PT_TICKET> map = new HashMap();
+
+      for(PT_TICKET pt_ticket : dungeonTicketsBox.getTicket()) {
+         if (pt_ticket.dungeontype != null) {
+            map.put(pt_ticket.dungeontype, pt_ticket);
+         }
+      }
+
+      dungeonTicketsBox.setTicketMap(map);
+      return dungeonTicketsBox;
+   }
+
+   public static MaterialBox getMaterialBox() {
+      MaterialBox materialBox = new MaterialBox();
+      return materialBox;
+   }
+
+   static CreatureErrandBox getCreatureErrandBox() {
+      CreatureErrandBox creatureErrandBox = new CreatureErrandBox();
+      PT_CREATURE_ERRAND pt_creature_errand = creatureErrandBox.getErrandinfo();
+      pt_creature_errand.level = 1;
+      pt_creature_errand.slotlist = new ArrayList();
+      PT_ERRAND_INFO pt_errand_info = new PT_ERRAND_INFO();
+      pt_errand_info.errandid = 1009;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1001;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1012;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1008;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1004;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1015;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1006;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1005;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1002;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1010;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1003;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1011;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1007;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1013;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_errand_info.errandid = 1014;
+      pt_creature_errand.slotlist.add(pt_errand_info);
+      pt_creature_errand.lastresettime = TimeUtil.currS();
+      creatureErrandBox.setErrandinfo(pt_creature_errand);
+      return creatureErrandBox;
+   }
+
+   static TonicBox getTonicBox() {
+      TonicBox tonicBox = new TonicBox();
+
+      for(int i = 0; i < 6; ++i) {
+         PT_TONIC_INFO pt_tonic_info1 = new PT_TONIC_INFO();
+         pt_tonic_info1.index = 1 + i;
+         pt_tonic_info1.level = 0;
+         tonicBox.addCrystaralTonic(pt_tonic_info1);
+      }
+
+      PT_TONIC_INFO pt_tonic_info = new PT_TONIC_INFO();
+      pt_tonic_info.index = 11;
+      pt_tonic_info.level = 0;
+      tonicBox.addCrystaralTonic(pt_tonic_info);
+      PT_TONIC_MATERIAL_USAGE pt_tonic_material_usage1 = new PT_TONIC_MATERIAL_USAGE();
+      pt_tonic_material_usage1.index = 2013102100;
+      pt_tonic_material_usage1.total = 0;
+      tonicBox.addCrystaralTonicPoint(pt_tonic_material_usage1);
+      PT_TONIC_MATERIAL_USAGE pt_tonic_material_usage2 = new PT_TONIC_MATERIAL_USAGE();
+      pt_tonic_material_usage2.index = 2013102101;
+      pt_tonic_material_usage2.total = 0;
+      tonicBox.addCrystaralTonicPoint(pt_tonic_material_usage2);
+      return tonicBox;
+   }
+
+   static TutoBox getTutoBox() {
+      TutoBox tutoBox = new TutoBox();
+      PT_TUTORIAL pt_tutorial1 = new PT_TUTORIAL();
+      pt_tutorial1.index = 206100;
+      pt_tutorial1.state = 2;
+      PT_TUTORIAL pt_tutorial2 = new PT_TUTORIAL();
+      pt_tutorial2.index = 208700;
+      pt_tutorial2.state = 2;
+      PT_TUTORIAL pt_tutorial3 = new PT_TUTORIAL();
+      pt_tutorial3.index = 201100;
+      pt_tutorial3.state = 2;
+      PT_TUTORIAL pt_tutorial4 = new PT_TUTORIAL();
+      pt_tutorial4.index = 200100;
+      pt_tutorial4.state = 2;
+      tutoBox.addTuto(pt_tutorial1);
+      tutoBox.addTuto(pt_tutorial2);
+      tutoBox.addTuto(pt_tutorial3);
+      tutoBox.addTuto(pt_tutorial4);
+      return tutoBox;
+   }
+
+   static MoneyBox getMoneyBox() {
+      MoneyBox moneyBox = new MoneyBox();
+      PT_MONEY_ITEM rescoin = new PT_MONEY_ITEM();
+      rescoin.count = 1000;
+      rescoin.index = 2013100902;
+      moneyBox.putCurrency(rescoin);
+      PT_MONEY_ITEM goldcoin = new PT_MONEY_ITEM();
+      goldcoin.count = 5;
+      goldcoin.index = 0;
+      moneyBox.putCurrency(goldcoin);
+      PT_MONEY_ITEM item3 = new PT_MONEY_ITEM();
+      item3.index = 2013102100;
+      item3.count = 66666;
+      moneyBox.putCurrency(item3);
+      PT_MONEY_ITEM item4 = new PT_MONEY_ITEM();
+      item4.index = 2013102101;
+      item4.count = 520;
+      moneyBox.putCurrency(item4);
+      return moneyBox;
+   }
+
+   static AdventureReapInfo getAdventureReapInfo() {
+      AdventureReapInfo adventureReapInfo = new AdventureReapInfo();
+      return adventureReapInfo;
+   }
+
+   static CreatureBox getCreatureBox() {
+      CreatureBox creatureBox = new CreatureBox();
+      PT_CREATURE pt_creature = new PT_CREATURE();
+      pt_creature.index = 2054000152;
+      pt_creature.guid = IdGenerator.getNextId();
+      pt_creature.slot = 1000;
+      pt_creature.exp = 5000;
+      pt_creature.skill = new ArrayList();
+      PT_CREATURE_SKILL pt_creature_skill = new PT_CREATURE_SKILL();
+      pt_creature_skill.skillindex = 80001;
+      pt_creature_skill.pairindex = 3;
+      pt_creature.skill.add(pt_creature_skill);
+      creatureBox.addCreature(pt_creature);
+      return creatureBox;
+   }
+
+   static ClearDungeonBox getClearDungeonBox() {
+      ClearDungeonBox clearDungeonBox = new ClearDungeonBox();
+      PT_CLEAR_DUNGEON_INFO_LIST pt_clear_dungeon_info_list = new PT_CLEAR_DUNGEON_INFO_LIST();
+      pt_clear_dungeon_info_list.list = new ArrayList();
+      pt_clear_dungeon_info_list.index = 2002910001;
+      PT_CLEAR_DUNGEON_INFO pt_clear_dungeon_info = new PT_CLEAR_DUNGEON_INFO();
+      pt_clear_dungeon_info.shortestcleartime = 111L;
+      pt_clear_dungeon_info_list.list.add(pt_clear_dungeon_info);
+      clearDungeonBox.addDungeoninfo(pt_clear_dungeon_info_list);
+      return clearDungeonBox;
+   }
+
+   static QuestInfoBox getQuestInfoBox() {
+      QuestInfoBox questInfoBox = new QuestInfoBox();
+      PT_QUEST_INFO pt_quest_info = new PT_QUEST_INFO();
+      pt_quest_info.qindex = 100110;
+      pt_quest_info.isminequest = true;
+      questInfoBox.addQuest(pt_quest_info);
+      return questInfoBox;
+   }
+
+   static ServerSimpleDataBox getServerSimpleData() {
+      ServerSimpleDataBox serverSimpleDataBox = new ServerSimpleDataBox();
+      ServerSimpleData serverSimpleData1 = new ServerSimpleData();
+      serverSimpleData1.setType(0);
+      serverSimpleData1.setEnumvalue(2);
+      serverSimpleData1.setValue("{\"hdhahgdhbdhcgfe\":[240,5,1,0,0,0,3,0,0,0,233,3,234,3,161,15,0,1,1,0,0,0,20,0,0,0],\"version\":0}");
+      serverSimpleData1.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData1.getType(), serverSimpleData1.getEnumvalue(), serverSimpleData1);
+      ServerSimpleData serverSimpleData2 = new ServerSimpleData();
+      serverSimpleData2.setType(0);
+      serverSimpleData2.setEnumvalue(3);
+      serverSimpleData2.setValue("{\"CheckDatas\":{},\"version\":0}");
+      serverSimpleData2.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData2.getType(), serverSimpleData2.getEnumvalue(), serverSimpleData2);
+      ServerSimpleData serverSimpleData3 = new ServerSimpleData();
+      serverSimpleData3.setType(0);
+      serverSimpleData3.setEnumvalue(9);
+      serverSimpleData3.setValue("");
+      serverSimpleData3.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData3.getType(), serverSimpleData3.getEnumvalue(), serverSimpleData3);
+      ServerSimpleData serverSimpleData4 = new ServerSimpleData();
+      serverSimpleData4.setType(0);
+      serverSimpleData4.setEnumvalue(8);
+      serverSimpleData4.setValue("");
+      serverSimpleData4.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData4.getType(), serverSimpleData4.getEnumvalue(), serverSimpleData4);
+      ServerSimpleData serverSimpleData5 = new ServerSimpleData();
+      serverSimpleData5.setType(0);
+      serverSimpleData5.setEnumvalue(11);
+      serverSimpleData5.setValue("{\"isRead\":false,\"version\":0}");
+      serverSimpleData5.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData5.getType(), serverSimpleData5.getEnumvalue(), serverSimpleData5);
+      ServerSimpleData serverSimpleData6 = new ServerSimpleData();
+      serverSimpleData6.setType(0);
+      serverSimpleData6.setEnumvalue(4);
+      serverSimpleData6.setValue("");
+      serverSimpleData6.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData6.getType(), serverSimpleData6.getEnumvalue(), serverSimpleData6);
+      ServerSimpleData serverSimpleData7 = new ServerSimpleData();
+      serverSimpleData7.setType(0);
+      serverSimpleData7.setEnumvalue(10);
+      serverSimpleData7.setValue("{\"completeTracking\":[\"gamestart\",\"epi1_start\"],\"version\":0}");
+      serverSimpleData7.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData7.getType(), serverSimpleData7.getEnumvalue(), serverSimpleData7);
+      ServerSimpleData serverSimpleData8 = new ServerSimpleData();
+      serverSimpleData8.setType(0);
+      serverSimpleData8.setEnumvalue(12);
+      serverSimpleData8.setValue("{\"isNotCheckedStorageBox\":true,\"version\":0}");
+      serverSimpleData8.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData8.getType(), serverSimpleData8.getEnumvalue(), serverSimpleData8);
+      ServerSimpleData serverSimpleData8a = new ServerSimpleData();
+      serverSimpleData8a.setType(0);
+      serverSimpleData8a.setEnumvalue(13);
+      serverSimpleData8a.setValue("");
+      serverSimpleData8a.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData8a.getType(), serverSimpleData8a.getEnumvalue(), serverSimpleData8a);
+      ServerSimpleData serverSimpleData9 = new ServerSimpleData();
+      serverSimpleData9.setType(0);
+      serverSimpleData9.setEnumvalue(1);
+      serverSimpleData9.setValue("{\"bhhahghdeccbgdd\":[[241,76,0,0,0,0,38,0,0,0,233,3,234,3,235,3,236,3,237,3,238,3,239,3,240,3,241,3,242,3,243,3,244,3,245,3,246,3,247,3,248,3,249,3,250,3,251,3,252,3,253,3,254,3,255,3,209,7,210,7,185,11,186,11,187,11,188,11,189,11,190,11,191,11,192,11,193,11,194,11,195,11,161,15,162,15,1,0,1,0,0,1,1,5,0,0,8,0,19,1,8,0,20,0,1,0,44,128,63,4,0,192,205,204,76,63,0,0,24,66,0,0,248,65,4,0,240,1,154,153,153,62,154,153,153,62,0,0,0,0,0,0,0,0,167,0,0,0]],\"version\":0}");
+      serverSimpleData9.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData9.getType(), serverSimpleData9.getEnumvalue(), serverSimpleData9);
+      ServerSimpleData serverSimpleData10 = new ServerSimpleData();
+      serverSimpleData10.setType(1);
+      serverSimpleData10.setEnumvalue(6);
+      serverSimpleData10.setValue("{\"hdhahgdhbdhcgfe\":[243,4,1,0,0,0,3,0,0,0,1,0,2,0,3,0,2,0,0,0,255,1,0,47,4,0,1,0,15,23,6,48,0,7,1,0,80,255,255,255,255,255,90,0,0,0],\"version\":0}");
+      serverSimpleData10.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData10.getType(), serverSimpleData10.getEnumvalue(), serverSimpleData10);
+      ServerSimpleData serverSimpleData11 = new ServerSimpleData();
+      serverSimpleData11.setType(1);
+      serverSimpleData11.setEnumvalue(3);
+      serverSimpleData11.setValue("");
+      serverSimpleData11.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData11.getType(), serverSimpleData11.getEnumvalue(), serverSimpleData11);
+      ServerSimpleData serverSimpleData12 = new ServerSimpleData();
+      serverSimpleData12.setType(1);
+      serverSimpleData12.setEnumvalue(1);
+      serverSimpleData12.setValue("");
+      serverSimpleData12.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData12.getType(), serverSimpleData12.getEnumvalue(), serverSimpleData12);
+      ServerSimpleData serverSimpleData13 = new ServerSimpleData();
+      serverSimpleData13.setType(1);
+      serverSimpleData13.setEnumvalue(4);
+      serverSimpleData13.setValue("{\"DictAlreadyOpenedRoom\":{\"Elvengard\":{\"1\":\"\",\"2\":\"\",\"3\":\"\"}},\"version\":0}");
+      serverSimpleData13.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData13.getType(), serverSimpleData13.getEnumvalue(), serverSimpleData13);
+      ServerSimpleData serverSimpleData14 = new ServerSimpleData();
+      serverSimpleData14.setType(1);
+      serverSimpleData14.setEnumvalue(5);
+      serverSimpleData14.setValue("");
+      serverSimpleData14.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData14.getType(), serverSimpleData14.getEnumvalue(), serverSimpleData14);
+      ServerSimpleData serverSimpleData15 = new ServerSimpleData();
+      serverSimpleData15.setType(1);
+      serverSimpleData15.setEnumvalue(7);
+      serverSimpleData15.setValue("");
+      serverSimpleData15.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData15.getType(), serverSimpleData15.getEnumvalue(), serverSimpleData15);
+      ServerSimpleData serverSimpleData16 = new ServerSimpleData();
+      serverSimpleData16.setType(1);
+      serverSimpleData16.setEnumvalue(10);
+      serverSimpleData16.setValue("{\"completeComboKeyValuePairs\":{},\"autoChainKeyValuePairs\":{},\"pvpCompleteComboKeyValuePairs\":{},\"pvpAutoChainKeyValuePairs\":{},\"version\":0}");
+      serverSimpleData16.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData16.getType(), serverSimpleData16.getEnumvalue(), serverSimpleData16);
+      ServerSimpleData serverSimpleData17 = new ServerSimpleData();
+      serverSimpleData17.setType(1);
+      serverSimpleData17.setEnumvalue(9);
+      serverSimpleData17.setValue("");
+      serverSimpleData17.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData17.getType(), serverSimpleData17.getEnumvalue(), serverSimpleData17);
+      ServerSimpleData serverSimpleData18 = new ServerSimpleData();
+      serverSimpleData18.setType(1);
+      serverSimpleData18.setEnumvalue(13);
+      serverSimpleData18.setValue("{\"lastResetTicks\":\"-9223372036854775808\",\"version\":0}");
+      serverSimpleData18.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData18.getType(), serverSimpleData18.getEnumvalue(), serverSimpleData18);
+      ServerSimpleData serverSimpleData19 = new ServerSimpleData();
+      serverSimpleData19.setType(1);
+      serverSimpleData19.setEnumvalue(12);
+      serverSimpleData19.setValue("{\"favoritesList\":[],\"sendTargetType\":0,\"version\":0}");
+      serverSimpleData19.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData19.getType(), serverSimpleData19.getEnumvalue(), serverSimpleData19);
+      ServerSimpleData serverSimpleData20 = new ServerSimpleData();
+      serverSimpleData20.setType(1);
+      serverSimpleData20.setEnumvalue(Integer.MAX_VALUE);
+      serverSimpleData20.setValue("{\"hdhahgdhbdhcgfe\":[240,5,1,0,0,0,3,0,0,0,233,3,234,3,161,15,0,1,1,0,0,0,20,0,0,0],\"version\":0}");
+      serverSimpleData20.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData20.getType(), serverSimpleData20.getEnumvalue(), serverSimpleData20);
+      ServerSimpleData serverSimpleData20a = new ServerSimpleData();
+      serverSimpleData20a.setType(1);
+      serverSimpleData20a.setEnumvalue(14);
+      serverSimpleData20a.setValue("");
+      serverSimpleData20a.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData20a.getType(), serverSimpleData20a.getEnumvalue(), serverSimpleData20a);
+      ServerSimpleData serverSimpleData21 = new ServerSimpleData();
+      serverSimpleData21.setType(1);
+      serverSimpleData21.setEnumvalue(2);
+      serverSimpleData21.setValue("{\"bhhahghdeccbgdd\":[[240,29,0,0,0,0,18,0,0,0,233,3,234,3,235,3,236,3,237,3,238,3,209,7,185,11,186,11,187,11,188,11,189,11,190,11,191,11,192,11,193,11,194,11,195,11,44,0,49,1,1,0,1,0,162,12,66,0,0,0,63,0,0,128,63,16,0,240,11,72,67,205,204,204,62,51,51,51,63,0,0,200,66,0,0,200,66,102,102,102,63,0,0,64,63,98,0,0,0],[255,21,3,0,0,0,11,0,0,0,1,0,2,0,3,0,4,0,233,3,234,3,235,3,209,7,210,7,211,7,212,7,0,0,0,0,54,0,1,0,199,83,2,0,0,0,40,4,0,24,2,25,0,192,1,0,0,0,1,0,0,0,2,0,0,0,35,1,0,0]],\"version\":0}");
+      serverSimpleData21.setTransId(serverSimpleDataBox.nextTransId++);
+      serverSimpleDataBox.addServerSimpleData(serverSimpleData21.getType(), serverSimpleData21.getEnumvalue(), serverSimpleData21);
+      return serverSimpleDataBox;
+   }
+
+   static SkillBox getSkillBox(int job) {
+      if (job == 0) {
+         SkillBox skillBox = new SkillBox();
+         PT_SKILL pt_skill1 = new PT_SKILL();
+         pt_skill1.index = 169;
+         pt_skill1.level = 1;
+         skillBox.addSkill(pt_skill1);
+         PT_SKILL pt_skill2 = new PT_SKILL();
+         pt_skill2.index = 334;
+         pt_skill2.level = 1;
+         skillBox.addSkill(pt_skill2);
+         PT_SKILL pt_skill3 = new PT_SKILL();
+         pt_skill3.index = 511;
+         pt_skill3.level = 1;
+         skillBox.addSkill(pt_skill3);
+         PT_SKILL pt_skill4 = new PT_SKILL();
+         pt_skill4.index = 190;
+         pt_skill4.level = 1;
+         skillBox.addSkill(pt_skill4);
+         PT_SKILL pt_skill5 = new PT_SKILL();
+         pt_skill5.index = 46;
+         pt_skill5.level = 1;
+         skillBox.addSkill(pt_skill5);
+         PT_SKILL pt_skill6 = new PT_SKILL();
+         pt_skill6.index = 5;
+         pt_skill6.level = 1;
+         skillBox.addSkill(pt_skill6);
+         PT_SKILL pt_skill7 = new PT_SKILL();
+         pt_skill7.index = 58;
+         pt_skill7.level = 1;
+         skillBox.addSkill(pt_skill7);
+         PT_SKILL pt_skill8 = new PT_SKILL();
+         pt_skill8.index = 350;
+         pt_skill8.level = 1;
+         skillBox.addSkill(pt_skill8);
+         skillBox.setSp(40);
+         skillBox.setSp_pk(40);
+         skillBox.setSkilllist_pk(skillBox.getSkills());
+         return skillBox;
+      } else if (job == 11) {
+         SkillBox skillBox = new SkillBox();
+         PT_SKILL pt_skill1 = new PT_SKILL();
+         pt_skill1.index = 46;
+         pt_skill1.level = 1;
+         skillBox.addSkill(pt_skill1);
+         PT_SKILL pt_skill2 = new PT_SKILL();
+         pt_skill2.index = 8;
+         pt_skill2.level = 1;
+         skillBox.addSkill(pt_skill2);
+         PT_SKILL pt_skill3 = new PT_SKILL();
+         pt_skill3.index = 169;
+         pt_skill3.level = 1;
+         skillBox.addSkill(pt_skill3);
+         PT_SKILL pt_skill4 = new PT_SKILL();
+         pt_skill4.index = 511;
+         pt_skill4.level = 1;
+         skillBox.addSkill(pt_skill4);
+         PT_SKILL pt_skill5 = new PT_SKILL();
+         pt_skill5.index = 334;
+         pt_skill5.level = 1;
+         skillBox.addSkill(pt_skill5);
+         PT_SKILL pt_skill6 = new PT_SKILL();
+         pt_skill6.index = 350;
+         pt_skill6.level = 1;
+         skillBox.addSkill(pt_skill6);
+         PT_SKILL pt_skill7 = new PT_SKILL();
+         pt_skill7.index = 190;
+         pt_skill7.level = 1;
+         skillBox.addSkill(pt_skill7);
+         PT_SKILL pt_skill8 = new PT_SKILL();
+         pt_skill8.index = 1;
+         pt_skill8.level = 1;
+         skillBox.addSkill(pt_skill8);
+         skillBox.setSp(40);
+         skillBox.setSp_pk(40);
+         skillBox.setSkilllist_pk(skillBox.getSkills());
+         return skillBox;
+      } else if (job == 1) {
+         SkillBox skillBox = new SkillBox();
+         PT_SKILL pt_skill1 = new PT_SKILL();
+         pt_skill1.index = 334;
+         pt_skill1.level = 1;
+         skillBox.addSkill(pt_skill1);
+         PT_SKILL pt_skill2 = new PT_SKILL();
+         pt_skill2.index = 169;
+         pt_skill2.level = 1;
+         skillBox.addSkill(pt_skill2);
+         PT_SKILL pt_skill3 = new PT_SKILL();
+         pt_skill3.index = 5;
+         pt_skill3.level = 1;
+         skillBox.addSkill(pt_skill3);
+         PT_SKILL pt_skill4 = new PT_SKILL();
+         pt_skill4.index = 511;
+         pt_skill4.level = 1;
+         skillBox.addSkill(pt_skill4);
+         PT_SKILL pt_skill5 = new PT_SKILL();
+         pt_skill5.index = 190;
+         pt_skill5.level = 1;
+         skillBox.addSkill(pt_skill5);
+         PT_SKILL pt_skill6 = new PT_SKILL();
+         pt_skill6.index = 46;
+         pt_skill6.level = 1;
+         skillBox.addSkill(pt_skill6);
+         PT_SKILL pt_skill7 = new PT_SKILL();
+         pt_skill7.index = 9;
+         pt_skill7.level = 1;
+         skillBox.addSkill(pt_skill7);
+         PT_SKILL pt_skill8 = new PT_SKILL();
+         pt_skill8.index = 350;
+         pt_skill8.level = 1;
+         skillBox.addSkill(pt_skill8);
+         skillBox.setSp(40);
+         skillBox.setSp_pk(40);
+         skillBox.setSkilllist_pk(skillBox.getSkills());
+         return skillBox;
+      } else if (job == 2) {
+         SkillBox skillBox = new SkillBox();
+         PT_SKILL pt_skill1 = new PT_SKILL();
+         pt_skill1.index = 334;
+         pt_skill1.level = 1;
+         skillBox.addSkill(pt_skill1);
+         PT_SKILL pt_skill2 = new PT_SKILL();
+         pt_skill2.index = 511;
+         pt_skill2.level = 1;
+         skillBox.addSkill(pt_skill2);
+         PT_SKILL pt_skill3 = new PT_SKILL();
+         pt_skill3.index = 6;
+         pt_skill3.level = 1;
+         skillBox.addSkill(pt_skill3);
+         PT_SKILL pt_skill4 = new PT_SKILL();
+         pt_skill4.index = 7;
+         pt_skill4.level = 1;
+         skillBox.addSkill(pt_skill4);
+         PT_SKILL pt_skill5 = new PT_SKILL();
+         pt_skill5.index = 190;
+         pt_skill5.level = 1;
+         skillBox.addSkill(pt_skill5);
+         PT_SKILL pt_skill6 = new PT_SKILL();
+         pt_skill6.index = 4;
+         pt_skill6.level = 1;
+         skillBox.addSkill(pt_skill6);
+         PT_SKILL pt_skill7 = new PT_SKILL();
+         pt_skill7.index = 169;
+         pt_skill7.level = 1;
+         skillBox.addSkill(pt_skill7);
+         PT_SKILL pt_skill8 = new PT_SKILL();
+         pt_skill8.index = 350;
+         pt_skill8.level = 1;
+         skillBox.addSkill(pt_skill8);
+         skillBox.setSp(35);
+         skillBox.setSp_pk(35);
+         skillBox.setSkilllist_pk(skillBox.getSkills());
+         return skillBox;
+      } else if (job == 3) {
+         SkillBox skillBox = new SkillBox();
+         PT_SKILL pt_skill1 = new PT_SKILL();
+         pt_skill1.index = 511;
+         pt_skill1.level = 1;
+         skillBox.addSkill(pt_skill1);
+         PT_SKILL pt_skill2 = new PT_SKILL();
+         pt_skill2.index = 15;
+         pt_skill2.level = 1;
+         skillBox.addSkill(pt_skill2);
+         PT_SKILL pt_skill3 = new PT_SKILL();
+         pt_skill3.index = 16;
+         pt_skill3.level = 1;
+         skillBox.addSkill(pt_skill3);
+         PT_SKILL pt_skill4 = new PT_SKILL();
+         pt_skill4.index = 169;
+         pt_skill4.level = 1;
+         skillBox.addSkill(pt_skill4);
+         PT_SKILL pt_skill5 = new PT_SKILL();
+         pt_skill5.index = 65;
+         pt_skill5.level = 1;
+         skillBox.addSkill(pt_skill5);
+         PT_SKILL pt_skill6 = new PT_SKILL();
+         pt_skill6.index = 190;
+         pt_skill6.level = 1;
+         skillBox.addSkill(pt_skill6);
+         PT_SKILL pt_skill7 = new PT_SKILL();
+         pt_skill7.index = 334;
+         pt_skill7.level = 1;
+         skillBox.addSkill(pt_skill7);
+         PT_SKILL pt_skill8 = new PT_SKILL();
+         pt_skill8.index = 350;
+         pt_skill8.level = 1;
+         skillBox.addSkill(pt_skill8);
+         PT_SKILL pt_skill9 = new PT_SKILL();
+         pt_skill9.index = 12;
+         pt_skill9.level = 1;
+         skillBox.addSkill(pt_skill9);
+         skillBox.setSp(35);
+         skillBox.setSp_pk(35);
+         skillBox.setSkilllist_pk(skillBox.getSkills());
+         return skillBox;
+      } else if (job == 14) {
+         SkillBox skillBox = new SkillBox();
+         PT_SKILL pt_skill1 = new PT_SKILL();
+         pt_skill1.index = 350;
+         pt_skill1.level = 1;
+         skillBox.addSkill(pt_skill1);
+         PT_SKILL pt_skill2 = new PT_SKILL();
+         pt_skill2.index = 9;
+         pt_skill2.level = 1;
+         skillBox.addSkill(pt_skill2);
+         PT_SKILL pt_skill3 = new PT_SKILL();
+         pt_skill3.index = 7;
+         pt_skill3.level = 1;
+         skillBox.addSkill(pt_skill3);
+         PT_SKILL pt_skill4 = new PT_SKILL();
+         pt_skill4.index = 1;
+         pt_skill4.level = 1;
+         skillBox.addSkill(pt_skill4);
+         PT_SKILL pt_skill5 = new PT_SKILL();
+         pt_skill5.index = 511;
+         pt_skill5.level = 1;
+         skillBox.addSkill(pt_skill5);
+         PT_SKILL pt_skill6 = new PT_SKILL();
+         pt_skill6.index = 169;
+         pt_skill6.level = 1;
+         skillBox.addSkill(pt_skill6);
+         PT_SKILL pt_skill7 = new PT_SKILL();
+         pt_skill7.index = 190;
+         pt_skill7.level = 1;
+         skillBox.addSkill(pt_skill7);
+         PT_SKILL pt_skill8 = new PT_SKILL();
+         pt_skill8.index = 334;
+         pt_skill8.level = 1;
+         skillBox.addSkill(pt_skill8);
+         skillBox.setSp(40);
+         skillBox.setSp_pk(40);
+         skillBox.setSkilllist_pk(skillBox.getSkills());
+         return skillBox;
+      } else {
+         logger.error("ERROR=====SkillBox==job error====={}", job);
+         return null;
+      }
+   }
+
+   static SkillslotBox getSkillslotBox(int job) {
+      if (job == 0) {
+         SkillslotBox skillslotBox = new SkillslotBox();
+         PT_SKILL_SLOT pt_skill_slot1 = new PT_SKILL_SLOT();
+         pt_skill_slot1.index = 169;
+         pt_skill_slot1.slot = 7;
+         skillslotBox.addActive(pt_skill_slot1);
+         PT_SKILL_SLOT pt_skill_slot2 = new PT_SKILL_SLOT();
+         pt_skill_slot2.index = 46;
+         pt_skill_slot2.slot = 0;
+         skillslotBox.addActive(pt_skill_slot2);
+         PT_SKILL_SLOT pt_skill_slot3 = new PT_SKILL_SLOT();
+         pt_skill_slot3.index = 5;
+         pt_skill_slot3.slot = 1;
+         skillslotBox.addActive(pt_skill_slot3);
+         PT_SKILL_SLOT pt_skill_slot4 = new PT_SKILL_SLOT();
+         pt_skill_slot4.index = 58;
+         pt_skill_slot4.slot = 2;
+         skillslotBox.addActive(pt_skill_slot4);
+         PT_SKILL_SLOT pt_skill_slot5 = new PT_SKILL_SLOT();
+         pt_skill_slot5.index = 10001;
+         pt_skill_slot5.slot = 18;
+         skillslotBox.addActive(pt_skill_slot5);
+         PT_SKILL_SLOT pt_skill_slot6 = new PT_SKILL_SLOT();
+         pt_skill_slot6.index = 10002;
+         pt_skill_slot6.slot = 17;
+         skillslotBox.addActive(pt_skill_slot6);
+         skillslotBox.setSkillslot_pk(skillslotBox.getSkillslot());
+         return skillslotBox;
+      } else if (job == 11) {
+         SkillslotBox skillslotBox = new SkillslotBox();
+         PT_SKILL_SLOT pt_skill_slot1 = new PT_SKILL_SLOT();
+         pt_skill_slot1.index = 46;
+         pt_skill_slot1.slot = 2;
+         skillslotBox.addActive(pt_skill_slot1);
+         PT_SKILL_SLOT pt_skill_slot2 = new PT_SKILL_SLOT();
+         pt_skill_slot2.index = 8;
+         pt_skill_slot2.slot = 0;
+         skillslotBox.addActive(pt_skill_slot2);
+         PT_SKILL_SLOT pt_skill_slot3 = new PT_SKILL_SLOT();
+         pt_skill_slot3.index = 169;
+         pt_skill_slot3.slot = 7;
+         skillslotBox.addActive(pt_skill_slot3);
+         PT_SKILL_SLOT pt_skill_slot4 = new PT_SKILL_SLOT();
+         pt_skill_slot4.index = 1;
+         pt_skill_slot4.slot = 1;
+         skillslotBox.addActive(pt_skill_slot4);
+         PT_SKILL_SLOT pt_skill_slot5 = new PT_SKILL_SLOT();
+         pt_skill_slot5.index = 10001;
+         pt_skill_slot5.slot = 18;
+         skillslotBox.addActive(pt_skill_slot5);
+         PT_SKILL_SLOT pt_skill_slot6 = new PT_SKILL_SLOT();
+         pt_skill_slot6.index = 10002;
+         pt_skill_slot6.slot = 17;
+         skillslotBox.addActive(pt_skill_slot6);
+         skillslotBox.setSkillslot_pk(skillslotBox.getSkillslot());
+         return skillslotBox;
+      } else if (job == 1) {
+         SkillslotBox skillslotBox = new SkillslotBox();
+         PT_SKILL_SLOT pt_skill_slot1 = new PT_SKILL_SLOT();
+         pt_skill_slot1.index = 169;
+         pt_skill_slot1.slot = 7;
+         skillslotBox.addActive(pt_skill_slot1);
+         PT_SKILL_SLOT pt_skill_slot2 = new PT_SKILL_SLOT();
+         pt_skill_slot2.index = 5;
+         pt_skill_slot2.slot = 0;
+         skillslotBox.addActive(pt_skill_slot2);
+         PT_SKILL_SLOT pt_skill_slot3 = new PT_SKILL_SLOT();
+         pt_skill_slot3.index = 46;
+         pt_skill_slot3.slot = 1;
+         skillslotBox.addActive(pt_skill_slot3);
+         PT_SKILL_SLOT pt_skill_slot4 = new PT_SKILL_SLOT();
+         pt_skill_slot4.index = 9;
+         pt_skill_slot4.slot = 2;
+         skillslotBox.addActive(pt_skill_slot4);
+         PT_SKILL_SLOT pt_skill_slot5 = new PT_SKILL_SLOT();
+         pt_skill_slot5.index = 10001;
+         pt_skill_slot5.slot = 18;
+         skillslotBox.addActive(pt_skill_slot5);
+         PT_SKILL_SLOT pt_skill_slot6 = new PT_SKILL_SLOT();
+         pt_skill_slot6.index = 10002;
+         pt_skill_slot6.slot = 17;
+         skillslotBox.addActive(pt_skill_slot6);
+         skillslotBox.setSkillslot_pk(skillslotBox.getSkillslot());
+         return skillslotBox;
+      } else if (job == 2) {
+         SkillslotBox skillslotBox = new SkillslotBox();
+         PT_SKILL_SLOT pt_skill_slot1 = new PT_SKILL_SLOT();
+         pt_skill_slot1.index = 6;
+         pt_skill_slot1.slot = 2;
+         skillslotBox.addActive(pt_skill_slot1);
+         PT_SKILL_SLOT pt_skill_slot2 = new PT_SKILL_SLOT();
+         pt_skill_slot2.index = 7;
+         pt_skill_slot2.slot = 1;
+         skillslotBox.addActive(pt_skill_slot2);
+         PT_SKILL_SLOT pt_skill_slot3 = new PT_SKILL_SLOT();
+         pt_skill_slot3.index = 4;
+         pt_skill_slot3.slot = 0;
+         skillslotBox.addActive(pt_skill_slot3);
+         PT_SKILL_SLOT pt_skill_slot4 = new PT_SKILL_SLOT();
+         pt_skill_slot4.index = 169;
+         pt_skill_slot4.slot = 7;
+         skillslotBox.addActive(pt_skill_slot4);
+         PT_SKILL_SLOT pt_skill_slot5 = new PT_SKILL_SLOT();
+         pt_skill_slot5.index = 10001;
+         pt_skill_slot5.slot = 18;
+         skillslotBox.addActive(pt_skill_slot5);
+         PT_SKILL_SLOT pt_skill_slot6 = new PT_SKILL_SLOT();
+         pt_skill_slot6.index = 10002;
+         pt_skill_slot6.slot = 17;
+         skillslotBox.addActive(pt_skill_slot6);
+         skillslotBox.setSkillslot_pk(skillslotBox.getSkillslot());
+         return skillslotBox;
+      } else if (job == 3) {
+         SkillslotBox skillslotBox = new SkillslotBox();
+         PT_SKILL_SLOT pt_skill_slot1 = new PT_SKILL_SLOT();
+         pt_skill_slot1.index = 15;
+         pt_skill_slot1.slot = 0;
+         skillslotBox.addActive(pt_skill_slot1);
+         PT_SKILL_SLOT pt_skill_slot2 = new PT_SKILL_SLOT();
+         pt_skill_slot2.index = 16;
+         pt_skill_slot2.slot = 1;
+         skillslotBox.addActive(pt_skill_slot2);
+         PT_SKILL_SLOT pt_skill_slot3 = new PT_SKILL_SLOT();
+         pt_skill_slot3.index = 169;
+         pt_skill_slot3.slot = 7;
+         skillslotBox.addActive(pt_skill_slot3);
+         PT_SKILL_SLOT pt_skill_slot4 = new PT_SKILL_SLOT();
+         pt_skill_slot4.index = 65;
+         pt_skill_slot4.slot = 2;
+         skillslotBox.addActive(pt_skill_slot4);
+         PT_SKILL_SLOT pt_skill_slot5 = new PT_SKILL_SLOT();
+         pt_skill_slot5.index = 10001;
+         pt_skill_slot5.slot = 18;
+         skillslotBox.addActive(pt_skill_slot5);
+         PT_SKILL_SLOT pt_skill_slot6 = new PT_SKILL_SLOT();
+         pt_skill_slot6.index = 10002;
+         pt_skill_slot6.slot = 17;
+         skillslotBox.addActive(pt_skill_slot6);
+         skillslotBox.setSkillslot_pk(skillslotBox.getSkillslot());
+         return skillslotBox;
+      } else if (job == 14) {
+         SkillslotBox skillslotBox = new SkillslotBox();
+         PT_SKILL_SLOT pt_skill_slot1 = new PT_SKILL_SLOT();
+         pt_skill_slot1.index = 9;
+         pt_skill_slot1.slot = 2;
+         skillslotBox.addActive(pt_skill_slot1);
+         PT_SKILL_SLOT pt_skill_slot2 = new PT_SKILL_SLOT();
+         pt_skill_slot2.index = 7;
+         pt_skill_slot2.slot = 1;
+         skillslotBox.addActive(pt_skill_slot2);
+         PT_SKILL_SLOT pt_skill_slot3 = new PT_SKILL_SLOT();
+         pt_skill_slot3.index = 1;
+         pt_skill_slot3.slot = 0;
+         skillslotBox.addActive(pt_skill_slot3);
+         PT_SKILL_SLOT pt_skill_slot4 = new PT_SKILL_SLOT();
+         pt_skill_slot4.index = 169;
+         pt_skill_slot4.slot = 7;
+         skillslotBox.addActive(pt_skill_slot4);
+         PT_SKILL_SLOT pt_skill_slot5 = new PT_SKILL_SLOT();
+         pt_skill_slot5.index = 10001;
+         pt_skill_slot5.slot = 18;
+         skillslotBox.addActive(pt_skill_slot5);
+         PT_SKILL_SLOT pt_skill_slot6 = new PT_SKILL_SLOT();
+         pt_skill_slot6.index = 10002;
+         pt_skill_slot6.slot = 17;
+         skillslotBox.addActive(pt_skill_slot6);
+         skillslotBox.setSkillslot_pk(skillslotBox.getSkillslot());
+         return skillslotBox;
+      } else {
+         logger.error("ERROR=====SkillslotBox==job error====={}", job);
+         return null;
+      }
+   }
+
+   static EquippedBox getEquippedBox(int job) {
+      if (job == 0) {
+         EquippedBox equipBox = new EquippedBox();
+         PT_EQUIPPED pt_equipped1 = new PT_EQUIPPED();
+         pt_equipped1.index = 2001030027;
+         pt_equipped1.guid = IdGenerator.getNextId();
+         pt_equipped1.quality = 100;
+         pt_equipped1.endurance = 30;
+         pt_equipped1.slot = 11;
+         pt_equipped1.upgrade = 0;
+         pt_equipped1.upgradepoint = 0;
+         equipBox.addEquip(pt_equipped1);
+         PT_EQUIPPED pt_equipped2 = new PT_EQUIPPED();
+         pt_equipped2.index = 2000060036;
+         pt_equipped2.guid = IdGenerator.getNextId();
+         pt_equipped2.quality = 100;
+         pt_equipped2.endurance = 30;
+         pt_equipped2.slot = 13;
+         pt_equipped2.upgrade = 0;
+         pt_equipped2.upgradepoint = 0;
+         equipBox.addEquip(pt_equipped2);
+         PT_EQUIPPED pt_equipped3 = new PT_EQUIPPED();
+         pt_equipped3.index = 2000110036;
+         pt_equipped3.guid = IdGenerator.getNextId();
+         pt_equipped3.quality = 100;
+         pt_equipped3.endurance = 30;
+         pt_equipped3.slot = 15;
+         pt_equipped3.upgrade = 0;
+         pt_equipped3.upgradepoint = 0;
+         equipBox.addEquip(pt_equipped3);
+         PT_EQUIPPED pt_equipped4 = new PT_EQUIPPED();
+         pt_equipped4.index = 2000160031;
+         pt_equipped4.guid = IdGenerator.getNextId();
+         pt_equipped4.quality = 100;
+         pt_equipped4.endurance = 30;
+         pt_equipped4.slot = 14;
+         pt_equipped4.upgrade = 0;
+         pt_equipped4.upgradepoint = 0;
+         equipBox.addEquip(pt_equipped4);
+         PT_EQUIPPED pt_equipped5 = new PT_EQUIPPED();
+         pt_equipped5.index = 2000210037;
+         pt_equipped5.guid = IdGenerator.getNextId();
+         pt_equipped5.quality = 100;
+         pt_equipped5.endurance = 30;
+         pt_equipped5.slot = 17;
+         pt_equipped5.upgrade = 0;
+         pt_equipped5.upgradepoint = 0;
+         equipBox.addEquip(pt_equipped5);
+         PT_EQUIPPED pt_equipped6 = new PT_EQUIPPED();
+         pt_equipped6.index = 2000260031;
+         pt_equipped6.guid = IdGenerator.getNextId();
+         pt_equipped6.quality = 100;
+         pt_equipped6.endurance = 30;
+         pt_equipped6.slot = 16;
+         pt_equipped6.upgrade = 0;
+         pt_equipped6.upgradepoint = 0;
+         equipBox.addEquip(pt_equipped6);
+         return equipBox;
+      } else if (job == 11) {
+         EquippedBox equipBox = new EquippedBox();
+         equipBox.addEquip(EquipDataPool.createEquipped(2001010025, 11));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000060036, 13));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000110036, 15));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000160031, 14));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000210037, 17));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000260031, 16));
+         return equipBox;
+      } else if (job == 1) {
+         EquippedBox equipBox = new EquippedBox();
+         equipBox.addEquip(EquipDataPool.createEquipped(2002040023, 11));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000060036, 13));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000110036, 15));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000160031, 14));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000210037, 17));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000260031, 16));
+         return equipBox;
+      } else if (job == 2) {
+         EquippedBox equipBox = new EquippedBox();
+         equipBox.addEquip(EquipDataPool.createEquipped(2004010024, 11));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000060036, 13));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000110036, 15));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000160031, 14));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000210037, 17));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000260031, 16));
+         return equipBox;
+      } else if (job == 3) {
+         EquippedBox equipBox = new EquippedBox();
+         equipBox.addEquip(EquipDataPool.createEquipped(2006020025, 11));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000060036, 13));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000110036, 15));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000160031, 14));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000210037, 17));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000260031, 16));
+         return equipBox;
+      } else if (job == 14) {
+         EquippedBox equipBox = new EquippedBox();
+         equipBox.addEquip(EquipDataPool.createEquipped(2008000071, 11));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000060036, 13));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000110036, 15));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000160031, 14));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000210037, 17));
+         equipBox.addEquip(EquipDataPool.createEquipped(2000260031, 16));
+         return equipBox;
+      } else {
+         logger.error("ERROR=====EquippedBox==job error====={}", job);
+         return null;
+      }
+   }
+
+   static MailBox getmailbox() {
+      MailBox mailBox = new MailBox();
+      return mailBox;
+   }
+
+   static MoneyBox getmoneybox() {
+      MoneyBox moneyBox = new MoneyBox();
+      return moneyBox;
+   }
+
+   public static void main(String[] args) {
+      MoneyBox moneyBox = new MoneyBox();
+      PT_MONEY_ITEM rescoin = new PT_MONEY_ITEM();
+      rescoin.count = 5;
+      rescoin.index = 2013100902;
+      moneyBox.putCurrency(rescoin);
+      PT_MONEY_ITEM goldcoin = new PT_MONEY_ITEM();
+      goldcoin.count = 5;
+      goldcoin.index = 0;
+      moneyBox.putCurrency(goldcoin);
+      AccountMoneyBox accountMoneyBox = new AccountMoneyBox();
+      PT_MONEY_ITEM item1 = new PT_MONEY_ITEM();
+      item1.index = 2013103791;
+      accountMoneyBox.putAccountCurrency(item1);
+      PT_MONEY_ITEM item2 = new PT_MONEY_ITEM();
+      item2.index = 2;
+      item2.count = 666666;
+      accountMoneyBox.putAccountCurrency(item2);
+      String json = JSON.toJSONString(accountMoneyBox);
+      System.out.println(json);
+      AccountMoneyBox test = (AccountMoneyBox)JSON.parseObject("{\"accountcurrency\":{\"2013103791\":{\"index\":2013103791},\"2\":{\"count\":666666,\"index\":2}}}", AccountMoneyBox.class);
+      System.out.println(((PT_MONEY_ITEM)test.getAccountcurrency().get(2)).count);
+      new EquippedBox();
+      PT_EQUIPPED equip = new PT_EQUIPPED();
+      equip.index = 2000320092;
+   }
+}

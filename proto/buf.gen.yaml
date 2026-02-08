@@ -1,0 +1,21 @@
+version: v2
+managed:
+  enabled: true
+  disable:
+    - file_option: go_package
+      module: buf.build/googleapis/googleapis
+  override:
+    - file_option: java_package
+      value: "com.dnfm.mina.protobuf.generated"
+    - file_option: go_package_prefix
+      value: gen
+
+plugins:
+  # Java Protobuf代码生成
+  - remote: buf.build/protocolbuffers/java
+    out: gen/java
+
+  # Go代码生成（生成到dnf-go-client工程）
+  - remote: buf.build/protocolbuffers/go
+    out: ../dnf-go-client/gen/go
+    opt: paths=source_relative

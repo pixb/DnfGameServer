@@ -1,0 +1,120 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+
+// 公会职位
+enum GuildPosition {
+  GUILD_POSITION_UNSPECIFIED = 0;
+  MEMBER = 1;
+  ELITE = 2;
+  OFFICER = 3;
+  VICE_MASTER = 4;
+  MASTER = 5;
+}
+
+// 公会信息
+message GuildInfo {
+  int64 guild_id = 1;
+  string name = 2;
+  int32 level = 3;
+  int64 exp = 4;
+  string notice = 5;
+  int32 member_count = 6;
+  int32 max_member_count = 7;
+  string master_name = 8;
+  int64 create_time = 9;
+}
+
+// 公会成员
+message GuildMember {
+  int64 uid = 1;
+  string name = 2;
+  int32 job = 3;
+  int32 level = 4;
+  GuildPosition position = 5;
+  int32 contribution = 6;
+  int64 last_login_time = 7;
+  bool online = 8;
+}
+
+// 获取公会信息请求
+message GetGuildInfoRequest {}
+
+// 获取公会信息响应
+message GetGuildInfoResponse {
+  int32 error = 1;
+  GuildInfo guild = 2;
+  repeated GuildMember members = 3;
+}
+
+// 创建公会请求
+message CreateGuildRequest {
+  string name = 1;
+}
+
+// 创建公会响应
+message CreateGuildResponse {
+  int32 error = 1;
+  int64 guild_id = 2;
+}
+
+// 加入公会请求
+message JoinGuildRequest {
+  int64 guild_id = 1;
+}
+
+// 加入公会响应
+message JoinGuildResponse {
+  int32 error = 1;
+}
+
+// 退出公会请求
+message LeaveGuildRequest {}
+
+// 退出公会响应
+message LeaveGuildResponse {
+  int32 error = 1;
+}
+
+// 公会贡献请求
+message GuildDonateRequest {
+  int32 donate_type = 1; // 1:金币 2:点券 3:物品
+  int32 amount = 2;
+}
+
+// 公会贡献响应
+message GuildDonateResponse {
+  int32 error = 1;
+  int32 total_contribution = 2;
+  int32 guild_exp_gain = 3;
+}
+
+// 公会技能
+message GuildSkill {
+  int32 skill_id = 1;
+  int32 level = 2;
+  int32 max_level = 3;
+  int32 effect_value = 4;
+}
+
+// 获取公会技能请求
+message GetGuildSkillRequest {}
+
+// 获取公会技能响应
+message GetGuildSkillResponse {
+  int32 error = 1;
+  repeated GuildSkill skills = 2;
+}
+
+// 升级公会技能请求
+message UpgradeGuildSkillRequest {
+  int32 skill_id = 1;
+}
+
+// 升级公会技能响应
+message UpgradeGuildSkillResponse {
+  int32 error = 1;
+  GuildSkill skill = 2;
+}

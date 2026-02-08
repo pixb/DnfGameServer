@@ -1,0 +1,36 @@
+package com.dnfm.mina.protobuf;
+
+import com.baidu.bjf.remoting.protobuf.FieldType;
+import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
+
+public class PT_TUTORIAL_DATA {
+   @Protobuf(
+      fieldType = FieldType.INT32,
+      order = 1,
+      required = false
+   )
+   public Integer index;
+   @Protobuf(
+      fieldType = FieldType.INT32,
+      order = 2,
+      required = false
+   )
+   public Integer state;
+   @Protobuf(
+      fieldType = FieldType.INT32,
+      order = 3,
+      required = false
+   )
+   public Integer type;
+   @Protobuf(
+      fieldType = FieldType.BOOL,
+      order = 4,
+      required = false
+   )
+   public Boolean enforce;
+   @Protobuf(
+      order = 5,
+      required = false
+   )
+   public PT_TUTORIAL_REWARD tutorialreward;
+}

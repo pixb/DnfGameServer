@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+import "dnf/v1/item.proto";
+
+option go_package = "gen/dnf/v1";
+
+// 任务状态
+enum QuestState {
+  QUEST_STATE_UNSPECIFIED = 0;
+  NOT_ACCEPTED = 1;
+  IN_PROGRESS = 2;
+  COMPLETED = 3;
+  REWARDED = 4;
+}
+
+// 任务类型
+enum QuestType {
+  QUEST_TYPE_UNSPECIFIED = 0;
+  MAIN = 1;      // 主线任务
+  SUB = 2;       // 支线任务
+  DAILY = 3;     // 日常任务
+  EVENT = 4;     // 活动任务
+}
+
+// 任务信息
+message QuestInfo {
+  int32 quest_id = 1;
+  string name = 2;
+  string description = 3;
+  QuestType quest_type = 4;
+  QuestState state = 5;
+  int32 required_level = 6;
+  repeated QuestObjective objectives = 7;
+  repeated QuestReward rewards = 8;
+}
+
+// 任务目标
+message QuestObjective {
+  int32 objective_id = 1;
+  string description = 2;
+  int32 target_count = 3;
+  int32 current_count = 4;
+  bool is_completed = 5;
+}
+
+// 任务奖励
+message QuestReward {
+  int32 reward_type = 1; // 1:经验 2:金币 3:物品
+  int32 reward_id = 2;
+  int32 count = 3;
+}
+
+// 获取任务列表请求
+message GetQuestListRequest {
+  QuestType quest_type = 1;
+}
+
+// 获取任务列表响应
+message GetQuestListResponse {
+  int32 error = 1;
+  repeated QuestInfo quests = 2;
+}
+
+// 接受任务请求
+message AcceptQuestRequest {
+  int32 quest_id = 1;
+}
+
+// 接受任务响应
+message AcceptQuestResponse {
+  int32 error = 1;
+  QuestInfo quest = 2;
+}
+
+// 完成任务请求
+message CompleteQuestRequest {
+  int32 quest_id = 1;
+}
+
+// 完成任务响应
+message CompleteQuestResponse {
+  int32 error = 1;
+  repeated QuestReward rewards = 2;
+  int64 exp_gain = 3;
+  int32 gold_gain = 4;
+}
+
+// 领取任务奖励请求
+message GetQuestRewardRequest {
+  int32 quest_id = 1;
+}
+
+// 领取任务奖励响应
+message GetQuestRewardResponse {
+  int32 error = 1;
+  repeated BagItem items = 2;
+}
+
+// 任务进度更新通知
+message QuestProgressNotify {
+  int32 quest_id = 1;
+  int32 objective_id = 2;
+  int32 current_count = 3;
+  bool is_completed = 4;
+}
+
+// 任务完成通知
+message QuestCompletedNotify {
+  int32 quest_id = 1;
+  string quest_name = 2;
+}
+
+// 放弃任务请求
+message AbandonQuestRequest {
+  int32 quest_id = 1;
+}
+
+// 放弃任务响应
+message AbandonQuestResponse {
+  int32 error = 1;
+}

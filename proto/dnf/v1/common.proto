@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+option java_package = "com.dnfm.mina.protobuf.generated";
+option java_outer_classname = "CommonProto";
+
+// ========== 枚举类型 ==========
+
+// 通用响应码
+enum ErrorCode {
+  ERROR_CODE_UNSPECIFIED = 0;
+  SUCCESS = 1;
+  FAIL = 2;
+  INVALID_PARAM = 3;
+  NOT_FOUND = 4;
+  PERMISSION_DENIED = 5;
+  TIMEOUT = 6;
+  ALREADY_EXISTS = 7;
+}
+
+// 职业类型
+enum JobType {
+  JOB_TYPE_UNSPECIFIED = 0;
+  SWORDMAN = 1;
+  FIGHTER = 2;
+  MAGE = 3;
+  GUNNER = 4;
+  THIEF = 5;
+  KNIGHT = 6;
+  DEMON_SLAYER = 7;
+  LAUNCHER = 8;
+  ELEMENTALIST = 9;
+  PRIEST = 10;
+}
+
+// ========== 数据结构 ==========
+
+// 消息元信息，用于路由
+message MessageMeta {
+  int32 module = 1;
+  int32 cmd = 2;
+}
+
+// 通用分页请求
+message PageRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  int32 offset = 3;
+}
+
+// 通用分页响应
+message PageResponse {
+  string next_page_token = 1;
+  int32 total = 2;
+}
+
+// 空消息
+message Empty {}
+
+// 位置信息
+message Position {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+// 地图信息
+message MapInfo {
+  int32 map_id = 1;
+  int32 channel = 2;
+  Position position = 3;
+}
+
+// 物品信息
+message Item {
+  int32 item_id = 1;
+  int32 count = 2;
+  int64 guid = 3;
+  int32 quality = 4;
+  int32 level = 5;
+}
+
+// 装备信息
+message Equip {
+  int32 equip_id = 1;
+  int32 level = 2;
+  int32 quality = 3;
+  int64 guid = 4;
+  int32 slot = 5;
+  int32 reinforce_level = 6;
+}

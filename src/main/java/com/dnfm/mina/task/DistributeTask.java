@@ -1,0 +1,7 @@
+package com.dnfm.mina.task;
+
+public interface DistributeTask extends Distributable {
+   String getName();
+
+   void action();
+}

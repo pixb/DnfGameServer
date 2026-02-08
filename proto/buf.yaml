@@ -1,0 +1,26 @@
+version: v2
+deps:
+  - buf.build/googleapis/googleapis
+
+lint:
+  use:
+    - BASIC
+    - ENUM_ZERO_VALUE_SUFFIX
+    - FIELD_LOWER_SNAKE_CASE
+    - MESSAGE_NAMES
+  except:
+    - ENUM_VALUE_PREFIX
+    - FIELD_NOT_REQUIRED
+    - PACKAGE_DIRECTORY_MATCH
+    - PACKAGE_NO_IMPORT_CYCLE
+    - PACKAGE_VERSION_SUFFIX
+    - ENUM_ZERO_VALUE_SUFFIX
+    - PACKAGE_SAME_DIRECTORY
+  disallow_comment_ignores: true
+
+breaking:
+  use:
+    - FILE
+  except:
+    - EXTENSION_NO_DELETE
+    - FIELD_SAME_DEFAULT

@@ -1,0 +1,175 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+import "dnf/v1/item.proto";
+
+option go_package = "gen/dnf/v1";
+
+// 商店类型
+enum ShopType {
+  SHOP_TYPE_UNSPECIFIED = 0;
+  NPC_SHOP = 1;
+  CERA_SHOP = 2; // 点券商店
+  AUCTION = 3;   // 拍卖行
+  PRIVATE_STORE = 4; // 个人商店
+}
+
+// 商店商品
+message ShopItem {
+  int32 slot = 1;
+  uint32 item_id = 2;
+  int32 price = 3;
+  int32 currency_type = 4; // 1:金币 2:点券
+  int32 stock = 5;
+  int32 discount = 6; // 折扣百分比
+  int32 level_limit = 7;
+  int32 job_limit = 8;
+}
+
+// 获取商店列表请求
+message GetShopListRequest {
+  ShopType shop_type = 1;
+  int32 npc_id = 2; // NPC商店使用
+}
+
+// 获取商店列表响应
+message GetShopListResponse {
+  int32 error = 1;
+  repeated ShopItem items = 2;
+  int32 refresh_time = 3; // 下次刷新时间
+}
+
+// 购买商品请求
+message BuyItemRequest {
+  ShopType shop_type = 1;
+  int32 slot = 2;
+  int32 count = 3;
+}
+
+// 购买商品响应
+message BuyItemResponse {
+  int32 error = 1;
+  repeated BagItem new_items = 2;
+  Currency currency = 3;
+}
+
+// 出售物品请求
+message SellToShopRequest {
+  uint64 guid = 1;
+  int32 count = 2;
+}
+
+// 出售物品响应
+message SellToShopResponse {
+  int32 error = 1;
+  int32 gold_received = 2;
+}
+
+// 拍卖行物品
+message AuctionItem {
+  int64 auction_id = 1;
+  uint32 item_id = 2;
+  string seller_name = 3;
+  int32 price = 4;
+  int32 bid_price = 5;
+  int32 time_left = 6; // 剩余时间秒
+  ItemQuality quality = 7;
+}
+
+// 搜索拍卖行请求
+message SearchAuctionRequest {
+  uint32 item_id = 1;
+  string keyword = 2;
+  ItemQuality min_quality = 3;
+  int32 max_price = 4;
+  int32 page = 5;
+  int32 page_size = 6;
+}
+
+// 搜索拍卖行响应
+message SearchAuctionResponse {
+  int32 error = 1;
+  repeated AuctionItem items = 2;
+  int32 total = 3;
+}
+
+// 上架拍卖请求
+message RegisterAuctionRequest {
+  uint64 guid = 1;
+  int32 start_price = 2;
+  int32 buyout_price = 3;
+  int32 duration = 4; // 小时
+}
+
+// 上架拍卖响应
+message RegisterAuctionResponse {
+  int32 error = 1;
+  int64 auction_id = 2;
+}
+
+// 竞拍请求
+message BidAuctionRequest {
+  int64 auction_id = 1;
+  int32 bid_price = 2;
+}
+
+// 竞拍响应
+message BidAuctionResponse {
+  int32 error = 1;
+}
+
+// 一口价购买请求
+message BuyoutAuctionRequest {
+  int64 auction_id = 1;
+}
+
+// 一口价购买响应
+message BuyoutAuctionResponse {
+  int32 error = 1;
+  BagItem item = 2;
+}
+
+// 个人商店商品
+message PrivateStoreItem {
+  uint64 guid = 1;
+  uint32 item_id = 2;
+  int32 count = 3;
+  int32 price = 4;
+}
+
+// 开设个人商店请求
+message OpenPrivateStoreRequest {
+  string store_name = 1;
+  repeated PrivateStoreItem items = 2;
+}
+
+// 开设个人商店响应
+message OpenPrivateStoreResponse {
+  int32 error = 1;
+}
+
+// 查看个人商店请求
+message ViewPrivateStoreRequest {
+  int64 owner_uid = 1;
+}
+
+// 查看个人商店响应
+message ViewPrivateStoreResponse {
+  int32 error = 1;
+  string store_name = 2;
+  string owner_name = 3;
+  repeated PrivateStoreItem items = 4;
+}
+
+// 从个人商店购买请求
+message BuyFromPrivateStoreRequest {
+  int64 owner_uid = 1;
+  uint64 item_guid = 2;
+  int32 count = 3;
+}
+
+// 从个人商店购买响应
+message BuyFromPrivateStoreResponse {
+  int32 error = 1;
+}

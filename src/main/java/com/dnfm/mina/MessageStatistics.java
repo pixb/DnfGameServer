@@ -1,0 +1,51 @@
+package com.dnfm.mina;
+
+import com.dnfm.mina.task.CmdRecord;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class MessageStatistics {
+   private static final MessageStatistics self = new MessageStatistics();
+   private final ConcurrentMap<Integer, AtomicInteger> sentCounter = new ConcurrentHashMap();
+   private final ConcurrentMap<Integer, AtomicInteger> receivedCounter = new ConcurrentHashMap();
+
+   public static MessageStatistics getInstance() {
+      return self;
+   }
+
+   public void addReceived(int cmd) {
+      this.receivedCounter.putIfAbsent(cmd, new AtomicInteger());
+      AtomicInteger counter = (AtomicInteger)this.receivedCounter.get(cmd);
+      counter.incrementAndGet();
+   }
+
+   public void addSent(int cmd) {
+      this.sentCounter.putIfAbsent(cmd, new AtomicInteger());
+      AtomicInteger counter = (AtomicInteger)this.sentCounter.get(cmd);
+      counter.incrementAndGet();
+   }
+
+   public String toString() {
+      List<CmdRecord> received = new ArrayList();
+      List<CmdRecord> sent = new ArrayList();
+
+      for(Map.Entry<Integer, AtomicInteger> entry : this.receivedCounter.entrySet()) {
+         received.add(new CmdRecord((Integer)entry.getKey(), ((AtomicInteger)entry.getValue()).get()));
+      }
+
+      for(Map.Entry<Integer, AtomicInteger> entry : this.sentCounter.entrySet()) {
+         sent.add(new CmdRecord((Integer)entry.getKey(), ((AtomicInteger)entry.getValue()).get()));
+      }
+
+      Collections.sort(received);
+      Collections.sort(sent);
+      StringBuilder result = new StringBuilder();
+      result.append("received = ").append(received).append("\n").append("sent = ").append(sent);
+      return result.toString();
+   }
+}

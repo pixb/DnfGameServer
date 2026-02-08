@@ -1,0 +1,19 @@
+package com.dnfm.mina.protobuf;
+
+import com.baidu.bjf.remoting.protobuf.FieldType;
+import com.baidu.bjf.remoting.protobuf.annotation.Protobuf;
+
+public class PT_WORLD_RAID_INFO {
+   @Protobuf(
+      fieldType = FieldType.INT32,
+      order = 1,
+      required = false
+   )
+   public Integer dungeonindex;
+   @Protobuf(
+      fieldType = FieldType.UINT64,
+      order = 2,
+      required = false
+   )
+   public Long hp;
+}

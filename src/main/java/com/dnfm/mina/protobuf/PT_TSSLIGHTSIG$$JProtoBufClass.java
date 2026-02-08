@@ -1,0 +1,124 @@
+package com.dnfm.mina.protobuf;
+
+import com.baidu.bjf.remoting.protobuf.Codec;
+import com.baidu.bjf.remoting.protobuf.code.CodedConstant;
+import com.google.protobuf.CodedInputStream;
+import com.google.protobuf.CodedOutputStream;
+import com.google.protobuf.Descriptors;
+import com.google.protobuf.InvalidProtocolBufferException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
+
+public class PT_TSSLIGHTSIG$$JProtoBufClass implements Codec<PT_TSSLIGHTSIG>, Serializable {
+   public static final long serialVersionUID = 1L;
+   private Descriptors.Descriptor descriptor;
+
+   public byte[] encode(PT_TSSLIGHTSIG var1) throws IOException {
+      ByteArrayOutputStream var2 = new ByteArrayOutputStream();
+      CodedOutputStream var3 = CodedOutputStream.newInstance(var2);
+      this.doWriteTo(var1, var3);
+      var3.flush();
+      return var2.toByteArray();
+   }
+
+   public PT_TSSLIGHTSIG decode(byte[] var1) throws IOException {
+      CodedInputStream var2 = CodedInputStream.newInstance(var1, 0, var1.length);
+      return this.readFrom(var2);
+   }
+
+   public int size(PT_TSSLIGHTSIG var1) throws IOException {
+      int var2 = 0;
+      Object var3 = null;
+      if (!CodedConstant.isNull(var1.gamesafedata)) {
+         String var6 = var1.gamesafedata;
+         var2 += CodedOutputStream.computeStringSize(1, var6);
+      }
+
+      Object var4 = null;
+      if (!CodedConstant.isNull(var1.gamesafedatacrc)) {
+         String var7 = var1.gamesafedatacrc;
+         var2 += CodedOutputStream.computeStringSize(2, var7);
+      }
+
+      Object var5 = null;
+      if (!CodedConstant.isNull(var1.gamesafedatafilename)) {
+         String var8 = var1.gamesafedatafilename;
+         var2 += CodedOutputStream.computeStringSize(3, var8);
+      }
+
+      return var2;
+   }
+
+   public void doWriteTo(PT_TSSLIGHTSIG var1, CodedOutputStream var2) throws IOException {
+      Object var3 = null;
+      if (!CodedConstant.isNull(var1.gamesafedata)) {
+         String var6 = var1.gamesafedata;
+         if (var6 != null) {
+            var2.writeString(1, var6);
+         }
+      }
+
+      Object var4 = null;
+      if (!CodedConstant.isNull(var1.gamesafedatacrc)) {
+         String var7 = var1.gamesafedatacrc;
+         if (var7 != null) {
+            var2.writeString(2, var7);
+         }
+      }
+
+      Object var5 = null;
+      if (!CodedConstant.isNull(var1.gamesafedatafilename)) {
+         String var8 = var1.gamesafedatafilename;
+         if (var8 != null) {
+            var2.writeString(3, var8);
+         }
+      }
+
+   }
+
+   public void writeTo(PT_TSSLIGHTSIG var1, CodedOutputStream var2) throws IOException {
+      this.doWriteTo(var1, var2);
+   }
+
+   public PT_TSSLIGHTSIG readFrom(CodedInputStream var1) throws IOException {
+      PT_TSSLIGHTSIG var2 = new PT_TSSLIGHTSIG();
+
+      try {
+         boolean var3 = false;
+         Object var4 = null;
+
+         while(!var3) {
+            int var5 = var1.readTag();
+            if (var5 == 0) {
+               break;
+            }
+
+            if (var5 == 10) {
+               var2.gamesafedata = var1.readString();
+            } else if (var5 == 18) {
+               var2.gamesafedatacrc = var1.readString();
+            } else if (var5 == 26) {
+               var2.gamesafedatafilename = var1.readString();
+            } else {
+               var1.skipField(var5);
+            }
+         }
+
+         return var2;
+      } catch (InvalidProtocolBufferException var6) {
+         throw var6;
+      } catch (IOException var7) {
+         throw var7;
+      }
+   }
+
+   public Descriptors.Descriptor getDescriptor() throws IOException {
+      if (this.descriptor != null) {
+         return this.descriptor;
+      } else {
+         Descriptors.Descriptor var1 = CodedConstant.getDescriptor(PT_TSSLIGHTSIG.class);
+         return this.descriptor = var1;
+      }
+   }
+}

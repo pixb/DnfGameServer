@@ -1,0 +1,106 @@
+package com.dnfm.mina.udp.codec.reflect.serializer;
+
+import com.dnfm.game.utils.ByteBuffUtil;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.apache.mina.core.buffer.IoBuffer;
+
+public class CollectionSerializer extends Serializer {
+   public Object decode(IoBuffer in, Class<?> type, Class<?> wrapper) {
+      int size = ByteBuffUtil.readShort(in);
+      return this.getObject(in, type, wrapper, size);
+   }
+
+   public Object decodeByte(IoBuffer in, Class<?> type, Class<?> wrapper) {
+      int size = ByteBuffUtil.readByte(in);
+      return this.getObject(in, type, wrapper, size);
+   }
+
+   public Object decodeInt(IoBuffer in, Class<?> type, Class<?> wrapper) {
+      int size = ByteBuffUtil.readInt(in);
+      if (size == 65536) {
+         size = 1;
+      }
+
+      return this.getObject(in, type, wrapper, size);
+   }
+
+   private Object getObject(IoBuffer in, Class<?> type, Class<?> wrapper, int size) {
+      int modifier = type.getModifiers();
+      Collection<Object> result = null;
+      if (!Modifier.isAbstract(modifier) && !Modifier.isInterface(modifier)) {
+         try {
+            result = (Collection)type.newInstance();
+         } catch (Exception var10) {
+            result = new ArrayList();
+         }
+      } else if (List.class.isAssignableFrom(type)) {
+         result = new ArrayList();
+      } else if (Set.class.isAssignableFrom(type)) {
+         result = new HashSet();
+      }
+
+      for(int i = 0; i < size; ++i) {
+         Serializer fieldCodec = Serializer.getSerializer(wrapper);
+         Object eleValue = fieldCodec.decode(in, wrapper, (Class)null);
+         result.add(eleValue);
+      }
+
+      return result;
+   }
+
+   public void encode(IoBuffer out, Object value, Class<?> wrapper) {
+      if (value == null) {
+         ByteBuffUtil.writeShort(out, (short)0);
+      } else {
+         Collection<Object> collection = (Collection)value;
+         int size = collection.size();
+         ByteBuffUtil.writeShort(out, (short)size);
+
+         for(Object elem : collection) {
+            Class<?> clazz = elem.getClass();
+            Serializer fieldCodec = Serializer.getSerializer(clazz);
+            fieldCodec.encode(out, elem, wrapper);
+         }
+
+      }
+   }
+
+   public void encode(IoBuffer out, Object value, Class<?> wrapper, int type) {
+      if (value == null) {
+         if (type == 1) {
+            ByteBuffUtil.writeByte(out, (byte)0);
+         } else if (type != 2) {
+            if (type == 3) {
+               ByteBuffUtil.writeInt(out, 0);
+            } else {
+               ByteBuffUtil.writeShort(out, (short)0);
+            }
+         }
+
+      } else {
+         Collection<Object> collection = (Collection)value;
+         int size = collection.size();
+         if (type == 1) {
+            ByteBuffUtil.writeByte(out, (byte)size);
+         } else if (type != 2) {
+            if (type == 3) {
+               ByteBuffUtil.writeInt(out, size);
+            } else {
+               ByteBuffUtil.writeShort(out, (short)size);
+            }
+         }
+
+         for(Object elem : collection) {
+            Class<?> clazz = elem.getClass();
+            Serializer fieldCodec = Serializer.getSerializer(clazz);
+            fieldCodec.encode(out, elem, wrapper);
+         }
+
+      }
+   }
+}

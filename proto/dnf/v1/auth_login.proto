@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+option java_multiple_files = true;
+option java_package = "com.dnfm.mina.protobuf.generated";
+option java_outer_classname = "AuthLoginProto";
+
+// ========== 数据结构 ==========
+
+// 渠道信息
+message ChannelInfo {
+  int32 world = 1;
+  int32 channel = 2;
+  string ip = 3;
+  int32 port = 4;
+  int32 priority = 5;
+}
+
+// 入侵成员信息
+message IntrudeMemberInfo {
+  string name = 1;
+  int32 level = 2;
+  int32 job = 3;
+  int32 growtype = 4;
+  int32 secgrowtype = 5;
+}
+
+// 入侵信息
+message IntrudeInfo {
+  bool intrude = 1;
+  string name = 2;
+  uint64 guid = 3;
+  ChannelInfo channel = 4;
+  repeated IntrudeMemberInfo party_members = 5;
+  uint64 rp_guid = 6;
+}
+
+// ========== 请求消息 ==========
+
+// 登录请求 (module=10000, cmd=0)
+message LoginRequest {
+  string openid = 1;
+  uint32 type = 2;
+  string token = 3;
+  uint32 platID = 4;
+  string clientIP = 5;
+  string version = 6;
+  string friendopenid = 7;
+  uint32 cancelunregist = 8;
+  string countrycode = 9;
+  int32 toyplatid = 10;
+  int32 agetype = 11;
+}
+
+// ========== 响应消息 ==========
+
+// 登录响应 (module=10000, cmd=1)
+message LoginResponse {
+  int32 error = 1;
+  string authkey = 2;
+  string accountkey = 3;
+  bool encrypt = 4;
+  uint64 servertime = 5;
+  string localtime = 6;
+  uint32 authority = 7;
+  string key = 8;
+  repeated ChannelInfo channel = 9;
+  IntrudeInfo intrudeinfo = 10;
+  int32 worldid = 11;
+  repeated int32 seeds = 12;
+}

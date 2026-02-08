@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+import "dnf/v1/role.proto";
+import "dnf/v1/item.proto";
+
+option go_package = "gen/dnf/v1";
+
+// 副本难度
+enum DungeonDifficulty {
+  DUNGEON_DIFFICULTY_UNSPECIFIED = 0;
+  DUNGEON_NORMAL = 1;
+  DUNGEON_HARD = 2;
+  DUNGEON_HELL = 3;
+  DUNGEON_EPIC = 4;
+}
+
+// 副本信息
+message DungeonInfo {
+  int32 dungeon_id = 1;
+  string name = 2;
+  int32 min_level = 3;
+  int32 max_level = 4;
+  int32 required_fatigue = 5;
+  int32 max_players = 6;
+  DungeonDifficulty difficulty = 7;
+  bool is_multi = 8; // 是否多人副本
+}
+
+// 副本进入请求
+message EnterDungeonRequest {
+  int32 dungeon_id = 1;
+  DungeonDifficulty difficulty = 2;
+  bool use_party = 3; // 是否组队进入
+}
+
+// 副本进入响应
+message EnterDungeonResponse {
+  int32 error = 1;
+  int32 instance_id = 2;
+  int32 map_id = 3;
+  RolePosition start_position = 4;
+  repeated DungeonMonster monsters = 5;
+}
+
+// 副本怪物
+message DungeonMonster {
+  int32 monster_id = 1;
+  int32 level = 2;
+  float x = 3;
+  float y = 4;
+  float z = 5;
+  bool is_boss = 6;
+}
+
+// 副本退出请求
+message ExitDungeonRequest {
+  bool is_clear = 1; // 是否通关后退出
+}
+
+// 副本退出响应
+message ExitDungeonResponse {
+  int32 error = 1;
+  DungeonResult result = 2;
+}
+
+// 副本结算
+message DungeonResult {
+  bool is_clear = 1;
+  int64 exp_gain = 2;
+  int32 gold_gain = 3;
+  repeated ItemReward items = 4;
+  int32 clear_time = 5; // 秒
+  int32 rating = 6; // 评分 S/A/B/C
+}
+
+// 物品奖励
+message ItemReward {
+  uint32 item_id = 1;
+  int32 count = 2;
+  ItemQuality quality = 3;
+}
+
+// 怪物击杀通知
+message MonsterKillNotify {
+  int32 monster_id = 1;
+  int64 killer_uid = 2;
+  int64 exp_gain = 3;
+  repeated ItemReward drops = 4;
+}
+
+// BOSS击杀通知
+message BossKillNotify {
+  int32 boss_id = 1;
+  int64 killer_uid = 2;
+  int64 total_exp = 3;
+  repeated ItemReward drops = 4;
+}
+
+// 副本完成通知
+message DungeonCompleteNotify {
+  int32 dungeon_id = 1;
+  DungeonResult result = 2;
+}
+
+// 复活请求
+message ReviveRequest {
+  int32 revive_type = 1; // 1:免费 2:金币 3:道具
+}
+
+// 复活响应
+message ReviveResponse {
+  int32 error = 1;
+  RolePosition position = 2;
+  int32 hp = 3;
+  int32 mp = 4;
+}
+
+// 切换房间/地图请求
+message ChangeRoomRequest {
+  int32 room_id = 1;
+  int32 portal_id = 2;
+}
+
+// 切换房间响应
+message ChangeRoomResponse {
+  int32 error = 1;
+  int32 new_room_id = 2;
+  RolePosition position = 3;
+  repeated DungeonMonster monsters = 4;
+}

@@ -1,0 +1,134 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+
+// 聊天频道
+enum ChatChannel {
+  CHAT_CHANNEL_UNSPECIFIED = 0;
+  SYSTEM = 1;
+  WORLD = 2;
+  TOWN = 3;
+  PARTY = 4;
+  GUILD = 5;
+  WHISPER = 6;
+  TRADE = 7;
+}
+
+// 聊天消息
+message ChatMessage {
+  int64 id = 1;
+  ChatChannel channel = 2;
+  int64 sender_uid = 3;
+  string sender_name = 4;
+  int32 sender_job = 5;
+  int32 sender_level = 6;
+  string content = 7;
+  int64 timestamp = 8;
+}
+
+// 发送聊天请求
+message SendChatRequest {
+  ChatChannel channel = 1;
+  string content = 2;
+  string target_name = 3; // 私聊目标
+}
+
+// 发送聊天响应
+message SendChatResponse {
+  int32 error = 1;
+}
+
+// 接收聊天消息通知
+message ReceiveChatNotify {
+  ChatMessage message = 1;
+}
+
+// 获取聊天历史请求
+message GetChatHistoryRequest {
+  ChatChannel channel = 1;
+  int64 before_id = 2;
+  int32 limit = 3;
+}
+
+// 获取聊天历史响应
+message GetChatHistoryResponse {
+  int32 error = 1;
+  repeated ChatMessage messages = 2;
+  bool has_more = 3;
+}
+
+// 系统消息
+message SystemMessage {
+  int32 msg_type = 1;
+  string content = 2;
+  repeated string params = 3;
+}
+
+// 广播通知
+message BroadcastNotify {
+  int32 broadcast_type = 1;
+  string content = 2;
+  int32 priority = 3;
+}
+
+// 好友信息
+message FriendInfo {
+  int64 uid = 1;
+  string name = 2;
+  int32 job = 3;
+  int32 level = 4;
+  bool online = 5;
+  int64 last_login_time = 6;
+  int32 intimacy = 7; // 亲密度
+}
+
+// 获取好友列表请求
+message GetFriendListRequest {}
+
+// 获取好友列表响应
+message GetFriendListResponse {
+  int32 error = 1;
+  repeated FriendInfo friends = 2;
+}
+
+// 添加好友请求
+message AddFriendRequest {
+  string target_name = 1;
+}
+
+// 添加好友响应
+message AddFriendResponse {
+  int32 error = 1;
+}
+
+// 好友申请通知
+message FriendRequestNotify {
+  int64 requester_uid = 1;
+  string requester_name = 2;
+  int32 requester_job = 3;
+  int32 requester_level = 4;
+}
+
+// 回复好友申请请求
+message ReplyFriendRequestMessage {
+  int64 requester_uid = 1;
+  bool accept = 2;
+}
+
+// 删除好友请求
+message RemoveFriendRequest {
+  int64 friend_uid = 1;
+}
+
+// 删除好友响应
+message RemoveFriendResponse {
+  int32 error = 1;
+}
+
+// 好友上线通知
+message FriendOnlineNotify {
+  int64 uid = 1;
+  bool online = 2;
+}

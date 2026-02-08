@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+
+// 角色状态
+enum RoleState {
+  ROLE_STATE_UNSPECIFIED = 0;
+  IDLE = 1;
+  MOVING = 2;
+  ATTACKING = 3;
+  CASTING = 4;
+  DEAD = 5;
+}
+
+// 角色基础属性
+message RoleBaseInfo {
+  int64 uid = 1;
+  int32 role_id = 2;
+  string name = 3;
+  int32 job = 4;
+  int32 level = 5;
+  int64 exp = 6;
+  int32 fatigue = 7;
+  int32 max_fatigue = 8;
+}
+
+// 角色战斗属性
+message RoleBattleInfo {
+  int32 str = 1;
+  int32 dex = 2;
+  int32 vit = 3;
+  int32 spr = 4;
+  int32 hp = 5;
+  int32 max_hp = 6;
+  int32 mp = 7;
+  int32 max_mp = 8;
+  int32 atk = 9;
+  int32 def = 10;
+  int32 magic_atk = 11;
+  int32 magic_def = 12;
+  int32 move_speed = 13;
+  int32 atk_speed = 14;
+  int32 cast_speed = 15;
+}
+
+// 角色位置
+message RolePosition {
+  int32 map_id = 1;
+  int32 dungeon_id = 2;
+  float x = 3;
+  float y = 4;
+  float z = 5;
+}
+
+// 技能信息
+message SkillInfo {
+  int32 skill_id = 1;
+  int32 level = 2;
+  int32 max_level = 3;
+  int32 sp_cost = 4;
+  int32 cooldown = 5;
+}
+
+// 获取角色信息请求
+message GetRoleInfoRequest {
+  int64 uid = 1;
+}
+
+// 获取角色信息响应
+message GetRoleInfoResponse {
+  int32 error = 1;
+  RoleBaseInfo base_info = 2;
+  RoleBattleInfo battle_info = 3;
+  RolePosition position = 4;
+  repeated SkillInfo skills = 5;
+}
+
+// 角色升级通知
+message RoleLevelUpNotify {
+  int64 uid = 1;
+  int32 old_level = 2;
+  int32 new_level = 3;
+  int64 new_exp = 4;
+}
+
+// 更新属性请求
+message UpdateAttributesRequest {
+  int32 str = 1;
+  int32 dex = 2;
+  int32 vit = 3;
+  int32 spr = 4;
+}
+
+// 更新属性响应
+message UpdateAttributesResponse {
+  int32 error = 1;
+  RoleBattleInfo battle_info = 2;
+}
+
+// 学习技能请求
+message LearnSkillRequest {
+  int32 skill_id = 1;
+}
+
+// 学习技能响应
+message LearnSkillResponse {
+  int32 error = 1;
+  SkillInfo skill = 2;
+}
+
+// 技能升级请求
+message UpgradeSkillRequest {
+  int32 skill_id = 1;
+}
+
+// 技能升级响应
+message UpgradeSkillResponse {
+  int32 error = 1;
+  SkillInfo skill = 2;
+}
+
+// 恢复疲劳值请求
+message RecoverFatigueRequest {
+  int32 item_id = 1; // 0表示使用货币
+  int32 recover_amount = 2;
+}
+
+// 恢复疲劳值响应
+message RecoverFatigueResponse {
+  int32 error = 1;
+  int32 current_fatigue = 2;
+  int32 max_fatigue = 3;
+}

@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+
+// 消息元信息，用于路由
+message MessageMeta {
+  int32 module = 1;
+  int32 cmd = 2;
+}
+
+// 通用响应码
+enum ErrorCode {
+  ERROR_CODE_UNSPECIFIED = 0;
+  SUCCESS = 1;
+  FAIL = 2;
+  INVALID_PARAM = 3;
+  NOT_FOUND = 4;
+  PERMISSION_DENIED = 5;
+  TIMEOUT = 6;
+}
+
+// 通用分页请求
+message PageRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+  int32 offset = 3;
+}
+
+// 通用分页响应
+message PageResponse {
+  string next_page_token = 1;
+  int32 total = 2;
+}
+
+// 空消息
+message Empty {}

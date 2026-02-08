@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "dnf/v1/auth.proto";
+import "dnf/v1/role.proto";
+import "dnf/v1/item.proto";
+import "dnf/v1/dungeon.proto";
+import "dnf/v1/chat.proto";
+import "dnf/v1/shop.proto";
+import "dnf/v1/quest.proto";
+import "dnf/v1/guild.proto";
+
+option go_package = "gen/dnf/v1";
+
+// 游戏服务 - 主要的TCP游戏逻辑服务
+service GameService {
+  // 角色相关
+  rpc GetRoleInfo(GetRoleInfoRequest) returns (GetRoleInfoResponse);
+  rpc UpdateAttributes(UpdateAttributesRequest) returns (UpdateAttributesResponse);
+  rpc LearnSkill(LearnSkillRequest) returns (LearnSkillResponse);
+  rpc UpgradeSkill(UpgradeSkillRequest) returns (UpgradeSkillResponse);
+  rpc RecoverFatigue(RecoverFatigueRequest) returns (RecoverFatigueResponse);
+  
+  // 背包相关
+  rpc GetBag(GetBagRequest) returns (GetBagResponse);
+  rpc UseItem(UseItemRequest) returns (UseItemResponse);
+  rpc MoveItem(MoveItemRequest) returns (MoveItemResponse);
+  rpc SellItem(SellItemRequest) returns (SellItemResponse);
+  rpc EquipItem(EquipItemRequest) returns (EquipItemResponse);
+  
+  // 副本相关
+  rpc EnterDungeon(EnterDungeonRequest) returns (EnterDungeonResponse);
+  rpc ExitDungeon(ExitDungeonRequest) returns (ExitDungeonResponse);
+  rpc Revive(ReviveRequest) returns (ReviveResponse);
+  rpc ChangeRoom(ChangeRoomRequest) returns (ChangeRoomResponse);
+  
+  // 聊天相关
+  rpc SendChat(SendChatRequest) returns (SendChatResponse);
+  rpc GetChatHistory(GetChatHistoryRequest) returns (GetChatHistoryResponse);
+  
+  // 好友相关
+  rpc GetFriendList(GetFriendListRequest) returns (GetFriendListResponse);
+  rpc AddFriend(AddFriendRequest) returns (AddFriendResponse);
+  rpc ReplyFriendRequest(ReplyFriendRequestMessage) returns (google.protobuf.Empty);
+  rpc RemoveFriend(RemoveFriendRequest) returns (RemoveFriendResponse);
+  
+  // 商店相关
+  rpc GetShopList(GetShopListRequest) returns (GetShopListResponse);
+  rpc BuyItem(BuyItemRequest) returns (BuyItemResponse);
+  rpc SellToShop(SellToShopRequest) returns (SellToShopResponse);
+  
+  // 拍卖行
+  rpc SearchAuction(SearchAuctionRequest) returns (SearchAuctionResponse);
+  rpc RegisterAuction(RegisterAuctionRequest) returns (RegisterAuctionResponse);
+  rpc BidAuction(BidAuctionRequest) returns (BidAuctionResponse);
+  rpc BuyoutAuction(BuyoutAuctionRequest) returns (BuyoutAuctionResponse);
+  
+  // 个人商店
+  rpc OpenPrivateStore(OpenPrivateStoreRequest) returns (OpenPrivateStoreResponse);
+  rpc ViewPrivateStore(ViewPrivateStoreRequest) returns (ViewPrivateStoreResponse);
+  rpc BuyFromPrivateStore(BuyFromPrivateStoreRequest) returns (BuyFromPrivateStoreResponse);
+  
+  // 任务相关
+  rpc GetQuestList(GetQuestListRequest) returns (GetQuestListResponse);
+  rpc AcceptQuest(AcceptQuestRequest) returns (AcceptQuestResponse);
+  rpc CompleteQuest(CompleteQuestRequest) returns (CompleteQuestResponse);
+  rpc GetQuestReward(GetQuestRewardRequest) returns (GetQuestRewardResponse);
+  rpc AbandonQuest(AbandonQuestRequest) returns (AbandonQuestResponse);
+  
+  // 公会相关
+  rpc GetGuildInfo(GetGuildInfoRequest) returns (GetGuildInfoResponse);
+  rpc CreateGuild(CreateGuildRequest) returns (CreateGuildResponse);
+  rpc JoinGuild(JoinGuildRequest) returns (JoinGuildResponse);
+  rpc LeaveGuild(LeaveGuildRequest) returns (LeaveGuildResponse);
+  rpc GuildDonate(GuildDonateRequest) returns (GuildDonateResponse);
+  rpc GetGuildSkill(GetGuildSkillRequest) returns (GetGuildSkillResponse);
+  rpc UpgradeGuildSkill(UpgradeGuildSkillRequest) returns (UpgradeGuildSkillResponse);
+}
+
+// 认证服务 - 登录相关
+service AuthService {
+  rpc Login(LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/login"
+      body: "*"
+    };
+  }
+  
+  rpc CreateCharacter(CreateCharacterRequest) returns (CreateCharacterResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/character/create"
+      body: "*"
+    };
+  }
+  
+  rpc GetCharacterList(CharacterListRequest) returns (CharacterListResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/character/list"
+    };
+  }
+  
+  rpc SelectCharacter(SelectCharacterRequest) returns (SelectCharacterResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/character/select"
+      body: "*"
+    };
+  }
+}

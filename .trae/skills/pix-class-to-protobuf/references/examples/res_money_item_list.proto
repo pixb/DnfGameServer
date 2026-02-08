@@ -1,0 +1,14 @@
+// Generated from class file: RES_MONEY_ITEM_LIST.class
+syntax = "proto3";
+package dnfm.protobuf;
+
+import "common/pt_currency_daily_gain.proto";
+import "common/pt_money_item.proto";
+
+message RES_MONEY_ITEM_LIST {
+  int32 error = 1;
+  repeated PT_MONEY_ITEM currency = 2;
+  repeated PT_MONEY_ITEM accountcurrency = 3;
+  repeated PT_CURRENCY_DAILY_GAIN characterdailygain = 4;
+  repeated PT_CURRENCY_DAILY_GAIN accountdailygain = 5;
+}

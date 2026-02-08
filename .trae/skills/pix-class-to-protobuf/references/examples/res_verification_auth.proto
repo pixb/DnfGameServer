@@ -1,0 +1,8 @@
+// Generated from class file: RES_VERIFICATION_AUTH.class
+syntax = "proto3";
+package dnfm.protobuf;
+
+message RES_VERIFICATION_AUTH {
+  int32 error = 1;
+  int32 authkey = 2;
+}

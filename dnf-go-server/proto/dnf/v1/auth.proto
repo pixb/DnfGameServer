@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+
+// 渠道信息
+message ChannelInfo {
+  int32 world = 1;
+  int32 channel = 2;
+  string ip = 3;
+  int32 port = 4;
+  int32 priority = 5;
+}
+
+// 入侵信息
+message IntrudeInfo {
+  int32 remain_time = 1;
+  int32 world_id = 2;
+  int32 channel = 3;
+  int32 max_channel = 4;
+}
+
+// 登录请求
+message LoginRequest {
+  string openid = 1;
+  uint32 type = 2;
+  string token = 3;
+  uint32 plat_id = 4;
+  string client_ip = 5;
+  string version = 6;
+  string friend_openid = 7;
+  int32 cancel_unregist = 8;
+  string country_code = 9;
+  int32 toy_plat_id = 10;
+  int32 age_type = 11;
+}
+
+// 登录响应
+message LoginResponse {
+  int32 error = 1;
+  string auth_key = 2;
+  string account_key = 3;
+  bool encrypt = 4;
+  uint64 server_time = 5;
+  string local_time = 6;
+  uint32 authority = 7;
+  string key = 8;
+  repeated ChannelInfo channels = 9;
+  IntrudeInfo intrude_info = 10;
+  int32 world_id = 11;
+  repeated int32 seeds = 12;
+}
+
+// 创建角色请求
+message CreateCharacterRequest {
+  string name = 1;
+  int32 job = 2;
+  int32 slot = 3;
+}
+
+// 创建角色响应
+message CreateCharacterResponse {
+  int32 error = 1;
+  int64 uid = 2;
+  int32 role_id = 3;
+  string name = 4;
+  int32 job = 5;
+  int32 level = 6;
+}
+
+// 角色列表请求
+message CharacterListRequest {
+  string openid = 1;
+}
+
+// 角色信息
+message CharacterInfo {
+  int64 uid = 1;
+  int32 role_id = 2;
+  string name = 3;
+  string dist_name = 4;
+  int32 job = 5;
+  int32 level = 6;
+  int64 exp = 7;
+  int32 fatigue = 8;
+  int64 last_login_time = 9;
+}
+
+// 角色列表响应
+message CharacterListResponse {
+  int32 error = 1;
+  repeated CharacterInfo characters = 2;
+}
+
+// 选择角色请求
+message SelectCharacterRequest {
+  int64 uid = 1;
+}
+
+// 选择角色响应
+message SelectCharacterResponse {
+  int32 error = 1;
+  string server_ip = 2;
+  int32 server_port = 3;
+  string auth_token = 4;
+}

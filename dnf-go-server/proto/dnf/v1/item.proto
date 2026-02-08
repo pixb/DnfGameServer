@@ -1,0 +1,175 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+
+// 装备槽位
+enum EquipSlot {
+  EQUIP_SLOT_UNSPECIFIED = 0;
+  WEAPON = 1;
+  SHOULDER = 2;
+  ARMOR = 3;
+  LEG = 4;
+  SHOES = 5;
+  RING_1 = 6;
+  RING_2 = 7;
+  NECKLACE = 8;
+  BRACELET = 9;
+  SUB_EQUIPMENT = 10;
+  MAGIC_STONE = 11;
+  EARRING = 12;
+}
+
+// 装备部位
+enum EquipPart {
+  EQUIP_PART_UNSPECIFIED = 0;
+  PART_WEAPON = 1;
+  PART_ARMOR = 2;
+  PART_ACCESSORY = 3;
+  PART_SPECIAL = 4;
+}
+
+// 装备品质
+enum ItemQuality {
+  ITEM_QUALITY_UNSPECIFIED = 0;
+  COMMON = 1;
+  UNCOMMON = 2;
+  RARE = 3;
+  EPIC = 4;
+  LEGENDARY = 5;
+}
+
+// 物品类型
+enum ItemType {
+  ITEM_TYPE_UNSPECIFIED = 0;
+  EQUIPMENT = 1;
+  CONSUMABLE = 2;
+  MATERIAL = 3;
+  CURRENCY = 4;
+  QUEST = 5;
+}
+
+// 物品基础信息
+message ItemBase {
+  uint32 item_id = 1;
+  ItemType item_type = 2;
+  string name = 3;
+  string description = 4;
+  ItemQuality quality = 5;
+  int32 level = 6;
+  int32 stack_size = 7;
+  int32 buy_price = 8;
+  int32 sell_price = 9;
+  bool tradable = 10;
+}
+
+// 装备信息
+message EquipmentInfo {
+  uint64 guid = 1;
+  uint32 item_id = 2;
+  EquipSlot slot = 3;
+  int32 reinforce_level = 4;
+  int32 durability = 5;
+  int32 max_durability = 6;
+  repeated EquipmentOption options = 7;
+  int32 avatar_flag = 8; // 是否为时装
+}
+
+// 装备属性
+message EquipmentOption {
+  int32 option_id = 1;
+  int32 option_value = 2;
+}
+
+// 背包物品
+message BagItem {
+  uint64 guid = 1;
+  uint32 item_id = 2;
+  int32 count = 3;
+  int32 slot = 4;
+  oneof details {
+    EquipmentInfo equipment = 5;
+    ConsumableInfo consumable = 6;
+  }
+}
+
+// 消耗品信息
+message ConsumableInfo {
+  int32 cooldown_id = 1;
+  int32 cooldown_time = 2;
+}
+
+// 金钱/货币
+message Currency {
+  int32 gold = 1;
+  int32 cera = 2;
+  int32 fatigue = 3;
+}
+
+// 背包信息
+message BagInfo {
+  int32 bag_type = 1; // 1:装备 2:消耗品 3:材料 4:任务
+  int32 max_slot = 2;
+  repeated BagItem items = 3;
+}
+
+// 获取背包请求
+message GetBagRequest {
+  int32 bag_type = 1;
+}
+
+// 获取背包响应
+message GetBagResponse {
+  int32 error = 1;
+  BagInfo bag = 2;
+}
+
+// 使用物品请求
+message UseItemRequest {
+  uint64 guid = 1;
+  int32 count = 2;
+}
+
+// 使用物品响应
+message UseItemResponse {
+  int32 error = 1;
+  repeated BagItem updated_items = 2;
+}
+
+// 移动物品请求
+message MoveItemRequest {
+  uint64 guid = 1;
+  int32 from_bag = 2;
+  int32 to_bag = 3;
+  int32 to_slot = 4;
+}
+
+// 移动物品响应
+message MoveItemResponse {
+  int32 error = 1;
+}
+
+// 出售物品请求
+message SellItemRequest {
+  uint64 guid = 1;
+  int32 count = 2;
+}
+
+// 出售物品响应
+message SellItemResponse {
+  int32 error = 1;
+  int32 gold_received = 2;
+}
+
+// 装备穿戴请求
+message EquipItemRequest {
+  uint64 guid = 1;
+  bool equip = 2; // true:穿上 false:脱下
+}
+
+// 装备穿戴响应
+message EquipItemResponse {
+  int32 error = 1;
+  repeated BagItem updated_items = 2;
+}

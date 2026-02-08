@@ -1,0 +1,23 @@
+package com.dnfm.game.equip;
+
+public interface EquEnum {
+   int ENUM_EQUIPMENTTYPE_WEAPON = 11;
+   int ENUM_EQUIPMENTTYPE_JACKET = 13;
+   int ENUM_EQUIPMENTTYPE_SHOULDER = 14;
+   int ENUM_EQUIPMENTTYPE_PANTS = 15;
+   int ENUM_EQUIPMENTTYPE_SHOES = 16;
+   int ENUM_EQUIPMENTTYPE_WAIST = 17;
+   int ENUM_EQUIPMENTTYPE_AMULET = 18;
+   int ENUM_EQUIPMENTTYPE_WRIST = 19;
+   int ENUM_EQUIPMENTTYPE_RING = 20;
+   int RARITY_COMMON = 0;
+   int RARITY_UNCOMMON = 1;
+   int RARITY_RARE = 2;
+   int RARITY_UNIQUE = 3;
+   int RARITY_EPIC = 4;
+   int RARITY_CHRONICLE = 5;
+   int RARITY_LEGENDARY = 6;
+   double GOLD_RATIO = (double)0.5F;
+   double MATERIAL_RATIO = (double)0.5F;
+   double ADV_MATERIAL_RATIO = (double)0.5F;
+}
