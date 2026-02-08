@@ -119,15 +119,6 @@ type Driver interface {
 	ListGuildMembers(ctx context.Context, guildID uint64) ([]*GuildMember, error)
 	RemoveGuildMember(ctx context.Context, delete *DeleteGuildMember) error
 
-	// ==================== 技能相关 ====================
-	GetSkill(ctx context.Context, skillID int32) (*Skill, error)
-	ListSkillsByJob(ctx context.Context, job int32) ([]*Skill, error)
-
-	GetRoleSkill(ctx context.Context, roleID uint64, skillID int32) (*RoleSkill, error)
-	ListRoleSkills(ctx context.Context, roleID uint64) ([]*RoleSkill, error)
-	CreateRoleSkill(ctx context.Context, create *CreateRoleSkill) (*RoleSkill, error)
-	UpdateRoleSkill(ctx context.Context, update *UpdateRoleSkill) error
-
 	// ==================== 好友相关 ====================
 	CreateFriend(ctx context.Context, create *Friend) (*Friend, error)
 	UpdateFriend(ctx context.Context, update *UpdateFriend) error

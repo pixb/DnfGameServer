@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+option java_multiple_files = true;
+option java_package = "com.dnfm.mina.protobuf.generated";
+option java_outer_classname = "IdipProto";
+
+// ========== 数据结构 ==========
+
+// IDIP禁止类型
+enum IdipProhibitType {
+  IDIP_NONE = 0;
+  PATTERN = 1;
+  INCOME = 2;
+  RANKING = 3;
+  CHAT = 4;
+  BAN = 5;
+  MESSAGE = 6;
+  GUILD_CREATE = 7;
+  FRIEND_INVITE = 8;
+  FRIEND_ACCEPT = 9;
+  CREATE_CHARACTER = 10;
+  AUCTION_BUY = 11;
+  AUCTION_SELL = 12;
+  DUNGEON = 13;
+  PARTY = 14;
+  FRIEND = 15;
+}
+
+// 禁止信息
+message Prohibit {
+  uint64 target = 1;
+  IdipProhibitType type = 2;
+  repeated int32 subtype = 3;
+  int64 endtime = 4;
+  string reason = 5;
+  repeated int64 times = 6;
+}
+
+// ========== 请求消息 ==========
+
+// IDIP禁止列表请求 (module=10017, cmd=0)
+message IdipProhibitListRequest {
+}
+
+// ========== 响应消息 ==========
+
+// IDIP禁止列表响应 (module=10017, cmd=1)
+message IdipProhibitListResponse {
+  int32 error = 1;
+  repeated Prohibit prohibit = 2;
+}

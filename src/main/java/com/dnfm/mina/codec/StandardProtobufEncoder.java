@@ -65,6 +65,14 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
                 return adaptAuthkeyRefreshResponse(msg);
             case 10012:
                 return adaptPlatformProfileUpdateResponse(msg);
+            case 10014:
+                return adaptConnectBattleServerResponse(msg);
+            case 10017:
+                return adaptIdipProhibitListResponse(msg);
+            case 10031:
+                return adaptLoadServerSimpleDataResponse(msg);
+            case 10032:
+                return adaptSaveServerSimpleDataResponse(msg);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -588,6 +596,114 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
                 }
                 builder.addChannel(channelBuilder.build());
             }
+        }
+        
+        return builder.build().toByteArray();
+    }
+    
+    private byte[] adaptConnectBattleServerResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_CONNECT_BATTLE_SERVER oldResponse = 
+            (com.dnfm.mina.protobuf.RES_CONNECT_BATTLE_SERVER) msg;
+        
+        com.dnfm.mina.protobuf.generated.ConnectBattleServerResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.ConnectBattleServerResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.authkey != null) {
+            builder.setAuthkey(oldResponse.authkey);
+        }
+        if (oldResponse.bchannel != null) {
+            builder.setBchannel(oldResponse.bchannel);
+        }
+        if (oldResponse.servertime != null) {
+            builder.setServertime(oldResponse.servertime);
+        }
+        if (oldResponse.encrypt != null) {
+            builder.setEncrypt(oldResponse.encrypt);
+        }
+        if (oldResponse.key != null) {
+            builder.setKey(oldResponse.key);
+        }
+        if (oldResponse.seeds != null) {
+            builder.addAllSeeds(oldResponse.seeds);
+        }
+        
+        return builder.build().toByteArray();
+    }
+    
+    private byte[] adaptIdipProhibitListResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_IDIP_PROHIBIT_LIST oldResponse = 
+            (com.dnfm.mina.protobuf.RES_IDIP_PROHIBIT_LIST) msg;
+        
+        com.dnfm.mina.protobuf.generated.IdipProhibitListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.IdipProhibitListResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.prohibit != null) {
+            for (com.dnfm.mina.protobuf.PT_PROHIBIT oldProhibit : oldResponse.prohibit) {
+                com.dnfm.mina.protobuf.generated.Prohibit.Builder prohibitBuilder = 
+                    com.dnfm.mina.protobuf.generated.Prohibit.newBuilder();
+                if (oldProhibit.target != null) {
+                    prohibitBuilder.setTarget(oldProhibit.target);
+                }
+                if (oldProhibit.type != null) {
+                    prohibitBuilder.setTypeValue(oldProhibit.type.value());
+                }
+                if (oldProhibit.subtype != null) {
+                    prohibitBuilder.addAllSubtype(oldProhibit.subtype);
+                }
+                if (oldProhibit.endtime != null) {
+                    prohibitBuilder.setEndtime(oldProhibit.endtime);
+                }
+                if (oldProhibit.reason != null) {
+                    prohibitBuilder.setReason(oldProhibit.reason);
+                }
+                if (oldProhibit.times != null) {
+                    prohibitBuilder.addAllTimes(oldProhibit.times);
+                }
+                builder.addProhibit(prohibitBuilder.build());
+            }
+        }
+        
+        return builder.build().toByteArray();
+    }
+    
+    private byte[] adaptLoadServerSimpleDataResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_LOAD_SERVER_SIMPLE_DATA oldResponse = 
+            (com.dnfm.mina.protobuf.RES_LOAD_SERVER_SIMPLE_DATA) msg;
+        
+        com.dnfm.mina.protobuf.generated.LoadServerSimpleDataResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.LoadServerSimpleDataResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.type != null) {
+            builder.setType(oldResponse.type);
+        }
+        if (oldResponse.enumvalue != null) {
+            builder.setEnumvalue(oldResponse.enumvalue);
+        }
+        if (oldResponse.value != null) {
+            builder.setValue(oldResponse.value);
+        }
+        
+        return builder.build().toByteArray();
+    }
+    
+    private byte[] adaptSaveServerSimpleDataResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_SAVE_SERVER_SIMPLE_DATA oldResponse = 
+            (com.dnfm.mina.protobuf.RES_SAVE_SERVER_SIMPLE_DATA) msg;
+        
+        com.dnfm.mina.protobuf.generated.SaveServerSimpleDataResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.SaveServerSimpleDataResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
         }
         
         return builder.build().toByteArray();

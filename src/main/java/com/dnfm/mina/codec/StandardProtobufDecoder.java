@@ -99,6 +99,14 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
                 return adaptEnterChannelRequest(body);
             case 10012:
                 return adaptPlatformProfileUpdateRequest(body);
+            case 10014:
+                return adaptConnectBattleServerRequest(body);
+            case 10017:
+                return adaptIdipProhibitListRequest(body);
+            case 10031:
+                return adaptLoadServerSimpleDataRequest(body);
+            case 10032:
+                return adaptSaveServerSimpleDataRequest(body);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -307,7 +315,7 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
             oldClientInfo.deviceLanguage = newClientInfo.getDeviceLanguage();
             oldClientInfo.deviceUTC = newClientInfo.getDeviceUTC();
             
-            if (newClientInfo.hasBuildType()) {
+            if (newClientInfo.getBuildType() != com.dnfm.mina.protobuf.generated.ClientBuildType.NONE) {
                 switch (newClientInfo.getBuildType()) {
                     case NONE:
                         oldClientInfo.buildType = com.dnfm.mina.protobuf.ENUM_CLIENT_BUILD_TYPE.T.NONE;
@@ -439,6 +447,82 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
         oldRequest.secondlocation = newRequest.getSecondlocation();
         
         System.out.println("===== StandardProtobufDecoder.adaptPlatformProfileUpdateRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptConnectBattleServerRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptConnectBattleServerRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.ConnectBattleServerRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.ConnectBattleServerRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptConnectBattleServerRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_CONNECT_BATTLE_SERVER oldRequest = new com.dnfm.mina.protobuf.REQ_CONNECT_BATTLE_SERVER();
+        oldRequest.authkey = newRequest.getAuthkey();
+        oldRequest.openid = newRequest.getOpenid();
+        oldRequest.world = newRequest.getWorld();
+        oldRequest.channel = newRequest.getChannel();
+        oldRequest.charguid = newRequest.getCharguid();
+        oldRequest.type = newRequest.getType();
+        oldRequest.dungeonguid = newRequest.getDungeonguid();
+        
+        System.out.println("===== StandardProtobufDecoder.adaptConnectBattleServerRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptIdipProhibitListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptIdipProhibitListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.IdipProhibitListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.IdipProhibitListRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptIdipProhibitListRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_IDIP_PROHIBIT_LIST oldRequest = new com.dnfm.mina.protobuf.REQ_IDIP_PROHIBIT_LIST();
+        
+        System.out.println("===== StandardProtobufDecoder.adaptIdipProhibitListRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptLoadServerSimpleDataRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptLoadServerSimpleDataRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.LoadServerSimpleDataRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.LoadServerSimpleDataRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptLoadServerSimpleDataRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_LOAD_SERVER_SIMPLE_DATA oldRequest = new com.dnfm.mina.protobuf.REQ_LOAD_SERVER_SIMPLE_DATA();
+        
+        if (newRequest.getListList() != null) {
+            oldRequest.list = new java.util.ArrayList<>();
+            for (com.dnfm.mina.protobuf.generated.LoadServerSimpleData newData : newRequest.getListList()) {
+                com.dnfm.mina.protobuf.PT_LOAD_SERVER_SIMPLE_DATA oldData = new com.dnfm.mina.protobuf.PT_LOAD_SERVER_SIMPLE_DATA();
+                oldData.type = newData.getType();
+                oldData.enumvalue = newData.getEnumvalue();
+                oldRequest.list.add(oldData);
+            }
+        }
+        
+        System.out.println("===== StandardProtobufDecoder.adaptLoadServerSimpleDataRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptSaveServerSimpleDataRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptSaveServerSimpleDataRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.SaveServerSimpleDataRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.SaveServerSimpleDataRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptSaveServerSimpleDataRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_SAVE_SERVER_SIMPLE_DATA oldRequest = new com.dnfm.mina.protobuf.REQ_SAVE_SERVER_SIMPLE_DATA();
+        oldRequest.type = newRequest.getType();
+        oldRequest.enumvalue = newRequest.getEnumvalue();
+        oldRequest.value = newRequest.getValue();
+        
+        System.out.println("===== StandardProtobufDecoder.adaptSaveServerSimpleDataRequest() oldRequest=" + oldRequest + " =====");
         
         return oldRequest;
     }

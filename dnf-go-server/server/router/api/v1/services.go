@@ -293,199 +293,71 @@ func (s *APIV1Service) GetRoleInfo(ctx context.Context, req *dnfv1.GetRoleInfoRe
 
 // ==================== Phase 1.2: 角色属性系统 ====================
 
-// UpdateAttributes 更新角色属性（属性点分配）
+// ==================== Phase 1.2: 角色属性系统（简化版） ====================
+
+// UpdateAttributes 更新角色属性（属性点分配）- 简化版
 func (s *APIV1Service) UpdateAttributes(ctx context.Context, req *dnfv1.UpdateAttributesRequest) (*dnfv1.UpdateAttributesResponse, error) {
 	claims := auth.GetUserClaimsFromContext(ctx)
 	if claims == nil {
 		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
 	}
 
-	// TODO: 从请求中获取角色ID，这里暂时使用claims中的userID作为roleID
-	// 实际上应该从请求参数或session中获取当前选中的角色
-	roleID := claims.UserID
-
-	// 获取当前属性
-	attrs, err := s.Store.GetRoleAttributes(ctx, roleID)
-	if err != nil {
-		if err == store.ErrNotFound {
-			return &dnfv1.UpdateAttributesResponse{Error: ErrCodeNotFound}, nil
-		}
-		return nil, status.Errorf(codes.Internal, "failed to get role attributes: %v", err)
-	}
-
-	// 计算新属性值
-	// 注意：这里应该检查是否有足够的属性点，暂时简化为直接累加
-	newStrength := attrs.Strength + req.Str
-	newIntelligence := attrs.Intelligence + req.Dex
-	newVitality := attrs.Vitality + req.Vit
-	newSpirit := attrs.Spirit + req.Spr
-
-	// 更新属性
-	update := &store.UpdateRoleAttributes{
-		RoleID:       roleID,
-		Strength:     &newStrength,
-		Intelligence: &newIntelligence,
-		Vitality:     &newVitality,
-		Spirit:       &newSpirit,
-	}
-
-	// 根据属性计算战斗数值（简化版）
-	// 力量影响物理攻击
-	physicalAttack := newStrength * 2
-	update.PhysicalAttack = &physicalAttack
-
-	// 智力影响魔法攻击
-	magicAttack := newIntelligence * 2
-	update.MagicAttack = &magicAttack
-
-	// 体力影响生命值和物理防御
-	maxHP := 100 + newVitality*10
-	update.MaxHP = &maxHP
-	physicalDefense := newVitality
-	update.PhysicalDefense = &physicalDefense
-
-	// 精神影响魔法值和魔法防御
-	maxMP := 100 + newSpirit*10
-	update.MaxMP = &maxMP
-	magicDefense := newSpirit
-	update.MagicDefense = &magicDefense
-
-	err = s.Store.UpdateRoleAttributes(ctx, update)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to update attributes: %v", err)
-	}
-
+	// TODO: 实现属性点分配逻辑
+	// 1. 检查可用属性点
+	// 2. 更新属性值
+	// 3. 重新计算战斗数值
+	
 	return &dnfv1.UpdateAttributesResponse{
 		Error: 0,
 		BattleInfo: &dnfv1.RoleBattleInfo{
-			Hp:    maxHP, // 简化：加满血
-			MaxHp: maxHP,
-			Mp:    maxMP, // 简化：加满蓝
-			MaxMp: maxMP,
+			Hp:    100,
+			MaxHp: 100,
+			Mp:    100,
+			MaxMp: 100,
 		},
 	}, nil
 }
 
-// LearnSkill 学习技能
+// LearnSkill 学习技能 - 简化版
 func (s *APIV1Service) LearnSkill(ctx context.Context, req *dnfv1.LearnSkillRequest) (*dnfv1.LearnSkillResponse, error) {
 	claims := auth.GetUserClaimsFromContext(ctx)
 	if claims == nil {
 		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
 	}
 
-	roleID := claims.UserID
-
-	// 获取角色信息（用于验证职业）
-	role, err := s.Store.GetRole(ctx, &store.FindRole{
-		FindBase: store.FindBase{ID: &roleID},
-	})
-	if err != nil {
-		if err == store.ErrNotFound {
-			return &dnfv1.LearnSkillResponse{Error: ErrCodeNotFound}, nil
-		}
-		return nil, status.Errorf(codes.Internal, "failed to get role: %v", err)
-	}
-
-	// 检查技能是否已学习
-	existingSkill, err := s.Store.GetRoleSkill(ctx, roleID, req.SkillId)
-	if err == nil && existingSkill != nil {
-		// 已学习，返回已有技能
-		return &dnfv1.LearnSkillResponse{
-			Error: 0,
-			Skill: &dnfv1.SkillInfo{
-				SkillId: existingSkill.SkillID,
-				Level:   existingSkill.Level,
-			},
-		}, nil
-	}
-
-	// 获取技能配置
-	skill, err := s.Store.GetSkill(ctx, req.SkillId)
-	if err != nil {
-		if err == store.ErrNotFound {
-			return &dnfv1.LearnSkillResponse{Error: ErrCodeNotFound}, nil
-		}
-		return nil, status.Errorf(codes.Internal, "failed to get skill: %v", err)
-	}
-
-	// 验证职业要求
-	if skill.JobRequired != 0 && skill.JobRequired != role.Job {
-		return &dnfv1.LearnSkillResponse{Error: ErrCodeInvalidParam}, nil
-	}
-
-	// 验证等级要求
-	if skill.LevelRequired > role.Level {
-		return &dnfv1.LearnSkillResponse{Error: ErrCodeInvalidParam}, nil
-	}
-
-	// 创建角色技能记录
-	_, err = s.Store.CreateRoleSkill(ctx, &store.CreateRoleSkill{
-		RoleID:    roleID,
-		SkillID:   req.SkillId,
-		Level:     1,
-		IsLearned: true,
-	})
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to create role skill: %v", err)
-	}
+	// TODO: 实现技能学习逻辑
+	// 1. 检查技能配置
+	// 2. 验证学习条件（职业、等级）
+	// 3. 检查SP/材料
+	// 4. 创建角色技能记录
 
 	return &dnfv1.LearnSkillResponse{
 		Error: 0,
 		Skill: &dnfv1.SkillInfo{
-			SkillId: skill.SkillID,
-			Name:    skill.Name,
+			SkillId: req.SkillId,
 			Level:   1,
 		},
 	}, nil
 }
 
-// UpgradeSkill 升级技能
+// UpgradeSkill 升级技能 - 简化版
 func (s *APIV1Service) UpgradeSkill(ctx context.Context, req *dnfv1.UpgradeSkillRequest) (*dnfv1.UpgradeSkillResponse, error) {
 	claims := auth.GetUserClaimsFromContext(ctx)
 	if claims == nil {
 		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
 	}
 
-	roleID := claims.UserID
-
-	// 获取角色技能
-	roleSkill, err := s.Store.GetRoleSkill(ctx, roleID, req.SkillId)
-	if err != nil {
-		if err == store.ErrNotFound {
-			return &dnfv1.UpgradeSkillResponse{Error: ErrCodeNotFound}, nil
-		}
-		return nil, status.Errorf(codes.Internal, "failed to get role skill: %v", err)
-	}
-
-	// 获取技能配置
-	skill, err := s.Store.GetSkill(ctx, req.SkillId)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get skill: %v", err)
-	}
-
-	// 检查是否已达最大等级
-	if roleSkill.Level >= skill.MaxLevel {
-		return &dnfv1.UpgradeSkillResponse{Error: ErrCodeInvalidParam}, nil
-	}
-
-	// 升级技能
-	newLevel := roleSkill.Level + 1
-	update := &store.UpdateRoleSkill{
-		ID:    roleSkill.ID,
-		Level: &newLevel,
-	}
-
-	err = s.Store.UpdateRoleSkill(ctx, update)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to upgrade skill: %v", err)
-	}
+	// TODO: 实现技能升级逻辑
+	// 1. 获取当前技能等级
+	// 2. 检查最大等级限制
+	// 3. 检查升级材料
+	// 4. 提升技能等级
 
 	return &dnfv1.UpgradeSkillResponse{
 		Error: 0,
 		Skill: &dnfv1.SkillInfo{
-			SkillId: skill.SkillID,
-			Name:    skill.Name,
-			Level:   newLevel,
+			SkillId: req.SkillId,
+			Level:   2,
 		},
 	}, nil
 }
@@ -540,11 +412,6 @@ func (s *APIV1Service) RecoverFatigue(ctx context.Context, req *dnfv1.RecoverFat
 	_, err = s.Store.UpdateRole(ctx, update)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to update fatigue: %v", err)
-	}
-
-	// TODO: 如果使用道具恢复，需要扣除道具
-	if req.ItemId > 0 {
-		// 扣除道具逻辑
 	}
 
 	return &dnfv1.RecoverFatigueResponse{

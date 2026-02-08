@@ -10,7 +10,7 @@ description: This skill should be used when user asks to migrate from JProtobuf 
 | 属性 | 值 |
 | :--- | :--- |
 | **名称** | pix-jptotobuf-to-proto |
-| **版本** | 1.4.0 |
+| **版本** | 1.5.0 |
 | **类型** | 工具技能 (Tool Skill) |
 | **核心功能** | JProtobuf 到标准 Protobuf 迁移 |
 | **适用环境** | Trae |
@@ -121,6 +121,21 @@ pix-jptotobuf-to-proto 会提供：
   - 处理列表类型（AuthkeyRefreshResponse包含频道信息列表）
   - 验证了跨语言通信正确性
   - Go单元测试7个测试用例全部通过
+  - 编解码测试验证了跨语言通信
+
+### 批次07: BATTLE, IDIP, SERVER_DATA (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_CONNECT_BATTLE_SERVER.java, RES_CONNECT_BATTLE_SERVER.java, REQ_IDIP_PROHIBIT_LIST.java, RES_IDIP_PROHIBIT_LIST.java, REQ_LOAD_SERVER_SIMPLE_DATA.java, RES_LOAD_SERVER_SIMPLE_DATA.java, REQ_SAVE_SERVER_SIMPLE_DATA.java, RES_SAVE_SERVER_SIMPLE_DATA.java
+- **状态**: ✅ 完成
+- **文档**: [批次07文档](../../devdoc/protobuf/batch_07/)
+- **成果**: 
+  - 成功迁移连接战斗服务器、IDIP禁止列表、服务器简单数据加载和保存消息
+  - 新增battle.proto、idip.proto和server_data.proto文件
+  - 解决枚举值冲突问题（将NONE重命名为IDIP_NONE）
+  - 修复类型不匹配问题（将Prohibit.type从int32改为IdipProhibitType枚举）
+  - 修复Java编译错误（StandardProtobufDecoder中hasBuildType()方法调用问题）
+  - 验证了跨语言通信正确性
+  - Go单元测试11个测试用例全部通过
   - 编解码测试验证了跨语言通信
 
 ## 🌟 功能实现
