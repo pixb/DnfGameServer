@@ -61,6 +61,10 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
                 return adaptRemoveCharacterResponse(msg);
             case 10008:
                 return adaptChannelListResponse(msg);
+            case 10009:
+                return adaptAuthkeyRefreshResponse(msg);
+            case 10012:
+                return adaptPlatformProfileUpdateResponse(msg);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -542,6 +546,62 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         }
         if (oldResponse.pendingtime != null) {
             builder.setPendingtime(oldResponse.pendingtime);
+        }
+        
+        return builder.build().toByteArray();
+    }
+    
+    private byte[] adaptAuthkeyRefreshResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_AUTHKEY_REFRESH oldResponse = 
+            (com.dnfm.mina.protobuf.RES_AUTHKEY_REFRESH) msg;
+        
+        com.dnfm.mina.protobuf.generated.AuthkeyRefreshResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AuthkeyRefreshResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.authkey != null) {
+            builder.setAuthkey(oldResponse.authkey);
+        }
+        if (oldResponse.version != null) {
+            builder.setVersion(oldResponse.version);
+        }
+        if (oldResponse.channel != null) {
+            for (com.dnfm.mina.protobuf.PT_CHANNEL_INFO oldChannel : oldResponse.channel) {
+                com.dnfm.mina.protobuf.generated.ChannelInfo.Builder channelBuilder = 
+                    com.dnfm.mina.protobuf.generated.ChannelInfo.newBuilder();
+                if (oldChannel.world != null) {
+                    channelBuilder.setWorld(oldChannel.world);
+                }
+                if (oldChannel.channel != null) {
+                    channelBuilder.setChannel(oldChannel.channel);
+                }
+                if (oldChannel.ip != null) {
+                    channelBuilder.setIp(oldChannel.ip);
+                }
+                if (oldChannel.port != null) {
+                    channelBuilder.setPort(oldChannel.port);
+                }
+                if (oldChannel.priority != null) {
+                    channelBuilder.setPriority(oldChannel.priority);
+                }
+                builder.addChannel(channelBuilder.build());
+            }
+        }
+        
+        return builder.build().toByteArray();
+    }
+    
+    private byte[] adaptPlatformProfileUpdateResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_PLATFORM_PROFILE_UPDATE oldResponse = 
+            (com.dnfm.mina.protobuf.RES_PLATFORM_PROFILE_UPDATE) msg;
+        
+        com.dnfm.mina.protobuf.generated.PlatformProfileUpdateResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.PlatformProfileUpdateResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
         }
         
         return builder.build().toByteArray();

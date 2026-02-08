@@ -7,7 +7,7 @@ package com.dnfm.mina.protobuf.generated;
 
 /**
  * <pre>
- * 频道信息
+ * 频道信息 (用于频道列表)
  * </pre>
  *
  * Protobuf type {@code dnf.v1.Channel}
@@ -356,7 +356,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * 频道信息
+   * 频道信息 (用于频道列表)
    * </pre>
    *
    * Protobuf type {@code dnf.v1.Channel}

@@ -9,7 +9,7 @@ option java_outer_classname = "ChannelProto";
 
 // ========== 数据结构 ==========
 
-// 频道信息
+// 频道信息 (用于频道列表)
 message Channel {
   int32 world = 1;
   int32 channel = 2;

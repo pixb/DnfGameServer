@@ -93,8 +93,12 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
                 return adaptExitCharacterRequest(body);
             case 10008:
                 return adaptChannelListRequest(body);
+            case 10009:
+                return adaptAuthkeyRefreshRequest(body);
             case 10011:
                 return adaptEnterChannelRequest(body);
+            case 10012:
+                return adaptPlatformProfileUpdateRequest(body);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -402,6 +406,39 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
         oldRequest.exittype = newRequest.getExittype();
         
         System.out.println("===== StandardProtobufDecoder.adaptExitCharacterRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptAuthkeyRefreshRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAuthkeyRefreshRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AuthkeyRefreshRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AuthkeyRefreshRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptAuthkeyRefreshRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_AUTHKEY_REFRESH oldRequest = new com.dnfm.mina.protobuf.REQ_AUTHKEY_REFRESH();
+        oldRequest.authkey = newRequest.getAuthkey();
+        
+        System.out.println("===== StandardProtobufDecoder.adaptAuthkeyRefreshRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptPlatformProfileUpdateRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptPlatformProfileUpdateRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.PlatformProfileUpdateRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.PlatformProfileUpdateRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptPlatformProfileUpdateRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_PLATFORM_PROFILE_UPDATE oldRequest = new com.dnfm.mina.protobuf.REQ_PLATFORM_PROFILE_UPDATE();
+        oldRequest.profileurl = newRequest.getProfileurl();
+        oldRequest.profilename = newRequest.getProfilename();
+        oldRequest.firstlocation = newRequest.getFirstlocation();
+        oldRequest.secondlocation = newRequest.getSecondlocation();
+        
+        System.out.println("===== StandardProtobufDecoder.adaptPlatformProfileUpdateRequest() oldRequest=" + oldRequest + " =====");
         
         return oldRequest;
     }

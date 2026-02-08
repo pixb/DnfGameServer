@@ -71,7 +71,7 @@ func (ClientBuildType) EnumDescriptor() ([]byte, []int) {
 	return file_dnf_v1_channel_proto_rawDescGZIP(), []int{0}
 }
 
-// 频道信息
+// 频道信息 (用于频道列表)
 type Channel struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	World         int32                  `protobuf:"varint,1,opt,name=world,proto3" json:"world,omitempty"`

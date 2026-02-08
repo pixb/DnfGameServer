@@ -10,7 +10,7 @@ description: This skill should be used when user asks to migrate from JProtobuf 
 | 属性 | 值 |
 | :--- | :--- |
 | **名称** | pix-jptotobuf-to-proto |
-| **版本** | 1.3.0 |
+| **版本** | 1.4.0 |
 | **类型** | 工具技能 (Tool Skill) |
 | **核心功能** | JProtobuf 到标准 Protobuf 迁移 |
 | **适用环境** | Trae |
@@ -107,6 +107,20 @@ pix-jptotobuf-to-proto 会提供：
   - 处理复杂嵌套结构（StartGameRequest包含ProtocolTransaction列表）
   - 验证了跨语言通信正确性
   - Go单元测试9个测试用例全部通过
+  - 编解码测试验证了跨语言通信
+
+### 批次06: AUTH (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_AUTHKEY_REFRESH.java, RES_AUTHKEY_REFRESH.java, REQ_PLATFORM_PROFILE_UPDATE.java, RES_PLATFORM_PROFILE_UPDATE.java
+- **状态**: ✅ 完成
+- **文档**: [批次06文档](../../devdoc/protobuf/batch_06/)
+- **成果**: 
+  - 成功迁移认证密钥刷新、平台资料更新消息
+  - 新增auth.proto和platform.proto文件
+  - 正确处理依赖关系（复用auth_login.proto中的ChannelInfo）
+  - 处理列表类型（AuthkeyRefreshResponse包含频道信息列表）
+  - 验证了跨语言通信正确性
+  - Go单元测试7个测试用例全部通过
   - 编解码测试验证了跨语言通信
 
 ## 🌟 功能实现

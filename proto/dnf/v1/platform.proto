@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+option java_multiple_files = true;
+option java_package = "com.dnfm.mina.protobuf.generated";
+option java_outer_classname = "PlatformProto";
+
+// ========== 请求消息 ==========
+
+// 平台资料更新请求 (module=10012, cmd=0)
+message PlatformProfileUpdateRequest {
+  string profileurl = 1;
+  string profilename = 2;
+  int32 firstlocation = 3;
+  int32 secondlocation = 4;
+}
+
+// ========== 响应消息 ==========
+
+// 平台资料更新响应 (module=10012, cmd=1)
+message PlatformProfileUpdateResponse {
+  int32 error = 1;
+}
