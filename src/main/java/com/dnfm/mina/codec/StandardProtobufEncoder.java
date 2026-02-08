@@ -49,12 +49,16 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         switch (moduleId) {
             case 10000:
                 return adaptLoginResponse(msg);
+            case 10001:
+                return adaptStandbyResponse(msg);
             case 10006:
                 return adaptPingResponse(msg);
             case 10002:
                 return adaptCharacterListResponse(msg);
             case 10003:
                 return adaptCreateCharacterResponse(msg);
+            case 10004:
+                return adaptRemoveCharacterResponse(msg);
             case 10008:
                 return adaptChannelListResponse(msg);
             default:
@@ -495,6 +499,49 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
                 }
                 builder.addWorldrecommands(channelBuilder.build());
             }
+        }
+        
+        return builder.build().toByteArray();
+    }
+    
+    private byte[] adaptStandbyResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_STANDBY oldResponse = 
+            (com.dnfm.mina.protobuf.RES_STANDBY) msg;
+        
+        com.dnfm.mina.protobuf.generated.StandbyResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.StandbyResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.standby != null) {
+            builder.setStandby(oldResponse.standby);
+        }
+        if (oldResponse.vip != null) {
+            builder.setVip(oldResponse.vip);
+        }
+        if (oldResponse.reconnect != null) {
+            builder.setReconnect(oldResponse.reconnect);
+        }
+        
+        return builder.build().toByteArray();
+    }
+    
+    private byte[] adaptRemoveCharacterResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_REMOVE_CHARACTER oldResponse = 
+            (com.dnfm.mina.protobuf.RES_REMOVE_CHARACTER) msg;
+        
+        com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.charguid != null) {
+            builder.setCharguid(oldResponse.charguid);
+        }
+        if (oldResponse.pendingtime != null) {
+            builder.setPendingtime(oldResponse.pendingtime);
         }
         
         return builder.build().toByteArray();

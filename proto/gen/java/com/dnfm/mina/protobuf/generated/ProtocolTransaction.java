@@ -7,16 +7,16 @@ package com.dnfm.mina.protobuf.generated;
 
 /**
  * <pre>
- * 删除角色响应 (module=10004, cmd=1)
+ * 协议事务
  * </pre>
  *
- * Protobuf type {@code dnf.v1.DeleteCharacterResponse}
+ * Protobuf type {@code dnf.v1.ProtocolTransaction}
  */
 @com.google.protobuf.Generated
-public final class DeleteCharacterResponse extends
+public final class ProtocolTransaction extends
     com.google.protobuf.GeneratedMessage implements
-    // @@protoc_insertion_point(message_implements:dnf.v1.DeleteCharacterResponse)
-    DeleteCharacterResponseOrBuilder {
+    // @@protoc_insertion_point(message_implements:dnf.v1.ProtocolTransaction)
+    ProtocolTransactionOrBuilder {
 private static final long serialVersionUID = 0L;
   static {
     com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
@@ -25,59 +25,48 @@ private static final long serialVersionUID = 0L;
       /* minor= */ 33,
       /* patch= */ 5,
       /* suffix= */ "",
-      "DeleteCharacterResponse");
+      "ProtocolTransaction");
   }
-  // Use DeleteCharacterResponse.newBuilder() to construct.
-  private DeleteCharacterResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+  // Use ProtocolTransaction.newBuilder() to construct.
+  private ProtocolTransaction(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
     super(builder);
   }
-  private DeleteCharacterResponse() {
+  private ProtocolTransaction() {
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterResponse_descriptor;
+    return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_ProtocolTransaction_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterResponse_fieldAccessorTable
+    return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_ProtocolTransaction_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.class, com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.Builder.class);
+            com.dnfm.mina.protobuf.generated.ProtocolTransaction.class, com.dnfm.mina.protobuf.generated.ProtocolTransaction.Builder.class);
   }
 
-  public static final int ERROR_FIELD_NUMBER = 1;
-  private int error_ = 0;
+  public static final int PROTOCOL_FIELD_NUMBER = 1;
+  private int protocol_ = 0;
   /**
-   * <code>int32 error = 1 [json_name = "error"];</code>
-   * @return The error.
+   * <code>int32 protocol = 1 [json_name = "protocol"];</code>
+   * @return The protocol.
    */
   @java.lang.Override
-  public int getError() {
-    return error_;
+  public int getProtocol() {
+    return protocol_;
   }
 
-  public static final int CHARGUID_FIELD_NUMBER = 2;
-  private long charguid_ = 0L;
+  public static final int TRANSACTIONID_FIELD_NUMBER = 2;
+  private int transactionid_ = 0;
   /**
-   * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
-   * @return The charguid.
+   * <code>int32 transactionid = 2 [json_name = "transactionid"];</code>
+   * @return The transactionid.
    */
   @java.lang.Override
-  public long getCharguid() {
-    return charguid_;
-  }
-
-  public static final int PENDINGTIME_FIELD_NUMBER = 3;
-  private long pendingtime_ = 0L;
-  /**
-   * <code>int64 pendingtime = 3 [json_name = "pendingtime"];</code>
-   * @return The pendingtime.
-   */
-  @java.lang.Override
-  public long getPendingtime() {
-    return pendingtime_;
+  public int getTransactionid() {
+    return transactionid_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -94,14 +83,11 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (error_ != 0) {
-      output.writeInt32(1, error_);
+    if (protocol_ != 0) {
+      output.writeInt32(1, protocol_);
     }
-    if (charguid_ != 0L) {
-      output.writeUInt64(2, charguid_);
-    }
-    if (pendingtime_ != 0L) {
-      output.writeInt64(3, pendingtime_);
+    if (transactionid_ != 0) {
+      output.writeInt32(2, transactionid_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -112,17 +98,13 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (error_ != 0) {
+    if (protocol_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, error_);
+        .computeInt32Size(1, protocol_);
     }
-    if (charguid_ != 0L) {
+    if (transactionid_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeUInt64Size(2, charguid_);
-    }
-    if (pendingtime_ != 0L) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt64Size(3, pendingtime_);
+        .computeInt32Size(2, transactionid_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -134,17 +116,15 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.dnfm.mina.protobuf.generated.DeleteCharacterResponse)) {
+    if (!(obj instanceof com.dnfm.mina.protobuf.generated.ProtocolTransaction)) {
       return super.equals(obj);
     }
-    com.dnfm.mina.protobuf.generated.DeleteCharacterResponse other = (com.dnfm.mina.protobuf.generated.DeleteCharacterResponse) obj;
+    com.dnfm.mina.protobuf.generated.ProtocolTransaction other = (com.dnfm.mina.protobuf.generated.ProtocolTransaction) obj;
 
-    if (getError()
-        != other.getError()) return false;
-    if (getCharguid()
-        != other.getCharguid()) return false;
-    if (getPendingtime()
-        != other.getPendingtime()) return false;
+    if (getProtocol()
+        != other.getProtocol()) return false;
+    if (getTransactionid()
+        != other.getTransactionid()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -156,57 +136,53 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + ERROR_FIELD_NUMBER;
-    hash = (53 * hash) + getError();
-    hash = (37 * hash) + CHARGUID_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getCharguid());
-    hash = (37 * hash) + PENDINGTIME_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getPendingtime());
+    hash = (37 * hash) + PROTOCOL_FIELD_NUMBER;
+    hash = (53 * hash) + getProtocol();
+    hash = (37 * hash) + TRANSACTIONID_FIELD_NUMBER;
+    hash = (53 * hash) + getTransactionid();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ProtocolTransaction parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ProtocolTransaction parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ProtocolTransaction parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ProtocolTransaction parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(byte[] data)
+  public static com.dnfm.mina.protobuf.generated.ProtocolTransaction parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ProtocolTransaction parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.ProtocolTransaction parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ProtocolTransaction parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -214,26 +190,26 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseDelimitedFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.ProtocolTransaction parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input);
   }
 
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseDelimitedFrom(
+  public static com.dnfm.mina.protobuf.generated.ProtocolTransaction parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ProtocolTransaction parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ProtocolTransaction parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -246,7 +222,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.DeleteCharacterResponse prototype) {
+  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.ProtocolTransaction prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -263,29 +239,29 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * 删除角色响应 (module=10004, cmd=1)
+   * 协议事务
    * </pre>
    *
-   * Protobuf type {@code dnf.v1.DeleteCharacterResponse}
+   * Protobuf type {@code dnf.v1.ProtocolTransaction}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:dnf.v1.DeleteCharacterResponse)
-      com.dnfm.mina.protobuf.generated.DeleteCharacterResponseOrBuilder {
+      // @@protoc_insertion_point(builder_implements:dnf.v1.ProtocolTransaction)
+      com.dnfm.mina.protobuf.generated.ProtocolTransactionOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterResponse_descriptor;
+      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_ProtocolTransaction_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterResponse_fieldAccessorTable
+      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_ProtocolTransaction_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.class, com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.Builder.class);
+              com.dnfm.mina.protobuf.generated.ProtocolTransaction.class, com.dnfm.mina.protobuf.generated.ProtocolTransaction.Builder.class);
     }
 
-    // Construct using com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.newBuilder()
+    // Construct using com.dnfm.mina.protobuf.generated.ProtocolTransaction.newBuilder()
     private Builder() {
 
     }
@@ -299,26 +275,25 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      error_ = 0;
-      charguid_ = 0L;
-      pendingtime_ = 0L;
+      protocol_ = 0;
+      transactionid_ = 0;
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterResponse_descriptor;
+      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_ProtocolTransaction_descriptor;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.DeleteCharacterResponse getDefaultInstanceForType() {
-      return com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.getDefaultInstance();
+    public com.dnfm.mina.protobuf.generated.ProtocolTransaction getDefaultInstanceForType() {
+      return com.dnfm.mina.protobuf.generated.ProtocolTransaction.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.DeleteCharacterResponse build() {
-      com.dnfm.mina.protobuf.generated.DeleteCharacterResponse result = buildPartial();
+    public com.dnfm.mina.protobuf.generated.ProtocolTransaction build() {
+      com.dnfm.mina.protobuf.generated.ProtocolTransaction result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -326,46 +301,40 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.DeleteCharacterResponse buildPartial() {
-      com.dnfm.mina.protobuf.generated.DeleteCharacterResponse result = new com.dnfm.mina.protobuf.generated.DeleteCharacterResponse(this);
+    public com.dnfm.mina.protobuf.generated.ProtocolTransaction buildPartial() {
+      com.dnfm.mina.protobuf.generated.ProtocolTransaction result = new com.dnfm.mina.protobuf.generated.ProtocolTransaction(this);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    private void buildPartial0(com.dnfm.mina.protobuf.generated.DeleteCharacterResponse result) {
+    private void buildPartial0(com.dnfm.mina.protobuf.generated.ProtocolTransaction result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.error_ = error_;
+        result.protocol_ = protocol_;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.charguid_ = charguid_;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.pendingtime_ = pendingtime_;
+        result.transactionid_ = transactionid_;
       }
     }
 
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.dnfm.mina.protobuf.generated.DeleteCharacterResponse) {
-        return mergeFrom((com.dnfm.mina.protobuf.generated.DeleteCharacterResponse)other);
+      if (other instanceof com.dnfm.mina.protobuf.generated.ProtocolTransaction) {
+        return mergeFrom((com.dnfm.mina.protobuf.generated.ProtocolTransaction)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.DeleteCharacterResponse other) {
-      if (other == com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.getDefaultInstance()) return this;
-      if (other.getError() != 0) {
-        setError(other.getError());
+    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.ProtocolTransaction other) {
+      if (other == com.dnfm.mina.protobuf.generated.ProtocolTransaction.getDefaultInstance()) return this;
+      if (other.getProtocol() != 0) {
+        setProtocol(other.getProtocol());
       }
-      if (other.getCharguid() != 0L) {
-        setCharguid(other.getCharguid());
-      }
-      if (other.getPendingtime() != 0L) {
-        setPendingtime(other.getPendingtime());
+      if (other.getTransactionid() != 0) {
+        setTransactionid(other.getTransactionid());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -394,20 +363,15 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 8: {
-              error_ = input.readInt32();
+              protocol_ = input.readInt32();
               bitField0_ |= 0x00000001;
               break;
             } // case 8
             case 16: {
-              charguid_ = input.readUInt64();
+              transactionid_ = input.readInt32();
               bitField0_ |= 0x00000002;
               break;
             } // case 16
-            case 24: {
-              pendingtime_ = input.readInt64();
-              bitField0_ |= 0x00000004;
-              break;
-            } // case 24
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -425,119 +389,87 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private int error_ ;
+    private int protocol_ ;
     /**
-     * <code>int32 error = 1 [json_name = "error"];</code>
-     * @return The error.
+     * <code>int32 protocol = 1 [json_name = "protocol"];</code>
+     * @return The protocol.
      */
     @java.lang.Override
-    public int getError() {
-      return error_;
+    public int getProtocol() {
+      return protocol_;
     }
     /**
-     * <code>int32 error = 1 [json_name = "error"];</code>
-     * @param value The error to set.
+     * <code>int32 protocol = 1 [json_name = "protocol"];</code>
+     * @param value The protocol to set.
      * @return This builder for chaining.
      */
-    public Builder setError(int value) {
+    public Builder setProtocol(int value) {
 
-      error_ = value;
+      protocol_ = value;
       bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 error = 1 [json_name = "error"];</code>
+     * <code>int32 protocol = 1 [json_name = "protocol"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearError() {
+    public Builder clearProtocol() {
       bitField0_ = (bitField0_ & ~0x00000001);
-      error_ = 0;
+      protocol_ = 0;
       onChanged();
       return this;
     }
 
-    private long charguid_ ;
+    private int transactionid_ ;
     /**
-     * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
-     * @return The charguid.
+     * <code>int32 transactionid = 2 [json_name = "transactionid"];</code>
+     * @return The transactionid.
      */
     @java.lang.Override
-    public long getCharguid() {
-      return charguid_;
+    public int getTransactionid() {
+      return transactionid_;
     }
     /**
-     * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
-     * @param value The charguid to set.
+     * <code>int32 transactionid = 2 [json_name = "transactionid"];</code>
+     * @param value The transactionid to set.
      * @return This builder for chaining.
      */
-    public Builder setCharguid(long value) {
+    public Builder setTransactionid(int value) {
 
-      charguid_ = value;
+      transactionid_ = value;
       bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
-     * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
+     * <code>int32 transactionid = 2 [json_name = "transactionid"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearCharguid() {
+    public Builder clearTransactionid() {
       bitField0_ = (bitField0_ & ~0x00000002);
-      charguid_ = 0L;
+      transactionid_ = 0;
       onChanged();
       return this;
     }
 
-    private long pendingtime_ ;
-    /**
-     * <code>int64 pendingtime = 3 [json_name = "pendingtime"];</code>
-     * @return The pendingtime.
-     */
-    @java.lang.Override
-    public long getPendingtime() {
-      return pendingtime_;
-    }
-    /**
-     * <code>int64 pendingtime = 3 [json_name = "pendingtime"];</code>
-     * @param value The pendingtime to set.
-     * @return This builder for chaining.
-     */
-    public Builder setPendingtime(long value) {
-
-      pendingtime_ = value;
-      bitField0_ |= 0x00000004;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int64 pendingtime = 3 [json_name = "pendingtime"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearPendingtime() {
-      bitField0_ = (bitField0_ & ~0x00000004);
-      pendingtime_ = 0L;
-      onChanged();
-      return this;
-    }
-
-    // @@protoc_insertion_point(builder_scope:dnf.v1.DeleteCharacterResponse)
+    // @@protoc_insertion_point(builder_scope:dnf.v1.ProtocolTransaction)
   }
 
-  // @@protoc_insertion_point(class_scope:dnf.v1.DeleteCharacterResponse)
-  private static final com.dnfm.mina.protobuf.generated.DeleteCharacterResponse DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:dnf.v1.ProtocolTransaction)
+  private static final com.dnfm.mina.protobuf.generated.ProtocolTransaction DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.DeleteCharacterResponse();
+    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.ProtocolTransaction();
   }
 
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse getDefaultInstance() {
+  public static com.dnfm.mina.protobuf.generated.ProtocolTransaction getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<DeleteCharacterResponse>
-      PARSER = new com.google.protobuf.AbstractParser<DeleteCharacterResponse>() {
+  private static final com.google.protobuf.Parser<ProtocolTransaction>
+      PARSER = new com.google.protobuf.AbstractParser<ProtocolTransaction>() {
     @java.lang.Override
-    public DeleteCharacterResponse parsePartialFrom(
+    public ProtocolTransaction parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -556,17 +488,17 @@ private static final long serialVersionUID = 0L;
     }
   };
 
-  public static com.google.protobuf.Parser<DeleteCharacterResponse> parser() {
+  public static com.google.protobuf.Parser<ProtocolTransaction> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<DeleteCharacterResponse> getParserForType() {
+  public com.google.protobuf.Parser<ProtocolTransaction> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.DeleteCharacterResponse getDefaultInstanceForType() {
+  public com.dnfm.mina.protobuf.generated.ProtocolTransaction getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

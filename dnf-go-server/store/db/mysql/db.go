@@ -356,6 +356,39 @@ func (d *DB) ListRolesByAccount(ctx context.Context, accountID uint64) ([]*store
 	return d.ListRoles(ctx, &store.FindRole{AccountID: &accountID})
 }
 
+// GetRoleByName 根据角色名获取角色
+func (d *DB) GetRoleByName(ctx context.Context, name string) (*store.Role, error) {
+	query := `SELECT id, created_at, updated_at, row_status, account_id, role_id, name, job, level, exp, fatigue, max_fatigue, map_id, x, y, channel FROM role WHERE name = ? AND row_status = 'NORMAL' LIMIT 1`
+	row := d.db.QueryRowContext(ctx, query, name)
+
+	var role store.Role
+	var rowStatus string
+	err := row.Scan(
+		&role.ID, &role.CreatedAt, &role.UpdatedAt, &rowStatus,
+		&role.AccountID, &role.RoleID, &role.Name, &role.Job, &role.Level,
+		&role.Exp, &role.Fatigue, &role.MaxFatigue, &role.MapID, &role.X, &role.Y, &role.Channel,
+	)
+	if err == sql.ErrNoRows {
+		return nil, store.ErrNotFound
+	}
+	if err != nil {
+		return nil, fmt.Errorf("failed to get role by name: %w", err)
+	}
+	role.RowStatus = store.RowStatus(rowStatus)
+	return &role, nil
+}
+
+// CountRolesByAccount 获取账户的角色数量
+func (d *DB) CountRolesByAccount(ctx context.Context, accountID uint64) (int, error) {
+	query := `SELECT COUNT(*) FROM role WHERE account_id = ? AND row_status = 'NORMAL'`
+	var count int
+	err := d.db.QueryRowContext(ctx, query, accountID).Scan(&count)
+	if err != nil {
+		return 0, fmt.Errorf("failed to count roles: %w", err)
+	}
+	return count, nil
+}
+
 // UpdateRole 更新角色
 func (d *DB) UpdateRole(ctx context.Context, update *store.UpdateRole) (*store.Role, error) {
 	var sets []string

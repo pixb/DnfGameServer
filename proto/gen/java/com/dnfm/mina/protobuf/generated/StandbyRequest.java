@@ -7,16 +7,16 @@ package com.dnfm.mina.protobuf.generated;
 
 /**
  * <pre>
- * 删除角色请求 (module=10004, cmd=0)
+ * 待机请求 (module=10001, cmd=0)
  * </pre>
  *
- * Protobuf type {@code dnf.v1.DeleteCharacterRequest}
+ * Protobuf type {@code dnf.v1.StandbyRequest}
  */
 @com.google.protobuf.Generated
-public final class DeleteCharacterRequest extends
+public final class StandbyRequest extends
     com.google.protobuf.GeneratedMessage implements
-    // @@protoc_insertion_point(message_implements:dnf.v1.DeleteCharacterRequest)
-    DeleteCharacterRequestOrBuilder {
+    // @@protoc_insertion_point(message_implements:dnf.v1.StandbyRequest)
+    StandbyRequestOrBuilder {
 private static final long serialVersionUID = 0L;
   static {
     com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
@@ -25,37 +25,26 @@ private static final long serialVersionUID = 0L;
       /* minor= */ 33,
       /* patch= */ 5,
       /* suffix= */ "",
-      "DeleteCharacterRequest");
+      "StandbyRequest");
   }
-  // Use DeleteCharacterRequest.newBuilder() to construct.
-  private DeleteCharacterRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+  // Use StandbyRequest.newBuilder() to construct.
+  private StandbyRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
     super(builder);
   }
-  private DeleteCharacterRequest() {
+  private StandbyRequest() {
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterRequest_descriptor;
+    return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_StandbyRequest_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterRequest_fieldAccessorTable
+    return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_StandbyRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.dnfm.mina.protobuf.generated.DeleteCharacterRequest.class, com.dnfm.mina.protobuf.generated.DeleteCharacterRequest.Builder.class);
-  }
-
-  public static final int CHAR_GUID_FIELD_NUMBER = 1;
-  private long charGuid_ = 0L;
-  /**
-   * <code>int64 char_guid = 1 [json_name = "charGuid"];</code>
-   * @return The charGuid.
-   */
-  @java.lang.Override
-  public long getCharGuid() {
-    return charGuid_;
+            com.dnfm.mina.protobuf.generated.StandbyRequest.class, com.dnfm.mina.protobuf.generated.StandbyRequest.Builder.class);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -72,9 +61,6 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (charGuid_ != 0L) {
-      output.writeInt64(1, charGuid_);
-    }
     getUnknownFields().writeTo(output);
   }
 
@@ -84,10 +70,6 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (charGuid_ != 0L) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt64Size(1, charGuid_);
-    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -98,13 +80,11 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.dnfm.mina.protobuf.generated.DeleteCharacterRequest)) {
+    if (!(obj instanceof com.dnfm.mina.protobuf.generated.StandbyRequest)) {
       return super.equals(obj);
     }
-    com.dnfm.mina.protobuf.generated.DeleteCharacterRequest other = (com.dnfm.mina.protobuf.generated.DeleteCharacterRequest) obj;
+    com.dnfm.mina.protobuf.generated.StandbyRequest other = (com.dnfm.mina.protobuf.generated.StandbyRequest) obj;
 
-    if (getCharGuid()
-        != other.getCharGuid()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -116,52 +96,49 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + CHAR_GUID_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getCharGuid());
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterRequest parseFrom(
+  public static com.dnfm.mina.protobuf.generated.StandbyRequest parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterRequest parseFrom(
+  public static com.dnfm.mina.protobuf.generated.StandbyRequest parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterRequest parseFrom(
+  public static com.dnfm.mina.protobuf.generated.StandbyRequest parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterRequest parseFrom(
+  public static com.dnfm.mina.protobuf.generated.StandbyRequest parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterRequest parseFrom(byte[] data)
+  public static com.dnfm.mina.protobuf.generated.StandbyRequest parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterRequest parseFrom(
+  public static com.dnfm.mina.protobuf.generated.StandbyRequest parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterRequest parseFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.StandbyRequest parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterRequest parseFrom(
+  public static com.dnfm.mina.protobuf.generated.StandbyRequest parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -169,26 +146,26 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterRequest parseDelimitedFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.StandbyRequest parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input);
   }
 
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterRequest parseDelimitedFrom(
+  public static com.dnfm.mina.protobuf.generated.StandbyRequest parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterRequest parseFrom(
+  public static com.dnfm.mina.protobuf.generated.StandbyRequest parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterRequest parseFrom(
+  public static com.dnfm.mina.protobuf.generated.StandbyRequest parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -201,7 +178,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.DeleteCharacterRequest prototype) {
+  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.StandbyRequest prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -218,29 +195,29 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * 删除角色请求 (module=10004, cmd=0)
+   * 待机请求 (module=10001, cmd=0)
    * </pre>
    *
-   * Protobuf type {@code dnf.v1.DeleteCharacterRequest}
+   * Protobuf type {@code dnf.v1.StandbyRequest}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:dnf.v1.DeleteCharacterRequest)
-      com.dnfm.mina.protobuf.generated.DeleteCharacterRequestOrBuilder {
+      // @@protoc_insertion_point(builder_implements:dnf.v1.StandbyRequest)
+      com.dnfm.mina.protobuf.generated.StandbyRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterRequest_descriptor;
+      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_StandbyRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterRequest_fieldAccessorTable
+      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_StandbyRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.dnfm.mina.protobuf.generated.DeleteCharacterRequest.class, com.dnfm.mina.protobuf.generated.DeleteCharacterRequest.Builder.class);
+              com.dnfm.mina.protobuf.generated.StandbyRequest.class, com.dnfm.mina.protobuf.generated.StandbyRequest.Builder.class);
     }
 
-    // Construct using com.dnfm.mina.protobuf.generated.DeleteCharacterRequest.newBuilder()
+    // Construct using com.dnfm.mina.protobuf.generated.StandbyRequest.newBuilder()
     private Builder() {
 
     }
@@ -253,25 +230,23 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      bitField0_ = 0;
-      charGuid_ = 0L;
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterRequest_descriptor;
+      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_StandbyRequest_descriptor;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.DeleteCharacterRequest getDefaultInstanceForType() {
-      return com.dnfm.mina.protobuf.generated.DeleteCharacterRequest.getDefaultInstance();
+    public com.dnfm.mina.protobuf.generated.StandbyRequest getDefaultInstanceForType() {
+      return com.dnfm.mina.protobuf.generated.StandbyRequest.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.DeleteCharacterRequest build() {
-      com.dnfm.mina.protobuf.generated.DeleteCharacterRequest result = buildPartial();
+    public com.dnfm.mina.protobuf.generated.StandbyRequest build() {
+      com.dnfm.mina.protobuf.generated.StandbyRequest result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -279,35 +254,24 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.DeleteCharacterRequest buildPartial() {
-      com.dnfm.mina.protobuf.generated.DeleteCharacterRequest result = new com.dnfm.mina.protobuf.generated.DeleteCharacterRequest(this);
-      if (bitField0_ != 0) { buildPartial0(result); }
+    public com.dnfm.mina.protobuf.generated.StandbyRequest buildPartial() {
+      com.dnfm.mina.protobuf.generated.StandbyRequest result = new com.dnfm.mina.protobuf.generated.StandbyRequest(this);
       onBuilt();
       return result;
     }
 
-    private void buildPartial0(com.dnfm.mina.protobuf.generated.DeleteCharacterRequest result) {
-      int from_bitField0_ = bitField0_;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.charGuid_ = charGuid_;
-      }
-    }
-
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.dnfm.mina.protobuf.generated.DeleteCharacterRequest) {
-        return mergeFrom((com.dnfm.mina.protobuf.generated.DeleteCharacterRequest)other);
+      if (other instanceof com.dnfm.mina.protobuf.generated.StandbyRequest) {
+        return mergeFrom((com.dnfm.mina.protobuf.generated.StandbyRequest)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.DeleteCharacterRequest other) {
-      if (other == com.dnfm.mina.protobuf.generated.DeleteCharacterRequest.getDefaultInstance()) return this;
-      if (other.getCharGuid() != 0L) {
-        setCharGuid(other.getCharGuid());
-      }
+    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.StandbyRequest other) {
+      if (other == com.dnfm.mina.protobuf.generated.StandbyRequest.getDefaultInstance()) return this;
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -334,11 +298,6 @@ private static final long serialVersionUID = 0L;
             case 0:
               done = true;
               break;
-            case 8: {
-              charGuid_ = input.readInt64();
-              bitField0_ |= 0x00000001;
-              break;
-            } // case 8
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -354,57 +313,24 @@ private static final long serialVersionUID = 0L;
       } // finally
       return this;
     }
-    private int bitField0_;
 
-    private long charGuid_ ;
-    /**
-     * <code>int64 char_guid = 1 [json_name = "charGuid"];</code>
-     * @return The charGuid.
-     */
-    @java.lang.Override
-    public long getCharGuid() {
-      return charGuid_;
-    }
-    /**
-     * <code>int64 char_guid = 1 [json_name = "charGuid"];</code>
-     * @param value The charGuid to set.
-     * @return This builder for chaining.
-     */
-    public Builder setCharGuid(long value) {
-
-      charGuid_ = value;
-      bitField0_ |= 0x00000001;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int64 char_guid = 1 [json_name = "charGuid"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearCharGuid() {
-      bitField0_ = (bitField0_ & ~0x00000001);
-      charGuid_ = 0L;
-      onChanged();
-      return this;
-    }
-
-    // @@protoc_insertion_point(builder_scope:dnf.v1.DeleteCharacterRequest)
+    // @@protoc_insertion_point(builder_scope:dnf.v1.StandbyRequest)
   }
 
-  // @@protoc_insertion_point(class_scope:dnf.v1.DeleteCharacterRequest)
-  private static final com.dnfm.mina.protobuf.generated.DeleteCharacterRequest DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:dnf.v1.StandbyRequest)
+  private static final com.dnfm.mina.protobuf.generated.StandbyRequest DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.DeleteCharacterRequest();
+    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.StandbyRequest();
   }
 
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterRequest getDefaultInstance() {
+  public static com.dnfm.mina.protobuf.generated.StandbyRequest getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<DeleteCharacterRequest>
-      PARSER = new com.google.protobuf.AbstractParser<DeleteCharacterRequest>() {
+  private static final com.google.protobuf.Parser<StandbyRequest>
+      PARSER = new com.google.protobuf.AbstractParser<StandbyRequest>() {
     @java.lang.Override
-    public DeleteCharacterRequest parsePartialFrom(
+    public StandbyRequest parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -423,17 +349,17 @@ private static final long serialVersionUID = 0L;
     }
   };
 
-  public static com.google.protobuf.Parser<DeleteCharacterRequest> parser() {
+  public static com.google.protobuf.Parser<StandbyRequest> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<DeleteCharacterRequest> getParserForType() {
+  public com.google.protobuf.Parser<StandbyRequest> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.DeleteCharacterRequest getDefaultInstanceForType() {
+  public com.dnfm.mina.protobuf.generated.StandbyRequest getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

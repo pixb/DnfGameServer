@@ -139,7 +139,7 @@ message CreateCharacterRequest {
   string name = 2;
 }
 
-// 删除角色请求 (module=10004, cmd=1)
+// 删除角色请求 (module=10004, cmd=0)
 message DeleteCharacterRequest {
   int64 char_guid = 1;
 }
@@ -223,10 +223,11 @@ message CreateCharacterResponse {
   string name = 4;
 }
 
-// 删除角色响应 (module=10004, cmd=2)
+// 删除角色响应 (module=10004, cmd=1)
 message DeleteCharacterResponse {
   int32 error = 1;
-  int32 remain_seconds = 2;
+  uint64 charguid = 2;
+  int64 pendingtime = 3;
 }
 
 // 恢复删除角色响应 (module=10005, cmd=2)
@@ -288,4 +289,49 @@ message AllocateStatPointsResponse {
 // 转职任务完成响应 (module=10115, cmd=2)
 message CompleteJobQuestResponse {
   int32 error = 1;
+}
+
+// ========== 批次05新增消息 ==========
+
+// 待机请求 (module=10001, cmd=0)
+message StandbyRequest {
+}
+
+// 待机响应 (module=10001, cmd=1)
+message StandbyResponse {
+  int32 error = 1;
+  int32 standby = 2;
+  int32 vip = 3;
+  int32 reconnect = 4;
+}
+
+// 开始游戏请求 (module=10005, cmd=0)
+message StartGameRequest {
+  uint64 charguid = 1;
+  uint64 dungeonguid = 2;
+  string authkey = 3;
+  string accesstoken = 4;
+  string paytoken = 5;
+  uint32 town = 6;
+  uint32 area = 7;
+  int32 posx = 8;
+  int32 posy = 9;
+  repeated ProtocolTransaction request = 10;
+  uint64 partyguid = 11;
+}
+
+// 退出角色请求 (module=10007, cmd=0)
+message ExitCharacterRequest {
+  int32 world = 1;
+  int32 channel = 2;
+  int32 reservationtype = 3;
+  int32 exittype = 4;
+}
+
+// ========== 批次05新增数据结构 ==========
+
+// 协议事务
+message ProtocolTransaction {
+  int32 protocol = 1;
+  int32 transactionid = 2;
 }

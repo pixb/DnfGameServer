@@ -78,13 +78,19 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
             case 10000:
                 return adaptLoginRequest(body);
             case 10001:
-                return adaptLoginResponse(body);
+                return adaptStandbyRequest(body);
             case 10006:
                 return adaptPingRequest(body);
             case 10002:
                 return adaptCharacterListRequest(body);
             case 10003:
                 return adaptCreateCharacterRequest(body);
+            case 10004:
+                return adaptRemoveCharacterRequest(body);
+            case 10005:
+                return adaptStartGameRequest(body);
+            case 10007:
+                return adaptExitCharacterRequest(body);
             case 10008:
                 return adaptChannelListRequest(body);
             case 10011:
@@ -315,6 +321,87 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
         }
         
         System.out.println("===== StandardProtobufDecoder.adaptEnterChannelRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptStandbyRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptStandbyRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.StandbyRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.StandbyRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptStandbyRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_STANDBY oldRequest = new com.dnfm.mina.protobuf.REQ_STANDBY();
+        
+        System.out.println("===== StandardProtobufDecoder.adaptStandbyRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptRemoveCharacterRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptRemoveCharacterRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.DeleteCharacterRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.DeleteCharacterRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptRemoveCharacterRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_REMOVE_CHARACTER oldRequest = new com.dnfm.mina.protobuf.REQ_REMOVE_CHARACTER();
+        oldRequest.charguid = newRequest.getCharGuid();
+        
+        System.out.println("===== StandardProtobufDecoder.adaptRemoveCharacterRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptStartGameRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptStartGameRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.StartGameRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.StartGameRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptStartGameRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_START_GAME oldRequest = new com.dnfm.mina.protobuf.REQ_START_GAME();
+        oldRequest.charguid = newRequest.getCharguid();
+        oldRequest.dungeonguid = newRequest.getDungeonguid();
+        oldRequest.authkey = newRequest.getAuthkey();
+        oldRequest.accesstoken = newRequest.getAccesstoken();
+        oldRequest.paytoken = newRequest.getPaytoken();
+        oldRequest.town = (int) newRequest.getTown();
+        oldRequest.area = (int) newRequest.getArea();
+        oldRequest.posx = newRequest.getPosx();
+        oldRequest.posy = newRequest.getPosy();
+        oldRequest.partyguid = newRequest.getPartyguid();
+        
+        if (newRequest.getRequestList() != null) {
+            oldRequest.request = new java.util.ArrayList<>();
+            for (com.dnfm.mina.protobuf.generated.ProtocolTransaction newTransaction : newRequest.getRequestList()) {
+                com.dnfm.mina.protobuf.PT_PROTOCOL_TRANSACTION oldTransaction = new com.dnfm.mina.protobuf.PT_PROTOCOL_TRANSACTION();
+                oldTransaction.protocol = newTransaction.getProtocol();
+                oldTransaction.transactionid = newTransaction.getTransactionid();
+                oldRequest.request.add(oldTransaction);
+            }
+        }
+        
+        System.out.println("===== StandardProtobufDecoder.adaptStartGameRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+    
+    private Message adaptExitCharacterRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptExitCharacterRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.ExitCharacterRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.ExitCharacterRequest.parseFrom(body);
+        
+        System.out.println("===== StandardProtobufDecoder.adaptExitCharacterRequest() newRequest=" + newRequest + " =====");
+        
+        com.dnfm.mina.protobuf.REQ_EXIT_CHARACTER oldRequest = new com.dnfm.mina.protobuf.REQ_EXIT_CHARACTER();
+        oldRequest.world = newRequest.getWorld();
+        oldRequest.channel = newRequest.getChannel();
+        oldRequest.reservationtype = newRequest.getReservationtype();
+        oldRequest.exittype = newRequest.getExittype();
+        
+        System.out.println("===== StandardProtobufDecoder.adaptExitCharacterRequest() oldRequest=" + oldRequest + " =====");
         
         return oldRequest;
     }

@@ -2,6 +2,8 @@ package v1
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"github.com/pixb/DnfGameServer/dnf-go-server/server/auth"
@@ -11,19 +13,61 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
+// ==================== 错误码定义 ====================
+const (
+	ErrCodeSuccess          = 0
+	ErrCodeInvalidParam     = 1
+	ErrCodeAccountNotFound  = 2
+	ErrCodeRoleNameExists   = 3
+	ErrCodeRoleLimitReached = 4
+	ErrCodeInvalidRoleName  = 5
+	ErrCodeSystemError      = 99
+)
+
 // ==================== AuthService 实现 ====================
 
 // Login 登录
 func (s *APIV1Service) Login(ctx context.Context, req *dnfv1.LoginRequest) (*dnfv1.LoginResponse, error) {
-	// 1. 验证账户
+	// 1. 验证账户（如果不存在则自动创建）
 	account, err := s.Store.GetAccount(ctx, &store.FindAccount{
 		OpenID: &req.Openid,
 	})
 	if err != nil {
-		return nil, status.Errorf(codes.NotFound, "account not found")
+		if err == store.ErrNotFound {
+			// 自动创建账户
+			account, err = s.Store.CreateAccount(ctx, &store.Account{
+				OpenID:     req.Openid,
+				AccountKey: "",
+				AuthKey:    "",
+				Authority:  0,
+				Status:     0,
+			})
+			if err != nil {
+				return nil, status.Errorf(codes.Internal, "failed to create account: %v", err)
+			}
+		} else {
+			return nil, status.Errorf(codes.Internal, "failed to get account: %v", err)
+		}
 	}
 
-	// 2. 生成Token
+	// 2. 检查账户状态
+	if account.Status != 0 {
+		return nil, status.Errorf(codes.PermissionDenied, "account is banned")
+	}
+
+	// 3. 更新登录信息
+	now := time.Now().Unix()
+	_, err = s.Store.UpdateAccount(ctx, &store.UpdateAccount{
+		ID:          account.ID,
+		LastLoginAt: &now,
+		LastLoginIP: func() *string { s := "127.0.0.1"; return &s }(), // 实际应从context获取
+	})
+	if err != nil {
+		// 登录信息更新失败不应阻断登录流程，仅记录日志
+		fmt.Printf("warning: failed to update login info: %v\n", err)
+	}
+
+	// 4. 生成Token
 	accessToken, err := auth.GenerateAccessToken(account.ID, account.OpenID, 0, s.Secret)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to generate token")
@@ -34,17 +78,34 @@ func (s *APIV1Service) Login(ctx context.Context, req *dnfv1.LoginRequest) (*dnf
 		return nil, status.Errorf(codes.Internal, "failed to generate refresh token")
 	}
 
-	// 3. 返回响应
+	// 5. 返回响应（带频道列表）
 	return &dnfv1.LoginResponse{
-		Error:      0,
+		Error:      ErrCodeSuccess,
 		AuthKey:    accessToken,
 		AccountKey: refreshToken,
 		Encrypt:    true,
-		ServerTime: 1707123456,
-		LocalTime:  "2026-02-09 12:00:00",
+		ServerTime: uint32(now),
+		LocalTime:  time.Now().Format("2006-01-02 15:04:05"),
 		Authority:  uint32(account.Authority),
 		Key:        "session_key",
 		WorldId:    1,
+		Channels: []*dnfv1.ChannelInfo{
+			{
+				World:    1,
+				Channel:  1,
+				Ip:       "127.0.0.1",
+				Port:     9001,
+				Priority: 1,
+			},
+			{
+				World:    1,
+				Channel:  2,
+				Ip:       "127.0.0.1",
+				Port:     9002,
+				Priority: 2,
+			},
+		},
+		Seeds: []int32{12345, 67890, 11111, 22222, 33333, 44444, 55555, 66666},
 	}, nil
 }
 
@@ -59,7 +120,7 @@ func (s *APIV1Service) GetCharacterList(ctx context.Context, req *dnfv1.Characte
 	// 查询角色列表
 	roles, err := s.Store.ListRolesByAccount(ctx, claims.UserID)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to list roles")
+		return nil, status.Errorf(codes.Internal, "failed to list roles: %v", err)
 	}
 
 	// 转换为proto消息
@@ -78,7 +139,7 @@ func (s *APIV1Service) GetCharacterList(ctx context.Context, req *dnfv1.Characte
 	}
 
 	return &dnfv1.CharacterListResponse{
-		Error:      0,
+		Error:      ErrCodeSuccess,
 		Characters: characters,
 	}, nil
 }
@@ -90,21 +151,56 @@ func (s *APIV1Service) CreateCharacter(ctx context.Context, req *dnfv1.CreateCha
 		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
 	}
 
-	// 创建角色
-	role, err := s.Store.CreateRole(ctx, &store.Role{
-		AccountID: claims.UserID,
-		RoleID:    req.Slot,
-		Name:      req.Name,
-		Job:       req.Job,
-		Level:     1,
-		MapID:     1,
-	})
+	// 1. 验证角色名
+	if len(req.Name) < 2 || len(req.Name) > 12 {
+		return &dnfv1.CreateCharacterResponse{
+			Error: ErrCodeInvalidRoleName,
+		}, nil
+	}
+
+	// 2. 检查角色名是否已存在
+	_, err := s.Store.GetRoleByName(ctx, req.Name)
+	if err == nil {
+		return &dnfv1.CreateCharacterResponse{
+			Error: ErrCodeRoleNameExists,
+		}, nil
+	} else if err != store.ErrNotFound {
+		return nil, status.Errorf(codes.Internal, "failed to check role name: %v", err)
+	}
+
+	// 3. 检查角色数量限制（最多4个）
+	roleCount, err := s.Store.CountRolesByAccount(ctx, claims.UserID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to count roles: %v", err)
+	}
+	if roleCount >= 4 {
+		return &dnfv1.CreateCharacterResponse{
+			Error: ErrCodeRoleLimitReached,
+		}, nil
+	}
+
+	// 4. 检查槽位是否已被占用
+	slot := req.Slot
+	existingRoles, err := s.Store.ListRolesByAccount(ctx, claims.UserID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to list roles: %v", err)
+	}
+	for _, r := range existingRoles {
+		if r.RoleID == slot {
+			return &dnfv1.CreateCharacterResponse{
+				Error: ErrCodeInvalidParam,
+			}, nil
+		}
+	}
+
+	// 5. 创建角色（需要事务）
+	role, err := s.createRoleWithInitialization(ctx, claims.UserID, slot, req.Name, req.Job)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create role: %v", err)
 	}
 
 	return &dnfv1.CreateCharacterResponse{
-		Error:  0,
+		Error:  ErrCodeSuccess,
 		Uid:    int64(role.ID),
 		RoleId: int32(role.RoleID),
 		Name:   role.Name,
@@ -113,22 +209,167 @@ func (s *APIV1Service) CreateCharacter(ctx context.Context, req *dnfv1.CreateCha
 	}, nil
 }
 
+// createRoleWithInitialization 创建角色并初始化属性和货币
+func (s *APIV1Service) createRoleWithInitialization(ctx context.Context, accountID uint64, slot int32, name string, job int32) (*store.Role, error) {
+	// 创建角色
+	role, err := s.Store.CreateRole(ctx, &store.Role{
+		AccountID:  accountID,
+		RoleID:     slot,
+		Name:       name,
+		Job:        job,
+		Level:      1,
+		Exp:        0,
+		Fatigue:    100,
+		MaxFatigue: 100,
+		MapID:      1,
+		X:          0,
+		Y:          0,
+		Channel:    1,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("create role failed: %w", err)
+	}
+
+	// 初始化角色属性
+	_, err = s.Store.CreateRoleAttributes(ctx, &store.RoleAttributes{
+		RoleID:          role.ID,
+		HP:              100,
+		MaxHP:           100,
+		MP:              100,
+		MaxMP:           100,
+		Strength:        10,
+		Intelligence:    10,
+		Vitality:        10,
+		Spirit:          10,
+		PhysicalAttack:  10,
+		PhysicalDefense: 5,
+		MagicAttack:     10,
+		MagicDefense:    5,
+		MoveSpeed:       100,
+		AttackSpeed:     100,
+		CastSpeed:       100,
+	})
+	if err != nil {
+		// TODO: 应该回滚角色创建
+		return nil, fmt.Errorf("create role attributes failed: %w", err)
+	}
+
+	// 初始化角色货币
+	err = s.Store.UpdateRoleCurrency(ctx, &store.RoleCurrency{
+		RoleID:     role.ID,
+		Gold:       1000, // 初始金币
+		Coin:       0,
+		Fatigue:    100,
+		MaxFatigue: 100,
+	})
+	if err != nil {
+		// TODO: 应该回滚角色创建和属性创建
+		return nil, fmt.Errorf("create role currency failed: %w", err)
+	}
+
+	return role, nil
+}
+
 // SelectCharacter 选择角色
 func (s *APIV1Service) SelectCharacter(ctx context.Context, req *dnfv1.SelectCharacterRequest) (*dnfv1.SelectCharacterResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	// 验证角色存在且属于当前用户
+	roleID := uint64(req.Uid)
+	role, err := s.Store.GetRole(ctx, &store.FindRole{
+		FindBase: store.FindBase{ID: &roleID},
+	})
+	if err != nil {
+		if err == store.ErrNotFound {
+			return &dnfv1.SelectCharacterResponse{
+				Error: ErrCodeNotFound,
+			}, nil
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get role: %v", err)
+	}
+
+	// 验证角色归属
+	if role.AccountID != claims.UserID {
+		return nil, status.Errorf(codes.PermissionDenied, "role does not belong to user")
+	}
+
+	// 生成游戏服务器 Token
+	gameToken, err := auth.GenerateAccessToken(role.ID, claims.OpenID, int(role.Job), s.Secret)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to generate game token")
+	}
+
 	return &dnfv1.SelectCharacterResponse{
-		Error:      0,
+		Error:      ErrCodeSuccess,
 		ServerIp:   "127.0.0.1",
 		ServerPort: 9001,
-		AuthToken:  "game_token",
+		AuthToken:  gameToken,
 	}, nil
 }
 
-// ==================== GameService 实现 (简化版) ====================
+// ==================== GameService 实现 (占位) ====================
 
 // GetRoleInfo 获取角色信息
 func (s *APIV1Service) GetRoleInfo(ctx context.Context, req *dnfv1.GetRoleInfoRequest) (*dnfv1.GetRoleInfoResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	// 查询角色
+	roleID := uint64(req.Uid)
+	role, err := s.Store.GetRole(ctx, &store.FindRole{
+		FindBase: store.FindBase{ID: &roleID},
+	})
+	if err != nil {
+		if err == store.ErrNotFound {
+			return &dnfv1.GetRoleInfoResponse{Error: ErrCodeNotFound}, nil
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get role: %v", err)
+	}
+
+	// 验证角色归属
+	if role.AccountID != claims.UserID {
+		return nil, status.Errorf(codes.PermissionDenied, "role does not belong to user")
+	}
+
+	// 查询属性
+	attrs, _ := s.Store.GetRoleAttributes(ctx, role.ID)
+
+	// 查询货币
+	currency, _ := s.Store.GetRoleCurrency(ctx, role.ID)
+
 	return &dnfv1.GetRoleInfoResponse{
 		Error: 0,
+		BaseInfo: &dnfv1.RoleBaseInfo{
+			Uid:   int64(role.ID),
+			Name:  role.Name,
+			Job:   role.Job,
+			Level: role.Level,
+			Exp:   role.Exp,
+		},
+		BattleInfo: &dnfv1.RoleBattleInfo{
+			Hp:              attrs.HP,
+			MaxHp:           attrs.MaxHP,
+			Mp:              attrs.MP,
+			MaxMp:           attrs.MaxMP,
+			PhysicalAttack:  attrs.PhysicalAttack,
+			PhysicalDefense: attrs.PhysicalDefense,
+			MagicAttack:     attrs.MagicAttack,
+			MagicDefense:    attrs.MagicDefense,
+			MoveSpeed:       attrs.MoveSpeed,
+			AttackSpeed:     attrs.AttackSpeed,
+			CastSpeed:       attrs.CastSpeed,
+		},
+		Position: &dnfv1.RolePosition{
+			MapId: role.MapID,
+			X:     role.X,
+			Y:     role.Y,
+		},
+		Skills: nil,
 	}, nil
 }
 

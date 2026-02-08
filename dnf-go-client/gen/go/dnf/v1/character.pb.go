@@ -1076,7 +1076,7 @@ func (x *CreateCharacterRequest) GetName() string {
 	return ""
 }
 
-// 删除角色请求 (module=10004, cmd=1)
+// 删除角色请求 (module=10004, cmd=0)
 type DeleteCharacterRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CharGuid      int64                  `protobuf:"varint,1,opt,name=char_guid,json=charGuid,proto3" json:"char_guid,omitempty"`
@@ -1797,11 +1797,12 @@ func (x *CreateCharacterResponse) GetName() string {
 	return ""
 }
 
-// 删除角色响应 (module=10004, cmd=2)
+// 删除角色响应 (module=10004, cmd=1)
 type DeleteCharacterResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
-	RemainSeconds int32                  `protobuf:"varint,2,opt,name=remain_seconds,json=remainSeconds,proto3" json:"remain_seconds,omitempty"`
+	Charguid      uint64                 `protobuf:"varint,2,opt,name=charguid,proto3" json:"charguid,omitempty"`
+	Pendingtime   int64                  `protobuf:"varint,3,opt,name=pendingtime,proto3" json:"pendingtime,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1843,9 +1844,16 @@ func (x *DeleteCharacterResponse) GetError() int32 {
 	return 0
 }
 
-func (x *DeleteCharacterResponse) GetRemainSeconds() int32 {
+func (x *DeleteCharacterResponse) GetCharguid() uint64 {
 	if x != nil {
-		return x.RemainSeconds
+		return x.Charguid
+	}
+	return 0
+}
+
+func (x *DeleteCharacterResponse) GetPendingtime() int64 {
+	if x != nil {
+		return x.Pendingtime
 	}
 	return 0
 }
@@ -2388,6 +2396,359 @@ func (x *CompleteJobQuestResponse) GetError() int32 {
 	return 0
 }
 
+// 待机请求 (module=10001, cmd=0)
+type StandbyRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StandbyRequest) Reset() {
+	*x = StandbyRequest{}
+	mi := &file_dnf_v1_character_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StandbyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StandbyRequest) ProtoMessage() {}
+
+func (x *StandbyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_character_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StandbyRequest.ProtoReflect.Descriptor instead.
+func (*StandbyRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{35}
+}
+
+// 待机响应 (module=10001, cmd=1)
+type StandbyResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	Standby       int32                  `protobuf:"varint,2,opt,name=standby,proto3" json:"standby,omitempty"`
+	Vip           int32                  `protobuf:"varint,3,opt,name=vip,proto3" json:"vip,omitempty"`
+	Reconnect     int32                  `protobuf:"varint,4,opt,name=reconnect,proto3" json:"reconnect,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StandbyResponse) Reset() {
+	*x = StandbyResponse{}
+	mi := &file_dnf_v1_character_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StandbyResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StandbyResponse) ProtoMessage() {}
+
+func (x *StandbyResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_character_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StandbyResponse.ProtoReflect.Descriptor instead.
+func (*StandbyResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *StandbyResponse) GetError() int32 {
+	if x != nil {
+		return x.Error
+	}
+	return 0
+}
+
+func (x *StandbyResponse) GetStandby() int32 {
+	if x != nil {
+		return x.Standby
+	}
+	return 0
+}
+
+func (x *StandbyResponse) GetVip() int32 {
+	if x != nil {
+		return x.Vip
+	}
+	return 0
+}
+
+func (x *StandbyResponse) GetReconnect() int32 {
+	if x != nil {
+		return x.Reconnect
+	}
+	return 0
+}
+
+// 开始游戏请求 (module=10005, cmd=0)
+type StartGameRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Charguid      uint64                 `protobuf:"varint,1,opt,name=charguid,proto3" json:"charguid,omitempty"`
+	Dungeonguid   uint64                 `protobuf:"varint,2,opt,name=dungeonguid,proto3" json:"dungeonguid,omitempty"`
+	Authkey       string                 `protobuf:"bytes,3,opt,name=authkey,proto3" json:"authkey,omitempty"`
+	Accesstoken   string                 `protobuf:"bytes,4,opt,name=accesstoken,proto3" json:"accesstoken,omitempty"`
+	Paytoken      string                 `protobuf:"bytes,5,opt,name=paytoken,proto3" json:"paytoken,omitempty"`
+	Town          uint32                 `protobuf:"varint,6,opt,name=town,proto3" json:"town,omitempty"`
+	Area          uint32                 `protobuf:"varint,7,opt,name=area,proto3" json:"area,omitempty"`
+	Posx          int32                  `protobuf:"varint,8,opt,name=posx,proto3" json:"posx,omitempty"`
+	Posy          int32                  `protobuf:"varint,9,opt,name=posy,proto3" json:"posy,omitempty"`
+	Request       []*ProtocolTransaction `protobuf:"bytes,10,rep,name=request,proto3" json:"request,omitempty"`
+	Partyguid     uint64                 `protobuf:"varint,11,opt,name=partyguid,proto3" json:"partyguid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StartGameRequest) Reset() {
+	*x = StartGameRequest{}
+	mi := &file_dnf_v1_character_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StartGameRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StartGameRequest) ProtoMessage() {}
+
+func (x *StartGameRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_character_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StartGameRequest.ProtoReflect.Descriptor instead.
+func (*StartGameRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *StartGameRequest) GetCharguid() uint64 {
+	if x != nil {
+		return x.Charguid
+	}
+	return 0
+}
+
+func (x *StartGameRequest) GetDungeonguid() uint64 {
+	if x != nil {
+		return x.Dungeonguid
+	}
+	return 0
+}
+
+func (x *StartGameRequest) GetAuthkey() string {
+	if x != nil {
+		return x.Authkey
+	}
+	return ""
+}
+
+func (x *StartGameRequest) GetAccesstoken() string {
+	if x != nil {
+		return x.Accesstoken
+	}
+	return ""
+}
+
+func (x *StartGameRequest) GetPaytoken() string {
+	if x != nil {
+		return x.Paytoken
+	}
+	return ""
+}
+
+func (x *StartGameRequest) GetTown() uint32 {
+	if x != nil {
+		return x.Town
+	}
+	return 0
+}
+
+func (x *StartGameRequest) GetArea() uint32 {
+	if x != nil {
+		return x.Area
+	}
+	return 0
+}
+
+func (x *StartGameRequest) GetPosx() int32 {
+	if x != nil {
+		return x.Posx
+	}
+	return 0
+}
+
+func (x *StartGameRequest) GetPosy() int32 {
+	if x != nil {
+		return x.Posy
+	}
+	return 0
+}
+
+func (x *StartGameRequest) GetRequest() []*ProtocolTransaction {
+	if x != nil {
+		return x.Request
+	}
+	return nil
+}
+
+func (x *StartGameRequest) GetPartyguid() uint64 {
+	if x != nil {
+		return x.Partyguid
+	}
+	return 0
+}
+
+// 退出角色请求 (module=10007, cmd=0)
+type ExitCharacterRequest struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	World           int32                  `protobuf:"varint,1,opt,name=world,proto3" json:"world,omitempty"`
+	Channel         int32                  `protobuf:"varint,2,opt,name=channel,proto3" json:"channel,omitempty"`
+	Reservationtype int32                  `protobuf:"varint,3,opt,name=reservationtype,proto3" json:"reservationtype,omitempty"`
+	Exittype        int32                  `protobuf:"varint,4,opt,name=exittype,proto3" json:"exittype,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *ExitCharacterRequest) Reset() {
+	*x = ExitCharacterRequest{}
+	mi := &file_dnf_v1_character_proto_msgTypes[38]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExitCharacterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExitCharacterRequest) ProtoMessage() {}
+
+func (x *ExitCharacterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_character_proto_msgTypes[38]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExitCharacterRequest.ProtoReflect.Descriptor instead.
+func (*ExitCharacterRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{38}
+}
+
+func (x *ExitCharacterRequest) GetWorld() int32 {
+	if x != nil {
+		return x.World
+	}
+	return 0
+}
+
+func (x *ExitCharacterRequest) GetChannel() int32 {
+	if x != nil {
+		return x.Channel
+	}
+	return 0
+}
+
+func (x *ExitCharacterRequest) GetReservationtype() int32 {
+	if x != nil {
+		return x.Reservationtype
+	}
+	return 0
+}
+
+func (x *ExitCharacterRequest) GetExittype() int32 {
+	if x != nil {
+		return x.Exittype
+	}
+	return 0
+}
+
+// 协议事务
+type ProtocolTransaction struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Protocol      int32                  `protobuf:"varint,1,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	Transactionid int32                  `protobuf:"varint,2,opt,name=transactionid,proto3" json:"transactionid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProtocolTransaction) Reset() {
+	*x = ProtocolTransaction{}
+	mi := &file_dnf_v1_character_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProtocolTransaction) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProtocolTransaction) ProtoMessage() {}
+
+func (x *ProtocolTransaction) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_character_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProtocolTransaction.ProtoReflect.Descriptor instead.
+func (*ProtocolTransaction) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_character_proto_rawDescGZIP(), []int{39}
+}
+
+func (x *ProtocolTransaction) GetProtocol() int32 {
+	if x != nil {
+		return x.Protocol
+	}
+	return 0
+}
+
+func (x *ProtocolTransaction) GetTransactionid() int32 {
+	if x != nil {
+		return x.Transactionid
+	}
+	return 0
+}
+
 var File_dnf_v1_character_proto protoreflect.FileDescriptor
 
 const file_dnf_v1_character_proto_rawDesc = "" +
@@ -2547,10 +2908,11 @@ const file_dnf_v1_character_proto_rawDesc = "" +
 	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x1a\n" +
 	"\bcharguid\x18\x02 \x01(\x04R\bcharguid\x12\x10\n" +
 	"\x03job\x18\x03 \x01(\x05R\x03job\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\"V\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\"m\n" +
 	"\x17DeleteCharacterResponse\x12\x14\n" +
-	"\x05error\x18\x01 \x01(\x05R\x05error\x12%\n" +
-	"\x0eremain_seconds\x18\x02 \x01(\x05R\rremainSeconds\"0\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x1a\n" +
+	"\bcharguid\x18\x02 \x01(\x04R\bcharguid\x12 \n" +
+	"\vpendingtime\x18\x03 \x01(\x03R\vpendingtime\"0\n" +
 	"\x18RestoreCharacterResponse\x12\x14\n" +
 	"\x05error\x18\x01 \x01(\x05R\x05error\"3\n" +
 	"\x1bExitCharacterSelectResponse\x12\x14\n" +
@@ -2581,7 +2943,34 @@ const file_dnf_v1_character_proto_rawDesc = "" +
 	"\bstat_spr\x18\x05 \x01(\x05R\astatSpr\x12)\n" +
 	"\x10available_points\x18\x06 \x01(\x05R\x0favailablePoints\"0\n" +
 	"\x18CompleteJobQuestResponse\x12\x14\n" +
-	"\x05error\x18\x01 \x01(\x05R\x05errorB}\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\"\x10\n" +
+	"\x0eStandbyRequest\"q\n" +
+	"\x0fStandbyResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\astandby\x18\x02 \x01(\x05R\astandby\x12\x10\n" +
+	"\x03vip\x18\x03 \x01(\x05R\x03vip\x12\x1c\n" +
+	"\treconnect\x18\x04 \x01(\x05R\treconnect\"\xcd\x02\n" +
+	"\x10StartGameRequest\x12\x1a\n" +
+	"\bcharguid\x18\x01 \x01(\x04R\bcharguid\x12 \n" +
+	"\vdungeonguid\x18\x02 \x01(\x04R\vdungeonguid\x12\x18\n" +
+	"\aauthkey\x18\x03 \x01(\tR\aauthkey\x12 \n" +
+	"\vaccesstoken\x18\x04 \x01(\tR\vaccesstoken\x12\x1a\n" +
+	"\bpaytoken\x18\x05 \x01(\tR\bpaytoken\x12\x12\n" +
+	"\x04town\x18\x06 \x01(\rR\x04town\x12\x12\n" +
+	"\x04area\x18\a \x01(\rR\x04area\x12\x12\n" +
+	"\x04posx\x18\b \x01(\x05R\x04posx\x12\x12\n" +
+	"\x04posy\x18\t \x01(\x05R\x04posy\x125\n" +
+	"\arequest\x18\n" +
+	" \x03(\v2\x1b.dnf.v1.ProtocolTransactionR\arequest\x12\x1c\n" +
+	"\tpartyguid\x18\v \x01(\x04R\tpartyguid\"\x8c\x01\n" +
+	"\x14ExitCharacterRequest\x12\x14\n" +
+	"\x05world\x18\x01 \x01(\x05R\x05world\x12\x18\n" +
+	"\achannel\x18\x02 \x01(\x05R\achannel\x12(\n" +
+	"\x0freservationtype\x18\x03 \x01(\x05R\x0freservationtype\x12\x1a\n" +
+	"\bexittype\x18\x04 \x01(\x05R\bexittype\"W\n" +
+	"\x13ProtocolTransaction\x12\x1a\n" +
+	"\bprotocol\x18\x01 \x01(\x05R\bprotocol\x12$\n" +
+	"\rtransactionid\x18\x02 \x01(\x05R\rtransactionidB}\n" +
 	" com.dnfm.mina.protobuf.generatedB\x0eCharacterProtoP\x01Z\x10gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
 
 var (
@@ -2596,7 +2985,7 @@ func file_dnf_v1_character_proto_rawDescGZIP() []byte {
 	return file_dnf_v1_character_proto_rawDescData
 }
 
-var file_dnf_v1_character_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
+var file_dnf_v1_character_proto_msgTypes = make([]protoimpl.MessageInfo, 40)
 var file_dnf_v1_character_proto_goTypes = []any{
 	(*JobLimitInfo)(nil),                // 0: dnf.v1.JobLimitInfo
 	(*CharacterEquipIndex)(nil),         // 1: dnf.v1.CharacterEquipIndex
@@ -2633,6 +3022,11 @@ var file_dnf_v1_character_proto_goTypes = []any{
 	(*UpgradeSkillResponse)(nil),        // 32: dnf.v1.UpgradeSkillResponse
 	(*AllocateStatPointsResponse)(nil),  // 33: dnf.v1.AllocateStatPointsResponse
 	(*CompleteJobQuestResponse)(nil),    // 34: dnf.v1.CompleteJobQuestResponse
+	(*StandbyRequest)(nil),              // 35: dnf.v1.StandbyRequest
+	(*StandbyResponse)(nil),             // 36: dnf.v1.StandbyResponse
+	(*StartGameRequest)(nil),            // 37: dnf.v1.StartGameRequest
+	(*ExitCharacterRequest)(nil),        // 38: dnf.v1.ExitCharacterRequest
+	(*ProtocolTransaction)(nil),         // 39: dnf.v1.ProtocolTransaction
 }
 var file_dnf_v1_character_proto_depIdxs = []int32{
 	2,  // 0: dnf.v1.CharacterEquipIndexList.equiplist:type_name -> dnf.v1.EquipIndexSlot
@@ -2645,11 +3039,12 @@ var file_dnf_v1_character_proto_depIdxs = []int32{
 	8,  // 7: dnf.v1.SkillListResponse.skills:type_name -> dnf.v1.SkillInfo
 	8,  // 8: dnf.v1.LearnSkillResponse.skill:type_name -> dnf.v1.SkillInfo
 	8,  // 9: dnf.v1.UpgradeSkillResponse.skill:type_name -> dnf.v1.SkillInfo
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	39, // 10: dnf.v1.StartGameRequest.request:type_name -> dnf.v1.ProtocolTransaction
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_dnf_v1_character_proto_init() }
@@ -2664,7 +3059,7 @@ func file_dnf_v1_character_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dnf_v1_character_proto_rawDesc), len(file_dnf_v1_character_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   35,
+			NumMessages:   40,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

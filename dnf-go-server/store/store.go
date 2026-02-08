@@ -188,6 +188,16 @@ func (s *Store) ListRolesByAccount(ctx context.Context, accountID uint64) ([]*Ro
 	return s.driver.ListRolesByAccount(ctx, accountID)
 }
 
+// GetRoleByName 根据角色名获取角色
+func (s *Store) GetRoleByName(ctx context.Context, name string) (*Role, error) {
+	return s.driver.GetRoleByName(ctx, name)
+}
+
+// CountRolesByAccount 获取账户的角色数量
+func (s *Store) CountRolesByAccount(ctx context.Context, accountID uint64) (int, error) {
+	return s.driver.CountRolesByAccount(ctx, accountID)
+}
+
 // ==================== 角色属性Store方法 ====================
 
 // GetRoleAttributes 获取角色属性

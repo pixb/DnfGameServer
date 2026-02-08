@@ -7,16 +7,16 @@ package com.dnfm.mina.protobuf.generated;
 
 /**
  * <pre>
- * 删除角色响应 (module=10004, cmd=1)
+ * 退出角色请求 (module=10007, cmd=0)
  * </pre>
  *
- * Protobuf type {@code dnf.v1.DeleteCharacterResponse}
+ * Protobuf type {@code dnf.v1.ExitCharacterRequest}
  */
 @com.google.protobuf.Generated
-public final class DeleteCharacterResponse extends
+public final class ExitCharacterRequest extends
     com.google.protobuf.GeneratedMessage implements
-    // @@protoc_insertion_point(message_implements:dnf.v1.DeleteCharacterResponse)
-    DeleteCharacterResponseOrBuilder {
+    // @@protoc_insertion_point(message_implements:dnf.v1.ExitCharacterRequest)
+    ExitCharacterRequestOrBuilder {
 private static final long serialVersionUID = 0L;
   static {
     com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
@@ -25,59 +25,70 @@ private static final long serialVersionUID = 0L;
       /* minor= */ 33,
       /* patch= */ 5,
       /* suffix= */ "",
-      "DeleteCharacterResponse");
+      "ExitCharacterRequest");
   }
-  // Use DeleteCharacterResponse.newBuilder() to construct.
-  private DeleteCharacterResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+  // Use ExitCharacterRequest.newBuilder() to construct.
+  private ExitCharacterRequest(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
     super(builder);
   }
-  private DeleteCharacterResponse() {
+  private ExitCharacterRequest() {
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterResponse_descriptor;
+    return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_ExitCharacterRequest_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterResponse_fieldAccessorTable
+    return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_ExitCharacterRequest_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.class, com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.Builder.class);
+            com.dnfm.mina.protobuf.generated.ExitCharacterRequest.class, com.dnfm.mina.protobuf.generated.ExitCharacterRequest.Builder.class);
   }
 
-  public static final int ERROR_FIELD_NUMBER = 1;
-  private int error_ = 0;
+  public static final int WORLD_FIELD_NUMBER = 1;
+  private int world_ = 0;
   /**
-   * <code>int32 error = 1 [json_name = "error"];</code>
-   * @return The error.
+   * <code>int32 world = 1 [json_name = "world"];</code>
+   * @return The world.
    */
   @java.lang.Override
-  public int getError() {
-    return error_;
+  public int getWorld() {
+    return world_;
   }
 
-  public static final int CHARGUID_FIELD_NUMBER = 2;
-  private long charguid_ = 0L;
+  public static final int CHANNEL_FIELD_NUMBER = 2;
+  private int channel_ = 0;
   /**
-   * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
-   * @return The charguid.
+   * <code>int32 channel = 2 [json_name = "channel"];</code>
+   * @return The channel.
    */
   @java.lang.Override
-  public long getCharguid() {
-    return charguid_;
+  public int getChannel() {
+    return channel_;
   }
 
-  public static final int PENDINGTIME_FIELD_NUMBER = 3;
-  private long pendingtime_ = 0L;
+  public static final int RESERVATIONTYPE_FIELD_NUMBER = 3;
+  private int reservationtype_ = 0;
   /**
-   * <code>int64 pendingtime = 3 [json_name = "pendingtime"];</code>
-   * @return The pendingtime.
+   * <code>int32 reservationtype = 3 [json_name = "reservationtype"];</code>
+   * @return The reservationtype.
    */
   @java.lang.Override
-  public long getPendingtime() {
-    return pendingtime_;
+  public int getReservationtype() {
+    return reservationtype_;
+  }
+
+  public static final int EXITTYPE_FIELD_NUMBER = 4;
+  private int exittype_ = 0;
+  /**
+   * <code>int32 exittype = 4 [json_name = "exittype"];</code>
+   * @return The exittype.
+   */
+  @java.lang.Override
+  public int getExittype() {
+    return exittype_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -94,14 +105,17 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (error_ != 0) {
-      output.writeInt32(1, error_);
+    if (world_ != 0) {
+      output.writeInt32(1, world_);
     }
-    if (charguid_ != 0L) {
-      output.writeUInt64(2, charguid_);
+    if (channel_ != 0) {
+      output.writeInt32(2, channel_);
     }
-    if (pendingtime_ != 0L) {
-      output.writeInt64(3, pendingtime_);
+    if (reservationtype_ != 0) {
+      output.writeInt32(3, reservationtype_);
+    }
+    if (exittype_ != 0) {
+      output.writeInt32(4, exittype_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -112,17 +126,21 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (error_ != 0) {
+    if (world_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, error_);
+        .computeInt32Size(1, world_);
     }
-    if (charguid_ != 0L) {
+    if (channel_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeUInt64Size(2, charguid_);
+        .computeInt32Size(2, channel_);
     }
-    if (pendingtime_ != 0L) {
+    if (reservationtype_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt64Size(3, pendingtime_);
+        .computeInt32Size(3, reservationtype_);
+    }
+    if (exittype_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(4, exittype_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -134,17 +152,19 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.dnfm.mina.protobuf.generated.DeleteCharacterResponse)) {
+    if (!(obj instanceof com.dnfm.mina.protobuf.generated.ExitCharacterRequest)) {
       return super.equals(obj);
     }
-    com.dnfm.mina.protobuf.generated.DeleteCharacterResponse other = (com.dnfm.mina.protobuf.generated.DeleteCharacterResponse) obj;
+    com.dnfm.mina.protobuf.generated.ExitCharacterRequest other = (com.dnfm.mina.protobuf.generated.ExitCharacterRequest) obj;
 
-    if (getError()
-        != other.getError()) return false;
-    if (getCharguid()
-        != other.getCharguid()) return false;
-    if (getPendingtime()
-        != other.getPendingtime()) return false;
+    if (getWorld()
+        != other.getWorld()) return false;
+    if (getChannel()
+        != other.getChannel()) return false;
+    if (getReservationtype()
+        != other.getReservationtype()) return false;
+    if (getExittype()
+        != other.getExittype()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -156,57 +176,57 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + ERROR_FIELD_NUMBER;
-    hash = (53 * hash) + getError();
-    hash = (37 * hash) + CHARGUID_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getCharguid());
-    hash = (37 * hash) + PENDINGTIME_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getPendingtime());
+    hash = (37 * hash) + WORLD_FIELD_NUMBER;
+    hash = (53 * hash) + getWorld();
+    hash = (37 * hash) + CHANNEL_FIELD_NUMBER;
+    hash = (53 * hash) + getChannel();
+    hash = (37 * hash) + RESERVATIONTYPE_FIELD_NUMBER;
+    hash = (53 * hash) + getReservationtype();
+    hash = (37 * hash) + EXITTYPE_FIELD_NUMBER;
+    hash = (53 * hash) + getExittype();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ExitCharacterRequest parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ExitCharacterRequest parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ExitCharacterRequest parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ExitCharacterRequest parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(byte[] data)
+  public static com.dnfm.mina.protobuf.generated.ExitCharacterRequest parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ExitCharacterRequest parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.ExitCharacterRequest parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ExitCharacterRequest parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -214,26 +234,26 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseDelimitedFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.ExitCharacterRequest parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input);
   }
 
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseDelimitedFrom(
+  public static com.dnfm.mina.protobuf.generated.ExitCharacterRequest parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ExitCharacterRequest parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse parseFrom(
+  public static com.dnfm.mina.protobuf.generated.ExitCharacterRequest parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -246,7 +266,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.DeleteCharacterResponse prototype) {
+  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.ExitCharacterRequest prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -263,29 +283,29 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * 删除角色响应 (module=10004, cmd=1)
+   * 退出角色请求 (module=10007, cmd=0)
    * </pre>
    *
-   * Protobuf type {@code dnf.v1.DeleteCharacterResponse}
+   * Protobuf type {@code dnf.v1.ExitCharacterRequest}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:dnf.v1.DeleteCharacterResponse)
-      com.dnfm.mina.protobuf.generated.DeleteCharacterResponseOrBuilder {
+      // @@protoc_insertion_point(builder_implements:dnf.v1.ExitCharacterRequest)
+      com.dnfm.mina.protobuf.generated.ExitCharacterRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterResponse_descriptor;
+      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_ExitCharacterRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterResponse_fieldAccessorTable
+      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_ExitCharacterRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.class, com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.Builder.class);
+              com.dnfm.mina.protobuf.generated.ExitCharacterRequest.class, com.dnfm.mina.protobuf.generated.ExitCharacterRequest.Builder.class);
     }
 
-    // Construct using com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.newBuilder()
+    // Construct using com.dnfm.mina.protobuf.generated.ExitCharacterRequest.newBuilder()
     private Builder() {
 
     }
@@ -299,26 +319,27 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      error_ = 0;
-      charguid_ = 0L;
-      pendingtime_ = 0L;
+      world_ = 0;
+      channel_ = 0;
+      reservationtype_ = 0;
+      exittype_ = 0;
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_DeleteCharacterResponse_descriptor;
+      return com.dnfm.mina.protobuf.generated.CharacterProto.internal_static_dnf_v1_ExitCharacterRequest_descriptor;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.DeleteCharacterResponse getDefaultInstanceForType() {
-      return com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.getDefaultInstance();
+    public com.dnfm.mina.protobuf.generated.ExitCharacterRequest getDefaultInstanceForType() {
+      return com.dnfm.mina.protobuf.generated.ExitCharacterRequest.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.DeleteCharacterResponse build() {
-      com.dnfm.mina.protobuf.generated.DeleteCharacterResponse result = buildPartial();
+    public com.dnfm.mina.protobuf.generated.ExitCharacterRequest build() {
+      com.dnfm.mina.protobuf.generated.ExitCharacterRequest result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -326,46 +347,52 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.DeleteCharacterResponse buildPartial() {
-      com.dnfm.mina.protobuf.generated.DeleteCharacterResponse result = new com.dnfm.mina.protobuf.generated.DeleteCharacterResponse(this);
+    public com.dnfm.mina.protobuf.generated.ExitCharacterRequest buildPartial() {
+      com.dnfm.mina.protobuf.generated.ExitCharacterRequest result = new com.dnfm.mina.protobuf.generated.ExitCharacterRequest(this);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    private void buildPartial0(com.dnfm.mina.protobuf.generated.DeleteCharacterResponse result) {
+    private void buildPartial0(com.dnfm.mina.protobuf.generated.ExitCharacterRequest result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.error_ = error_;
+        result.world_ = world_;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.charguid_ = charguid_;
+        result.channel_ = channel_;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.pendingtime_ = pendingtime_;
+        result.reservationtype_ = reservationtype_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.exittype_ = exittype_;
       }
     }
 
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.dnfm.mina.protobuf.generated.DeleteCharacterResponse) {
-        return mergeFrom((com.dnfm.mina.protobuf.generated.DeleteCharacterResponse)other);
+      if (other instanceof com.dnfm.mina.protobuf.generated.ExitCharacterRequest) {
+        return mergeFrom((com.dnfm.mina.protobuf.generated.ExitCharacterRequest)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.DeleteCharacterResponse other) {
-      if (other == com.dnfm.mina.protobuf.generated.DeleteCharacterResponse.getDefaultInstance()) return this;
-      if (other.getError() != 0) {
-        setError(other.getError());
+    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.ExitCharacterRequest other) {
+      if (other == com.dnfm.mina.protobuf.generated.ExitCharacterRequest.getDefaultInstance()) return this;
+      if (other.getWorld() != 0) {
+        setWorld(other.getWorld());
       }
-      if (other.getCharguid() != 0L) {
-        setCharguid(other.getCharguid());
+      if (other.getChannel() != 0) {
+        setChannel(other.getChannel());
       }
-      if (other.getPendingtime() != 0L) {
-        setPendingtime(other.getPendingtime());
+      if (other.getReservationtype() != 0) {
+        setReservationtype(other.getReservationtype());
+      }
+      if (other.getExittype() != 0) {
+        setExittype(other.getExittype());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -394,20 +421,25 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 8: {
-              error_ = input.readInt32();
+              world_ = input.readInt32();
               bitField0_ |= 0x00000001;
               break;
             } // case 8
             case 16: {
-              charguid_ = input.readUInt64();
+              channel_ = input.readInt32();
               bitField0_ |= 0x00000002;
               break;
             } // case 16
             case 24: {
-              pendingtime_ = input.readInt64();
+              reservationtype_ = input.readInt32();
               bitField0_ |= 0x00000004;
               break;
             } // case 24
+            case 32: {
+              exittype_ = input.readInt32();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -425,119 +457,151 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private int error_ ;
+    private int world_ ;
     /**
-     * <code>int32 error = 1 [json_name = "error"];</code>
-     * @return The error.
+     * <code>int32 world = 1 [json_name = "world"];</code>
+     * @return The world.
      */
     @java.lang.Override
-    public int getError() {
-      return error_;
+    public int getWorld() {
+      return world_;
     }
     /**
-     * <code>int32 error = 1 [json_name = "error"];</code>
-     * @param value The error to set.
+     * <code>int32 world = 1 [json_name = "world"];</code>
+     * @param value The world to set.
      * @return This builder for chaining.
      */
-    public Builder setError(int value) {
+    public Builder setWorld(int value) {
 
-      error_ = value;
+      world_ = value;
       bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 error = 1 [json_name = "error"];</code>
+     * <code>int32 world = 1 [json_name = "world"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearError() {
+    public Builder clearWorld() {
       bitField0_ = (bitField0_ & ~0x00000001);
-      error_ = 0;
+      world_ = 0;
       onChanged();
       return this;
     }
 
-    private long charguid_ ;
+    private int channel_ ;
     /**
-     * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
-     * @return The charguid.
+     * <code>int32 channel = 2 [json_name = "channel"];</code>
+     * @return The channel.
      */
     @java.lang.Override
-    public long getCharguid() {
-      return charguid_;
+    public int getChannel() {
+      return channel_;
     }
     /**
-     * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
-     * @param value The charguid to set.
+     * <code>int32 channel = 2 [json_name = "channel"];</code>
+     * @param value The channel to set.
      * @return This builder for chaining.
      */
-    public Builder setCharguid(long value) {
+    public Builder setChannel(int value) {
 
-      charguid_ = value;
+      channel_ = value;
       bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
-     * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
+     * <code>int32 channel = 2 [json_name = "channel"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearCharguid() {
+    public Builder clearChannel() {
       bitField0_ = (bitField0_ & ~0x00000002);
-      charguid_ = 0L;
+      channel_ = 0;
       onChanged();
       return this;
     }
 
-    private long pendingtime_ ;
+    private int reservationtype_ ;
     /**
-     * <code>int64 pendingtime = 3 [json_name = "pendingtime"];</code>
-     * @return The pendingtime.
+     * <code>int32 reservationtype = 3 [json_name = "reservationtype"];</code>
+     * @return The reservationtype.
      */
     @java.lang.Override
-    public long getPendingtime() {
-      return pendingtime_;
+    public int getReservationtype() {
+      return reservationtype_;
     }
     /**
-     * <code>int64 pendingtime = 3 [json_name = "pendingtime"];</code>
-     * @param value The pendingtime to set.
+     * <code>int32 reservationtype = 3 [json_name = "reservationtype"];</code>
+     * @param value The reservationtype to set.
      * @return This builder for chaining.
      */
-    public Builder setPendingtime(long value) {
+    public Builder setReservationtype(int value) {
 
-      pendingtime_ = value;
+      reservationtype_ = value;
       bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
     /**
-     * <code>int64 pendingtime = 3 [json_name = "pendingtime"];</code>
+     * <code>int32 reservationtype = 3 [json_name = "reservationtype"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearPendingtime() {
+    public Builder clearReservationtype() {
       bitField0_ = (bitField0_ & ~0x00000004);
-      pendingtime_ = 0L;
+      reservationtype_ = 0;
       onChanged();
       return this;
     }
 
-    // @@protoc_insertion_point(builder_scope:dnf.v1.DeleteCharacterResponse)
+    private int exittype_ ;
+    /**
+     * <code>int32 exittype = 4 [json_name = "exittype"];</code>
+     * @return The exittype.
+     */
+    @java.lang.Override
+    public int getExittype() {
+      return exittype_;
+    }
+    /**
+     * <code>int32 exittype = 4 [json_name = "exittype"];</code>
+     * @param value The exittype to set.
+     * @return This builder for chaining.
+     */
+    public Builder setExittype(int value) {
+
+      exittype_ = value;
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 exittype = 4 [json_name = "exittype"];</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearExittype() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      exittype_ = 0;
+      onChanged();
+      return this;
+    }
+
+    // @@protoc_insertion_point(builder_scope:dnf.v1.ExitCharacterRequest)
   }
 
-  // @@protoc_insertion_point(class_scope:dnf.v1.DeleteCharacterResponse)
-  private static final com.dnfm.mina.protobuf.generated.DeleteCharacterResponse DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:dnf.v1.ExitCharacterRequest)
+  private static final com.dnfm.mina.protobuf.generated.ExitCharacterRequest DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.DeleteCharacterResponse();
+    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.ExitCharacterRequest();
   }
 
-  public static com.dnfm.mina.protobuf.generated.DeleteCharacterResponse getDefaultInstance() {
+  public static com.dnfm.mina.protobuf.generated.ExitCharacterRequest getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<DeleteCharacterResponse>
-      PARSER = new com.google.protobuf.AbstractParser<DeleteCharacterResponse>() {
+  private static final com.google.protobuf.Parser<ExitCharacterRequest>
+      PARSER = new com.google.protobuf.AbstractParser<ExitCharacterRequest>() {
     @java.lang.Override
-    public DeleteCharacterResponse parsePartialFrom(
+    public ExitCharacterRequest parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -556,17 +620,17 @@ private static final long serialVersionUID = 0L;
     }
   };
 
-  public static com.google.protobuf.Parser<DeleteCharacterResponse> parser() {
+  public static com.google.protobuf.Parser<ExitCharacterRequest> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<DeleteCharacterResponse> getParserForType() {
+  public com.google.protobuf.Parser<ExitCharacterRequest> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.DeleteCharacterResponse getDefaultInstanceForType() {
+  public com.dnfm.mina.protobuf.generated.ExitCharacterRequest getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

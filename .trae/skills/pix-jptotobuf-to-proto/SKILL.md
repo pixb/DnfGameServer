@@ -10,7 +10,7 @@ description: This skill should be used when user asks to migrate from JProtobuf 
 | 属性 | 值 |
 | :--- | :--- |
 | **名称** | pix-jptotobuf-to-proto |
-| **版本** | 1.2.0 |
+| **版本** | 1.3.0 |
 | **类型** | 工具技能 (Tool Skill) |
 | **核心功能** | JProtobuf 到标准 Protobuf 迁移 |
 | **适用环境** | Trae |
@@ -91,6 +91,20 @@ pix-jptotobuf-to-proto 会提供：
   - 修复CreateCharacter消息的CMD值和字段定义
   - 新增channel.proto文件定义频道相关消息
   - 处理复杂嵌套结构（ClientInfo包含枚举类型）
+  - 验证了跨语言通信正确性
+  - Go单元测试9个测试用例全部通过
+  - 编解码测试验证了跨语言通信
+
+### 批次05: STANDBY (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_STANDBY.java, RES_STANDBY.java, REQ_REMOVE_CHARACTER.java, RES_REMOVE_CHARACTER.java, REQ_START_GAME.java, REQ_EXIT_CHARACTER.java
+- **状态**: ✅ 完成
+- **文档**: [批次05文档](../../devdoc/protobuf/batch_05/)
+- **成果**: 
+  - 成功迁移待机、删除角色、开始游戏、退出角色消息
+  - 修复DeleteCharacter消息的CMD值和字段定义
+  - 新增Standby、StartGame、ExitCharacter消息
+  - 处理复杂嵌套结构（StartGameRequest包含ProtocolTransaction列表）
   - 验证了跨语言通信正确性
   - Go单元测试9个测试用例全部通过
   - 编解码测试验证了跨语言通信

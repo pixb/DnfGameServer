@@ -71,9 +71,11 @@ type Driver interface {
 	CreateRole(ctx context.Context, create *Role) (*Role, error)
 	UpdateRole(ctx context.Context, update *UpdateRole) (*Role, error)
 	GetRole(ctx context.Context, find *FindRole) (*Role, error)
+	GetRoleByName(ctx context.Context, name string) (*Role, error)
 	ListRoles(ctx context.Context, find *FindRole) ([]*Role, error)
 	ListRolesByAccount(ctx context.Context, accountID uint64) ([]*Role, error)
 	DeleteRole(ctx context.Context, delete *DeleteRole) error
+	CountRolesByAccount(ctx context.Context, accountID uint64) (int, error)
 
 	// ==================== 角色属性 ====================
 	CreateRoleAttributes(ctx context.Context, create *RoleAttributes) (*RoleAttributes, error)

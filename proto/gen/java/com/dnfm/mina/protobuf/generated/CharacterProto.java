@@ -201,6 +201,31 @@ public final class CharacterProto extends com.google.protobuf.GeneratedFile {
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_CompleteJobQuestResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_StandbyRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_StandbyRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_StandbyResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_StandbyResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_StartGameRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_StartGameRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ExitCharacterRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ExitCharacterRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ProtocolTransaction_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ProtocolTransaction_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -306,34 +331,52 @@ public final class CharacterProto extends com.google.protobuf.GeneratedFile {
       "_blacklist\030\014 \001(\tR\027ignoreContentsBlacklis" +
       "t\"q\n\027CreateCharacterResponse\022\024\n\005error\030\001 " +
       "\001(\005R\005error\022\032\n\010charguid\030\002 \001(\004R\010charguid\022\020" +
-      "\n\003job\030\003 \001(\005R\003job\022\022\n\004name\030\004 \001(\tR\004name\"V\n\027" +
+      "\n\003job\030\003 \001(\005R\003job\022\022\n\004name\030\004 \001(\tR\004name\"m\n\027" +
       "DeleteCharacterResponse\022\024\n\005error\030\001 \001(\005R\005" +
-      "error\022%\n\016remain_seconds\030\002 \001(\005R\rremainSec" +
-      "onds\"0\n\030RestoreCharacterResponse\022\024\n\005erro" +
-      "r\030\001 \001(\005R\005error\"3\n\033ExitCharacterSelectRes" +
-      "ponse\022\024\n\005error\030\001 \001(\005R\005error\"e\n\030GetCharac" +
-      "terInfoResponse\022\024\n\005error\030\001 \001(\005R\005error\0223\n" +
-      "\006detail\030\002 \001(\0132\033.dnf.v1.CharacterDetailIn" +
-      "foR\006detail\"B\n\021ChangeJobResponse\022\024\n\005error" +
-      "\030\001 \001(\005R\005error\022\027\n\007new_job\030\002 \001(\005R\006newJob\"?" +
-      "\n\016AwakenResponse\022\024\n\005error\030\001 \001(\005R\005error\022\027" +
-      "\n\007new_job\030\002 \001(\005R\006newJob\"T\n\021SkillListResp" +
-      "onse\022\024\n\005error\030\001 \001(\005R\005error\022)\n\006skills\030\002 \003" +
-      "(\0132\021.dnf.v1.SkillInfoR\006skills\"S\n\022LearnSk" +
-      "illResponse\022\024\n\005error\030\001 \001(\005R\005error\022\'\n\005ski" +
-      "ll\030\002 \001(\0132\021.dnf.v1.SkillInfoR\005skill\"U\n\024Up" +
-      "gradeSkillResponse\022\024\n\005error\030\001 \001(\005R\005error" +
-      "\022\'\n\005skill\030\002 \001(\0132\021.dnf.v1.SkillInfoR\005skil" +
-      "l\"\311\001\n\032AllocateStatPointsResponse\022\024\n\005erro" +
-      "r\030\001 \001(\005R\005error\022\031\n\010stat_str\030\002 \001(\005R\007statSt" +
-      "r\022\031\n\010stat_int\030\003 \001(\005R\007statInt\022\031\n\010stat_vit" +
-      "\030\004 \001(\005R\007statVit\022\031\n\010stat_spr\030\005 \001(\005R\007statS" +
-      "pr\022)\n\020available_points\030\006 \001(\005R\017availableP" +
-      "oints\"0\n\030CompleteJobQuestResponse\022\024\n\005err" +
-      "or\030\001 \001(\005R\005errorB}\n com.dnfm.mina.protobu" +
-      "f.generatedB\016CharacterProtoP\001Z\020gen/dnf/v" +
-      "1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1" +
-      "\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
+      "error\022\032\n\010charguid\030\002 \001(\004R\010charguid\022 \n\013pen" +
+      "dingtime\030\003 \001(\003R\013pendingtime\"0\n\030RestoreCh" +
+      "aracterResponse\022\024\n\005error\030\001 \001(\005R\005error\"3\n" +
+      "\033ExitCharacterSelectResponse\022\024\n\005error\030\001 " +
+      "\001(\005R\005error\"e\n\030GetCharacterInfoResponse\022\024" +
+      "\n\005error\030\001 \001(\005R\005error\0223\n\006detail\030\002 \001(\0132\033.d" +
+      "nf.v1.CharacterDetailInfoR\006detail\"B\n\021Cha" +
+      "ngeJobResponse\022\024\n\005error\030\001 \001(\005R\005error\022\027\n\007" +
+      "new_job\030\002 \001(\005R\006newJob\"?\n\016AwakenResponse\022" +
+      "\024\n\005error\030\001 \001(\005R\005error\022\027\n\007new_job\030\002 \001(\005R\006" +
+      "newJob\"T\n\021SkillListResponse\022\024\n\005error\030\001 \001" +
+      "(\005R\005error\022)\n\006skills\030\002 \003(\0132\021.dnf.v1.Skill" +
+      "InfoR\006skills\"S\n\022LearnSkillResponse\022\024\n\005er" +
+      "ror\030\001 \001(\005R\005error\022\'\n\005skill\030\002 \001(\0132\021.dnf.v1" +
+      ".SkillInfoR\005skill\"U\n\024UpgradeSkillRespons" +
+      "e\022\024\n\005error\030\001 \001(\005R\005error\022\'\n\005skill\030\002 \001(\0132\021" +
+      ".dnf.v1.SkillInfoR\005skill\"\311\001\n\032AllocateSta" +
+      "tPointsResponse\022\024\n\005error\030\001 \001(\005R\005error\022\031\n" +
+      "\010stat_str\030\002 \001(\005R\007statStr\022\031\n\010stat_int\030\003 \001" +
+      "(\005R\007statInt\022\031\n\010stat_vit\030\004 \001(\005R\007statVit\022\031" +
+      "\n\010stat_spr\030\005 \001(\005R\007statSpr\022)\n\020available_p" +
+      "oints\030\006 \001(\005R\017availablePoints\"0\n\030Complete" +
+      "JobQuestResponse\022\024\n\005error\030\001 \001(\005R\005error\"\020" +
+      "\n\016StandbyRequest\"q\n\017StandbyResponse\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\030\n\007standby\030\002 \001(\005R\007stan" +
+      "dby\022\020\n\003vip\030\003 \001(\005R\003vip\022\034\n\treconnect\030\004 \001(\005" +
+      "R\treconnect\"\315\002\n\020StartGameRequest\022\032\n\010char" +
+      "guid\030\001 \001(\004R\010charguid\022 \n\013dungeonguid\030\002 \001(" +
+      "\004R\013dungeonguid\022\030\n\007authkey\030\003 \001(\tR\007authkey" +
+      "\022 \n\013accesstoken\030\004 \001(\tR\013accesstoken\022\032\n\010pa" +
+      "ytoken\030\005 \001(\tR\010paytoken\022\022\n\004town\030\006 \001(\rR\004to" +
+      "wn\022\022\n\004area\030\007 \001(\rR\004area\022\022\n\004posx\030\010 \001(\005R\004po" +
+      "sx\022\022\n\004posy\030\t \001(\005R\004posy\0225\n\007request\030\n \003(\0132" +
+      "\033.dnf.v1.ProtocolTransactionR\007request\022\034\n" +
+      "\tpartyguid\030\013 \001(\004R\tpartyguid\"\214\001\n\024ExitChar" +
+      "acterRequest\022\024\n\005world\030\001 \001(\005R\005world\022\030\n\007ch" +
+      "annel\030\002 \001(\005R\007channel\022(\n\017reservationtype\030" +
+      "\003 \001(\005R\017reservationtype\022\032\n\010exittype\030\004 \001(\005" +
+      "R\010exittype\"W\n\023ProtocolTransaction\022\032\n\010pro" +
+      "tocol\030\001 \001(\005R\010protocol\022$\n\rtransactionid\030\002" +
+      " \001(\005R\rtransactionidB}\n com.dnfm.mina.pro" +
+      "tobuf.generatedB\016CharacterProtoP\001Z\020gen/d" +
+      "nf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dn" +
+      "f\\V1\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -489,7 +532,7 @@ public final class CharacterProto extends com.google.protobuf.GeneratedFile {
     internal_static_dnf_v1_DeleteCharacterResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_DeleteCharacterResponse_descriptor,
-        new java.lang.String[] { "Error", "RemainSeconds", });
+        new java.lang.String[] { "Error", "Charguid", "Pendingtime", });
     internal_static_dnf_v1_RestoreCharacterResponse_descriptor =
       getDescriptor().getMessageType(25);
     internal_static_dnf_v1_RestoreCharacterResponse_fieldAccessorTable = new
@@ -550,6 +593,36 @@ public final class CharacterProto extends com.google.protobuf.GeneratedFile {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CompleteJobQuestResponse_descriptor,
         new java.lang.String[] { "Error", });
+    internal_static_dnf_v1_StandbyRequest_descriptor =
+      getDescriptor().getMessageType(35);
+    internal_static_dnf_v1_StandbyRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_StandbyRequest_descriptor,
+        new java.lang.String[] { });
+    internal_static_dnf_v1_StandbyResponse_descriptor =
+      getDescriptor().getMessageType(36);
+    internal_static_dnf_v1_StandbyResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_StandbyResponse_descriptor,
+        new java.lang.String[] { "Error", "Standby", "Vip", "Reconnect", });
+    internal_static_dnf_v1_StartGameRequest_descriptor =
+      getDescriptor().getMessageType(37);
+    internal_static_dnf_v1_StartGameRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_StartGameRequest_descriptor,
+        new java.lang.String[] { "Charguid", "Dungeonguid", "Authkey", "Accesstoken", "Paytoken", "Town", "Area", "Posx", "Posy", "Request", "Partyguid", });
+    internal_static_dnf_v1_ExitCharacterRequest_descriptor =
+      getDescriptor().getMessageType(38);
+    internal_static_dnf_v1_ExitCharacterRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ExitCharacterRequest_descriptor,
+        new java.lang.String[] { "World", "Channel", "Reservationtype", "Exittype", });
+    internal_static_dnf_v1_ProtocolTransaction_descriptor =
+      getDescriptor().getMessageType(39);
+    internal_static_dnf_v1_ProtocolTransaction_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ProtocolTransaction_descriptor,
+        new java.lang.String[] { "Protocol", "Transactionid", });
     descriptor.resolveAllFeaturesImmutable();
     com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor();
   }

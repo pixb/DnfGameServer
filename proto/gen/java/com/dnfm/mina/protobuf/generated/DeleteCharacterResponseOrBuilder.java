@@ -17,8 +17,14 @@ public interface DeleteCharacterResponseOrBuilder extends
   int getError();
 
   /**
-   * <code>int32 remain_seconds = 2 [json_name = "remainSeconds"];</code>
-   * @return The remainSeconds.
+   * <code>uint64 charguid = 2 [json_name = "charguid"];</code>
+   * @return The charguid.
    */
-  int getRemainSeconds();
+  long getCharguid();
+
+  /**
+   * <code>int64 pendingtime = 3 [json_name = "pendingtime"];</code>
+   * @return The pendingtime.
+   */
+  long getPendingtime();
 }
