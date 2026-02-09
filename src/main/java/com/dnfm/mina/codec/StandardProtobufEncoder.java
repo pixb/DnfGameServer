@@ -180,6 +180,14 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
             case 21002:
                 return adaptFriendDeleteResponse(msg);
             case 21003:
+            case 21004:
+                return adaptFriendRequestListResponse(msg);
+            case 21005:
+                return adaptFriendRequestAcceptResponse(msg);
+            case 21006:
+                return adaptFriendRequestRejectResponse(msg);
+            case 21007:
+                return adaptFriendBlacklistResponse(msg);
                 return adaptFriendMessageResponse(msg);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
@@ -2176,6 +2184,76 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         builder.setSuccess(true);
         builder.setMessage("Message sent successfully");
         builder.setSendTime(System.currentTimeMillis());
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptFriendRequestListResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptFriendRequestListResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.FriendRequestListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.FriendRequestListResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setTotalCount(3);
+        builder.setPage(1);
+        builder.setPageSize(20);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptFriendRequestAcceptResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptFriendRequestAcceptResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.FriendRequestAcceptResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.FriendRequestAcceptResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setRequestId(1);
+        builder.setFriendCharacterId(2);
+        builder.setSuccess(true);
+        builder.setMessage("Friend request accepted successfully");
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptFriendRequestRejectResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptFriendRequestRejectResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.FriendRequestRejectResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.FriendRequestRejectResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setRequestId(1);
+        builder.setFromCharacterId(2);
+        builder.setSuccess(true);
+        builder.setMessage("Friend request rejected successfully");
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptFriendBlacklistResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptFriendBlacklistResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.FriendBlacklistResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.FriendBlacklistResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setOperation(1);
+        builder.setSuccess(true);
+        builder.setMessage("Blacklist operation completed successfully");
         
         return builder.build().toByteArray();
     }

@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+// Go代码生成选项
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+// Java代码生成选项（重要）
+option java_multiple_files = true;  // 为每个消息生成独立的Java文件
+option java_package = "com.dnfm.mina.protobuf.generated";  // 指定Java包名
+option java_outer_classname = "FriendExtProto";  // 指定外层类名
+
+// 好友请求列表请求
+message FriendRequestListRequest {
+  int32 character_id = 1;       // 角色ID
+  int32 page = 2;                // 页码
+  int32 page_size = 3;           // 每页数量
+}
+
+// 好友请求信息
+message FriendRequestInfo {
+  int32 request_id = 1;         // 请求ID
+  int32 from_character_id = 2;    // 发送者角色ID
+  string from_character_name = 3;  // 发送者角色名称
+  int32 level = 4;               // 发送者角色等级
+  int32 job = 5;                 // 发送者角色职业
+  string verify_message = 6;      // 验证消息
+  int64 request_time = 7;         // 请求时间
+}
+
+// 好友请求列表响应
+message FriendRequestListResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  repeated FriendRequestInfo requests = 3;  // 好友请求列表
+  int32 total_count = 4;         // 总请求数
+  int32 page = 5;                // 当前页码
+  int32 page_size = 6;           // 每页数量
+}
+
+// 好友请求接受请求
+message FriendRequestAcceptRequest {
+  int32 character_id = 1;       // 角色ID
+  int32 request_id = 2;          // 请求ID
+  int32 from_character_id = 3;    // 发送者角色ID
+}
+
+// 好友请求接受响应
+message FriendRequestAcceptResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  int32 request_id = 3;          // 请求ID
+  int32 friend_character_id = 4;  // 好友角色ID
+  bool success = 5;              // 是否成功
+  string message = 6;            // 提示消息
+}
+
+// 好友请求拒绝请求
+message FriendRequestRejectRequest {
+  int32 character_id = 1;       // 角色ID
+  int32 request_id = 2;          // 请求ID
+  int32 from_character_id = 3;    // 发送者角色ID
+  string reason = 4;             // 拒绝原因
+}
+
+// 好友请求拒绝响应
+message FriendRequestRejectResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  int32 request_id = 3;          // 请求ID
+  int32 from_character_id = 4;    // 发送者角色ID
+  bool success = 5;              // 是否成功
+  string message = 6;            // 提示消息
+}
+
+// 好友黑名单请求
+message FriendBlacklistRequest {
+  int32 character_id = 1;       // 角色ID
+  int32 operation = 2;           // 操作类型：1-添加，2-删除，3-查询
+  int32 target_character_id = 3;  // 目标角色ID
+  int32 page = 4;                // 页码（查询时使用）
+  int32 page_size = 5;           // 每页数量（查询时使用）
+}
+
+// 黑名单信息
+message BlacklistInfo {
+  int32 character_id = 1;       // 黑名单角色ID
+  string character_name = 2;     // 黑名单角色名称
+  int32 level = 3;               // 黑名单角色等级
+  int32 job = 4;                 // 黑名单角色职业
+  int64 add_time = 5;            // 添加时间
+  string reason = 6;             // 添加原因
+}
+
+// 好友黑名单响应
+message FriendBlacklistResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  int32 operation = 3;           // 操作类型
+  bool success = 4;              // 是否成功
+  string message = 5;            // 提示消息
+  repeated BlacklistInfo blacklist = 6;  // 黑名单列表（查询时使用）
+  int32 total_count = 7;         // 总数（查询时使用）
+  int32 page = 8;                // 当前页码（查询时使用）
+  int32 page_size = 9;           // 每页数量（查询时使用）
+}
