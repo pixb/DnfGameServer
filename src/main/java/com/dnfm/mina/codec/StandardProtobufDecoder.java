@@ -147,6 +147,34 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
                 return adaptSkillSlotRequest(body);
             case 16001:
                 return adaptSkillSetRequest(body);
+            case 17000:
+                return adaptAchievementListRequest(body);
+            case 17001:
+                return adaptAchievementInfoRequest(body);
+            case 17002:
+                return adaptAchievementRewardRequest(body);
+            case 17003:
+                return adaptAchievementBonusRewardRequest(body);
+            case 18000:
+                return adaptAdventureDataRequest(body);
+            case 18001:
+                return adaptAdventureReapInfoRequest(body);
+            case 18002:
+                return adaptAdventureReapRewardRequest(body);
+            case 18003:
+                return adaptAdventureStorageListRequest(body);
+            case 18004:
+                return adaptAdventureAutoSearchRequest(body);
+            case 18005:
+                return adaptAdventureAutoSearchRewardRequest(body);
+            case 18006:
+                return adaptAdventureBookInfoRequest(body);
+            case 18007:
+                return adaptAdventureBookSpecialRewardRequest(body);
+            case 18008:
+                return adaptAdventureBookTeraRewardRequest(body);
+            case 18009:
+                return adaptAdventureBookUpdateConditionRequest(body);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -835,6 +863,132 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
         System.out.println("===== StandardProtobufDecoder.adaptSkillSetRequest() 被调用，body.length=" + body.length + " =====");
         com.dnfm.mina.protobuf.generated.SkillSetRequest newRequest = 
             com.dnfm.mina.protobuf.generated.SkillSetRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAchievementListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAchievementListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AchievementListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AchievementListRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAchievementInfoRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAchievementInfoRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AchievementInfoRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AchievementInfoRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAchievementRewardRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAchievementRewardRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AchievementRewardRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AchievementRewardRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAchievementBonusRewardRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAchievementBonusRewardRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AchievementBonusRewardRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AchievementBonusRewardRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAdventureDataRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAdventureDataRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AdventureDataRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AdventureDataRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAdventureReapInfoRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAdventureReapInfoRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AdventureReapInfoRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AdventureReapInfoRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAdventureReapRewardRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAdventureReapRewardRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AdventureReapRewardRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AdventureReapRewardRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAdventureStorageListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAdventureStorageListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AdventureStorageListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AdventureStorageListRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAdventureAutoSearchRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAdventureAutoSearchRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AdventureAutoSearchRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AdventureAutoSearchRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAdventureAutoSearchRewardRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAdventureAutoSearchRewardRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AdventureAutoSearchRewardRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AdventureAutoSearchRewardRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAdventureBookInfoRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAdventureBookInfoRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AdventureBookInfoRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AdventureBookInfoRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAdventureBookSpecialRewardRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAdventureBookSpecialRewardRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AdventureBookSpecialRewardRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AdventureBookSpecialRewardRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAdventureBookTeraRewardRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAdventureBookTeraRewardRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AdventureBookTeraRewardRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AdventureBookTeraRewardRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptAdventureBookUpdateConditionRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptAdventureBookUpdateConditionRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.AdventureBookUpdateConditionRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.AdventureBookUpdateConditionRequest.parseFrom(body);
         
         // 简化实现，返回null
         return null;

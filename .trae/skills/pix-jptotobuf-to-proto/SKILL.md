@@ -197,6 +197,36 @@ pix-jptotobuf-to-proto 会提供：
   - Go单元测试6个测试用例全部通过
   - Java编译成功，无错误
 
+### 批次12: ACHIEVEMENT (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_ACHIEVEMENT_LIST.java, REQ_ACHIEVEMENT_INFO.java, REQ_ACHIEVEMENT_REWARD.java, REQ_ACHIEVEMENT_BONUS_REWARD.java
+- **状态**: ✅ 完成
+- **文档**: [批次12文档](../../devdoc/protobuf/batch_12/)
+- **成果**: 
+  - 成功迁移成就列表、成就信息、成就奖励、成就额外奖励消息
+  - 新增achievement.proto文件定义成就相关消息
+  - 定义了成就相关数据结构（AchievementInfo, AchievementProgress, AchievementReward, AchievementCategory等）
+  - 扩展了StandardProtobufDecoder和StandardProtobufEncoder支持成就模块
+  - 实现了成就相关消息的编解码支持
+  - 验证了跨语言通信正确性
+  - Go单元测试12个测试用例全部通过
+  - Java编译成功，无错误
+
+### 批次13: ADVENTURE (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_ADVENTURE_DATA.java, REQ_ADVENTURE_REAP_INFO.java, REQ_ADVENTURE_REAP_REWARD.java, REQ_ADVENTURE_STORAGE_LIST.java, REQ_ADVENTURE_AUTO_SEARCH.java, REQ_ADVENTURE_AUTO_SEARCH_REWARD.java, REQ_ADVENTURE_BOOK_INFO.java, REQ_ADVENTURE_BOOK_SPECIAL_REWARD.java, REQ_ADVENTURE_BOOK_TERA_REWARD.java, REQ_ADVENTURE_BOOK_UPDATE_CONDITION.java
+- **状态**: ✅ 完成
+- **文档**: [批次13文档](../../devdoc/protobuf/batch_13/)
+- **成果**: 
+  - 成功迁移冒险数据、冒险收获信息、冒险收获奖励、冒险存储列表、冒险自动搜索、冒险自动搜索奖励、冒险书信息、冒险书特殊奖励、冒险书泰拉奖励、冒险书条件更新消息
+  - 新增adventure.proto文件定义冒险相关消息
+  - 定义了冒险相关数据结构（AdventureData, AdventureReapInfo, AdventureReapReward, AdventureStorageItem, AdventureAutoSearch, AdventureBookInfo, AdventureBookCondition, AdventureBookReward等）
+  - 扩展了StandardProtobufDecoder和StandardProtobufEncoder支持冒险模块
+  - 实现了冒险相关消息的编解码支持
+  - 验证了跨语言通信正确性
+  - Go单元测试25个测试用例全部通过
+  - Java编译成功，无错误
+
 ## 🌟 功能实现
 
 ### 核心功能

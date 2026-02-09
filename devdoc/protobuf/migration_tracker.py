@@ -760,7 +760,7 @@ def cmd_show_progress():
         print(f"进度: {progress['files']['progress_percent']}%")
         print(f"问题: {progress['issues']['open']}/{progress['issues']['total']} 待解决")
         
-        if progress['issues']['critical'] > 0:
+        if progress['issues']['critical'] and progress['issues']['critical'] > 0:
             print(f"⚠️ 严重问题: {progress['issues']['critical']} 个")
         
         print("\n文件状态分布:")

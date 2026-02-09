@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+// Go代码生成选项
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+// Java代码生成选项（重要）
+option java_multiple_files = true;  // 为每个消息生成独立的Java文件
+option java_package = "com.dnfm.mina.protobuf.generated";  // 指定Java包名
+option java_outer_classname = "AchievementProto";  // 指定外层类名
+
+// 成就分类
+message AchievementCategory {
+  int32 category_id = 1;    // 分类ID
+  string name = 2;          // 分类名称
+  int32 order = 3;          // 排序
+}
+
+// 成就进度
+message AchievementProgress {
+  int32 current = 1;         // 当前进度
+  int32 target = 2;          // 目标进度
+  bool completed = 3;        // 是否完成
+}
+
+// 成就奖励
+message AchievementReward {
+  int32 reward_id = 1;       // 奖励ID
+  int32 type = 2;            // 奖励类型
+  int32 amount = 3;          // 奖励数量
+  bool claimed = 4;          // 是否已领取
+}
+
+// 成就信息
+message AchievementInfo {
+  int32 achievement_id = 1;  // 成就ID
+  string name = 2;           // 成就名称
+  string description = 3;     // 成就描述
+  int32 category_id = 4;      // 分类ID
+  int32 points = 5;           // 成就点数
+  AchievementProgress progress = 6;  // 成就进度
+  repeated AchievementReward rewards = 7;  // 成就奖励
+  bool completed = 8;         // 是否完成
+  int64 completed_time = 9;   // 完成时间
+}
+
+// 成就列表请求
+message AchievementListRequest {
+  int32 character_id = 1;     // 角色ID
+  int32 category_id = 2;       // 分类ID（0表示所有分类）
+}
+
+// 成就列表响应
+message AchievementListResponse {
+  int32 error = 1;            // 错误码
+  int32 character_id = 2;     // 角色ID
+  int32 total_points = 3;      // 总成就点数
+  int32 completed_count = 4;   // 已完成成就数量
+  int32 total_count = 5;       // 总成就数量
+  repeated AchievementCategory categories = 6;  // 成就分类列表
+  repeated AchievementInfo achievements = 7;  // 成就列表
+}
+
+// 成就信息请求
+message AchievementInfoRequest {
+  int32 character_id = 1;     // 角色ID
+  int32 achievement_id = 2;   // 成就ID
+}
+
+// 成就信息响应
+message AchievementInfoResponse {
+  int32 error = 1;            // 错误码
+  int32 character_id = 2;     // 角色ID
+  AchievementInfo achievement = 3;  // 成就详细信息
+}
+
+// 成就奖励请求
+message AchievementRewardRequest {
+  int32 character_id = 1;     // 角色ID
+  int32 achievement_id = 2;   // 成就ID
+  int32 reward_id = 3;        // 奖励ID
+}
+
+// 成就奖励响应
+message AchievementRewardResponse {
+  int32 error = 1;            // 错误码
+  int32 character_id = 2;     // 角色ID
+  int32 achievement_id = 3;   // 成就ID
+  int32 reward_id = 4;        // 奖励ID
+  bool success = 5;           // 是否成功
+}
+
+// 成就额外奖励请求
+message AchievementBonusRewardRequest {
+  int32 character_id = 1;     // 角色ID
+  int32 bonus_id = 2;         // 额外奖励ID
+}
+
+// 成就额外奖励响应
+message AchievementBonusRewardResponse {
+  int32 error = 1;            // 错误码
+  int32 character_id = 2;     // 角色ID
+  int32 bonus_id = 3;         // 额外奖励ID
+  bool success = 4;           // 是否成功
+  repeated AchievementReward rewards = 5;  // 奖励列表
+}

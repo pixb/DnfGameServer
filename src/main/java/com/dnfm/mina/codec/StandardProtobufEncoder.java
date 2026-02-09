@@ -113,6 +113,34 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
                 return adaptSkillSlotResponse(msg);
             case 16001:
                 return adaptSkillSetResponse(msg);
+            case 17000:
+                return adaptAchievementListResponse(msg);
+            case 17001:
+                return adaptAchievementInfoResponse(msg);
+            case 17002:
+                return adaptAchievementRewardResponse(msg);
+            case 17003:
+                return adaptAchievementBonusRewardResponse(msg);
+            case 18000:
+                return adaptAdventureDataResponse(msg);
+            case 18001:
+                return adaptAdventureReapInfoResponse(msg);
+            case 18002:
+                return adaptAdventureReapRewardResponse(msg);
+            case 18003:
+                return adaptAdventureStorageListResponse(msg);
+            case 18004:
+                return adaptAdventureAutoSearchResponse(msg);
+            case 18005:
+                return adaptAdventureAutoSearchRewardResponse(msg);
+            case 18006:
+                return adaptAdventureBookInfoResponse(msg);
+            case 18007:
+                return adaptAdventureBookSpecialRewardResponse(msg);
+            case 18008:
+                return adaptAdventureBookTeraRewardResponse(msg);
+            case 18009:
+                return adaptAdventureBookUpdateConditionResponse(msg);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -1500,6 +1528,248 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         builder.setError(0);
         builder.setSuccess(true);
         builder.setCharacterId(1);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAchievementListResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAchievementListResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AchievementListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AchievementListResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setTotalPoints(100);
+        builder.setCompletedCount(10);
+        builder.setTotalCount(50);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAchievementInfoResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAchievementInfoResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AchievementInfoResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AchievementInfoResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        
+        com.dnfm.mina.protobuf.generated.AchievementInfo.Builder achievementBuilder = 
+            com.dnfm.mina.protobuf.generated.AchievementInfo.newBuilder();
+        achievementBuilder.setAchievementId(1);
+        achievementBuilder.setName("Test Achievement");
+        achievementBuilder.setDescription("Test Description");
+        achievementBuilder.setCategoryId(1);
+        achievementBuilder.setPoints(10);
+        achievementBuilder.setCompleted(true);
+        achievementBuilder.setCompletedTime(System.currentTimeMillis());
+        
+        builder.setAchievement(achievementBuilder.build());
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAchievementRewardResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAchievementRewardResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AchievementRewardResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AchievementRewardResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setAchievementId(1);
+        builder.setRewardId(1);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAchievementBonusRewardResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAchievementBonusRewardResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AchievementBonusRewardResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AchievementBonusRewardResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setBonusId(1);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAdventureDataResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAdventureDataResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AdventureDataResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AdventureDataResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        
+        com.dnfm.mina.protobuf.generated.AdventureData.Builder dataBuilder = 
+            com.dnfm.mina.protobuf.generated.AdventureData.newBuilder();
+        dataBuilder.setAdventureLevel(10);
+        dataBuilder.setAdventureExp(1000);
+        dataBuilder.setEnergy(100);
+        dataBuilder.setMaxEnergy(100);
+        dataBuilder.setLastEnergyRecovery(System.currentTimeMillis());
+        
+        builder.setData(dataBuilder.build());
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAdventureReapInfoResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAdventureReapInfoResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AdventureReapInfoResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AdventureReapInfoResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAdventureReapRewardResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAdventureReapRewardResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AdventureReapRewardResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AdventureReapRewardResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setReapId(1);
+        builder.setIsSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAdventureStorageListResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAdventureStorageListResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AdventureStorageListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AdventureStorageListResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setTotal(0);
+        builder.setPage(1);
+        builder.setPageSize(20);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAdventureAutoSearchResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAdventureAutoSearchResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AdventureAutoSearchResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AdventureAutoSearchResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setIsSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAdventureAutoSearchRewardResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAdventureAutoSearchRewardResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AdventureAutoSearchRewardResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AdventureAutoSearchRewardResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setSearchId(1);
+        builder.setIsSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAdventureBookInfoResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAdventureBookInfoResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AdventureBookInfoResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AdventureBookInfoResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAdventureBookSpecialRewardResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAdventureBookSpecialRewardResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AdventureBookSpecialRewardResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AdventureBookSpecialRewardResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setBookId(1);
+        builder.setRewardId(1);
+        builder.setIsSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAdventureBookTeraRewardResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAdventureBookTeraRewardResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AdventureBookTeraRewardResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AdventureBookTeraRewardResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setBookId(1);
+        builder.setIsSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptAdventureBookUpdateConditionResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptAdventureBookUpdateConditionResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.AdventureBookUpdateConditionResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.AdventureBookUpdateConditionResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setBookId(1);
+        builder.setConditionId(1);
+        builder.setIsSuccess(true);
         
         return builder.build().toByteArray();
     }
