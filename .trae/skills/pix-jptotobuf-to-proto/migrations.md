@@ -123,6 +123,32 @@
   - 验证了Java编译和功能测试
   - 更新了迁移文档和技能文档
 
+### 批次32: 杂项数据结构 (已完成)
+- **迁移日期**: 2026-02-10
+- **迁移文件**: PT_CUSTOM_DATA.java, PT_MONSTER_EXP.java, PT_HIDDEN_CHATTING.java
+- **状态**: ✅ 完成
+- **文档**: [批次32文档](../../devdoc/protobuf/batch_32/)
+- **成果**: 
+  - 成功迁移PT_CUSTOM_DATA、PT_MONSTER_EXP和PT_HIDDEN_CHATTING三个杂项数据结构
+  - 新增misc_data_types.proto文件，集中管理杂项数据结构
+  - 生成了Java和Go语言的代码，支持跨语言通信
+  - 编写了Go单元测试验证消息编解码
+  - 验证了Java编译和功能测试
+  - 更新了迁移文档和技能文档
+
+### 批次33: 系统杂项数据结构 (已完成)
+- **迁移日期**: 2026-02-10
+- **迁移文件**: PT_SYSCMD_COMMAND.java, PT_GUILD_BUFF_UPGRADE_COST.java, PT_GUILD_DONATION_ACCUMULATE_REWARD.java
+- **状态**: ✅ 完成
+- **文档**: [批次33文档](../../devdoc/protobuf/batch_33/)
+- **成果**: 
+  - 成功迁移PT_SYSCMD_COMMAND、PT_GUILD_BUFF_UPGRADE_COST和PT_GUILD_DONATION_ACCUMULATE_REWARD三个系统杂项数据结构
+  - 新增system_misc_types.proto文件，集中管理系统杂项数据结构
+  - 生成了Java和Go语言的代码，支持跨语言通信
+  - 编写了Go单元测试验证消息编解码
+  - 验证了Java编译和功能测试
+  - 更新了迁移文档和技能文档
+
 ## 历史批次
 
 ### 批次22: STREAM_DATA 和 USER_INFO (已完成)
@@ -147,8 +173,8 @@
 
 ## 迁移统计
 
-- **总批次**: 31
-- **已完成批次**: 31
+- **总批次**: 33
+- **已完成批次**: 33
 - **进行中批次**: 0
 - **待开始批次**: 0
 - **完成率**: 100%
@@ -175,6 +201,12 @@
 
 ### 物品数据结构
 - `proto/dnf/v1/item_types.proto` - 物品GUID、槽位附魔经验信息、槽位附魔信息
+
+### 杂项数据结构
+- `proto/dnf/v1/misc_data_types.proto` - 自定义数据、怪物经验信息、隐藏聊天信息
+
+### 系统杂项数据结构
+- `proto/dnf/v1/system_misc_types.proto` - 系统命令、公会buff升级成本、公会捐赠累积奖励
 
 ### 通用数据结构
 - `proto/dnf/v1/common_types.proto` - 公会符号、avatar物品、排名信息
@@ -342,6 +374,8 @@
 - 添加批次29：游戏玩法数据结构迁移
 - 添加批次30：库存数据结构迁移
 - 添加批次31：物品数据结构迁移
+- 添加批次32：杂项数据结构迁移
+- 添加批次33：系统杂项数据结构迁移
 - 更新迁移统计信息
 
 ## 注意事项

@@ -1,0 +1,1232 @@
+{
+  "batches": [
+    {
+      "name": "batch_01",
+      "number": 1,
+      "description": "登录认证模块",
+      "status": "completed",
+      "priority": 10,
+      "total_files": 7,
+      "migrated_files": 7
+    },
+    {
+      "name": "batch_02",
+      "number": 2,
+      "description": "会话管理模块(PING)",
+      "status": "completed",
+      "priority": 9,
+      "total_files": 2,
+      "migrated_files": 2
+    },
+    {
+      "name": "batch_03",
+      "number": 3,
+      "description": "角色列表管理",
+      "status": "completed",
+      "priority": 9,
+      "total_files": 2,
+      "migrated_files": 2
+    },
+    {
+      "name": "batch_04",
+      "number": 4,
+      "description": "创建角色/频道列表/进入频道",
+      "status": "completed",
+      "priority": 9,
+      "total_files": 5,
+      "migrated_files": 5
+    },
+    {
+      "name": "batch_05",
+      "number": 5,
+      "description": "待机/删除角色/开始游戏/退出角色",
+      "status": "completed",
+      "priority": 8,
+      "total_files": 6,
+      "migrated_files": 6
+    },
+    {
+      "name": "batch_06",
+      "number": 6,
+      "description": "认证密钥刷新/平台资料更新",
+      "status": "completed",
+      "priority": 8,
+      "total_files": 4,
+      "migrated_files": 4
+    },
+    {
+      "name": "batch_07",
+      "number": 7,
+      "description": "战斗服务器/IDIP禁止/服务器数据",
+      "status": "completed",
+      "priority": 8,
+      "total_files": 8,
+      "migrated_files": 8
+    },
+    {
+      "name": "batch_08",
+      "number": 8,
+      "description": "城镇相关消息(进入/离开/角色信息)",
+      "status": "completed",
+      "priority": 7,
+      "total_files": 12,
+      "migrated_files": 12
+    },
+    {
+      "name": "batch_09",
+      "number": 9,
+      "description": "MAIL邮件模块",
+      "status": "completed",
+      "priority": 7,
+      "total_files": 12,
+      "migrated_files": 12
+    },
+    {
+      "name": "batch_10",
+      "number": 10,
+      "description": "物品相关消息(使用/强化)",
+      "status": "completed",
+      "priority": 8,
+      "total_files": 4,
+      "migrated_files": 4
+    },
+    {
+      "name": "batch_11",
+      "number": 11,
+      "description": "SKILL技能模块",
+      "status": "completed",
+      "priority": 7,
+      "total_files": 2,
+      "migrated_files": 2
+    },
+    {
+      "name": "batch_12",
+      "number": 12,
+      "description": "ACHIEVEMENT成就模块",
+      "status": "completed",
+      "priority": 6,
+      "total_files": 4,
+      "migrated_files": 4
+    },
+    {
+      "name": "batch_13",
+      "number": 13,
+      "description": "ADVENTURE冒险模块",
+      "status": "completed",
+      "priority": 6,
+      "total_files": 20,
+      "migrated_files": 20
+    },
+    {
+      "name": "batch_22",
+      "number": 22,
+      "description": "STREAM_DATA 和 USER_INFO 模块",
+      "status": "completed",
+      "priority": 5,
+      "total_files": 2,
+      "migrated_files": 2
+    },
+    {
+      "name": "batch_23",
+      "number": 23,
+      "description": "通用数据结构（PT_GUILD_SYMBOL、PT_SD_AVATAR_ITEM、PT_RANKING）",
+      "status": "completed",
+      "priority": 4,
+      "total_files": 3,
+      "migrated_files": 3
+    },
+    {
+      "name": "batch_24",
+      "number": 24,
+      "description": "基础数据结构（AUTH_INFO、CHARACTER_INFO、BASE_CHAT）",
+      "status": "completed",
+      "priority": 4,
+      "total_files": 3,
+      "migrated_files": 3
+    },
+    {
+      "name": "batch_25",
+      "number": 25,
+      "description": "系统数据结构（Actor、CHAT_BASE、SUBSYSTEM）",
+      "status": "completed",
+      "priority": 4,
+      "total_files": 3,
+      "migrated_files": 3
+    },
+    {
+      "name": "batch_26",
+      "number": 26,
+      "description": "系统选项数据结构（5个数据结构）",
+      "status": "completed",
+      "priority": 4,
+      "total_files": 5,
+      "migrated_files": 5
+    },
+    {
+      "name": "batch_27",
+      "number": 27,
+      "description": "杂项数据结构（PT_CERA_SHOP_MONEY、PT_DINING_PAY、PT_GUARDIAN_ORDER）",
+      "status": "completed",
+      "priority": 4,
+      "total_files": 3,
+      "migrated_files": 3
+    },
+    {
+      "name": "batch_28",
+      "number": 28,
+      "description": "社交数据结构（4个数据结构）",
+      "status": "completed",
+      "priority": 4,
+      "total_files": 4,
+      "migrated_files": 4
+    },
+    {
+      "name": "batch_29",
+      "number": 29,
+      "description": "游戏玩法数据结构（PT_SKILL、PT_DROP_OBJECT_GOLD）",
+      "status": "completed",
+      "priority": 4,
+      "total_files": 2,
+      "migrated_files": 2
+    },
+    {
+      "name": "batch_30",
+      "number": 30,
+      "description": "库存数据结构（PT_STACKABLE、PT_REPURCHASE_STACKABLE）",
+      "status": "completed",
+      "priority": 4,
+      "total_files": 2,
+      "migrated_files": 2
+    },
+    {
+      "name": "batch_31",
+      "number": 31,
+      "description": "物品数据结构（PT_ITEM_GUID、PT_SLOT_ENCHANT_EXP、PT_SLOT_ENCHANT_INFO）",
+      "status": "completed",
+      "priority": 4,
+      "total_files": 3,
+      "migrated_files": 3
+    },
+    {
+      "name": "batch_32",
+      "number": 32,
+      "description": "杂项数据结构（PT_CUSTOM_DATA、PT_MONSTER_EXP、PT_HIDDEN_CHATTING）",
+      "status": "completed",
+      "priority": 4,
+      "total_files": 3,
+      "migrated_files": 3
+    },
+    {
+      "name": "batch_33",
+      "number": 33,
+      "description": "系统杂项数据结构（3个数据结构）",
+      "status": "completed",
+      "priority": 4,
+      "total_files": 3,
+      "migrated_files": 3
+    }
+  ],
+  "files": [
+    {
+      "name": "ChannelInfo.java",
+      "module": "LOGIN",
+      "batch_id": 1,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "IntrudeInfo.java",
+      "module": "LOGIN",
+      "batch_id": 1,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "IntrudeMemberInfo.java",
+      "module": "LOGIN",
+      "batch_id": 1,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "LoginRequest.java",
+      "module": "LOGIN",
+      "batch_id": 1,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "LoginResponse.java",
+      "module": "LOGIN",
+      "batch_id": 1,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_LOGIN.java",
+      "module": "LOGIN",
+      "batch_id": 1,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_LOGIN.java",
+      "module": "LOGIN",
+      "batch_id": 1,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_CHANNEL_LIST.java",
+      "module": "CHANNEL",
+      "batch_id": 4,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_CHARAC_LIST.java",
+      "module": "CHARACTER",
+      "batch_id": 3,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_CREATE_CHARACTER.java",
+      "module": "CHARACTER",
+      "batch_id": 4,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ENTER_CHANNEL.java",
+      "module": "CHANNEL",
+      "batch_id": 4,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_PING.java",
+      "module": "SESSION",
+      "batch_id": 2,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_CHANNEL_LIST.java",
+      "module": "CHANNEL",
+      "batch_id": 4,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_CHARAC_LIST.java",
+      "module": "CHARACTER",
+      "batch_id": 3,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_CREATE_CHARACTER.java",
+      "module": "CHARACTER",
+      "batch_id": 4,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_PING.java",
+      "module": "SESSION",
+      "batch_id": 2,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_AUTHKEY_REFRESH.java",
+      "module": "AUTH",
+      "batch_id": 6,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_CONNECT_BATTLE_SERVER.java",
+      "module": "BATTLE",
+      "batch_id": 7,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_EXIT_CHARACTER.java",
+      "module": "CHARACTER",
+      "batch_id": 5,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_IDIP_PROHIBIT_LIST.java",
+      "module": "IDIP",
+      "batch_id": 7,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ITEM_REINFORCE.java",
+      "module": "ITEM",
+      "batch_id": 10,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ITEM_USE.java",
+      "module": "ITEM",
+      "batch_id": 10,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_LOAD_SERVER_SIMPLE_DATA.java",
+      "module": "SERVER_DATA",
+      "batch_id": 7,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_PLATFORM_PROFILE_UPDATE.java",
+      "module": "PLATFORM",
+      "batch_id": 6,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_REMOVE_CHARACTER.java",
+      "module": "CHARACTER",
+      "batch_id": 5,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_SAVE_SERVER_SIMPLE_DATA.java",
+      "module": "SERVER_DATA",
+      "batch_id": 7,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_STANDBY.java",
+      "module": "CHARACTER",
+      "batch_id": 5,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_START_GAME.java",
+      "module": "CHARACTER",
+      "batch_id": 5,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_AUTHKEY_REFRESH.java",
+      "module": "AUTH",
+      "batch_id": 6,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_CONNECT_BATTLE_SERVER.java",
+      "module": "BATTLE",
+      "batch_id": 7,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_IDIP_PROHIBIT_LIST.java",
+      "module": "IDIP",
+      "batch_id": 7,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_ITEM_REINFORCE.java",
+      "module": "ITEM",
+      "batch_id": 10,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_ITEM_USE.java",
+      "module": "ITEM",
+      "batch_id": 10,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_LOAD_SERVER_SIMPLE_DATA.java",
+      "module": "SERVER_DATA",
+      "batch_id": 7,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_PLATFORM_PROFILE_UPDATE.java",
+      "module": "PLATFORM",
+      "batch_id": 6,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_REMOVE_CHARACTER.java",
+      "module": "CHARACTER",
+      "batch_id": 5,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_SAVE_SERVER_SIMPLE_DATA.java",
+      "module": "SERVER_DATA",
+      "batch_id": 7,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_STANDBY.java",
+      "module": "CHARACTER",
+      "batch_id": 5,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_CHARACTER_INFO.java",
+      "module": "TOWN",
+      "batch_id": 8,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ENTER_TO_TOWN.java",
+      "module": "TOWN",
+      "batch_id": 8,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_INTERACTION_MENU.java",
+      "module": "TOWN",
+      "batch_id": 8,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_LEAVE_FROM_TOWN.java",
+      "module": "TOWN",
+      "batch_id": 8,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_MAIL_ALL_DELETE.java",
+      "module": "MAIL",
+      "batch_id": 9,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_MAIL_DELETE.java",
+      "module": "MAIL",
+      "batch_id": 9,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_MAIL_GET.java",
+      "module": "MAIL",
+      "batch_id": 9,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_MAIL_ITEM_ALL_GET.java",
+      "module": "MAIL",
+      "batch_id": 9,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_MAIL_LIST.java",
+      "module": "MAIL",
+      "batch_id": 9,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_MAIL_READ.java",
+      "module": "MAIL",
+      "batch_id": 9,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_SKILL_SET.java",
+      "module": "SKILL",
+      "batch_id": 11,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_SKILL_SLOT.java",
+      "module": "SKILL",
+      "batch_id": 11,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_TARGET_USER_DETAIL_INFO.java",
+      "module": "TOWN",
+      "batch_id": 8,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_TOWN_USER_GUID_LIST.java",
+      "module": "TOWN",
+      "batch_id": 8,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_CHARACTER_INFO.java",
+      "module": "TOWN",
+      "batch_id": 8,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_ENTER_TO_TOWN.java",
+      "module": "TOWN",
+      "batch_id": 8,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_INTERACTION_MENU.java",
+      "module": "TOWN",
+      "batch_id": 8,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_LEAVE_FROM_TOWN.java",
+      "module": "TOWN",
+      "batch_id": 8,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_MAIL_ALL_DELETE.java",
+      "module": "MAIL",
+      "batch_id": 9,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_MAIL_DELETE.java",
+      "module": "MAIL",
+      "batch_id": 9,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_MAIL_GET.java",
+      "module": "MAIL",
+      "batch_id": 9,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_MAIL_ITEM_ALL_GET.java",
+      "module": "MAIL",
+      "batch_id": 9,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_MAIL_LIST.java",
+      "module": "MAIL",
+      "batch_id": 9,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_MAIL_READ.java",
+      "module": "MAIL",
+      "batch_id": 9,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_TARGET_USER_DETAIL_INFO.java",
+      "module": "TOWN",
+      "batch_id": 8,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_TOWN_USER_GUID_LIST.java",
+      "module": "TOWN",
+      "batch_id": 8,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ACHIEVEMENT_BONUS_REWARD.java",
+      "module": "ACHIEVEMENT",
+      "batch_id": 12,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ACHIEVEMENT_INFO.java",
+      "module": "ACHIEVEMENT",
+      "batch_id": 12,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ACHIEVEMENT_LIST.java",
+      "module": "ACHIEVEMENT",
+      "batch_id": 12,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ACHIEVEMENT_REWARD.java",
+      "module": "ACHIEVEMENT",
+      "batch_id": 12,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ADVENTURE_AUTO_SEARCH.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ADVENTURE_AUTO_SEARCH_REWARD.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ADVENTURE_BOOK_INFO.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ADVENTURE_BOOK_SPECIAL_REWARD.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ADVENTURE_BOOK_TERA_REWARD.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ADVENTURE_BOOK_UPDATE_CONDITION.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ADVENTURE_DATA.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ADVENTURE_REAP_INFO.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ADVENTURE_REAP_REWARD.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "REQ_ADVENTURE_STORAGE_LIST.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_ADVENTURE_AUTO_SEARCH.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_ADVENTURE_AUTO_SEARCH_REWARD.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_ADVENTURE_BOOK_INFO.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_ADVENTURE_BOOK_SPECIAL_REWARD.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_ADVENTURE_BOOK_TERA_REWARD.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_ADVENTURE_BOOK_UPDATE_CONDITION.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_ADVENTURE_DATA.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_ADVENTURE_REAP_INFO.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_ADVENTURE_REAP_REWARD.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_ADVENTURE_STORAGE_LIST.java",
+      "module": "ADVENTURE",
+      "batch_id": 13,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "STREAM_DATA",
+      "module": "STREAM_DATA",
+      "batch_id": 14,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "USER_INFO",
+      "module": "USER_INFO",
+      "batch_id": 14,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "AUTH_INFO",
+      "module": "BASIC_TYPES",
+      "batch_id": 16,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "Actor",
+      "module": "SYSTEM_TYPES",
+      "batch_id": 17,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "BASE_CHAT",
+      "module": "BASIC_TYPES",
+      "batch_id": 16,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "CHARACTER_INFO",
+      "module": "BASIC_TYPES",
+      "batch_id": 16,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "CHAT_BASE",
+      "module": "SYSTEM_TYPES",
+      "batch_id": 17,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "ENUM_BATTLE_OPTION",
+      "module": "OPTION_TYPES",
+      "batch_id": 18,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_AUCTION_ITEM_PRICE_INFO",
+      "module": "SOCIAL_TYPES",
+      "batch_id": 20,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_BATTLE_OPTION",
+      "module": "OPTION_TYPES",
+      "batch_id": 18,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_CERA_SHOP_MONEY",
+      "module": "MISC_TYPES",
+      "batch_id": 19,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_CHARACTER_SLOT_INFO",
+      "module": "SOCIAL_TYPES",
+      "batch_id": 20,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_CUSTOM_DATA",
+      "module": "MISC_DATA_TYPES",
+      "batch_id": 24,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_DINING_PAY",
+      "module": "MISC_TYPES",
+      "batch_id": 19,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_DROP_OBJECT_GOLD",
+      "module": "GAMEPLAY_TYPES",
+      "batch_id": 21,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_GUARDIAN_ORDER",
+      "module": "MISC_TYPES",
+      "batch_id": 19,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_GUILD_BUFF_UPGRADE_COST",
+      "module": "SYSTEM_MISC_TYPES",
+      "batch_id": 25,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_GUILD_DONATION_ACCUMULATE_REWARD",
+      "module": "SYSTEM_MISC_TYPES",
+      "batch_id": 25,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_GUILD_SYMBOL",
+      "module": "COMMON_TYPES",
+      "batch_id": 15,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_HIDDEN_CHATTING",
+      "module": "MISC_DATA_TYPES",
+      "batch_id": 24,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_ITEM_GUID",
+      "module": "ITEM_TYPES",
+      "batch_id": 23,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_MENTEE_INFO",
+      "module": "SOCIAL_TYPES",
+      "batch_id": 20,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_MENTOR_QUEST_INFO",
+      "module": "SOCIAL_TYPES",
+      "batch_id": 20,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_MONSTER_EXP",
+      "module": "MISC_DATA_TYPES",
+      "batch_id": 24,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_RANKING",
+      "module": "COMMON_TYPES",
+      "batch_id": 15,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_REPURCHASE_STACKABLE",
+      "module": "INVENTORY_TYPES",
+      "batch_id": 22,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_SD_AVATAR_ITEM",
+      "module": "COMMON_TYPES",
+      "batch_id": 15,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_SKILL",
+      "module": "GAMEPLAY_TYPES",
+      "batch_id": 21,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_SLOT_ENCHANT_EXP",
+      "module": "ITEM_TYPES",
+      "batch_id": 23,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_SLOT_ENCHANT_INFO",
+      "module": "ITEM_TYPES",
+      "batch_id": 23,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_STACKABLE",
+      "module": "INVENTORY_TYPES",
+      "batch_id": 22,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_SYSCMD_COMMAND",
+      "module": "SYSTEM_MISC_TYPES",
+      "batch_id": 25,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "PT_SYSTEM_BUFF_APPENDAGE",
+      "module": "OPTION_TYPES",
+      "batch_id": 18,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_RANDOMOPTION_SELECT",
+      "module": "OPTION_TYPES",
+      "batch_id": 18,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "RES_SYSTEM_BUFF_APPENDAGE_LIST",
+      "module": "OPTION_TYPES",
+      "batch_id": 18,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    },
+    {
+      "name": "SUBSYSTEM",
+      "module": "SYSTEM_TYPES",
+      "batch_id": 17,
+      "status": "completed",
+      "has_test": 1,
+      "test_passed": 1
+    }
+  ],
+  "issues": [
+    {
+      "id": 1,
+      "title": "SESSION_LOGOUT使用场景待确认",
+      "description": "没有找到REQ/RES类，只有Types.REQ和Types.RES。没有找到Module ID定义，也没有找到实际使用场景。",
+      "severity": "medium",
+      "status": "open"
+    }
+  ]
+}

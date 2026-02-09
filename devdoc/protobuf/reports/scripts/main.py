@@ -19,7 +19,10 @@ from batch_management.update_all_batches import update_all_batches
 from batch_management.fix_batch_status import fix_batch_status
 from batch_management.fix_batch_10 import fix_batch_10
 from batch_management.update_batches_10_13 import update_batches_10_to_13
+from batch_management.add_batches_22_33_simple import add_batches_22_33
 from reports.generate_report import generate_markdown_report, generate_html_report
+from reports.enhanced_report_generator import EnhancedReportGenerator
+from ai_assistant import AIMigrationAssistant
 from query.query_mappings import MessageMappingQuery
 from analyze.analyze_jprotobuf_files import count_jprotobuf_files
 
@@ -62,6 +65,10 @@ def generate_report(format='markdown'):
         generate_markdown_report()
     elif format == 'html':
         generate_html_report()
+    elif format == 'comprehensive':
+        generator = EnhancedReportGenerator()
+        generator.generate_comprehensive_report()
+        generator.generate_json_report()
     print("✅ 报告生成完成")
 
 
@@ -98,6 +105,76 @@ def analyze():
     print(f"  总计: {result['total']}")
 
 
+def add_batches():
+    """添加批次22-33到数据库"""
+    print("\n📦 正在添加批次22-33到数据库...")
+    add_batches_22_33()
+    print("\n✅ 批次添加完成")
+
+
+def ai_summary():
+    """AI 助手摘要"""
+    print("\n🤖 AI 迁移助手摘要")
+    print("=" * 80)
+    
+    assistant = AIMigrationAssistant()
+    summary = assistant.get_migration_summary()
+    
+    print(f"\n📊 总体进度: {summary['overall_progress']['files']['progress_percent']}%")
+    print(f"   文件: {summary['overall_progress']['files']['migrated']}/{summary['overall_progress']['files']['total']}")
+    print(f"   批次: {summary['overall_progress']['batches']['completed']}/{summary['overall_progress']['batches']['total']}")
+    
+    if summary['next_batch']:
+        print(f"\n📋 下一个批次: {summary['next_batch']['batch_name']} ({summary['next_batch']['description']})")
+        print(f"   优先级: {summary['next_batch']['priority']}")
+        print(f"   文件数: {summary['next_batch']['total_files']}")
+    else:
+        print(f"\n📋 所有批次已完成")
+    
+    print(f"\n🔴 待解决问题: {summary['open_issues']}")
+    
+    print("\n" + "=" * 80)
+
+
+def ai_scan():
+    """AI 助手文件扫描"""
+    print("\n🔍 AI 迁移助手文件扫描")
+    print("=" * 80)
+    
+    assistant = AIMigrationAssistant()
+    
+    proto_files = assistant.scan_proto_files()
+    print(f"\n📁 Proto 文件: {len(proto_files)} 个")
+    for pf in proto_files[:10]:
+        print(f"   {pf['path']}")
+    if len(proto_files) > 10:
+        print(f"   ... 还有 {len(proto_files) - 10} 个文件")
+    
+    java_files = assistant.scan_java_files()
+    print(f"\n📁 Java 文件: {len(java_files)} 个")
+    
+    test_files = assistant.scan_test_files()
+    print(f"\n📁 测试文件: {len(test_files)} 个")
+    for tf in test_files[:10]:
+        print(f"   {tf['path']}")
+    if len(test_files) > 10:
+        print(f"   ... 还有 {len(test_files) - 10} 个文件")
+    
+    print("\n" + "=" * 80)
+
+
+def ai_export():
+    """AI 助手数据导出"""
+    print("\n💾 AI 迁移助手数据导出")
+    print("=" * 80)
+    
+    assistant = AIMigrationAssistant()
+    output_file = assistant.export_to_json()
+    
+    print(f"\n✅ 数据已导出到: {output_file}")
+    print("\n" + "=" * 80)
+
+
 def main():
     """主函数"""
     if len(sys.argv) < 2:
@@ -113,6 +190,10 @@ def main():
         'query': lambda: query(*sys.argv[2:]),
         'fix': fix_all_batches,
         'analyze': analyze,
+        'add-batches': add_batches,
+        'ai-summary': ai_summary,
+        'ai-scan': ai_scan,
+        'ai-export': ai_export,
     }
 
     if command in commands:

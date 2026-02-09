@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+// Go代码生成选项
+option go_package = "dnf/proto/v1;systemmiscv1";
+
+// Java代码生成选项（重要）
+option java_multiple_files = true;  // 为每个消息生成独立的Java文件
+option java_package = "com.dnfm.mina.protobuf.generated";
+option java_outer_classname = "SystemMiscTypesProto";
+
+// 系统命令
+message SyscmdCommand {
+  int32 runtype = 1;    // 运行类型
+  int32 targettype = 2;  // 目标类型
+  int32 type = 3;        // 类型
+  uint64 time = 4;        // 时间
+}
+
+// 公会buff升级成本
+message GuildBuffUpgradeCost {
+  int32 itemindex = 1;  // 物品索引
+  int32 count = 2;        // 数量
+}
+
+// 公会捐赠累积奖励
+message GuildDonationAccumulateReward {
+  int32 clearcount = 1;  // 清除数量
+  bool received = 2;       // 是否已领取
+}
