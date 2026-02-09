@@ -64,13 +64,28 @@ func (m *Migrator) Migrate(ctx context.Context) error {
 
 // ensureMigrationsTable 确保迁移表存在
 func (m *Migrator) ensureMigrationsTable(ctx context.Context) error {
-	query := `
-		CREATE TABLE IF NOT EXISTS schema_migrations (
-			version VARCHAR(255) PRIMARY KEY,
-			applied_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			description TEXT NOT NULL DEFAULT ''
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
-	`
+	driver := m.profile.GetDriver()
+	var query string
+
+	switch driver {
+	case "sqlite":
+		query = `
+			CREATE TABLE IF NOT EXISTS schema_migrations (
+				version TEXT PRIMARY KEY,
+				applied_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				description TEXT NOT NULL DEFAULT ''
+			)
+		`
+	default: // mysql and others
+		query = `
+			CREATE TABLE IF NOT EXISTS schema_migrations (
+				version VARCHAR(255) PRIMARY KEY,
+				applied_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				description TEXT NOT NULL DEFAULT ''
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+		`
+	}
+
 	db := m.driver.GetDB()
 	_, err := db.ExecContext(ctx, query)
 	return err
@@ -78,10 +93,19 @@ func (m *Migrator) ensureMigrationsTable(ctx context.Context) error {
 
 // isSchemaMigrationsExists 检查迁移表是否存在
 func (m *Migrator) isSchemaMigrationsExists(ctx context.Context) bool {
-	query := `
-		SELECT COUNT(*) FROM information_schema.tables 
-		WHERE table_schema = DATABASE() AND table_name = 'schema_migrations'
-	`
+	driver := m.profile.GetDriver()
+	var query string
+
+	switch driver {
+	case "sqlite":
+		query = `SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='schema_migrations'`
+	default: // mysql
+		query = `
+			SELECT COUNT(*) FROM information_schema.tables 
+			WHERE table_schema = DATABASE() AND table_name = 'schema_migrations'
+		`
+	}
+
 	var count int
 	db := m.driver.GetDB()
 	err := db.QueryRowContext(ctx, query).Scan(&count)
@@ -167,7 +191,8 @@ func (m *Migrator) getAvailableMigrations() ([]Migration, error) {
 	// 读取目录
 	entries, err := migrationFS.ReadDir(basePath)
 	if err != nil {
-		return nil, err
+		// 目录不存在时返回空列表
+		return []Migration{}, nil
 	}
 
 	var migrations []Migration
@@ -177,6 +202,11 @@ func (m *Migrator) getAvailableMigrations() ([]Migration, error) {
 		}
 		name := entry.Name()
 		if !strings.HasSuffix(name, ".sql") {
+			continue
+		}
+
+		// 跳过 LATEST.sql，它是初始迁移文件
+		if name == "LATEST.sql" {
 			continue
 		}
 

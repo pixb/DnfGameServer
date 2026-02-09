@@ -120,6 +120,18 @@ func (d *DB) UpdateGuild(ctx context.Context, update *store.UpdateGuild) (*store
 		sets = append(sets, "leader_id = ?")
 		args = append(args, *update.LeaderID)
 	}
+	if update.MemberCount != nil {
+		sets = append(sets, "member_count = ?")
+		args = append(args, *update.MemberCount)
+	}
+	if update.MaxMembers != nil {
+		sets = append(sets, "max_members = ?")
+		args = append(args, *update.MaxMembers)
+	}
+	if update.Fund != nil {
+		sets = append(sets, "fund = ?")
+		args = append(args, *update.Fund)
+	}
 	if update.RowStatus != nil {
 		sets = append(sets, "row_status = ?")
 		args = append(args, *update.RowStatus)

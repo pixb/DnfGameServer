@@ -46,11 +46,14 @@ type UpdateGuild struct {
 	UpdatedAt *int64
 	RowStatus *RowStatus
 
-	Name     *string
-	Level    *int32
-	Exp      *int64
-	Notice   *string
-	LeaderID *uint64
+	Name        *string
+	Level       *int32
+	Exp         *int64
+	Notice      *string
+	LeaderID    *uint64
+	MemberCount *int32
+	MaxMembers  *int32
+	Fund        *int64
 }
 
 // UpdateGuildMember 更新公会成员

@@ -152,6 +152,21 @@ pix-jptotobuf-to-proto 会提供：
   - Go单元测试8个测试用例全部通过
   - 编解码测试验证了跨语言通信
 
+### 批次09: MAIL (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_MAIL_LIST.java, RES_MAIL_LIST.java, REQ_MAIL_GET.java, RES_MAIL_GET.java, REQ_MAIL_READ.java, RES_MAIL_READ.java, REQ_MAIL_DELETE.java, RES_MAIL_DELETE.java, REQ_MAIL_ITEM_ALL_GET.java, RES_MAIL_ITEM_ALL_GET.java, REQ_MAIL_ALL_DELETE.java, RES_MAIL_ALL_DELETE.java
+- **状态**: ✅ 完成
+- **文档**: [批次09文档](../../devdoc/protobuf/batch_09/)
+- **成果**: 
+  - 成功迁移邮件列表、获取邮件、读取邮件、删除邮件、一键领取所有邮件物品、删除所有邮件消息
+  - 新增mail.proto文件定义邮件相关消息
+  - 新增18个数据结构定义（SelectedItem, PostPackage, Stackable等）
+  - ModuleID 15007的消息未迁移（非Message类，需要特殊处理）
+  - 验证了跨语言通信正确性
+  - Go单元测试7个测试用例全部通过
+  - 编解码测试验证了跨语言通信
+  - Java编译成功，无错误
+
 ## 🌟 功能实现
 
 ### 核心功能

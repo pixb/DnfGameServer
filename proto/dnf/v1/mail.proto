@@ -1,0 +1,247 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1";
+option java_multiple_files = true;
+option java_package = "com.dnfm.mina.protobuf.generated";
+option java_outer_classname = "MailProto";
+
+import "dnf/v1/common.proto";
+
+// ========== 数据结构 ==========
+
+// 选中的物品
+message SelectedItem {
+  int32 index = 1;
+  int32 count = 2;
+  uint64 guid = 3;
+  int32 slotindex = 4;
+}
+
+// 邮件包裹
+message PostPackage {
+  int32 value = 1;
+  int32 index = 2;
+  int32 slotindex = 3;
+}
+
+// 可堆叠物品（简化版）
+message Stackable {
+  int32 index = 1;
+  int32 count = 2;
+  bool bind = 3;
+}
+
+// 头像物品（简化版）
+message AvatarItem {
+  int32 avatar_id = 1;
+  int64 guid = 2;
+}
+
+// 生物（简化版）
+message Creature {
+  int32 creature_id = 1;
+  int64 guid = 2;
+}
+
+// 神器（简化版）
+message Artifact {
+  int32 artifact_id = 1;
+  int64 guid = 2;
+}
+
+// 皮肤物品（简化版）
+message SkinItem {
+  int32 skin_id = 1;
+  int64 guid = 2;
+}
+
+// 时间盒物品（简化版）
+message ItemTimebox {
+  int32 index = 1;
+  int32 group = 2;
+  uint64 guid = 3;
+  int64 opentime = 4;
+}
+
+// 物品集合（简化版）
+message Items {
+  repeated Equip equipitems = 1;
+  repeated Stackable materialitems = 2;
+  repeated Stackable consumeitems = 3;
+  repeated Stackable emblemitems = 4;
+  repeated Stackable carditems = 5;
+  repeated Stackable crackitems = 6;
+  repeated Stackable bookmarkitems = 7;
+  repeated Artifact cartifactitems = 8;
+  repeated Creature creatureitems = 9;
+  repeated AvatarItem avataritems = 10;
+  repeated ItemTimebox timebox = 11;
+  int32 index = 12;
+  int32 count = 13;
+}
+
+// 物品奖励信息
+message ItemRewardInfo {
+  Items inventory = 1;
+}
+
+// 货币奖励信息
+message CurrencyRewardInfo {
+  int32 gold = 1;
+  int32 diamond = 2;
+  int32 cera = 3;
+}
+
+// 票据奖励信息
+message TicketRewardInfo {
+  repeated int32 ticket = 1;
+}
+
+// 邮政奖励信息
+message PostalRewardInfo {
+  repeated int32 postal = 1;
+}
+
+// 内容奖励信息
+message ContentsRewardInfo {
+  ItemRewardInfo items = 1;
+  CurrencyRewardInfo currency = 2;
+  CurrencyRewardInfo paymentcurrency = 3;
+  TicketRewardInfo ticket = 4;
+  PostalRewardInfo postal = 5;
+  PostalRewardInfo accountpostal = 6;
+}
+
+// 邮件分配物品
+message MailDistributionItems {
+  uint64 postalguid = 1;
+  repeated SelectedItem selecteditems = 2;
+  repeated PostPackage selectedpackages = 3;
+}
+
+// 邮件列表项（简化版）
+message PostAllList {
+  int32 index = 15;
+  int32 count = 16;
+  uint64 guid = 17;
+  string title = 18;
+  string msg = 19;
+  int64 expiretime = 20;
+  bool read = 23;
+  bool receive = 24;
+  int32 importance = 30;
+}
+
+// ========== 邮件列表 (ModuleID: 15001) ==========
+
+// 邮件列表请求
+message MailListRequest {
+  int32 page = 1;
+  int32 type = 2;
+}
+
+// 邮件列表响应
+message MailListResponse {
+  int32 error = 1;
+  int32 count = 2;
+  repeated PostAllList postallist = 3;
+  int32 type = 4;
+}
+
+// ========== 获取邮件 (ModuleID: 15002) ==========
+
+// 获取邮件请求
+message MailGetRequest {
+  int32 type = 1;
+  uint64 guid = 2;
+  repeated SelectedItem selecteditems = 3;
+  repeated PostPackage selectedpackages = 4;
+}
+
+// 获取邮件响应
+message MailGetResponse {
+  int32 error = 1;
+  uint64 guid = 2;
+  bool limit = 3;
+  int32 type = 4;
+  repeated SelectedItem remaineditems = 5;
+  repeated PostPackage remainedpackages = 6;
+  ContentsRewardInfo rewards = 7;
+}
+
+// ========== 读取邮件 (ModuleID: 15003) ==========
+
+// 读取邮件请求
+message MailReadRequest {
+  uint64 guid = 1;
+  int32 type = 2;
+}
+
+// 读取邮件响应
+message MailReadResponse {
+  int32 error = 1;
+  uint64 guid = 2;
+  int32 type = 3;
+}
+
+// ========== 删除邮件 (ModuleID: 15004) ==========
+
+// 删除邮件请求
+message MailDeleteRequest {
+  uint64 guid = 1;
+  int32 type = 2;
+}
+
+// 删除邮件响应
+message MailDeleteResponse {
+  int32 error = 1;
+  uint64 guid = 2;
+  int32 type = 3;
+}
+
+// ========== 一键领取所有邮件物品 (ModuleID: 15005) ==========
+
+// 一键领取所有邮件物品请求
+message MailItemAllGetRequest {
+  int32 type = 1;
+}
+
+// 一键领取所有邮件物品响应
+message MailItemAllGetResponse {
+  int32 error = 1;
+  int32 page = 2;
+  int32 maxpage = 3;
+  bool limit = 4;
+  int32 type = 5;
+  bool bind = 6;
+  ContentsRewardInfo rewards = 7;
+}
+
+// ========== 删除所有邮件 (ModuleID: 15006) ==========
+
+// 删除所有邮件请求
+message MailAllDeleteRequest {
+  int32 type = 1;
+}
+
+// 删除所有邮件响应
+message MailAllDeleteResponse {
+  int32 error = 1;
+  int32 type = 2;
+  int32 removecount = 3;
+}
+
+// ========== 账号邮件分配到角色 (ModuleID: 15007) ==========
+
+// 账号邮件分配到角色请求
+message MailDistributeAccountToCharacterRequest {
+  uint64 charguid = 1;
+  repeated MailDistributionItems distributedmails = 2;
+}
+
+// 账号邮件分配到角色响应
+message MailDistributeAccountToCharacterResponse {
+  int32 error = 1;
+}

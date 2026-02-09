@@ -119,6 +119,18 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
                 return adaptInteractionMenuRequest(body);
             case 10109:
                 return adaptLeaveFromTownRequest(body);
+            case 15001:
+                return adaptMailListRequest(body);
+            case 15002:
+                return adaptMailGetRequest(body);
+            case 15003:
+                return adaptMailReadRequest(body);
+            case 15004:
+                return adaptMailDeleteRequest(body);
+            case 15005:
+                return adaptMailItemAllGetRequest(body);
+            case 15006:
+                return adaptMailAllDeleteRequest(body);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -620,6 +632,99 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
             com.dnfm.mina.protobuf.generated.LeaveFromTownRequest.parseFrom(body);
         
         com.dnfm.mina.protobuf.REQ_LEAVE_FROM_TOWN oldRequest = new com.dnfm.mina.protobuf.REQ_LEAVE_FROM_TOWN();
+        
+        return oldRequest;
+    }
+
+    private Message adaptMailListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptMailListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.MailListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.MailListRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_MAIL_LIST oldRequest = new com.dnfm.mina.protobuf.REQ_MAIL_LIST();
+        oldRequest.page = newRequest.getPage();
+        oldRequest.type = newRequest.getType();
+        
+        return oldRequest;
+    }
+
+    private Message adaptMailGetRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptMailGetRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.MailGetRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.MailGetRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_MAIL_GET oldRequest = new com.dnfm.mina.protobuf.REQ_MAIL_GET();
+        oldRequest.type = newRequest.getType();
+        oldRequest.guid = newRequest.getGuid();
+        
+        if (newRequest.getSelecteditemsList() != null) {
+            oldRequest.selecteditems = new java.util.ArrayList<>();
+            for (com.dnfm.mina.protobuf.generated.SelectedItem newItem : newRequest.getSelecteditemsList()) {
+                com.dnfm.mina.protobuf.PT_SELECTED_ITEM oldItem = new com.dnfm.mina.protobuf.PT_SELECTED_ITEM();
+                oldItem.index = newItem.getIndex();
+                oldItem.count = newItem.getCount();
+                oldItem.guid = newItem.getGuid();
+                oldItem.slotindex = newItem.getSlotindex();
+                oldRequest.selecteditems.add(oldItem);
+            }
+        }
+        
+        if (newRequest.getSelectedpackagesList() != null) {
+            oldRequest.selectedpackages = new java.util.ArrayList<>();
+            for (com.dnfm.mina.protobuf.generated.PostPackage newPackage : newRequest.getSelectedpackagesList()) {
+                com.dnfm.mina.protobuf.PT_POST_PACKAGE oldPackage = new com.dnfm.mina.protobuf.PT_POST_PACKAGE();
+                oldPackage.value = newPackage.getValue();
+                oldPackage.index = newPackage.getIndex();
+                oldPackage.slotindex = newPackage.getSlotindex();
+                oldRequest.selectedpackages.add(oldPackage);
+            }
+        }
+        
+        return oldRequest;
+    }
+
+    private Message adaptMailReadRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptMailReadRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.MailReadRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.MailReadRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_MAIL_READ oldRequest = new com.dnfm.mina.protobuf.REQ_MAIL_READ();
+        oldRequest.guid = newRequest.getGuid();
+        oldRequest.type = newRequest.getType();
+        
+        return oldRequest;
+    }
+
+    private Message adaptMailDeleteRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptMailDeleteRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.MailDeleteRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.MailDeleteRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_MAIL_DELETE oldRequest = new com.dnfm.mina.protobuf.REQ_MAIL_DELETE();
+        oldRequest.guid = newRequest.getGuid();
+        oldRequest.type = newRequest.getType();
+        
+        return oldRequest;
+    }
+
+    private Message adaptMailItemAllGetRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptMailItemAllGetRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.MailItemAllGetRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.MailItemAllGetRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_MAIL_ITEM_ALL_GET oldRequest = new com.dnfm.mina.protobuf.REQ_MAIL_ITEM_ALL_GET();
+        oldRequest.type = newRequest.getType();
+        
+        return oldRequest;
+    }
+
+    private Message adaptMailAllDeleteRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptMailAllDeleteRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.MailAllDeleteRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.MailAllDeleteRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_MAIL_ALL_DELETE oldRequest = new com.dnfm.mina.protobuf.REQ_MAIL_ALL_DELETE();
+        oldRequest.type = newRequest.getType();
         
         return oldRequest;
     }

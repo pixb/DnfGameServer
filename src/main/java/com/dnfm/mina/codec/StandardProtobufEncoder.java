@@ -85,6 +85,18 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
                 return adaptInteractionMenuResponse(msg);
             case 10109:
                 return adaptLeaveFromTownResponse(msg);
+            case 15001:
+                return adaptMailListResponse(msg);
+            case 15002:
+                return adaptMailGetResponse(msg);
+            case 15003:
+                return adaptMailReadResponse(msg);
+            case 15004:
+                return adaptMailDeleteResponse(msg);
+            case 15005:
+                return adaptMailItemAllGetResponse(msg);
+            case 15006:
+                return adaptMailAllDeleteResponse(msg);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -1119,6 +1131,245 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         
         if (oldResponse.error != null) {
             builder.setError(oldResponse.error);
+        }
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptMailListResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_MAIL_LIST oldResponse = 
+            (com.dnfm.mina.protobuf.RES_MAIL_LIST) msg;
+        
+        com.dnfm.mina.protobuf.generated.MailListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.MailListResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.count != null) {
+            builder.setCount(oldResponse.count);
+        }
+        if (oldResponse.type != null) {
+            builder.setType(oldResponse.type);
+        }
+        if (oldResponse.postallist != null) {
+            for (com.dnfm.mina.protobuf.PT_POST_ALL_LIST oldPost : oldResponse.postallist) {
+                com.dnfm.mina.protobuf.generated.PostAllList.Builder postBuilder = 
+                    com.dnfm.mina.protobuf.generated.PostAllList.newBuilder();
+                if (oldPost.index != null) {
+                    postBuilder.setIndex(oldPost.index);
+                }
+                if (oldPost.count != null) {
+                    postBuilder.setCount(oldPost.count);
+                }
+                if (oldPost.guid != null) {
+                    postBuilder.setGuid(oldPost.guid);
+                }
+                if (oldPost.title != null) {
+                    postBuilder.setTitle(oldPost.title);
+                }
+                if (oldPost.msg != null) {
+                    postBuilder.setMsg(oldPost.msg);
+                }
+                if (oldPost.expiretime != null) {
+                    postBuilder.setExpiretime(oldPost.expiretime);
+                }
+                if (oldPost.read != null) {
+                    postBuilder.setRead(oldPost.read);
+                }
+                if (oldPost.receive != null) {
+                    postBuilder.setReceive(oldPost.receive);
+                }
+                if (oldPost.importance != null) {
+                    postBuilder.setImportance(oldPost.importance);
+                }
+                builder.addPostallist(postBuilder.build());
+            }
+        }
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptMailGetResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_MAIL_GET oldResponse = 
+            (com.dnfm.mina.protobuf.RES_MAIL_GET) msg;
+        
+        com.dnfm.mina.protobuf.generated.MailGetResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.MailGetResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.guid != null) {
+            builder.setGuid(oldResponse.guid);
+        }
+        if (oldResponse.limit != null) {
+            builder.setLimit(oldResponse.limit);
+        }
+        if (oldResponse.type != null) {
+            builder.setType(oldResponse.type);
+        }
+        if (oldResponse.remaineditems != null) {
+            for (com.dnfm.mina.protobuf.PT_SELECTED_ITEM oldItem : oldResponse.remaineditems) {
+                com.dnfm.mina.protobuf.generated.SelectedItem.Builder itemBuilder = 
+                    com.dnfm.mina.protobuf.generated.SelectedItem.newBuilder();
+                if (oldItem.index != null) {
+                    itemBuilder.setIndex(oldItem.index);
+                }
+                if (oldItem.count != null) {
+                    itemBuilder.setCount(oldItem.count);
+                }
+                if (oldItem.guid != null) {
+                    itemBuilder.setGuid(oldItem.guid);
+                }
+                if (oldItem.slotindex != null) {
+                    itemBuilder.setSlotindex(oldItem.slotindex);
+                }
+                builder.addRemaineditems(itemBuilder.build());
+            }
+        }
+        if (oldResponse.remainedpackages != null) {
+            for (com.dnfm.mina.protobuf.PT_POST_PACKAGE oldPackage : oldResponse.remainedpackages) {
+                com.dnfm.mina.protobuf.generated.PostPackage.Builder packageBuilder = 
+                    com.dnfm.mina.protobuf.generated.PostPackage.newBuilder();
+                if (oldPackage.value != null) {
+                    packageBuilder.setValue(oldPackage.value);
+                }
+                if (oldPackage.index != null) {
+                    packageBuilder.setIndex(oldPackage.index);
+                }
+                if (oldPackage.slotindex != null) {
+                    packageBuilder.setSlotindex(oldPackage.slotindex);
+                }
+                builder.addRemainedpackages(packageBuilder.build());
+            }
+        }
+        if (oldResponse.rewards != null) {
+            com.dnfm.mina.protobuf.generated.ContentsRewardInfo.Builder rewardsBuilder = 
+                com.dnfm.mina.protobuf.generated.ContentsRewardInfo.newBuilder();
+            if (oldResponse.rewards.items != null && oldResponse.rewards.items.inventory != null) {
+                com.dnfm.mina.protobuf.generated.ItemRewardInfo.Builder itemsBuilder = 
+                    com.dnfm.mina.protobuf.generated.ItemRewardInfo.newBuilder();
+                com.dnfm.mina.protobuf.generated.Items.Builder inventoryBuilder = 
+                    com.dnfm.mina.protobuf.generated.Items.newBuilder();
+                if (oldResponse.rewards.items.inventory.index != null) {
+                    inventoryBuilder.setIndex(oldResponse.rewards.items.inventory.index);
+                }
+                if (oldResponse.rewards.items.inventory.count != null) {
+                    inventoryBuilder.setCount(oldResponse.rewards.items.inventory.count);
+                }
+                itemsBuilder.setInventory(inventoryBuilder.build());
+                rewardsBuilder.setItems(itemsBuilder.build());
+            }
+            builder.setRewards(rewardsBuilder.build());
+        }
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptMailReadResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_MAIL_READ oldResponse = 
+            (com.dnfm.mina.protobuf.RES_MAIL_READ) msg;
+        
+        com.dnfm.mina.protobuf.generated.MailReadResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.MailReadResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.guid != null) {
+            builder.setGuid(oldResponse.guid);
+        }
+        if (oldResponse.type != null) {
+            builder.setType(oldResponse.type);
+        }
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptMailDeleteResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_MAIL_DELETE oldResponse = 
+            (com.dnfm.mina.protobuf.RES_MAIL_DELETE) msg;
+        
+        com.dnfm.mina.protobuf.generated.MailDeleteResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.MailDeleteResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.guid != null) {
+            builder.setGuid(oldResponse.guid);
+        }
+        if (oldResponse.type != null) {
+            builder.setType(oldResponse.type);
+        }
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptMailItemAllGetResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_MAIL_ITEM_ALL_GET oldResponse = 
+            (com.dnfm.mina.protobuf.RES_MAIL_ITEM_ALL_GET) msg;
+        
+        com.dnfm.mina.protobuf.generated.MailItemAllGetResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.MailItemAllGetResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.page != null) {
+            builder.setPage(oldResponse.page);
+        }
+        if (oldResponse.maxpage != null) {
+            builder.setMaxpage(oldResponse.maxpage);
+        }
+        if (oldResponse.limit != null) {
+            builder.setLimit(oldResponse.limit);
+        }
+        if (oldResponse.type != null) {
+            builder.setType(oldResponse.type);
+        }
+        if (oldResponse.bind != null) {
+            builder.setBind(oldResponse.bind);
+        }
+        if (oldResponse.rewards != null) {
+            com.dnfm.mina.protobuf.generated.ContentsRewardInfo.Builder rewardsBuilder = 
+                com.dnfm.mina.protobuf.generated.ContentsRewardInfo.newBuilder();
+            if (oldResponse.rewards.items != null && oldResponse.rewards.items.inventory != null) {
+                com.dnfm.mina.protobuf.generated.ItemRewardInfo.Builder itemsBuilder = 
+                    com.dnfm.mina.protobuf.generated.ItemRewardInfo.newBuilder();
+                com.dnfm.mina.protobuf.generated.Items.Builder inventoryBuilder = 
+                    com.dnfm.mina.protobuf.generated.Items.newBuilder();
+                if (oldResponse.rewards.items.inventory.index != null) {
+                    inventoryBuilder.setIndex(oldResponse.rewards.items.inventory.index);
+                }
+                if (oldResponse.rewards.items.inventory.count != null) {
+                    inventoryBuilder.setCount(oldResponse.rewards.items.inventory.count);
+                }
+                itemsBuilder.setInventory(inventoryBuilder.build());
+                rewardsBuilder.setItems(itemsBuilder.build());
+            }
+            builder.setRewards(rewardsBuilder.build());
+        }
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptMailAllDeleteResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_MAIL_ALL_DELETE oldResponse = 
+            (com.dnfm.mina.protobuf.RES_MAIL_ALL_DELETE) msg;
+        
+        com.dnfm.mina.protobuf.generated.MailAllDeleteResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.MailAllDeleteResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.type != null) {
+            builder.setType(oldResponse.type);
+        }
+        if (oldResponse.removecount != null) {
+            builder.setRemovecount(oldResponse.removecount);
         }
         
         return builder.build().toByteArray();

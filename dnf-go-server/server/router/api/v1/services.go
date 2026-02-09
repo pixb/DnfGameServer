@@ -305,7 +305,7 @@ func (s *APIV1Service) UpdateAttributes(ctx context.Context, req *dnfv1.UpdateAt
 	// 1. 检查可用属性点
 	// 2. 更新属性值
 	// 3. 重新计算战斗数值
-	
+
 	return &dnfv1.UpdateAttributesResponse{
 		Error: 0,
 		BattleInfo: &dnfv1.RoleBattleInfo{
@@ -419,6 +419,7 @@ func (s *APIV1Service) RecoverFatigue(ctx context.Context, req *dnfv1.RecoverFat
 		MaxFatigue:     role.MaxFatigue,
 	}, nil
 }
+
 // ==================== Phase 2: 背包系统 ====================
 
 // GetBag 获取背包
@@ -440,10 +441,10 @@ func (s *APIV1Service) GetBag(ctx context.Context, req *dnfv1.GetBagRequest) (*d
 	var bagItems []*dnfv1.BagItem
 	for _, item := range items {
 		bagItems = append(bagItems, &dnfv1.BagItem{
-			Guid:    item.ID,
-			ItemId:  uint32(item.ItemID),
-			Count:   item.Count,
-			Slot:    item.GridIndex,
+			Guid:   item.ID,
+			ItemId: uint32(item.ItemID),
+			Count:  item.Count,
+			Slot:   item.GridIndex,
 		})
 	}
 
@@ -594,8 +595,8 @@ func (s *APIV1Service) UseItem(ctx context.Context, req *dnfv1.UseItemRequest) (
 	}
 
 	return &dnfv1.UseItemResponse{
-		Error:         ErrCodeSuccess,
-		UpdatedItems:  updatedItems,
+		Error:        ErrCodeSuccess,
+		UpdatedItems: updatedItems,
 	}, nil
 }
 
@@ -648,7 +649,7 @@ func (s *APIV1Service) SellItem(ctx context.Context, req *dnfv1.SellItemRequest)
 	// 这里应该调用 UpdateRoleCurrency 增加金币
 
 	return &dnfv1.SellItemResponse{
-		Error:       ErrCodeSuccess,
+		Error:        ErrCodeSuccess,
 		GoldReceived: int32(totalPrice),
 	}, nil
 }
@@ -690,7 +691,7 @@ func (s *APIV1Service) EquipItem(ctx context.Context, req *dnfv1.EquipItemReques
 		// 装备物品
 		// TODO: 检查装备条件（职业、等级）
 		// TODO: 处理已装备的同类型装备
-		
+
 		isEquipped := true
 		err = s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{
 			ID:        item.ID,
@@ -706,6 +707,7 @@ func (s *APIV1Service) EquipItem(ctx context.Context, req *dnfv1.EquipItemReques
 		UpdatedItems: nil,
 	}, nil
 }
+
 // ==================== Phase 3: 副本系统 ====================
 
 // EnterDungeon 进入副本
@@ -946,8 +948,8 @@ func (s *APIV1Service) ChangeRoom(ctx context.Context, req *dnfv1.ChangeRoomRequ
 	}
 
 	return &dnfv1.ChangeRoomResponse{
-		Error:      ErrCodeSuccess,
-		NewRoomId:  req.RoomId,
+		Error:     ErrCodeSuccess,
+		NewRoomId: req.RoomId,
 		Position: &dnfv1.RolePosition{
 			MapId: 1,
 			X:     0,
@@ -956,6 +958,7 @@ func (s *APIV1Service) ChangeRoom(ctx context.Context, req *dnfv1.ChangeRoomRequ
 		Monsters: monsters,
 	}, nil
 }
+
 // ==================== Phase 4: 聊天与社交系统 ====================
 
 // SendChat 发送聊天消息
@@ -1002,9 +1005,9 @@ func (s *APIV1Service) GetChatHistory(ctx context.Context, req *dnfv1.GetChatHis
 	// 简化：返回空列表
 
 	return &dnfv1.GetChatHistoryResponse{
-		Error:     ErrCodeSuccess,
-		Messages:  []*dnfv1.ChatMessage{},
-		HasMore:   false,
+		Error:    ErrCodeSuccess,
+		Messages: []*dnfv1.ChatMessage{},
+		HasMore:  false,
 	}, nil
 }
 
@@ -1036,12 +1039,12 @@ func (s *APIV1Service) GetFriendList(ctx context.Context, req *dnfv1.GetFriendLi
 		}
 
 		friendInfos = append(friendInfos, &dnfv1.FriendInfo{
-			Uid:       int64(friend.FriendID),
-			Name:      friendRole.Name,
-			Level:     friendRole.Level,
-			Job:       friendRole.Job,
-			Online:  true, // TODO: 检查在线状态
-			Intimacy:  int32(friend.Intimacy),
+			Uid:      int64(friend.FriendID),
+			Name:     friendRole.Name,
+			Level:    friendRole.Level,
+			Job:      friendRole.Job,
+			Online:   true, // TODO: 检查在线状态
+			Intimacy: int32(friend.Intimacy),
 		})
 	}
 
@@ -1076,8 +1079,8 @@ func (s *APIV1Service) AddFriend(ctx context.Context, req *dnfv1.AddFriendReques
 
 	// 检查是否已经是好友
 	_, err = s.Store.GetFriend(ctx, &store.FindFriend{
-		RoleID:    &roleID,
-		FriendID:  &targetRole.ID,
+		RoleID:   &roleID,
+		FriendID: &targetRole.ID,
 	})
 	if err == nil {
 		// 已经是好友
@@ -1086,10 +1089,10 @@ func (s *APIV1Service) AddFriend(ctx context.Context, req *dnfv1.AddFriendReques
 
 	// 创建好友关系
 	_, err = s.Store.CreateFriend(ctx, &store.Friend{
-		RoleID:   roleID,
-		FriendID: targetRole.ID,
+		RoleID:     roleID,
+		FriendID:   targetRole.ID,
 		FriendName: targetRole.Name,
-		Intimacy: 0,
+		Intimacy:   0,
 	})
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create friend: %v", err)
@@ -1180,6 +1183,7 @@ func (s *APIV1Service) ViewPrivateStore(ctx context.Context, req *dnfv1.ViewPriv
 func (s *APIV1Service) BuyFromPrivateStore(ctx context.Context, req *dnfv1.BuyFromPrivateStoreRequest) (*dnfv1.BuyFromPrivateStoreResponse, error) {
 	return &dnfv1.BuyFromPrivateStoreResponse{Error: 0}, nil
 }
+
 // ==================== Phase 6: 任务系统 ====================
 
 // GetQuestList 获取任务列表
@@ -1241,24 +1245,415 @@ func (s *APIV1Service) GetQuestReward(ctx context.Context, req *dnfv1.GetQuestRe
 func (s *APIV1Service) AbandonQuest(ctx context.Context, req *dnfv1.AbandonQuestRequest) (*dnfv1.AbandonQuestResponse, error) {
 	return &dnfv1.AbandonQuestResponse{Error: 0}, nil
 }
+
+// GetGuildInfo 获取公会信息
 func (s *APIV1Service) GetGuildInfo(ctx context.Context, req *dnfv1.GetGuildInfoRequest) (*dnfv1.GetGuildInfoResponse, error) {
-	return &dnfv1.GetGuildInfoResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.GetGuildInfoResponse{Error: ErrCodeInvalidParam}, nil
+	}
+	roleID := claims.UserID
+
+	// 1. 获取角色的公会成员信息
+	member, err := s.Store.GetDriver().GetGuildMember(ctx, &store.FindGuildMember{RoleID: &roleID})
+	if err != nil {
+		return &dnfv1.GetGuildInfoResponse{Error: ErrCodeSuccess}, nil // 没有公会
+	}
+
+	// 3. 获取公会信息
+	guild, err := s.Store.GetGuild(ctx, &store.FindGuild{FindBase: store.FindBase{ID: &member.GuildID}})
+	if err != nil {
+		return &dnfv1.GetGuildInfoResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	// 4. 获取公会成员列表
+	members, err := s.Store.GetDriver().ListGuildMembers(ctx, guild.ID)
+	if err != nil {
+		return &dnfv1.GetGuildInfoResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	// 5. 获取会长信息
+	leader, err := s.Store.GetRole(ctx, &store.FindRole{FindBase: store.FindBase{ID: &guild.LeaderID}})
+	leaderName := ""
+	if err == nil && leader != nil {
+		leaderName = leader.Name
+	}
+
+	// 6. 构建成员列表
+	protoMembers := make([]*dnfv1.GuildMember, 0, len(members))
+	for _, m := range members {
+		memberRole, _ := s.Store.GetRole(ctx, &store.FindRole{FindBase: store.FindBase{ID: &m.RoleID}})
+		if memberRole == nil {
+			continue
+		}
+
+		// 转换职位：store.Position (0-4) -> proto.GuildPosition (1-5)
+		position := dnfv1.GuildPosition(m.Position + 1)
+
+		protoMembers = append(protoMembers, &dnfv1.GuildMember{
+			Uid:           int64(m.RoleID),
+			Name:          memberRole.Name,
+			Job:           memberRole.Job,
+			Level:         memberRole.Level,
+			Position:      position,
+			Contribution:  int32(m.Contribution),
+			LastLoginTime: 0,
+			Online:        false,
+		})
+	}
+
+	return &dnfv1.GetGuildInfoResponse{
+		Error: ErrCodeSuccess,
+		Guild: &dnfv1.GuildInfo{
+			GuildId:        int64(guild.ID),
+			Name:           guild.Name,
+			Level:          guild.Level,
+			Exp:            guild.Exp,
+			Notice:         guild.Notice,
+			MemberCount:    guild.MemberCount,
+			MaxMemberCount: guild.MaxMembers,
+			MasterName:     leaderName,
+			CreateTime:     guild.CreatedAt,
+		},
+		Members: protoMembers,
+	}, nil
 }
+
+// CreateGuild 创建公会
 func (s *APIV1Service) CreateGuild(ctx context.Context, req *dnfv1.CreateGuildRequest) (*dnfv1.CreateGuildResponse, error) {
-	return &dnfv1.CreateGuildResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.CreateGuildResponse{Error: ErrCodeInvalidParam}, nil
+	}
+	roleID := claims.UserID
+
+	// 1. 验证公会名
+	if req.Name == "" {
+		return &dnfv1.CreateGuildResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	// 2. 检查角色是否已有公会
+	existingMember, _ := s.Store.GetDriver().GetGuildMember(ctx, &store.FindGuildMember{RoleID: &roleID})
+	if existingMember != nil {
+		return &dnfv1.CreateGuildResponse{Error: 7}, nil // 已在公会中
+	}
+
+	// 3. 获取角色货币
+	currency, err := s.Store.GetRoleCurrency(ctx, roleID)
+	if err != nil {
+		return &dnfv1.CreateGuildResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	// 5. 检查创建费用 (100000金币)
+	const createCost int64 = 100000
+	if currency.Gold < createCost {
+		return &dnfv1.CreateGuildResponse{Error: 3}, nil // 金币不足
+	}
+
+	// 6. 扣除金币
+	currency.Gold -= createCost
+	if err := s.Store.UpdateRoleCurrency(ctx, currency); err != nil {
+		return &dnfv1.CreateGuildResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	// 7. 创建公会
+	guild, err := s.Store.CreateGuild(ctx, &store.Guild{
+		Name:        req.Name,
+		Level:       1,
+		Exp:         0,
+		Notice:      "",
+		LeaderID:    roleID,
+		MemberCount: 1,
+		MaxMembers:  50,
+		Fund:        createCost,
+	})
+	if err != nil {
+		if err == store.ErrDuplicate {
+			return &dnfv1.CreateGuildResponse{Error: ErrCodeRoleNameExists}, nil
+		}
+		return &dnfv1.CreateGuildResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	// 8. 添加会长为成员
+	_, err = s.Store.GetDriver().AddGuildMember(ctx, &store.GuildMember{
+		GuildID:      guild.ID,
+		RoleID:       roleID,
+		Position:     3, // 会长
+		Contribution: 0,
+	})
+	if err != nil {
+		return &dnfv1.CreateGuildResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	return &dnfv1.CreateGuildResponse{
+		Error:   ErrCodeSuccess,
+		GuildId: int64(guild.ID),
+	}, nil
 }
+
+// JoinGuild 加入公会
 func (s *APIV1Service) JoinGuild(ctx context.Context, req *dnfv1.JoinGuildRequest) (*dnfv1.JoinGuildResponse, error) {
-	return &dnfv1.JoinGuildResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.JoinGuildResponse{Error: ErrCodeInvalidParam}, nil
+	}
+	roleID := claims.UserID
+	guildID := uint64(req.GuildId)
+
+	// 1. 检查角色是否已有公会
+	existingMember, _ := s.Store.GetDriver().GetGuildMember(ctx, &store.FindGuildMember{RoleID: &roleID})
+	if existingMember != nil {
+		return &dnfv1.JoinGuildResponse{Error: 7}, nil // 已在公会中
+	}
+
+	// 2. 获取公会信息
+	guild, err := s.Store.GetGuild(ctx, &store.FindGuild{FindBase: store.FindBase{ID: &guildID}})
+	if err != nil {
+		return &dnfv1.JoinGuildResponse{Error: ErrCodeNotFound}, nil
+	}
+
+	// 3. 检查公会是否已满
+	if guild.MemberCount >= guild.MaxMembers {
+		return &dnfv1.JoinGuildResponse{Error: 8}, nil // 公会已满
+	}
+
+	// 4. 添加成员
+	_, err = s.Store.GetDriver().AddGuildMember(ctx, &store.GuildMember{
+		GuildID:      guildID,
+		RoleID:       roleID,
+		Position:     0, // 普通成员
+		Contribution: 0,
+	})
+	if err != nil {
+		return &dnfv1.JoinGuildResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	// 5. 更新公会人数
+	newCount := guild.MemberCount + 1
+	_, err = s.Store.UpdateGuild(ctx, &store.UpdateGuild{
+		ID:          guildID,
+		MemberCount: &newCount,
+	})
+	if err != nil {
+		return &dnfv1.JoinGuildResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	return &dnfv1.JoinGuildResponse{Error: ErrCodeSuccess}, nil
 }
+
+// LeaveGuild 离开公会
 func (s *APIV1Service) LeaveGuild(ctx context.Context, req *dnfv1.LeaveGuildRequest) (*dnfv1.LeaveGuildResponse, error) {
-	return &dnfv1.LeaveGuildResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.LeaveGuildResponse{Error: ErrCodeInvalidParam}, nil
+	}
+	roleID := claims.UserID
+
+	// 1. 获取角色的公会成员信息
+	member, err := s.Store.GetDriver().GetGuildMember(ctx, &store.FindGuildMember{RoleID: &roleID})
+	if err != nil {
+		return &dnfv1.LeaveGuildResponse{Error: 9}, nil // 不在公会中
+	}
+
+	// 2. 检查是否是会长（会长不能离开，必须先转让）
+	if member.Position == 3 {
+		return &dnfv1.LeaveGuildResponse{Error: 10}, nil // 会长不能离开
+	}
+
+	// 3. 获取公会信息
+	guild, err := s.Store.GetGuild(ctx, &store.FindGuild{FindBase: store.FindBase{ID: &member.GuildID}})
+	if err != nil {
+		return &dnfv1.LeaveGuildResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	// 4. 删除成员
+	err = s.Store.GetDriver().RemoveGuildMember(ctx, &store.DeleteGuildMember{ID: member.ID})
+	if err != nil {
+		return &dnfv1.LeaveGuildResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	// 5. 更新公会人数
+	newCount := guild.MemberCount - 1
+	_, err = s.Store.UpdateGuild(ctx, &store.UpdateGuild{
+		ID:          member.GuildID,
+		MemberCount: &newCount,
+	})
+	if err != nil {
+		return &dnfv1.LeaveGuildResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	return &dnfv1.LeaveGuildResponse{Error: ErrCodeSuccess}, nil
 }
+
+// GuildDonate 公会捐赠
 func (s *APIV1Service) GuildDonate(ctx context.Context, req *dnfv1.GuildDonateRequest) (*dnfv1.GuildDonateResponse, error) {
-	return &dnfv1.GuildDonateResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.GuildDonateResponse{Error: ErrCodeInvalidParam}, nil
+	}
+	roleID := claims.UserID
+
+	// 1. 获取角色的公会成员信息
+	member, err := s.Store.GetDriver().GetGuildMember(ctx, &store.FindGuildMember{RoleID: &roleID})
+	if err != nil {
+		return &dnfv1.GuildDonateResponse{Error: 9}, nil // 不在公会中
+	}
+
+	// 2. 获取公会信息
+	guild, err := s.Store.GetGuild(ctx, &store.FindGuild{FindBase: store.FindBase{ID: &member.GuildID}})
+	if err != nil {
+		return &dnfv1.GuildDonateResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	// 3. 处理捐赠
+	var contribution int64
+	switch req.DonateType {
+	case 1: // 金币
+		currency, err := s.Store.GetRoleCurrency(ctx, roleID)
+		if err != nil {
+			return &dnfv1.GuildDonateResponse{Error: ErrCodeSystemError}, nil
+		}
+		if currency.Gold < int64(req.Amount) {
+			return &dnfv1.GuildDonateResponse{Error: 3}, nil // 金币不足
+		}
+		currency.Gold -= int64(req.Amount)
+		if err := s.Store.UpdateRoleCurrency(ctx, currency); err != nil {
+			return &dnfv1.GuildDonateResponse{Error: ErrCodeSystemError}, nil
+		}
+		// 金币捐赠：1金币 = 1贡献，公会获得1资金
+		contribution = int64(req.Amount)
+
+	case 2: // 点券
+		currency, err := s.Store.GetRoleCurrency(ctx, roleID)
+		if err != nil {
+			return &dnfv1.GuildDonateResponse{Error: ErrCodeSystemError}, nil
+		}
+		if currency.Coin < int64(req.Amount) {
+			return &dnfv1.GuildDonateResponse{Error: 3}, nil // 点券不足
+		}
+		currency.Coin -= int64(req.Amount)
+		if err := s.Store.UpdateRoleCurrency(ctx, currency); err != nil {
+			return &dnfv1.GuildDonateResponse{Error: ErrCodeSystemError}, nil
+		}
+		// 点券捐赠：1点券 = 10贡献，公会获得10资金
+		contribution = int64(req.Amount) * 10
+
+	default:
+		return &dnfv1.GuildDonateResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	// 4. 更新个人贡献
+	newContribution := member.Contribution + contribution
+	newPosition := member.Position
+	position := &newPosition
+	err = s.Store.GetDriver().UpdateGuildMember(ctx, &store.UpdateGuildMember{
+		ID:           member.ID,
+		Contribution: &newContribution,
+		Position:     position,
+	})
+	if err != nil {
+		return &dnfv1.GuildDonateResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	// 5. 更新公会资金和贡献
+	newFund := guild.Fund + contribution
+	_, err = s.Store.UpdateGuild(ctx, &store.UpdateGuild{
+		ID:   member.GuildID,
+		Fund: &newFund,
+	})
+	if err != nil {
+		return &dnfv1.GuildDonateResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	return &dnfv1.GuildDonateResponse{
+		Error:             ErrCodeSuccess,
+		TotalContribution: int32(newContribution),
+		GuildExpGain:      int32(contribution),
+	}, nil
 }
+
+// GetGuildSkill 获取公会技能
 func (s *APIV1Service) GetGuildSkill(ctx context.Context, req *dnfv1.GetGuildSkillRequest) (*dnfv1.GetGuildSkillResponse, error) {
-	return &dnfv1.GetGuildSkillResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.GetGuildSkillResponse{Error: ErrCodeInvalidParam}, nil
+	}
+	roleID := claims.UserID
+
+	// 1. 获取角色的公会成员信息
+	_, err := s.Store.GetDriver().GetGuildMember(ctx, &store.FindGuildMember{RoleID: &roleID})
+	if err != nil {
+		return &dnfv1.GetGuildSkillResponse{Error: 9}, nil // 不在公会中
+	}
+
+	// 2. 返回固定的公会技能列表（简化版）
+	skills := []*dnfv1.GuildSkill{
+		{SkillId: 1, Level: 1, MaxLevel: 10, EffectValue: 10},
+		{SkillId: 2, Level: 1, MaxLevel: 10, EffectValue: 5},
+		{SkillId: 3, Level: 1, MaxLevel: 10, EffectValue: 15},
+	}
+
+	return &dnfv1.GetGuildSkillResponse{
+		Error:  ErrCodeSuccess,
+		Skills: skills,
+	}, nil
 }
+
+// UpgradeGuildSkill 升级公会技能
 func (s *APIV1Service) UpgradeGuildSkill(ctx context.Context, req *dnfv1.UpgradeGuildSkillRequest) (*dnfv1.UpgradeGuildSkillResponse, error) {
-	return &dnfv1.UpgradeGuildSkillResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.UpgradeGuildSkillResponse{Error: ErrCodeInvalidParam}, nil
+	}
+	roleID := claims.UserID
+
+	// 1. 获取角色的公会成员信息
+	member, err := s.Store.GetDriver().GetGuildMember(ctx, &store.FindGuildMember{RoleID: &roleID})
+	if err != nil {
+		return &dnfv1.UpgradeGuildSkillResponse{Error: 9}, nil // 不在公会中
+	}
+
+	// 2. 检查权限（只有会长和副会长能升级技能）
+	if member.Position < 2 {
+		return &dnfv1.UpgradeGuildSkillResponse{Error: 11}, nil // 权限不足
+	}
+
+	// 3. 获取公会信息
+	guild, err := s.Store.GetGuild(ctx, &store.FindGuild{FindBase: store.FindBase{ID: &member.GuildID}})
+	if err != nil {
+		return &dnfv1.UpgradeGuildSkillResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	// 4. 计算升级费用（简化版：技能ID × 10000 × 当前等级）
+	currentLevel := int32(1)
+	upgradeCost := int64(req.SkillId) * 10000 * int64(currentLevel)
+
+	// 5. 检查公会资金
+	if guild.Fund < upgradeCost {
+		return &dnfv1.UpgradeGuildSkillResponse{Error: 12}, nil // 公会资金不足
+	}
+
+	// 6. 扣除公会资金
+	newFund := guild.Fund - upgradeCost
+	_, err = s.Store.UpdateGuild(ctx, &store.UpdateGuild{
+		ID:   member.GuildID,
+		Fund: &newFund,
+	})
+	if err != nil {
+		return &dnfv1.UpgradeGuildSkillResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	// 7. 返回升级后的技能（简化版）
+	newLevel := currentLevel + 1
+	newEffect := int32(req.SkillId) * 5 * newLevel
+
+	return &dnfv1.UpgradeGuildSkillResponse{
+		Error: ErrCodeSuccess,
+		Skill: &dnfv1.GuildSkill{
+			SkillId:     req.SkillId,
+			Level:       newLevel,
+			MaxLevel:    10,
+			EffectValue: newEffect,
+		},
+	}, nil
 }
