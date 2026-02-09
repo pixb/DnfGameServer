@@ -1,0 +1,484 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+import "dnf/v1/common.proto";
+import "dnf/v1/common_types.proto";
+import "dnf/v1/inventory_types.proto";
+
+enum GuildNpcType {
+  NPC = 0;
+  NPC_SKIN = 1;
+}
+
+enum GuildNpcStatus {
+  GUILD_NPC_STATUS_NONE = 0;
+  COMPLETE_PURCHASE = 1;
+  APPLYING = 2;
+}
+
+enum GuildStructureType {
+  NORMAL = 0;
+  UPGRADE = 1;
+  ADD_ON = 2;
+  SKIN = 3;
+}
+
+enum GuildStructureStatus {
+  GUILD_STRUCTURE_STATUS_NONE = 0;
+  CONSTRUCTION = 1;
+  FINISH_CONSTRUCTION = 2;
+  CONSTRUCTION_HIDDEN = 3;
+}
+
+enum TeamType {
+  PLAYER = 0;
+  RED = 1;
+  BLUE = 2;
+  YELLOW = 3;
+  GREEN = 4;
+  BLACK = 5;
+  PINK = 6;
+  GRAY = 7;
+  ORANGE = 8;
+  PURPLE = 9;
+  BROWN = 10;
+  ENEMY = 11;
+  ENEMY_END = 12;
+  NEUTRAL = 13;
+  NEUTRAL_END = 14;
+  OBSERVER = 15;
+  OBSERVER_END = 16;
+}
+
+message WatingListUserInfo {
+  string name = 1;
+  string gname = 2;
+  int32 job = 3;
+  int32 growtype = 4;
+  int32 secgrowtype = 5;
+  uint64 charguid = 6;
+  int32 level = 7;
+  bool leader = 8;
+  bool ready = 9;
+  uint64 customdata = 10;
+  uint64 partyguid = 11;
+}
+
+message UserName {
+  string name = 1;
+}
+
+message UserMinimumInfo {
+  uint64 charguid = 1;
+  int32 growtype = 2;
+  int32 secgrowtype = 3;
+  int32 job = 4;
+  int32 level = 5;
+  string name = 6;
+  TeamType teamtype = 7;
+  int32 rank = 8;
+  int32 pvpstargrade = 9;
+  string profileurl = 10;
+  int32 world = 11;
+  SkinChatInfo skinchatinfo = 12;
+  bool iskeyboard = 13;
+}
+
+message UserLoadingStatus {
+  uint64 charguid = 1;
+  bool ready = 2;
+  bool waiting = 3;
+  bool disconnect = 4;
+  bool leave = 5;
+  repeated uint64 kickoutvotes = 6;
+}
+
+message SimpleCharacter {
+  uint64 charguid = 1;
+  int32 growtype = 2;
+  int32 secgrowtype = 3;
+  int32 job = 4;
+  int32 level = 5;
+  string name = 6;
+  int32 equipscore = 7;
+  int32 characterframe = 8;
+}
+
+message UserBoardGameResult {
+  uint64 charguid = 1;
+  int32 playtime = 2;
+  int32 mine = 3;
+  int32 gold = 4;
+  int32 hp = 5;
+  int32 relic = 6;
+}
+
+message RoomUserInfo {
+  uint64 charguid = 1;
+  int32 level = 2;
+  int32 job = 3;
+  int32 growtype = 4;
+  int32 secondgrowtype = 5;
+  string name = 6;
+  int32 teamtype = 7;
+  int32 creditscore = 8;
+  bool ready = 9;
+  SkinChatInfo skinchatinfo = 10;
+}
+
+message TeamResult {
+  int32 win = 1;
+  int32 addpoint = 2;
+  int32 clearcount = 3;
+}
+
+message ShopTabReset {
+  int32 shopid = 1;
+  int32 tab = 2;
+  int32 count = 3;
+}
+
+message ShopBuyCount {
+  int32 goodsid = 1;
+  int32 count = 2;
+  uint64 lastbuytime = 3;
+  int32 supplycount = 4;
+  uint64 supplydurationtime = 5;
+}
+
+message Ticket {
+  string dungeontype = 1;
+  int32 dailyticket = 2;
+  int32 weeklyticket = 3;
+  int32 premiumticket = 4;
+  int32 sweepticket = 5;
+  int32 dailyrewardticket = 6;
+  int32 weeklyrewardticket = 7;
+  int32 buycount = 8;
+  int64 chargetime = 9;
+  int32 freeticket = 10;
+}
+
+message TicketRewardInfo {
+  repeated Ticket character = 1;
+  repeated Ticket account = 2;
+}
+
+message TowerRewardItems {
+  repeated Equip equipitems = 1;
+  repeated Equip titleitems = 2;
+  repeated Equip flagitems = 3;
+  repeated Stackable materialitems = 4;
+  repeated Stackable consumeitems = 5;
+  repeated Stackable emblemitems = 6;
+  repeated Stackable carditems = 7;
+  repeated Stackable epicpieceitems = 8;
+  repeated Artifact cartifactitems = 9;
+  repeated Creature creatureitems = 10;
+  repeated SdAvatarItem avataritems = 11;
+  int32 index = 12;
+  int32 count = 13;
+}
+
+message TimeAttackReward {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message ShareRewardInfo {
+  int32 index = 1;
+  int32 state = 2;
+}
+
+message SkinItemInfo {
+  int32 index = 1;
+  uint64 guid = 2;
+  int64 expiretime = 3;
+  int64 acquisitiontime = 4;
+  int32 favorite = 5;
+}
+
+message SkinChatInfo {
+  int32 chatframe = 1;
+  int32 characterframe = 2;
+}
+
+message SkinEquipPutOnOff {
+  int32 index = 1;
+  int32 isequip = 2;
+}
+
+message Tutorial {
+  int32 index = 1;
+  int32 state = 2;
+  int32 type = 3;
+  bool enforce = 4;
+}
+
+message SyscmdCommand {
+  int32 runtype = 1;
+  int32 targettype = 2;
+  int32 type = 3;
+  uint64 time = 4;
+}
+
+message SyscmdItemjson {
+  uint64 guid = 1;
+  int32 count = 2;
+  int32 index = 3;
+}
+
+message SyscmdCerashop {
+  uint64 goodsid = 1;
+  int32 count = 2;
+  int32 type = 3;
+}
+
+message SyscmdPackages {
+  int32 index = 1;
+  int32 value = 2;
+  int32 upgrade = 3;
+  int32 reforge = 4;
+  int32 endurance = 5;
+}
+
+message SyscmdParty {
+  int32 area = 1;
+  int32 stageindex = 2;
+  int32 opentype = 3;
+  int32 subtype = 4;
+  uint64 partyguid = 5;
+  uint64 leaderguid = 6;
+  int32 packet = 7;
+  uint64 bundleguid = 8;
+  bool merge = 9;
+  bytes msg = 10;
+}
+
+message SyscmdMasterbuff {
+  int32 buffid = 1;
+  uint64 endtime = 2;
+}
+
+message SyscmdCommandTakeItem {
+  int32 gold = 1;
+  int32 tera = 2;
+  int32 cera = 3;
+  repeated SyscmdItemjson items = 4;
+  string itemreason = 5;
+  int32 itemsubreason = 6;
+  string moneyreason = 7;
+  int32 moneysubreason = 8;
+}
+
+message SystemCommand {
+  SyscmdCommand commands = 1;
+  int32 dungeon = 2;
+  bytes value = 3;
+  string reason = 4;
+  uint32 type = 5;
+  uint64 time = 6;
+  int32 idip = 7;
+  int32 platID = 8;
+  uint64 charguid = 9;
+  int32 subtype = 10;
+  uint64 addtime = 11;
+  int32 zeroBenefit = 12;
+  int32 unPlay = 13;
+  int32 unBanRank = 14;
+  int32 unGag = 15;
+  int32 unTitle = 16;
+  int32 cera = 17;
+  string title = 18;
+  string sender = 19;
+  string content = 20;
+  int32 itemflag = 21;
+  int32 subreason = 22;
+  bool systemreq = 23;
+  int32 exp = 24;
+  int32 growtype = 25;
+  int32 secgrowtype = 26;
+  bool reset = 27;
+  int32 qindex = 28;
+  int32 qtype = 29;
+  bool flag = 30;
+  uint64 fguid = 31;
+  int64 fromsendtime = 32;
+  uint64 closenessguid = 33;
+  repeated SyscmdItemjson items = 34;
+  int32 cmd = 35;
+  int32 source = 36;
+  string serial = 37;
+  int32 dungeonindex = 38;
+  int64 withdrawaltime = 39;
+  bool kickout = 40;
+  int32 expireday = 41;
+  int32 matchtype = 42;
+  int32 result = 43;
+  int32 status = 44;
+  bool ison = 45;
+  int32 shopid = 46;
+  repeated SyscmdCerashop lists = 47;
+  int32 goodsid = 48;
+  int32 amount = 49;
+  int32 count = 50;
+  int32 buycount = 51;
+  int32 packageindex = 52;
+  uint64 guid = 53;
+  string msg = 54;
+  int32 itemindex = 55;
+  int32 index = 56;
+  uint64 receiverguid = 57;
+  int32 boardtype = 58;
+  int32 reactiontype = 59;
+  uint64 noteguid = 60;
+  string fopenid = 61;
+  string openid = 62;
+  uint64 accountkey = 63;
+  uint64 itemguid = 64;
+  int32 inventype = 65;
+  int32 upgrade = 66;
+  int32 reforge = 67;
+  int32 endurance = 68;
+  string changename = 69;
+  uint64 gguid = 70;
+  int64 endtime = 71;
+  repeated SyscmdPackages packages = 72;
+  int32 world = 73;
+  int32 channel = 74;
+  SyscmdCommandTakeItem takeitem = 75;
+  int64 createtime = 76;
+  SyscmdParty party = 77;
+  int32 importance = 78;
+  bool needcare = 79;
+  bool faileddelete = 80;
+  string orderId = 81;
+  string reasonOpt = 82;
+  repeated SyscmdMasterbuff masterbuff = 83;
+  string mailType = 84;
+}
+
+message WhisperChat {
+  uint64 charguid = 1;
+  string sender = 2;
+  string receiver = 3;
+  string chat = 4;
+  string voice = 5;
+  int32 job = 6;
+  int32 growtype = 7;
+  int32 secondgrowtype = 8;
+  uint64 date = 9;
+}
+
+message UseInheritType {
+  bool upgrade = 1;
+  bool reforge = 2;
+  bool amplify = 3;
+}
+
+message WarehouseNpc {
+  GuildNpcType type = 1;
+  int32 index = 2;
+  uint64 guid = 3;
+  GuildNpcStatus status = 4;
+}
+
+message WarehouseStructure {
+  GuildStructureType type = 1;
+  int32 index = 2;
+  int32 count = 3;
+  uint64 guid = 4;
+  GuildStructureStatus status = 5;
+}
+
+message WorldtradeReward {
+  int32 index = 1;
+  int32 count = 2;
+  uint64 totalscore = 3;
+}
+
+message WelfareFindRewardInfo {
+  int32 currentstate = 1;
+  int32 dungeontype = 2;
+  int32 overduestate = 3;
+}
+
+message UsableFacilityInfo {
+  int32 buff = 1;
+  int64 endtime = 2;
+}
+
+message SeriaBuffMaterial {
+  int32 index = 1;
+  int32 aftervalue = 2;
+}
+
+message SeriaBuffInfo {
+  int32 number = 1;
+  int64 cooltime = 2;
+}
+
+message SdDeathMatchRewardInfo {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message SdDeathMatchReward {
+  uint64 charguid = 1;
+  int32 rewardcount = 2;
+  repeated SdDeathMatchRewardInfo list = 3;
+}
+
+message SdBattleroyalRecord {
+  uint64 recorder = 1;
+  int32 count = 2;
+  int32 teamtype = 3;
+}
+
+message TownInterval {
+  uint32 townindex = 1;
+  int32 refreshinterval = 2;
+}
+
+message SubdueInfo {
+  int32 index = 1;
+  repeated uint64 charguids = 2;
+  int64 starttime = 3;
+  int64 endtime = 4;
+  int32 state = 5;
+  int32 count = 6;
+  int32 totalantievil = 7;
+}
+
+message StateObjectDrop {
+  repeated int32 golds = 1;
+  repeated int32 items = 2;
+  uint64 charguid = 3;
+}
+
+message SpecialTileInfo {
+  int32 index = 1;
+  bool active = 2;
+  int32 cooltime = 3;
+}
+
+message Seasonpass {
+  int32 index = 1;
+  int64 dateStart = 2;
+  int64 dateEnd = 3;
+  repeated uint64 targetGuids = 4;
+}
+
+message ToyBillingVerify {
+  string stampToken = 1;
+  string orderId = 2;
+  string productId = 3;
+  string userId = 4;
+  string characterId = 5;
+  string servicePayload = 6;
+  string marketType = 7;
+  string purchaseType = 8;
+}

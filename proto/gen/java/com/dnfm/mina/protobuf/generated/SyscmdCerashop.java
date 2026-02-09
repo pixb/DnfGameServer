@@ -6,13 +6,13 @@
 package com.dnfm.mina.protobuf.generated;
 
 /**
- * Protobuf type {@code dnf.v1.SyscmdCommand}
+ * Protobuf type {@code dnf.v1.SyscmdCerashop}
  */
 @com.google.protobuf.Generated
-public final class SyscmdCommand extends
+public final class SyscmdCerashop extends
     com.google.protobuf.GeneratedMessage implements
-    // @@protoc_insertion_point(message_implements:dnf.v1.SyscmdCommand)
-    SyscmdCommandOrBuilder {
+    // @@protoc_insertion_point(message_implements:dnf.v1.SyscmdCerashop)
+    SyscmdCerashopOrBuilder {
 private static final long serialVersionUID = 0L;
   static {
     com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
@@ -21,48 +21,48 @@ private static final long serialVersionUID = 0L;
       /* minor= */ 33,
       /* patch= */ 5,
       /* suffix= */ "",
-      "SyscmdCommand");
+      "SyscmdCerashop");
   }
-  // Use SyscmdCommand.newBuilder() to construct.
-  private SyscmdCommand(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+  // Use SyscmdCerashop.newBuilder() to construct.
+  private SyscmdCerashop(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
     super(builder);
   }
-  private SyscmdCommand() {
+  private SyscmdCerashop() {
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCommand_descriptor;
+    return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCerashop_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCommand_fieldAccessorTable
+    return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCerashop_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.dnfm.mina.protobuf.generated.SyscmdCommand.class, com.dnfm.mina.protobuf.generated.SyscmdCommand.Builder.class);
+            com.dnfm.mina.protobuf.generated.SyscmdCerashop.class, com.dnfm.mina.protobuf.generated.SyscmdCerashop.Builder.class);
   }
 
-  public static final int RUNTYPE_FIELD_NUMBER = 1;
-  private int runtype_ = 0;
+  public static final int GOODSID_FIELD_NUMBER = 1;
+  private long goodsid_ = 0L;
   /**
-   * <code>int32 runtype = 1 [json_name = "runtype"];</code>
-   * @return The runtype.
+   * <code>uint64 goodsid = 1 [json_name = "goodsid"];</code>
+   * @return The goodsid.
    */
   @java.lang.Override
-  public int getRuntype() {
-    return runtype_;
+  public long getGoodsid() {
+    return goodsid_;
   }
 
-  public static final int TARGETTYPE_FIELD_NUMBER = 2;
-  private int targettype_ = 0;
+  public static final int COUNT_FIELD_NUMBER = 2;
+  private int count_ = 0;
   /**
-   * <code>int32 targettype = 2 [json_name = "targettype"];</code>
-   * @return The targettype.
+   * <code>int32 count = 2 [json_name = "count"];</code>
+   * @return The count.
    */
   @java.lang.Override
-  public int getTargettype() {
-    return targettype_;
+  public int getCount() {
+    return count_;
   }
 
   public static final int TYPE_FIELD_NUMBER = 3;
@@ -74,17 +74,6 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public int getType() {
     return type_;
-  }
-
-  public static final int TIME_FIELD_NUMBER = 4;
-  private long time_ = 0L;
-  /**
-   * <code>uint64 time = 4 [json_name = "time"];</code>
-   * @return The time.
-   */
-  @java.lang.Override
-  public long getTime() {
-    return time_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -101,17 +90,14 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (runtype_ != 0) {
-      output.writeInt32(1, runtype_);
+    if (goodsid_ != 0L) {
+      output.writeUInt64(1, goodsid_);
     }
-    if (targettype_ != 0) {
-      output.writeInt32(2, targettype_);
+    if (count_ != 0) {
+      output.writeInt32(2, count_);
     }
     if (type_ != 0) {
       output.writeInt32(3, type_);
-    }
-    if (time_ != 0L) {
-      output.writeUInt64(4, time_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -122,21 +108,17 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (runtype_ != 0) {
+    if (goodsid_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, runtype_);
+        .computeUInt64Size(1, goodsid_);
     }
-    if (targettype_ != 0) {
+    if (count_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(2, targettype_);
+        .computeInt32Size(2, count_);
     }
     if (type_ != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(3, type_);
-    }
-    if (time_ != 0L) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeUInt64Size(4, time_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -148,19 +130,17 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.dnfm.mina.protobuf.generated.SyscmdCommand)) {
+    if (!(obj instanceof com.dnfm.mina.protobuf.generated.SyscmdCerashop)) {
       return super.equals(obj);
     }
-    com.dnfm.mina.protobuf.generated.SyscmdCommand other = (com.dnfm.mina.protobuf.generated.SyscmdCommand) obj;
+    com.dnfm.mina.protobuf.generated.SyscmdCerashop other = (com.dnfm.mina.protobuf.generated.SyscmdCerashop) obj;
 
-    if (getRuntype()
-        != other.getRuntype()) return false;
-    if (getTargettype()
-        != other.getTargettype()) return false;
+    if (getGoodsid()
+        != other.getGoodsid()) return false;
+    if (getCount()
+        != other.getCount()) return false;
     if (getType()
         != other.getType()) return false;
-    if (getTime()
-        != other.getTime()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -172,58 +152,56 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + RUNTYPE_FIELD_NUMBER;
-    hash = (53 * hash) + getRuntype();
-    hash = (37 * hash) + TARGETTYPE_FIELD_NUMBER;
-    hash = (53 * hash) + getTargettype();
+    hash = (37 * hash) + GOODSID_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+        getGoodsid());
+    hash = (37 * hash) + COUNT_FIELD_NUMBER;
+    hash = (53 * hash) + getCount();
     hash = (37 * hash) + TYPE_FIELD_NUMBER;
     hash = (53 * hash) + getType();
-    hash = (37 * hash) + TIME_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getTime());
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.SyscmdCerashop parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.SyscmdCerashop parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.SyscmdCerashop parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.SyscmdCerashop parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(byte[] data)
+  public static com.dnfm.mina.protobuf.generated.SyscmdCerashop parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.SyscmdCerashop parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.SyscmdCerashop parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.SyscmdCerashop parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -231,26 +209,26 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseDelimitedFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.SyscmdCerashop parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input);
   }
 
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseDelimitedFrom(
+  public static com.dnfm.mina.protobuf.generated.SyscmdCerashop parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.SyscmdCerashop parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.SyscmdCerashop parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -263,7 +241,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.SyscmdCommand prototype) {
+  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.SyscmdCerashop prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -279,26 +257,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code dnf.v1.SyscmdCommand}
+   * Protobuf type {@code dnf.v1.SyscmdCerashop}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:dnf.v1.SyscmdCommand)
-      com.dnfm.mina.protobuf.generated.SyscmdCommandOrBuilder {
+      // @@protoc_insertion_point(builder_implements:dnf.v1.SyscmdCerashop)
+      com.dnfm.mina.protobuf.generated.SyscmdCerashopOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCommand_descriptor;
+      return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCerashop_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCommand_fieldAccessorTable
+      return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCerashop_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.dnfm.mina.protobuf.generated.SyscmdCommand.class, com.dnfm.mina.protobuf.generated.SyscmdCommand.Builder.class);
+              com.dnfm.mina.protobuf.generated.SyscmdCerashop.class, com.dnfm.mina.protobuf.generated.SyscmdCerashop.Builder.class);
     }
 
-    // Construct using com.dnfm.mina.protobuf.generated.SyscmdCommand.newBuilder()
+    // Construct using com.dnfm.mina.protobuf.generated.SyscmdCerashop.newBuilder()
     private Builder() {
 
     }
@@ -312,27 +290,26 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      runtype_ = 0;
-      targettype_ = 0;
+      goodsid_ = 0L;
+      count_ = 0;
       type_ = 0;
-      time_ = 0L;
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCommand_descriptor;
+      return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCerashop_descriptor;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.SyscmdCommand getDefaultInstanceForType() {
-      return com.dnfm.mina.protobuf.generated.SyscmdCommand.getDefaultInstance();
+    public com.dnfm.mina.protobuf.generated.SyscmdCerashop getDefaultInstanceForType() {
+      return com.dnfm.mina.protobuf.generated.SyscmdCerashop.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.SyscmdCommand build() {
-      com.dnfm.mina.protobuf.generated.SyscmdCommand result = buildPartial();
+    public com.dnfm.mina.protobuf.generated.SyscmdCerashop build() {
+      com.dnfm.mina.protobuf.generated.SyscmdCerashop result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -340,52 +317,46 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.SyscmdCommand buildPartial() {
-      com.dnfm.mina.protobuf.generated.SyscmdCommand result = new com.dnfm.mina.protobuf.generated.SyscmdCommand(this);
+    public com.dnfm.mina.protobuf.generated.SyscmdCerashop buildPartial() {
+      com.dnfm.mina.protobuf.generated.SyscmdCerashop result = new com.dnfm.mina.protobuf.generated.SyscmdCerashop(this);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    private void buildPartial0(com.dnfm.mina.protobuf.generated.SyscmdCommand result) {
+    private void buildPartial0(com.dnfm.mina.protobuf.generated.SyscmdCerashop result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.runtype_ = runtype_;
+        result.goodsid_ = goodsid_;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.targettype_ = targettype_;
+        result.count_ = count_;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.type_ = type_;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        result.time_ = time_;
       }
     }
 
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.dnfm.mina.protobuf.generated.SyscmdCommand) {
-        return mergeFrom((com.dnfm.mina.protobuf.generated.SyscmdCommand)other);
+      if (other instanceof com.dnfm.mina.protobuf.generated.SyscmdCerashop) {
+        return mergeFrom((com.dnfm.mina.protobuf.generated.SyscmdCerashop)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.SyscmdCommand other) {
-      if (other == com.dnfm.mina.protobuf.generated.SyscmdCommand.getDefaultInstance()) return this;
-      if (other.getRuntype() != 0) {
-        setRuntype(other.getRuntype());
+    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.SyscmdCerashop other) {
+      if (other == com.dnfm.mina.protobuf.generated.SyscmdCerashop.getDefaultInstance()) return this;
+      if (other.getGoodsid() != 0L) {
+        setGoodsid(other.getGoodsid());
       }
-      if (other.getTargettype() != 0) {
-        setTargettype(other.getTargettype());
+      if (other.getCount() != 0) {
+        setCount(other.getCount());
       }
       if (other.getType() != 0) {
         setType(other.getType());
-      }
-      if (other.getTime() != 0L) {
-        setTime(other.getTime());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -414,12 +385,12 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 8: {
-              runtype_ = input.readInt32();
+              goodsid_ = input.readUInt64();
               bitField0_ |= 0x00000001;
               break;
             } // case 8
             case 16: {
-              targettype_ = input.readInt32();
+              count_ = input.readInt32();
               bitField0_ |= 0x00000002;
               break;
             } // case 16
@@ -428,11 +399,6 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000004;
               break;
             } // case 24
-            case 32: {
-              time_ = input.readUInt64();
-              bitField0_ |= 0x00000008;
-              break;
-            } // case 32
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -450,66 +416,66 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private int runtype_ ;
+    private long goodsid_ ;
     /**
-     * <code>int32 runtype = 1 [json_name = "runtype"];</code>
-     * @return The runtype.
+     * <code>uint64 goodsid = 1 [json_name = "goodsid"];</code>
+     * @return The goodsid.
      */
     @java.lang.Override
-    public int getRuntype() {
-      return runtype_;
+    public long getGoodsid() {
+      return goodsid_;
     }
     /**
-     * <code>int32 runtype = 1 [json_name = "runtype"];</code>
-     * @param value The runtype to set.
+     * <code>uint64 goodsid = 1 [json_name = "goodsid"];</code>
+     * @param value The goodsid to set.
      * @return This builder for chaining.
      */
-    public Builder setRuntype(int value) {
+    public Builder setGoodsid(long value) {
 
-      runtype_ = value;
+      goodsid_ = value;
       bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 runtype = 1 [json_name = "runtype"];</code>
+     * <code>uint64 goodsid = 1 [json_name = "goodsid"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearRuntype() {
+    public Builder clearGoodsid() {
       bitField0_ = (bitField0_ & ~0x00000001);
-      runtype_ = 0;
+      goodsid_ = 0L;
       onChanged();
       return this;
     }
 
-    private int targettype_ ;
+    private int count_ ;
     /**
-     * <code>int32 targettype = 2 [json_name = "targettype"];</code>
-     * @return The targettype.
+     * <code>int32 count = 2 [json_name = "count"];</code>
+     * @return The count.
      */
     @java.lang.Override
-    public int getTargettype() {
-      return targettype_;
+    public int getCount() {
+      return count_;
     }
     /**
-     * <code>int32 targettype = 2 [json_name = "targettype"];</code>
-     * @param value The targettype to set.
+     * <code>int32 count = 2 [json_name = "count"];</code>
+     * @param value The count to set.
      * @return This builder for chaining.
      */
-    public Builder setTargettype(int value) {
+    public Builder setCount(int value) {
 
-      targettype_ = value;
+      count_ = value;
       bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 targettype = 2 [json_name = "targettype"];</code>
+     * <code>int32 count = 2 [json_name = "count"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearTargettype() {
+    public Builder clearCount() {
       bitField0_ = (bitField0_ & ~0x00000002);
-      targettype_ = 0;
+      count_ = 0;
       onChanged();
       return this;
     }
@@ -546,55 +512,23 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private long time_ ;
-    /**
-     * <code>uint64 time = 4 [json_name = "time"];</code>
-     * @return The time.
-     */
-    @java.lang.Override
-    public long getTime() {
-      return time_;
-    }
-    /**
-     * <code>uint64 time = 4 [json_name = "time"];</code>
-     * @param value The time to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTime(long value) {
-
-      time_ = value;
-      bitField0_ |= 0x00000008;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>uint64 time = 4 [json_name = "time"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearTime() {
-      bitField0_ = (bitField0_ & ~0x00000008);
-      time_ = 0L;
-      onChanged();
-      return this;
-    }
-
-    // @@protoc_insertion_point(builder_scope:dnf.v1.SyscmdCommand)
+    // @@protoc_insertion_point(builder_scope:dnf.v1.SyscmdCerashop)
   }
 
-  // @@protoc_insertion_point(class_scope:dnf.v1.SyscmdCommand)
-  private static final com.dnfm.mina.protobuf.generated.SyscmdCommand DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:dnf.v1.SyscmdCerashop)
+  private static final com.dnfm.mina.protobuf.generated.SyscmdCerashop DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.SyscmdCommand();
+    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.SyscmdCerashop();
   }
 
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand getDefaultInstance() {
+  public static com.dnfm.mina.protobuf.generated.SyscmdCerashop getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<SyscmdCommand>
-      PARSER = new com.google.protobuf.AbstractParser<SyscmdCommand>() {
+  private static final com.google.protobuf.Parser<SyscmdCerashop>
+      PARSER = new com.google.protobuf.AbstractParser<SyscmdCerashop>() {
     @java.lang.Override
-    public SyscmdCommand parsePartialFrom(
+    public SyscmdCerashop parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -613,17 +547,17 @@ private static final long serialVersionUID = 0L;
     }
   };
 
-  public static com.google.protobuf.Parser<SyscmdCommand> parser() {
+  public static com.google.protobuf.Parser<SyscmdCerashop> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<SyscmdCommand> getParserForType() {
+  public com.google.protobuf.Parser<SyscmdCerashop> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.SyscmdCommand getDefaultInstanceForType() {
+  public com.dnfm.mina.protobuf.generated.SyscmdCerashop getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

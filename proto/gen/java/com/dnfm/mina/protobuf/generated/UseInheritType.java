@@ -6,13 +6,13 @@
 package com.dnfm.mina.protobuf.generated;
 
 /**
- * Protobuf type {@code dnf.v1.SyscmdCommand}
+ * Protobuf type {@code dnf.v1.UseInheritType}
  */
 @com.google.protobuf.Generated
-public final class SyscmdCommand extends
+public final class UseInheritType extends
     com.google.protobuf.GeneratedMessage implements
-    // @@protoc_insertion_point(message_implements:dnf.v1.SyscmdCommand)
-    SyscmdCommandOrBuilder {
+    // @@protoc_insertion_point(message_implements:dnf.v1.UseInheritType)
+    UseInheritTypeOrBuilder {
 private static final long serialVersionUID = 0L;
   static {
     com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
@@ -21,70 +21,59 @@ private static final long serialVersionUID = 0L;
       /* minor= */ 33,
       /* patch= */ 5,
       /* suffix= */ "",
-      "SyscmdCommand");
+      "UseInheritType");
   }
-  // Use SyscmdCommand.newBuilder() to construct.
-  private SyscmdCommand(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+  // Use UseInheritType.newBuilder() to construct.
+  private UseInheritType(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
     super(builder);
   }
-  private SyscmdCommand() {
+  private UseInheritType() {
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCommand_descriptor;
+    return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_UseInheritType_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCommand_fieldAccessorTable
+    return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_UseInheritType_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.dnfm.mina.protobuf.generated.SyscmdCommand.class, com.dnfm.mina.protobuf.generated.SyscmdCommand.Builder.class);
+            com.dnfm.mina.protobuf.generated.UseInheritType.class, com.dnfm.mina.protobuf.generated.UseInheritType.Builder.class);
   }
 
-  public static final int RUNTYPE_FIELD_NUMBER = 1;
-  private int runtype_ = 0;
+  public static final int UPGRADE_FIELD_NUMBER = 1;
+  private boolean upgrade_ = false;
   /**
-   * <code>int32 runtype = 1 [json_name = "runtype"];</code>
-   * @return The runtype.
+   * <code>bool upgrade = 1 [json_name = "upgrade"];</code>
+   * @return The upgrade.
    */
   @java.lang.Override
-  public int getRuntype() {
-    return runtype_;
+  public boolean getUpgrade() {
+    return upgrade_;
   }
 
-  public static final int TARGETTYPE_FIELD_NUMBER = 2;
-  private int targettype_ = 0;
+  public static final int REFORGE_FIELD_NUMBER = 2;
+  private boolean reforge_ = false;
   /**
-   * <code>int32 targettype = 2 [json_name = "targettype"];</code>
-   * @return The targettype.
+   * <code>bool reforge = 2 [json_name = "reforge"];</code>
+   * @return The reforge.
    */
   @java.lang.Override
-  public int getTargettype() {
-    return targettype_;
+  public boolean getReforge() {
+    return reforge_;
   }
 
-  public static final int TYPE_FIELD_NUMBER = 3;
-  private int type_ = 0;
+  public static final int AMPLIFY_FIELD_NUMBER = 3;
+  private boolean amplify_ = false;
   /**
-   * <code>int32 type = 3 [json_name = "type"];</code>
-   * @return The type.
+   * <code>bool amplify = 3 [json_name = "amplify"];</code>
+   * @return The amplify.
    */
   @java.lang.Override
-  public int getType() {
-    return type_;
-  }
-
-  public static final int TIME_FIELD_NUMBER = 4;
-  private long time_ = 0L;
-  /**
-   * <code>uint64 time = 4 [json_name = "time"];</code>
-   * @return The time.
-   */
-  @java.lang.Override
-  public long getTime() {
-    return time_;
+  public boolean getAmplify() {
+    return amplify_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -101,17 +90,14 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (runtype_ != 0) {
-      output.writeInt32(1, runtype_);
+    if (upgrade_ != false) {
+      output.writeBool(1, upgrade_);
     }
-    if (targettype_ != 0) {
-      output.writeInt32(2, targettype_);
+    if (reforge_ != false) {
+      output.writeBool(2, reforge_);
     }
-    if (type_ != 0) {
-      output.writeInt32(3, type_);
-    }
-    if (time_ != 0L) {
-      output.writeUInt64(4, time_);
+    if (amplify_ != false) {
+      output.writeBool(3, amplify_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -122,21 +108,17 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (runtype_ != 0) {
+    if (upgrade_ != false) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, runtype_);
+        .computeBoolSize(1, upgrade_);
     }
-    if (targettype_ != 0) {
+    if (reforge_ != false) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(2, targettype_);
+        .computeBoolSize(2, reforge_);
     }
-    if (type_ != 0) {
+    if (amplify_ != false) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(3, type_);
-    }
-    if (time_ != 0L) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeUInt64Size(4, time_);
+        .computeBoolSize(3, amplify_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -148,19 +130,17 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.dnfm.mina.protobuf.generated.SyscmdCommand)) {
+    if (!(obj instanceof com.dnfm.mina.protobuf.generated.UseInheritType)) {
       return super.equals(obj);
     }
-    com.dnfm.mina.protobuf.generated.SyscmdCommand other = (com.dnfm.mina.protobuf.generated.SyscmdCommand) obj;
+    com.dnfm.mina.protobuf.generated.UseInheritType other = (com.dnfm.mina.protobuf.generated.UseInheritType) obj;
 
-    if (getRuntype()
-        != other.getRuntype()) return false;
-    if (getTargettype()
-        != other.getTargettype()) return false;
-    if (getType()
-        != other.getType()) return false;
-    if (getTime()
-        != other.getTime()) return false;
+    if (getUpgrade()
+        != other.getUpgrade()) return false;
+    if (getReforge()
+        != other.getReforge()) return false;
+    if (getAmplify()
+        != other.getAmplify()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -172,58 +152,58 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + RUNTYPE_FIELD_NUMBER;
-    hash = (53 * hash) + getRuntype();
-    hash = (37 * hash) + TARGETTYPE_FIELD_NUMBER;
-    hash = (53 * hash) + getTargettype();
-    hash = (37 * hash) + TYPE_FIELD_NUMBER;
-    hash = (53 * hash) + getType();
-    hash = (37 * hash) + TIME_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getTime());
+    hash = (37 * hash) + UPGRADE_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getUpgrade());
+    hash = (37 * hash) + REFORGE_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getReforge());
+    hash = (37 * hash) + AMPLIFY_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getAmplify());
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.UseInheritType parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.UseInheritType parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.UseInheritType parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.UseInheritType parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(byte[] data)
+  public static com.dnfm.mina.protobuf.generated.UseInheritType parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.UseInheritType parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.UseInheritType parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.UseInheritType parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -231,26 +211,26 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseDelimitedFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.UseInheritType parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input);
   }
 
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseDelimitedFrom(
+  public static com.dnfm.mina.protobuf.generated.UseInheritType parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.UseInheritType parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand parseFrom(
+  public static com.dnfm.mina.protobuf.generated.UseInheritType parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -263,7 +243,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.SyscmdCommand prototype) {
+  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.UseInheritType prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -279,26 +259,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code dnf.v1.SyscmdCommand}
+   * Protobuf type {@code dnf.v1.UseInheritType}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:dnf.v1.SyscmdCommand)
-      com.dnfm.mina.protobuf.generated.SyscmdCommandOrBuilder {
+      // @@protoc_insertion_point(builder_implements:dnf.v1.UseInheritType)
+      com.dnfm.mina.protobuf.generated.UseInheritTypeOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCommand_descriptor;
+      return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_UseInheritType_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCommand_fieldAccessorTable
+      return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_UseInheritType_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.dnfm.mina.protobuf.generated.SyscmdCommand.class, com.dnfm.mina.protobuf.generated.SyscmdCommand.Builder.class);
+              com.dnfm.mina.protobuf.generated.UseInheritType.class, com.dnfm.mina.protobuf.generated.UseInheritType.Builder.class);
     }
 
-    // Construct using com.dnfm.mina.protobuf.generated.SyscmdCommand.newBuilder()
+    // Construct using com.dnfm.mina.protobuf.generated.UseInheritType.newBuilder()
     private Builder() {
 
     }
@@ -312,27 +292,26 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      runtype_ = 0;
-      targettype_ = 0;
-      type_ = 0;
-      time_ = 0L;
+      upgrade_ = false;
+      reforge_ = false;
+      amplify_ = false;
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_SyscmdCommand_descriptor;
+      return com.dnfm.mina.protobuf.generated.UserSystemsProto.internal_static_dnf_v1_UseInheritType_descriptor;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.SyscmdCommand getDefaultInstanceForType() {
-      return com.dnfm.mina.protobuf.generated.SyscmdCommand.getDefaultInstance();
+    public com.dnfm.mina.protobuf.generated.UseInheritType getDefaultInstanceForType() {
+      return com.dnfm.mina.protobuf.generated.UseInheritType.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.SyscmdCommand build() {
-      com.dnfm.mina.protobuf.generated.SyscmdCommand result = buildPartial();
+    public com.dnfm.mina.protobuf.generated.UseInheritType build() {
+      com.dnfm.mina.protobuf.generated.UseInheritType result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -340,52 +319,46 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.SyscmdCommand buildPartial() {
-      com.dnfm.mina.protobuf.generated.SyscmdCommand result = new com.dnfm.mina.protobuf.generated.SyscmdCommand(this);
+    public com.dnfm.mina.protobuf.generated.UseInheritType buildPartial() {
+      com.dnfm.mina.protobuf.generated.UseInheritType result = new com.dnfm.mina.protobuf.generated.UseInheritType(this);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    private void buildPartial0(com.dnfm.mina.protobuf.generated.SyscmdCommand result) {
+    private void buildPartial0(com.dnfm.mina.protobuf.generated.UseInheritType result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.runtype_ = runtype_;
+        result.upgrade_ = upgrade_;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.targettype_ = targettype_;
+        result.reforge_ = reforge_;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.type_ = type_;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        result.time_ = time_;
+        result.amplify_ = amplify_;
       }
     }
 
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.dnfm.mina.protobuf.generated.SyscmdCommand) {
-        return mergeFrom((com.dnfm.mina.protobuf.generated.SyscmdCommand)other);
+      if (other instanceof com.dnfm.mina.protobuf.generated.UseInheritType) {
+        return mergeFrom((com.dnfm.mina.protobuf.generated.UseInheritType)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.SyscmdCommand other) {
-      if (other == com.dnfm.mina.protobuf.generated.SyscmdCommand.getDefaultInstance()) return this;
-      if (other.getRuntype() != 0) {
-        setRuntype(other.getRuntype());
+    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.UseInheritType other) {
+      if (other == com.dnfm.mina.protobuf.generated.UseInheritType.getDefaultInstance()) return this;
+      if (other.getUpgrade() != false) {
+        setUpgrade(other.getUpgrade());
       }
-      if (other.getTargettype() != 0) {
-        setTargettype(other.getTargettype());
+      if (other.getReforge() != false) {
+        setReforge(other.getReforge());
       }
-      if (other.getType() != 0) {
-        setType(other.getType());
-      }
-      if (other.getTime() != 0L) {
-        setTime(other.getTime());
+      if (other.getAmplify() != false) {
+        setAmplify(other.getAmplify());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -414,25 +387,20 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 8: {
-              runtype_ = input.readInt32();
+              upgrade_ = input.readBool();
               bitField0_ |= 0x00000001;
               break;
             } // case 8
             case 16: {
-              targettype_ = input.readInt32();
+              reforge_ = input.readBool();
               bitField0_ |= 0x00000002;
               break;
             } // case 16
             case 24: {
-              type_ = input.readInt32();
+              amplify_ = input.readBool();
               bitField0_ |= 0x00000004;
               break;
             } // case 24
-            case 32: {
-              time_ = input.readUInt64();
-              bitField0_ |= 0x00000008;
-              break;
-            } // case 32
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -450,151 +418,119 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private int runtype_ ;
+    private boolean upgrade_ ;
     /**
-     * <code>int32 runtype = 1 [json_name = "runtype"];</code>
-     * @return The runtype.
+     * <code>bool upgrade = 1 [json_name = "upgrade"];</code>
+     * @return The upgrade.
      */
     @java.lang.Override
-    public int getRuntype() {
-      return runtype_;
+    public boolean getUpgrade() {
+      return upgrade_;
     }
     /**
-     * <code>int32 runtype = 1 [json_name = "runtype"];</code>
-     * @param value The runtype to set.
+     * <code>bool upgrade = 1 [json_name = "upgrade"];</code>
+     * @param value The upgrade to set.
      * @return This builder for chaining.
      */
-    public Builder setRuntype(int value) {
+    public Builder setUpgrade(boolean value) {
 
-      runtype_ = value;
+      upgrade_ = value;
       bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 runtype = 1 [json_name = "runtype"];</code>
+     * <code>bool upgrade = 1 [json_name = "upgrade"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearRuntype() {
+    public Builder clearUpgrade() {
       bitField0_ = (bitField0_ & ~0x00000001);
-      runtype_ = 0;
+      upgrade_ = false;
       onChanged();
       return this;
     }
 
-    private int targettype_ ;
+    private boolean reforge_ ;
     /**
-     * <code>int32 targettype = 2 [json_name = "targettype"];</code>
-     * @return The targettype.
+     * <code>bool reforge = 2 [json_name = "reforge"];</code>
+     * @return The reforge.
      */
     @java.lang.Override
-    public int getTargettype() {
-      return targettype_;
+    public boolean getReforge() {
+      return reforge_;
     }
     /**
-     * <code>int32 targettype = 2 [json_name = "targettype"];</code>
-     * @param value The targettype to set.
+     * <code>bool reforge = 2 [json_name = "reforge"];</code>
+     * @param value The reforge to set.
      * @return This builder for chaining.
      */
-    public Builder setTargettype(int value) {
+    public Builder setReforge(boolean value) {
 
-      targettype_ = value;
+      reforge_ = value;
       bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 targettype = 2 [json_name = "targettype"];</code>
+     * <code>bool reforge = 2 [json_name = "reforge"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearTargettype() {
+    public Builder clearReforge() {
       bitField0_ = (bitField0_ & ~0x00000002);
-      targettype_ = 0;
+      reforge_ = false;
       onChanged();
       return this;
     }
 
-    private int type_ ;
+    private boolean amplify_ ;
     /**
-     * <code>int32 type = 3 [json_name = "type"];</code>
-     * @return The type.
+     * <code>bool amplify = 3 [json_name = "amplify"];</code>
+     * @return The amplify.
      */
     @java.lang.Override
-    public int getType() {
-      return type_;
+    public boolean getAmplify() {
+      return amplify_;
     }
     /**
-     * <code>int32 type = 3 [json_name = "type"];</code>
-     * @param value The type to set.
+     * <code>bool amplify = 3 [json_name = "amplify"];</code>
+     * @param value The amplify to set.
      * @return This builder for chaining.
      */
-    public Builder setType(int value) {
+    public Builder setAmplify(boolean value) {
 
-      type_ = value;
+      amplify_ = value;
       bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 type = 3 [json_name = "type"];</code>
+     * <code>bool amplify = 3 [json_name = "amplify"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearType() {
+    public Builder clearAmplify() {
       bitField0_ = (bitField0_ & ~0x00000004);
-      type_ = 0;
+      amplify_ = false;
       onChanged();
       return this;
     }
 
-    private long time_ ;
-    /**
-     * <code>uint64 time = 4 [json_name = "time"];</code>
-     * @return The time.
-     */
-    @java.lang.Override
-    public long getTime() {
-      return time_;
-    }
-    /**
-     * <code>uint64 time = 4 [json_name = "time"];</code>
-     * @param value The time to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTime(long value) {
-
-      time_ = value;
-      bitField0_ |= 0x00000008;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>uint64 time = 4 [json_name = "time"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearTime() {
-      bitField0_ = (bitField0_ & ~0x00000008);
-      time_ = 0L;
-      onChanged();
-      return this;
-    }
-
-    // @@protoc_insertion_point(builder_scope:dnf.v1.SyscmdCommand)
+    // @@protoc_insertion_point(builder_scope:dnf.v1.UseInheritType)
   }
 
-  // @@protoc_insertion_point(class_scope:dnf.v1.SyscmdCommand)
-  private static final com.dnfm.mina.protobuf.generated.SyscmdCommand DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:dnf.v1.UseInheritType)
+  private static final com.dnfm.mina.protobuf.generated.UseInheritType DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.SyscmdCommand();
+    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.UseInheritType();
   }
 
-  public static com.dnfm.mina.protobuf.generated.SyscmdCommand getDefaultInstance() {
+  public static com.dnfm.mina.protobuf.generated.UseInheritType getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<SyscmdCommand>
-      PARSER = new com.google.protobuf.AbstractParser<SyscmdCommand>() {
+  private static final com.google.protobuf.Parser<UseInheritType>
+      PARSER = new com.google.protobuf.AbstractParser<UseInheritType>() {
     @java.lang.Override
-    public SyscmdCommand parsePartialFrom(
+    public UseInheritType parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -613,17 +549,17 @@ private static final long serialVersionUID = 0L;
     }
   };
 
-  public static com.google.protobuf.Parser<SyscmdCommand> parser() {
+  public static com.google.protobuf.Parser<UseInheritType> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<SyscmdCommand> getParserForType() {
+  public com.google.protobuf.Parser<UseInheritType> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.SyscmdCommand getDefaultInstanceForType() {
+  public com.dnfm.mina.protobuf.generated.UseInheritType getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 
