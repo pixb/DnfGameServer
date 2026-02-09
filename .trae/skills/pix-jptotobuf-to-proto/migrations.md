@@ -44,6 +44,20 @@
   - 验证了Java编译和功能测试
   - 更新了迁移文档和技能文档
 
+### 批次26: 系统选项数据结构 (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: RES_SYSTEM_BUFF_APPENDAGE_LIST.java, PT_SYSTEM_BUFF_APPENDAGE.java, PT_BATTLE_OPTION.java, ENUM_BATTLE_OPTION.java, RES_RANDOMOPTION_SELECT.java
+- **状态**: ✅ 完成
+- **文档**: [批次26文档](../../devdoc/protobuf/batch_26/)
+- **成果**: 
+  - 成功迁移系统选项相关的数据结构
+  - 新增option_types.proto文件，集中管理系统选项数据结构
+  - 生成了Java和Go语言的代码，支持跨语言通信
+  - 编写了Go单元测试验证消息编解码
+  - 验证了Java编译和功能测试
+  - 处理了Equip消息重复定义的问题
+  - 更新了迁移文档和技能文档
+
 ## 历史批次
 
 ### 批次22: STREAM_DATA 和 USER_INFO (已完成)
@@ -68,8 +82,8 @@
 
 ## 迁移统计
 
-- **总批次**: 25
-- **已完成批次**: 25
+- **总批次**: 26
+- **已完成批次**: 26
 - **进行中批次**: 0
 - **待开始批次**: 0
 - **完成率**: 100%
@@ -78,6 +92,9 @@
 
 ### 系统数据结构
 - `proto/dnf/v1/system_types.proto` - 角色信息、聊天基础信息、超链接数据
+
+### 系统选项数据结构
+- `proto/dnf/v1/option_types.proto` - 系统buff附加信息、战斗选项、随机选项
 
 ### 通用数据结构
 - `proto/dnf/v1/common_types.proto` - 公会符号、avatar物品、排名信息
@@ -236,6 +253,7 @@
 - 添加批次23：通用数据结构迁移
 - 添加批次24：基础数据结构迁移
 - 添加批次25：系统数据结构迁移
+- 添加批次26：系统选项数据结构迁移
 - 更新迁移统计信息
 
 ## 注意事项
