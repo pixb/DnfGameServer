@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+// Go代码生成选项
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+// Java代码生成选项（重要）
+option java_multiple_files = true;  // 为每个消息生成独立的Java文件
+option java_package = "com.dnfm.mina.protobuf.generated";  // 指定Java包名
+option java_outer_classname = "TaskProto";  // 指定外层类名
+
+// 任务列表请求
+message TaskListRequest {
+  int32 character_id = 1;       // 角色ID
+  int32 task_type = 2;           // 任务类型
+}
+
+// 任务简要信息
+message TaskBriefInfo {
+  int32 task_id = 1;             // 任务ID
+  string task_name = 2;          // 任务名称
+  int32 task_type = 3;           // 任务类型
+  int32 task_status = 4;         // 任务状态
+  int32 task_level = 5;           // 任务等级
+  string task_icon = 6;           // 任务图标
+}
+
+// 任务列表响应
+message TaskListResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  repeated TaskBriefInfo tasks = 3;  // 任务列表
+}
+
+// 任务详情请求
+message TaskInfoRequest {
+  int32 character_id = 1;       // 角色ID
+  int32 task_id = 2;             // 任务ID
+}
+
+// 任务目标
+message TaskObjective {
+  int32 objective_id = 1;        // 目标ID
+  string objective_desc = 2;      // 目标描述
+  int32 current_progress = 3;     // 当前进度
+  int32 target_progress = 4;      // 目标进度
+  bool is_completed = 5;          // 是否完成
+}
+
+// 任务奖励
+message TaskReward {
+  int32 reward_id = 1;           // 奖励ID
+  int32 reward_type = 2;          // 奖励类型
+  int32 reward_count = 3;         // 奖励数量
+  string reward_name = 4;         // 奖励名称
+}
+
+// 任务详情
+message TaskDetailInfo {
+  int32 task_id = 1;             // 任务ID
+  string task_name = 2;          // 任务名称
+  string task_desc = 3;           // 任务描述
+  int32 task_type = 4;           // 任务类型
+  int32 task_status = 5;         // 任务状态
+  int32 task_level = 6;           // 任务等级
+  int32 accept_level = 7;         // 接受等级
+  repeated TaskObjective objectives = 8;  // 任务目标
+  repeated TaskReward rewards = 9;  // 任务奖励
+  string task_npc = 10;           // 任务NPC
+  int64 accept_time = 11;         // 接受时间
+  int64 deadline_time = 12;       // 截止时间
+}
+
+// 任务详情响应
+message TaskInfoResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  TaskDetailInfo task_info = 3;  // 任务详情
+}
+
+// 任务接受请求
+message TaskAcceptRequest {
+  int32 character_id = 1;       // 角色ID
+  int32 task_id = 2;             // 任务ID
+}
+
+// 任务接受响应
+message TaskAcceptResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  int32 task_id = 3;             // 任务ID
+  bool success = 4;              // 是否成功
+  string message = 5;            // 提示消息
+}
+
+// 任务完成请求
+message TaskFinishRequest {
+  int32 character_id = 1;       // 角色ID
+  int32 task_id = 2;             // 任务ID
+  int32 npc_id = 3;              // NPC ID
+}
+
+// 任务完成响应
+message TaskFinishResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  int32 task_id = 3;             // 任务ID
+  bool success = 4;              // 是否成功
+  string message = 5;            // 提示消息
+  repeated TaskReward rewards = 6;  // 获得奖励
+}

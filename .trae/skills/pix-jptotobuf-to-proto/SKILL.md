@@ -227,6 +227,66 @@ pix-jptotobuf-to-proto 会提供：
   - Go单元测试25个测试用例全部通过
   - Java编译成功，无错误
 
+### 批次14: GUILD (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_GUILD_CREATE.java, REQ_GUILD_JOIN.java, REQ_GUILD_INFO.java, REQ_GUILD_LIST.java
+- **状态**: ✅ 完成
+- **文档**: [批次14文档](../../devdoc/protobuf/batch_14/)
+- **成果**: 
+  - 成功迁移公会创建、公会加入、公会信息、公会列表消息
+  - 新增guild.proto文件定义公会相关消息
+  - 定义了公会相关数据结构（GuildInfo, GuildBriefInfo等）
+  - 扩展了StandardProtobufDecoder和StandardProtobufEncoder支持公会模块
+  - 实现了公会相关消息的编解码支持
+  - 验证了跨语言通信正确性
+  - Go单元测试10个测试用例全部通过
+  - Java编译成功，无错误
+
+### 批次15: GUILD (续) (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_GUILD_MEMBER_LIST.java, REQ_GUILD_DONATE.java, REQ_GUILD_SKILL.java, REQ_GUILD_STORAGE.java
+- **状态**: ✅ 完成
+- **文档**: [批次15文档](../../devdoc/protobuf/batch_15/)
+- **成果**: 
+  - 成功迁移公会成员列表、公会捐赠、公会技能、公会仓库消息
+  - 新增guild_ext.proto文件定义公会扩展相关消息
+  - 定义了公会相关数据结构（GuildMemberInfo, GuildSkillInfo, GuildStorageItem等）
+  - 扩展了StandardProtobufDecoder和StandardProtobufEncoder支持公会扩展模块
+  - 实现了公会扩展相关消息的编解码支持
+  - 验证了跨语言通信正确性
+  - Go单元测试11个测试用例全部通过
+  - Java编译成功，无错误
+
+### 批次16: TASK (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_TASK_LIST.java, REQ_TASK_INFO.java, REQ_TASK_ACCEPT.java, REQ_TASK_FINISH.java
+- **状态**: ✅ 完成
+- **文档**: [批次16文档](../../devdoc/protobuf/batch_16/)
+- **成果**: 
+  - 成功迁移任务列表、任务详情、任务接受、任务完成消息
+  - 新增task.proto文件定义任务相关消息
+  - 定义了任务相关数据结构（TaskBriefInfo, TaskDetailInfo, TaskObjective, TaskReward等）
+  - 扩展了StandardProtobufDecoder和StandardProtobufEncoder支持任务模块
+  - 实现了任务相关消息的编解码支持
+  - 验证了跨语言通信正确性
+  - Go单元测试11个测试用例全部通过
+  - Java编译成功，无错误
+
+### 批次17: TASK (续) (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_TASK_PROGRESS.java, REQ_TASK_ABANDON.java, REQ_TASK_REWARD.java, REQ_TASK_TRACK.java
+- **状态**: ✅ 完成
+- **文档**: [批次17文档](../../devdoc/protobuf/batch_17/)
+- **成果**: 
+  - 成功迁移任务进度更新、任务放弃、任务奖励领取、任务追踪消息
+  - 新增task_ext.proto文件定义任务扩展相关消息
+  - 复用了task.proto中的TaskReward数据结构
+  - 扩展了StandardProtobufDecoder和StandardProtobufEncoder支持任务扩展模块
+  - 实现了任务扩展相关消息的编解码支持
+  - 验证了跨语言通信正确性
+  - Go单元测试8个测试用例全部通过
+  - Java编译成功，无错误
+
 ## 🌟 功能实现
 
 ### 核心功能

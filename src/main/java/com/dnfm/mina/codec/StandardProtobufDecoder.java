@@ -175,6 +175,46 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
                 return adaptAdventureBookTeraRewardRequest(body);
             case 18009:
                 return adaptAdventureBookUpdateConditionRequest(body);
+            case 19000:
+                return adaptGuildCreateRequest(body);
+            case 19001:
+                return adaptGuildJoinRequest(body);
+            case 19002:
+                return adaptGuildInfoRequest(body);
+            case 19003:
+                return adaptGuildListRequest(body);
+            case 19004:
+                return adaptGuildMemberListRequest(body);
+            case 19005:
+                return adaptGuildDonateRequest(body);
+            case 19006:
+                return adaptGuildSkillRequest(body);
+            case 19007:
+                return adaptGuildStorageRequest(body);
+            case 20000:
+                return adaptTaskListRequest(body);
+            case 20001:
+                return adaptTaskInfoRequest(body);
+            case 20002:
+                return adaptTaskAcceptRequest(body);
+            case 20003:
+                return adaptTaskFinishRequest(body);
+            case 20004:
+                return adaptTaskProgressUpdateRequest(body);
+            case 20005:
+                return adaptTaskAbandonRequest(body);
+            case 20006:
+                return adaptTaskRewardClaimRequest(body);
+            case 20007:
+                return adaptTaskTrackRequest(body);
+            case 21000:
+                return adaptFriendListRequest(body);
+            case 21001:
+                return adaptFriendAddRequest(body);
+            case 21002:
+                return adaptFriendDeleteRequest(body);
+            case 21003:
+                return adaptFriendMessageRequest(body);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -989,6 +1029,186 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
         System.out.println("===== StandardProtobufDecoder.adaptAdventureBookUpdateConditionRequest() 被调用，body.length=" + body.length + " =====");
         com.dnfm.mina.protobuf.generated.AdventureBookUpdateConditionRequest newRequest = 
             com.dnfm.mina.protobuf.generated.AdventureBookUpdateConditionRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptGuildCreateRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptGuildCreateRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.GuildCreateRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.GuildCreateRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptGuildJoinRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptGuildJoinRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.GuildJoinRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.GuildJoinRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptGuildInfoRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptGuildInfoRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.GuildInfoRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.GuildInfoRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptGuildListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptGuildListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.GuildListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.GuildListRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptGuildMemberListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptGuildMemberListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.GuildMemberListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.GuildMemberListRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptGuildDonateRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptGuildDonateRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.GuildDonateRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.GuildDonateRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptGuildSkillRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptGuildSkillRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.GuildSkillRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.GuildSkillRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptGuildStorageRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptGuildStorageRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.GuildStorageRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.GuildStorageRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptTaskListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptTaskListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.TaskListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.TaskListRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptTaskInfoRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptTaskInfoRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.TaskInfoRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.TaskInfoRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptTaskAcceptRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptTaskAcceptRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.TaskAcceptRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.TaskAcceptRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptTaskFinishRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptTaskFinishRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.TaskFinishRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.TaskFinishRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptTaskProgressUpdateRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptTaskProgressUpdateRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.TaskProgressUpdateRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.TaskProgressUpdateRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptTaskAbandonRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptTaskAbandonRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.TaskAbandonRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.TaskAbandonRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptTaskRewardClaimRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptTaskRewardClaimRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.TaskRewardClaimRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.TaskRewardClaimRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptTaskTrackRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptTaskTrackRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.TaskTrackRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.TaskTrackRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptFriendListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptFriendListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.FriendListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.FriendListRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptFriendAddRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptFriendAddRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.FriendAddRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.FriendAddRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptFriendDeleteRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptFriendDeleteRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.FriendDeleteRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.FriendDeleteRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptFriendMessageRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptFriendMessageRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.FriendMessageRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.FriendMessageRequest.parseFrom(body);
         
         // 简化实现，返回null
         return null;

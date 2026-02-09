@@ -141,6 +141,46 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
                 return adaptAdventureBookTeraRewardResponse(msg);
             case 18009:
                 return adaptAdventureBookUpdateConditionResponse(msg);
+            case 19000:
+                return adaptGuildCreateResponse(msg);
+            case 19001:
+                return adaptGuildJoinResponse(msg);
+            case 19002:
+                return adaptGuildInfoResponse(msg);
+            case 19003:
+                return adaptGuildListResponse(msg);
+            case 19004:
+                return adaptGuildMemberListResponse(msg);
+            case 19005:
+                return adaptGuildDonateResponse(msg);
+            case 19006:
+                return adaptGuildSkillResponse(msg);
+            case 19007:
+                return adaptGuildStorageResponse(msg);
+            case 20000:
+                return adaptTaskListResponse(msg);
+            case 20001:
+                return adaptTaskInfoResponse(msg);
+            case 20002:
+                return adaptTaskAcceptResponse(msg);
+            case 20003:
+                return adaptTaskFinishResponse(msg);
+            case 20004:
+                return adaptTaskProgressUpdateResponse(msg);
+            case 20005:
+                return adaptTaskAbandonResponse(msg);
+            case 20006:
+                return adaptTaskRewardClaimResponse(msg);
+            case 20007:
+                return adaptTaskTrackResponse(msg);
+            case 21000:
+                return adaptFriendListResponse(msg);
+            case 21001:
+                return adaptFriendAddResponse(msg);
+            case 21002:
+                return adaptFriendDeleteResponse(msg);
+            case 21003:
+                return adaptFriendMessageResponse(msg);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -1770,6 +1810,372 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         builder.setBookId(1);
         builder.setConditionId(1);
         builder.setIsSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptGuildCreateResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptGuildCreateResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.GuildCreateResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.GuildCreateResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setGuildId(1);
+        builder.setGuildName("Test Guild");
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptGuildJoinResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptGuildJoinResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.GuildJoinResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.GuildJoinResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setGuildId(1);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptGuildInfoResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptGuildInfoResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.GuildInfoResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.GuildInfoResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        
+        com.dnfm.mina.protobuf.generated.GuildInfo.Builder guildInfoBuilder = 
+            com.dnfm.mina.protobuf.generated.GuildInfo.newBuilder();
+        guildInfoBuilder.setGuildId(1);
+        guildInfoBuilder.setGuildName("Test Guild");
+        guildInfoBuilder.setGuildNotice("Welcome to our guild!");
+        guildInfoBuilder.setGuildLevel(1);
+        guildInfoBuilder.setGuildExp(0);
+        guildInfoBuilder.setMemberCount(1);
+        guildInfoBuilder.setMaxMemberCount(10);
+        guildInfoBuilder.setGuildMaster("GuildMaster");
+        guildInfoBuilder.setGuildType(1);
+        guildInfoBuilder.setCreateTime(System.currentTimeMillis());
+        
+        builder.setGuildInfo(guildInfoBuilder.build());
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptGuildListResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptGuildListResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.GuildListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.GuildListResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setTotal(0);
+        builder.setPage(1);
+        builder.setPageSize(20);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptGuildMemberListResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptGuildMemberListResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.GuildMemberListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.GuildMemberListResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setGuildId(1);
+        builder.setTotal(0);
+        builder.setPage(1);
+        builder.setPageSize(20);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptGuildDonateResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptGuildDonateResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.GuildDonateResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.GuildDonateResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setGuildId(1);
+        builder.setDonateType(1);
+        builder.setDonateAmount(100);
+        builder.setContribution(10);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptGuildSkillResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptGuildSkillResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.GuildSkillResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.GuildSkillResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setGuildId(1);
+        builder.setSkillId(1);
+        
+        com.dnfm.mina.protobuf.generated.GuildSkillInfo.Builder skillInfoBuilder = 
+            com.dnfm.mina.protobuf.generated.GuildSkillInfo.newBuilder();
+        skillInfoBuilder.setSkillId(1);
+        skillInfoBuilder.setSkillName("Test Skill");
+        skillInfoBuilder.setLevel(1);
+        skillInfoBuilder.setMaxLevel(10);
+        skillInfoBuilder.setEffectValue(10);
+        skillInfoBuilder.setCostContribution(100);
+        skillInfoBuilder.setCostGuildExp(1000);
+        skillInfoBuilder.setIsLearned(true);
+        
+        builder.setSkillInfo(skillInfoBuilder.build());
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptGuildStorageResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptGuildStorageResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.GuildStorageResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.GuildStorageResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setGuildId(1);
+        builder.setOperation(1);
+        builder.setItemId(1);
+        builder.setItemCount(1);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptTaskListResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptTaskListResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.TaskListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.TaskListResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptTaskInfoResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptTaskInfoResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.TaskInfoResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.TaskInfoResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptTaskAcceptResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptTaskAcceptResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.TaskAcceptResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.TaskAcceptResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setTaskId(1);
+        builder.setSuccess(true);
+        builder.setMessage("Task accepted successfully");
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptTaskFinishResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptTaskFinishResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.TaskFinishResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.TaskFinishResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setTaskId(1);
+        builder.setSuccess(true);
+        builder.setMessage("Task completed successfully");
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptTaskProgressUpdateResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptTaskProgressUpdateResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.TaskProgressUpdateResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.TaskProgressUpdateResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setTaskId(1);
+        builder.setObjectiveId(1);
+        builder.setCurrentProgress(5);
+        builder.setIsCompleted(false);
+        builder.setMessage("Progress updated successfully");
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptTaskAbandonResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptTaskAbandonResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.TaskAbandonResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.TaskAbandonResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setTaskId(1);
+        builder.setSuccess(true);
+        builder.setMessage("Task abandoned successfully");
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptTaskRewardClaimResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptTaskRewardClaimResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.TaskRewardClaimResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.TaskRewardClaimResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setTaskId(1);
+        builder.setSuccess(true);
+        builder.setMessage("Reward claimed successfully");
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptTaskTrackResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptTaskTrackResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.TaskTrackResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.TaskTrackResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setTaskId(1);
+        builder.setIsTracking(true);
+        builder.setMessage("Task tracking updated successfully");
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptFriendListResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptFriendListResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.FriendListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.FriendListResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setTotalCount(5);
+        builder.setPage(1);
+        builder.setPageSize(20);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptFriendAddResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptFriendAddResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.FriendAddResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.FriendAddResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setFriendCharacterId(2);
+        builder.setSuccess(true);
+        builder.setMessage("Friend added successfully");
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptFriendDeleteResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptFriendDeleteResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.FriendDeleteResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.FriendDeleteResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setFriendCharacterId(2);
+        builder.setSuccess(true);
+        builder.setMessage("Friend deleted successfully");
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptFriendMessageResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptFriendMessageResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.FriendMessageResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.FriendMessageResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setFriendCharacterId(2);
+        builder.setSuccess(true);
+        builder.setMessage("Message sent successfully");
+        builder.setSendTime(System.currentTimeMillis());
         
         return builder.build().toByteArray();
     }

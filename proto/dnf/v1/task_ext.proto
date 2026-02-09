@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+// Go代码生成选项
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+// Java代码生成选项（重要）
+option java_multiple_files = true;  // 为每个消息生成独立的Java文件
+option java_package = "com.dnfm.mina.protobuf.generated";  // 指定Java包名
+option java_outer_classname = "TaskExtProto";  // 指定外层类名
+
+// 导入task.proto中的TaskReward消息
+import "dnf/v1/task.proto";
+
+// 任务进度更新请求
+message TaskProgressUpdateRequest {
+  int32 character_id = 1;       // 角色ID
+  int32 task_id = 2;             // 任务ID
+  int32 objective_id = 3;        // 目标ID
+  int32 progress = 4;            // 进度值
+}
+
+// 任务进度更新响应
+message TaskProgressUpdateResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  int32 task_id = 3;             // 任务ID
+  int32 objective_id = 4;        // 目标ID
+  int32 current_progress = 5;     // 当前进度
+  bool is_completed = 6;          // 是否完成
+  string message = 7;            // 提示消息
+}
+
+// 任务放弃请求
+message TaskAbandonRequest {
+  int32 character_id = 1;       // 角色ID
+  int32 task_id = 2;             // 任务ID
+}
+
+// 任务放弃响应
+message TaskAbandonResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  int32 task_id = 3;             // 任务ID
+  bool success = 4;              // 是否成功
+  string message = 5;            // 提示消息
+}
+
+// 任务奖励领取请求
+message TaskRewardClaimRequest {
+  int32 character_id = 1;       // 角色ID
+  int32 task_id = 2;             // 任务ID
+}
+
+// 任务奖励领取响应
+message TaskRewardClaimResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  int32 task_id = 3;             // 任务ID
+  bool success = 4;              // 是否成功
+  string message = 5;            // 提示消息
+  repeated TaskReward rewards = 6;  // 获得奖励
+}
+
+// 任务追踪请求
+message TaskTrackRequest {
+  int32 character_id = 1;       // 角色ID
+  int32 task_id = 2;             // 任务ID
+  bool is_tracking = 3;          // 是否追踪
+}
+
+// 任务追踪响应
+message TaskTrackResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  int32 task_id = 3;             // 任务ID
+  bool is_tracking = 4;          // 是否追踪
+  string message = 5;            // 提示消息
+}
