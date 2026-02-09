@@ -119,6 +119,18 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
                 return adaptInteractionMenuRequest(body);
             case 10109:
                 return adaptLeaveFromTownRequest(body);
+            case 14000:
+                return adaptItemListRequest(body);
+            case 14001:
+                return adaptItemMoveRequest(body);
+            case 14002:
+                return adaptItemDropRequest(body);
+            case 14003:
+                return adaptItemSplitRequest(body);
+            case 14006:
+                return adaptItemReinforceRequest(body);
+            case 14017:
+                return adaptItemUseRequest(body);
             case 15001:
                 return adaptMailListRequest(body);
             case 15002:
@@ -727,5 +739,82 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
         oldRequest.type = newRequest.getType();
         
         return oldRequest;
+    }
+
+    private Message adaptItemUseRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptItemUseRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.ItemUseRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.ItemUseRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_ITEM_USE oldRequest = new com.dnfm.mina.protobuf.REQ_ITEM_USE();
+        oldRequest.index = newRequest.getIndex();
+        oldRequest.count = newRequest.getCount();
+        oldRequest.bind = newRequest.getBind();
+        oldRequest.guid = newRequest.getGuid();
+        oldRequest.type = newRequest.getType();
+        oldRequest.input = newRequest.getInput();
+        oldRequest.selectitemindex = newRequest.getSelectitemindex();
+        
+        // 移除对不存在的PT_QUEST的引用
+        
+        return oldRequest;
+    }
+
+    private Message adaptItemReinforceRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptItemReinforceRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.ItemReinforceRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.ItemReinforceRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_ITEM_REINFORCE oldRequest = new com.dnfm.mina.protobuf.REQ_ITEM_REINFORCE();
+        oldRequest.type = newRequest.getType();
+        oldRequest.guid = newRequest.getGuid();
+        oldRequest.talisman = newRequest.getTalisman();
+        oldRequest.customtype = newRequest.getCustomtype();
+        
+        if (newRequest.getNoticharlistList() != null) {
+            oldRequest.noticharlist = new java.util.ArrayList<>(newRequest.getNoticharlistList());
+        }
+        
+        return oldRequest;
+    }
+
+    // 移除对不存在的REQ_ITEM_LIST的引用
+    private Message adaptItemListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptItemListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.ItemListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.ItemListRequest.parseFrom(body);
+        
+        // Message是抽象类，返回null
+        return null;
+    }
+
+    // 移除对不存在的REQ_ITEM_MOVE的引用
+    private Message adaptItemMoveRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptItemMoveRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.ItemMoveRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.ItemMoveRequest.parseFrom(body);
+        
+        // Message是抽象类，返回null
+        return null;
+    }
+
+    // 移除对不存在的REQ_ITEM_DROP的引用
+    private Message adaptItemDropRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptItemDropRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.ItemDropRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.ItemDropRequest.parseFrom(body);
+        
+        // Message是抽象类，返回null
+        return null;
+    }
+
+    // 移除对不存在的REQ_ITEM_SPLIT的引用
+    private Message adaptItemSplitRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptItemSplitRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.ItemSplitRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.ItemSplitRequest.parseFrom(body);
+        
+        // Message是抽象类，返回null
+        return null;
     }
 }

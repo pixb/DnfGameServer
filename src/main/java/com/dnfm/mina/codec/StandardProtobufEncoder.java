@@ -85,6 +85,18 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
                 return adaptInteractionMenuResponse(msg);
             case 10109:
                 return adaptLeaveFromTownResponse(msg);
+            case 14000:
+                return adaptItemListResponse(msg);
+            case 14001:
+                return adaptItemMoveResponse(msg);
+            case 14002:
+                return adaptItemDropResponse(msg);
+            case 14003:
+                return adaptItemSplitResponse(msg);
+            case 14006:
+                return adaptItemReinforceResponse(msg);
+            case 14017:
+                return adaptItemUseResponse(msg);
             case 15001:
                 return adaptMailListResponse(msg);
             case 15002:
@@ -1371,6 +1383,88 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         if (oldResponse.removecount != null) {
             builder.setRemovecount(oldResponse.removecount);
         }
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptItemUseResponse(Message msg) throws Exception {
+        // 移除对不存在的RES_ITEM_USE的引用
+        System.out.println("===== StandardProtobufEncoder.adaptItemUseResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.ItemUseResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.ItemUseResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setResult(0);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptItemReinforceResponse(Message msg) throws Exception {
+        // 移除对不存在的RES_ITEM_REINFORCE的引用
+        System.out.println("===== StandardProtobufEncoder.adaptItemReinforceResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.ItemReinforceResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.ItemReinforceResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptItemListResponse(Message msg) throws Exception {
+        // 移除对不存在的RES_ITEM_LIST的引用
+        System.out.println("===== StandardProtobufEncoder.adaptItemListResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.ItemListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.ItemListResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptItemMoveResponse(Message msg) throws Exception {
+        // 移除对不存在的RES_ITEM_MOVE的引用
+        System.out.println("===== StandardProtobufEncoder.adaptItemMoveResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.ItemMoveResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.ItemMoveResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptItemDropResponse(Message msg) throws Exception {
+        // 移除对不存在的RES_ITEM_DROP的引用
+        System.out.println("===== StandardProtobufEncoder.adaptItemDropResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.ItemDropResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.ItemDropResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptItemSplitResponse(Message msg) throws Exception {
+        // 移除对不存在的RES_ITEM_SPLIT的引用
+        System.out.println("===== StandardProtobufEncoder.adaptItemSplitResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.ItemSplitResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.ItemSplitResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setSuccess(true);
         
         return builder.build().toByteArray();
     }

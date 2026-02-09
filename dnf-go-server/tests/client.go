@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
-	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"

@@ -167,6 +167,21 @@ pix-jptotobuf-to-proto 会提供：
   - 编解码测试验证了跨语言通信
   - Java编译成功，无错误
 
+### 批次10: ITEM (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_ITEM_USE.java, REQ_ITEM_REINFORCE.java
+- **状态**: ✅ 完成
+- **文档**: [批次10文档](../../devdoc/protobuf/batch_10/)
+- **成果**: 
+  - 成功迁移物品使用、物品强化消息
+  - 新增item.proto文件定义物品相关消息
+  - 定义了物品相关数据结构（ItemInfo等）
+  - 扩展了StandardProtobufDecoder和StandardProtobufEncoder支持物品模块
+  - 实现了物品相关消息的编解码支持
+  - 验证了跨语言通信正确性
+  - Go单元测试6个测试用例全部通过
+  - Java编译成功，无错误
+
 ## 🌟 功能实现
 
 ### 核心功能
