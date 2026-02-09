@@ -7,6 +7,7 @@
 这是一个基于 SQLite 的迁移进度管理系统，用于追踪从 JProtobuf 到标准 Protobuf 的迁移过程。
 
 **核心文件**:
+
 - `migration_tracker.py` - 主要操作接口
 - `migration_progress.db` - SQLite 数据库
 - `init_migration_db.py` - 初始化脚本
@@ -14,6 +15,7 @@
 ## 常用操作速查
 
 ### 1. 查看整体进度
+
 ```python
 import subprocess
 result = subprocess.run(['python', 'migration_tracker.py', 'progress'], 
@@ -22,6 +24,7 @@ print(result.stdout)
 ```
 
 ### 2. 查看批次详情
+
 ```python
 # 查看 batch_01
 result = subprocess.run(['python', 'migration_tracker.py', 'batch', 'batch_01'], 
@@ -30,6 +33,7 @@ print(result.stdout)
 ```
 
 ### 3. 列出所有批次
+
 ```python
 result = subprocess.run(['python', 'migration_tracker.py', 'list_batches'], 
                        capture_output=True, text=True, cwd='devdoc/protobuf')
@@ -37,6 +41,7 @@ print(result.stdout)
 ```
 
 ### 4. 列出文件
+
 ```python
 # 列出所有文件
 result = subprocess.run(['python', 'migration_tracker.py', 'list_files'], 
@@ -50,6 +55,7 @@ print(result.stdout)
 ```
 
 ### 5. 列出问题
+
 ```python
 # 列出所有待解决问题
 result = subprocess.run(['python', 'migration_tracker.py', 'list_issues'], 
@@ -58,6 +64,7 @@ print(result.stdout)
 ```
 
 ### 6. 添加新批次
+
 ```python
 # 添加 batch_11
 result = subprocess.run(['python', 'migration_tracker.py', 'add_batch', 
@@ -67,6 +74,7 @@ print(result.stdout)
 ```
 
 ### 7. 添加文件到批次
+
 ```python
 # 添加文件到 batch_03
 result = subprocess.run(['python', 'migration_tracker.py', 'add_file', 
@@ -76,6 +84,7 @@ print(result.stdout)
 ```
 
 ### 8. 更新文件状态
+
 ```python
 # 开始迁移文件 ID 为 6 的文件
 result = subprocess.run(['python', 'migration_tracker.py', 'start_file', '6'], 
@@ -89,6 +98,7 @@ print(result.stdout)
 ```
 
 ### 9. 添加问题
+
 ```python
 # 添加问题到 batch_03
 result = subprocess.run(['python', 'migration_tracker.py', 'add_issue', 
@@ -98,6 +108,7 @@ print(result.stdout)
 ```
 
 ### 10. 解决问题
+
 ```python
 # 解决问题 ID 为 2 的问题
 result = subprocess.run(['python', 'migration_tracker.py', 'resolve_issue', 
@@ -130,6 +141,7 @@ with MigrationTracker('devdoc/protobuf/migration_progress.db') as tracker:
 ## 数据结构说明
 
 ### Batch (批次)
+
 ```python
 {
     'id': 1,
@@ -144,6 +156,7 @@ with MigrationTracker('devdoc/protobuf/migration_progress.db') as tracker:
 ```
 
 ### MigrationFile (文件)
+
 ```python
 {
     'id': 1,
@@ -159,6 +172,7 @@ with MigrationTracker('devdoc/protobuf/migration_progress.db') as tracker:
 ```
 
 ### Issue (问题)
+
 ```python
 {
     'id': 1,

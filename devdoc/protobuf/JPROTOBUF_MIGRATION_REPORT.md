@@ -162,30 +162,35 @@ graph TB
 ## 🔍 模块详细分析
 
 ### 1. 登录认证模块 ✅
+
 - **文件数**: 5
 - **状态**: 已完成
 - **包含文件**: ChannelInfo, IntrudeMemberInfo, IntrudeInfo, LoginRequest, LoginResponse
 - **完成日期**: 2026-02-09
 
 ### 2. 会话管理模块 ✅
+
 - **文件数**: 1 (实际迁移1个)
 - **状态**: 部分完成
 - **包含文件**: PING消息
 - **待确认**: SESSION_LOGOUT, HEARTBEAT
 
 ### 3. 角色管理模块 🔄
+
 - **预估文件数**: ~150
 - **状态**: 进行中
 - **包含文件**: CHARACTER_INFO, JOB_INFO, REQ_LOAD_CHARAC 等
 - **优先级**: 高
 
 ### 4. 物品系统模块 ⏳
+
 - **预估文件数**: ~200
 - **状态**: 待开始
 - **包含文件**: PT_ITEM, REQ_ITEM_LIST, RES_EQUIP_LIST 等
 - **优先级**: 高
 
 ### 5-13. 其他模块 ⏳
+
 - 技能系统、副本系统、公会系统、PVP系统、任务系统、宠物系统、商城系统、聊天社交、活动系统
 - **状态**: 待规划
 

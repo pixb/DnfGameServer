@@ -3,7 +3,7 @@
 **批次**: batch_01  
 **模块**: 登录认证模块  
 **状态**: completed  
-**生成时间**: 2026-02-09 20:01:26
+**生成时间**: 2026-02-09 23:12:57
 
 ---
 
@@ -17,25 +17,28 @@
 | 10000 | 0 | `PT_INTRUDEINFO` | UNKNOWN | `IntrudeInfo` | `auth_login.proto` | ❌ missing | IntrudeInfo.java, auth_login.pb.go |
 | 10000 | 1 | `RES_LOGIN` | RES | `LoginResponse` | `auth_login.proto` | ✅ complete | LoginResponse.java, auth_login.pb.go |
 
-
 ---
 
 ## 文件路径汇总
 
 ### 原Java文件位置
+
 - **路径**: `src/main/java/com/dnfm/mina/protobuf/`
 - **文件数**: 5 个
 
 ### Proto文件位置
+
 - **路径**: `proto/dnf/v1/`
 - **文件列表**:
   - `auth_login.proto`
 
 ### 生成的Java文件位置
+
 - **路径**: `proto/gen/java/com/dnfm/mina/protobuf/generated/`
 - **文件数**: 5 个
 
 ### 生成的Go文件位置
+
 - **路径**: `dnf-go-client/gen/dnf/v1/`
 - **文件数**: 1 个
 
