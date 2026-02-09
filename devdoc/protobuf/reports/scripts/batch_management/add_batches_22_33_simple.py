@@ -9,7 +9,7 @@ import sqlite3
 
 def add_batches_22_33():
     """添加批次22-33到数据库"""
-    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/scripts/migration_progress.db'
+    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/data/migration_progress.db'
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     

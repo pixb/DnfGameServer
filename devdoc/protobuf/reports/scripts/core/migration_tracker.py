@@ -87,7 +87,10 @@ class Issue:
 class MigrationTracker:
     """迁移进度追踪器"""
     
-    def __init__(self, db_path: str = "migration_progress.db"):
+    def __init__(self, db_path: str = None):
+        if db_path is None:
+            # 默认使用 data 目录下的数据库
+            db_path = str(Path(__file__).parent.parent.parent / 'data' / 'migration_progress.db')
         self.db_path = db_path
         self.conn = None
         self._connect()

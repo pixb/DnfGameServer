@@ -382,7 +382,7 @@ class MessageMappingExtractor:
 
 def main():
     """主函数"""
-    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/scripts/migration_progress.db'
+    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/data/migration_progress.db'
     
     extractor = MessageMappingExtractor(db_path)
     

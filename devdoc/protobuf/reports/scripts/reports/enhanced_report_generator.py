@@ -12,15 +12,21 @@ from core.migration_tracker import MigrationTracker
 from datetime import datetime, timedelta
 from typing import List, Dict
 import json
+from pathlib import Path
 
 class EnhancedReportGenerator:
     """增强版报告生成器"""
     
     def __init__(self, db_path: str = None):
         self.tracker = MigrationTracker(db_path) if db_path else MigrationTracker()
+        self.outputs_dir = Path(__file__).parent.parent.parent / 'outputs'
     
     def generate_comprehensive_report(self, output_file: str = "comprehensive_migration_report.md"):
         """生成综合迁移报告"""
+        
+        # 默认输出到 outputs 目录
+        if not Path(output_file).is_absolute():
+            output_file = str(self.outputs_dir / output_file)
         
         progress = self.tracker.get_overall_progress()
         batches = self.tracker.list_batches(order_by="batch_number")
@@ -307,6 +313,10 @@ class EnhancedReportGenerator:
     
     def generate_json_report(self, output_file: str = "migration_report.json"):
         """生成JSON格式的报告"""
+        
+        # 默认输出到 outputs 目录
+        if not Path(output_file).is_absolute():
+            output_file = str(self.outputs_dir / output_file)
         
         progress = self.tracker.get_overall_progress()
         batches = self.tracker.list_batches(order_by="batch_number")

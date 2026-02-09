@@ -20,6 +20,7 @@ class AIMigrationAssistant:
     def __init__(self):
         self.tracker = MigrationTracker()
         self.project_root = Path('/home/pix/dev/code/java/DnfGameServer')
+        self.outputs_dir = self.project_root / 'devdoc' / 'protobuf' / 'reports' / 'outputs'
     
     # ========== 快速查询接口 ==========
     
@@ -400,7 +401,8 @@ class AIMigrationAssistant:
             ]
         }
         
-        output_path = self.project_root / 'devdoc' / 'protobuf' / 'reports' / output_file
+        # 默认输出到 outputs 目录
+        output_path = self.outputs_dir / output_file
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
         

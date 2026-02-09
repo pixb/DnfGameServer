@@ -9,9 +9,14 @@ sys.path.insert(0, '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/report
 
 from core.migration_tracker import MigrationTracker
 from datetime import datetime
+from pathlib import Path
 
 def generate_markdown_report(output_file: str = "migration_report.md"):
     """生成 Markdown 格式的进度报告"""
+    
+    # 默认输出到 outputs 目录
+    if not Path(output_file).is_absolute():
+        output_file = str(Path(__file__).parent.parent.parent / 'outputs' / output_file)
     
     with MigrationTracker() as tracker:
         progress = tracker.get_overall_progress()
@@ -117,6 +122,10 @@ def generate_markdown_report(output_file: str = "migration_report.md"):
 
 def generate_html_report(output_file: str = "migration_report.html"):
     """生成 HTML 格式的进度报告"""
+    
+    # 默认输出到 outputs 目录
+    if not Path(output_file).is_absolute():
+        output_file = str(Path(__file__).parent.parent.parent / 'outputs' / output_file)
     
     with MigrationTracker() as tracker:
         progress = tracker.get_overall_progress()

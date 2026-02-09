@@ -17,8 +17,6 @@ sys.path.insert(0, str(project_root / 'devdoc' / 'protobuf'))
 from core.migration_tracker import MigrationTracker
 from batch_management.update_all_batches import update_all_batches
 from batch_management.fix_batch_status import fix_batch_status
-from batch_management.fix_batch_10 import fix_batch_10
-from batch_management.update_batches_10_13 import update_batches_10_to_13
 from batch_management.add_batches_22_33_simple import add_batches_22_33
 from reports.generate_report import generate_markdown_report, generate_html_report
 from reports.enhanced_report_generator import EnhancedReportGenerator
@@ -74,7 +72,7 @@ def generate_report(format='markdown'):
 
 def query(old_name=None, new_name=None, module_id=None, batch_name=None):
     """查询消息映射"""
-    query = MessageMappingQuery('/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/scripts/migration_progress.db')
+    query = MessageMappingQuery('/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/data/migration_progress.db')
 
     if old_name:
         query.query_by_old_name(old_name)

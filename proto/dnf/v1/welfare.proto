@@ -1,0 +1,163 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+import "dnf/v1/inventory_types.proto";
+import "dnf/v1/common_types.proto";
+import "dnf/v1/common.proto";
+
+message WelfareRewardGetRequest {
+  int32 module_id = 1;
+  int32 cmd = 2;
+}
+
+message WelfareRewardGetResponse {
+  int32 error = 1;
+  int32 level = 2;
+  ExpDetailInfo clear_exp = 3;
+  Ticket ticket = 4;
+  int32 adventure_union_level = 5;
+  int64 adventure_union_exp = 6;
+  ContentsRewardInfo rewards = 7;
+}
+
+message WelfareRewardInfoRequest {
+  int32 module_id = 1;
+  int32 cmd = 2;
+}
+
+message WelfareRewardInfoResponse {
+  int32 error = 1;
+  repeated WelfareRewardInfo dungeon_infos = 2;
+}
+
+message WelfareRewardInfo {
+  int32 current_state = 1;
+  int32 dungeon_type = 2;
+  int32 overdue_state = 3;
+}
+
+message ExpDetailInfo {
+  int32 base_exp = 1;
+  int32 rank_exp = 2;
+  int32 premium_exp = 3;
+  repeated AppendageExp appendage_exp = 4;
+}
+
+message AppendageExp {
+  int32 index = 1;
+  int32 exp = 2;
+}
+
+message Ticket {
+  string dungeon_type = 1;
+  int32 daily_ticket = 2;
+  int32 weekly_ticket = 3;
+  int32 premium_ticket = 4;
+  int32 sweep_ticket = 5;
+  int32 daily_reward_ticket = 6;
+  int32 weekly_reward_ticket = 7;
+  int32 buy_count = 8;
+  int64 charge_time = 9;
+  int32 free_ticket = 10;
+}
+
+message ContentsRewardInfo {
+  ItemRewardInfo items = 1;
+  CurrencyRewardInfo currency = 2;
+  CurrencyRewardInfo payment_currency = 3;
+  TicketRewardInfo ticket = 4;
+  PostalRewardInfo postal = 5;
+  PostalRewardInfo account_postal = 6;
+}
+
+message ItemRewardInfo {
+  Items inventory = 1;
+}
+
+message CurrencyRewardInfo {
+  repeated MoneyItem currency = 1;
+}
+
+message TicketRewardInfo {
+  repeated Ticket character = 1;
+  repeated Ticket account = 2;
+}
+
+message PostalRewardInfo {
+  repeated int32 postal_ids = 1;
+}
+
+message Items {
+  repeated Equip equip_items = 1;
+  repeated Equip title_items = 2;
+  repeated Equip flag_items = 3;
+  repeated Stackable material_items = 4;
+  repeated Stackable consume_items = 5;
+  repeated Stackable emblem_items = 6;
+  repeated Stackable card_items = 7;
+  repeated Stackable epic_piece_items = 8;
+  repeated Artifact artifact_items = 9;
+  repeated Creature creature_items = 10;
+  repeated SdAvatarItem avatar_items = 11;
+  repeated SkinItem damage_font_items = 12;
+  repeated SkinItem chat_frame_items = 13;
+  repeated SkinItem character_frame_items = 14;
+  repeated Stackable crack_items = 15;
+  repeated Equip crack_equip_items = 16;
+  repeated SdAvatarItem sd_avatar_items = 17;
+  repeated ItemTimeBox time_box = 18;
+  repeated Stackable bookmark_items = 19;
+  repeated Equip scroll_items = 20;
+  int32 index = 21;
+  int32 count = 22;
+}
+
+message MoneyItem {
+  int32 index = 1;
+  int32 count = 2;
+  int32 season = 3;
+}
+
+message Equip {
+  int32 id = 1;
+  int32 quality = 2;
+  int32 reinforce = 3;
+  int32 enchant = 4;
+  int32 seal = 5;
+  int32 transfer = 6;
+  int32 amplify = 7;
+  int32 refine = 8;
+  int32 color = 9;
+  int32 type = 10;
+  int32 slot = 11;
+  int64 expire_time = 12;
+  int32 durability = 13;
+  int32 max_durability = 14;
+}
+
+message Artifact {
+  int32 id = 1;
+  int32 level = 2;
+  int32 exp = 3;
+}
+
+message Creature {
+  int32 id = 1;
+  int32 level = 2;
+  int32 exp = 3;
+  int32 grade = 4;
+}
+
+message SkinItem {
+  int32 id = 1;
+  int64 expire_time = 2;
+}
+
+message ItemTimeBox {
+  int32 id = 1;
+  int64 expire_time = 2;
+  int32 count = 3;
+}
