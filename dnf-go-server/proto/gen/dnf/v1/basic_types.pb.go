@@ -314,9 +314,9 @@ const file_dnf_v1_basic_types_proto_rawDesc = "" +
 	"\vcreditscore\x18\t \x01(\x05R\vcreditscore\x12&\n" +
 	"\x0echaracterframe\x18\n" +
 	" \x01(\x05R\x0echaracterframe\x12\x1c\n" +
-	"\tchatframe\x18\v \x01(\x05R\tchatframeB|\n" +
+	"\tchatframe\x18\v \x01(\x05R\tchatframeB\x9a\x01\n" +
 	"\n" +
-	"com.dnf.v1B\x0fBasicTypesProtoP\x01Z$dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
+	"com.dnf.v1B\x0fBasicTypesProtoP\x01ZBgithub.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
 
 var (
 	file_dnf_v1_basic_types_proto_rawDescOnce sync.Once

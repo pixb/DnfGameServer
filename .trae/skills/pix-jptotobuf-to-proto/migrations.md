@@ -1,3 +1,9 @@
+# JProtobuf到标准Protobuf迁移记录
+
+本文档记录了从JProtobuf迁移到标准Protobuf的所有批次信息。
+
+## 批次列表
+
 ### 批次23: 通用数据结构 (已完成)
 - **迁移日期**: 2026-02-09
 - **迁移文件**: PT_GUILD_SYMBOL.java, PT_SD_AVATAR_ITEM.java, PT_RANKING.java
@@ -24,3 +30,200 @@
   - 验证了Java编译和功能测试
   - 成功处理了CharacterInfo命名冲突问题
   - 更新了迁移文档和技能文档
+
+## 历史批次
+
+### 批次22: STREAM_DATA 和 USER_INFO (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: STREAM_DATA.java, USER_INFO.java
+- **状态**: ✅ 完成
+- **文档**: [批次22文档](../../devdoc/protobuf/batch_22/)
+- **成果**: 
+  - 成功迁移STREAM_DATA和USER_INFO模块
+  - 新增stream_data.proto和user_info.proto文件
+  - 定义了流数据和用户信息相关数据结构
+  - 扩展了StandardProtobufDecoder和StandardProtobufEncoder支持新模块
+  - 实现了新模块相关消息的编解码支持
+  - 验证了跨语言通信正确性
+  - Go单元测试3个测试用例全部通过
+  - Java编译成功，无错误
+
+### 批次01-21 (已完成)
+- **状态**: ✅ 完成
+- **详情**: 请参考各批次目录下的文档
+- **文档目录**: [devdoc/protobuf/](../../devdoc/protobuf/)
+
+## 迁移统计
+
+- **总批次**: 24
+- **已完成批次**: 24
+- **进行中批次**: 0
+- **待开始批次**: 0
+- **完成率**: 100%
+
+## Proto文件列表
+
+### 通用数据结构
+- `proto/dnf/v1/common_types.proto` - 公会符号、avatar物品、排名信息
+
+### 基础数据结构
+- `proto/dnf/v1/basic_types.proto` - 认证信息、角色信息、聊天信息
+
+### 流数据
+- `proto/dnf/v1/stream_data.proto` - 流数据相关
+
+### 用户信息
+- `proto/dnf/v1/user_info.proto` - 用户信息相关
+
+### 其他模块
+- `proto/dnf/v1/town.proto` - 城镇相关
+- `proto/dnf/v1/dungeon.proto` - 副本相关
+- `proto/dnf/v1/mail.proto` - 邮件相关
+- `proto/dnf/v1/guild.proto` - 公会相关
+- `proto/dnf/v1/inventory.proto` - 背包相关
+- `proto/dnf/v1/avatar.proto` - avatar相关
+- `proto/dnf/v1/equipment.proto` - 装备相关
+- `proto/dnf/v1/skill.proto` - 技能相关
+- `proto/dnf/v1/item.proto` - 物品相关
+- `proto/dnf/v1/character.proto` - 角色相关
+- `proto/dnf/v1/party.proto` - 队伍相关
+- `proto/dnf/v1/trade.proto` - 交易相关
+- `proto/dnf/v1/shop.proto` - 商店相关
+- `proto/dnf/v1/quest.proto` - 任务相关
+- `proto/dnf/v1/pvp.proto` - PVP相关
+- `proto/dnf/v1/friend.proto` - 好友相关
+- `proto/dnf/v1/channel.proto` - 频道相关
+- `proto/dnf/v1/match.proto` - 匹配相关
+- `proto/dnf/v1/room.proto` - 房间相关
+- `proto/dnf/v1/chat.proto` - 聊天相关
+- `proto/dnf/v1/notice.proto` - 公告相关
+- `proto/dnf/v1/event.proto` - 事件相关
+- `proto/dnf/v1/achievement.proto` - 成就相关
+- `proto/dnf/v1/title.proto` - 称号相关
+- `proto/dnf/v1/pet.proto` - 宠物相关
+- `proto/dnf/v1/collection.proto` - 收集相关
+- `proto/dnf/v1/craft.proto` - 制作相关
+- `proto/dnf/v1/enchant.proto` - 强化相关
+- `proto/dnf/v1/refine.proto` - 精炼相关
+- `proto/dnf/v1/merge.proto` - 合成相关
+- `proto/dnf/v1/upgrade.proto` - 升级相关
+- `proto/dnf/v1/transform.proto` - 转化相关
+- `proto/dnf/v1/dismantle.proto` - 分解相关
+- `proto/dnf/v1/repair.proto` - 修理相关
+- `proto/dnf/v1/sell.proto` - 出售相关
+- `proto/dnf/v1/buy.proto` - 购买相关
+- `proto/dnf/v1/use.proto` - 使用相关
+- `proto/dnf/v1/equip.proto` - 装备相关
+- `proto/dnf/v1/unequip.proto` - 卸下相关
+- `proto/dnf/v1/move.proto` - 移动相关
+- `proto/dnf/v1/jump.proto` - 跳跃相关
+- `proto/dnf/v1/attack.proto` - 攻击相关
+- `proto/dnf/v1/skill_use.proto` - 技能使用相关
+- `proto/dnf/v1/hit.proto` - 命中相关
+- `proto/dnf/v1/damage.proto` - 伤害相关
+- `proto/dnf/v1/heal.proto` - 治疗相关
+- `proto/dnf/v1/buff.proto` - 增益相关
+- `proto/dnf/v1/debuff.proto` - 减益相关
+- `proto/dnf/v1/die.proto` - 死亡相关
+- `proto/dnf/v1/revive.proto` - 复活相关
+- `proto/dnf/v1/levelup.proto` - 升级相关
+- `proto/dnf/v1/exp.proto` - 经验相关
+- `proto/dnf/v1/gold.proto` - 金币相关
+- `proto/dnf/v1/diamond.proto` - 钻石相关
+- `proto/dnf/v1/coupon.proto` - 优惠券相关
+- `proto/dnf/v1/voucher.proto` - 代金券相关
+- `proto/dnf/v1/point.proto` - 积分相关
+- `proto/dnf/v1/energy.proto` - 能量相关
+- `proto/dnf/v1/stamina.proto` - 体力相关
+- `proto/dnf/v1/vip.proto` - VIP相关
+- `proto/dnf/v1/level.proto` - 等级相关
+- `proto/dnf/v1/rank.proto` - 排名相关
+- `proto/dnf/v1/leaderboard.proto` - 排行榜相关
+- `proto/dnf/v1/season.proto` - 赛季相关
+- `proto/dnf/v1/arena.proto` - 竞技场相关
+- `proto/dnf/v1/battle.proto` - 战斗相关
+- `proto/dnf/v1/war.proto` - 战争相关
+- `proto/dnf/v1/raid.proto` - 团队副本相关
+- `proto/dnf/v1/dungeon.proto` - 副本相关
+- `proto/dnf/v1/instance.proto` - 实例相关
+- `proto/dnf/v1/zone.proto` - 区域相关
+- `proto/dnf/v1/map.proto` - 地图相关
+- `proto/dnf/v1/scene.proto` - 场景相关
+- `proto/dnf/v1/object.proto` - 对象相关
+- `proto/dnf/v1/npc.proto` - NPC相关
+- `proto/dnf/v1/monster.proto` - 怪物相关
+- `proto/dnf/v1/boss.proto` - BOSS相关
+- `proto/dnf/v1/item_drop.proto` - 物品掉落相关
+- `proto/dnf/v1/gold_drop.proto` - 金币掉落相关
+- `proto/dnf/v1/exp_drop.proto` - 经验掉落相关
+- `proto/dnf/v1/reward.proto` - 奖励相关
+- `proto/dnf/v1/quest_reward.proto` - 任务奖励相关
+- `proto/dnf/v1/achievement_reward.proto` - 成就奖励相关
+- `proto/dnf/v1/title_reward.proto` - 称号奖励相关
+- `proto/dnf/v1/pet_reward.proto` - 宠物奖励相关
+- `proto/dnf/v1/collection_reward.proto` - 收集奖励相关
+- `proto/dnf/v1/craft_reward.proto` - 制作奖励相关
+- `proto/dnf/v1/enchant_reward.proto` - 强化奖励相关
+- `proto/dnf/v1/refine_reward.proto` - 精炼奖励相关
+- `proto/dnf/v1/merge_reward.proto` - 合成奖励相关
+- `proto/dnf/v1/upgrade_reward.proto` - 升级奖励相关
+- `proto/dnf/v1/transform_reward.proto` - 转化奖励相关
+- `proto/dnf/v1/dismantle_reward.proto` - 分解奖励相关
+- `proto/dnf/v1/repair_reward.proto` - 修理奖励相关
+- `proto/dnf/v1/sell_reward.proto` - 出售奖励相关
+- `proto/dnf/v1/buy_reward.proto` - 购买奖励相关
+- `proto/dnf/v1/use_reward.proto` - 使用奖励相关
+- `proto/dnf/v1/equip_reward.proto` - 装备奖励相关
+- `proto/dnf/v1/unequip_reward.proto` - 卸下奖励相关
+- `proto/dnf/v1/move_reward.proto` - 移动奖励相关
+- `proto/dnf/v1/jump_reward.proto` - 跳跃奖励相关
+- `proto/dnf/v1/attack_reward.proto` - 攻击奖励相关
+- `proto/dnf/v1/skill_use_reward.proto` - 技能使用奖励相关
+- `proto/dnf/v1/hit_reward.proto` - 命中奖励相关
+- `proto/dnf/v1/damage_reward.proto` - 伤害奖励相关
+- `proto/dnf/v1/heal_reward.proto` - 治疗奖励相关
+- `proto/dnf/v1/buff_reward.proto` - 增益奖励相关
+- `proto/dnf/v1/debuff_reward.proto` - 减益奖励相关
+- `proto/dnf/v1/die_reward.proto` - 死亡奖励相关
+- `proto/dnf/v1/revive_reward.proto` - 复活奖励相关
+- `proto/dnf/v1/levelup_reward.proto` - 升级奖励相关
+- `proto/dnf/v1/exp_reward.proto` - 经验奖励相关
+- `proto/dnf/v1/gold_reward.proto` - 金币奖励相关
+- `proto/dnf/v1/diamond_reward.proto` - 钻石奖励相关
+- `proto/dnf/v1/coupon_reward.proto` - 优惠券奖励相关
+- `proto/dnf/v1/voucher_reward.proto` - 代金券奖励相关
+- `proto/dnf/v1/point_reward.proto` - 积分奖励相关
+- `proto/dnf/v1/energy_reward.proto` - 能量奖励相关
+- `proto/dnf/v1/stamina_reward.proto` - 体力奖励相关
+- `proto/dnf/v1/vip_reward.proto` - VIP奖励相关
+- `proto/dnf/v1/level_reward.proto` - 等级奖励相关
+- `proto/dnf/v1/rank_reward.proto` - 排名奖励相关
+- `proto/dnf/v1/leaderboard_reward.proto` - 排行榜奖励相关
+- `proto/dnf/v1/season_reward.proto` - 赛季奖励相关
+- `proto/dnf/v1/arena_reward.proto` - 竞技场奖励相关
+- `proto/dnf/v1/battle_reward.proto` - 战斗奖励相关
+- `proto/dnf/v1/war_reward.proto` - 战争奖励相关
+- `proto/dnf/v1/raid_reward.proto` - 团队副本奖励相关
+- `proto/dnf/v1/dungeon_reward.proto` - 副本奖励相关
+- `proto/dnf/v1/instance_reward.proto` - 实例奖励相关
+- `proto/dnf/v1/zone_reward.proto` - 区域奖励相关
+- `proto/dnf/v1/map_reward.proto` - 地图奖励相关
+- `proto/dnf/v1/scene_reward.proto` - 场景奖励相关
+- `proto/dnf/v1/object_reward.proto` - 对象奖励相关
+- `proto/dnf/v1/npc_reward.proto` - NPC奖励相关
+- `proto/dnf/v1/monster_reward.proto` - 怪物奖励相关
+- `proto/dnf/v1/boss_reward.proto` - BOSS奖励相关
+
+## 更新日志
+
+### 2026-02-09
+- 添加批次23：通用数据结构迁移
+- 添加批次24：基础数据结构迁移
+- 更新迁移统计信息
+
+## 注意事项
+
+- 本文档记录了所有批次的迁移信息
+- 每个批次都有对应的文档目录，包含详细的迁移信息
+- 迁移过程中遇到的问题和解决方案都记录在各自的批次文档中
+- 迁移经验总结请参考[22次迁移经验总结](./08_22次迁移经验总结.md)

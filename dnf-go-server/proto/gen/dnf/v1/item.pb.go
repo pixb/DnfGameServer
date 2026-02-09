@@ -1492,9 +1492,9 @@ const file_dnf_v1_item_proto_rawDesc = "" +
 	"CONSUMABLE\x10\x02\x12\f\n" +
 	"\bMATERIAL\x10\x03\x12\f\n" +
 	"\bCURRENCY\x10\x04\x12\t\n" +
-	"\x05QUEST\x10\x05Bv\n" +
+	"\x05QUEST\x10\x05B\x94\x01\n" +
 	"\n" +
-	"com.dnf.v1B\tItemProtoP\x01Z$dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
+	"com.dnf.v1B\tItemProtoP\x01ZBgithub.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
 
 var (
 	file_dnf_v1_item_proto_rawDescOnce sync.Once

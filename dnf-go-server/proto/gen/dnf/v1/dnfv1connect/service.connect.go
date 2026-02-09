@@ -7,8 +7,8 @@ package dnfv1connect
 import (
 	connect "connectrpc.com/connect"
 	context "context"
-	v1 "dnf-go-server/proto/gen/dnf/v1"
 	errors "errors"
+	v1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	http "net/http"
 	strings "strings"

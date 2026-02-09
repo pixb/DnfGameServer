@@ -311,9 +311,9 @@ const file_dnf_v1_common_proto_rawDesc = "" +
 	"\rINVALID_PARAM\x10\x03\x12\r\n" +
 	"\tNOT_FOUND\x10\x04\x12\x15\n" +
 	"\x11PERMISSION_DENIED\x10\x05\x12\v\n" +
-	"\aTIMEOUT\x10\x06Bx\n" +
+	"\aTIMEOUT\x10\x06B\x96\x01\n" +
 	"\n" +
-	"com.dnf.v1B\vCommonProtoP\x01Z$dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
+	"com.dnf.v1B\vCommonProtoP\x01ZBgithub.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
 
 var (
 	file_dnf_v1_common_proto_rawDescOnce sync.Once

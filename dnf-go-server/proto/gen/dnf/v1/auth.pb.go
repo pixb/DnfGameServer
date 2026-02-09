@@ -976,9 +976,9 @@ const file_dnf_v1_auth_proto_rawDesc = "" +
 	"\vserver_port\x18\x03 \x01(\x05R\n" +
 	"serverPort\x12\x1d\n" +
 	"\n" +
-	"auth_token\x18\x04 \x01(\tR\tauthTokenBv\n" +
+	"auth_token\x18\x04 \x01(\tR\tauthTokenB\x94\x01\n" +
 	"\n" +
-	"com.dnf.v1B\tAuthProtoP\x01Z$dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
+	"com.dnf.v1B\tAuthProtoP\x01ZBgithub.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
 
 var (
 	file_dnf_v1_auth_proto_rawDescOnce sync.Once

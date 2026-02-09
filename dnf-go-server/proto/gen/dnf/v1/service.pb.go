@@ -79,9 +79,9 @@ const file_dnf_v1_service_proto_rawDesc = "" +
 	"\x05Login\x12\x14.dnf.v1.LoginRequest\x1a\x15.dnf.v1.LoginResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/v1/auth/login\x12w\n" +
 	"\x0fCreateCharacter\x12\x1e.dnf.v1.CreateCharacterRequest\x1a\x1f.dnf.v1.CreateCharacterResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/v1/character/create\x12o\n" +
 	"\x10GetCharacterList\x12\x1c.dnf.v1.CharacterListRequest\x1a\x1d.dnf.v1.CharacterListResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/api/v1/character/list\x12w\n" +
-	"\x0fSelectCharacter\x12\x1e.dnf.v1.SelectCharacterRequest\x1a\x1f.dnf.v1.SelectCharacterResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/v1/character/selectBy\n" +
+	"\x0fSelectCharacter\x12\x1e.dnf.v1.SelectCharacterRequest\x1a\x1f.dnf.v1.SelectCharacterResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/v1/character/selectB\x97\x01\n" +
 	"\n" +
-	"com.dnf.v1B\fServiceProtoP\x01Z$dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
+	"com.dnf.v1B\fServiceProtoP\x01ZBgithub.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
 
 var file_dnf_v1_service_proto_goTypes = []any{
 	(*GetRoleInfoRequest)(nil),          // 0: dnf.v1.GetRoleInfoRequest

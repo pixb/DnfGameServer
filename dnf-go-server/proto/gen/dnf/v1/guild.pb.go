@@ -1103,10 +1103,10 @@ const file_dnf_v1_guild_proto_rawDesc = "" +
 	"\aOFFICER\x10\x03\x12\x0f\n" +
 	"\vVICE_MASTER\x10\x04\x12\n" +
 	"\n" +
-	"\x06MASTER\x10\x05Bw\n" +
+	"\x06MASTER\x10\x05B\x95\x01\n" +
 	"\n" +
 	"com.dnf.v1B\n" +
-	"GuildProtoP\x01Z$dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
+	"GuildProtoP\x01ZBgithub.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
 
 var (
 	file_dnf_v1_guild_proto_rawDescOnce sync.Once

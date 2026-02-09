@@ -2076,9 +2076,9 @@ const file_dnf_v1_adventure_proto_rawDesc = "" +
 	"\fcondition_id\x18\x04 \x01(\x05R\vconditionId\x12\x1d\n" +
 	"\n" +
 	"is_success\x18\x05 \x01(\bR\tisSuccess\x12<\n" +
-	"\tcondition\x18\x06 \x01(\v2\x1e.dnf.v1.AdventureBookConditionR\tconditionB{\n" +
+	"\tcondition\x18\x06 \x01(\v2\x1e.dnf.v1.AdventureBookConditionR\tconditionB\x99\x01\n" +
 	"\n" +
-	"com.dnf.v1B\x0eAdventureProtoP\x01Z$dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
+	"com.dnf.v1B\x0eAdventureProtoP\x01ZBgithub.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
 
 var (
 	file_dnf_v1_adventure_proto_rawDescOnce sync.Once

@@ -1205,9 +1205,9 @@ const file_dnf_v1_chat_proto_rawDesc = "" +
 	"\x05PARTY\x10\x04\x12\t\n" +
 	"\x05GUILD\x10\x05\x12\v\n" +
 	"\aWHISPER\x10\x06\x12\t\n" +
-	"\x05TRADE\x10\aBv\n" +
+	"\x05TRADE\x10\aB\x94\x01\n" +
 	"\n" +
-	"com.dnf.v1B\tChatProtoP\x01Z$dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
+	"com.dnf.v1B\tChatProtoP\x01ZBgithub.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
 
 var (
 	file_dnf_v1_chat_proto_rawDescOnce sync.Once

@@ -1068,10 +1068,10 @@ const file_dnf_v1_quest_proto_rawDesc = "" +
 	"\x04MAIN\x10\x01\x12\a\n" +
 	"\x03SUB\x10\x02\x12\t\n" +
 	"\x05DAILY\x10\x03\x12\t\n" +
-	"\x05EVENT\x10\x04Bw\n" +
+	"\x05EVENT\x10\x04B\x95\x01\n" +
 	"\n" +
 	"com.dnf.v1B\n" +
-	"QuestProtoP\x01Z$dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
+	"QuestProtoP\x01ZBgithub.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
 
 var (
 	file_dnf_v1_quest_proto_rawDescOnce sync.Once

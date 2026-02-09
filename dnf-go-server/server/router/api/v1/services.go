@@ -2465,3 +2465,194 @@ func (s *APIV1Service) UpgradeGuildSkill(ctx context.Context, req *dnfv1.Upgrade
 		},
 	}, nil
 }
+
+// ==================== 冒险系统 API ====================
+
+// GetAdventureData 获取冒险数据
+func (s *APIV1Service) GetAdventureData(ctx context.Context, req *dnfv1.AdventureDataRequest) (*dnfv1.AdventureDataResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.AdventureDataResponse{Error: ErrCodeInvalidParam}, nil
+	}
+	roleID := claims.UserID
+
+	data, err := s.Store.GetDriver().GetAdventureData(ctx, &store.FindAdventureData{RoleID: &roleID})
+	if err != nil {
+		if err == store.ErrNotFound {
+			// 创建默认冒险数据
+			newData, createErr := s.Store.GetDriver().CreateAdventureData(ctx, &store.CreateAdventureData{
+				RoleID:         roleID,
+				AdventureLevel: 1,
+				AdventureExp:   0,
+				Energy:         100,
+				MaxEnergy:      100,
+			})
+			if createErr != nil {
+				return &dnfv1.AdventureDataResponse{Error: ErrCodeSystemError}, nil
+			}
+			return &dnfv1.AdventureDataResponse{
+				Error: ErrCodeSuccess,
+				Data: &dnfv1.AdventureData{
+					AdventureLevel:     newData.AdventureLevel,
+					AdventureExp:       newData.AdventureExp,
+					Energy:             newData.Energy,
+					MaxEnergy:          newData.MaxEnergy,
+					LastEnergyRecovery: newData.LastEnergyRecovery,
+				},
+			}, nil
+		}
+		return &dnfv1.AdventureDataResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	return &dnfv1.AdventureDataResponse{
+		Error: ErrCodeSuccess,
+		Data: &dnfv1.AdventureData{
+			AdventureLevel:     data.AdventureLevel,
+			AdventureExp:       data.AdventureExp,
+			Energy:             data.Energy,
+			MaxEnergy:          data.MaxEnergy,
+			LastEnergyRecovery: data.LastEnergyRecovery,
+		},
+	}, nil
+}
+
+// GetAdventureStorageList 获取冒险存储列表
+func (s *APIV1Service) GetAdventureStorageList(ctx context.Context, req *dnfv1.AdventureStorageListRequest) (*dnfv1.AdventureStorageListResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.AdventureStorageListResponse{Error: ErrCodeInvalidParam}, nil
+	}
+	roleID := claims.UserID
+
+	items, err := s.Store.GetDriver().ListAdventureStorageItems(ctx, &store.FindAdventureStorageItem{
+		RoleID: &roleID,
+		Limit:  func() *int { l := int(req.PageSize); return &l }(),
+		Offset: func() *int { o := int((req.Page - 1) * req.PageSize); return &o }(),
+	})
+	if err != nil {
+		return &dnfv1.AdventureStorageListResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	var storageItems []*dnfv1.AdventureStorageItem
+	for _, item := range items {
+		storageItems = append(storageItems, &dnfv1.AdventureStorageItem{
+			ItemId:      item.ItemID,
+			Count:       item.Count,
+			IsBound:     item.IsBound,
+			StorageTime: item.StorageTime,
+		})
+	}
+
+	return &dnfv1.AdventureStorageListResponse{
+		Error: ErrCodeSuccess,
+		Total: int32(len(items)),
+		Items: storageItems,
+	}, nil
+}
+
+// GetAdventureReapInfo 获取冒险收获信息
+func (s *APIV1Service) GetAdventureReapInfo(ctx context.Context, req *dnfv1.AdventureReapInfoRequest) (*dnfv1.AdventureReapInfoResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.AdventureReapInfoResponse{Error: ErrCodeInvalidParam}, nil
+	}
+	roleID := claims.UserID
+
+	reaps, err := s.Store.GetDriver().ListAdventureReaps(ctx, roleID)
+	if err != nil {
+		return &dnfv1.AdventureReapInfoResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	var reapInfos []*dnfv1.AdventureReapInfo
+	for _, reap := range reaps {
+		reapInfos = append(reapInfos, &dnfv1.AdventureReapInfo{
+			ReapId:      reap.ReapID,
+			Progress:    reap.Progress,
+			Total:       reap.Total,
+			IsCompleted: reap.IsCompleted,
+			StartTime:   reap.StartTime,
+			EndTime:     reap.EndTime,
+		})
+	}
+
+	return &dnfv1.AdventureReapInfoResponse{
+		Error: ErrCodeSuccess,
+		Reaps: reapInfos,
+	}, nil
+}
+
+// ClaimAdventureReapReward 领取冒险收获奖励
+func (s *APIV1Service) ClaimAdventureReapReward(ctx context.Context, req *dnfv1.AdventureReapRewardRequest) (*dnfv1.AdventureReapRewardResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.AdventureReapRewardResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	return &dnfv1.AdventureReapRewardResponse{
+		Error:     ErrCodeSuccess,
+		IsSuccess: true,
+	}, nil
+}
+
+// GetAdventureBookInfo 获取冒险书信息
+func (s *APIV1Service) GetAdventureBookInfo(ctx context.Context, req *dnfv1.AdventureBookInfoRequest) (*dnfv1.AdventureBookInfoResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.AdventureBookInfoResponse{Error: ErrCodeInvalidParam}, nil
+	}
+	roleID := claims.UserID
+
+	books, err := s.Store.GetDriver().ListAdventureBooks(ctx, roleID)
+	if err != nil {
+		return &dnfv1.AdventureBookInfoResponse{Error: ErrCodeSystemError}, nil
+	}
+
+	var bookInfos []*dnfv1.AdventureBookInfo
+	for _, book := range books {
+		conditions, _ := s.Store.GetDriver().ListAdventureBookRewards(ctx, book.BookID)
+
+		var bookConditions []*dnfv1.AdventureBookCondition
+		for _, c := range conditions {
+			bookConditions = append(bookConditions, &dnfv1.AdventureBookCondition{
+				ConditionId: c.RewardID,
+				Current:     c.Amount,
+				Target:      c.Amount * 2,
+				IsCompleted: c.IsClaimed,
+			})
+		}
+
+		bookInfos = append(bookInfos, &dnfv1.AdventureBookInfo{
+			BookId:     book.BookID,
+			Name:       book.Name,
+			Level:      book.Level,
+			Experience: book.Experience,
+			Conditions: bookConditions,
+		})
+	}
+
+	return &dnfv1.AdventureBookInfoResponse{
+		Error: ErrCodeSuccess,
+		Books: bookInfos,
+	}, nil
+}
+
+// AdventureAutoSearch 冒险自动搜索
+func (s *APIV1Service) AdventureAutoSearch(ctx context.Context, req *dnfv1.AdventureAutoSearchRequest) (*dnfv1.AdventureAutoSearchResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.AdventureAutoSearchResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	return &dnfv1.AdventureAutoSearchResponse{
+		Error:     ErrCodeSuccess,
+		IsSuccess: true,
+		Search: &dnfv1.AdventureAutoSearch{
+			SearchId:    1,
+			Duration:    req.Duration,
+			Progress:    0,
+			IsCompleted: false,
+			StartTime:   time.Now().Unix(),
+			EndTime:     time.Now().Add(time.Duration(req.Duration) * time.Minute).Unix(),
+		},
+	}, nil
+}
