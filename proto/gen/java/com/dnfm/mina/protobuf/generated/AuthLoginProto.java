@@ -90,11 +90,12 @@ public final class AuthLoginProto extends com.google.protobuf.GeneratedFile {
       "key\022-\n\007channel\030\t \003(\0132\023.dnf.v1.ChannelInf" +
       "oR\007channel\0225\n\013intrudeinfo\030\n \001(\0132\023.dnf.v1" +
       ".IntrudeInfoR\013intrudeinfo\022\030\n\007worldid\030\013 \001" +
-      "(\005R\007worldid\022\024\n\005seeds\030\014 \003(\005R\005seedsB}\n com" +
-      ".dnfm.mina.protobuf.generatedB\016AuthLogin" +
-      "ProtoP\001Z\020gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1" +
-      "\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1" +
-      "b\006proto3"
+      "(\005R\007worldid\022\024\n\005seeds\030\014 \003(\005R\005seedsB\251\001\n co" +
+      "m.dnfm.mina.protobuf.generatedB\016AuthLogi" +
+      "nProtoP\001Z<github.com/pixb/DnfGameServer/" +
+      "dnf-go-client/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006D" +
+      "nf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dn" +
+      "f::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

@@ -373,10 +373,11 @@ public final class CharacterProto extends com.google.protobuf.GeneratedFile {
       "\003 \001(\005R\017reservationtype\022\032\n\010exittype\030\004 \001(\005" +
       "R\010exittype\"W\n\023ProtocolTransaction\022\032\n\010pro" +
       "tocol\030\001 \001(\005R\010protocol\022$\n\rtransactionid\030\002" +
-      " \001(\005R\rtransactionidB}\n com.dnfm.mina.pro" +
-      "tobuf.generatedB\016CharacterProtoP\001Z\020gen/d" +
-      "nf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dn" +
-      "f\\V1\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
+      " \001(\005R\rtransactionidB\251\001\n com.dnfm.mina.pr" +
+      "otobuf.generatedB\016CharacterProtoP\001Z<gith" +
+      "ub.com/pixb/DnfGameServer/dnf-go-client/" +
+      "gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1" +
+      "\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

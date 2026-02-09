@@ -7,10 +7,10 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	dnfv1 "dnf-go-client/gen/go/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
 )
 
-func main() {
+func main07() {
 	fmt.Println("===== 批次07编解码测试开始 =====")
 
 	testConnectBattleServer()
@@ -27,11 +27,11 @@ func testConnectBattleServer() {
 	req := &dnfv1.ConnectBattleServerRequest{
 		Authkey:     "test_authkey_123",
 		Openid:      "test_openid_456",
-		World:        1,
-		Channel:      1,
-		Charguid:     1234567890,
-		Type:         1,
-		Dungeonguid:  0,
+		World:       1,
+		Channel:     1,
+		Charguid:    1234567890,
+		Type:        1,
+		Dungeonguid: 0,
 	}
 
 	data, err := proto.Marshal(req)
@@ -42,11 +42,11 @@ func testConnectBattleServer() {
 
 	resp := &dnfv1.ConnectBattleServerResponse{
 		Error:      0,
-		Authkey:     "new_authkey_789",
-		Bchannel:    1,
-		Servertime:  uint64(time.Now().Unix()),
-		Encrypt:     true,
-		Key:         "test_key_123",
+		Authkey:    "new_authkey_789",
+		Bchannel:   1,
+		Servertime: uint64(time.Now().Unix()),
+		Encrypt:    true,
+		Key:        "test_key_123",
 	}
 	resp.Seeds = append(resp.Seeds, 100)
 	resp.Seeds = append(resp.Seeds, 200)
@@ -82,17 +82,17 @@ func testIdipProhibitList() {
 	}
 
 	resp.Prohibit = append(resp.Prohibit, &dnfv1.Prohibit{
-		Target:   1234567890,
-		Type:     dnfv1.IdipProhibitType_BAN,
-		Endtime:  time.Now().Unix() + 86400,
-		Reason:   "Test ban reason",
+		Target:  1234567890,
+		Type:    dnfv1.IdipProhibitType_BAN,
+		Endtime: time.Now().Unix() + 86400,
+		Reason:  "Test ban reason",
 	})
 
 	resp.Prohibit = append(resp.Prohibit, &dnfv1.Prohibit{
-		Target:   9876543210,
-		Type:     dnfv1.IdipProhibitType_CHAT,
-		Endtime:  time.Now().Unix() + 86400,
-		Reason:   "Test chat ban reason",
+		Target:  9876543210,
+		Type:    dnfv1.IdipProhibitType_CHAT,
+		Endtime: time.Now().Unix() + 86400,
+		Reason:  "Test chat ban reason",
 	})
 
 	respData, err := proto.Marshal(resp)

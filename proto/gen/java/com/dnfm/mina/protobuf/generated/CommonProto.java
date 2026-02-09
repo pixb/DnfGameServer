@@ -101,10 +101,11 @@ public final class CommonProto extends com.google.protobuf.GeneratedFile {
       "ORDMAN\020\001\022\013\n\007FIGHTER\020\002\022\010\n\004MAGE\020\003\022\n\n\006GUNNE" +
       "R\020\004\022\t\n\005THIEF\020\005\022\n\n\006KNIGHT\020\006\022\020\n\014DEMON_SLAY" +
       "ER\020\007\022\014\n\010LAUNCHER\020\010\022\020\n\014ELEMENTALIST\020\t\022\n\n\006" +
-      "PRIEST\020\nBz\n com.dnfm.mina.protobuf.gener" +
-      "atedB\013CommonProtoP\001Z\020gen/dnf/v1;dnfv1\242\002\003" +
-      "DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetada" +
-      "ta\352\002\007Dnf::V1b\006proto3"
+      "PRIEST\020\nB\246\001\n com.dnfm.mina.protobuf.gene" +
+      "ratedB\013CommonProtoP\001Z<github.com/pixb/Dn" +
+      "fGameServer/dnf-go-client/gen/dnf/v1;dnf" +
+      "v1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBM" +
+      "etadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

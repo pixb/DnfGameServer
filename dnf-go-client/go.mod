@@ -1,4 +1,4 @@
-module dnf-go-client
+module github.com/pixb/DnfGameServer/dnf-go-client
 
 go 1.25.5
 

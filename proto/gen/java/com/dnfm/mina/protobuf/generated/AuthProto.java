@@ -51,10 +51,11 @@ public final class AuthProto extends com.google.protobuf.GeneratedFile {
       "shResponse\022\024\n\005error\030\001 \001(\005R\005error\022\030\n\007auth" +
       "key\030\002 \001(\tR\007authkey\022-\n\007channel\030\003 \003(\0132\023.dn" +
       "f.v1.ChannelInfoR\007channel\022\030\n\007version\030\004 \001" +
-      "(\tR\007versionBx\n com.dnfm.mina.protobuf.ge" +
-      "neratedB\tAuthProtoP\001Z\020gen/dnf/v1;dnfv1\242\002" +
-      "\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetad" +
-      "ata\352\002\007Dnf::V1b\006proto3"
+      "(\tR\007versionB\244\001\n com.dnfm.mina.protobuf.g" +
+      "eneratedB\tAuthProtoP\001Z<github.com/pixb/D" +
+      "nfGameServer/dnf-go-client/gen/dnf/v1;dn" +
+      "fv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPB" +
+      "Metadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

@@ -71,11 +71,12 @@ public final class ServerDataProto extends com.google.protobuf.GeneratedFile {
       "onse\022\024\n\005error\030\001 \001(\005R\005error\022\022\n\004type\030\002 \001(\005" +
       "R\004type\022\034\n\tenumvalue\030\003 \001(\005R\tenumvalue\022\024\n\005" +
       "value\030\004 \001(\tR\005value\"4\n\034SaveServerSimpleDa" +
-      "taResponse\022\024\n\005error\030\001 \001(\005R\005errorB~\n com." +
-      "dnfm.mina.protobuf.generatedB\017ServerData" +
-      "ProtoP\001Z\020gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1" +
-      "\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1" +
-      "b\006proto3"
+      "taResponse\022\024\n\005error\030\001 \001(\005R\005errorB\252\001\n com" +
+      ".dnfm.mina.protobuf.generatedB\017ServerDat" +
+      "aProtoP\001Z<github.com/pixb/DnfGameServer/" +
+      "dnf-go-client/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006D" +
+      "nf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dn" +
+      "f::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

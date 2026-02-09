@@ -56,10 +56,11 @@ public final class BattleProto extends com.google.protobuf.GeneratedFile {
       "\022\032\n\010bchannel\030\003 \001(\005R\010bchannel\022\036\n\nserverti" +
       "me\030\004 \001(\004R\nservertime\022\030\n\007encrypt\030\005 \001(\010R\007e" +
       "ncrypt\022\020\n\003key\030\006 \001(\tR\003key\022\024\n\005seeds\030\007 \003(\005R" +
-      "\005seedsBz\n com.dnfm.mina.protobuf.generat" +
-      "edB\013BattleProtoP\001Z\020gen/dnf/v1;dnfv1\242\002\003DX" +
-      "X\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata" +
-      "\352\002\007Dnf::V1b\006proto3"
+      "\005seedsB\246\001\n com.dnfm.mina.protobuf.genera" +
+      "tedB\013BattleProtoP\001Z<github.com/pixb/DnfG" +
+      "ameServer/dnf-go-client/gen/dnf/v1;dnfv1" +
+      "\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMet" +
+      "adata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

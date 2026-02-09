@@ -1180,63 +1180,17 @@ func (s *APIV1Service) ViewPrivateStore(ctx context.Context, req *dnfv1.ViewPriv
 func (s *APIV1Service) BuyFromPrivateStore(ctx context.Context, req *dnfv1.BuyFromPrivateStoreRequest) (*dnfv1.BuyFromPrivateStoreResponse, error) {
 	return &dnfv1.BuyFromPrivateStoreResponse{Error: 0}, nil
 }
-// ==================== Phase 6: 任务系统 ====================
-
-// GetQuestList 获取任务列表
 func (s *APIV1Service) GetQuestList(ctx context.Context, req *dnfv1.GetQuestListRequest) (*dnfv1.GetQuestListResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	// TODO: 从数据库查询任务列表
-	// 简化：返回空列表
-	return &dnfv1.GetQuestListResponse{
-		Error:  ErrCodeSuccess,
-		Quests: []*dnfv1.QuestInfo{},
-	}, nil
+	return &dnfv1.GetQuestListResponse{Error: 0}, nil
 }
-
-// AcceptQuest 接受任务
 func (s *APIV1Service) AcceptQuest(ctx context.Context, req *dnfv1.AcceptQuestRequest) (*dnfv1.AcceptQuestResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	// TODO: 接受任务逻辑
-	return &dnfv1.AcceptQuestResponse{
-		Error: ErrCodeSuccess,
-	}, nil
+	return &dnfv1.AcceptQuestResponse{Error: 0}, nil
 }
-
-// CompleteQuest 完成任务
 func (s *APIV1Service) CompleteQuest(ctx context.Context, req *dnfv1.CompleteQuestRequest) (*dnfv1.CompleteQuestResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	// TODO: 完成任务逻辑
-	return &dnfv1.CompleteQuestResponse{
-		Error:    ErrCodeSuccess,
-		ExpGain:  100,
-		GoldGain: 50,
-	}, nil
+	return &dnfv1.CompleteQuestResponse{Error: 0}, nil
 }
-
-// GetQuestReward 领取任务奖励
 func (s *APIV1Service) GetQuestReward(ctx context.Context, req *dnfv1.GetQuestRewardRequest) (*dnfv1.GetQuestRewardResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	// TODO: 领取奖励逻辑
-	return &dnfv1.GetQuestRewardResponse{
-		Error: ErrCodeSuccess,
-		Items: []*dnfv1.BagItem{},
-	}, nil
+	return &dnfv1.GetQuestRewardResponse{Error: 0}, nil
 }
 func (s *APIV1Service) AbandonQuest(ctx context.Context, req *dnfv1.AbandonQuestRequest) (*dnfv1.AbandonQuestResponse, error) {
 	return &dnfv1.AbandonQuestResponse{Error: 0}, nil

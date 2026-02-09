@@ -8,7 +8,7 @@ managed:
     - file_option: java_package
       value: "com.dnfm.mina.protobuf.generated"
     - file_option: go_package_prefix
-      value: gen
+      value: github.com/pixb/DnfGameServer/dnf-go-client/gen
 
 plugins:
   # Java Protobuf代码生成
@@ -17,5 +17,5 @@ plugins:
 
   # Go代码生成（生成到dnf-go-client工程）
   - remote: buf.build/protocolbuffers/go
-    out: ../dnf-go-client/gen/go
+    out: ../dnf-go-client/gen
     opt: paths=source_relative

@@ -199,10 +199,11 @@ public final class TownProto extends com.google.protobuf.GeneratedFile {
       "R\022adventureunionname\022&\n\016gamecenterinfo\030\031" +
       " \001(\005R\016gamecenterinfo\022\034\n\tqqVipinfo\030\032 \001(\005R" +
       "\tqqVipinfo\022&\n\016characterframe\030\033 \001(\005R\016char" +
-      "acterframeBx\n com.dnfm.mina.protobuf.gen" +
-      "eratedB\tTownProtoP\001Z\020gen/dnf/v1;dnfv1\242\002\003" +
-      "DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetada" +
-      "ta\352\002\007Dnf::V1b\006proto3"
+      "acterframeB\244\001\n com.dnfm.mina.protobuf.ge" +
+      "neratedB\tTownProtoP\001Z<github.com/pixb/Dn" +
+      "fGameServer/dnf-go-client/gen/dnf/v1;dnf" +
+      "v1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBM" +
+      "etadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

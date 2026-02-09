@@ -3,12 +3,13 @@ package main
 import (
 	"encoding/binary"
 	"fmt"
+
 	"google.golang.org/protobuf/proto"
 
-	dnfv1 "dnf-go-client/gen/go/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
 )
 
-func main() {
+func main05() {
 	fmt.Println("===== 批次05编解码测试 =====")
 
 	testStandby()
@@ -26,7 +27,7 @@ func testStandby() {
 
 	moduleID := uint16(10001)
 	body, _ := proto.Marshal(req)
-	packet := buildPacket(moduleID, 0, body)
+	packet := buildPacket05(moduleID, 0, body)
 
 	fmt.Printf("请求数据包长度: %d\n", len(packet))
 	fmt.Printf("请求数据包: %v\n", packet)
@@ -46,7 +47,7 @@ func testStandby() {
 	}
 
 	respBody, _ := proto.Marshal(resp)
-	respPacket := buildPacket(moduleID, 1, respBody)
+	respPacket := buildPacket05(moduleID, 1, respBody)
 
 	fmt.Printf("响应数据包长度: %d\n", len(respPacket))
 	fmt.Printf("响应数据包: %v\n", respPacket)
@@ -69,7 +70,7 @@ func testRemoveCharacter() {
 
 	moduleID := uint16(10004)
 	body, _ := proto.Marshal(req)
-	packet := buildPacket(moduleID, 0, body)
+	packet := buildPacket05(moduleID, 0, body)
 
 	fmt.Printf("请求数据包长度: %d\n", len(packet))
 	fmt.Printf("请求数据包: %v\n", packet)
@@ -88,7 +89,7 @@ func testRemoveCharacter() {
 	}
 
 	respBody, _ := proto.Marshal(resp)
-	respPacket := buildPacket(moduleID, 1, respBody)
+	respPacket := buildPacket05(moduleID, 1, respBody)
 
 	fmt.Printf("响应数据包长度: %d\n", len(respPacket))
 	fmt.Printf("响应数据包: %v\n", respPacket)
@@ -108,14 +109,14 @@ func testStartGame() {
 	req := &dnfv1.StartGameRequest{
 		Charguid:    1234567890,
 		Dungeonguid: 0,
-		Authkey:      "test_authkey_123",
+		Authkey:     "test_authkey_123",
 		Accesstoken: "test_token_123",
-		Paytoken:     "pay_token_123",
-		Town:         1,
-		Area:         1,
-		Posx:         100,
-		Posy:         200,
-		Partyguid:    0,
+		Paytoken:    "pay_token_123",
+		Town:        1,
+		Area:        1,
+		Posx:        100,
+		Posy:        200,
+		Partyguid:   0,
 	}
 
 	req.Request = append(req.Request, &dnfv1.ProtocolTransaction{
@@ -130,7 +131,7 @@ func testStartGame() {
 
 	moduleID := uint16(10005)
 	body, _ := proto.Marshal(req)
-	packet := buildPacket(moduleID, 0, body)
+	packet := buildPacket05(moduleID, 0, body)
 
 	fmt.Printf("请求数据包长度: %d\n", len(packet))
 	fmt.Printf("请求数据包: %v\n", packet)
@@ -149,15 +150,15 @@ func testExitCharacter() {
 	fmt.Println("\n--- 测试退出角色消息 ---")
 
 	req := &dnfv1.ExitCharacterRequest{
-		World:            1,
-		Channel:          1,
-		Reservationtype:  0,
-		Exittype:         0,
+		World:           1,
+		Channel:         1,
+		Reservationtype: 0,
+		Exittype:        0,
 	}
 
 	moduleID := uint16(10007)
 	body, _ := proto.Marshal(req)
-	packet := buildPacket(moduleID, 0, body)
+	packet := buildPacket05(moduleID, 0, body)
 
 	fmt.Printf("请求数据包长度: %d\n", len(packet))
 	fmt.Printf("请求数据包: %v\n", packet)
@@ -171,7 +172,7 @@ func testExitCharacter() {
 		parsedReq.World, parsedReq.Channel, parsedReq.Reservationtype, parsedReq.Exittype)
 }
 
-func buildPacket(moduleID uint16, cmd byte, body []byte) []byte {
+func buildPacket05(moduleID uint16, cmd byte, body []byte) []byte {
 	totalLen := len(body) + 8
 	packet := make([]byte, totalLen)
 

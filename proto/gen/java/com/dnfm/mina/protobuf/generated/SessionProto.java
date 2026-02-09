@@ -75,10 +75,11 @@ public final class SessionProto extends com.google.protobuf.GeneratedFile {
       "\030\001 \001(\004R\tauthIndex\"m\n\025SessionLogoutRespon" +
       "se\022\024\n\005error\030\001 \001(\005R\005error\022\037\n\013server_type\030" +
       "\002 \001(\005R\nserverType\022\035\n\nserver_key\030\003 \001(\003R\ts" +
-      "erverKeyB{\n com.dnfm.mina.protobuf.gener" +
-      "atedB\014SessionProtoP\001Z\020gen/dnf/v1;dnfv1\242\002" +
-      "\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetad" +
-      "ata\352\002\007Dnf::V1b\006proto3"
+      "erverKeyB\247\001\n com.dnfm.mina.protobuf.gene" +
+      "ratedB\014SessionProtoP\001Z<github.com/pixb/D" +
+      "nfGameServer/dnf-go-client/gen/dnf/v1;dn" +
+      "fv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPB" +
+      "Metadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

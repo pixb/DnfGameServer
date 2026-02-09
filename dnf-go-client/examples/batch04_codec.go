@@ -3,12 +3,13 @@ package main
 import (
 	"encoding/binary"
 	"fmt"
+
 	"google.golang.org/protobuf/proto"
 
-	dnfv1 "dnf-go-client/gen/go/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
 )
 
-func main() {
+func main04() {
 	fmt.Println("===== 批次04编解码测试 =====")
 
 	testCreateCharacter()
@@ -28,7 +29,7 @@ func testCreateCharacter() {
 
 	moduleID := uint16(10003)
 	body, _ := proto.Marshal(req)
-	packet := buildPacket(moduleID, 0, body)
+	packet := buildPacket04(moduleID, 0, body)
 
 	fmt.Printf("请求数据包长度: %d\n", len(packet))
 	fmt.Printf("请求数据包: %v\n", packet)
@@ -48,7 +49,7 @@ func testCreateCharacter() {
 	}
 
 	respBody, _ := proto.Marshal(resp)
-	respPacket := buildPacket(moduleID, 1, respBody)
+	respPacket := buildPacket04(moduleID, 1, respBody)
 
 	fmt.Printf("响应数据包长度: %d\n", len(respPacket))
 	fmt.Printf("响应数据包: %v\n", respPacket)
@@ -72,7 +73,7 @@ func testChannelList() {
 
 	moduleID := uint16(10008)
 	body, _ := proto.Marshal(req)
-	packet := buildPacket(moduleID, 0, body)
+	packet := buildPacket04(moduleID, 0, body)
 
 	fmt.Printf("请求数据包长度: %d\n", len(packet))
 	fmt.Printf("请求数据包: %v\n", packet)
@@ -92,7 +93,7 @@ func testChannelList() {
 
 	resp.List = append(resp.List, &dnfv1.Channel{
 		World:       1,
-		Channel:      1,
+		Channel:     1,
 		Ip:          "127.0.0.1",
 		Port:        8080,
 		Saturation:  50,
@@ -101,7 +102,7 @@ func testChannelList() {
 
 	resp.List = append(resp.List, &dnfv1.Channel{
 		World:       1,
-		Channel:      2,
+		Channel:     2,
 		Ip:          "127.0.0.1",
 		Port:        8081,
 		Saturation:  30,
@@ -114,7 +115,7 @@ func testChannelList() {
 
 	resp.Integrationrecommands = append(resp.Integrationrecommands, &dnfv1.Channel{
 		World:       1,
-		Channel:      3,
+		Channel:     3,
 		Ip:          "127.0.0.1",
 		Port:        8082,
 		Saturation:  20,
@@ -123,7 +124,7 @@ func testChannelList() {
 
 	resp.Worldrecommands = append(resp.Worldrecommands, &dnfv1.Channel{
 		World:       2,
-		Channel:      1,
+		Channel:     1,
 		Ip:          "127.0.0.1",
 		Port:        8083,
 		Saturation:  10,
@@ -131,7 +132,7 @@ func testChannelList() {
 	})
 
 	respBody, _ := proto.Marshal(resp)
-	respPacket := buildPacket(moduleID, 1, respBody)
+	respPacket := buildPacket04(moduleID, 1, respBody)
 
 	fmt.Printf("响应数据包长度: %d\n", len(respPacket))
 	fmt.Printf("响应数据包: %v\n", respPacket)
@@ -153,34 +154,34 @@ func testEnterChannel() {
 	fmt.Println("\n--- 测试进入频道消息 ---")
 
 	req := &dnfv1.EnterChannelRequest{
-		Openid:          "test_openid_123",
-		Charguid:        1234567890,
-		Authkey:          "test_authkey_123",
-		Version:          "1.0.0",
-		Accesstoken:     "test_token_123",
-		Launchinfo:       1,
-		Dungeonguid:     0,
+		Openid:              "test_openid_123",
+		Charguid:            1234567890,
+		Authkey:             "test_authkey_123",
+		Version:             "1.0.0",
+		Accesstoken:         "test_token_123",
+		Launchinfo:          1,
+		Dungeonguid:         0,
 		Registeredchannelid: "channel123",
-		Installchannelid:  "install123",
-		Isexternpackage:  false,
-		Validusercheckcode: "check123",
-		ToyPlatID:       1,
-		Countrycode:      "CN",
-		Language:         "zh-CN",
-		Adid:            "ad123",
-		Idfv:             "idfv123",
-		Isadult:          false,
+		Installchannelid:    "install123",
+		Isexternpackage:     false,
+		Validusercheckcode:  "check123",
+		ToyPlatID:           1,
+		Countrycode:         "CN",
+		Language:            "zh-CN",
+		Adid:                "ad123",
+		Idfv:                "idfv123",
+		Isadult:             false,
 	}
 
 	req.Deviceinfo = &dnfv1.ClientInfo{
-		PlatID:    1,
+		PlatID:     1,
 		DeviceSoft: "Android",
 		DeviceHard: "SM-G960F",
 	}
 
 	moduleID := uint16(10011)
 	body, _ := proto.Marshal(req)
-	packet := buildPacket(moduleID, 0, body)
+	packet := buildPacket04(moduleID, 0, body)
 
 	fmt.Printf("请求数据包长度: %d\n", len(packet))
 	fmt.Printf("请求数据包: %v\n", packet)
@@ -196,7 +197,7 @@ func testEnterChannel() {
 		parsedReq.Deviceinfo.PlatID, parsedReq.Deviceinfo.DeviceSoft, parsedReq.Deviceinfo.DeviceHard)
 }
 
-func buildPacket(moduleID uint16, cmd byte, body []byte) []byte {
+func buildPacket04(moduleID uint16, cmd byte, body []byte) []byte {
 	totalLen := len(body) + 8
 	packet := make([]byte, totalLen)
 

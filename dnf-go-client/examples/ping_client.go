@@ -8,10 +8,10 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	dnfv1 "dnf-go-client/gen/go/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
 )
 
-func main() {
+func mainPingClient() {
 	conn, err := net.Dial("tcp", "127.0.0.1:10001")
 	if err != nil {
 		fmt.Printf("连接服务器失败: %v\n", err)

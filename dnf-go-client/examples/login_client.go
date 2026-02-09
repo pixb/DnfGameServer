@@ -9,7 +9,7 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	dnfv1 "dnf-go-client/gen/go/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
 )
 
 const (
@@ -17,7 +17,7 @@ const (
 	ModuleID   = 10000 // 登录模块ID
 )
 
-func main() {
+func mainLogin() {
 	log.Println("=== 开始测试标准Protobuf跨语言通信 ===")
 
 	// 创建登录请求

@@ -64,10 +64,12 @@ public final class IdipProto extends com.google.protobuf.GeneratedFile {
       "\014GUILD_CREATE\020\007\022\021\n\rFRIEND_INVITE\020\010\022\021\n\rFR" +
       "IEND_ACCEPT\020\t\022\024\n\020CREATE_CHARACTER\020\n\022\017\n\013A" +
       "UCTION_BUY\020\013\022\020\n\014AUCTION_SELL\020\014\022\013\n\007DUNGEO" +
-      "N\020\r\022\t\n\005PARTY\020\016\022\n\n\006FRIEND\020\017Bx\n com.dnfm.m" +
-      "ina.protobuf.generatedB\tIdipProtoP\001Z\020gen" +
-      "/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022" +
-      "Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
+      "N\020\r\022\t\n\005PARTY\020\016\022\n\n\006FRIEND\020\017B\244\001\n com.dnfm." +
+      "mina.protobuf.generatedB\tIdipProtoP\001Z<gi" +
+      "thub.com/pixb/DnfGameServer/dnf-go-clien" +
+      "t/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\" +
+      "V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1b\006proto" +
+      "3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

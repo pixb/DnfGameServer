@@ -51,10 +51,12 @@ public final class PlatformProto extends com.google.protobuf.GeneratedFile {
       "rofilename\022$\n\rfirstlocation\030\003 \001(\005R\rfirst" +
       "location\022&\n\016secondlocation\030\004 \001(\005R\016second" +
       "location\"5\n\035PlatformProfileUpdateRespons" +
-      "e\022\024\n\005error\030\001 \001(\005R\005errorB|\n com.dnfm.mina" +
-      ".protobuf.generatedB\rPlatformProtoP\001Z\020ge" +
-      "n/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002" +
-      "\022Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
+      "e\022\024\n\005error\030\001 \001(\005R\005errorB\250\001\n com.dnfm.min" +
+      "a.protobuf.generatedB\rPlatformProtoP\001Z<g" +
+      "ithub.com/pixb/DnfGameServer/dnf-go-clie" +
+      "nt/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf" +
+      "\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1b\006prot" +
+      "o3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

@@ -111,10 +111,11 @@ public final class ChannelProto extends com.google.protobuf.GeneratedFile {
       "lR\025integrationrecommands\0229\n\017worldrecomma" +
       "nds\030\007 \003(\0132\017.dnf.v1.ChannelR\017worldrecomma" +
       "nds*0\n\017ClientBuildType\022\010\n\004NONE\020\000\022\010\n\004TEEN" +
-      "\020\001\022\t\n\005ADULT\020\002B{\n com.dnfm.mina.protobuf." +
-      "generatedB\014ChannelProtoP\001Z\020gen/dnf/v1;dn" +
-      "fv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPB" +
-      "Metadata\352\002\007Dnf::V1b\006proto3"
+      "\020\001\022\t\n\005ADULT\020\002B\247\001\n com.dnfm.mina.protobuf" +
+      ".generatedB\014ChannelProtoP\001Z<github.com/p" +
+      "ixb/DnfGameServer/dnf-go-client/gen/dnf/" +
+      "v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V" +
+      "1\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

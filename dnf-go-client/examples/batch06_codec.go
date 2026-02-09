@@ -3,12 +3,13 @@ package main
 import (
 	"encoding/binary"
 	"fmt"
+
 	"google.golang.org/protobuf/proto"
 
-	dnfv1 "dnf-go-client/gen/go/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
 )
 
-func main() {
+func main06() {
 	fmt.Println("===== 批次06编解码测试 =====")
 
 	testAuthkeyRefresh()
@@ -26,7 +27,7 @@ func testAuthkeyRefresh() {
 
 	moduleID := uint16(10009)
 	body, _ := proto.Marshal(req)
-	packet := buildPacket(moduleID, 0, body)
+	packet := buildPacket06(moduleID, 0, body)
 
 	fmt.Printf("请求数据包长度: %d\n", len(packet))
 	fmt.Printf("请求数据包: %v\n", packet)
@@ -61,7 +62,7 @@ func testAuthkeyRefresh() {
 	})
 
 	respBody, _ := proto.Marshal(resp)
-	respPacket := buildPacket(moduleID, 1, respBody)
+	respPacket := buildPacket06(moduleID, 1, respBody)
 
 	fmt.Printf("响应数据包长度: %d\n", len(respPacket))
 	fmt.Printf("响应数据包: %v\n", respPacket)
@@ -84,15 +85,15 @@ func testPlatformProfileUpdate() {
 	fmt.Println("\n--- 测试平台资料更新消息 ---")
 
 	req := &dnfv1.PlatformProfileUpdateRequest{
-		Profileurl:      "https://example.com/profile.jpg",
-		Profilename:     "Test User",
-		Firstlocation:   1,
-		Secondlocation:  2,
+		Profileurl:     "https://example.com/profile.jpg",
+		Profilename:    "Test User",
+		Firstlocation:  1,
+		Secondlocation: 2,
 	}
 
 	moduleID := uint16(10012)
 	body, _ := proto.Marshal(req)
-	packet := buildPacket(moduleID, 0, body)
+	packet := buildPacket06(moduleID, 0, body)
 
 	fmt.Printf("请求数据包长度: %d\n", len(packet))
 	fmt.Printf("请求数据包: %v\n", packet)
@@ -110,7 +111,7 @@ func testPlatformProfileUpdate() {
 	}
 
 	respBody, _ := proto.Marshal(resp)
-	respPacket := buildPacket(moduleID, 1, respBody)
+	respPacket := buildPacket06(moduleID, 1, respBody)
 
 	fmt.Printf("响应数据包长度: %d\n", len(respPacket))
 	fmt.Printf("响应数据包: %v\n", respPacket)
@@ -123,7 +124,7 @@ func testPlatformProfileUpdate() {
 	fmt.Printf("解析后的响应: Error=%d\n", parsedResp.Error)
 }
 
-func buildPacket(moduleID uint16, cmd byte, body []byte) []byte {
+func buildPacket06(moduleID uint16, cmd byte, body []byte) []byte {
 	totalLen := len(body) + 8
 	packet := make([]byte, totalLen)
 

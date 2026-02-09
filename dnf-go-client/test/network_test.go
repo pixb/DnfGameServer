@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	dnfv1 "dnf-go-client/gen/go/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
 
 	"google.golang.org/protobuf/proto"
 )

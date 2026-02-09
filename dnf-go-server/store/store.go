@@ -339,6 +339,11 @@ func (s *Store) ListFriends(ctx context.Context, roleID uint64) ([]*Friend, erro
 	return s.driver.ListFriends(ctx, roleID)
 }
 
+// GetFriend 获取好友关系
+func (s *Store) GetFriend(ctx context.Context, find *FindFriend) (*Friend, error) {
+	return s.driver.GetFriend(ctx, find)
+}
+
 // DeleteFriend 删除好友
 func (s *Store) DeleteFriend(ctx context.Context, delete *DeleteFriend) error {
 	return s.driver.DeleteFriend(ctx, delete)

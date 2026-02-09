@@ -1004,7 +1004,6 @@ func (s *APIV1Service) GetChatHistory(ctx context.Context, req *dnfv1.GetChatHis
 	return &dnfv1.GetChatHistoryResponse{
 		Error:     ErrCodeSuccess,
 		Messages:  []*dnfv1.ChatMessage{},
-		HasMore:   false,
 	}, nil
 }
 
@@ -1150,20 +1149,184 @@ func (s *APIV1Service) RemoveFriend(ctx context.Context, req *dnfv1.RemoveFriend
 		Error: ErrCodeSuccess,
 	}, nil
 }
+// ==================== Phase 5: 商店系统 ====================
+
+// GetShopList 获取商店列表
 func (s *APIV1Service) GetShopList(ctx context.Context, req *dnfv1.GetShopListRequest) (*dnfv1.GetShopListResponse, error) {
-	return &dnfv1.GetShopListResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	// TODO: 从配置加载商店商品
+	// 简化：返回模拟商品列表
+	items := []*dnfv1.ShopItem{
+		{
+			Slot:         1,
+			ItemId:       1001,
+			Price:        1000,
+			CurrencyType: 1, // 金币
+			Stock:        99,
+		},
+		{
+			Slot:         2,
+			ItemId:       2001,
+			Price:        500,
+			CurrencyType: 1, // 金币
+			Stock:        99,
+		},
+		{
+			Slot:         3,
+			ItemId:       3001,
+			Price:        100,
+			CurrencyType: 2, // 点券
+			Stock:        50,
+		},
+	}
+
+	return &dnfv1.GetShopListResponse{
+		Error:       ErrCodeSuccess,
+		Items:       items,
+		RefreshTime: 3600, // 1小时后刷新
+	}, nil
 }
+
+// BuyItem 购买物品
 func (s *APIV1Service) BuyItem(ctx context.Context, req *dnfv1.BuyItemRequest) (*dnfv1.BuyItemResponse, error) {
-	return &dnfv1.BuyItemResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	roleID := claims.UserID
+
+	// TODO: 从商店配置获取商品信息
+	// 简化：固定价格
+	itemID := int32(1000 + req.Slot)
+
+	// TODO: 检查货币充足
+	// TODO: 扣除货币
+
+	// 创建背包物品
+	_, err := s.Store.CreateBagItem(ctx, &store.BagItem{
+		RoleID:    roleID,
+		ItemID:    itemID,
+		GridIndex: 0, // 自动寻找空位
+		Count:     req.Count,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to create bag item: %v", err)
+	}
+
+	// 返回更新后的背包
+	items, _ := s.Store.ListBagItemsByRole(ctx, roleID)
+	var newItems []*dnfv1.BagItem
+	for _, it := range items {
+		newItems = append(newItems, &dnfv1.BagItem{
+			Guid:   it.ID,
+			ItemId: uint32(it.ItemID),
+			Count:  it.Count,
+			Slot:   it.GridIndex,
+		})
+	}
+
+	return &dnfv1.BuyItemResponse{
+		Error:     ErrCodeSuccess,
+		NewItems:  newItems,
+		Currency: &dnfv1.Currency{
+			Gold: 0, // TODO: 返回实际货币
+		},
+	}, nil
 }
+
+// SellToShop 出售给商店
 func (s *APIV1Service) SellToShop(ctx context.Context, req *dnfv1.SellToShopRequest) (*dnfv1.SellToShopResponse, error) {
-	return &dnfv1.SellToShopResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	roleID := claims.UserID
+	itemID := uint64(req.Guid)
+
+	// 获取物品
+	item, err := s.Store.GetBagItem(ctx, &store.FindBagItem{
+		FindBase: store.FindBase{ID: &itemID},
+		RoleID:   &roleID,
+	})
+	if err != nil {
+		if err == store.ErrNotFound {
+			return &dnfv1.SellToShopResponse{Error: ErrCodeNotFound}, nil
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get item: %v", err)
+	}
+
+	// 检查数量
+	if item.Count < req.Count {
+		return &dnfv1.SellToShopResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	// 计算出售价格（30%基础价格）
+	basePrice := int64(item.ItemID * 10)
+	sellPrice := int32(basePrice * int64(req.Count) * 30 / 100)
+
+	// 删除/减少物品
+	newCount := item.Count - req.Count
+	if newCount <= 0 {
+		err = s.Store.DeleteBagItem(ctx, &store.DeleteBagItem{ID: item.ID})
+	} else {
+		err = s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{
+			ID:    item.ID,
+			Count: &newCount,
+		})
+	}
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to update item: %v", err)
+	}
+
+	// TODO: 增加金币
+
+	return &dnfv1.SellToShopResponse{
+		Error:         ErrCodeSuccess,
+		GoldReceived:  sellPrice,
+	}, nil
 }
+
+// SearchAuction 搜索拍卖行
 func (s *APIV1Service) SearchAuction(ctx context.Context, req *dnfv1.SearchAuctionRequest) (*dnfv1.SearchAuctionResponse, error) {
-	return &dnfv1.SearchAuctionResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	// TODO: 查询拍卖行数据
+	// 简化：返回空列表
+
+	return &dnfv1.SearchAuctionResponse{
+		Error:       ErrCodeSuccess,
+		Items:       []*dnfv1.AuctionItem{},
+		Total:  0,
+	}, nil
 }
+
+// RegisterAuction 上架拍卖
 func (s *APIV1Service) RegisterAuction(ctx context.Context, req *dnfv1.RegisterAuctionRequest) (*dnfv1.RegisterAuctionResponse, error) {
-	return &dnfv1.RegisterAuctionResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	// TODO: 验证物品存在
+	// TODO: 计算手续费
+	// TODO: 锁定物品
+	// TODO: 创建拍卖记录
+
+	// 简化：直接返回成功
+	return &dnfv1.RegisterAuctionResponse{
+		Error:       ErrCodeSuccess,
+		AuctionId:   int64(time.Now().Unix()),
+		
+	}, nil
 }
 func (s *APIV1Service) BidAuction(ctx context.Context, req *dnfv1.BidAuctionRequest) (*dnfv1.BidAuctionResponse, error) {
 	return &dnfv1.BidAuctionResponse{Error: 0}, nil
@@ -1180,63 +1343,17 @@ func (s *APIV1Service) ViewPrivateStore(ctx context.Context, req *dnfv1.ViewPriv
 func (s *APIV1Service) BuyFromPrivateStore(ctx context.Context, req *dnfv1.BuyFromPrivateStoreRequest) (*dnfv1.BuyFromPrivateStoreResponse, error) {
 	return &dnfv1.BuyFromPrivateStoreResponse{Error: 0}, nil
 }
-// ==================== Phase 6: 任务系统 ====================
-
-// GetQuestList 获取任务列表
 func (s *APIV1Service) GetQuestList(ctx context.Context, req *dnfv1.GetQuestListRequest) (*dnfv1.GetQuestListResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	// TODO: 从数据库查询任务列表
-	// 简化：返回空列表
-	return &dnfv1.GetQuestListResponse{
-		Error:  ErrCodeSuccess,
-		Quests: []*dnfv1.QuestInfo{},
-	}, nil
+	return &dnfv1.GetQuestListResponse{Error: 0}, nil
 }
-
-// AcceptQuest 接受任务
 func (s *APIV1Service) AcceptQuest(ctx context.Context, req *dnfv1.AcceptQuestRequest) (*dnfv1.AcceptQuestResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	// TODO: 接受任务逻辑
-	return &dnfv1.AcceptQuestResponse{
-		Error: ErrCodeSuccess,
-	}, nil
+	return &dnfv1.AcceptQuestResponse{Error: 0}, nil
 }
-
-// CompleteQuest 完成任务
 func (s *APIV1Service) CompleteQuest(ctx context.Context, req *dnfv1.CompleteQuestRequest) (*dnfv1.CompleteQuestResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	// TODO: 完成任务逻辑
-	return &dnfv1.CompleteQuestResponse{
-		Error:    ErrCodeSuccess,
-		ExpGain:  100,
-		GoldGain: 50,
-	}, nil
+	return &dnfv1.CompleteQuestResponse{Error: 0}, nil
 }
-
-// GetQuestReward 领取任务奖励
 func (s *APIV1Service) GetQuestReward(ctx context.Context, req *dnfv1.GetQuestRewardRequest) (*dnfv1.GetQuestRewardResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	// TODO: 领取奖励逻辑
-	return &dnfv1.GetQuestRewardResponse{
-		Error: ErrCodeSuccess,
-		Items: []*dnfv1.BagItem{},
-	}, nil
+	return &dnfv1.GetQuestRewardResponse{Error: 0}, nil
 }
 func (s *APIV1Service) AbandonQuest(ctx context.Context, req *dnfv1.AbandonQuestRequest) (*dnfv1.AbandonQuestResponse, error) {
 	return &dnfv1.AbandonQuestResponse{Error: 0}, nil
