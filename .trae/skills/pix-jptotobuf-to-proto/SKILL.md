@@ -182,6 +182,21 @@ pix-jptotobuf-to-proto 会提供：
   - Go单元测试6个测试用例全部通过
   - Java编译成功，无错误
 
+### 批次11: SKILL (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_SKILL_SLOT.java, REQ_SKILL_SET.java
+- **状态**: ✅ 完成
+- **文档**: [批次11文档](../../devdoc/protobuf/batch_11/)
+- **成果**: 
+  - 成功迁移技能槽位、技能设置消息
+  - 新增skill.proto文件定义技能相关消息
+  - 定义了技能相关数据结构（SkillSlotInfo, SkillSlotSkillInfo等）
+  - 扩展了StandardProtobufDecoder和StandardProtobufEncoder支持技能模块
+  - 实现了技能相关消息的编解码支持
+  - 验证了跨语言通信正确性
+  - Go单元测试6个测试用例全部通过
+  - Java编译成功，无错误
+
 ## 🌟 功能实现
 
 ### 核心功能

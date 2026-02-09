@@ -109,6 +109,10 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
                 return adaptMailItemAllGetResponse(msg);
             case 15006:
                 return adaptMailAllDeleteResponse(msg);
+            case 16000:
+                return adaptSkillSlotResponse(msg);
+            case 16001:
+                return adaptSkillSetResponse(msg);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -1465,6 +1469,37 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         // 简化实现，只设置默认值
         builder.setError(0);
         builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptSkillSlotResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptSkillSlotResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.SkillSlotResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.SkillSlotResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setCharacterId(1);
+        builder.setPage(1);
+        builder.setMaxPage(1);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptSkillSetResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptSkillSetResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.SkillSetResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.SkillSetResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setSuccess(true);
+        builder.setCharacterId(1);
         
         return builder.build().toByteArray();
     }

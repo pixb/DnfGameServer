@@ -143,6 +143,10 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
                 return adaptMailItemAllGetRequest(body);
             case 15006:
                 return adaptMailAllDeleteRequest(body);
+            case 16000:
+                return adaptSkillSlotRequest(body);
+            case 16001:
+                return adaptSkillSetRequest(body);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -815,6 +819,24 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
             com.dnfm.mina.protobuf.generated.ItemSplitRequest.parseFrom(body);
         
         // Message是抽象类，返回null
+        return null;
+    }
+
+    private Message adaptSkillSlotRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptSkillSlotRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.SkillSlotRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.SkillSlotRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptSkillSetRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptSkillSetRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.SkillSetRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.SkillSetRequest.parseFrom(body);
+        
+        // 简化实现，返回null
         return null;
     }
 }
