@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+// Go代码生成选项
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+// Java代码生成选项（重要）
+option java_multiple_files = true;  // 为每个消息生成独立的Java文件
+option java_package = "com.dnfm.mina.protobuf.generated";  // 指定Java包名
+option java_outer_classname = "GuildExtProto";  // 指定外层类名
+
+// 公会成员列表请求
+message GuildMemberListRequest {
+  int32 character_id = 1;       // 角色ID
+  int64 guild_id = 2;            // 公会ID
+  int32 page = 3;                // 页码
+  int32 page_size = 4;           // 每页数量
+}
+
+// 公会成员信息
+message GuildMemberInfo {
+  int32 character_id = 1;       // 角色ID
+  string character_name = 2;     // 角色名称
+  int32 level = 3;               // 角色等级
+  int32 job = 4;                 // 角色职业
+  int32 position = 5;            // 公会职位
+  int64 join_time = 6;            // 加入时间
+  int32 contribution = 7;        // 贡献值
+  int32 online_status = 8;       // 在线状态
+}
+
+// 公会成员列表响应
+message GuildMemberListResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  int64 guild_id = 3;            // 公会ID
+  int32 total = 4;              // 总数
+  int32 page = 5;               // 页码
+  int32 page_size = 6;          // 每页数量
+  repeated GuildMemberInfo members = 7;  // 成员列表
+}
+
+// 公会捐赠请求
+message GuildDonateRequest {
+  int32 character_id = 1;       // 角色ID
+  int64 guild_id = 2;            // 公会ID
+  int32 donate_type = 3;         // 捐赠类型
+  int32 donate_amount = 4;       // 捐赠数量
+}
+
+// 公会捐赠响应
+message GuildDonateResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  int64 guild_id = 3;            // 公会ID
+  int32 donate_type = 4;         // 捐赠类型
+  int32 donate_amount = 5;       // 捐赠数量
+  int32 contribution = 6;        // 获得贡献值
+  bool success = 7;              // 是否成功
+}
+
+// 公会技能请求
+message GuildSkillRequest {
+  int32 character_id = 1;       // 角色ID
+  int64 guild_id = 2;            // 公会ID
+  int32 skill_id = 3;            // 技能ID
+  int32 operation = 4;           // 操作类型（学习/升级）
+}
+
+// 公会技能信息
+message GuildSkillInfo {
+  int32 skill_id = 1;            // 技能ID
+  string skill_name = 2;         // 技能名称
+  int32 level = 3;               // 技能等级
+  int32 max_level = 4;           // 最大等级
+  int32 effect_value = 5;        // 技能效果值
+  int32 cost_contribution = 6;   // 学习所需贡献值
+  int32 cost_guild_exp = 7;      // 学习所需公会经验
+  bool is_learned = 8;           // 是否已学习
+}
+
+// 公会技能响应
+message GuildSkillResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  int64 guild_id = 3;            // 公会ID
+  int32 skill_id = 4;            // 技能ID
+  GuildSkillInfo skill_info = 5;  // 技能信息
+  bool success = 6;              // 是否成功
+}
+
+// 公会仓库请求
+message GuildStorageRequest {
+  int32 character_id = 1;       // 角色ID
+  int64 guild_id = 2;            // 公会ID
+  int32 operation = 3;           // 操作类型（存入/取出）
+  int32 item_id = 4;             // 物品ID
+  int32 item_count = 5;          // 物品数量
+}
+
+// 公会仓库物品
+message GuildStorageItem {
+  int32 item_id = 1;             // 物品ID
+  string item_name = 2;          // 物品名称
+  int32 item_count = 3;          // 物品数量
+  int32 item_level = 4;          // 物品等级
+  int32 item_rarity = 5;          // 物品稀有度
+  int64 deposit_time = 6;        // 存入时间
+  int32 depositor_id = 7;        // 存入角色ID
+}
+
+// 公会仓库响应
+message GuildStorageResponse {
+  int32 error = 1;              // 错误码
+  int32 character_id = 2;       // 角色ID
+  int64 guild_id = 3;            // 公会ID
+  int32 operation = 4;           // 操作类型
+  int32 item_id = 5;             // 物品ID
+  int32 item_count = 6;          // 物品数量
+  repeated GuildStorageItem items = 7;  // 仓库物品列表
+  bool success = 8;              // 是否成功
+}
