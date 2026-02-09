@@ -10,30 +10,26 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-// TestClient HTTP测试客户端
 type TestClient struct {
-	BaseURL    string
-	HTTPClient *http.Client
-	Token      string
+	BaseURL string
+	Client  *http.Client
+	Token   string
 }
 
-// NewTestClient 创建测试客户端
 func NewTestClient(baseURL string) *TestClient {
 	return &TestClient{
 		BaseURL: baseURL,
-		HTTPClient: &http.Client{
+		Client: &http.Client{
 			Timeout: 10 * time.Second,
 		},
 	}
 }
 
-// SetToken 设置认证令牌
 func (c *TestClient) SetToken(token string) {
 	c.Token = token
 }
 
-// Request 发送HTTP请求
-func (c *TestClient) Request(method, path string, body interface{}) (*http.Response, error) {
+func (c *TestClient) Post(path string, body interface{}) (map[string]interface{}, error) {
 	var bodyReader *bytes.Reader
 	if body != nil {
 		jsonBody, _ := json.Marshal(body)
@@ -42,7 +38,7 @@ func (c *TestClient) Request(method, path string, body interface{}) (*http.Respo
 		bodyReader = bytes.NewReader([]byte{})
 	}
 
-	req, err := http.NewRequest(method, c.BaseURL+path, bodyReader)
+	req, err := http.NewRequest("POST", c.BaseURL+path, bodyReader)
 	if err != nil {
 		return nil, err
 	}
@@ -52,12 +48,7 @@ func (c *TestClient) Request(method, path string, body interface{}) (*http.Respo
 		req.Header.Set("Authorization", "Bearer "+c.Token)
 	}
 
-	return c.HTTPClient.Do(req)
-}
-
-// Post 发送POST请求
-func (c *TestClient) Post(path string, body interface{}) (map[string]interface{}, error) {
-	resp, err := c.Request("POST", path, body)
+	resp, err := c.Client.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -71,23 +62,66 @@ func (c *TestClient) Post(path string, body interface{}) (map[string]interface{}
 	return result, nil
 }
 
-// BaseTestSuite 基础测试套件
+func (c *TestClient) Get(path string) (map[string]interface{}, error) {
+	req, err := http.NewRequest("GET", c.BaseURL+path, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	if c.Token != "" {
+		req.Header.Set("Authorization", "Bearer "+c.Token)
+	}
+
+	resp, err := c.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var result map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
 type BaseTestSuite struct {
 	suite.Suite
 	Client *TestClient
 }
 
-// SetupSuite 测试套件设置
 func (s *BaseTestSuite) SetupSuite() {
 	s.Client = NewTestClient("http://localhost:8081")
 }
 
-// AssertSuccess 断言成功响应
+func (s *BaseTestSuite) LoginAs(openid string) string {
+	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
+		"openid": openid,
+	})
+	s.NoError(err)
+	if err != nil || resp == nil {
+		return ""
+	}
+	if token, ok := resp["authKey"].(string); ok {
+		s.Client.SetToken(token)
+		return token
+	}
+	return ""
+}
+
 func (s *BaseTestSuite) AssertSuccess(resp map[string]interface{}) {
+	if resp == nil {
+		s.T().Errorf("Response is nil")
+		return
+	}
 	assert.Equal(s.T(), float64(0), resp["error"], "Expected success response")
 }
 
-// AssertError 断言错误响应
 func (s *BaseTestSuite) AssertError(resp map[string]interface{}, expectedError float64) {
+	if resp == nil {
+		s.T().Errorf("Response is nil")
+		return
+	}
 	assert.Equal(s.T(), expectedError, resp["error"], "Expected error response")
 }

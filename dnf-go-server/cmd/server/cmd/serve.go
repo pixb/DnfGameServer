@@ -75,6 +75,16 @@ func runServe(cmd *cobra.Command, args []string) error {
 	}
 	fmt.Println("Database migrations completed")
 
+	// 3.5 初始化测试数据
+	if prof.Mode == "dev" {
+		fmt.Println("Seeding test data...")
+		if err := s.Seed(ctx); err != nil {
+			fmt.Printf("Warning: failed to seed test data: %v\n", err)
+		} else {
+			fmt.Println("Test data seeded successfully")
+		}
+	}
+
 	// 4. 创建服务器
 	fmt.Println("Creating server...")
 	srv, err := server.NewServer(ctx, prof, s)

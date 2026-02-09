@@ -148,4 +148,39 @@ type Driver interface {
 	// ==================== 系统设置 ====================
 	GetInstanceBasicSetting(ctx context.Context) (*InstanceBasicSetting, error)
 	UpsertInstanceSetting(ctx context.Context, setting *InstanceSetting) (*InstanceSetting, error)
+
+	// ==================== 技能相关 ====================
+	GetSkill(ctx context.Context, find *FindSkill) (*Skill, error)
+	ListSkills(ctx context.Context, find *FindSkill) ([]*Skill, error)
+	GetRoleSkill(ctx context.Context, find *FindRoleSkill) (*RoleSkill, error)
+	ListRoleSkills(ctx context.Context, roleID uint64) ([]*RoleSkill, error)
+	CreateRoleSkill(ctx context.Context, create *CreateRoleSkill) (*RoleSkill, error)
+	UpdateRoleSkill(ctx context.Context, update *UpdateRoleSkill) error
+
+	// ==================== 冒险相关 ====================
+	GetAdventureData(ctx context.Context, find *FindAdventureData) (*AdventureData, error)
+	CreateAdventureData(ctx context.Context, create *CreateAdventureData) (*AdventureData, error)
+	UpdateAdventureData(ctx context.Context, update *UpdateAdventureData) error
+
+	CreateAdventureStorageItem(ctx context.Context, create *CreateAdventureStorageItem) (*AdventureStorageItem, error)
+	UpdateAdventureStorageItem(ctx context.Context, update *UpdateAdventureStorageItem) error
+	ListAdventureStorageItems(ctx context.Context, find *FindAdventureStorageItem) ([]*AdventureStorageItem, error)
+	DeleteAdventureStorageItem(ctx context.Context, id uint64) error
+
+	CreateAdventureReap(ctx context.Context, create *CreateAdventureReap) (*AdventureReap, error)
+	UpdateAdventureReap(ctx context.Context, update *UpdateAdventureReap) error
+	ListAdventureReaps(ctx context.Context, roleID uint64) ([]*AdventureReap, error)
+	DeleteAdventureReap(ctx context.Context, id uint64) error
+
+	CreateAdventureBook(ctx context.Context, create *CreateAdventureBook) (*AdventureBook, error)
+	UpdateAdventureBook(ctx context.Context, update *UpdateAdventureBook) error
+	GetAdventureBook(ctx context.Context, find *FindAdventureBook) (*AdventureBook, error)
+	ListAdventureBooks(ctx context.Context, roleID uint64) ([]*AdventureBook, error)
+
+	CreateAdventureBookCondition(ctx context.Context, create *CreateAdventureBookCondition) (*AdventureBookCondition, error)
+	UpdateAdventureBookCondition(ctx context.Context, update *UpdateAdventureBookCondition) error
+
+	CreateAdventureBookReward(ctx context.Context, create *CreateAdventureBookReward) (*AdventureBookReward, error)
+	ClaimAdventureBookReward(ctx context.Context, claim *ClaimAdventureBookReward) error
+	ListAdventureBookRewards(ctx context.Context, bookID int32) ([]*AdventureBookReward, error)
 }

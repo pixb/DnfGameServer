@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+// Go代码生成选项
+option go_package = "dnf/proto/v1;userv1";
+
+// Java代码生成选项（重要）
+option java_multiple_files = true;  // 为每个消息生成独立的Java文件
+option java_package = "com.dnfm.mina.protobuf.generated";
+option java_outer_classname = "UserInfoProto";
+
+// 用户信息
+message UserInfo {
+  uint64 charguid = 1;              // 角色GUID
+  int32 job = 2;                    // 职业
+  int32 growtype = 3;               // 成长类型
+  int32 secgrowtype = 4;            // 次要成长类型
+  int32 team_type = 5;              // 队伍类型
+  int32 world = 6;                  // 世界
+  int32 level = 7;                  // 等级
+  string name = 8;                  // 名称
+  string profile_url = 9;            // 头像URL
+  string profile_name = 10;          // 头像名称
+  int32 character_frame = 11;        // 角色边框
+  int32 rank = 12;                   // 排名
+}

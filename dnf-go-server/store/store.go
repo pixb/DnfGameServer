@@ -276,6 +276,11 @@ func (s *Store) ListRoleQuests(ctx context.Context, roleID uint64) ([]*RoleQuest
 	return s.driver.ListRoleQuests(ctx, roleID)
 }
 
+// DeleteRoleQuest 删除角色任务
+func (s *Store) DeleteRoleQuest(ctx context.Context, delete *DeleteRoleQuest) error {
+	return s.driver.DeleteRoleQuest(ctx, delete)
+}
+
 // ==================== 公会相关Store方法 ====================
 
 // CreateGuild 创建公会
@@ -356,6 +361,11 @@ func (s *Store) CreateMail(ctx context.Context, create *Mail) (*Mail, error) {
 	return s.driver.CreateMail(ctx, create)
 }
 
+// GetMail 获取邮件
+func (s *Store) GetMail(ctx context.Context, find *FindMail) (*Mail, error) {
+	return s.driver.GetMail(ctx, find)
+}
+
 // ListMails 获取邮件列表
 func (s *Store) ListMails(ctx context.Context, find *FindMail) ([]*Mail, error) {
 	return s.driver.ListMails(ctx, find)
@@ -418,4 +428,36 @@ func (s *Store) GetInstanceBasicSetting(ctx context.Context) (*InstanceBasicSett
 // UpsertInstanceSetting 更新或创建设置
 func (s *Store) UpsertInstanceSetting(ctx context.Context, setting *InstanceSetting) (*InstanceSetting, error) {
 	return s.driver.UpsertInstanceSetting(ctx, setting)
+}
+
+// ==================== 技能Store方法 ====================
+
+// GetSkill 获取技能
+func (s *Store) GetSkill(ctx context.Context, find *FindSkill) (*Skill, error) {
+	return s.driver.GetSkill(ctx, find)
+}
+
+// ListSkills 获取技能列表
+func (s *Store) ListSkills(ctx context.Context, find *FindSkill) ([]*Skill, error) {
+	return s.driver.ListSkills(ctx, find)
+}
+
+// GetRoleSkill 获取角色技能
+func (s *Store) GetRoleSkill(ctx context.Context, find *FindRoleSkill) (*RoleSkill, error) {
+	return s.driver.GetRoleSkill(ctx, find)
+}
+
+// ListRoleSkills 获取角色技能列表
+func (s *Store) ListRoleSkills(ctx context.Context, roleID uint64) ([]*RoleSkill, error) {
+	return s.driver.ListRoleSkills(ctx, roleID)
+}
+
+// CreateRoleSkill 创建角色技能
+func (s *Store) CreateRoleSkill(ctx context.Context, create *CreateRoleSkill) (*RoleSkill, error) {
+	return s.driver.CreateRoleSkill(ctx, create)
+}
+
+// UpdateRoleSkill 更新角色技能
+func (s *Store) UpdateRoleSkill(ctx context.Context, update *UpdateRoleSkill) error {
+	return s.driver.UpdateRoleSkill(ctx, update)
 }

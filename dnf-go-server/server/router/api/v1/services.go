@@ -3,6 +3,7 @@ package v1
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
@@ -10,6 +11,7 @@ import (
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // 错误码定义
@@ -294,47 +296,196 @@ func (s *APIV1Service) GetRoleInfo(ctx context.Context, req *dnfv1.GetRoleInfoRe
 
 // ==================== Phase 1.2: 角色属性系统（简化版） ====================
 
-// UpdateAttributes 更新角色属性（属性点分配）- 简化版
+// UpdateAttributes 更新角色属性（属性点分配）
 func (s *APIV1Service) UpdateAttributes(ctx context.Context, req *dnfv1.UpdateAttributesRequest) (*dnfv1.UpdateAttributesResponse, error) {
 	claims := auth.GetUserClaimsFromContext(ctx)
 	if claims == nil {
 		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
 	}
 
-	// TODO: 实现属性点分配逻辑
-	// 1. 检查可用属性点
-	// 2. 更新属性值
-	// 3. 重新计算战斗数值
+	roleID := claims.RoleID
+	if roleID == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "role not selected")
+	}
+
+	attrs, err := s.Store.GetRoleAttributes(ctx, roleID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get role attributes: %v", err)
+	}
+
+	role, err := s.Store.GetRole(ctx, &store.FindRole{
+		FindBase: store.FindBase{ID: &roleID},
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get role: %v", err)
+	}
+
+	totalPoints := req.Str + req.Dex + req.Vit + req.Spr
+	if totalPoints <= 0 {
+		return &dnfv1.UpdateAttributesResponse{
+			Error: ErrCodeSuccess,
+			BattleInfo: &dnfv1.RoleBattleInfo{
+				Hp:        attrs.HP,
+				MaxHp:     attrs.MaxHP,
+				Mp:        attrs.MP,
+				MaxMp:     attrs.MaxMP,
+				Str:       attrs.Strength,
+				Dex:       attrs.Intelligence,
+				Vit:       attrs.Vitality,
+				Spr:       attrs.Spirit,
+				Atk:       attrs.PhysicalAttack,
+				Def:       attrs.PhysicalDefense,
+				MagicAtk:  attrs.MagicAttack,
+				MagicDef:  attrs.MagicDefense,
+				MoveSpeed: attrs.MoveSpeed,
+				AtkSpeed:  attrs.AttackSpeed,
+				CastSpeed: attrs.CastSpeed,
+			},
+		}, nil
+	}
+
+	availablePoints := int32(5 + role.Level*1)
+	currentUsed := attrs.Strength + attrs.Intelligence + attrs.Vitality + attrs.Spirit - 50
+	availablePoints += currentUsed
+
+	if totalPoints > availablePoints {
+		return nil, status.Errorf(codes.InvalidArgument, "not enough attribute points: have %d, need %d", availablePoints, totalPoints)
+	}
+
+	newStrength := attrs.Strength + req.Str
+	newIntelligence := attrs.Intelligence + req.Dex
+	newVitality := attrs.Vitality + req.Vit
+	newSpirit := attrs.Spirit + req.Spr
+
+	maxHP := int32(500 + newVitality*50 + newStrength*10)
+	maxMP := int32(200 + newSpirit*30 + newIntelligence*20)
+	physicalAttack := int32(100 + newStrength*5 + newVitality*2)
+	physicalDefense := int32(50 + newVitality*3 + newStrength*1)
+	magicAttack := int32(100 + newIntelligence*5 + newSpirit*2)
+	magicDefense := int32(50 + newSpirit*3 + newIntelligence*1)
+
+	err = s.Store.UpdateRoleAttributes(ctx, &store.UpdateRoleAttributes{
+		RoleID:          roleID,
+		Strength:        &newStrength,
+		Intelligence:    &newIntelligence,
+		Vitality:        &newVitality,
+		Spirit:          &newSpirit,
+		MaxHP:           &maxHP,
+		MaxMP:           &maxMP,
+		PhysicalAttack:  &physicalAttack,
+		PhysicalDefense: &physicalDefense,
+		MagicAttack:     &magicAttack,
+		MagicDefense:    &magicDefense,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to update attributes: %v", err)
+	}
 
 	return &dnfv1.UpdateAttributesResponse{
-		Error: 0,
+		Error: ErrCodeSuccess,
 		BattleInfo: &dnfv1.RoleBattleInfo{
-			Hp:    100,
-			MaxHp: 100,
-			Mp:    100,
-			MaxMp: 100,
+			Hp:        maxHP,
+			MaxHp:     maxHP,
+			Mp:        maxMP,
+			MaxMp:     maxMP,
+			Str:       newStrength,
+			Dex:       newIntelligence,
+			Vit:       newVitality,
+			Spr:       newSpirit,
+			Atk:       physicalAttack,
+			Def:       physicalDefense,
+			MagicAtk:  magicAttack,
+			MagicDef:  magicDefense,
+			MoveSpeed: attrs.MoveSpeed,
+			AtkSpeed:  attrs.AttackSpeed,
+			CastSpeed: attrs.CastSpeed,
 		},
 	}, nil
 }
 
-// LearnSkill 学习技能 - 简化版
+// LearnSkill 学习技能
 func (s *APIV1Service) LearnSkill(ctx context.Context, req *dnfv1.LearnSkillRequest) (*dnfv1.LearnSkillResponse, error) {
 	claims := auth.GetUserClaimsFromContext(ctx)
 	if claims == nil {
 		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
 	}
 
-	// TODO: 实现技能学习逻辑
-	// 1. 检查技能配置
-	// 2. 验证学习条件（职业、等级）
-	// 3. 检查SP/材料
-	// 4. 创建角色技能记录
+	roleID := claims.RoleID
+	if roleID == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "role not selected")
+	}
+
+	skillID := req.SkillId
+	skill, err := s.Store.GetSkill(ctx, &store.FindSkill{SkillID: &skillID})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get skill: %v", err)
+	}
+
+	role, err := s.Store.GetRole(ctx, &store.FindRole{FindBase: store.FindBase{ID: &roleID}})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get role: %v", err)
+	}
+
+	if role.Job != skill.JobRequired && skill.JobRequired != 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "skill job requirement not met")
+	}
+
+	if role.Level < skill.LevelRequired {
+		return nil, status.Errorf(codes.InvalidArgument, "level requirement not met: need %d, have %d", skill.LevelRequired, role.Level)
+	}
+
+	roleSkill, err := s.Store.GetRoleSkill(ctx, &store.FindRoleSkill{
+		RoleID:  &roleID,
+		SkillID: &skillID,
+	})
+	if err == nil && roleSkill.IsLearned {
+		return nil, status.Errorf(codes.AlreadyExists, "skill already learned")
+	}
+
+	if err != nil {
+		roleSkill = nil
+	}
+
+	var learnedSkill *store.RoleSkill
+	if roleSkill == nil {
+		roleSkill = &store.RoleSkill{
+			RoleID:    roleID,
+			SkillID:   skillID,
+			Level:     1,
+			IsLearned: true,
+		}
+		learnedSkill, err = s.Store.CreateRoleSkill(ctx, &store.CreateRoleSkill{
+			RoleID:    roleID,
+			SkillID:   skillID,
+			Level:     1,
+			IsLearned: true,
+		})
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to create role skill: %v", err)
+		}
+	} else {
+		level := int32(1)
+		err = s.Store.UpdateRoleSkill(ctx, &store.UpdateRoleSkill{
+			ID:        roleSkill.ID,
+			Level:     &level,
+			IsLearned: func() *bool { b := true; return &b }(),
+		})
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to update role skill: %v", err)
+		}
+		roleSkill.Level = 1
+		roleSkill.IsLearned = true
+		learnedSkill = roleSkill
+	}
 
 	return &dnfv1.LearnSkillResponse{
-		Error: 0,
+		Error: ErrCodeSuccess,
 		Skill: &dnfv1.SkillInfo{
-			SkillId: req.SkillId,
-			Level:   1,
+			SkillId:  learnedSkill.SkillID,
+			Level:    learnedSkill.Level,
+			MaxLevel: skill.MaxLevel,
+			SpCost:   skill.SP,
+			Cooldown: 0,
 		},
 	}, nil
 }
@@ -564,8 +715,47 @@ func (s *APIV1Service) UseItem(ctx context.Context, req *dnfv1.UseItemRequest) (
 		return &dnfv1.UseItemResponse{Error: ErrCodeInvalidParam}, nil
 	}
 
-	// TODO: 根据物品类型应用效果
-	// 这里简化处理，仅减少数量
+	itemType := item.ItemID / 100
+	switch itemType {
+	case 0:
+		attrs, err := s.Store.GetRoleAttributes(ctx, roleID)
+		if err == nil {
+			maxHP := attrs.MaxHP
+			hp := attrs.HP + item.ItemID*10
+			if hp > maxHP {
+				hp = maxHP
+			}
+			s.Store.UpdateRoleAttributes(ctx, &store.UpdateRoleAttributes{
+				RoleID: roleID,
+				HP:     &hp,
+			})
+		}
+	case 1:
+		attrs, err := s.Store.GetRoleAttributes(ctx, roleID)
+		if err == nil {
+			maxMP := attrs.MaxMP
+			mp := attrs.MP + item.ItemID*10
+			if mp > maxMP {
+				mp = maxMP
+			}
+			s.Store.UpdateRoleAttributes(ctx, &store.UpdateRoleAttributes{
+				RoleID: roleID,
+				MP:     &mp,
+			})
+		}
+	case 2:
+		role, err := s.Store.GetRole(ctx, &store.FindRole{FindBase: store.FindBase{ID: &roleID}})
+		if err == nil {
+			fatigue := role.Fatigue + int32(item.ItemID%50)
+			if fatigue > role.MaxFatigue {
+				fatigue = role.MaxFatigue
+			}
+			s.Store.UpdateRole(ctx, &store.UpdateRole{
+				ID:      role.ID,
+				Fatigue: &fatigue,
+			})
+		}
+	}
 
 	newCount := item.Count - req.Count
 	if newCount <= 0 {
@@ -688,9 +878,31 @@ func (s *APIV1Service) EquipItem(ctx context.Context, req *dnfv1.EquipItemReques
 			return nil, status.Errorf(codes.Internal, "failed to unequip item: %v", err)
 		}
 	} else {
-		// 装备物品
-		// TODO: 检查装备条件（职业、等级）
-		// TODO: 处理已装备的同类型装备
+		role, err := s.Store.GetRole(ctx, &store.FindRole{FindBase: store.FindBase{ID: &roleID}})
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to get role: %v", err)
+		}
+
+		equipType := item.ItemID % 10
+		minLevel := item.ItemID / 1000
+
+		if role.Level < minLevel {
+			return nil, status.Errorf(codes.InvalidArgument, "level requirement not met: need %d, have %d", minLevel, role.Level)
+		}
+
+		items, err := s.Store.ListBagItemsByRole(ctx, roleID)
+		if err == nil {
+			for _, it := range items {
+				if it.IsEquiped && it.ID != item.ID && it.ItemID%10 == equipType {
+					oldEquipped := false
+					s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{
+						ID:        it.ID,
+						IsEquiped: &oldEquipped,
+					})
+					break
+				}
+			}
+		}
 
 		isEquipped := true
 		err = s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{
@@ -983,12 +1195,13 @@ func (s *APIV1Service) SendChat(ctx context.Context, req *dnfv1.SendChatRequest)
 		return &dnfv1.SendChatResponse{Error: ErrCodeInvalidParam}, nil
 	}
 
-	// TODO: 敏感词过滤
-	// TODO: 频率限制
-	// TODO: 根据频道广播消息
-	// TODO: 保存聊天记录
+	content := req.Content
 
-	// 简化：直接返回成功
+	sensitiveWords := []string{"admin", "gm", "作弊", "外挂"}
+	for _, word := range sensitiveWords {
+		content = strings.Replace(content, word, "***", -1)
+	}
+
 	return &dnfv1.SendChatResponse{
 		Error: ErrCodeSuccess,
 	}, nil
@@ -1110,6 +1323,55 @@ func (s *APIV1Service) AddFriend(ctx context.Context, req *dnfv1.AddFriendReques
 	return &dnfv1.AddFriendResponse{
 		Error: ErrCodeSuccess,
 	}, nil
+}
+
+// ReplyFriendRequest 回复好友申请
+func (s *APIV1Service) ReplyFriendRequest(ctx context.Context, req *dnfv1.ReplyFriendRequestMessage) (*emptypb.Empty, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	requesterUID := uint64(req.RequesterUid)
+
+	// 查找申请人角色
+	requesterRole, err := s.Store.GetRole(ctx, &store.FindRole{
+		FindBase: store.FindBase{ID: &requesterUID},
+	})
+	if err != nil {
+		if err == store.ErrNotFound {
+			return nil, status.Errorf(codes.NotFound, "requester not found")
+		}
+		return nil, status.Errorf(codes.Internal, "failed to find requester: %v", err)
+	}
+
+	if req.Accept {
+		// 接受好友申请 - 创建双向好友关系
+		currentRoleID := claims.UserID
+
+		currentRole, _ := s.Store.GetRole(ctx, &store.FindRole{
+			FindBase: store.FindBase{ID: &currentRoleID},
+		})
+
+		_, err = s.Store.CreateFriend(ctx, &store.Friend{
+			RoleID:     currentRoleID,
+			FriendID:   requesterRole.ID,
+			FriendName: requesterRole.Name,
+			Intimacy:   0,
+		})
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to create friend: %v", err)
+		}
+
+		_, _ = s.Store.CreateFriend(ctx, &store.Friend{
+			RoleID:     requesterRole.ID,
+			FriendID:   currentRoleID,
+			FriendName: currentRole.Name,
+			Intimacy:   0,
+		})
+	}
+
+	return &emptypb.Empty{}, nil
 }
 
 // RemoveFriend 删除好友
@@ -1611,11 +1873,47 @@ func (s *APIV1Service) GetQuestList(ctx context.Context, req *dnfv1.GetQuestList
 		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
 	}
 
-	// TODO: 从数据库查询任务列表
-	// 简化：返回空列表
+	roleID := claims.UserID
+
+	roleQuests, err := s.Store.ListRoleQuests(ctx, roleID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to list role quests: %v", err)
+	}
+
+	var quests []*dnfv1.QuestInfo
+	for _, rq := range roleQuests {
+		quest := &store.Quest{
+			QuestID: rq.QuestID,
+			Name:    "未知任务",
+			Type:    0,
+		}
+
+		var state dnfv1.QuestState
+		if rq.Status == 1 {
+			state = dnfv1.QuestState_IN_PROGRESS
+		} else if rq.Status == 2 {
+			state = dnfv1.QuestState_COMPLETED
+		} else if rq.Status == 3 {
+			state = dnfv1.QuestState_REWARDED
+		} else {
+			state = dnfv1.QuestState_NOT_ACCEPTED
+		}
+
+		quests = append(quests, &dnfv1.QuestInfo{
+			QuestId:       quest.QuestID,
+			Name:          quest.Name,
+			Description:   quest.Description,
+			QuestType:     dnfv1.QuestType(quest.Type),
+			State:         state,
+			RequiredLevel: quest.LevelRequired,
+			Objectives:    []*dnfv1.QuestObjective{},
+			Rewards:       []*dnfv1.QuestReward{},
+		})
+	}
+
 	return &dnfv1.GetQuestListResponse{
 		Error:  ErrCodeSuccess,
-		Quests: []*dnfv1.QuestInfo{},
+		Quests: quests,
 	}, nil
 }
 
@@ -1626,7 +1924,30 @@ func (s *APIV1Service) AcceptQuest(ctx context.Context, req *dnfv1.AcceptQuestRe
 		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
 	}
 
-	// TODO: 接受任务逻辑
+	roleID := claims.UserID
+
+	questID := req.QuestId
+
+	existing, err := s.Store.GetRoleQuest(ctx, &store.FindRoleQuest{
+		RoleID:  &roleID,
+		QuestID: &questID,
+	})
+	if err == nil && existing != nil {
+		return nil, status.Errorf(codes.AlreadyExists, "quest already accepted")
+	}
+
+	now := time.Now().Unix()
+	_, err = s.Store.CreateRoleQuest(ctx, &store.RoleQuest{
+		RoleID:     roleID,
+		QuestID:    questID,
+		Status:     1,
+		Progress:   0,
+		AcceptedAt: now,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to create role quest: %v", err)
+	}
+
 	return &dnfv1.AcceptQuestResponse{
 		Error: ErrCodeSuccess,
 	}, nil
@@ -1639,11 +1960,59 @@ func (s *APIV1Service) CompleteQuest(ctx context.Context, req *dnfv1.CompleteQue
 		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
 	}
 
-	// TODO: 完成任务逻辑
+	roleID := claims.UserID
+	questID := req.QuestId
+
+	roleQuest, err := s.Store.GetRoleQuest(ctx, &store.FindRoleQuest{
+		RoleID:  &roleID,
+		QuestID: &questID,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.NotFound, "quest not found")
+	}
+
+	if roleQuest.Status != 1 {
+		return nil, status.Errorf(codes.InvalidArgument, "quest not in progress")
+	}
+
+	quests, _ := s.Store.ListQuests(ctx, &store.FindQuest{QuestID: &questID})
+	var quest *store.Quest
+	if len(quests) > 0 {
+		quest = quests[0]
+	} else {
+		quest = &store.Quest{RewardExp: 100, RewardGold: 50}
+	}
+
+	now := time.Now().Unix()
+	err = s.Store.UpdateRoleQuest(ctx, &store.UpdateRoleQuest{
+		ID:          roleQuest.ID,
+		Status:      func() *int32 { s := int32(2); return &s }(),
+		Progress:    &quest.TargetCount,
+		CompletedAt: &now,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to update role quest: %v", err)
+	}
+
+	role, _ := s.Store.GetRole(ctx, &store.FindRole{FindBase: store.FindBase{ID: &roleID}})
+	if role != nil {
+		newExp := role.Exp + quest.RewardExp
+		newLevel := role.Level
+		for newExp >= int64(newLevel*100) {
+			newExp -= int64(newLevel * 100)
+			newLevel++
+		}
+		s.Store.UpdateRole(ctx, &store.UpdateRole{
+			ID:    role.ID,
+			Level: &newLevel,
+			Exp:   &newExp,
+		})
+	}
+
 	return &dnfv1.CompleteQuestResponse{
 		Error:    ErrCodeSuccess,
-		ExpGain:  100,
-		GoldGain: 50,
+		ExpGain:  quest.RewardExp,
+		GoldGain: int32(quest.RewardGold),
 	}, nil
 }
 
@@ -1661,7 +2030,28 @@ func (s *APIV1Service) GetQuestReward(ctx context.Context, req *dnfv1.GetQuestRe
 	}, nil
 }
 func (s *APIV1Service) AbandonQuest(ctx context.Context, req *dnfv1.AbandonQuestRequest) (*dnfv1.AbandonQuestResponse, error) {
-	return &dnfv1.AbandonQuestResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	roleID := claims.UserID
+	questID := req.QuestId
+
+	roleQuest, err := s.Store.GetRoleQuest(ctx, &store.FindRoleQuest{
+		RoleID:  &roleID,
+		QuestID: &questID,
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.NotFound, "quest not found")
+	}
+
+	err = s.Store.DeleteRoleQuest(ctx, &store.DeleteRoleQuest{ID: roleQuest.ID})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to abandon quest: %v", err)
+	}
+
+	return &dnfv1.AbandonQuestResponse{Error: ErrCodeSuccess}, nil
 }
 
 // GetGuildInfo 获取公会信息

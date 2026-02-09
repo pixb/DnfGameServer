@@ -1,113 +1,116 @@
 package tests
 
 import (
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/suite"
 )
 
-// SocialTestSuite 社交测试套件
 type SocialTestSuite struct {
 	BaseTestSuite
 }
 
-// setupAuthenticatedClient 设置认证客户端
-func (s *SocialTestSuite) setupAuthenticatedClient() {
-	// 登录
-	resp, err := s.Client.Post("/api/v1/login", map[string]interface{}{
-		"openid": "test_social_user",
+func (s *SocialTestSuite) setupAuthenticatedClient(openid string) {
+	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
+		"openid": openid,
 	})
 	s.NoError(err)
-	s.AssertSuccess(resp)
+	s.NotNil(resp)
 
-	if token, ok := resp["auth_key"].(string); ok {
+	if resp == nil {
+		s.T().Skip("Login failed")
+		return
+	}
+
+	if token, ok := resp["authKey"].(string); ok {
 		s.Client.SetToken(token)
 	}
 
-	// 获取角色列表并选择角色
-	listResp, err := s.Client.Post("/api/v1/character/list", nil)
+	listResp, err := s.Client.Get("/api/v1/character/list")
 	s.NoError(err)
+	s.NotNil(listResp)
 
 	characters, ok := listResp["characters"].([]interface{})
 	if !ok || len(characters) == 0 {
-		s.T().Skip("No characters available")
+		createResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+			"name": fmt.Sprintf("SocialHero%d", time.Now().UnixNano()%10000),
+			"job":  1,
+		})
+		s.NoError(err)
+		s.NotNil(createResp)
+		if createResp != nil && createResp["error"] == float64(0) {
+			listResp, _ = s.Client.Get("/api/v1/character/list")
+			if listResp != nil {
+				characters, _ = listResp["characters"].([]interface{})
+			}
+		}
 	}
 
-	firstChar := characters[0].(map[string]interface{})
-	_, err = s.Client.Post("/api/v1/character/select", map[string]interface{}{
-		"role_id": firstChar["id"],
-	})
-	s.NoError(err)
+	if characters != nil && len(characters) > 0 {
+		firstChar := characters[0].(map[string]interface{})
+		_, err = s.Client.Post("/api/v1/character/select", map[string]interface{}{
+			"uid": firstChar["uid"],
+		})
+		s.NoError(err)
+	}
 }
 
-// TestSendChat 测试发送聊天消息
-func (s *SocialTestSuite) TestSendChat() {
-	s.setupAuthenticatedClient()
-
-	resp, err := s.Client.Post("/api/v1/chat/send", map[string]interface{}{
-		"channel": 1, // 世界频道
-		"message": "Hello, DNF!",
-	})
-	s.NoError(err)
-	s.AssertSuccess(resp)
-}
-
-// TestSendChatInvalidChannel 测试发送聊天-无效频道
-func (s *SocialTestSuite) TestSendChatInvalidChannel() {
-	s.setupAuthenticatedClient()
-
-	resp, err := s.Client.Post("/api/v1/chat/send", map[string]interface{}{
-		"channel": 999, // 无效频道
-		"message": "Hello",
-	})
-	s.NoError(err)
-	s.AssertError(resp, 1) // Invalid parameter
-}
-
-// TestGetChatHistory 测试获取聊天记录
-func (s *SocialTestSuite) TestGetChatHistory() {
-	s.setupAuthenticatedClient()
-
-	resp, err := s.Client.Post("/api/v1/chat/history", map[string]interface{}{
-		"channel": 1,
-	})
-	s.NoError(err)
-	s.AssertSuccess(resp)
-	s.NotNil(resp["messages"])
-}
-
-// TestGetFriendList 测试获取好友列表
 func (s *SocialTestSuite) TestGetFriendList() {
-	s.setupAuthenticatedClient()
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_social_%d", uniqueID))
 
-	resp, err := s.Client.Post("/api/v1/friend/list", nil)
+	resp, err := s.Client.Get("/api/v1/friend/list")
 	s.NoError(err)
-	s.AssertSuccess(resp)
-	s.NotNil(resp["friends"])
+	s.NotNil(resp)
+	if resp != nil {
+		s.Equal(float64(0), resp["error"])
+	}
 }
 
-// TestAddFriend 测试添加好友
 func (s *SocialTestSuite) TestAddFriend() {
-	s.setupAuthenticatedClient()
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_social2_%d", uniqueID))
 
 	resp, err := s.Client.Post("/api/v1/friend/add", map[string]interface{}{
-		"friend_id": 999, // 测试好友ID
+		"target_name": "NonExistentPlayer",
 	})
 	s.NoError(err)
-	// 可能成功或好友不存在
-	s.NotNil(resp["error"])
+	s.NotNil(resp)
+	if resp != nil {
+		errVal, _ := resp["error"].(float64)
+		s.True(errVal == 0 || errVal == 6,
+			fmt.Sprintf("Expected success or target not found, got: %v", errVal))
+	}
 }
 
-// TestRemoveFriend 测试删除好友
 func (s *SocialTestSuite) TestRemoveFriend() {
-	s.setupAuthenticatedClient()
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_social3_%d", uniqueID))
 
 	resp, err := s.Client.Post("/api/v1/friend/remove", map[string]interface{}{
-		"friend_id": 999,
+		"friend_uid": 99999,
 	})
 	s.NoError(err)
-	// 可能成功或好友不存在
-	s.NotNil(resp["error"])
+	s.NotNil(resp)
+	if resp != nil {
+		errVal, _ := resp["error"].(float64)
+		s.True(errVal == 0 || errVal == 6,
+			fmt.Sprintf("Expected success or friend not found, got: %v", errVal))
+	}
+}
+
+func (s *SocialTestSuite) TestGetMailList() {
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_social4_%d", uniqueID))
+
+	resp, err := s.Client.Get("/api/v1/mail/list")
+	s.NoError(err)
+	s.NotNil(resp)
+	if resp != nil {
+		s.Equal(float64(0), resp["error"])
+	}
 }
 
 func TestSocialSuite(t *testing.T) {

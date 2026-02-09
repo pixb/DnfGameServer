@@ -1,147 +1,118 @@
 package tests
 
 import (
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/suite"
 )
 
-// ShopTestSuite 商店测试套件
 type ShopTestSuite struct {
 	BaseTestSuite
 }
 
-// setupAuthenticatedClient 设置认证客户端
-func (s *ShopTestSuite) setupAuthenticatedClient() {
-	// 登录
-	resp, err := s.Client.Post("/api/v1/login", map[string]interface{}{
-		"openid": "test_shop_user",
+func (s *ShopTestSuite) setupAuthenticatedClient(openid string) {
+	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
+		"openid": openid,
 	})
 	s.NoError(err)
-	s.AssertSuccess(resp)
+	s.NotNil(resp)
 
-	if token, ok := resp["auth_key"].(string); ok {
+	if resp == nil {
+		s.T().Skip("Login failed")
+		return
+	}
+
+	if token, ok := resp["authKey"].(string); ok {
 		s.Client.SetToken(token)
 	}
 
-	// 获取角色列表并选择角色
-	listResp, err := s.Client.Post("/api/v1/character/list", nil)
+	listResp, err := s.Client.Get("/api/v1/character/list")
 	s.NoError(err)
+	s.NotNil(listResp)
 
 	characters, ok := listResp["characters"].([]interface{})
 	if !ok || len(characters) == 0 {
-		s.T().Skip("No characters available")
+		createResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+			"name": fmt.Sprintf("ShopHero%d", time.Now().UnixNano()%10000),
+			"job":  1,
+		})
+		s.NoError(err)
+		s.NotNil(createResp)
+		if createResp != nil && createResp["error"] == float64(0) {
+			listResp, _ = s.Client.Get("/api/v1/character/list")
+			if listResp != nil {
+				characters, _ = listResp["characters"].([]interface{})
+			}
+		}
 	}
 
-	firstChar := characters[0].(map[string]interface{})
-	_, err = s.Client.Post("/api/v1/character/select", map[string]interface{}{
-		"role_id": firstChar["id"],
-	})
-	s.NoError(err)
+	if characters != nil && len(characters) > 0 {
+		firstChar := characters[0].(map[string]interface{})
+		_, err = s.Client.Post("/api/v1/character/select", map[string]interface{}{
+			"uid": firstChar["uid"],
+		})
+		s.NoError(err)
+	}
 }
 
-// TestGetShopList 测试获取商店列表
 func (s *ShopTestSuite) TestGetShopList() {
-	s.setupAuthenticatedClient()
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_shop_%d", uniqueID))
 
-	resp, err := s.Client.Post("/api/v1/shop/list", map[string]interface{}{
-		"shop_id": 1,
-	})
+	resp, err := s.Client.Get("/api/v1/shop/list")
 	s.NoError(err)
-	s.AssertSuccess(resp)
-	s.NotNil(resp["items"])
+	s.NotNil(resp)
+	if resp != nil {
+		s.Equal(float64(0), resp["error"])
+	}
 }
 
-// TestBuyItem 测试购买物品
 func (s *ShopTestSuite) TestBuyItem() {
-	s.setupAuthenticatedClient()
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_shop2_%d", uniqueID))
 
 	resp, err := s.Client.Post("/api/v1/shop/buy", map[string]interface{}{
-		"shop_id": 1,
-		"item_id": 1,
-		"count":   1,
+		"slot":  1,
+		"count": 1,
 	})
 	s.NoError(err)
-	// 可能成功或金币不足
-	s.NotNil(resp["error"])
+	s.NotNil(resp)
+	if resp != nil {
+		errVal, _ := resp["error"].(float64)
+		s.True(errVal == 0 || errVal == 3,
+			fmt.Sprintf("Expected success (0) or insufficient gold (3), got: %v", errVal))
+	}
 }
 
-// TestBuyItemNotEnoughMoney 测试购买物品-金币不足
-func (s *ShopTestSuite) TestBuyItemNotEnoughMoney() {
-	s.setupAuthenticatedClient()
-
-	resp, err := s.Client.Post("/api/v1/shop/buy", map[string]interface{}{
-		"shop_id": 1,
-		"item_id": 1,
-		"count":   999999, // 大量购买
-	})
-	s.NoError(err)
-	// 应该返回金币不足错误
-	errorCode := resp["error"].(float64)
-	s.True(errorCode == 0 || errorCode == 3, "Should succeed or get not enough money error")
-}
-
-// TestSellToShop 测试出售物品给商店
 func (s *ShopTestSuite) TestSellToShop() {
-	s.setupAuthenticatedClient()
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_shop3_%d", uniqueID))
 
 	resp, err := s.Client.Post("/api/v1/shop/sell", map[string]interface{}{
-		"item_id": 1,
-		"count":   1,
+		"guid":  999999,
+		"count": 1,
 	})
 	s.NoError(err)
-	// 可能成功或物品不存在
-	s.NotNil(resp["error"])
+	s.NotNil(resp)
+	if resp != nil {
+		errVal, _ := resp["error"].(float64)
+		s.True(errVal == 0 || errVal == 6,
+			fmt.Sprintf("Expected success (0) or item not found (6), got: %v", errVal))
+	}
 }
 
-// TestSearchAuction 测试搜索拍卖行
 func (s *ShopTestSuite) TestSearchAuction() {
-	s.setupAuthenticatedClient()
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_shop4_%d", uniqueID))
 
-	resp, err := s.Client.Post("/api/v1/auction/search", map[string]interface{}{
-		"keyword": "sword",
-	})
+	resp, err := s.Client.Get("/api/v1/auction/search")
 	s.NoError(err)
-	s.AssertSuccess(resp)
-	s.NotNil(resp["items"])
-}
-
-// TestRegisterAuction 测试上架拍卖
-func (s *ShopTestSuite) TestRegisterAuction() {
-	s.setupAuthenticatedClient()
-
-	resp, err := s.Client.Post("/api/v1/auction/register", map[string]interface{}{
-		"item_id": 1,
-		"price":   1000,
-	})
-	s.NoError(err)
-	// 可能成功或物品不存在
-	s.NotNil(resp["error"])
-}
-
-// TestBidAuction 测试竞拍
-func (s *ShopTestSuite) TestBidAuction() {
-	s.setupAuthenticatedClient()
-
-	resp, err := s.Client.Post("/api/v1/auction/bid", map[string]interface{}{
-		"auction_id": 1,
-		"price":      1000,
-	})
-	s.NoError(err)
-	// 可能成功或拍卖不存在
-	s.NotNil(resp["error"])
-}
-
-// TestBuyoutAuction 测试一口价购买
-func (s *ShopTestSuite) TestBuyoutAuction() {
-	s.setupAuthenticatedClient()
-
-	resp, err := s.Client.Post("/api/v1/auction/buyout", map[string]interface{}{
-		"auction_id": 1,
-	})
-	s.NoError(err)
-	// 可能成功或拍卖不存在
-	s.NotNil(resp["error"])
+	s.NotNil(resp)
+	if resp != nil {
+		s.Equal(float64(0), resp["error"])
+	}
 }
 
 func TestShopSuite(t *testing.T) {

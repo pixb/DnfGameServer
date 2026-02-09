@@ -360,3 +360,32 @@ func (s *Store) MigrateFromJava(ctx context.Context) error {
 
 	return nil
 }
+
+// Seed 初始化测试数据
+func (s *Store) Seed(ctx context.Context) error {
+	// 插入默认系统设置
+	settings := []struct {
+		name        string
+		value       string
+		description string
+	}{
+		{"basic", `{"version":"1.0.0","name":"DNF Go Server"}`, "实例基本设置"},
+		{"game.max_players", "1000", "最大玩家数"},
+		{"game.max_roles_per_account", "4", "每个账户最大角色数"},
+		{"game.default_map_id", "1", "默认地图ID"},
+		{"shop.fee_rate", "0.05", "拍卖行手续费率"},
+	}
+
+	for _, setting := range settings {
+		_, err := s.UpsertInstanceSetting(ctx, &InstanceSetting{
+			Key:         setting.name,
+			Value:       setting.value,
+			Description: setting.description,
+		})
+		if err != nil {
+			return fmt.Errorf("failed to seed setting %s: %w", setting.name, err)
+		}
+	}
+
+	return nil
+}

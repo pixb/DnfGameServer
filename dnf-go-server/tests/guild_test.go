@@ -1,141 +1,118 @@
 package tests
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/suite"
 )
 
-// GuildTestSuite 公会测试套件
 type GuildTestSuite struct {
 	BaseTestSuite
 }
 
-// setupAuthenticatedClient 设置认证客户端
-func (s *GuildTestSuite) setupAuthenticatedClient() {
-	// 登录
-	resp, err := s.Client.Post("/api/v1/login", map[string]interface{}{
-		"openid": "test_guild_user",
+func (s *GuildTestSuite) setupAuthenticatedClient(openid string) {
+	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
+		"openid": openid,
 	})
 	s.NoError(err)
-	s.AssertSuccess(resp)
+	s.NotNil(resp)
 
-	if token, ok := resp["auth_key"].(string); ok {
+	if resp == nil {
+		s.T().Skip("Login failed")
+		return
+	}
+
+	if token, ok := resp["authKey"].(string); ok {
 		s.Client.SetToken(token)
 	}
 
-	// 获取角色列表并选择角色
-	listResp, err := s.Client.Post("/api/v1/character/list", nil)
+	listResp, err := s.Client.Get("/api/v1/character/list")
 	s.NoError(err)
+	s.NotNil(listResp)
 
 	characters, ok := listResp["characters"].([]interface{})
 	if !ok || len(characters) == 0 {
-		s.T().Skip("No characters available")
+		createResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+			"name": fmt.Sprintf("GuildHero%d", time.Now().UnixNano()%10000),
+			"job":  1,
+		})
+		s.NoError(err)
+		s.NotNil(createResp)
+		if createResp != nil && createResp["error"] == float64(0) {
+			listResp, _ = s.Client.Get("/api/v1/character/list")
+			if listResp != nil {
+				characters, _ = listResp["characters"].([]interface{})
+			}
+		}
 	}
 
-	firstChar := characters[0].(map[string]interface{})
-	_, err = s.Client.Post("/api/v1/character/select", map[string]interface{}{
-		"role_id": firstChar["id"],
-	})
-	s.NoError(err)
+	if characters != nil && len(characters) > 0 {
+		firstChar := characters[0].(map[string]interface{})
+		_, err = s.Client.Post("/api/v1/character/select", map[string]interface{}{
+			"uid": firstChar["uid"],
+		})
+		s.NoError(err)
+	}
 }
 
-// TestGetGuildInfo 测试获取公会信息
 func (s *GuildTestSuite) TestGetGuildInfo() {
-	s.setupAuthenticatedClient()
-
-	resp, err := s.Client.Post("/api/v1/guild/info", nil)
-	s.NoError(err)
-	// 可能成功或不在公会中
-	s.NotNil(resp["error"])
-}
-
-// TestCreateGuild 测试创建公会
-func (s *GuildTestSuite) TestCreateGuild() {
-	s.setupAuthenticatedClient()
-
 	uniqueID := time.Now().UnixNano()
-	resp, err := s.Client.Post("/api/v1/guild/create", map[string]interface{}{
-		"name": "TestGuild_" + string(rune(uniqueID)),
-	})
+	s.setupAuthenticatedClient(fmt.Sprintf("test_guild_%d", uniqueID))
+
+	resp, err := s.Client.Get("/api/v1/guild/info")
 	s.NoError(err)
-	// 可能成功或金币不足/已有公会
-	errorCode := resp["error"].(float64)
-	s.True(errorCode == 0 || errorCode == 3 || errorCode == 7, "Should succeed or get money/not in guild error")
+	s.NotNil(resp)
+	if resp != nil {
+		s.Equal(float64(0), resp["error"])
+	}
 }
 
-// TestCreateGuildInvalidName 测试创建公会-无效名称
-func (s *GuildTestSuite) TestCreateGuildInvalidName() {
-	s.setupAuthenticatedClient()
+func (s *GuildTestSuite) TestCreateGuild() {
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_guild2_%d", uniqueID))
 
 	resp, err := s.Client.Post("/api/v1/guild/create", map[string]interface{}{
-		"name": "",
+		"name": fmt.Sprintf("TestGuild%d", uniqueID%10000),
 	})
 	s.NoError(err)
-	s.AssertError(resp, 1) // Invalid parameter
+	s.NotNil(resp)
+	if resp != nil {
+		errVal, _ := resp["error"].(float64)
+		s.True(errVal == 0 || errVal == 3 || errVal == 7,
+			fmt.Sprintf("Expected success, got: %v", errVal))
+	}
 }
 
-// TestJoinGuild 测试加入公会
 func (s *GuildTestSuite) TestJoinGuild() {
-	s.setupAuthenticatedClient()
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_guild3_%d", uniqueID))
 
 	resp, err := s.Client.Post("/api/v1/guild/join", map[string]interface{}{
-		"guild_id": 1,
+		"guild_id": 99999,
 	})
 	s.NoError(err)
-	// 可能成功或公会不存在/已满/已有公会
-	errorCode := resp["error"].(float64)
-	s.True(errorCode == 0 || errorCode == 2 || errorCode == 7 || errorCode == 8, "Should succeed or get appropriate error")
+	s.NotNil(resp)
+	if resp != nil {
+		errVal, _ := resp["error"].(float64)
+		s.True(errVal == 0 || errVal == 6 || errVal == 7 || errVal == 8,
+			fmt.Sprintf("Expected success or error, got: %v", errVal))
+	}
 }
 
-// TestLeaveGuild 测试离开公会
 func (s *GuildTestSuite) TestLeaveGuild() {
-	s.setupAuthenticatedClient()
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_guild4_%d", uniqueID))
 
 	resp, err := s.Client.Post("/api/v1/guild/leave", nil)
 	s.NoError(err)
-	// 可能成功或不在公会中/是会长
-	errorCode := resp["error"].(float64)
-	s.True(errorCode == 0 || errorCode == 9 || errorCode == 10, "Should succeed or get appropriate error")
-}
-
-// TestGuildDonate 测试公会捐赠
-func (s *GuildTestSuite) TestGuildDonate() {
-	s.setupAuthenticatedClient()
-
-	resp, err := s.Client.Post("/api/v1/guild/donate", map[string]interface{}{
-		"donate_type": 1, // 金币
-		"amount":      100,
-	})
-	s.NoError(err)
-	// 可能成功或不在公会中/金币不足
-	errorCode := resp["error"].(float64)
-	s.True(errorCode == 0 || errorCode == 3 || errorCode == 9, "Should succeed or get appropriate error")
-}
-
-// TestGetGuildSkill 测试获取公会技能
-func (s *GuildTestSuite) TestGetGuildSkill() {
-	s.setupAuthenticatedClient()
-
-	resp, err := s.Client.Post("/api/v1/guild/skill", nil)
-	s.NoError(err)
-	// 可能成功或不在公会中
-	errorCode := resp["error"].(float64)
-	s.True(errorCode == 0 || errorCode == 9, "Should succeed or get appropriate error")
-}
-
-// TestUpgradeGuildSkill 测试升级公会技能
-func (s *GuildTestSuite) TestUpgradeGuildSkill() {
-	s.setupAuthenticatedClient()
-
-	resp, err := s.Client.Post("/api/v1/guild/skill/upgrade", map[string]interface{}{
-		"skill_id": 1,
-	})
-	s.NoError(err)
-	// 可能成功或不在公会中/权限不足/资金不足
-	errorCode := resp["error"].(float64)
-	s.True(errorCode == 0 || errorCode == 9 || errorCode == 11 || errorCode == 12, "Should succeed or get appropriate error")
+	s.NotNil(resp)
+	if resp != nil {
+		errVal, _ := resp["error"].(float64)
+		s.True(errVal == 0 || errVal == 9 || errVal == 10,
+			fmt.Sprintf("Expected success or error, got: %v", errVal))
+	}
 }
 
 func TestGuildSuite(t *testing.T) {

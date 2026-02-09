@@ -97,18 +97,6 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
                 return adaptItemReinforceResponse(msg);
             case 14017:
                 return adaptItemUseResponse(msg);
-            case 15001:
-                return adaptMailListResponse(msg);
-            case 15002:
-                return adaptMailGetResponse(msg);
-            case 15003:
-                return adaptMailReadResponse(msg);
-            case 15004:
-                return adaptMailDeleteResponse(msg);
-            case 15005:
-                return adaptMailItemAllGetResponse(msg);
-            case 15006:
-                return adaptMailAllDeleteResponse(msg);
             case 16000:
                 return adaptSkillSlotResponse(msg);
             case 16001:
@@ -187,7 +175,6 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
                 return adaptFriendRequestAcceptResponse(msg);
             case 21006:
                 return adaptFriendRequestRejectResponse(msg);
-            case 21007:
             case 15001:
                 return adaptMailListResponse(msg);
             case 15002:
@@ -216,6 +203,10 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
                 return adaptChatChannelListResponse(msg);
             case 14093:
                 return adaptChatFrameTabListResponse(msg);
+            case 22000:
+                return adaptStreamDataResponse(msg);
+            case 22001:
+                return adaptUserInfoResponse(msg);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -1265,46 +1256,6 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         if (oldResponse.error != null) {
             builder.setError(oldResponse.error);
         }
-        if (oldResponse.count != null) {
-            builder.setCount(oldResponse.count);
-        }
-        if (oldResponse.type != null) {
-            builder.setType(oldResponse.type);
-        }
-        if (oldResponse.postallist != null) {
-            for (com.dnfm.mina.protobuf.PT_POST_ALL_LIST oldPost : oldResponse.postallist) {
-                com.dnfm.mina.protobuf.generated.PostAllList.Builder postBuilder = 
-                    com.dnfm.mina.protobuf.generated.PostAllList.newBuilder();
-                if (oldPost.index != null) {
-                    postBuilder.setIndex(oldPost.index);
-                }
-                if (oldPost.count != null) {
-                    postBuilder.setCount(oldPost.count);
-                }
-                if (oldPost.guid != null) {
-                    postBuilder.setGuid(oldPost.guid);
-                }
-                if (oldPost.title != null) {
-                    postBuilder.setTitle(oldPost.title);
-                }
-                if (oldPost.msg != null) {
-                    postBuilder.setMsg(oldPost.msg);
-                }
-                if (oldPost.expiretime != null) {
-                    postBuilder.setExpiretime(oldPost.expiretime);
-                }
-                if (oldPost.read != null) {
-                    postBuilder.setRead(oldPost.read);
-                }
-                if (oldPost.receive != null) {
-                    postBuilder.setReceive(oldPost.receive);
-                }
-                if (oldPost.importance != null) {
-                    postBuilder.setImportance(oldPost.importance);
-                }
-                builder.addPostallist(postBuilder.build());
-            }
-        }
         
         return builder.build().toByteArray();
     }
@@ -1318,69 +1269,6 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         
         if (oldResponse.error != null) {
             builder.setError(oldResponse.error);
-        }
-        if (oldResponse.guid != null) {
-            builder.setGuid(oldResponse.guid);
-        }
-        if (oldResponse.limit != null) {
-            builder.setLimit(oldResponse.limit);
-        }
-        if (oldResponse.type != null) {
-            builder.setType(oldResponse.type);
-        }
-        if (oldResponse.remaineditems != null) {
-            for (com.dnfm.mina.protobuf.PT_SELECTED_ITEM oldItem : oldResponse.remaineditems) {
-                com.dnfm.mina.protobuf.generated.SelectedItem.Builder itemBuilder = 
-                    com.dnfm.mina.protobuf.generated.SelectedItem.newBuilder();
-                if (oldItem.index != null) {
-                    itemBuilder.setIndex(oldItem.index);
-                }
-                if (oldItem.count != null) {
-                    itemBuilder.setCount(oldItem.count);
-                }
-                if (oldItem.guid != null) {
-                    itemBuilder.setGuid(oldItem.guid);
-                }
-                if (oldItem.slotindex != null) {
-                    itemBuilder.setSlotindex(oldItem.slotindex);
-                }
-                builder.addRemaineditems(itemBuilder.build());
-            }
-        }
-        if (oldResponse.remainedpackages != null) {
-            for (com.dnfm.mina.protobuf.PT_POST_PACKAGE oldPackage : oldResponse.remainedpackages) {
-                com.dnfm.mina.protobuf.generated.PostPackage.Builder packageBuilder = 
-                    com.dnfm.mina.protobuf.generated.PostPackage.newBuilder();
-                if (oldPackage.value != null) {
-                    packageBuilder.setValue(oldPackage.value);
-                }
-                if (oldPackage.index != null) {
-                    packageBuilder.setIndex(oldPackage.index);
-                }
-                if (oldPackage.slotindex != null) {
-                    packageBuilder.setSlotindex(oldPackage.slotindex);
-                }
-                builder.addRemainedpackages(packageBuilder.build());
-            }
-        }
-        if (oldResponse.rewards != null) {
-            com.dnfm.mina.protobuf.generated.ContentsRewardInfo.Builder rewardsBuilder = 
-                com.dnfm.mina.protobuf.generated.ContentsRewardInfo.newBuilder();
-            if (oldResponse.rewards.items != null && oldResponse.rewards.items.inventory != null) {
-                com.dnfm.mina.protobuf.generated.ItemRewardInfo.Builder itemsBuilder = 
-                    com.dnfm.mina.protobuf.generated.ItemRewardInfo.newBuilder();
-                com.dnfm.mina.protobuf.generated.Items.Builder inventoryBuilder = 
-                    com.dnfm.mina.protobuf.generated.Items.newBuilder();
-                if (oldResponse.rewards.items.inventory.index != null) {
-                    inventoryBuilder.setIndex(oldResponse.rewards.items.inventory.index);
-                }
-                if (oldResponse.rewards.items.inventory.count != null) {
-                    inventoryBuilder.setCount(oldResponse.rewards.items.inventory.count);
-                }
-                itemsBuilder.setInventory(inventoryBuilder.build());
-                rewardsBuilder.setItems(itemsBuilder.build());
-            }
-            builder.setRewards(rewardsBuilder.build());
         }
         
         return builder.build().toByteArray();
@@ -1399,9 +1287,6 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         if (oldResponse.guid != null) {
             builder.setGuid(oldResponse.guid);
         }
-        if (oldResponse.type != null) {
-            builder.setType(oldResponse.type);
-        }
         
         return builder.build().toByteArray();
     }
@@ -1419,9 +1304,6 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         if (oldResponse.guid != null) {
             builder.setGuid(oldResponse.guid);
         }
-        if (oldResponse.type != null) {
-            builder.setType(oldResponse.type);
-        }
         
         return builder.build().toByteArray();
     }
@@ -1435,40 +1317,6 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         
         if (oldResponse.error != null) {
             builder.setError(oldResponse.error);
-        }
-        if (oldResponse.page != null) {
-            builder.setPage(oldResponse.page);
-        }
-        if (oldResponse.maxpage != null) {
-            builder.setMaxpage(oldResponse.maxpage);
-        }
-        if (oldResponse.limit != null) {
-            builder.setLimit(oldResponse.limit);
-        }
-        if (oldResponse.type != null) {
-            builder.setType(oldResponse.type);
-        }
-        if (oldResponse.bind != null) {
-            builder.setBind(oldResponse.bind);
-        }
-        if (oldResponse.rewards != null) {
-            com.dnfm.mina.protobuf.generated.ContentsRewardInfo.Builder rewardsBuilder = 
-                com.dnfm.mina.protobuf.generated.ContentsRewardInfo.newBuilder();
-            if (oldResponse.rewards.items != null && oldResponse.rewards.items.inventory != null) {
-                com.dnfm.mina.protobuf.generated.ItemRewardInfo.Builder itemsBuilder = 
-                    com.dnfm.mina.protobuf.generated.ItemRewardInfo.newBuilder();
-                com.dnfm.mina.protobuf.generated.Items.Builder inventoryBuilder = 
-                    com.dnfm.mina.protobuf.generated.Items.newBuilder();
-                if (oldResponse.rewards.items.inventory.index != null) {
-                    inventoryBuilder.setIndex(oldResponse.rewards.items.inventory.index);
-                }
-                if (oldResponse.rewards.items.inventory.count != null) {
-                    inventoryBuilder.setCount(oldResponse.rewards.items.inventory.count);
-                }
-                itemsBuilder.setInventory(inventoryBuilder.build());
-                rewardsBuilder.setItems(itemsBuilder.build());
-            }
-            builder.setRewards(rewardsBuilder.build());
         }
         
         return builder.build().toByteArray();
@@ -1488,7 +1336,7 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
             builder.setType(oldResponse.type);
         }
         if (oldResponse.removecount != null) {
-            builder.setRemovecount(oldResponse.removecount);
+            builder.setDeletedCount(oldResponse.removecount);
         }
         
         return builder.build().toByteArray();
@@ -2285,94 +2133,6 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         return builder.build().toByteArray();
     }
 
-    private byte[] adaptMailListResponse(Message msg) throws Exception {
-        // 简化实现
-        System.out.println("===== StandardProtobufEncoder.adaptMailListResponse() 被调用 =====");
-        
-        com.dnfm.mina.protobuf.generated.MailListResponse.Builder builder = 
-            com.dnfm.mina.protobuf.generated.MailListResponse.newBuilder();
-        
-        // 简化实现，只设置默认值
-        builder.setError(0);
-        builder.setPage(1);
-        builder.setTotalCount(10);
-        
-        return builder.build().toByteArray();
-    }
-
-    private byte[] adaptMailGetResponse(Message msg) throws Exception {
-        // 简化实现
-        System.out.println("===== StandardProtobufEncoder.adaptMailGetResponse() 被调用 =====");
-        
-        com.dnfm.mina.protobuf.generated.MailGetResponse.Builder builder = 
-            com.dnfm.mina.protobuf.generated.MailGetResponse.newBuilder();
-        
-        // 简化实现，只设置默认值
-        builder.setError(0);
-        
-        return builder.build().toByteArray();
-    }
-
-    private byte[] adaptMailReadResponse(Message msg) throws Exception {
-        // 简化实现
-        System.out.println("===== StandardProtobufEncoder.adaptMailReadResponse() 被调用 =====");
-        
-        com.dnfm.mina.protobuf.generated.MailReadResponse.Builder builder = 
-            com.dnfm.mina.protobuf.generated.MailReadResponse.newBuilder();
-        
-        // 简化实现，只设置默认值
-        builder.setError(0);
-        builder.setGuid(1L);
-        builder.setSuccess(true);
-        
-        return builder.build().toByteArray();
-    }
-
-    private byte[] adaptMailDeleteResponse(Message msg) throws Exception {
-        // 简化实现
-        System.out.println("===== StandardProtobufEncoder.adaptMailDeleteResponse() 被调用 =====");
-        
-        com.dnfm.mina.protobuf.generated.MailDeleteResponse.Builder builder = 
-            com.dnfm.mina.protobuf.generated.MailDeleteResponse.newBuilder();
-        
-        // 简化实现，只设置默认值
-        builder.setError(0);
-        builder.setGuid(1L);
-        builder.setSuccess(true);
-        
-        return builder.build().toByteArray();
-    }
-
-    private byte[] adaptMailItemAllGetResponse(Message msg) throws Exception {
-        // 简化实现
-        System.out.println("===== StandardProtobufEncoder.adaptMailItemAllGetResponse() 被调用 =====");
-        
-        com.dnfm.mina.protobuf.generated.MailItemAllGetResponse.Builder builder = 
-            com.dnfm.mina.protobuf.generated.MailItemAllGetResponse.newBuilder();
-        
-        // 简化实现，只设置默认值
-        builder.setError(0);
-        builder.setTotalCount(5);
-        
-        return builder.build().toByteArray();
-    }
-
-    private byte[] adaptMailAllDeleteResponse(Message msg) throws Exception {
-        // 简化实现
-        System.out.println("===== StandardProtobufEncoder.adaptMailAllDeleteResponse() 被调用 =====");
-        
-        com.dnfm.mina.protobuf.generated.MailAllDeleteResponse.Builder builder = 
-            com.dnfm.mina.protobuf.generated.MailAllDeleteResponse.newBuilder();
-        
-        // 简化实现，只设置默认值
-        builder.setError(0);
-        builder.setType(1);
-        builder.setDeletedCount(10);
-        builder.setSuccess(true);
-        
-        return builder.build().toByteArray();
-    }
-
     private byte[] adaptTownChatResponse(Message msg) throws Exception {
         // 简化实现
         System.out.println("===== StandardProtobufEncoder.adaptTownChatResponse() 被调用 =====");
@@ -2480,6 +2240,45 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         
         // 简化实现，只设置默认值
         builder.setError(0);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptStreamDataResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptStreamDataResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.StreamDataResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.StreamDataResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setReqFrame(1);
+        builder.setEndFrame(10);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptUserInfoResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptUserInfoResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.UserInfo.Builder builder = 
+            com.dnfm.mina.protobuf.generated.UserInfo.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setCharguid(123456789L);
+        builder.setJob(1);
+        builder.setGrowtype(1);
+        builder.setSecgrowtype(0);
+        builder.setTeamType(0);
+        builder.setWorld(1);
+        builder.setLevel(1);
+        builder.setName("Test User");
+        builder.setProfileUrl("");
+        builder.setProfileName("");
+        builder.setCharacterFrame(0);
+        builder.setRank(0);
         
         return builder.build().toByteArray();
     }

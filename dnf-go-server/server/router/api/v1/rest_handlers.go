@@ -3,6 +3,7 @@ package v1
 import (
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/labstack/echo/v4"
 
@@ -18,10 +19,7 @@ func (s *APIV1Service) handleGetBag(c echo.Context) error {
 	}
 
 	roleID := claims.UserID
-	items, err := s.Store.ListBagItemsByRole(c.Request().Context(), roleID)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{"error": 1})
-	}
+	items, _ := s.Store.ListBagItemsByRole(c.Request().Context(), roleID)
 
 	var bagItems []*dnfv1.BagItem
 	for _, item := range items {
@@ -226,48 +224,554 @@ func (s *APIV1Service) handleRemoveFriend(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
 }
 
+func (s *APIV1Service) handleGetMailList(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	mails, _ := s.Store.ListMails(c.Request().Context(), &store.FindMail{
+		ReceiverID: &claims.UserID,
+	})
+
+	var mailList []map[string]interface{}
+	for _, m := range mails {
+		mailList = append(mailList, map[string]interface{}{
+			"id":          m.ID,
+			"sender_id":   m.SenderID,
+			"sender_name": m.SenderName,
+			"title":       m.Title,
+			"content":     m.Content,
+			"is_read":     m.IsRead,
+			"is_claimed":  m.IsClaimed,
+			"gold":        m.Gold,
+			"created_at":  m.CreatedAt,
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error": 0,
+		"mails": mailList,
+	})
+}
+
+func (s *APIV1Service) handleSendMail(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	targetName := c.FormValue("target_name")
+	title := c.FormValue("title")
+	content := c.FormValue("content")
+	gold, _ := strconv.ParseInt(c.FormValue("gold"), 10, 64)
+
+	targetRole, err := s.Store.GetRoleByName(c.Request().Context(), targetName)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
+	}
+
+	role, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{
+		FindBase: store.FindBase{ID: &claims.UserID},
+	})
+
+	mail, _ := s.Store.CreateMail(c.Request().Context(), &store.Mail{
+		SenderID:   claims.UserID,
+		SenderName: role.Name,
+		ReceiverID: targetRole.ID,
+		Title:      title,
+		Content:    content,
+		Gold:       gold,
+		IsRead:     false,
+		IsClaimed:  false,
+		ExpireAt:   0,
+	})
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":  0,
+		"mailId": mail.ID,
+	})
+}
+
+func (s *APIV1Service) handleClaimMail(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	mailID, _ := strconv.ParseUint(c.FormValue("mail_id"), 10, 64)
+
+	mail, _ := s.Store.GetMail(c.Request().Context(), &store.FindMail{
+		FindBase:   store.FindBase{ID: &mailID},
+		ReceiverID: &claims.UserID,
+	})
+
+	if mail == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
+	}
+
+	if mail.IsClaimed {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 7})
+	}
+
+	isClaimed := true
+	s.Store.UpdateMail(c.Request().Context(), &store.UpdateMail{
+		ID:        mail.ID,
+		IsClaimed: &isClaimed,
+	})
+
+	if mail.Gold > 0 {
+		currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), claims.UserID)
+		currency.Gold += mail.Gold
+		s.Store.UpdateRoleCurrency(c.Request().Context(), currency)
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error": 0,
+		"gold":  mail.Gold,
+	})
+}
+
+func (s *APIV1Service) handleGetQuestList(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	quests, _ := s.Store.ListRoleQuests(c.Request().Context(), claims.UserID)
+
+	var questList []map[string]interface{}
+	for _, q := range quests {
+		questList = append(questList, map[string]interface{}{
+			"id":       q.ID,
+			"quest_id": q.QuestID,
+			"status":   q.Status,
+			"progress": q.Progress,
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":  0,
+		"quests": questList,
+	})
+}
+
+func (s *APIV1Service) handleAcceptQuest(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	questID, _ := strconv.Atoi(c.FormValue("quest_id"))
+
+	roleQuest, _ := s.Store.CreateRoleQuest(c.Request().Context(), &store.RoleQuest{
+		RoleID:     claims.UserID,
+		QuestID:    int32(questID),
+		Status:     0,
+		Progress:   0,
+		AcceptedAt: 0,
+	})
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":   0,
+		"questId": roleQuest.QuestID,
+	})
+}
+
+func (s *APIV1Service) handleCompleteQuest(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	questID, _ := strconv.Atoi(c.FormValue("quest_id"))
+
+	quests, _ := s.Store.ListRoleQuests(c.Request().Context(), claims.UserID)
+	for _, q := range quests {
+		if q.QuestID == int32(questID) {
+			status := int32(2)
+			s.Store.UpdateRoleQuest(c.Request().Context(), &store.UpdateRoleQuest{
+				ID:     q.ID,
+				Status: &status,
+			})
+
+			role, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{
+				FindBase: store.FindBase{ID: &claims.UserID},
+			})
+
+			expGain := int64(role.Level * 100)
+			goldGain := int32(role.Level * 50)
+
+			newExp := role.Exp + expGain
+			s.Store.UpdateRole(c.Request().Context(), &store.UpdateRole{
+				ID:  claims.UserID,
+				Exp: &newExp,
+			})
+
+			currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), claims.UserID)
+			currency.Gold += int64(goldGain)
+			s.Store.UpdateRoleCurrency(c.Request().Context(), currency)
+
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"error":    0,
+				"expGain":  expGain,
+				"goldGain": goldGain,
+			})
+		}
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
+}
+
 func (s *APIV1Service) handleGetGuildInfo(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	member, _ := s.Store.GetDriver().GetGuildMember(c.Request().Context(), &store.FindGuildMember{
+		RoleID: &claims.UserID,
+	})
+
+	if member == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 0, "hasGuild": false})
+	}
+
+	guild, _ := s.Store.GetGuild(c.Request().Context(), &store.FindGuild{
+		FindBase: store.FindBase{ID: &member.GuildID},
+	})
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":    0,
+		"hasGuild": true,
+		"guild": map[string]interface{}{
+			"id":      guild.ID,
+			"name":    guild.Name,
+			"level":   guild.Level,
+			"members": guild.MemberCount,
+		},
+	})
 }
 
 func (s *APIV1Service) handleCreateGuild(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	name := c.FormValue("name")
+
+	member, _ := s.Store.GetDriver().GetGuildMember(c.Request().Context(), &store.FindGuildMember{
+		RoleID: &claims.UserID,
+	})
+	if member != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 7})
+	}
+
+	currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), claims.UserID)
+	if currency.Gold < 100000 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	currency.Gold -= 100000
+	s.Store.UpdateRoleCurrency(c.Request().Context(), currency)
+
+	guild, _ := s.Store.CreateGuild(c.Request().Context(), &store.Guild{
+		Name:        name,
+		Level:       1,
+		Exp:         0,
+		LeaderID:    claims.UserID,
+		MemberCount: 1,
+		MaxMembers:  50,
+	})
+
+	s.Store.GetDriver().AddGuildMember(c.Request().Context(), &store.GuildMember{
+		GuildID:      guild.ID,
+		RoleID:       claims.UserID,
+		Position:     3,
+		Contribution: 0,
+	})
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":   0,
+		"guildId": guild.ID,
+	})
 }
 
 func (s *APIV1Service) handleJoinGuild(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	guildID, _ := strconv.ParseUint(c.FormValue("guild_id"), 10, 64)
+
+	member, _ := s.Store.GetDriver().GetGuildMember(c.Request().Context(), &store.FindGuildMember{
+		RoleID: &claims.UserID,
+	})
+	if member != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 7})
+	}
+
+	guild, _ := s.Store.GetGuild(c.Request().Context(), &store.FindGuild{
+		FindBase: store.FindBase{ID: &guildID},
+	})
+	if guild == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
+	}
+
+	if guild.MemberCount >= guild.MaxMembers {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 8})
+	}
+
+	s.Store.GetDriver().AddGuildMember(c.Request().Context(), &store.GuildMember{
+		GuildID:      guildID,
+		RoleID:       claims.UserID,
+		Position:     0,
+		Contribution: 0,
+	})
+
+	newCount := guild.MemberCount + 1
+	s.Store.UpdateGuild(c.Request().Context(), &store.UpdateGuild{
+		ID:          guildID,
+		MemberCount: &newCount,
+	})
+
 	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
 }
 
 func (s *APIV1Service) handleLeaveGuild(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
-}
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
 
-func (s *APIV1Service) handleGetQuestList(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0, "quests": []*dnfv1.QuestInfo{}})
-}
+	member, _ := s.Store.GetDriver().GetGuildMember(c.Request().Context(), &store.FindGuildMember{
+		RoleID: &claims.UserID,
+	})
+	if member == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 9})
+	}
 
-func (s *APIV1Service) handleAcceptQuest(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
-}
+	if member.Position == 3 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 10})
+	}
 
-func (s *APIV1Service) handleCompleteQuest(c echo.Context) error {
+	s.Store.GetDriver().RemoveGuildMember(c.Request().Context(), &store.DeleteGuildMember{ID: member.ID})
+
+	guild, _ := s.Store.GetGuild(c.Request().Context(), &store.FindGuild{
+		FindBase: store.FindBase{ID: &member.GuildID},
+	})
+	newCount := guild.MemberCount - 1
+	s.Store.UpdateGuild(c.Request().Context(), &store.UpdateGuild{
+		ID:          member.GuildID,
+		MemberCount: &newCount,
+	})
+
 	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
 }
 
 func (s *APIV1Service) handleSearchAuction(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0, "items": []*dnfv1.AuctionItem{}})
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	itemID := c.FormValue("item_id")
+	maxPrice := c.FormValue("max_price")
+
+	find := &store.FindAuctionItem{
+		Status: func() *store.AuctionStatus { s := store.AuctionStatusSelling; return &s }(),
+	}
+	if itemID != "" {
+		id, _ := strconv.Atoi(itemID)
+		find.ItemID = func() *int32 { v := int32(id); return &v }()
+	}
+	if maxPrice != "" {
+		price, _ := strconv.ParseInt(maxPrice, 10, 64)
+		find.MaxPrice = &price
+	}
+
+	items, _ := s.Store.ListAuctionItems(c.Request().Context(), find)
+
+	var itemList []map[string]interface{}
+	now := time.Now().Unix()
+	for _, item := range items {
+		itemList = append(itemList, map[string]interface{}{
+			"auction_id":  item.ID,
+			"item_id":     item.ItemID,
+			"seller_name": item.SellerName,
+			"price":       item.Price,
+			"bid_price":   item.BidPrice,
+			"time_left":   item.EndTime - now,
+			"count":       item.Count,
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error": 0,
+		"items": itemList,
+	})
 }
 
 func (s *APIV1Service) handleRegisterAuction(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	guid, _ := strconv.ParseUint(c.FormValue("guid"), 10, 64)
+	startPrice, _ := strconv.ParseInt(c.FormValue("start_price"), 10, 64)
+	duration, _ := strconv.Atoi(c.FormValue("duration"))
+
+	item, _ := s.Store.GetBagItem(c.Request().Context(), &store.FindBagItem{
+		FindBase: store.FindBase{ID: &guid},
+		RoleID:   &claims.UserID,
+	})
+	if item == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
+	}
+
+	role, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{
+		FindBase: store.FindBase{ID: &claims.UserID},
+	})
+
+	auction, _ := s.Store.CreateAuctionItem(c.Request().Context(), &store.AuctionItem{
+		SellerID:   claims.UserID,
+		SellerName: role.Name,
+		ItemID:     item.ItemID,
+		Count:      item.Count,
+		Price:      startPrice,
+		TotalPrice: startPrice,
+		Duration:   int32(duration),
+		Status:     store.AuctionStatusSelling,
+		BidPrice:   startPrice,
+		BidCount:   0,
+	})
+
+	s.Store.DeleteBagItem(c.Request().Context(), &store.DeleteBagItem{ID: item.ID})
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":     0,
+		"auctionId": auction.ID,
+	})
 }
 
 func (s *APIV1Service) handleBidAuction(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	auctionID, _ := strconv.ParseUint(c.FormValue("auction_id"), 10, 64)
+	bidPrice, _ := strconv.ParseInt(c.FormValue("bid_price"), 10, 64)
+
+	auction, _ := s.Store.GetAuctionItem(c.Request().Context(), &store.FindAuctionItem{
+		FindBase: store.FindBase{ID: &auctionID},
+	})
+	if auction == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
+	}
+	if auction.Status != store.AuctionStatusSelling {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 11})
+	}
+	if auction.SellerID == claims.UserID {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 12})
+	}
+
+	currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), claims.UserID)
+	if currency.Gold < bidPrice {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	currency.Gold -= bidPrice
+	s.Store.UpdateRoleCurrency(c.Request().Context(), currency)
+
+	if auction.BidderID > 0 {
+		prevCurrency, _ := s.Store.GetRoleCurrency(c.Request().Context(), auction.BidderID)
+		prevCurrency.Gold += auction.BidPrice
+		s.Store.UpdateRoleCurrency(c.Request().Context(), prevCurrency)
+	}
+
+	bidCount := auction.BidCount + 1
+	s.Store.UpdateAuctionItem(c.Request().Context(), &store.UpdateAuctionItem{
+		ID:       auction.ID,
+		BidderID: &claims.UserID,
+		BidPrice: &bidPrice,
+		BidCount: &bidCount,
+	})
+
 	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
 }
 
 func (s *APIV1Service) handleBuyoutAuction(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	auctionID, _ := strconv.ParseUint(c.FormValue("auction_id"), 10, 64)
+
+	auction, _ := s.Store.GetAuctionItem(c.Request().Context(), &store.FindAuctionItem{
+		FindBase: store.FindBase{ID: &auctionID},
+	})
+	if auction == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
+	}
+	if auction.SellerID == claims.UserID {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 12})
+	}
+
+	currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), claims.UserID)
+	if currency.Gold < auction.TotalPrice {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	currency.Gold -= auction.TotalPrice
+	s.Store.UpdateRoleCurrency(c.Request().Context(), currency)
+
+	sellerIncome := auction.TotalPrice - auction.TotalPrice/20
+	sellerCurrency, _ := s.Store.GetRoleCurrency(c.Request().Context(), auction.SellerID)
+	sellerCurrency.Gold += sellerIncome
+	s.Store.UpdateRoleCurrency(c.Request().Context(), sellerCurrency)
+
+	auctionStatus := store.AuctionStatusSold
+	s.Store.UpdateAuctionItem(c.Request().Context(), &store.UpdateAuctionItem{
+		ID:       auction.ID,
+		Status:   &auctionStatus,
+		BidderID: &claims.UserID,
+	})
+
+	s.Store.CreateAuctionHistory(c.Request().Context(), &store.CreateAuctionHistory{
+		AuctionID:    auction.ID,
+		SellerID:     auction.SellerID,
+		BuyerID:      claims.UserID,
+		ItemID:       auction.ItemID,
+		Count:        auction.Count,
+		FinalPrice:   auction.TotalPrice,
+		SellerIncome: sellerIncome,
+	})
+
+	newItem, _ := s.Store.CreateBagItem(c.Request().Context(), &store.BagItem{
+		RoleID:       claims.UserID,
+		ItemID:       auction.ItemID,
+		GridIndex:    0,
+		Count:        auction.Count,
+		IsEquiped:    false,
+		BindType:     2,
+		Durability:   100,
+		EnhanceLevel: 0,
+		Attributes:   auction.Attributes,
+	})
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error": 0,
+		"item": map[string]interface{}{
+			"guid":   newItem.ID,
+			"itemId": newItem.ItemID,
+			"count":  newItem.Count,
+		},
+	})
 }
 
 func getUserClaims(c echo.Context) *auth.UserClaims {

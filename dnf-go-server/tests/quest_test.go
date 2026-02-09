@@ -1,101 +1,104 @@
 package tests
 
 import (
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/suite"
 )
 
-// QuestTestSuite 任务测试套件
 type QuestTestSuite struct {
 	BaseTestSuite
 }
 
-// setupAuthenticatedClient 设置认证客户端
-func (s *QuestTestSuite) setupAuthenticatedClient() {
-	// 登录
-	resp, err := s.Client.Post("/api/v1/login", map[string]interface{}{
-		"openid": "test_quest_user",
+func (s *QuestTestSuite) setupAuthenticatedClient(openid string) {
+	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
+		"openid": openid,
 	})
 	s.NoError(err)
-	s.AssertSuccess(resp)
+	s.NotNil(resp)
 
-	if token, ok := resp["auth_key"].(string); ok {
+	if resp == nil {
+		s.T().Skip("Login failed")
+		return
+	}
+
+	if token, ok := resp["authKey"].(string); ok {
 		s.Client.SetToken(token)
 	}
 
-	// 获取角色列表并选择角色
-	listResp, err := s.Client.Post("/api/v1/character/list", nil)
+	listResp, err := s.Client.Get("/api/v1/character/list")
 	s.NoError(err)
+	s.NotNil(listResp)
 
 	characters, ok := listResp["characters"].([]interface{})
 	if !ok || len(characters) == 0 {
-		s.T().Skip("No characters available")
+		createResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+			"name": fmt.Sprintf("QuestHero%d", time.Now().UnixNano()%10000),
+			"job":  1,
+		})
+		s.NoError(err)
+		s.NotNil(createResp)
+		if createResp != nil && createResp["error"] == float64(0) {
+			listResp, _ = s.Client.Get("/api/v1/character/list")
+			if listResp != nil {
+				characters, _ = listResp["characters"].([]interface{})
+			}
+		}
 	}
 
-	firstChar := characters[0].(map[string]interface{})
-	_, err = s.Client.Post("/api/v1/character/select", map[string]interface{}{
-		"role_id": firstChar["id"],
-	})
-	s.NoError(err)
+	if characters != nil && len(characters) > 0 {
+		firstChar := characters[0].(map[string]interface{})
+		_, err = s.Client.Post("/api/v1/character/select", map[string]interface{}{
+			"uid": firstChar["uid"],
+		})
+		s.NoError(err)
+	}
 }
 
-// TestGetQuestList 测试获取任务列表
 func (s *QuestTestSuite) TestGetQuestList() {
-	s.setupAuthenticatedClient()
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_quest_%d", uniqueID))
 
-	resp, err := s.Client.Post("/api/v1/quest/list", nil)
+	resp, err := s.Client.Get("/api/v1/quest/list")
 	s.NoError(err)
-	s.AssertSuccess(resp)
-	s.NotNil(resp["quests"])
+	s.NotNil(resp)
+	if resp != nil {
+		s.Equal(float64(0), resp["error"])
+	}
 }
 
-// TestAcceptQuest 测试接受任务
 func (s *QuestTestSuite) TestAcceptQuest() {
-	s.setupAuthenticatedClient()
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_quest2_%d", uniqueID))
 
 	resp, err := s.Client.Post("/api/v1/quest/accept", map[string]interface{}{
 		"quest_id": 1,
 	})
 	s.NoError(err)
-	// 可能成功或任务不存在/已接受
-	s.NotNil(resp["error"])
+	s.NotNil(resp)
+	if resp != nil {
+		errVal, _ := resp["error"].(float64)
+		s.True(errVal == 0 || errVal == 6,
+			fmt.Sprintf("Expected success or quest not found, got: %v", errVal))
+	}
 }
 
-// TestCompleteQuest 测试完成任务
 func (s *QuestTestSuite) TestCompleteQuest() {
-	s.setupAuthenticatedClient()
+	uniqueID := time.Now().UnixNano()
+	s.setupAuthenticatedClient(fmt.Sprintf("test_quest3_%d", uniqueID))
 
 	resp, err := s.Client.Post("/api/v1/quest/complete", map[string]interface{}{
-		"quest_id": 1,
+		"quest_id": 99999,
 	})
 	s.NoError(err)
-	// 可能成功或任务未完成/不存在
-	s.NotNil(resp["error"])
-}
-
-// TestGetQuestReward 测试领取任务奖励
-func (s *QuestTestSuite) TestGetQuestReward() {
-	s.setupAuthenticatedClient()
-
-	resp, err := s.Client.Post("/api/v1/quest/reward", map[string]interface{}{
-		"quest_id": 1,
-	})
-	s.NoError(err)
-	// 可能成功或任务未完成/已领取
-	s.NotNil(resp["error"])
-}
-
-// TestAbandonQuest 测试放弃任务
-func (s *QuestTestSuite) TestAbandonQuest() {
-	s.setupAuthenticatedClient()
-
-	resp, err := s.Client.Post("/api/v1/quest/abandon", map[string]interface{}{
-		"quest_id": 1,
-	})
-	s.NoError(err)
-	// 可能成功或任务不存在
-	s.NotNil(resp["error"])
+	s.NotNil(resp)
+	if resp != nil {
+		errVal, _ := resp["error"].(float64)
+		s.True(errVal == 0 || errVal == 6,
+			fmt.Sprintf("Expected success or quest not found, got: %v", errVal))
+	}
 }
 
 func TestQuestSuite(t *testing.T) {

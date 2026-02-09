@@ -131,18 +131,6 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
                 return adaptItemReinforceRequest(body);
             case 14017:
                 return adaptItemUseRequest(body);
-            case 15001:
-                return adaptMailListRequest(body);
-            case 15002:
-                return adaptMailGetRequest(body);
-            case 15003:
-                return adaptMailReadRequest(body);
-            case 15004:
-                return adaptMailDeleteRequest(body);
-            case 15005:
-                return adaptMailItemAllGetRequest(body);
-            case 15006:
-                return adaptMailAllDeleteRequest(body);
             case 16000:
                 return adaptSkillSlotRequest(body);
             case 16001:
@@ -251,6 +239,10 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
                 return adaptChatChannelListRequest(body);
             case 14093:
                 return adaptChatFrameTabListRequest(body);
+            case 22000:
+                return adaptStreamDataRequest(body);
+            case 22001:
+                return adaptUserInfoRequest(body);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -777,26 +769,13 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
         oldRequest.type = newRequest.getType();
         oldRequest.guid = newRequest.getGuid();
         
-        if (newRequest.getSelecteditemsList() != null) {
+        if (newRequest.getSelectedItemsList() != null) {
             oldRequest.selecteditems = new java.util.ArrayList<>();
-            for (com.dnfm.mina.protobuf.generated.SelectedItem newItem : newRequest.getSelecteditemsList()) {
+            for (com.dnfm.mina.protobuf.generated.SelectedItem newItem : newRequest.getSelectedItemsList()) {
                 com.dnfm.mina.protobuf.PT_SELECTED_ITEM oldItem = new com.dnfm.mina.protobuf.PT_SELECTED_ITEM();
-                oldItem.index = newItem.getIndex();
-                oldItem.count = newItem.getCount();
                 oldItem.guid = newItem.getGuid();
-                oldItem.slotindex = newItem.getSlotindex();
+                oldItem.count = newItem.getCount();
                 oldRequest.selecteditems.add(oldItem);
-            }
-        }
-        
-        if (newRequest.getSelectedpackagesList() != null) {
-            oldRequest.selectedpackages = new java.util.ArrayList<>();
-            for (com.dnfm.mina.protobuf.generated.PostPackage newPackage : newRequest.getSelectedpackagesList()) {
-                com.dnfm.mina.protobuf.PT_POST_PACKAGE oldPackage = new com.dnfm.mina.protobuf.PT_POST_PACKAGE();
-                oldPackage.value = newPackage.getValue();
-                oldPackage.index = newPackage.getIndex();
-                oldPackage.slotindex = newPackage.getSlotindex();
-                oldRequest.selectedpackages.add(oldPackage);
             }
         }
         
@@ -1286,60 +1265,6 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
         return null;
     }
 
-    private Message adaptMailListRequest(byte[] body) throws Exception {
-        System.out.println("===== StandardProtobufDecoder.adaptMailListRequest() 被调用，body.length=" + body.length + " =====");
-        com.dnfm.mina.protobuf.generated.MailListRequest newRequest = 
-            com.dnfm.mina.protobuf.generated.MailListRequest.parseFrom(body);
-        
-        // 简化实现，返回null
-        return null;
-    }
-
-    private Message adaptMailGetRequest(byte[] body) throws Exception {
-        System.out.println("===== StandardProtobufDecoder.adaptMailGetRequest() 被调用，body.length=" + body.length + " =====");
-        com.dnfm.mina.protobuf.generated.MailGetRequest newRequest = 
-            com.dnfm.mina.protobuf.generated.MailGetRequest.parseFrom(body);
-        
-        // 简化实现，返回null
-        return null;
-    }
-
-    private Message adaptMailReadRequest(byte[] body) throws Exception {
-        System.out.println("===== StandardProtobufDecoder.adaptMailReadRequest() 被调用，body.length=" + body.length + " =====");
-        com.dnfm.mina.protobuf.generated.MailReadRequest newRequest = 
-            com.dnfm.mina.protobuf.generated.MailReadRequest.parseFrom(body);
-        
-        // 简化实现，返回null
-        return null;
-    }
-
-    private Message adaptMailDeleteRequest(byte[] body) throws Exception {
-        System.out.println("===== StandardProtobufDecoder.adaptMailDeleteRequest() 被调用，body.length=" + body.length + " =====");
-        com.dnfm.mina.protobuf.generated.MailDeleteRequest newRequest = 
-            com.dnfm.mina.protobuf.generated.MailDeleteRequest.parseFrom(body);
-        
-        // 简化实现，返回null
-        return null;
-    }
-
-    private Message adaptMailItemAllGetRequest(byte[] body) throws Exception {
-        System.out.println("===== StandardProtobufDecoder.adaptMailItemAllGetRequest() 被调用，body.length=" + body.length + " =====");
-        com.dnfm.mina.protobuf.generated.MailItemAllGetRequest newRequest = 
-            com.dnfm.mina.protobuf.generated.MailItemAllGetRequest.parseFrom(body);
-        
-        // 简化实现，返回null
-        return null;
-    }
-
-    private Message adaptMailAllDeleteRequest(byte[] body) throws Exception {
-        System.out.println("===== StandardProtobufDecoder.adaptMailAllDeleteRequest() 被调用，body.length=" + body.length + " =====");
-        com.dnfm.mina.protobuf.generated.MailAllDeleteRequest newRequest = 
-            com.dnfm.mina.protobuf.generated.MailAllDeleteRequest.parseFrom(body);
-        
-        // 简化实现，返回null
-        return null;
-    }
-
     private Message adaptTownChatRequest(byte[] body) throws Exception {
         System.out.println("===== StandardProtobufDecoder.adaptTownChatRequest() 被调用，body.length=" + body.length + " =====");
         com.dnfm.mina.protobuf.generated.TownChatRequest newRequest = 
@@ -1407,6 +1332,24 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
         System.out.println("===== StandardProtobufDecoder.adaptChatFrameTabListRequest() 被调用，body.length=" + body.length + " =====");
         com.dnfm.mina.protobuf.generated.ChatFrameTabListRequest newRequest = 
             com.dnfm.mina.protobuf.generated.ChatFrameTabListRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptStreamDataRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptStreamDataRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.StreamDataRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.StreamDataRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptUserInfoRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptUserInfoRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.UserInfo newRequest = 
+            com.dnfm.mina.protobuf.generated.UserInfo.parseFrom(body);
         
         // 简化实现，返回null
         return null;
