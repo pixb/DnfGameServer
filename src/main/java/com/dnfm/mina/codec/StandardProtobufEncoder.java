@@ -180,6 +180,7 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
             case 21002:
                 return adaptFriendDeleteResponse(msg);
             case 21003:
+                return adaptFriendMessageResponse(msg);
             case 21004:
                 return adaptFriendRequestListResponse(msg);
             case 21005:
@@ -187,8 +188,34 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
             case 21006:
                 return adaptFriendRequestRejectResponse(msg);
             case 21007:
-                return adaptFriendBlacklistResponse(msg);
-                return adaptFriendMessageResponse(msg);
+            case 15001:
+                return adaptMailListResponse(msg);
+            case 15002:
+                return adaptMailGetResponse(msg);
+            case 15003:
+                return adaptMailReadResponse(msg);
+            case 15004:
+                return adaptMailDeleteResponse(msg);
+            case 15005:
+                return adaptMailItemAllGetResponse(msg);
+            case 15006:
+                return adaptMailAllDeleteResponse(msg);
+            case 10105:
+                return adaptTownChatResponse(msg);
+            case 13037:
+                return adaptQuickChattingResponse(msg);
+            case 27017:
+                return adaptLoadGuildChatResponse(msg);
+            case 10131:
+                return adaptHiddenChattingLoadResponse(msg);
+            case 10129:
+                return adaptHiddenChattingAddResponse(msg);
+            case 10130:
+                return adaptHiddenChattingDeleteResponse(msg);
+            case 10128:
+                return adaptChatChannelListResponse(msg);
+            case 14093:
+                return adaptChatFrameTabListResponse(msg);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -2254,6 +2281,205 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         builder.setOperation(1);
         builder.setSuccess(true);
         builder.setMessage("Blacklist operation completed successfully");
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptMailListResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptMailListResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.MailListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.MailListResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setPage(1);
+        builder.setTotalCount(10);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptMailGetResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptMailGetResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.MailGetResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.MailGetResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptMailReadResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptMailReadResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.MailReadResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.MailReadResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setGuid(1L);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptMailDeleteResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptMailDeleteResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.MailDeleteResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.MailDeleteResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setGuid(1L);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptMailItemAllGetResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptMailItemAllGetResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.MailItemAllGetResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.MailItemAllGetResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setTotalCount(5);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptMailAllDeleteResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptMailAllDeleteResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.MailAllDeleteResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.MailAllDeleteResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setType(1);
+        builder.setDeletedCount(10);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptTownChatResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptTownChatResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.TownChatResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.TownChatResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptQuickChattingResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptQuickChattingResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.QuickChattingResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.QuickChattingResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptLoadGuildChatResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptLoadGuildChatResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.LoadGuildChatResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.LoadGuildChatResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setTotalCount(5);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptHiddenChattingLoadResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptHiddenChattingLoadResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.HiddenChattingLoadResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.HiddenChattingLoadResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setTotalCount(3);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptHiddenChattingAddResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptHiddenChattingAddResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.HiddenChattingAddResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.HiddenChattingAddResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptHiddenChattingDeleteResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptHiddenChattingDeleteResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.HiddenChattingDeleteResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.HiddenChattingDeleteResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setSuccess(true);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptChatChannelListResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptChatChannelListResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.ChatChannelListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.ChatChannelListResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
+        builder.setTotalCount(10);
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptChatFrameTabListResponse(Message msg) throws Exception {
+        // 简化实现
+        System.out.println("===== StandardProtobufEncoder.adaptChatFrameTabListResponse() 被调用 =====");
+        
+        com.dnfm.mina.protobuf.generated.ChatFrameTabListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.ChatFrameTabListResponse.newBuilder();
+        
+        // 简化实现，只设置默认值
+        builder.setError(0);
         
         return builder.build().toByteArray();
     }

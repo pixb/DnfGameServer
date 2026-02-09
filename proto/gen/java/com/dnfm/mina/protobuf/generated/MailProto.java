@@ -27,6 +27,21 @@ public final class MailProto extends com.google.protobuf.GeneratedFile {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_MailListRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_MailListRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_MailInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_MailInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_MailListResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_MailListResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dnf_v1_SelectedItem_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -36,86 +51,6 @@ public final class MailProto extends com.google.protobuf.GeneratedFile {
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_PostPackage_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_Stackable_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_Stackable_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_AvatarItem_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_AvatarItem_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_Creature_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_Creature_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_Artifact_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_Artifact_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_SkinItem_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_SkinItem_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_ItemTimebox_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_ItemTimebox_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_Items_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_Items_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_ItemRewardInfo_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_ItemRewardInfo_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_CurrencyRewardInfo_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_CurrencyRewardInfo_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_TicketRewardInfo_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_TicketRewardInfo_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_PostalRewardInfo_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_PostalRewardInfo_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_ContentsRewardInfo_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_ContentsRewardInfo_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_MailDistributionItems_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_MailDistributionItems_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_PostAllList_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_PostAllList_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_MailListRequest_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_MailListRequest_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_MailListResponse_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_MailListResponse_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dnf_v1_MailGetRequest_descriptor;
   static final 
@@ -166,16 +101,6 @@ public final class MailProto extends com.google.protobuf.GeneratedFile {
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_MailAllDeleteResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_MailDistributeAccountToCharacterRequest_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_MailDistributeAccountToCharacterRequest_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_MailDistributeAccountToCharacterResponse_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_MailDistributeAccountToCharacterResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -185,296 +110,148 @@ public final class MailProto extends com.google.protobuf.GeneratedFile {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\021dnf/v1/mail.proto\022\006dnf.v1\032\023dnf/v1/comm" +
-      "on.proto\"l\n\014SelectedItem\022\024\n\005index\030\001 \001(\005R" +
-      "\005index\022\024\n\005count\030\002 \001(\005R\005count\022\022\n\004guid\030\003 \001" +
-      "(\004R\004guid\022\034\n\tslotindex\030\004 \001(\005R\tslotindex\"W" +
-      "\n\013PostPackage\022\024\n\005value\030\001 \001(\005R\005value\022\024\n\005i" +
-      "ndex\030\002 \001(\005R\005index\022\034\n\tslotindex\030\003 \001(\005R\tsl" +
-      "otindex\"K\n\tStackable\022\024\n\005index\030\001 \001(\005R\005ind" +
-      "ex\022\024\n\005count\030\002 \001(\005R\005count\022\022\n\004bind\030\003 \001(\010R\004" +
-      "bind\"=\n\nAvatarItem\022\033\n\tavatar_id\030\001 \001(\005R\010a" +
-      "vatarId\022\022\n\004guid\030\002 \001(\003R\004guid\"?\n\010Creature\022" +
-      "\037\n\013creature_id\030\001 \001(\005R\ncreatureId\022\022\n\004guid" +
-      "\030\002 \001(\003R\004guid\"?\n\010Artifact\022\037\n\013artifact_id\030" +
-      "\001 \001(\005R\nartifactId\022\022\n\004guid\030\002 \001(\003R\004guid\"7\n" +
-      "\010SkinItem\022\027\n\007skin_id\030\001 \001(\005R\006skinId\022\022\n\004gu" +
-      "id\030\002 \001(\003R\004guid\"i\n\013ItemTimebox\022\024\n\005index\030\001" +
-      " \001(\005R\005index\022\024\n\005group\030\002 \001(\005R\005group\022\022\n\004gui" +
-      "d\030\003 \001(\004R\004guid\022\032\n\010opentime\030\004 \001(\003R\010opentim" +
-      "e\"\373\004\n\005Items\022-\n\nequipitems\030\001 \003(\0132\r.dnf.v1" +
-      ".EquipR\nequipitems\0227\n\rmaterialitems\030\002 \003(" +
-      "\0132\021.dnf.v1.StackableR\rmaterialitems\0225\n\014c" +
-      "onsumeitems\030\003 \003(\0132\021.dnf.v1.StackableR\014co" +
-      "nsumeitems\0223\n\013emblemitems\030\004 \003(\0132\021.dnf.v1" +
-      ".StackableR\013emblemitems\022/\n\tcarditems\030\005 \003" +
-      "(\0132\021.dnf.v1.StackableR\tcarditems\0221\n\ncrac" +
-      "kitems\030\006 \003(\0132\021.dnf.v1.StackableR\ncrackit" +
-      "ems\0227\n\rbookmarkitems\030\007 \003(\0132\021.dnf.v1.Stac" +
-      "kableR\rbookmarkitems\0228\n\016cartifactitems\030\010" +
-      " \003(\0132\020.dnf.v1.ArtifactR\016cartifactitems\0226" +
-      "\n\rcreatureitems\030\t \003(\0132\020.dnf.v1.CreatureR" +
-      "\rcreatureitems\0224\n\013avataritems\030\n \003(\0132\022.dn" +
-      "f.v1.AvatarItemR\013avataritems\022-\n\007timebox\030" +
-      "\013 \003(\0132\023.dnf.v1.ItemTimeboxR\007timebox\022\024\n\005i" +
-      "ndex\030\014 \001(\005R\005index\022\024\n\005count\030\r \001(\005R\005count\"" +
-      "=\n\016ItemRewardInfo\022+\n\tinventory\030\001 \001(\0132\r.d" +
-      "nf.v1.ItemsR\tinventory\"V\n\022CurrencyReward" +
-      "Info\022\022\n\004gold\030\001 \001(\005R\004gold\022\030\n\007diamond\030\002 \001(" +
-      "\005R\007diamond\022\022\n\004cera\030\003 \001(\005R\004cera\"*\n\020Ticket" +
-      "RewardInfo\022\026\n\006ticket\030\001 \003(\005R\006ticket\"*\n\020Po" +
-      "stalRewardInfo\022\026\n\006postal\030\001 \003(\005R\006postal\"\344" +
-      "\002\n\022ContentsRewardInfo\022,\n\005items\030\001 \001(\0132\026.d" +
-      "nf.v1.ItemRewardInfoR\005items\0226\n\010currency\030" +
-      "\002 \001(\0132\032.dnf.v1.CurrencyRewardInfoR\010curre" +
-      "ncy\022D\n\017paymentcurrency\030\003 \001(\0132\032.dnf.v1.Cu" +
-      "rrencyRewardInfoR\017paymentcurrency\0220\n\006tic" +
-      "ket\030\004 \001(\0132\030.dnf.v1.TicketRewardInfoR\006tic" +
-      "ket\0220\n\006postal\030\005 \001(\0132\030.dnf.v1.PostalRewar" +
-      "dInfoR\006postal\022>\n\raccountpostal\030\006 \001(\0132\030.d" +
-      "nf.v1.PostalRewardInfoR\raccountpostal\"\264\001" +
-      "\n\025MailDistributionItems\022\036\n\npostalguid\030\001 " +
-      "\001(\004R\npostalguid\022:\n\rselecteditems\030\002 \003(\0132\024" +
-      ".dnf.v1.SelectedItemR\rselecteditems\022?\n\020s" +
-      "electedpackages\030\003 \003(\0132\023.dnf.v1.PostPacka" +
-      "geR\020selectedpackages\"\343\001\n\013PostAllList\022\024\n\005" +
-      "index\030\017 \001(\005R\005index\022\024\n\005count\030\020 \001(\005R\005count" +
-      "\022\022\n\004guid\030\021 \001(\004R\004guid\022\024\n\005title\030\022 \001(\tR\005tit" +
-      "le\022\020\n\003msg\030\023 \001(\tR\003msg\022\036\n\nexpiretime\030\024 \001(\003" +
-      "R\nexpiretime\022\022\n\004read\030\027 \001(\010R\004read\022\030\n\007rece" +
-      "ive\030\030 \001(\010R\007receive\022\036\n\nimportance\030\036 \001(\005R\n" +
-      "importance\"9\n\017MailListRequest\022\022\n\004page\030\001 " +
-      "\001(\005R\004page\022\022\n\004type\030\002 \001(\005R\004type\"\207\001\n\020MailLi" +
-      "stResponse\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005coun" +
-      "t\030\002 \001(\005R\005count\0223\n\npostallist\030\003 \003(\0132\023.dnf" +
-      ".v1.PostAllListR\npostallist\022\022\n\004type\030\004 \001(" +
-      "\005R\004type\"\265\001\n\016MailGetRequest\022\022\n\004type\030\001 \001(\005" +
-      "R\004type\022\022\n\004guid\030\002 \001(\004R\004guid\022:\n\rselectedit" +
-      "ems\030\003 \003(\0132\024.dnf.v1.SelectedItemR\rselecte" +
-      "ditems\022?\n\020selectedpackages\030\004 \003(\0132\023.dnf.v" +
-      "1.PostPackageR\020selectedpackages\"\230\002\n\017Mail" +
-      "GetResponse\022\024\n\005error\030\001 \001(\005R\005error\022\022\n\004gui" +
-      "d\030\002 \001(\004R\004guid\022\024\n\005limit\030\003 \001(\010R\005limit\022\022\n\004t" +
-      "ype\030\004 \001(\005R\004type\022:\n\rremaineditems\030\005 \003(\0132\024" +
-      ".dnf.v1.SelectedItemR\rremaineditems\022?\n\020r" +
-      "emainedpackages\030\006 \003(\0132\023.dnf.v1.PostPacka" +
-      "geR\020remainedpackages\0224\n\007rewards\030\007 \001(\0132\032." +
-      "dnf.v1.ContentsRewardInfoR\007rewards\"9\n\017Ma" +
-      "ilReadRequest\022\022\n\004guid\030\001 \001(\004R\004guid\022\022\n\004typ" +
-      "e\030\002 \001(\005R\004type\"P\n\020MailReadResponse\022\024\n\005err" +
-      "or\030\001 \001(\005R\005error\022\022\n\004guid\030\002 \001(\004R\004guid\022\022\n\004t" +
-      "ype\030\003 \001(\005R\004type\";\n\021MailDeleteRequest\022\022\n\004" +
-      "guid\030\001 \001(\004R\004guid\022\022\n\004type\030\002 \001(\005R\004type\"R\n\022" +
-      "MailDeleteResponse\022\024\n\005error\030\001 \001(\005R\005error" +
-      "\022\022\n\004guid\030\002 \001(\004R\004guid\022\022\n\004type\030\003 \001(\005R\004type" +
-      "\"+\n\025MailItemAllGetRequest\022\022\n\004type\030\001 \001(\005R" +
-      "\004type\"\320\001\n\026MailItemAllGetResponse\022\024\n\005erro" +
-      "r\030\001 \001(\005R\005error\022\022\n\004page\030\002 \001(\005R\004page\022\030\n\007ma" +
-      "xpage\030\003 \001(\005R\007maxpage\022\024\n\005limit\030\004 \001(\010R\005lim" +
-      "it\022\022\n\004type\030\005 \001(\005R\004type\022\022\n\004bind\030\006 \001(\010R\004bi" +
-      "nd\0224\n\007rewards\030\007 \001(\0132\032.dnf.v1.ContentsRew" +
-      "ardInfoR\007rewards\"*\n\024MailAllDeleteRequest" +
-      "\022\022\n\004type\030\001 \001(\005R\004type\"c\n\025MailAllDeleteRes" +
-      "ponse\022\024\n\005error\030\001 \001(\005R\005error\022\022\n\004type\030\002 \001(" +
-      "\005R\004type\022 \n\013removecount\030\003 \001(\005R\013removecoun" +
-      "t\"\220\001\n\'MailDistributeAccountToCharacterRe" +
-      "quest\022\032\n\010charguid\030\001 \001(\004R\010charguid\022I\n\020dis" +
-      "tributedmails\030\002 \003(\0132\035.dnf.v1.MailDistrib" +
-      "utionItemsR\020distributedmails\"@\n(MailDist" +
-      "ributeAccountToCharacterResponse\022\024\n\005erro" +
-      "r\030\001 \001(\005R\005errorB\244\001\n com.dnfm.mina.protobu" +
-      "f.generatedB\tMailProtoP\001Z<github.com/pix" +
-      "b/DnfGameServer/dnf-go-client/gen/dnf/v1" +
-      ";dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\" +
-      "GPBMetadata\352\002\007Dnf::V1b\006proto3"
+      "\n\021dnf/v1/mail.proto\022\006dnf.v1\"9\n\017MailListR" +
+      "equest\022\022\n\004page\030\001 \001(\005R\004page\022\022\n\004type\030\002 \001(\005" +
+      "R\004type\"\370\001\n\010MailInfo\022\022\n\004guid\030\001 \001(\004R\004guid\022" +
+      "\024\n\005title\030\002 \001(\tR\005title\022\030\n\007content\030\003 \001(\tR\007" +
+      "content\022\022\n\004type\030\004 \001(\005R\004type\022\026\n\006status\030\005 " +
+      "\001(\005R\006status\022\033\n\tsend_time\030\006 \001(\003R\010sendTime" +
+      "\022\037\n\013expire_time\030\007 \001(\003R\nexpireTime\022%\n\016has" +
+      "_attachment\030\010 \001(\010R\rhasAttachment\022\027\n\007is_r" +
+      "ead\030\t \001(\010R\006isRead\"\205\001\n\020MailListResponse\022\024" +
+      "\n\005error\030\001 \001(\005R\005error\022&\n\005mails\030\002 \003(\0132\020.dn" +
+      "f.v1.MailInfoR\005mails\022\037\n\013total_count\030\003 \001(" +
+      "\005R\ntotalCount\022\022\n\004page\030\004 \001(\005R\004page\"8\n\014Sel" +
+      "ectedItem\022\022\n\004guid\030\001 \001(\004R\004guid\022\024\n\005count\030\002" +
+      " \001(\005R\005count\"7\n\013PostPackage\022\022\n\004guid\030\001 \001(\004" +
+      "R\004guid\022\024\n\005count\030\002 \001(\005R\005count\"\267\001\n\016MailGet" +
+      "Request\022\022\n\004type\030\001 \001(\005R\004type\022\022\n\004guid\030\002 \001(" +
+      "\004R\004guid\022;\n\016selected_items\030\003 \003(\0132\024.dnf.v1" +
+      ".SelectedItemR\rselectedItems\022@\n\021selected" +
+      "_packages\030\004 \003(\0132\023.dnf.v1.PostPackageR\020se" +
+      "lectedPackages\"\252\001\n\017MailGetResponse\022\024\n\005er" +
+      "ror\030\001 \001(\005R\005error\022$\n\004mail\030\002 \001(\0132\020.dnf.v1." +
+      "MailInfoR\004mail\022*\n\005items\030\003 \003(\0132\024.dnf.v1.S" +
+      "electedItemR\005items\022/\n\010packages\030\004 \003(\0132\023.d" +
+      "nf.v1.PostPackageR\010packages\"9\n\017MailReadR" +
+      "equest\022\022\n\004guid\030\001 \001(\004R\004guid\022\022\n\004type\030\002 \001(\005" +
+      "R\004type\"V\n\020MailReadResponse\022\024\n\005error\030\001 \001(" +
+      "\005R\005error\022\022\n\004guid\030\002 \001(\004R\004guid\022\030\n\007success\030" +
+      "\003 \001(\010R\007success\";\n\021MailDeleteRequest\022\022\n\004g" +
+      "uid\030\001 \001(\004R\004guid\022\022\n\004type\030\002 \001(\005R\004type\"X\n\022M" +
+      "ailDeleteResponse\022\024\n\005error\030\001 \001(\005R\005error\022" +
+      "\022\n\004guid\030\002 \001(\004R\004guid\022\030\n\007success\030\003 \001(\010R\007su" +
+      "ccess\"+\n\025MailItemAllGetRequest\022\022\n\004type\030\001" +
+      " \001(\005R\004type\"\254\001\n\026MailItemAllGetResponse\022\024\n" +
+      "\005error\030\001 \001(\005R\005error\022*\n\005items\030\002 \003(\0132\024.dnf" +
+      ".v1.SelectedItemR\005items\022/\n\010packages\030\003 \003(" +
+      "\0132\023.dnf.v1.PostPackageR\010packages\022\037\n\013tota" +
+      "l_count\030\004 \001(\005R\ntotalCount\"*\n\024MailAllDele" +
+      "teRequest\022\022\n\004type\030\001 \001(\005R\004type\"\200\001\n\025MailAl" +
+      "lDeleteResponse\022\024\n\005error\030\001 \001(\005R\005error\022\022\n" +
+      "\004type\030\002 \001(\005R\004type\022#\n\rdeleted_count\030\003 \001(\005" +
+      "R\014deletedCount\022\030\n\007success\030\004 \001(\010R\007success" +
+      "B\244\001\n com.dnfm.mina.protobuf.generatedB\tM" +
+      "ailProtoP\001Z<github.com/pixb/DnfGameServe" +
+      "r/dnf-go-client/gen/dnf/v1;dnfv1\242\002\003DXX\252\002" +
+      "\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007" +
+      "Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor(),
         });
-    internal_static_dnf_v1_SelectedItem_descriptor =
-      getDescriptor().getMessageType(0);
-    internal_static_dnf_v1_SelectedItem_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_SelectedItem_descriptor,
-        new java.lang.String[] { "Index", "Count", "Guid", "Slotindex", });
-    internal_static_dnf_v1_PostPackage_descriptor =
-      getDescriptor().getMessageType(1);
-    internal_static_dnf_v1_PostPackage_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_PostPackage_descriptor,
-        new java.lang.String[] { "Value", "Index", "Slotindex", });
-    internal_static_dnf_v1_Stackable_descriptor =
-      getDescriptor().getMessageType(2);
-    internal_static_dnf_v1_Stackable_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_Stackable_descriptor,
-        new java.lang.String[] { "Index", "Count", "Bind", });
-    internal_static_dnf_v1_AvatarItem_descriptor =
-      getDescriptor().getMessageType(3);
-    internal_static_dnf_v1_AvatarItem_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_AvatarItem_descriptor,
-        new java.lang.String[] { "AvatarId", "Guid", });
-    internal_static_dnf_v1_Creature_descriptor =
-      getDescriptor().getMessageType(4);
-    internal_static_dnf_v1_Creature_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_Creature_descriptor,
-        new java.lang.String[] { "CreatureId", "Guid", });
-    internal_static_dnf_v1_Artifact_descriptor =
-      getDescriptor().getMessageType(5);
-    internal_static_dnf_v1_Artifact_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_Artifact_descriptor,
-        new java.lang.String[] { "ArtifactId", "Guid", });
-    internal_static_dnf_v1_SkinItem_descriptor =
-      getDescriptor().getMessageType(6);
-    internal_static_dnf_v1_SkinItem_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_SkinItem_descriptor,
-        new java.lang.String[] { "SkinId", "Guid", });
-    internal_static_dnf_v1_ItemTimebox_descriptor =
-      getDescriptor().getMessageType(7);
-    internal_static_dnf_v1_ItemTimebox_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_ItemTimebox_descriptor,
-        new java.lang.String[] { "Index", "Group", "Guid", "Opentime", });
-    internal_static_dnf_v1_Items_descriptor =
-      getDescriptor().getMessageType(8);
-    internal_static_dnf_v1_Items_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_Items_descriptor,
-        new java.lang.String[] { "Equipitems", "Materialitems", "Consumeitems", "Emblemitems", "Carditems", "Crackitems", "Bookmarkitems", "Cartifactitems", "Creatureitems", "Avataritems", "Timebox", "Index", "Count", });
-    internal_static_dnf_v1_ItemRewardInfo_descriptor =
-      getDescriptor().getMessageType(9);
-    internal_static_dnf_v1_ItemRewardInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_ItemRewardInfo_descriptor,
-        new java.lang.String[] { "Inventory", });
-    internal_static_dnf_v1_CurrencyRewardInfo_descriptor =
-      getDescriptor().getMessageType(10);
-    internal_static_dnf_v1_CurrencyRewardInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_CurrencyRewardInfo_descriptor,
-        new java.lang.String[] { "Gold", "Diamond", "Cera", });
-    internal_static_dnf_v1_TicketRewardInfo_descriptor =
-      getDescriptor().getMessageType(11);
-    internal_static_dnf_v1_TicketRewardInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_TicketRewardInfo_descriptor,
-        new java.lang.String[] { "Ticket", });
-    internal_static_dnf_v1_PostalRewardInfo_descriptor =
-      getDescriptor().getMessageType(12);
-    internal_static_dnf_v1_PostalRewardInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_PostalRewardInfo_descriptor,
-        new java.lang.String[] { "Postal", });
-    internal_static_dnf_v1_ContentsRewardInfo_descriptor =
-      getDescriptor().getMessageType(13);
-    internal_static_dnf_v1_ContentsRewardInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_ContentsRewardInfo_descriptor,
-        new java.lang.String[] { "Items", "Currency", "Paymentcurrency", "Ticket", "Postal", "Accountpostal", });
-    internal_static_dnf_v1_MailDistributionItems_descriptor =
-      getDescriptor().getMessageType(14);
-    internal_static_dnf_v1_MailDistributionItems_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_MailDistributionItems_descriptor,
-        new java.lang.String[] { "Postalguid", "Selecteditems", "Selectedpackages", });
-    internal_static_dnf_v1_PostAllList_descriptor =
-      getDescriptor().getMessageType(15);
-    internal_static_dnf_v1_PostAllList_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_PostAllList_descriptor,
-        new java.lang.String[] { "Index", "Count", "Guid", "Title", "Msg", "Expiretime", "Read", "Receive", "Importance", });
     internal_static_dnf_v1_MailListRequest_descriptor =
-      getDescriptor().getMessageType(16);
+      getDescriptor().getMessageType(0);
     internal_static_dnf_v1_MailListRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailListRequest_descriptor,
         new java.lang.String[] { "Page", "Type", });
+    internal_static_dnf_v1_MailInfo_descriptor =
+      getDescriptor().getMessageType(1);
+    internal_static_dnf_v1_MailInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_MailInfo_descriptor,
+        new java.lang.String[] { "Guid", "Title", "Content", "Type", "Status", "SendTime", "ExpireTime", "HasAttachment", "IsRead", });
     internal_static_dnf_v1_MailListResponse_descriptor =
-      getDescriptor().getMessageType(17);
+      getDescriptor().getMessageType(2);
     internal_static_dnf_v1_MailListResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailListResponse_descriptor,
-        new java.lang.String[] { "Error", "Count", "Postallist", "Type", });
+        new java.lang.String[] { "Error", "Mails", "TotalCount", "Page", });
+    internal_static_dnf_v1_SelectedItem_descriptor =
+      getDescriptor().getMessageType(3);
+    internal_static_dnf_v1_SelectedItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SelectedItem_descriptor,
+        new java.lang.String[] { "Guid", "Count", });
+    internal_static_dnf_v1_PostPackage_descriptor =
+      getDescriptor().getMessageType(4);
+    internal_static_dnf_v1_PostPackage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PostPackage_descriptor,
+        new java.lang.String[] { "Guid", "Count", });
     internal_static_dnf_v1_MailGetRequest_descriptor =
-      getDescriptor().getMessageType(18);
+      getDescriptor().getMessageType(5);
     internal_static_dnf_v1_MailGetRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailGetRequest_descriptor,
-        new java.lang.String[] { "Type", "Guid", "Selecteditems", "Selectedpackages", });
+        new java.lang.String[] { "Type", "Guid", "SelectedItems", "SelectedPackages", });
     internal_static_dnf_v1_MailGetResponse_descriptor =
-      getDescriptor().getMessageType(19);
+      getDescriptor().getMessageType(6);
     internal_static_dnf_v1_MailGetResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailGetResponse_descriptor,
-        new java.lang.String[] { "Error", "Guid", "Limit", "Type", "Remaineditems", "Remainedpackages", "Rewards", });
+        new java.lang.String[] { "Error", "Mail", "Items", "Packages", });
     internal_static_dnf_v1_MailReadRequest_descriptor =
-      getDescriptor().getMessageType(20);
+      getDescriptor().getMessageType(7);
     internal_static_dnf_v1_MailReadRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailReadRequest_descriptor,
         new java.lang.String[] { "Guid", "Type", });
     internal_static_dnf_v1_MailReadResponse_descriptor =
-      getDescriptor().getMessageType(21);
+      getDescriptor().getMessageType(8);
     internal_static_dnf_v1_MailReadResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailReadResponse_descriptor,
-        new java.lang.String[] { "Error", "Guid", "Type", });
+        new java.lang.String[] { "Error", "Guid", "Success", });
     internal_static_dnf_v1_MailDeleteRequest_descriptor =
-      getDescriptor().getMessageType(22);
+      getDescriptor().getMessageType(9);
     internal_static_dnf_v1_MailDeleteRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailDeleteRequest_descriptor,
         new java.lang.String[] { "Guid", "Type", });
     internal_static_dnf_v1_MailDeleteResponse_descriptor =
-      getDescriptor().getMessageType(23);
+      getDescriptor().getMessageType(10);
     internal_static_dnf_v1_MailDeleteResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailDeleteResponse_descriptor,
-        new java.lang.String[] { "Error", "Guid", "Type", });
+        new java.lang.String[] { "Error", "Guid", "Success", });
     internal_static_dnf_v1_MailItemAllGetRequest_descriptor =
-      getDescriptor().getMessageType(24);
+      getDescriptor().getMessageType(11);
     internal_static_dnf_v1_MailItemAllGetRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailItemAllGetRequest_descriptor,
         new java.lang.String[] { "Type", });
     internal_static_dnf_v1_MailItemAllGetResponse_descriptor =
-      getDescriptor().getMessageType(25);
+      getDescriptor().getMessageType(12);
     internal_static_dnf_v1_MailItemAllGetResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailItemAllGetResponse_descriptor,
-        new java.lang.String[] { "Error", "Page", "Maxpage", "Limit", "Type", "Bind", "Rewards", });
+        new java.lang.String[] { "Error", "Items", "Packages", "TotalCount", });
     internal_static_dnf_v1_MailAllDeleteRequest_descriptor =
-      getDescriptor().getMessageType(26);
+      getDescriptor().getMessageType(13);
     internal_static_dnf_v1_MailAllDeleteRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailAllDeleteRequest_descriptor,
         new java.lang.String[] { "Type", });
     internal_static_dnf_v1_MailAllDeleteResponse_descriptor =
-      getDescriptor().getMessageType(27);
+      getDescriptor().getMessageType(14);
     internal_static_dnf_v1_MailAllDeleteResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailAllDeleteResponse_descriptor,
-        new java.lang.String[] { "Error", "Type", "Removecount", });
-    internal_static_dnf_v1_MailDistributeAccountToCharacterRequest_descriptor =
-      getDescriptor().getMessageType(28);
-    internal_static_dnf_v1_MailDistributeAccountToCharacterRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_MailDistributeAccountToCharacterRequest_descriptor,
-        new java.lang.String[] { "Charguid", "Distributedmails", });
-    internal_static_dnf_v1_MailDistributeAccountToCharacterResponse_descriptor =
-      getDescriptor().getMessageType(29);
-    internal_static_dnf_v1_MailDistributeAccountToCharacterResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_MailDistributeAccountToCharacterResponse_descriptor,
-        new java.lang.String[] { "Error", });
+        new java.lang.String[] { "Error", "Type", "DeletedCount", "Success", });
     descriptor.resolveAllFeaturesImmutable();
-    com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

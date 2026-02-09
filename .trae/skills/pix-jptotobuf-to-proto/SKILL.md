@@ -302,6 +302,21 @@ pix-jptotobuf-to-proto 会提供：
   - Go单元测试10个测试用例全部通过
   - Java编译成功，无错误
 
+### 批次19: FRIEND (续) (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_FRIEND_REQUEST_LIST.java, REQ_FRIEND_REQUEST_ACCEPT.java, REQ_FRIEND_REQUEST_REJECT.java, REQ_FRIEND_BLACKLIST.java
+- **状态**: ✅ 完成
+- **文档**: [批次19文档](../../devdoc/protobuf/batch_19/)
+- **成果**: 
+  - 成功迁移好友请求列表、好友请求接受、好友请求拒绝、好友黑名单消息
+  - 新增friend_ext.proto文件定义好友扩展相关消息
+  - 定义了好友扩展相关数据结构（FriendRequestInfo, BlacklistInfo等）
+  - 扩展了StandardProtobufDecoder和StandardProtobufEncoder支持好友扩展模块
+  - 实现了好友扩展相关消息的编解码支持
+  - 验证了跨语言通信正确性
+  - Go单元测试10个测试用例全部通过
+  - Java编译成功，无错误
+
 ## 🌟 功能实现
 
 ### 核心功能

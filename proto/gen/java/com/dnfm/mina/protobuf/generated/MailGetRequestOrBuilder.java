@@ -11,62 +11,110 @@ public interface MailGetRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * 邮件类型
+   * </pre>
+   *
    * <code>int32 type = 1 [json_name = "type"];</code>
    * @return The type.
    */
   int getType();
 
   /**
+   * <pre>
+   * 邮件GUID
+   * </pre>
+   *
    * <code>uint64 guid = 2 [json_name = "guid"];</code>
    * @return The guid.
    */
   long getGuid();
 
   /**
-   * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+   * <pre>
+   * 选中的物品
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
    */
   java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> 
-      getSelecteditemsList();
+      getSelectedItemsList();
   /**
-   * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+   * <pre>
+   * 选中的物品
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
    */
-  com.dnfm.mina.protobuf.generated.SelectedItem getSelecteditems(int index);
+  com.dnfm.mina.protobuf.generated.SelectedItem getSelectedItems(int index);
   /**
-   * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+   * <pre>
+   * 选中的物品
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
    */
-  int getSelecteditemsCount();
+  int getSelectedItemsCount();
   /**
-   * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+   * <pre>
+   * 选中的物品
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
    */
   java.util.List<? extends com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder> 
-      getSelecteditemsOrBuilderList();
+      getSelectedItemsOrBuilderList();
   /**
-   * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+   * <pre>
+   * 选中的物品
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
    */
-  com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder getSelecteditemsOrBuilder(
+  com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder getSelectedItemsOrBuilder(
       int index);
 
   /**
-   * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+   * <pre>
+   * 选中的包裹
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
    */
   java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> 
-      getSelectedpackagesList();
+      getSelectedPackagesList();
   /**
-   * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+   * <pre>
+   * 选中的包裹
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
    */
-  com.dnfm.mina.protobuf.generated.PostPackage getSelectedpackages(int index);
+  com.dnfm.mina.protobuf.generated.PostPackage getSelectedPackages(int index);
   /**
-   * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+   * <pre>
+   * 选中的包裹
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
    */
-  int getSelectedpackagesCount();
+  int getSelectedPackagesCount();
   /**
-   * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+   * <pre>
+   * 选中的包裹
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
    */
   java.util.List<? extends com.dnfm.mina.protobuf.generated.PostPackageOrBuilder> 
-      getSelectedpackagesOrBuilderList();
+      getSelectedPackagesOrBuilderList();
   /**
-   * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+   * <pre>
+   * 选中的包裹
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
    */
-  com.dnfm.mina.protobuf.generated.PostPackageOrBuilder getSelectedpackagesOrBuilder(
+  com.dnfm.mina.protobuf.generated.PostPackageOrBuilder getSelectedPackagesOrBuilder(
       int index);
 }

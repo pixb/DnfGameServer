@@ -1154,26 +1154,444 @@ func (s *APIV1Service) RemoveFriend(ctx context.Context, req *dnfv1.RemoveFriend
 	}, nil
 }
 func (s *APIV1Service) GetShopList(ctx context.Context, req *dnfv1.GetShopListRequest) (*dnfv1.GetShopListResponse, error) {
-	return &dnfv1.GetShopListResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	// 简化：根据商店类型返回固定商品
+	items := []*dnfv1.ShopItem{
+		{Slot: 1, ItemId: 1001, Price: 100, CurrencyType: 1, Stock: 999, Discount: 100},
+		{Slot: 2, ItemId: 1002, Price: 200, CurrencyType: 1, Stock: 999, Discount: 100},
+		{Slot: 3, ItemId: 1003, Price: 500, CurrencyType: 1, Stock: 100, Discount: 90},
+	}
+
+	return &dnfv1.GetShopListResponse{
+		Error:       0,
+		Items:       items,
+		RefreshTime: 3600,
+	}, nil
 }
+
+// BuyItem 购买商城物品
 func (s *APIV1Service) BuyItem(ctx context.Context, req *dnfv1.BuyItemRequest) (*dnfv1.BuyItemResponse, error) {
-	return &dnfv1.BuyItemResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	roleID := claims.UserID
+
+	// 根据slot计算物品ID和价格
+	itemID := int32(req.Slot*100 + 100)
+	price := int64(itemID * 10)
+
+	// 获取角色货币
+	currency, err := s.Store.GetRoleCurrency(ctx, roleID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get currency: %v", err)
+	}
+
+	totalPrice := price * int64(req.Count)
+
+	// 检查金币是否足够
+	if currency.Gold < totalPrice {
+		return &dnfv1.BuyItemResponse{Error: 3}, nil
+	}
+
+	// 扣除金币
+	currency.Gold -= totalPrice
+	if err := s.Store.UpdateRoleCurrency(ctx, currency); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to update currency: %v", err)
+	}
+
+	// 创建物品
+	var newItems []*dnfv1.BagItem
+	for i := int32(0); i < req.Count; i++ {
+		newItem := &store.BagItem{
+			RoleID:       roleID,
+			ItemID:       itemID,
+			GridIndex:    int32(i),
+			Count:        1,
+			IsEquiped:    false,
+			BindType:     1,
+			Durability:   100,
+			EnhanceLevel: 0,
+			Attributes:   "",
+		}
+		bagItem, _ := s.Store.CreateBagItem(ctx, newItem)
+		newItems = append(newItems, &dnfv1.BagItem{
+			Guid:   bagItem.ID,
+			ItemId: uint32(bagItem.ItemID),
+			Count:  bagItem.Count,
+			Slot:   bagItem.GridIndex,
+		})
+	}
+
+	return &dnfv1.BuyItemResponse{
+		Error:    0,
+		NewItems: newItems,
+		Currency: &dnfv1.Currency{Gold: int32(currency.Gold), Cera: int32(currency.Coin)},
+	}, nil
 }
+
+// SellToShop 出售给商店
 func (s *APIV1Service) SellToShop(ctx context.Context, req *dnfv1.SellToShopRequest) (*dnfv1.SellToShopResponse, error) {
-	return &dnfv1.SellToShopResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	roleID := claims.UserID
+
+	// 获取物品
+	item, err := s.Store.GetBagItem(ctx, &store.FindBagItem{
+		FindBase: store.FindBase{ID: func() *uint64 { v := uint64(req.Guid); return &v }()},
+		RoleID:   &roleID,
+	})
+	if err != nil {
+		if err == store.ErrNotFound {
+			return &dnfv1.SellToShopResponse{Error: ErrCodeNotFound}, nil
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get item: %v", err)
+	}
+
+	// 检查数量
+	sellCount := req.Count
+	if item.Count < sellCount {
+		return &dnfv1.SellToShopResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	// 计算出售价格
+	sellPrice := int64(item.ItemID) * 10 * int64(sellCount)
+
+	// 删除或减少物品
+	newCount := item.Count - sellCount
+	if newCount <= 0 {
+		if err := s.Store.DeleteBagItem(ctx, &store.DeleteBagItem{ID: item.ID}); err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to delete item: %v", err)
+		}
+	} else {
+		if err := s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{ID: item.ID, Count: &newCount}); err != nil {
+			return nil, status.Errorf(codes.Internal, "failed to update item: %v", err)
+		}
+	}
+
+	// 增加金币
+	currency, err := s.Store.GetRoleCurrency(ctx, roleID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get currency: %v", err)
+	}
+	currency.Gold += sellPrice
+	if err := s.Store.UpdateRoleCurrency(ctx, currency); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to update currency: %v", err)
+	}
+
+	return &dnfv1.SellToShopResponse{
+		Error:        0,
+		GoldReceived: int32(sellPrice),
+	}, nil
 }
+
+// SearchAuction 搜索拍卖行
 func (s *APIV1Service) SearchAuction(ctx context.Context, req *dnfv1.SearchAuctionRequest) (*dnfv1.SearchAuctionResponse, error) {
-	return &dnfv1.SearchAuctionResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	// 构建查询条件
+	find := &store.FindAuctionItem{
+		Status: func() *store.AuctionStatus { s := store.AuctionStatusSelling; return &s }(),
+	}
+	if req.ItemId > 0 {
+		itemID := int32(req.ItemId)
+		find.ItemID = &itemID
+	}
+	if req.MaxPrice > 0 {
+		maxPrice := int64(req.MaxPrice)
+		find.MaxPrice = &maxPrice
+	}
+	if req.PageSize > 0 {
+		limit := int(req.PageSize)
+		find.Limit = &limit
+		offset := int(req.Page * req.PageSize)
+		find.Offset = &offset
+	}
+
+	// 查询
+	items, err := s.Store.ListAuctionItems(ctx, find)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to search auctions: %v", err)
+	}
+
+	// 转换为proto格式
+	var auctionItems []*dnfv1.AuctionItem
+	now := time.Now().Unix()
+	for _, item := range items {
+		timeLeft := int32(item.EndTime - now)
+		if timeLeft < 0 {
+			timeLeft = 0
+		}
+		auctionItems = append(auctionItems, &dnfv1.AuctionItem{
+			AuctionId:  int64(item.ID),
+			ItemId:     uint32(item.ItemID),
+			SellerName: item.SellerName,
+			Price:      int32(item.Price),
+			BidPrice:   int32(item.BidPrice),
+			TimeLeft:   timeLeft,
+		})
+	}
+
+	return &dnfv1.SearchAuctionResponse{
+		Error: 0,
+		Items: auctionItems,
+		Total: int32(len(auctionItems)),
+	}, nil
 }
+
+// RegisterAuction 上架拍卖
 func (s *APIV1Service) RegisterAuction(ctx context.Context, req *dnfv1.RegisterAuctionRequest) (*dnfv1.RegisterAuctionResponse, error) {
-	return &dnfv1.RegisterAuctionResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	roleID := claims.UserID
+
+	// 检查上架数量限制
+	count, err := s.Store.GetDriver().CountAuctionItemsBySeller(ctx, roleID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to count auctions: %v", err)
+	}
+	if count >= 10 {
+		return &dnfv1.RegisterAuctionResponse{Error: 10}, nil // 上架数量已达上限
+	}
+
+	// 获取物品
+	item, err := s.Store.GetBagItem(ctx, &store.FindBagItem{
+		FindBase: store.FindBase{ID: func() *uint64 { v := uint64(req.Guid); return &v }()},
+		RoleID:   &roleID,
+	})
+	if err != nil {
+		if err == store.ErrNotFound {
+			return &dnfv1.RegisterAuctionResponse{Error: ErrCodeNotFound}, nil
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get item: %v", err)
+	}
+
+	// 获取角色名称
+	role, err := s.Store.GetRole(ctx, &store.FindRole{FindBase: store.FindBase{ID: &roleID}})
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get role: %v", err)
+	}
+
+	// 检查数量
+	if item.Count < 1 {
+		return &dnfv1.RegisterAuctionResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	// 创建拍卖
+	auction := &store.AuctionItem{
+		SellerID:   roleID,
+		SellerName: role.Name,
+		ItemID:     item.ItemID,
+		Count:      1, // 简化：每次上架1个
+		Price:      int64(req.StartPrice),
+		TotalPrice: int64(req.StartPrice),
+		Duration:   req.Duration,
+		Status:     store.AuctionStatusSelling,
+		BidPrice:   int64(req.StartPrice),
+		BidCount:   0,
+		Attributes: item.Attributes,
+	}
+
+	auctionItem, err := s.Store.CreateAuctionItem(ctx, auction)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to create auction: %v", err)
+	}
+
+	// 删除背包中的物品
+	if err := s.Store.DeleteBagItem(ctx, &store.DeleteBagItem{ID: item.ID}); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to delete item: %v", err)
+	}
+
+	return &dnfv1.RegisterAuctionResponse{
+		Error:     0,
+		AuctionId: int64(auctionItem.ID),
+	}, nil
 }
+
+// BidAuction 竞拍
 func (s *APIV1Service) BidAuction(ctx context.Context, req *dnfv1.BidAuctionRequest) (*dnfv1.BidAuctionResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	roleID := claims.UserID
+
+	// 获取拍卖物品
+	auction, err := s.Store.GetAuctionItem(ctx, &store.FindAuctionItem{
+		FindBase: store.FindBase{ID: func() *uint64 { v := uint64(req.AuctionId); return &v }()},
+	})
+	if err != nil {
+		if err == store.ErrNotFound {
+			return &dnfv1.BidAuctionResponse{Error: ErrCodeNotFound}, nil
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get auction: %v", err)
+	}
+
+	// 检查状态
+	if auction.Status != store.AuctionStatusSelling {
+		return &dnfv1.BidAuctionResponse{Error: 11}, nil // 拍卖已结束
+	}
+
+	// 检查是否自己的物品
+	if auction.SellerID == roleID {
+		return &dnfv1.BidAuctionResponse{Error: 12}, nil // 不能竞拍自己的物品
+	}
+
+	// 检查出价
+	bidPrice := int64(req.BidPrice)
+	if bidPrice <= auction.BidPrice {
+		return &dnfv1.BidAuctionResponse{Error: 13}, nil // 出价必须高于当前价
+	}
+
+	// 获取角色货币
+	currency, err := s.Store.GetRoleCurrency(ctx, roleID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get currency: %v", err)
+	}
+	if currency.Gold < bidPrice {
+		return &dnfv1.BidAuctionResponse{Error: 3}, nil // 金币不足
+	}
+
+	// 扣除金币
+	currency.Gold -= bidPrice
+	if err := s.Store.UpdateRoleCurrency(ctx, currency); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to update currency: %v", err)
+	}
+
+	// 退还之前的出价者
+	if auction.BidderID > 0 {
+		prevCurrency, _ := s.Store.GetRoleCurrency(ctx, auction.BidderID)
+		prevCurrency.Gold += auction.BidPrice
+		s.Store.UpdateRoleCurrency(ctx, prevCurrency)
+	}
+
+	// 更新拍卖
+	if err := s.Store.UpdateAuctionItem(ctx, &store.UpdateAuctionItem{
+		ID:       auction.ID,
+		BidderID: &roleID,
+		BidPrice: &bidPrice,
+		BidCount: func() *int32 { v := auction.BidCount + 1; return &v }(),
+	}); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to update auction: %v", err)
+	}
+
 	return &dnfv1.BidAuctionResponse{Error: 0}, nil
 }
+
+// BuyoutAuction 一口价购买
 func (s *APIV1Service) BuyoutAuction(ctx context.Context, req *dnfv1.BuyoutAuctionRequest) (*dnfv1.BuyoutAuctionResponse, error) {
-	return &dnfv1.BuyoutAuctionResponse{Error: 0}, nil
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	roleID := claims.UserID
+
+	// 获取拍卖物品
+	auction, err := s.Store.GetAuctionItem(ctx, &store.FindAuctionItem{
+		FindBase: store.FindBase{ID: func() *uint64 { v := uint64(req.AuctionId); return &v }()},
+	})
+	if err != nil {
+		if err == store.ErrNotFound {
+			return &dnfv1.BuyoutAuctionResponse{Error: ErrCodeNotFound}, nil
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get auction: %v", err)
+	}
+
+	// 检查状态
+	if auction.Status != store.AuctionStatusSelling {
+		return &dnfv1.BuyoutAuctionResponse{Error: 11}, nil
+	}
+
+	// 检查是否自己的物品
+	if auction.SellerID == roleID {
+		return &dnfv1.BuyoutAuctionResponse{Error: 12}, nil
+	}
+
+	// 获取角色货币
+	currency, err := s.Store.GetRoleCurrency(ctx, roleID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get currency: %v", err)
+	}
+
+	buyPrice := auction.TotalPrice
+	if currency.Gold < buyPrice {
+		return &dnfv1.BuyoutAuctionResponse{Error: 3}, nil
+	}
+
+	// 扣除金币
+	currency.Gold -= buyPrice
+	if err := s.Store.UpdateRoleCurrency(ctx, currency); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to update currency: %v", err)
+	}
+
+	// 给卖家增加金币（扣除手续费5%）
+	sellerIncome := buyPrice - buyPrice/20
+	sellerCurrency, _ := s.Store.GetRoleCurrency(ctx, auction.SellerID)
+	sellerCurrency.Gold += sellerIncome
+	s.Store.UpdateRoleCurrency(ctx, sellerCurrency)
+
+	// 更新拍卖状态
+	auctionStatus := store.AuctionStatusSold
+	if err := s.Store.UpdateAuctionItem(ctx, &store.UpdateAuctionItem{
+		ID:       auction.ID,
+		Status:   &auctionStatus,
+		BidderID: &roleID,
+	}); err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to update auction: %v", err)
+	}
+
+	// 创建拍卖历史
+	s.Store.CreateAuctionHistory(ctx, &store.CreateAuctionHistory{
+		AuctionID:    auction.ID,
+		SellerID:     auction.SellerID,
+		BuyerID:      roleID,
+		ItemID:       auction.ItemID,
+		Count:        auction.Count,
+		FinalPrice:   buyPrice,
+		SellerIncome: sellerIncome,
+	})
+
+	// 创建物品到买家背包
+	bagItem := &store.BagItem{
+		RoleID:       roleID,
+		ItemID:       auction.ItemID,
+		GridIndex:    0,
+		Count:        auction.Count,
+		IsEquiped:    false,
+		BindType:     2, // 拍卖获取绑定
+		Durability:   100,
+		EnhanceLevel: 0,
+		Attributes:   auction.Attributes,
+	}
+	newItem, _ := s.Store.CreateBagItem(ctx, bagItem)
+
+	return &dnfv1.BuyoutAuctionResponse{
+		Error: 0,
+		Item: &dnfv1.BagItem{
+			Guid:   newItem.ID,
+			ItemId: uint32(newItem.ItemID),
+			Count:  newItem.Count,
+			Slot:   newItem.GridIndex,
+		},
+	}, nil
 }
+
 func (s *APIV1Service) OpenPrivateStore(ctx context.Context, req *dnfv1.OpenPrivateStoreRequest) (*dnfv1.OpenPrivateStoreResponse, error) {
 	return &dnfv1.OpenPrivateStoreResponse{Error: 0}, nil
 }

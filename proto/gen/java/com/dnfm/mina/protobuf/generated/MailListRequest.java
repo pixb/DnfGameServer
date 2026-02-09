@@ -50,6 +50,10 @@ private static final long serialVersionUID = 0L;
   public static final int PAGE_FIELD_NUMBER = 1;
   private int page_ = 0;
   /**
+   * <pre>
+   * 页码
+   * </pre>
+   *
    * <code>int32 page = 1 [json_name = "page"];</code>
    * @return The page.
    */
@@ -61,6 +65,10 @@ private static final long serialVersionUID = 0L;
   public static final int TYPE_FIELD_NUMBER = 2;
   private int type_ = 0;
   /**
+   * <pre>
+   * 邮件类型
+   * </pre>
+   *
    * <code>int32 type = 2 [json_name = "type"];</code>
    * @return The type.
    */
@@ -391,6 +399,10 @@ private static final long serialVersionUID = 0L;
 
     private int page_ ;
     /**
+     * <pre>
+     * 页码
+     * </pre>
+     *
      * <code>int32 page = 1 [json_name = "page"];</code>
      * @return The page.
      */
@@ -399,6 +411,10 @@ private static final long serialVersionUID = 0L;
       return page_;
     }
     /**
+     * <pre>
+     * 页码
+     * </pre>
+     *
      * <code>int32 page = 1 [json_name = "page"];</code>
      * @param value The page to set.
      * @return This builder for chaining.
@@ -411,6 +427,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 页码
+     * </pre>
+     *
      * <code>int32 page = 1 [json_name = "page"];</code>
      * @return This builder for chaining.
      */
@@ -423,6 +443,10 @@ private static final long serialVersionUID = 0L;
 
     private int type_ ;
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 2 [json_name = "type"];</code>
      * @return The type.
      */
@@ -431,6 +455,10 @@ private static final long serialVersionUID = 0L;
       return type_;
     }
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 2 [json_name = "type"];</code>
      * @param value The type to set.
      * @return This builder for chaining.
@@ -443,6 +471,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 2 [json_name = "type"];</code>
      * @return This builder for chaining.
      */

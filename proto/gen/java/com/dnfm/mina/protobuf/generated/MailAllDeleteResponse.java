@@ -7,7 +7,7 @@ package com.dnfm.mina.protobuf.generated;
 
 /**
  * <pre>
- * 删除所有邮件响应
+ * 邮件全部删除响应
  * </pre>
  *
  * Protobuf type {@code dnf.v1.MailAllDeleteResponse}
@@ -50,6 +50,10 @@ private static final long serialVersionUID = 0L;
   public static final int ERROR_FIELD_NUMBER = 1;
   private int error_ = 0;
   /**
+   * <pre>
+   * 错误码
+   * </pre>
+   *
    * <code>int32 error = 1 [json_name = "error"];</code>
    * @return The error.
    */
@@ -61,6 +65,10 @@ private static final long serialVersionUID = 0L;
   public static final int TYPE_FIELD_NUMBER = 2;
   private int type_ = 0;
   /**
+   * <pre>
+   * 邮件类型
+   * </pre>
+   *
    * <code>int32 type = 2 [json_name = "type"];</code>
    * @return The type.
    */
@@ -69,15 +77,34 @@ private static final long serialVersionUID = 0L;
     return type_;
   }
 
-  public static final int REMOVECOUNT_FIELD_NUMBER = 3;
-  private int removecount_ = 0;
+  public static final int DELETED_COUNT_FIELD_NUMBER = 3;
+  private int deletedCount_ = 0;
   /**
-   * <code>int32 removecount = 3 [json_name = "removecount"];</code>
-   * @return The removecount.
+   * <pre>
+   * 删除数量
+   * </pre>
+   *
+   * <code>int32 deleted_count = 3 [json_name = "deletedCount"];</code>
+   * @return The deletedCount.
    */
   @java.lang.Override
-  public int getRemovecount() {
-    return removecount_;
+  public int getDeletedCount() {
+    return deletedCount_;
+  }
+
+  public static final int SUCCESS_FIELD_NUMBER = 4;
+  private boolean success_ = false;
+  /**
+   * <pre>
+   * 是否成功
+   * </pre>
+   *
+   * <code>bool success = 4 [json_name = "success"];</code>
+   * @return The success.
+   */
+  @java.lang.Override
+  public boolean getSuccess() {
+    return success_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -100,8 +127,11 @@ private static final long serialVersionUID = 0L;
     if (type_ != 0) {
       output.writeInt32(2, type_);
     }
-    if (removecount_ != 0) {
-      output.writeInt32(3, removecount_);
+    if (deletedCount_ != 0) {
+      output.writeInt32(3, deletedCount_);
+    }
+    if (success_ != false) {
+      output.writeBool(4, success_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -120,9 +150,13 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(2, type_);
     }
-    if (removecount_ != 0) {
+    if (deletedCount_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(3, removecount_);
+        .computeInt32Size(3, deletedCount_);
+    }
+    if (success_ != false) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(4, success_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -143,8 +177,10 @@ private static final long serialVersionUID = 0L;
         != other.getError()) return false;
     if (getType()
         != other.getType()) return false;
-    if (getRemovecount()
-        != other.getRemovecount()) return false;
+    if (getDeletedCount()
+        != other.getDeletedCount()) return false;
+    if (getSuccess()
+        != other.getSuccess()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -160,8 +196,11 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getError();
     hash = (37 * hash) + TYPE_FIELD_NUMBER;
     hash = (53 * hash) + getType();
-    hash = (37 * hash) + REMOVECOUNT_FIELD_NUMBER;
-    hash = (53 * hash) + getRemovecount();
+    hash = (37 * hash) + DELETED_COUNT_FIELD_NUMBER;
+    hash = (53 * hash) + getDeletedCount();
+    hash = (37 * hash) + SUCCESS_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getSuccess());
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -261,7 +300,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * 删除所有邮件响应
+   * 邮件全部删除响应
    * </pre>
    *
    * Protobuf type {@code dnf.v1.MailAllDeleteResponse}
@@ -299,7 +338,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = 0;
       error_ = 0;
       type_ = 0;
-      removecount_ = 0;
+      deletedCount_ = 0;
+      success_ = false;
       return this;
     }
 
@@ -340,7 +380,10 @@ private static final long serialVersionUID = 0L;
         result.type_ = type_;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.removecount_ = removecount_;
+        result.deletedCount_ = deletedCount_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.success_ = success_;
       }
     }
 
@@ -362,8 +405,11 @@ private static final long serialVersionUID = 0L;
       if (other.getType() != 0) {
         setType(other.getType());
       }
-      if (other.getRemovecount() != 0) {
-        setRemovecount(other.getRemovecount());
+      if (other.getDeletedCount() != 0) {
+        setDeletedCount(other.getDeletedCount());
+      }
+      if (other.getSuccess() != false) {
+        setSuccess(other.getSuccess());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -402,10 +448,15 @@ private static final long serialVersionUID = 0L;
               break;
             } // case 16
             case 24: {
-              removecount_ = input.readInt32();
+              deletedCount_ = input.readInt32();
               bitField0_ |= 0x00000004;
               break;
             } // case 24
+            case 32: {
+              success_ = input.readBool();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -425,6 +476,10 @@ private static final long serialVersionUID = 0L;
 
     private int error_ ;
     /**
+     * <pre>
+     * 错误码
+     * </pre>
+     *
      * <code>int32 error = 1 [json_name = "error"];</code>
      * @return The error.
      */
@@ -433,6 +488,10 @@ private static final long serialVersionUID = 0L;
       return error_;
     }
     /**
+     * <pre>
+     * 错误码
+     * </pre>
+     *
      * <code>int32 error = 1 [json_name = "error"];</code>
      * @param value The error to set.
      * @return This builder for chaining.
@@ -445,6 +504,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 错误码
+     * </pre>
+     *
      * <code>int32 error = 1 [json_name = "error"];</code>
      * @return This builder for chaining.
      */
@@ -457,6 +520,10 @@ private static final long serialVersionUID = 0L;
 
     private int type_ ;
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 2 [json_name = "type"];</code>
      * @return The type.
      */
@@ -465,6 +532,10 @@ private static final long serialVersionUID = 0L;
       return type_;
     }
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 2 [json_name = "type"];</code>
      * @param value The type to set.
      * @return This builder for chaining.
@@ -477,6 +548,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 2 [json_name = "type"];</code>
      * @return This builder for chaining.
      */
@@ -487,34 +562,90 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int removecount_ ;
+    private int deletedCount_ ;
     /**
-     * <code>int32 removecount = 3 [json_name = "removecount"];</code>
-     * @return The removecount.
+     * <pre>
+     * 删除数量
+     * </pre>
+     *
+     * <code>int32 deleted_count = 3 [json_name = "deletedCount"];</code>
+     * @return The deletedCount.
      */
     @java.lang.Override
-    public int getRemovecount() {
-      return removecount_;
+    public int getDeletedCount() {
+      return deletedCount_;
     }
     /**
-     * <code>int32 removecount = 3 [json_name = "removecount"];</code>
-     * @param value The removecount to set.
+     * <pre>
+     * 删除数量
+     * </pre>
+     *
+     * <code>int32 deleted_count = 3 [json_name = "deletedCount"];</code>
+     * @param value The deletedCount to set.
      * @return This builder for chaining.
      */
-    public Builder setRemovecount(int value) {
+    public Builder setDeletedCount(int value) {
 
-      removecount_ = value;
+      deletedCount_ = value;
       bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 removecount = 3 [json_name = "removecount"];</code>
+     * <pre>
+     * 删除数量
+     * </pre>
+     *
+     * <code>int32 deleted_count = 3 [json_name = "deletedCount"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearRemovecount() {
+    public Builder clearDeletedCount() {
       bitField0_ = (bitField0_ & ~0x00000004);
-      removecount_ = 0;
+      deletedCount_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private boolean success_ ;
+    /**
+     * <pre>
+     * 是否成功
+     * </pre>
+     *
+     * <code>bool success = 4 [json_name = "success"];</code>
+     * @return The success.
+     */
+    @java.lang.Override
+    public boolean getSuccess() {
+      return success_;
+    }
+    /**
+     * <pre>
+     * 是否成功
+     * </pre>
+     *
+     * <code>bool success = 4 [json_name = "success"];</code>
+     * @param value The success to set.
+     * @return This builder for chaining.
+     */
+    public Builder setSuccess(boolean value) {
+
+      success_ = value;
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * 是否成功
+     * </pre>
+     *
+     * <code>bool success = 4 [json_name = "success"];</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearSuccess() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      success_ = false;
       onChanged();
       return this;
     }

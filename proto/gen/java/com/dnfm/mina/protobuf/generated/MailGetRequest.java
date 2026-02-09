@@ -7,7 +7,7 @@ package com.dnfm.mina.protobuf.generated;
 
 /**
  * <pre>
- * 获取邮件请求
+ * 邮件获取请求
  * </pre>
  *
  * Protobuf type {@code dnf.v1.MailGetRequest}
@@ -32,8 +32,8 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private MailGetRequest() {
-    selecteditems_ = java.util.Collections.emptyList();
-    selectedpackages_ = java.util.Collections.emptyList();
+    selectedItems_ = java.util.Collections.emptyList();
+    selectedPackages_ = java.util.Collections.emptyList();
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
@@ -52,6 +52,10 @@ private static final long serialVersionUID = 0L;
   public static final int TYPE_FIELD_NUMBER = 1;
   private int type_ = 0;
   /**
+   * <pre>
+   * 邮件类型
+   * </pre>
+   *
    * <code>int32 type = 1 [json_name = "type"];</code>
    * @return The type.
    */
@@ -63,6 +67,10 @@ private static final long serialVersionUID = 0L;
   public static final int GUID_FIELD_NUMBER = 2;
   private long guid_ = 0L;
   /**
+   * <pre>
+   * 邮件GUID
+   * </pre>
+   *
    * <code>uint64 guid = 2 [json_name = "guid"];</code>
    * @return The guid.
    */
@@ -71,86 +79,126 @@ private static final long serialVersionUID = 0L;
     return guid_;
   }
 
-  public static final int SELECTEDITEMS_FIELD_NUMBER = 3;
+  public static final int SELECTED_ITEMS_FIELD_NUMBER = 3;
   @SuppressWarnings("serial")
-  private java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> selecteditems_;
+  private java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> selectedItems_;
   /**
-   * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+   * <pre>
+   * 选中的物品
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
    */
   @java.lang.Override
-  public java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> getSelecteditemsList() {
-    return selecteditems_;
+  public java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> getSelectedItemsList() {
+    return selectedItems_;
   }
   /**
-   * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+   * <pre>
+   * 选中的物品
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
    */
   @java.lang.Override
   public java.util.List<? extends com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder> 
-      getSelecteditemsOrBuilderList() {
-    return selecteditems_;
+      getSelectedItemsOrBuilderList() {
+    return selectedItems_;
   }
   /**
-   * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+   * <pre>
+   * 选中的物品
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
    */
   @java.lang.Override
-  public int getSelecteditemsCount() {
-    return selecteditems_.size();
+  public int getSelectedItemsCount() {
+    return selectedItems_.size();
   }
   /**
-   * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+   * <pre>
+   * 选中的物品
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
    */
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.SelectedItem getSelecteditems(int index) {
-    return selecteditems_.get(index);
+  public com.dnfm.mina.protobuf.generated.SelectedItem getSelectedItems(int index) {
+    return selectedItems_.get(index);
   }
   /**
-   * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+   * <pre>
+   * 选中的物品
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
    */
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder getSelecteditemsOrBuilder(
+  public com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder getSelectedItemsOrBuilder(
       int index) {
-    return selecteditems_.get(index);
+    return selectedItems_.get(index);
   }
 
-  public static final int SELECTEDPACKAGES_FIELD_NUMBER = 4;
+  public static final int SELECTED_PACKAGES_FIELD_NUMBER = 4;
   @SuppressWarnings("serial")
-  private java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> selectedpackages_;
+  private java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> selectedPackages_;
   /**
-   * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+   * <pre>
+   * 选中的包裹
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
    */
   @java.lang.Override
-  public java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> getSelectedpackagesList() {
-    return selectedpackages_;
+  public java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> getSelectedPackagesList() {
+    return selectedPackages_;
   }
   /**
-   * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+   * <pre>
+   * 选中的包裹
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
    */
   @java.lang.Override
   public java.util.List<? extends com.dnfm.mina.protobuf.generated.PostPackageOrBuilder> 
-      getSelectedpackagesOrBuilderList() {
-    return selectedpackages_;
+      getSelectedPackagesOrBuilderList() {
+    return selectedPackages_;
   }
   /**
-   * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+   * <pre>
+   * 选中的包裹
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
    */
   @java.lang.Override
-  public int getSelectedpackagesCount() {
-    return selectedpackages_.size();
+  public int getSelectedPackagesCount() {
+    return selectedPackages_.size();
   }
   /**
-   * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+   * <pre>
+   * 选中的包裹
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
    */
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.PostPackage getSelectedpackages(int index) {
-    return selectedpackages_.get(index);
+  public com.dnfm.mina.protobuf.generated.PostPackage getSelectedPackages(int index) {
+    return selectedPackages_.get(index);
   }
   /**
-   * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+   * <pre>
+   * 选中的包裹
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
    */
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.PostPackageOrBuilder getSelectedpackagesOrBuilder(
+  public com.dnfm.mina.protobuf.generated.PostPackageOrBuilder getSelectedPackagesOrBuilder(
       int index) {
-    return selectedpackages_.get(index);
+    return selectedPackages_.get(index);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -173,11 +221,11 @@ private static final long serialVersionUID = 0L;
     if (guid_ != 0L) {
       output.writeUInt64(2, guid_);
     }
-    for (int i = 0; i < selecteditems_.size(); i++) {
-      output.writeMessage(3, selecteditems_.get(i));
+    for (int i = 0; i < selectedItems_.size(); i++) {
+      output.writeMessage(3, selectedItems_.get(i));
     }
-    for (int i = 0; i < selectedpackages_.size(); i++) {
-      output.writeMessage(4, selectedpackages_.get(i));
+    for (int i = 0; i < selectedPackages_.size(); i++) {
+      output.writeMessage(4, selectedPackages_.get(i));
     }
     getUnknownFields().writeTo(output);
   }
@@ -196,13 +244,13 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeUInt64Size(2, guid_);
     }
-    for (int i = 0; i < selecteditems_.size(); i++) {
+    for (int i = 0; i < selectedItems_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, selecteditems_.get(i));
+        .computeMessageSize(3, selectedItems_.get(i));
     }
-    for (int i = 0; i < selectedpackages_.size(); i++) {
+    for (int i = 0; i < selectedPackages_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(4, selectedpackages_.get(i));
+        .computeMessageSize(4, selectedPackages_.get(i));
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -223,10 +271,10 @@ private static final long serialVersionUID = 0L;
         != other.getType()) return false;
     if (getGuid()
         != other.getGuid()) return false;
-    if (!getSelecteditemsList()
-        .equals(other.getSelecteditemsList())) return false;
-    if (!getSelectedpackagesList()
-        .equals(other.getSelectedpackagesList())) return false;
+    if (!getSelectedItemsList()
+        .equals(other.getSelectedItemsList())) return false;
+    if (!getSelectedPackagesList()
+        .equals(other.getSelectedPackagesList())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -243,13 +291,13 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + GUID_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getGuid());
-    if (getSelecteditemsCount() > 0) {
-      hash = (37 * hash) + SELECTEDITEMS_FIELD_NUMBER;
-      hash = (53 * hash) + getSelecteditemsList().hashCode();
+    if (getSelectedItemsCount() > 0) {
+      hash = (37 * hash) + SELECTED_ITEMS_FIELD_NUMBER;
+      hash = (53 * hash) + getSelectedItemsList().hashCode();
     }
-    if (getSelectedpackagesCount() > 0) {
-      hash = (37 * hash) + SELECTEDPACKAGES_FIELD_NUMBER;
-      hash = (53 * hash) + getSelectedpackagesList().hashCode();
+    if (getSelectedPackagesCount() > 0) {
+      hash = (37 * hash) + SELECTED_PACKAGES_FIELD_NUMBER;
+      hash = (53 * hash) + getSelectedPackagesList().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -350,7 +398,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * 获取邮件请求
+   * 邮件获取请求
    * </pre>
    *
    * Protobuf type {@code dnf.v1.MailGetRequest}
@@ -388,18 +436,18 @@ private static final long serialVersionUID = 0L;
       bitField0_ = 0;
       type_ = 0;
       guid_ = 0L;
-      if (selecteditemsBuilder_ == null) {
-        selecteditems_ = java.util.Collections.emptyList();
+      if (selectedItemsBuilder_ == null) {
+        selectedItems_ = java.util.Collections.emptyList();
       } else {
-        selecteditems_ = null;
-        selecteditemsBuilder_.clear();
+        selectedItems_ = null;
+        selectedItemsBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000004);
-      if (selectedpackagesBuilder_ == null) {
-        selectedpackages_ = java.util.Collections.emptyList();
+      if (selectedPackagesBuilder_ == null) {
+        selectedPackages_ = java.util.Collections.emptyList();
       } else {
-        selectedpackages_ = null;
-        selectedpackagesBuilder_.clear();
+        selectedPackages_ = null;
+        selectedPackagesBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000008);
       return this;
@@ -435,23 +483,23 @@ private static final long serialVersionUID = 0L;
     }
 
     private void buildPartialRepeatedFields(com.dnfm.mina.protobuf.generated.MailGetRequest result) {
-      if (selecteditemsBuilder_ == null) {
+      if (selectedItemsBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0)) {
-          selecteditems_ = java.util.Collections.unmodifiableList(selecteditems_);
+          selectedItems_ = java.util.Collections.unmodifiableList(selectedItems_);
           bitField0_ = (bitField0_ & ~0x00000004);
         }
-        result.selecteditems_ = selecteditems_;
+        result.selectedItems_ = selectedItems_;
       } else {
-        result.selecteditems_ = selecteditemsBuilder_.build();
+        result.selectedItems_ = selectedItemsBuilder_.build();
       }
-      if (selectedpackagesBuilder_ == null) {
+      if (selectedPackagesBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0)) {
-          selectedpackages_ = java.util.Collections.unmodifiableList(selectedpackages_);
+          selectedPackages_ = java.util.Collections.unmodifiableList(selectedPackages_);
           bitField0_ = (bitField0_ & ~0x00000008);
         }
-        result.selectedpackages_ = selectedpackages_;
+        result.selectedPackages_ = selectedPackages_;
       } else {
-        result.selectedpackages_ = selectedpackagesBuilder_.build();
+        result.selectedPackages_ = selectedPackagesBuilder_.build();
       }
     }
 
@@ -483,55 +531,55 @@ private static final long serialVersionUID = 0L;
       if (other.getGuid() != 0L) {
         setGuid(other.getGuid());
       }
-      if (selecteditemsBuilder_ == null) {
-        if (!other.selecteditems_.isEmpty()) {
-          if (selecteditems_.isEmpty()) {
-            selecteditems_ = other.selecteditems_;
+      if (selectedItemsBuilder_ == null) {
+        if (!other.selectedItems_.isEmpty()) {
+          if (selectedItems_.isEmpty()) {
+            selectedItems_ = other.selectedItems_;
             bitField0_ = (bitField0_ & ~0x00000004);
           } else {
-            ensureSelecteditemsIsMutable();
-            selecteditems_.addAll(other.selecteditems_);
+            ensureSelectedItemsIsMutable();
+            selectedItems_.addAll(other.selectedItems_);
           }
           onChanged();
         }
       } else {
-        if (!other.selecteditems_.isEmpty()) {
-          if (selecteditemsBuilder_.isEmpty()) {
-            selecteditemsBuilder_.dispose();
-            selecteditemsBuilder_ = null;
-            selecteditems_ = other.selecteditems_;
+        if (!other.selectedItems_.isEmpty()) {
+          if (selectedItemsBuilder_.isEmpty()) {
+            selectedItemsBuilder_.dispose();
+            selectedItemsBuilder_ = null;
+            selectedItems_ = other.selectedItems_;
             bitField0_ = (bitField0_ & ~0x00000004);
-            selecteditemsBuilder_ = 
+            selectedItemsBuilder_ = 
               com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                 internalGetSelecteditemsFieldBuilder() : null;
+                 internalGetSelectedItemsFieldBuilder() : null;
           } else {
-            selecteditemsBuilder_.addAllMessages(other.selecteditems_);
+            selectedItemsBuilder_.addAllMessages(other.selectedItems_);
           }
         }
       }
-      if (selectedpackagesBuilder_ == null) {
-        if (!other.selectedpackages_.isEmpty()) {
-          if (selectedpackages_.isEmpty()) {
-            selectedpackages_ = other.selectedpackages_;
+      if (selectedPackagesBuilder_ == null) {
+        if (!other.selectedPackages_.isEmpty()) {
+          if (selectedPackages_.isEmpty()) {
+            selectedPackages_ = other.selectedPackages_;
             bitField0_ = (bitField0_ & ~0x00000008);
           } else {
-            ensureSelectedpackagesIsMutable();
-            selectedpackages_.addAll(other.selectedpackages_);
+            ensureSelectedPackagesIsMutable();
+            selectedPackages_.addAll(other.selectedPackages_);
           }
           onChanged();
         }
       } else {
-        if (!other.selectedpackages_.isEmpty()) {
-          if (selectedpackagesBuilder_.isEmpty()) {
-            selectedpackagesBuilder_.dispose();
-            selectedpackagesBuilder_ = null;
-            selectedpackages_ = other.selectedpackages_;
+        if (!other.selectedPackages_.isEmpty()) {
+          if (selectedPackagesBuilder_.isEmpty()) {
+            selectedPackagesBuilder_.dispose();
+            selectedPackagesBuilder_ = null;
+            selectedPackages_ = other.selectedPackages_;
             bitField0_ = (bitField0_ & ~0x00000008);
-            selectedpackagesBuilder_ = 
+            selectedPackagesBuilder_ = 
               com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                 internalGetSelectedpackagesFieldBuilder() : null;
+                 internalGetSelectedPackagesFieldBuilder() : null;
           } else {
-            selectedpackagesBuilder_.addAllMessages(other.selectedpackages_);
+            selectedPackagesBuilder_.addAllMessages(other.selectedPackages_);
           }
         }
       }
@@ -576,11 +624,11 @@ private static final long serialVersionUID = 0L;
                   input.readMessage(
                       com.dnfm.mina.protobuf.generated.SelectedItem.parser(),
                       extensionRegistry);
-              if (selecteditemsBuilder_ == null) {
-                ensureSelecteditemsIsMutable();
-                selecteditems_.add(m);
+              if (selectedItemsBuilder_ == null) {
+                ensureSelectedItemsIsMutable();
+                selectedItems_.add(m);
               } else {
-                selecteditemsBuilder_.addMessage(m);
+                selectedItemsBuilder_.addMessage(m);
               }
               break;
             } // case 26
@@ -589,11 +637,11 @@ private static final long serialVersionUID = 0L;
                   input.readMessage(
                       com.dnfm.mina.protobuf.generated.PostPackage.parser(),
                       extensionRegistry);
-              if (selectedpackagesBuilder_ == null) {
-                ensureSelectedpackagesIsMutable();
-                selectedpackages_.add(m);
+              if (selectedPackagesBuilder_ == null) {
+                ensureSelectedPackagesIsMutable();
+                selectedPackages_.add(m);
               } else {
-                selectedpackagesBuilder_.addMessage(m);
+                selectedPackagesBuilder_.addMessage(m);
               }
               break;
             } // case 34
@@ -616,6 +664,10 @@ private static final long serialVersionUID = 0L;
 
     private int type_ ;
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 1 [json_name = "type"];</code>
      * @return The type.
      */
@@ -624,6 +676,10 @@ private static final long serialVersionUID = 0L;
       return type_;
     }
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 1 [json_name = "type"];</code>
      * @param value The type to set.
      * @return This builder for chaining.
@@ -636,6 +692,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 1 [json_name = "type"];</code>
      * @return This builder for chaining.
      */
@@ -648,6 +708,10 @@ private static final long serialVersionUID = 0L;
 
     private long guid_ ;
     /**
+     * <pre>
+     * 邮件GUID
+     * </pre>
+     *
      * <code>uint64 guid = 2 [json_name = "guid"];</code>
      * @return The guid.
      */
@@ -656,6 +720,10 @@ private static final long serialVersionUID = 0L;
       return guid_;
     }
     /**
+     * <pre>
+     * 邮件GUID
+     * </pre>
+     *
      * <code>uint64 guid = 2 [json_name = "guid"];</code>
      * @param value The guid to set.
      * @return This builder for chaining.
@@ -668,6 +736,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 邮件GUID
+     * </pre>
+     *
      * <code>uint64 guid = 2 [json_name = "guid"];</code>
      * @return This builder for chaining.
      */
@@ -678,484 +750,628 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> selecteditems_ =
+    private java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> selectedItems_ =
       java.util.Collections.emptyList();
-    private void ensureSelecteditemsIsMutable() {
+    private void ensureSelectedItemsIsMutable() {
       if (!((bitField0_ & 0x00000004) != 0)) {
-        selecteditems_ = new java.util.ArrayList<com.dnfm.mina.protobuf.generated.SelectedItem>(selecteditems_);
+        selectedItems_ = new java.util.ArrayList<com.dnfm.mina.protobuf.generated.SelectedItem>(selectedItems_);
         bitField0_ |= 0x00000004;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilder<
-        com.dnfm.mina.protobuf.generated.SelectedItem, com.dnfm.mina.protobuf.generated.SelectedItem.Builder, com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder> selecteditemsBuilder_;
+        com.dnfm.mina.protobuf.generated.SelectedItem, com.dnfm.mina.protobuf.generated.SelectedItem.Builder, com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder> selectedItemsBuilder_;
 
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> getSelecteditemsList() {
-      if (selecteditemsBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(selecteditems_);
+    public java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> getSelectedItemsList() {
+      if (selectedItemsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(selectedItems_);
       } else {
-        return selecteditemsBuilder_.getMessageList();
+        return selectedItemsBuilder_.getMessageList();
       }
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public int getSelecteditemsCount() {
-      if (selecteditemsBuilder_ == null) {
-        return selecteditems_.size();
+    public int getSelectedItemsCount() {
+      if (selectedItemsBuilder_ == null) {
+        return selectedItems_.size();
       } else {
-        return selecteditemsBuilder_.getCount();
+        return selectedItemsBuilder_.getCount();
       }
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.SelectedItem getSelecteditems(int index) {
-      if (selecteditemsBuilder_ == null) {
-        return selecteditems_.get(index);
+    public com.dnfm.mina.protobuf.generated.SelectedItem getSelectedItems(int index) {
+      if (selectedItemsBuilder_ == null) {
+        return selectedItems_.get(index);
       } else {
-        return selecteditemsBuilder_.getMessage(index);
+        return selectedItemsBuilder_.getMessage(index);
       }
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public Builder setSelecteditems(
+    public Builder setSelectedItems(
         int index, com.dnfm.mina.protobuf.generated.SelectedItem value) {
-      if (selecteditemsBuilder_ == null) {
+      if (selectedItemsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureSelecteditemsIsMutable();
-        selecteditems_.set(index, value);
+        ensureSelectedItemsIsMutable();
+        selectedItems_.set(index, value);
         onChanged();
       } else {
-        selecteditemsBuilder_.setMessage(index, value);
+        selectedItemsBuilder_.setMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public Builder setSelecteditems(
+    public Builder setSelectedItems(
         int index, com.dnfm.mina.protobuf.generated.SelectedItem.Builder builderForValue) {
-      if (selecteditemsBuilder_ == null) {
-        ensureSelecteditemsIsMutable();
-        selecteditems_.set(index, builderForValue.build());
+      if (selectedItemsBuilder_ == null) {
+        ensureSelectedItemsIsMutable();
+        selectedItems_.set(index, builderForValue.build());
         onChanged();
       } else {
-        selecteditemsBuilder_.setMessage(index, builderForValue.build());
+        selectedItemsBuilder_.setMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public Builder addSelecteditems(com.dnfm.mina.protobuf.generated.SelectedItem value) {
-      if (selecteditemsBuilder_ == null) {
+    public Builder addSelectedItems(com.dnfm.mina.protobuf.generated.SelectedItem value) {
+      if (selectedItemsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureSelecteditemsIsMutable();
-        selecteditems_.add(value);
+        ensureSelectedItemsIsMutable();
+        selectedItems_.add(value);
         onChanged();
       } else {
-        selecteditemsBuilder_.addMessage(value);
+        selectedItemsBuilder_.addMessage(value);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public Builder addSelecteditems(
+    public Builder addSelectedItems(
         int index, com.dnfm.mina.protobuf.generated.SelectedItem value) {
-      if (selecteditemsBuilder_ == null) {
+      if (selectedItemsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureSelecteditemsIsMutable();
-        selecteditems_.add(index, value);
+        ensureSelectedItemsIsMutable();
+        selectedItems_.add(index, value);
         onChanged();
       } else {
-        selecteditemsBuilder_.addMessage(index, value);
+        selectedItemsBuilder_.addMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public Builder addSelecteditems(
+    public Builder addSelectedItems(
         com.dnfm.mina.protobuf.generated.SelectedItem.Builder builderForValue) {
-      if (selecteditemsBuilder_ == null) {
-        ensureSelecteditemsIsMutable();
-        selecteditems_.add(builderForValue.build());
+      if (selectedItemsBuilder_ == null) {
+        ensureSelectedItemsIsMutable();
+        selectedItems_.add(builderForValue.build());
         onChanged();
       } else {
-        selecteditemsBuilder_.addMessage(builderForValue.build());
+        selectedItemsBuilder_.addMessage(builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public Builder addSelecteditems(
+    public Builder addSelectedItems(
         int index, com.dnfm.mina.protobuf.generated.SelectedItem.Builder builderForValue) {
-      if (selecteditemsBuilder_ == null) {
-        ensureSelecteditemsIsMutable();
-        selecteditems_.add(index, builderForValue.build());
+      if (selectedItemsBuilder_ == null) {
+        ensureSelectedItemsIsMutable();
+        selectedItems_.add(index, builderForValue.build());
         onChanged();
       } else {
-        selecteditemsBuilder_.addMessage(index, builderForValue.build());
+        selectedItemsBuilder_.addMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public Builder addAllSelecteditems(
+    public Builder addAllSelectedItems(
         java.lang.Iterable<? extends com.dnfm.mina.protobuf.generated.SelectedItem> values) {
-      if (selecteditemsBuilder_ == null) {
-        ensureSelecteditemsIsMutable();
+      if (selectedItemsBuilder_ == null) {
+        ensureSelectedItemsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, selecteditems_);
+            values, selectedItems_);
         onChanged();
       } else {
-        selecteditemsBuilder_.addAllMessages(values);
+        selectedItemsBuilder_.addAllMessages(values);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public Builder clearSelecteditems() {
-      if (selecteditemsBuilder_ == null) {
-        selecteditems_ = java.util.Collections.emptyList();
+    public Builder clearSelectedItems() {
+      if (selectedItemsBuilder_ == null) {
+        selectedItems_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000004);
         onChanged();
       } else {
-        selecteditemsBuilder_.clear();
+        selectedItemsBuilder_.clear();
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public Builder removeSelecteditems(int index) {
-      if (selecteditemsBuilder_ == null) {
-        ensureSelecteditemsIsMutable();
-        selecteditems_.remove(index);
+    public Builder removeSelectedItems(int index) {
+      if (selectedItemsBuilder_ == null) {
+        ensureSelectedItemsIsMutable();
+        selectedItems_.remove(index);
         onChanged();
       } else {
-        selecteditemsBuilder_.remove(index);
+        selectedItemsBuilder_.remove(index);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.SelectedItem.Builder getSelecteditemsBuilder(
+    public com.dnfm.mina.protobuf.generated.SelectedItem.Builder getSelectedItemsBuilder(
         int index) {
-      return internalGetSelecteditemsFieldBuilder().getBuilder(index);
+      return internalGetSelectedItemsFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder getSelecteditemsOrBuilder(
+    public com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder getSelectedItemsOrBuilder(
         int index) {
-      if (selecteditemsBuilder_ == null) {
-        return selecteditems_.get(index);  } else {
-        return selecteditemsBuilder_.getMessageOrBuilder(index);
+      if (selectedItemsBuilder_ == null) {
+        return selectedItems_.get(index);  } else {
+        return selectedItemsBuilder_.getMessageOrBuilder(index);
       }
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
     public java.util.List<? extends com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder> 
-         getSelecteditemsOrBuilderList() {
-      if (selecteditemsBuilder_ != null) {
-        return selecteditemsBuilder_.getMessageOrBuilderList();
+         getSelectedItemsOrBuilderList() {
+      if (selectedItemsBuilder_ != null) {
+        return selectedItemsBuilder_.getMessageOrBuilderList();
       } else {
-        return java.util.Collections.unmodifiableList(selecteditems_);
+        return java.util.Collections.unmodifiableList(selectedItems_);
       }
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.SelectedItem.Builder addSelecteditemsBuilder() {
-      return internalGetSelecteditemsFieldBuilder().addBuilder(
+    public com.dnfm.mina.protobuf.generated.SelectedItem.Builder addSelectedItemsBuilder() {
+      return internalGetSelectedItemsFieldBuilder().addBuilder(
           com.dnfm.mina.protobuf.generated.SelectedItem.getDefaultInstance());
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.SelectedItem.Builder addSelecteditemsBuilder(
+    public com.dnfm.mina.protobuf.generated.SelectedItem.Builder addSelectedItemsBuilder(
         int index) {
-      return internalGetSelecteditemsFieldBuilder().addBuilder(
+      return internalGetSelectedItemsFieldBuilder().addBuilder(
           index, com.dnfm.mina.protobuf.generated.SelectedItem.getDefaultInstance());
     }
     /**
-     * <code>repeated .dnf.v1.SelectedItem selecteditems = 3 [json_name = "selecteditems"];</code>
+     * <pre>
+     * 选中的物品
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem selected_items = 3 [json_name = "selectedItems"];</code>
      */
     public java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem.Builder> 
-         getSelecteditemsBuilderList() {
-      return internalGetSelecteditemsFieldBuilder().getBuilderList();
+         getSelectedItemsBuilderList() {
+      return internalGetSelectedItemsFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilder<
         com.dnfm.mina.protobuf.generated.SelectedItem, com.dnfm.mina.protobuf.generated.SelectedItem.Builder, com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder> 
-        internalGetSelecteditemsFieldBuilder() {
-      if (selecteditemsBuilder_ == null) {
-        selecteditemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+        internalGetSelectedItemsFieldBuilder() {
+      if (selectedItemsBuilder_ == null) {
+        selectedItemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
             com.dnfm.mina.protobuf.generated.SelectedItem, com.dnfm.mina.protobuf.generated.SelectedItem.Builder, com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder>(
-                selecteditems_,
+                selectedItems_,
                 ((bitField0_ & 0x00000004) != 0),
                 getParentForChildren(),
                 isClean());
-        selecteditems_ = null;
+        selectedItems_ = null;
       }
-      return selecteditemsBuilder_;
+      return selectedItemsBuilder_;
     }
 
-    private java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> selectedpackages_ =
+    private java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> selectedPackages_ =
       java.util.Collections.emptyList();
-    private void ensureSelectedpackagesIsMutable() {
+    private void ensureSelectedPackagesIsMutable() {
       if (!((bitField0_ & 0x00000008) != 0)) {
-        selectedpackages_ = new java.util.ArrayList<com.dnfm.mina.protobuf.generated.PostPackage>(selectedpackages_);
+        selectedPackages_ = new java.util.ArrayList<com.dnfm.mina.protobuf.generated.PostPackage>(selectedPackages_);
         bitField0_ |= 0x00000008;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilder<
-        com.dnfm.mina.protobuf.generated.PostPackage, com.dnfm.mina.protobuf.generated.PostPackage.Builder, com.dnfm.mina.protobuf.generated.PostPackageOrBuilder> selectedpackagesBuilder_;
+        com.dnfm.mina.protobuf.generated.PostPackage, com.dnfm.mina.protobuf.generated.PostPackage.Builder, com.dnfm.mina.protobuf.generated.PostPackageOrBuilder> selectedPackagesBuilder_;
 
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> getSelectedpackagesList() {
-      if (selectedpackagesBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(selectedpackages_);
+    public java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> getSelectedPackagesList() {
+      if (selectedPackagesBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(selectedPackages_);
       } else {
-        return selectedpackagesBuilder_.getMessageList();
+        return selectedPackagesBuilder_.getMessageList();
       }
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public int getSelectedpackagesCount() {
-      if (selectedpackagesBuilder_ == null) {
-        return selectedpackages_.size();
+    public int getSelectedPackagesCount() {
+      if (selectedPackagesBuilder_ == null) {
+        return selectedPackages_.size();
       } else {
-        return selectedpackagesBuilder_.getCount();
+        return selectedPackagesBuilder_.getCount();
       }
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.PostPackage getSelectedpackages(int index) {
-      if (selectedpackagesBuilder_ == null) {
-        return selectedpackages_.get(index);
+    public com.dnfm.mina.protobuf.generated.PostPackage getSelectedPackages(int index) {
+      if (selectedPackagesBuilder_ == null) {
+        return selectedPackages_.get(index);
       } else {
-        return selectedpackagesBuilder_.getMessage(index);
+        return selectedPackagesBuilder_.getMessage(index);
       }
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public Builder setSelectedpackages(
+    public Builder setSelectedPackages(
         int index, com.dnfm.mina.protobuf.generated.PostPackage value) {
-      if (selectedpackagesBuilder_ == null) {
+      if (selectedPackagesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureSelectedpackagesIsMutable();
-        selectedpackages_.set(index, value);
+        ensureSelectedPackagesIsMutable();
+        selectedPackages_.set(index, value);
         onChanged();
       } else {
-        selectedpackagesBuilder_.setMessage(index, value);
+        selectedPackagesBuilder_.setMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public Builder setSelectedpackages(
+    public Builder setSelectedPackages(
         int index, com.dnfm.mina.protobuf.generated.PostPackage.Builder builderForValue) {
-      if (selectedpackagesBuilder_ == null) {
-        ensureSelectedpackagesIsMutable();
-        selectedpackages_.set(index, builderForValue.build());
+      if (selectedPackagesBuilder_ == null) {
+        ensureSelectedPackagesIsMutable();
+        selectedPackages_.set(index, builderForValue.build());
         onChanged();
       } else {
-        selectedpackagesBuilder_.setMessage(index, builderForValue.build());
+        selectedPackagesBuilder_.setMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public Builder addSelectedpackages(com.dnfm.mina.protobuf.generated.PostPackage value) {
-      if (selectedpackagesBuilder_ == null) {
+    public Builder addSelectedPackages(com.dnfm.mina.protobuf.generated.PostPackage value) {
+      if (selectedPackagesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureSelectedpackagesIsMutable();
-        selectedpackages_.add(value);
+        ensureSelectedPackagesIsMutable();
+        selectedPackages_.add(value);
         onChanged();
       } else {
-        selectedpackagesBuilder_.addMessage(value);
+        selectedPackagesBuilder_.addMessage(value);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public Builder addSelectedpackages(
+    public Builder addSelectedPackages(
         int index, com.dnfm.mina.protobuf.generated.PostPackage value) {
-      if (selectedpackagesBuilder_ == null) {
+      if (selectedPackagesBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureSelectedpackagesIsMutable();
-        selectedpackages_.add(index, value);
+        ensureSelectedPackagesIsMutable();
+        selectedPackages_.add(index, value);
         onChanged();
       } else {
-        selectedpackagesBuilder_.addMessage(index, value);
+        selectedPackagesBuilder_.addMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public Builder addSelectedpackages(
+    public Builder addSelectedPackages(
         com.dnfm.mina.protobuf.generated.PostPackage.Builder builderForValue) {
-      if (selectedpackagesBuilder_ == null) {
-        ensureSelectedpackagesIsMutable();
-        selectedpackages_.add(builderForValue.build());
+      if (selectedPackagesBuilder_ == null) {
+        ensureSelectedPackagesIsMutable();
+        selectedPackages_.add(builderForValue.build());
         onChanged();
       } else {
-        selectedpackagesBuilder_.addMessage(builderForValue.build());
+        selectedPackagesBuilder_.addMessage(builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public Builder addSelectedpackages(
+    public Builder addSelectedPackages(
         int index, com.dnfm.mina.protobuf.generated.PostPackage.Builder builderForValue) {
-      if (selectedpackagesBuilder_ == null) {
-        ensureSelectedpackagesIsMutable();
-        selectedpackages_.add(index, builderForValue.build());
+      if (selectedPackagesBuilder_ == null) {
+        ensureSelectedPackagesIsMutable();
+        selectedPackages_.add(index, builderForValue.build());
         onChanged();
       } else {
-        selectedpackagesBuilder_.addMessage(index, builderForValue.build());
+        selectedPackagesBuilder_.addMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public Builder addAllSelectedpackages(
+    public Builder addAllSelectedPackages(
         java.lang.Iterable<? extends com.dnfm.mina.protobuf.generated.PostPackage> values) {
-      if (selectedpackagesBuilder_ == null) {
-        ensureSelectedpackagesIsMutable();
+      if (selectedPackagesBuilder_ == null) {
+        ensureSelectedPackagesIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, selectedpackages_);
+            values, selectedPackages_);
         onChanged();
       } else {
-        selectedpackagesBuilder_.addAllMessages(values);
+        selectedPackagesBuilder_.addAllMessages(values);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public Builder clearSelectedpackages() {
-      if (selectedpackagesBuilder_ == null) {
-        selectedpackages_ = java.util.Collections.emptyList();
+    public Builder clearSelectedPackages() {
+      if (selectedPackagesBuilder_ == null) {
+        selectedPackages_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000008);
         onChanged();
       } else {
-        selectedpackagesBuilder_.clear();
+        selectedPackagesBuilder_.clear();
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public Builder removeSelectedpackages(int index) {
-      if (selectedpackagesBuilder_ == null) {
-        ensureSelectedpackagesIsMutable();
-        selectedpackages_.remove(index);
+    public Builder removeSelectedPackages(int index) {
+      if (selectedPackagesBuilder_ == null) {
+        ensureSelectedPackagesIsMutable();
+        selectedPackages_.remove(index);
         onChanged();
       } else {
-        selectedpackagesBuilder_.remove(index);
+        selectedPackagesBuilder_.remove(index);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.PostPackage.Builder getSelectedpackagesBuilder(
+    public com.dnfm.mina.protobuf.generated.PostPackage.Builder getSelectedPackagesBuilder(
         int index) {
-      return internalGetSelectedpackagesFieldBuilder().getBuilder(index);
+      return internalGetSelectedPackagesFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.PostPackageOrBuilder getSelectedpackagesOrBuilder(
+    public com.dnfm.mina.protobuf.generated.PostPackageOrBuilder getSelectedPackagesOrBuilder(
         int index) {
-      if (selectedpackagesBuilder_ == null) {
-        return selectedpackages_.get(index);  } else {
-        return selectedpackagesBuilder_.getMessageOrBuilder(index);
+      if (selectedPackagesBuilder_ == null) {
+        return selectedPackages_.get(index);  } else {
+        return selectedPackagesBuilder_.getMessageOrBuilder(index);
       }
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
     public java.util.List<? extends com.dnfm.mina.protobuf.generated.PostPackageOrBuilder> 
-         getSelectedpackagesOrBuilderList() {
-      if (selectedpackagesBuilder_ != null) {
-        return selectedpackagesBuilder_.getMessageOrBuilderList();
+         getSelectedPackagesOrBuilderList() {
+      if (selectedPackagesBuilder_ != null) {
+        return selectedPackagesBuilder_.getMessageOrBuilderList();
       } else {
-        return java.util.Collections.unmodifiableList(selectedpackages_);
+        return java.util.Collections.unmodifiableList(selectedPackages_);
       }
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.PostPackage.Builder addSelectedpackagesBuilder() {
-      return internalGetSelectedpackagesFieldBuilder().addBuilder(
+    public com.dnfm.mina.protobuf.generated.PostPackage.Builder addSelectedPackagesBuilder() {
+      return internalGetSelectedPackagesFieldBuilder().addBuilder(
           com.dnfm.mina.protobuf.generated.PostPackage.getDefaultInstance());
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.PostPackage.Builder addSelectedpackagesBuilder(
+    public com.dnfm.mina.protobuf.generated.PostPackage.Builder addSelectedPackagesBuilder(
         int index) {
-      return internalGetSelectedpackagesFieldBuilder().addBuilder(
+      return internalGetSelectedPackagesFieldBuilder().addBuilder(
           index, com.dnfm.mina.protobuf.generated.PostPackage.getDefaultInstance());
     }
     /**
-     * <code>repeated .dnf.v1.PostPackage selectedpackages = 4 [json_name = "selectedpackages"];</code>
+     * <pre>
+     * 选中的包裹
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage selected_packages = 4 [json_name = "selectedPackages"];</code>
      */
     public java.util.List<com.dnfm.mina.protobuf.generated.PostPackage.Builder> 
-         getSelectedpackagesBuilderList() {
-      return internalGetSelectedpackagesFieldBuilder().getBuilderList();
+         getSelectedPackagesBuilderList() {
+      return internalGetSelectedPackagesFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilder<
         com.dnfm.mina.protobuf.generated.PostPackage, com.dnfm.mina.protobuf.generated.PostPackage.Builder, com.dnfm.mina.protobuf.generated.PostPackageOrBuilder> 
-        internalGetSelectedpackagesFieldBuilder() {
-      if (selectedpackagesBuilder_ == null) {
-        selectedpackagesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+        internalGetSelectedPackagesFieldBuilder() {
+      if (selectedPackagesBuilder_ == null) {
+        selectedPackagesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
             com.dnfm.mina.protobuf.generated.PostPackage, com.dnfm.mina.protobuf.generated.PostPackage.Builder, com.dnfm.mina.protobuf.generated.PostPackageOrBuilder>(
-                selectedpackages_,
+                selectedPackages_,
                 ((bitField0_ & 0x00000008) != 0),
                 getParentForChildren(),
                 isClean());
-        selectedpackages_ = null;
+        selectedPackages_ = null;
       }
-      return selectedpackagesBuilder_;
+      return selectedPackagesBuilder_;
     }
 
     // @@protoc_insertion_point(builder_scope:dnf.v1.MailGetRequest)

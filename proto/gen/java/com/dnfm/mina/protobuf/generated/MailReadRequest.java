@@ -7,7 +7,7 @@ package com.dnfm.mina.protobuf.generated;
 
 /**
  * <pre>
- * 读取邮件请求
+ * 邮件读取请求
  * </pre>
  *
  * Protobuf type {@code dnf.v1.MailReadRequest}
@@ -50,6 +50,10 @@ private static final long serialVersionUID = 0L;
   public static final int GUID_FIELD_NUMBER = 1;
   private long guid_ = 0L;
   /**
+   * <pre>
+   * 邮件GUID
+   * </pre>
+   *
    * <code>uint64 guid = 1 [json_name = "guid"];</code>
    * @return The guid.
    */
@@ -61,6 +65,10 @@ private static final long serialVersionUID = 0L;
   public static final int TYPE_FIELD_NUMBER = 2;
   private int type_ = 0;
   /**
+   * <pre>
+   * 邮件类型
+   * </pre>
+   *
    * <code>int32 type = 2 [json_name = "type"];</code>
    * @return The type.
    */
@@ -240,7 +248,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * 读取邮件请求
+   * 邮件读取请求
    * </pre>
    *
    * Protobuf type {@code dnf.v1.MailReadRequest}
@@ -392,6 +400,10 @@ private static final long serialVersionUID = 0L;
 
     private long guid_ ;
     /**
+     * <pre>
+     * 邮件GUID
+     * </pre>
+     *
      * <code>uint64 guid = 1 [json_name = "guid"];</code>
      * @return The guid.
      */
@@ -400,6 +412,10 @@ private static final long serialVersionUID = 0L;
       return guid_;
     }
     /**
+     * <pre>
+     * 邮件GUID
+     * </pre>
+     *
      * <code>uint64 guid = 1 [json_name = "guid"];</code>
      * @param value The guid to set.
      * @return This builder for chaining.
@@ -412,6 +428,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 邮件GUID
+     * </pre>
+     *
      * <code>uint64 guid = 1 [json_name = "guid"];</code>
      * @return This builder for chaining.
      */
@@ -424,6 +444,10 @@ private static final long serialVersionUID = 0L;
 
     private int type_ ;
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 2 [json_name = "type"];</code>
      * @return The type.
      */
@@ -432,6 +456,10 @@ private static final long serialVersionUID = 0L;
       return type_;
     }
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 2 [json_name = "type"];</code>
      * @param value The type to set.
      * @return This builder for chaining.
@@ -444,6 +472,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 2 [json_name = "type"];</code>
      * @return This builder for chaining.
      */

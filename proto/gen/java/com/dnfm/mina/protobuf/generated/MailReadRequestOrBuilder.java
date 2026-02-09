@@ -11,12 +11,20 @@ public interface MailReadRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * 邮件GUID
+   * </pre>
+   *
    * <code>uint64 guid = 1 [json_name = "guid"];</code>
    * @return The guid.
    */
   long getGuid();
 
   /**
+   * <pre>
+   * 邮件类型
+   * </pre>
+   *
    * <code>int32 type = 2 [json_name = "type"];</code>
    * @return The type.
    */

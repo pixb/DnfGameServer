@@ -11,6 +11,10 @@ public interface MailItemAllGetRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * 邮件类型
+   * </pre>
+   *
    * <code>int32 type = 1 [json_name = "type"];</code>
    * @return The type.
    */

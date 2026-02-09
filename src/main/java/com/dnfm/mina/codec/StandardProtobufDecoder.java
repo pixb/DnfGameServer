@@ -215,6 +215,42 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
                 return adaptFriendDeleteRequest(body);
             case 21003:
                 return adaptFriendMessageRequest(body);
+            case 21004:
+                return adaptFriendRequestListRequest(body);
+            case 21005:
+                return adaptFriendRequestAcceptRequest(body);
+            case 21006:
+                return adaptFriendRequestRejectRequest(body);
+            case 21007:
+                return adaptFriendBlacklistRequest(body);
+            case 15001:
+                return adaptMailListRequest(body);
+            case 15002:
+                return adaptMailGetRequest(body);
+            case 15003:
+                return adaptMailReadRequest(body);
+            case 15004:
+                return adaptMailDeleteRequest(body);
+            case 15005:
+                return adaptMailItemAllGetRequest(body);
+            case 15006:
+                return adaptMailAllDeleteRequest(body);
+            case 10105:
+                return adaptTownChatRequest(body);
+            case 13037:
+                return adaptQuickChattingRequest(body);
+            case 27017:
+                return adaptLoadGuildChatRequest(body);
+            case 10131:
+                return adaptHiddenChattingLoadRequest(body);
+            case 10129:
+                return adaptHiddenChattingAddRequest(body);
+            case 10130:
+                return adaptHiddenChattingDeleteRequest(body);
+            case 10128:
+                return adaptChatChannelListRequest(body);
+            case 14093:
+                return adaptChatFrameTabListRequest(body);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -1209,6 +1245,168 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
         System.out.println("===== StandardProtobufDecoder.adaptFriendMessageRequest() 被调用，body.length=" + body.length + " =====");
         com.dnfm.mina.protobuf.generated.FriendMessageRequest newRequest = 
             com.dnfm.mina.protobuf.generated.FriendMessageRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptFriendRequestListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptFriendRequestListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.FriendRequestListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.FriendRequestListRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptFriendRequestAcceptRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptFriendRequestAcceptRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.FriendRequestAcceptRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.FriendRequestAcceptRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptFriendRequestRejectRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptFriendRequestRejectRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.FriendRequestRejectRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.FriendRequestRejectRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptFriendBlacklistRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptFriendBlacklistRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.FriendBlacklistRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.FriendBlacklistRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptMailListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptMailListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.MailListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.MailListRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptMailGetRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptMailGetRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.MailGetRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.MailGetRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptMailReadRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptMailReadRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.MailReadRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.MailReadRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptMailDeleteRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptMailDeleteRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.MailDeleteRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.MailDeleteRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptMailItemAllGetRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptMailItemAllGetRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.MailItemAllGetRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.MailItemAllGetRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptMailAllDeleteRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptMailAllDeleteRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.MailAllDeleteRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.MailAllDeleteRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptTownChatRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptTownChatRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.TownChatRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.TownChatRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptQuickChattingRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptQuickChattingRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.QuickChattingRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.QuickChattingRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptLoadGuildChatRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptLoadGuildChatRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.LoadGuildChatRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.LoadGuildChatRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptHiddenChattingLoadRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptHiddenChattingLoadRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.HiddenChattingLoadRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.HiddenChattingLoadRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptHiddenChattingAddRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptHiddenChattingAddRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.HiddenChattingAddRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.HiddenChattingAddRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptHiddenChattingDeleteRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptHiddenChattingDeleteRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.HiddenChattingDeleteRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.HiddenChattingDeleteRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptChatChannelListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptChatChannelListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.ChatChannelListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.ChatChannelListRequest.parseFrom(body);
+        
+        // 简化实现，返回null
+        return null;
+    }
+
+    private Message adaptChatFrameTabListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptChatFrameTabListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.ChatFrameTabListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.ChatFrameTabListRequest.parseFrom(body);
         
         // 简化实现，返回null
         return null;

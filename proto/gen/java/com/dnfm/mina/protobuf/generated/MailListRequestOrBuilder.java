@@ -11,12 +11,20 @@ public interface MailListRequestOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * 页码
+   * </pre>
+   *
    * <code>int32 page = 1 [json_name = "page"];</code>
    * @return The page.
    */
   int getPage();
 
   /**
+   * <pre>
+   * 邮件类型
+   * </pre>
+   *
    * <code>int32 type = 2 [json_name = "type"];</code>
    * @return The type.
    */

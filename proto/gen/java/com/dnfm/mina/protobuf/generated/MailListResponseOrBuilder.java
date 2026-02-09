@@ -11,44 +11,76 @@ public interface MailListResponseOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * 错误码
+   * </pre>
+   *
    * <code>int32 error = 1 [json_name = "error"];</code>
    * @return The error.
    */
   int getError();
 
   /**
-   * <code>int32 count = 2 [json_name = "count"];</code>
-   * @return The count.
+   * <pre>
+   * 邮件列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
    */
-  int getCount();
-
+  java.util.List<com.dnfm.mina.protobuf.generated.MailInfo> 
+      getMailsList();
   /**
-   * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+   * <pre>
+   * 邮件列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
    */
-  java.util.List<com.dnfm.mina.protobuf.generated.PostAllList> 
-      getPostallistList();
+  com.dnfm.mina.protobuf.generated.MailInfo getMails(int index);
   /**
-   * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+   * <pre>
+   * 邮件列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
    */
-  com.dnfm.mina.protobuf.generated.PostAllList getPostallist(int index);
+  int getMailsCount();
   /**
-   * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+   * <pre>
+   * 邮件列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
    */
-  int getPostallistCount();
+  java.util.List<? extends com.dnfm.mina.protobuf.generated.MailInfoOrBuilder> 
+      getMailsOrBuilderList();
   /**
-   * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+   * <pre>
+   * 邮件列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
    */
-  java.util.List<? extends com.dnfm.mina.protobuf.generated.PostAllListOrBuilder> 
-      getPostallistOrBuilderList();
-  /**
-   * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
-   */
-  com.dnfm.mina.protobuf.generated.PostAllListOrBuilder getPostallistOrBuilder(
+  com.dnfm.mina.protobuf.generated.MailInfoOrBuilder getMailsOrBuilder(
       int index);
 
   /**
-   * <code>int32 type = 4 [json_name = "type"];</code>
-   * @return The type.
+   * <pre>
+   * 总邮件数
+   * </pre>
+   *
+   * <code>int32 total_count = 3 [json_name = "totalCount"];</code>
+   * @return The totalCount.
    */
-  int getType();
+  int getTotalCount();
+
+  /**
+   * <pre>
+   * 当前页码
+   * </pre>
+   *
+   * <code>int32 page = 4 [json_name = "page"];</code>
+   * @return The page.
+   */
+  int getPage();
 }

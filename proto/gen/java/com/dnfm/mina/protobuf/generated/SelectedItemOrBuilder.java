@@ -11,26 +11,22 @@ public interface SelectedItemOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>int32 index = 1 [json_name = "index"];</code>
-   * @return The index.
-   */
-  int getIndex();
-
-  /**
-   * <code>int32 count = 2 [json_name = "count"];</code>
-   * @return The count.
-   */
-  int getCount();
-
-  /**
-   * <code>uint64 guid = 3 [json_name = "guid"];</code>
+   * <pre>
+   * 物品GUID
+   * </pre>
+   *
+   * <code>uint64 guid = 1 [json_name = "guid"];</code>
    * @return The guid.
    */
   long getGuid();
 
   /**
-   * <code>int32 slotindex = 4 [json_name = "slotindex"];</code>
-   * @return The slotindex.
+   * <pre>
+   * 数量
+   * </pre>
+   *
+   * <code>int32 count = 2 [json_name = "count"];</code>
+   * @return The count.
    */
-  int getSlotindex();
+  int getCount();
 }

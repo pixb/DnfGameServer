@@ -11,53 +11,110 @@ public interface MailItemAllGetResponseOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * 错误码
+   * </pre>
+   *
    * <code>int32 error = 1 [json_name = "error"];</code>
    * @return The error.
    */
   int getError();
 
   /**
-   * <code>int32 page = 2 [json_name = "page"];</code>
-   * @return The page.
+   * <pre>
+   * 物品列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
    */
-  int getPage();
+  java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> 
+      getItemsList();
+  /**
+   * <pre>
+   * 物品列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+   */
+  com.dnfm.mina.protobuf.generated.SelectedItem getItems(int index);
+  /**
+   * <pre>
+   * 物品列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+   */
+  int getItemsCount();
+  /**
+   * <pre>
+   * 物品列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+   */
+  java.util.List<? extends com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder> 
+      getItemsOrBuilderList();
+  /**
+   * <pre>
+   * 物品列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+   */
+  com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder getItemsOrBuilder(
+      int index);
 
   /**
-   * <code>int32 maxpage = 3 [json_name = "maxpage"];</code>
-   * @return The maxpage.
+   * <pre>
+   * 包裹列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
    */
-  int getMaxpage();
+  java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> 
+      getPackagesList();
+  /**
+   * <pre>
+   * 包裹列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+   */
+  com.dnfm.mina.protobuf.generated.PostPackage getPackages(int index);
+  /**
+   * <pre>
+   * 包裹列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+   */
+  int getPackagesCount();
+  /**
+   * <pre>
+   * 包裹列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+   */
+  java.util.List<? extends com.dnfm.mina.protobuf.generated.PostPackageOrBuilder> 
+      getPackagesOrBuilderList();
+  /**
+   * <pre>
+   * 包裹列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+   */
+  com.dnfm.mina.protobuf.generated.PostPackageOrBuilder getPackagesOrBuilder(
+      int index);
 
   /**
-   * <code>bool limit = 4 [json_name = "limit"];</code>
-   * @return The limit.
+   * <pre>
+   * 总数量
+   * </pre>
+   *
+   * <code>int32 total_count = 4 [json_name = "totalCount"];</code>
+   * @return The totalCount.
    */
-  boolean getLimit();
-
-  /**
-   * <code>int32 type = 5 [json_name = "type"];</code>
-   * @return The type.
-   */
-  int getType();
-
-  /**
-   * <code>bool bind = 6 [json_name = "bind"];</code>
-   * @return The bind.
-   */
-  boolean getBind();
-
-  /**
-   * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-   * @return Whether the rewards field is set.
-   */
-  boolean hasRewards();
-  /**
-   * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-   * @return The rewards.
-   */
-  com.dnfm.mina.protobuf.generated.ContentsRewardInfo getRewards();
-  /**
-   * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-   */
-  com.dnfm.mina.protobuf.generated.ContentsRewardInfoOrBuilder getRewardsOrBuilder();
+  int getTotalCount();
 }

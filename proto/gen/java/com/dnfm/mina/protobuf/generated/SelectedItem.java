@@ -47,32 +47,14 @@ private static final long serialVersionUID = 0L;
             com.dnfm.mina.protobuf.generated.SelectedItem.class, com.dnfm.mina.protobuf.generated.SelectedItem.Builder.class);
   }
 
-  public static final int INDEX_FIELD_NUMBER = 1;
-  private int index_ = 0;
-  /**
-   * <code>int32 index = 1 [json_name = "index"];</code>
-   * @return The index.
-   */
-  @java.lang.Override
-  public int getIndex() {
-    return index_;
-  }
-
-  public static final int COUNT_FIELD_NUMBER = 2;
-  private int count_ = 0;
-  /**
-   * <code>int32 count = 2 [json_name = "count"];</code>
-   * @return The count.
-   */
-  @java.lang.Override
-  public int getCount() {
-    return count_;
-  }
-
-  public static final int GUID_FIELD_NUMBER = 3;
+  public static final int GUID_FIELD_NUMBER = 1;
   private long guid_ = 0L;
   /**
-   * <code>uint64 guid = 3 [json_name = "guid"];</code>
+   * <pre>
+   * 物品GUID
+   * </pre>
+   *
+   * <code>uint64 guid = 1 [json_name = "guid"];</code>
    * @return The guid.
    */
   @java.lang.Override
@@ -80,15 +62,19 @@ private static final long serialVersionUID = 0L;
     return guid_;
   }
 
-  public static final int SLOTINDEX_FIELD_NUMBER = 4;
-  private int slotindex_ = 0;
+  public static final int COUNT_FIELD_NUMBER = 2;
+  private int count_ = 0;
   /**
-   * <code>int32 slotindex = 4 [json_name = "slotindex"];</code>
-   * @return The slotindex.
+   * <pre>
+   * 数量
+   * </pre>
+   *
+   * <code>int32 count = 2 [json_name = "count"];</code>
+   * @return The count.
    */
   @java.lang.Override
-  public int getSlotindex() {
-    return slotindex_;
+  public int getCount() {
+    return count_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -105,17 +91,11 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (index_ != 0) {
-      output.writeInt32(1, index_);
+    if (guid_ != 0L) {
+      output.writeUInt64(1, guid_);
     }
     if (count_ != 0) {
       output.writeInt32(2, count_);
-    }
-    if (guid_ != 0L) {
-      output.writeUInt64(3, guid_);
-    }
-    if (slotindex_ != 0) {
-      output.writeInt32(4, slotindex_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -126,21 +106,13 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (index_ != 0) {
+    if (guid_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, index_);
+        .computeUInt64Size(1, guid_);
     }
     if (count_ != 0) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(2, count_);
-    }
-    if (guid_ != 0L) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeUInt64Size(3, guid_);
-    }
-    if (slotindex_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(4, slotindex_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -157,14 +129,10 @@ private static final long serialVersionUID = 0L;
     }
     com.dnfm.mina.protobuf.generated.SelectedItem other = (com.dnfm.mina.protobuf.generated.SelectedItem) obj;
 
-    if (getIndex()
-        != other.getIndex()) return false;
-    if (getCount()
-        != other.getCount()) return false;
     if (getGuid()
         != other.getGuid()) return false;
-    if (getSlotindex()
-        != other.getSlotindex()) return false;
+    if (getCount()
+        != other.getCount()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -176,15 +144,11 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + INDEX_FIELD_NUMBER;
-    hash = (53 * hash) + getIndex();
-    hash = (37 * hash) + COUNT_FIELD_NUMBER;
-    hash = (53 * hash) + getCount();
     hash = (37 * hash) + GUID_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getGuid());
-    hash = (37 * hash) + SLOTINDEX_FIELD_NUMBER;
-    hash = (53 * hash) + getSlotindex();
+    hash = (37 * hash) + COUNT_FIELD_NUMBER;
+    hash = (53 * hash) + getCount();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -320,10 +284,8 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      index_ = 0;
-      count_ = 0;
       guid_ = 0L;
-      slotindex_ = 0;
+      count_ = 0;
       return this;
     }
 
@@ -358,16 +320,10 @@ private static final long serialVersionUID = 0L;
     private void buildPartial0(com.dnfm.mina.protobuf.generated.SelectedItem result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.index_ = index_;
+        result.guid_ = guid_;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.count_ = count_;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.guid_ = guid_;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        result.slotindex_ = slotindex_;
       }
     }
 
@@ -383,17 +339,11 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.dnfm.mina.protobuf.generated.SelectedItem other) {
       if (other == com.dnfm.mina.protobuf.generated.SelectedItem.getDefaultInstance()) return this;
-      if (other.getIndex() != 0) {
-        setIndex(other.getIndex());
-      }
-      if (other.getCount() != 0) {
-        setCount(other.getCount());
-      }
       if (other.getGuid() != 0L) {
         setGuid(other.getGuid());
       }
-      if (other.getSlotindex() != 0) {
-        setSlotindex(other.getSlotindex());
+      if (other.getCount() != 0) {
+        setCount(other.getCount());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -422,7 +372,7 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 8: {
-              index_ = input.readInt32();
+              guid_ = input.readUInt64();
               bitField0_ |= 0x00000001;
               break;
             } // case 8
@@ -431,16 +381,6 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000002;
               break;
             } // case 16
-            case 24: {
-              guid_ = input.readUInt64();
-              bitField0_ |= 0x00000004;
-              break;
-            } // case 24
-            case 32: {
-              slotindex_ = input.readInt32();
-              bitField0_ |= 0x00000008;
-              break;
-            } // case 32
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -458,40 +398,56 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private int index_ ;
+    private long guid_ ;
     /**
-     * <code>int32 index = 1 [json_name = "index"];</code>
-     * @return The index.
+     * <pre>
+     * 物品GUID
+     * </pre>
+     *
+     * <code>uint64 guid = 1 [json_name = "guid"];</code>
+     * @return The guid.
      */
     @java.lang.Override
-    public int getIndex() {
-      return index_;
+    public long getGuid() {
+      return guid_;
     }
     /**
-     * <code>int32 index = 1 [json_name = "index"];</code>
-     * @param value The index to set.
+     * <pre>
+     * 物品GUID
+     * </pre>
+     *
+     * <code>uint64 guid = 1 [json_name = "guid"];</code>
+     * @param value The guid to set.
      * @return This builder for chaining.
      */
-    public Builder setIndex(int value) {
+    public Builder setGuid(long value) {
 
-      index_ = value;
+      guid_ = value;
       bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 index = 1 [json_name = "index"];</code>
+     * <pre>
+     * 物品GUID
+     * </pre>
+     *
+     * <code>uint64 guid = 1 [json_name = "guid"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearIndex() {
+    public Builder clearGuid() {
       bitField0_ = (bitField0_ & ~0x00000001);
-      index_ = 0;
+      guid_ = 0L;
       onChanged();
       return this;
     }
 
     private int count_ ;
     /**
+     * <pre>
+     * 数量
+     * </pre>
+     *
      * <code>int32 count = 2 [json_name = "count"];</code>
      * @return The count.
      */
@@ -500,6 +456,10 @@ private static final long serialVersionUID = 0L;
       return count_;
     }
     /**
+     * <pre>
+     * 数量
+     * </pre>
+     *
      * <code>int32 count = 2 [json_name = "count"];</code>
      * @param value The count to set.
      * @return This builder for chaining.
@@ -512,76 +472,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 数量
+     * </pre>
+     *
      * <code>int32 count = 2 [json_name = "count"];</code>
      * @return This builder for chaining.
      */
     public Builder clearCount() {
       bitField0_ = (bitField0_ & ~0x00000002);
       count_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private long guid_ ;
-    /**
-     * <code>uint64 guid = 3 [json_name = "guid"];</code>
-     * @return The guid.
-     */
-    @java.lang.Override
-    public long getGuid() {
-      return guid_;
-    }
-    /**
-     * <code>uint64 guid = 3 [json_name = "guid"];</code>
-     * @param value The guid to set.
-     * @return This builder for chaining.
-     */
-    public Builder setGuid(long value) {
-
-      guid_ = value;
-      bitField0_ |= 0x00000004;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>uint64 guid = 3 [json_name = "guid"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearGuid() {
-      bitField0_ = (bitField0_ & ~0x00000004);
-      guid_ = 0L;
-      onChanged();
-      return this;
-    }
-
-    private int slotindex_ ;
-    /**
-     * <code>int32 slotindex = 4 [json_name = "slotindex"];</code>
-     * @return The slotindex.
-     */
-    @java.lang.Override
-    public int getSlotindex() {
-      return slotindex_;
-    }
-    /**
-     * <code>int32 slotindex = 4 [json_name = "slotindex"];</code>
-     * @param value The slotindex to set.
-     * @return This builder for chaining.
-     */
-    public Builder setSlotindex(int value) {
-
-      slotindex_ = value;
-      bitField0_ |= 0x00000008;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 slotindex = 4 [json_name = "slotindex"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearSlotindex() {
-      bitField0_ = (bitField0_ & ~0x00000008);
-      slotindex_ = 0;
       onChanged();
       return this;
     }

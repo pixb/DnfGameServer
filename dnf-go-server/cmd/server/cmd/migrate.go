@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 
@@ -246,7 +247,8 @@ func runMigrateStatus(cmd *cobra.Command, args []string) error {
 	fmt.Printf("%-15s %-30s %s\n", "VERSION", "APPLIED AT", "DESCRIPTION")
 	fmt.Println(strings.Repeat("-", 80))
 	for _, r := range records {
-		fmt.Printf("%-15s %-30s %s\n", r.Version, r.AppliedAt, r.Description)
+		appliedAt := time.Unix(r.AppliedAt, 0).Format("2006-01-02 15:04:05")
+		fmt.Printf("%-15s %-30s %s\n", r.Version, appliedAt, r.Description)
 	}
 
 	return nil

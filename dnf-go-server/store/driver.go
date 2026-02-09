@@ -133,6 +133,18 @@ type Driver interface {
 	ListMails(ctx context.Context, find *FindMail) ([]*Mail, error)
 	DeleteMail(ctx context.Context, delete *DeleteMail) error
 
+	// ==================== 拍卖行相关 ====================
+	CreateAuctionItem(ctx context.Context, create *AuctionItem) (*AuctionItem, error)
+	UpdateAuctionItem(ctx context.Context, update *UpdateAuctionItem) error
+	GetAuctionItem(ctx context.Context, find *FindAuctionItem) (*AuctionItem, error)
+	ListAuctionItems(ctx context.Context, find *FindAuctionItem) ([]*AuctionItem, error)
+	ListAuctionItemsBySeller(ctx context.Context, sellerID uint64) ([]*AuctionItem, error)
+	DeleteAuctionItem(ctx context.Context, delete *DeleteAuctionItem) error
+	CountAuctionItemsBySeller(ctx context.Context, sellerID uint64) (int, error)
+
+	CreateAuctionHistory(ctx context.Context, create *CreateAuctionHistory) (*AuctionHistory, error)
+	ListAuctionHistory(ctx context.Context, find *FindAuctionHistory) ([]*AuctionHistory, error)
+
 	// ==================== 系统设置 ====================
 	GetInstanceBasicSetting(ctx context.Context) (*InstanceBasicSetting, error)
 	UpsertInstanceSetting(ctx context.Context, setting *InstanceSetting) (*InstanceSetting, error)

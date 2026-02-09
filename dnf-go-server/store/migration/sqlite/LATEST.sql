@@ -227,6 +227,52 @@ CREATE TABLE IF NOT EXISTS system_setting (
     description TEXT DEFAULT ''
 );
 
+-- 拍卖行物品表
+CREATE TABLE IF NOT EXISTS auction_item (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    row_status TEXT NOT NULL DEFAULT 'NORMAL',
+    seller_id INTEGER NOT NULL,
+    seller_name TEXT DEFAULT '',
+    item_id INTEGER NOT NULL,
+    count INTEGER DEFAULT 1,
+    price INTEGER DEFAULT 0,
+    total_price INTEGER DEFAULT 0,
+    duration INTEGER DEFAULT 24,
+    status INTEGER DEFAULT 0,
+    bidder_id INTEGER DEFAULT 0,
+    bidder_name TEXT DEFAULT '',
+    bid_price INTEGER DEFAULT 0,
+    bid_count INTEGER DEFAULT 0,
+    attributes TEXT DEFAULT '',
+    end_time INTEGER DEFAULT 0,
+    FOREIGN KEY (seller_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_auction_item_seller ON auction_item(seller_id);
+CREATE INDEX IF NOT EXISTS idx_auction_item_item ON auction_item(item_id);
+CREATE INDEX IF NOT EXISTS idx_auction_item_status ON auction_item(status);
+CREATE INDEX IF NOT EXISTS idx_auction_item_end_time ON auction_item(end_time);
+
+-- 拍卖历史表
+CREATE TABLE IF NOT EXISTS auction_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    row_status TEXT NOT NULL DEFAULT 'NORMAL',
+    auction_id INTEGER NOT NULL,
+    seller_id INTEGER NOT NULL,
+    buyer_id INTEGER DEFAULT 0,
+    item_id INTEGER NOT NULL,
+    count INTEGER DEFAULT 1,
+    final_price INTEGER DEFAULT 0,
+    seller_income INTEGER DEFAULT 0
+);
+
+CREATE INDEX IF NOT EXISTS idx_auction_history_seller ON auction_history(seller_id);
+CREATE INDEX IF NOT EXISTS idx_auction_history_buyer ON auction_history(buyer_id);
+
 -- 插入默认系统设置
 INSERT OR IGNORE INTO system_setting (name, value, description) VALUES 
 ('basic', '{"version":"1.0.0","name":"DNF Go Server"}', '实例基本设置');

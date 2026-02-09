@@ -7,7 +7,7 @@ package com.dnfm.mina.protobuf.generated;
 
 /**
  * <pre>
- * 删除所有邮件请求
+ * 邮件全部删除请求
  * </pre>
  *
  * Protobuf type {@code dnf.v1.MailAllDeleteRequest}
@@ -50,6 +50,10 @@ private static final long serialVersionUID = 0L;
   public static final int TYPE_FIELD_NUMBER = 1;
   private int type_ = 0;
   /**
+   * <pre>
+   * 邮件类型
+   * </pre>
+   *
    * <code>int32 type = 1 [json_name = "type"];</code>
    * @return The type.
    */
@@ -217,7 +221,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * 删除所有邮件请求
+   * 邮件全部删除请求
    * </pre>
    *
    * Protobuf type {@code dnf.v1.MailAllDeleteRequest}
@@ -357,6 +361,10 @@ private static final long serialVersionUID = 0L;
 
     private int type_ ;
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 1 [json_name = "type"];</code>
      * @return The type.
      */
@@ -365,6 +373,10 @@ private static final long serialVersionUID = 0L;
       return type_;
     }
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 1 [json_name = "type"];</code>
      * @param value The type to set.
      * @return This builder for chaining.
@@ -377,6 +389,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 邮件类型
+     * </pre>
+     *
      * <code>int32 type = 1 [json_name = "type"];</code>
      * @return This builder for chaining.
      */

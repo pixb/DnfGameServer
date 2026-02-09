@@ -371,6 +371,43 @@ func (s *Store) DeleteMail(ctx context.Context, delete *DeleteMail) error {
 	return s.driver.DeleteMail(ctx, delete)
 }
 
+// ==================== 拍卖行相关Store方法 ====================
+
+// CreateAuctionItem 创建拍卖物品
+func (s *Store) CreateAuctionItem(ctx context.Context, create *AuctionItem) (*AuctionItem, error) {
+	return s.driver.CreateAuctionItem(ctx, create)
+}
+
+// GetAuctionItem 获取拍卖物品
+func (s *Store) GetAuctionItem(ctx context.Context, find *FindAuctionItem) (*AuctionItem, error) {
+	return s.driver.GetAuctionItem(ctx, find)
+}
+
+// ListAuctionItems 查询拍卖物品列表
+func (s *Store) ListAuctionItems(ctx context.Context, find *FindAuctionItem) ([]*AuctionItem, error) {
+	return s.driver.ListAuctionItems(ctx, find)
+}
+
+// UpdateAuctionItem 更新拍卖物品
+func (s *Store) UpdateAuctionItem(ctx context.Context, update *UpdateAuctionItem) error {
+	return s.driver.UpdateAuctionItem(ctx, update)
+}
+
+// DeleteAuctionItem 删除拍卖物品
+func (s *Store) DeleteAuctionItem(ctx context.Context, delete *DeleteAuctionItem) error {
+	return s.driver.DeleteAuctionItem(ctx, delete)
+}
+
+// CreateAuctionHistory 创建拍卖历史
+func (s *Store) CreateAuctionHistory(ctx context.Context, create *CreateAuctionHistory) (*AuctionHistory, error) {
+	return s.driver.CreateAuctionHistory(ctx, create)
+}
+
+// ListAuctionHistory 查询拍卖历史
+func (s *Store) ListAuctionHistory(ctx context.Context, find *FindAuctionHistory) ([]*AuctionHistory, error) {
+	return s.driver.ListAuctionHistory(ctx, find)
+}
+
 // ==================== 系统设置Store方法 ====================
 
 // GetInstanceBasicSetting 获取实例基本设置

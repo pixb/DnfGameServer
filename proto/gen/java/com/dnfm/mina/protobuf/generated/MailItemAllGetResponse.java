@@ -7,7 +7,7 @@ package com.dnfm.mina.protobuf.generated;
 
 /**
  * <pre>
- * 一键领取所有邮件物品响应
+ * 邮件物品全部获取响应
  * </pre>
  *
  * Protobuf type {@code dnf.v1.MailItemAllGetResponse}
@@ -32,6 +32,8 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private MailItemAllGetResponse() {
+    items_ = java.util.Collections.emptyList();
+    packages_ = java.util.Collections.emptyList();
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
@@ -47,10 +49,13 @@ private static final long serialVersionUID = 0L;
             com.dnfm.mina.protobuf.generated.MailItemAllGetResponse.class, com.dnfm.mina.protobuf.generated.MailItemAllGetResponse.Builder.class);
   }
 
-  private int bitField0_;
   public static final int ERROR_FIELD_NUMBER = 1;
   private int error_ = 0;
   /**
+   * <pre>
+   * 错误码
+   * </pre>
+   *
    * <code>int32 error = 1 [json_name = "error"];</code>
    * @return The error.
    */
@@ -59,85 +64,141 @@ private static final long serialVersionUID = 0L;
     return error_;
   }
 
-  public static final int PAGE_FIELD_NUMBER = 2;
-  private int page_ = 0;
+  public static final int ITEMS_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
+  private java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> items_;
   /**
-   * <code>int32 page = 2 [json_name = "page"];</code>
-   * @return The page.
+   * <pre>
+   * 物品列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
    */
   @java.lang.Override
-  public int getPage() {
-    return page_;
+  public java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> getItemsList() {
+    return items_;
+  }
+  /**
+   * <pre>
+   * 物品列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+   */
+  @java.lang.Override
+  public java.util.List<? extends com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder> 
+      getItemsOrBuilderList() {
+    return items_;
+  }
+  /**
+   * <pre>
+   * 物品列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+   */
+  @java.lang.Override
+  public int getItemsCount() {
+    return items_.size();
+  }
+  /**
+   * <pre>
+   * 物品列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+   */
+  @java.lang.Override
+  public com.dnfm.mina.protobuf.generated.SelectedItem getItems(int index) {
+    return items_.get(index);
+  }
+  /**
+   * <pre>
+   * 物品列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+   */
+  @java.lang.Override
+  public com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder getItemsOrBuilder(
+      int index) {
+    return items_.get(index);
   }
 
-  public static final int MAXPAGE_FIELD_NUMBER = 3;
-  private int maxpage_ = 0;
+  public static final int PACKAGES_FIELD_NUMBER = 3;
+  @SuppressWarnings("serial")
+  private java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> packages_;
   /**
-   * <code>int32 maxpage = 3 [json_name = "maxpage"];</code>
-   * @return The maxpage.
+   * <pre>
+   * 包裹列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
    */
   @java.lang.Override
-  public int getMaxpage() {
-    return maxpage_;
+  public java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> getPackagesList() {
+    return packages_;
+  }
+  /**
+   * <pre>
+   * 包裹列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+   */
+  @java.lang.Override
+  public java.util.List<? extends com.dnfm.mina.protobuf.generated.PostPackageOrBuilder> 
+      getPackagesOrBuilderList() {
+    return packages_;
+  }
+  /**
+   * <pre>
+   * 包裹列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+   */
+  @java.lang.Override
+  public int getPackagesCount() {
+    return packages_.size();
+  }
+  /**
+   * <pre>
+   * 包裹列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+   */
+  @java.lang.Override
+  public com.dnfm.mina.protobuf.generated.PostPackage getPackages(int index) {
+    return packages_.get(index);
+  }
+  /**
+   * <pre>
+   * 包裹列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+   */
+  @java.lang.Override
+  public com.dnfm.mina.protobuf.generated.PostPackageOrBuilder getPackagesOrBuilder(
+      int index) {
+    return packages_.get(index);
   }
 
-  public static final int LIMIT_FIELD_NUMBER = 4;
-  private boolean limit_ = false;
+  public static final int TOTAL_COUNT_FIELD_NUMBER = 4;
+  private int totalCount_ = 0;
   /**
-   * <code>bool limit = 4 [json_name = "limit"];</code>
-   * @return The limit.
+   * <pre>
+   * 总数量
+   * </pre>
+   *
+   * <code>int32 total_count = 4 [json_name = "totalCount"];</code>
+   * @return The totalCount.
    */
   @java.lang.Override
-  public boolean getLimit() {
-    return limit_;
-  }
-
-  public static final int TYPE_FIELD_NUMBER = 5;
-  private int type_ = 0;
-  /**
-   * <code>int32 type = 5 [json_name = "type"];</code>
-   * @return The type.
-   */
-  @java.lang.Override
-  public int getType() {
-    return type_;
-  }
-
-  public static final int BIND_FIELD_NUMBER = 6;
-  private boolean bind_ = false;
-  /**
-   * <code>bool bind = 6 [json_name = "bind"];</code>
-   * @return The bind.
-   */
-  @java.lang.Override
-  public boolean getBind() {
-    return bind_;
-  }
-
-  public static final int REWARDS_FIELD_NUMBER = 7;
-  private com.dnfm.mina.protobuf.generated.ContentsRewardInfo rewards_;
-  /**
-   * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-   * @return Whether the rewards field is set.
-   */
-  @java.lang.Override
-  public boolean hasRewards() {
-    return ((bitField0_ & 0x00000001) != 0);
-  }
-  /**
-   * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-   * @return The rewards.
-   */
-  @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.ContentsRewardInfo getRewards() {
-    return rewards_ == null ? com.dnfm.mina.protobuf.generated.ContentsRewardInfo.getDefaultInstance() : rewards_;
-  }
-  /**
-   * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-   */
-  @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.ContentsRewardInfoOrBuilder getRewardsOrBuilder() {
-    return rewards_ == null ? com.dnfm.mina.protobuf.generated.ContentsRewardInfo.getDefaultInstance() : rewards_;
+  public int getTotalCount() {
+    return totalCount_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -157,23 +218,14 @@ private static final long serialVersionUID = 0L;
     if (error_ != 0) {
       output.writeInt32(1, error_);
     }
-    if (page_ != 0) {
-      output.writeInt32(2, page_);
+    for (int i = 0; i < items_.size(); i++) {
+      output.writeMessage(2, items_.get(i));
     }
-    if (maxpage_ != 0) {
-      output.writeInt32(3, maxpage_);
+    for (int i = 0; i < packages_.size(); i++) {
+      output.writeMessage(3, packages_.get(i));
     }
-    if (limit_ != false) {
-      output.writeBool(4, limit_);
-    }
-    if (type_ != 0) {
-      output.writeInt32(5, type_);
-    }
-    if (bind_ != false) {
-      output.writeBool(6, bind_);
-    }
-    if (((bitField0_ & 0x00000001) != 0)) {
-      output.writeMessage(7, getRewards());
+    if (totalCount_ != 0) {
+      output.writeInt32(4, totalCount_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -188,29 +240,17 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(1, error_);
     }
-    if (page_ != 0) {
+    for (int i = 0; i < items_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(2, page_);
+        .computeMessageSize(2, items_.get(i));
     }
-    if (maxpage_ != 0) {
+    for (int i = 0; i < packages_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(3, maxpage_);
+        .computeMessageSize(3, packages_.get(i));
     }
-    if (limit_ != false) {
+    if (totalCount_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeBoolSize(4, limit_);
-    }
-    if (type_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(5, type_);
-    }
-    if (bind_ != false) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeBoolSize(6, bind_);
-    }
-    if (((bitField0_ & 0x00000001) != 0)) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(7, getRewards());
+        .computeInt32Size(4, totalCount_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -229,21 +269,12 @@ private static final long serialVersionUID = 0L;
 
     if (getError()
         != other.getError()) return false;
-    if (getPage()
-        != other.getPage()) return false;
-    if (getMaxpage()
-        != other.getMaxpage()) return false;
-    if (getLimit()
-        != other.getLimit()) return false;
-    if (getType()
-        != other.getType()) return false;
-    if (getBind()
-        != other.getBind()) return false;
-    if (hasRewards() != other.hasRewards()) return false;
-    if (hasRewards()) {
-      if (!getRewards()
-          .equals(other.getRewards())) return false;
-    }
+    if (!getItemsList()
+        .equals(other.getItemsList())) return false;
+    if (!getPackagesList()
+        .equals(other.getPackagesList())) return false;
+    if (getTotalCount()
+        != other.getTotalCount()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -257,22 +288,16 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + ERROR_FIELD_NUMBER;
     hash = (53 * hash) + getError();
-    hash = (37 * hash) + PAGE_FIELD_NUMBER;
-    hash = (53 * hash) + getPage();
-    hash = (37 * hash) + MAXPAGE_FIELD_NUMBER;
-    hash = (53 * hash) + getMaxpage();
-    hash = (37 * hash) + LIMIT_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-        getLimit());
-    hash = (37 * hash) + TYPE_FIELD_NUMBER;
-    hash = (53 * hash) + getType();
-    hash = (37 * hash) + BIND_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-        getBind());
-    if (hasRewards()) {
-      hash = (37 * hash) + REWARDS_FIELD_NUMBER;
-      hash = (53 * hash) + getRewards().hashCode();
+    if (getItemsCount() > 0) {
+      hash = (37 * hash) + ITEMS_FIELD_NUMBER;
+      hash = (53 * hash) + getItemsList().hashCode();
     }
+    if (getPackagesCount() > 0) {
+      hash = (37 * hash) + PACKAGES_FIELD_NUMBER;
+      hash = (53 * hash) + getPackagesList().hashCode();
+    }
+    hash = (37 * hash) + TOTAL_COUNT_FIELD_NUMBER;
+    hash = (53 * hash) + getTotalCount();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -372,7 +397,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * 一键领取所有邮件物品响应
+   * 邮件物品全部获取响应
    * </pre>
    *
    * Protobuf type {@code dnf.v1.MailItemAllGetResponse}
@@ -396,35 +421,34 @@ private static final long serialVersionUID = 0L;
 
     // Construct using com.dnfm.mina.protobuf.generated.MailItemAllGetResponse.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessage.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessage
-              .alwaysUseFieldBuilders) {
-        internalGetRewardsFieldBuilder();
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
       error_ = 0;
-      page_ = 0;
-      maxpage_ = 0;
-      limit_ = false;
-      type_ = 0;
-      bind_ = false;
-      rewards_ = null;
-      if (rewardsBuilder_ != null) {
-        rewardsBuilder_.dispose();
-        rewardsBuilder_ = null;
+      if (itemsBuilder_ == null) {
+        items_ = java.util.Collections.emptyList();
+      } else {
+        items_ = null;
+        itemsBuilder_.clear();
       }
+      bitField0_ = (bitField0_ & ~0x00000002);
+      if (packagesBuilder_ == null) {
+        packages_ = java.util.Collections.emptyList();
+      } else {
+        packages_ = null;
+        packagesBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000004);
+      totalCount_ = 0;
       return this;
     }
 
@@ -451,9 +475,31 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.dnfm.mina.protobuf.generated.MailItemAllGetResponse buildPartial() {
       com.dnfm.mina.protobuf.generated.MailItemAllGetResponse result = new com.dnfm.mina.protobuf.generated.MailItemAllGetResponse(this);
+      buildPartialRepeatedFields(result);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
+    }
+
+    private void buildPartialRepeatedFields(com.dnfm.mina.protobuf.generated.MailItemAllGetResponse result) {
+      if (itemsBuilder_ == null) {
+        if (((bitField0_ & 0x00000002) != 0)) {
+          items_ = java.util.Collections.unmodifiableList(items_);
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.items_ = items_;
+      } else {
+        result.items_ = itemsBuilder_.build();
+      }
+      if (packagesBuilder_ == null) {
+        if (((bitField0_ & 0x00000004) != 0)) {
+          packages_ = java.util.Collections.unmodifiableList(packages_);
+          bitField0_ = (bitField0_ & ~0x00000004);
+        }
+        result.packages_ = packages_;
+      } else {
+        result.packages_ = packagesBuilder_.build();
+      }
     }
 
     private void buildPartial0(com.dnfm.mina.protobuf.generated.MailItemAllGetResponse result) {
@@ -461,29 +507,9 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000001) != 0)) {
         result.error_ = error_;
       }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.page_ = page_;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.maxpage_ = maxpage_;
-      }
       if (((from_bitField0_ & 0x00000008) != 0)) {
-        result.limit_ = limit_;
+        result.totalCount_ = totalCount_;
       }
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        result.type_ = type_;
-      }
-      if (((from_bitField0_ & 0x00000020) != 0)) {
-        result.bind_ = bind_;
-      }
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000040) != 0)) {
-        result.rewards_ = rewardsBuilder_ == null
-            ? rewards_
-            : rewardsBuilder_.build();
-        to_bitField0_ |= 0x00000001;
-      }
-      result.bitField0_ |= to_bitField0_;
     }
 
     @java.lang.Override
@@ -501,23 +527,60 @@ private static final long serialVersionUID = 0L;
       if (other.getError() != 0) {
         setError(other.getError());
       }
-      if (other.getPage() != 0) {
-        setPage(other.getPage());
+      if (itemsBuilder_ == null) {
+        if (!other.items_.isEmpty()) {
+          if (items_.isEmpty()) {
+            items_ = other.items_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureItemsIsMutable();
+            items_.addAll(other.items_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.items_.isEmpty()) {
+          if (itemsBuilder_.isEmpty()) {
+            itemsBuilder_.dispose();
+            itemsBuilder_ = null;
+            items_ = other.items_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            itemsBuilder_ = 
+              com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                 internalGetItemsFieldBuilder() : null;
+          } else {
+            itemsBuilder_.addAllMessages(other.items_);
+          }
+        }
       }
-      if (other.getMaxpage() != 0) {
-        setMaxpage(other.getMaxpage());
+      if (packagesBuilder_ == null) {
+        if (!other.packages_.isEmpty()) {
+          if (packages_.isEmpty()) {
+            packages_ = other.packages_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            ensurePackagesIsMutable();
+            packages_.addAll(other.packages_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.packages_.isEmpty()) {
+          if (packagesBuilder_.isEmpty()) {
+            packagesBuilder_.dispose();
+            packagesBuilder_ = null;
+            packages_ = other.packages_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+            packagesBuilder_ = 
+              com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                 internalGetPackagesFieldBuilder() : null;
+          } else {
+            packagesBuilder_.addAllMessages(other.packages_);
+          }
+        }
       }
-      if (other.getLimit() != false) {
-        setLimit(other.getLimit());
-      }
-      if (other.getType() != 0) {
-        setType(other.getType());
-      }
-      if (other.getBind() != false) {
-        setBind(other.getBind());
-      }
-      if (other.hasRewards()) {
-        mergeRewards(other.getRewards());
+      if (other.getTotalCount() != 0) {
+        setTotalCount(other.getTotalCount());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -550,38 +613,37 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000001;
               break;
             } // case 8
-            case 16: {
-              page_ = input.readInt32();
-              bitField0_ |= 0x00000002;
+            case 18: {
+              com.dnfm.mina.protobuf.generated.SelectedItem m =
+                  input.readMessage(
+                      com.dnfm.mina.protobuf.generated.SelectedItem.parser(),
+                      extensionRegistry);
+              if (itemsBuilder_ == null) {
+                ensureItemsIsMutable();
+                items_.add(m);
+              } else {
+                itemsBuilder_.addMessage(m);
+              }
               break;
-            } // case 16
-            case 24: {
-              maxpage_ = input.readInt32();
-              bitField0_ |= 0x00000004;
+            } // case 18
+            case 26: {
+              com.dnfm.mina.protobuf.generated.PostPackage m =
+                  input.readMessage(
+                      com.dnfm.mina.protobuf.generated.PostPackage.parser(),
+                      extensionRegistry);
+              if (packagesBuilder_ == null) {
+                ensurePackagesIsMutable();
+                packages_.add(m);
+              } else {
+                packagesBuilder_.addMessage(m);
+              }
               break;
-            } // case 24
+            } // case 26
             case 32: {
-              limit_ = input.readBool();
+              totalCount_ = input.readInt32();
               bitField0_ |= 0x00000008;
               break;
             } // case 32
-            case 40: {
-              type_ = input.readInt32();
-              bitField0_ |= 0x00000010;
-              break;
-            } // case 40
-            case 48: {
-              bind_ = input.readBool();
-              bitField0_ |= 0x00000020;
-              break;
-            } // case 48
-            case 58: {
-              input.readMessage(
-                  internalGetRewardsFieldBuilder().getBuilder(),
-                  extensionRegistry);
-              bitField0_ |= 0x00000040;
-              break;
-            } // case 58
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -601,6 +663,10 @@ private static final long serialVersionUID = 0L;
 
     private int error_ ;
     /**
+     * <pre>
+     * 错误码
+     * </pre>
+     *
      * <code>int32 error = 1 [json_name = "error"];</code>
      * @return The error.
      */
@@ -609,6 +675,10 @@ private static final long serialVersionUID = 0L;
       return error_;
     }
     /**
+     * <pre>
+     * 错误码
+     * </pre>
+     *
      * <code>int32 error = 1 [json_name = "error"];</code>
      * @param value The error to set.
      * @return This builder for chaining.
@@ -621,6 +691,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 错误码
+     * </pre>
+     *
      * <code>int32 error = 1 [json_name = "error"];</code>
      * @return This builder for chaining.
      */
@@ -631,285 +705,672 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int page_ ;
+    private java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> items_ =
+      java.util.Collections.emptyList();
+    private void ensureItemsIsMutable() {
+      if (!((bitField0_ & 0x00000002) != 0)) {
+        items_ = new java.util.ArrayList<com.dnfm.mina.protobuf.generated.SelectedItem>(items_);
+        bitField0_ |= 0x00000002;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilder<
+        com.dnfm.mina.protobuf.generated.SelectedItem, com.dnfm.mina.protobuf.generated.SelectedItem.Builder, com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder> itemsBuilder_;
+
     /**
-     * <code>int32 page = 2 [json_name = "page"];</code>
-     * @return The page.
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem> getItemsList() {
+      if (itemsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(items_);
+      } else {
+        return itemsBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public int getItemsCount() {
+      if (itemsBuilder_ == null) {
+        return items_.size();
+      } else {
+        return itemsBuilder_.getCount();
+      }
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public com.dnfm.mina.protobuf.generated.SelectedItem getItems(int index) {
+      if (itemsBuilder_ == null) {
+        return items_.get(index);
+      } else {
+        return itemsBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public Builder setItems(
+        int index, com.dnfm.mina.protobuf.generated.SelectedItem value) {
+      if (itemsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureItemsIsMutable();
+        items_.set(index, value);
+        onChanged();
+      } else {
+        itemsBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public Builder setItems(
+        int index, com.dnfm.mina.protobuf.generated.SelectedItem.Builder builderForValue) {
+      if (itemsBuilder_ == null) {
+        ensureItemsIsMutable();
+        items_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        itemsBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public Builder addItems(com.dnfm.mina.protobuf.generated.SelectedItem value) {
+      if (itemsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureItemsIsMutable();
+        items_.add(value);
+        onChanged();
+      } else {
+        itemsBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public Builder addItems(
+        int index, com.dnfm.mina.protobuf.generated.SelectedItem value) {
+      if (itemsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureItemsIsMutable();
+        items_.add(index, value);
+        onChanged();
+      } else {
+        itemsBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public Builder addItems(
+        com.dnfm.mina.protobuf.generated.SelectedItem.Builder builderForValue) {
+      if (itemsBuilder_ == null) {
+        ensureItemsIsMutable();
+        items_.add(builderForValue.build());
+        onChanged();
+      } else {
+        itemsBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public Builder addItems(
+        int index, com.dnfm.mina.protobuf.generated.SelectedItem.Builder builderForValue) {
+      if (itemsBuilder_ == null) {
+        ensureItemsIsMutable();
+        items_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        itemsBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public Builder addAllItems(
+        java.lang.Iterable<? extends com.dnfm.mina.protobuf.generated.SelectedItem> values) {
+      if (itemsBuilder_ == null) {
+        ensureItemsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, items_);
+        onChanged();
+      } else {
+        itemsBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public Builder clearItems() {
+      if (itemsBuilder_ == null) {
+        items_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+      } else {
+        itemsBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public Builder removeItems(int index) {
+      if (itemsBuilder_ == null) {
+        ensureItemsIsMutable();
+        items_.remove(index);
+        onChanged();
+      } else {
+        itemsBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public com.dnfm.mina.protobuf.generated.SelectedItem.Builder getItemsBuilder(
+        int index) {
+      return internalGetItemsFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder getItemsOrBuilder(
+        int index) {
+      if (itemsBuilder_ == null) {
+        return items_.get(index);  } else {
+        return itemsBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public java.util.List<? extends com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder> 
+         getItemsOrBuilderList() {
+      if (itemsBuilder_ != null) {
+        return itemsBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(items_);
+      }
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public com.dnfm.mina.protobuf.generated.SelectedItem.Builder addItemsBuilder() {
+      return internalGetItemsFieldBuilder().addBuilder(
+          com.dnfm.mina.protobuf.generated.SelectedItem.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public com.dnfm.mina.protobuf.generated.SelectedItem.Builder addItemsBuilder(
+        int index) {
+      return internalGetItemsFieldBuilder().addBuilder(
+          index, com.dnfm.mina.protobuf.generated.SelectedItem.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     * 物品列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.SelectedItem items = 2 [json_name = "items"];</code>
+     */
+    public java.util.List<com.dnfm.mina.protobuf.generated.SelectedItem.Builder> 
+         getItemsBuilderList() {
+      return internalGetItemsFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilder<
+        com.dnfm.mina.protobuf.generated.SelectedItem, com.dnfm.mina.protobuf.generated.SelectedItem.Builder, com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder> 
+        internalGetItemsFieldBuilder() {
+      if (itemsBuilder_ == null) {
+        itemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+            com.dnfm.mina.protobuf.generated.SelectedItem, com.dnfm.mina.protobuf.generated.SelectedItem.Builder, com.dnfm.mina.protobuf.generated.SelectedItemOrBuilder>(
+                items_,
+                ((bitField0_ & 0x00000002) != 0),
+                getParentForChildren(),
+                isClean());
+        items_ = null;
+      }
+      return itemsBuilder_;
+    }
+
+    private java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> packages_ =
+      java.util.Collections.emptyList();
+    private void ensurePackagesIsMutable() {
+      if (!((bitField0_ & 0x00000004) != 0)) {
+        packages_ = new java.util.ArrayList<com.dnfm.mina.protobuf.generated.PostPackage>(packages_);
+        bitField0_ |= 0x00000004;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilder<
+        com.dnfm.mina.protobuf.generated.PostPackage, com.dnfm.mina.protobuf.generated.PostPackage.Builder, com.dnfm.mina.protobuf.generated.PostPackageOrBuilder> packagesBuilder_;
+
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public java.util.List<com.dnfm.mina.protobuf.generated.PostPackage> getPackagesList() {
+      if (packagesBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(packages_);
+      } else {
+        return packagesBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public int getPackagesCount() {
+      if (packagesBuilder_ == null) {
+        return packages_.size();
+      } else {
+        return packagesBuilder_.getCount();
+      }
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public com.dnfm.mina.protobuf.generated.PostPackage getPackages(int index) {
+      if (packagesBuilder_ == null) {
+        return packages_.get(index);
+      } else {
+        return packagesBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public Builder setPackages(
+        int index, com.dnfm.mina.protobuf.generated.PostPackage value) {
+      if (packagesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensurePackagesIsMutable();
+        packages_.set(index, value);
+        onChanged();
+      } else {
+        packagesBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public Builder setPackages(
+        int index, com.dnfm.mina.protobuf.generated.PostPackage.Builder builderForValue) {
+      if (packagesBuilder_ == null) {
+        ensurePackagesIsMutable();
+        packages_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        packagesBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public Builder addPackages(com.dnfm.mina.protobuf.generated.PostPackage value) {
+      if (packagesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensurePackagesIsMutable();
+        packages_.add(value);
+        onChanged();
+      } else {
+        packagesBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public Builder addPackages(
+        int index, com.dnfm.mina.protobuf.generated.PostPackage value) {
+      if (packagesBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensurePackagesIsMutable();
+        packages_.add(index, value);
+        onChanged();
+      } else {
+        packagesBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public Builder addPackages(
+        com.dnfm.mina.protobuf.generated.PostPackage.Builder builderForValue) {
+      if (packagesBuilder_ == null) {
+        ensurePackagesIsMutable();
+        packages_.add(builderForValue.build());
+        onChanged();
+      } else {
+        packagesBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public Builder addPackages(
+        int index, com.dnfm.mina.protobuf.generated.PostPackage.Builder builderForValue) {
+      if (packagesBuilder_ == null) {
+        ensurePackagesIsMutable();
+        packages_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        packagesBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public Builder addAllPackages(
+        java.lang.Iterable<? extends com.dnfm.mina.protobuf.generated.PostPackage> values) {
+      if (packagesBuilder_ == null) {
+        ensurePackagesIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, packages_);
+        onChanged();
+      } else {
+        packagesBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public Builder clearPackages() {
+      if (packagesBuilder_ == null) {
+        packages_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000004);
+        onChanged();
+      } else {
+        packagesBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public Builder removePackages(int index) {
+      if (packagesBuilder_ == null) {
+        ensurePackagesIsMutable();
+        packages_.remove(index);
+        onChanged();
+      } else {
+        packagesBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public com.dnfm.mina.protobuf.generated.PostPackage.Builder getPackagesBuilder(
+        int index) {
+      return internalGetPackagesFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public com.dnfm.mina.protobuf.generated.PostPackageOrBuilder getPackagesOrBuilder(
+        int index) {
+      if (packagesBuilder_ == null) {
+        return packages_.get(index);  } else {
+        return packagesBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public java.util.List<? extends com.dnfm.mina.protobuf.generated.PostPackageOrBuilder> 
+         getPackagesOrBuilderList() {
+      if (packagesBuilder_ != null) {
+        return packagesBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(packages_);
+      }
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public com.dnfm.mina.protobuf.generated.PostPackage.Builder addPackagesBuilder() {
+      return internalGetPackagesFieldBuilder().addBuilder(
+          com.dnfm.mina.protobuf.generated.PostPackage.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public com.dnfm.mina.protobuf.generated.PostPackage.Builder addPackagesBuilder(
+        int index) {
+      return internalGetPackagesFieldBuilder().addBuilder(
+          index, com.dnfm.mina.protobuf.generated.PostPackage.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     * 包裹列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.PostPackage packages = 3 [json_name = "packages"];</code>
+     */
+    public java.util.List<com.dnfm.mina.protobuf.generated.PostPackage.Builder> 
+         getPackagesBuilderList() {
+      return internalGetPackagesFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilder<
+        com.dnfm.mina.protobuf.generated.PostPackage, com.dnfm.mina.protobuf.generated.PostPackage.Builder, com.dnfm.mina.protobuf.generated.PostPackageOrBuilder> 
+        internalGetPackagesFieldBuilder() {
+      if (packagesBuilder_ == null) {
+        packagesBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+            com.dnfm.mina.protobuf.generated.PostPackage, com.dnfm.mina.protobuf.generated.PostPackage.Builder, com.dnfm.mina.protobuf.generated.PostPackageOrBuilder>(
+                packages_,
+                ((bitField0_ & 0x00000004) != 0),
+                getParentForChildren(),
+                isClean());
+        packages_ = null;
+      }
+      return packagesBuilder_;
+    }
+
+    private int totalCount_ ;
+    /**
+     * <pre>
+     * 总数量
+     * </pre>
+     *
+     * <code>int32 total_count = 4 [json_name = "totalCount"];</code>
+     * @return The totalCount.
      */
     @java.lang.Override
-    public int getPage() {
-      return page_;
+    public int getTotalCount() {
+      return totalCount_;
     }
     /**
-     * <code>int32 page = 2 [json_name = "page"];</code>
-     * @param value The page to set.
+     * <pre>
+     * 总数量
+     * </pre>
+     *
+     * <code>int32 total_count = 4 [json_name = "totalCount"];</code>
+     * @param value The totalCount to set.
      * @return This builder for chaining.
      */
-    public Builder setPage(int value) {
+    public Builder setTotalCount(int value) {
 
-      page_ = value;
-      bitField0_ |= 0x00000002;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 page = 2 [json_name = "page"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearPage() {
-      bitField0_ = (bitField0_ & ~0x00000002);
-      page_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private int maxpage_ ;
-    /**
-     * <code>int32 maxpage = 3 [json_name = "maxpage"];</code>
-     * @return The maxpage.
-     */
-    @java.lang.Override
-    public int getMaxpage() {
-      return maxpage_;
-    }
-    /**
-     * <code>int32 maxpage = 3 [json_name = "maxpage"];</code>
-     * @param value The maxpage to set.
-     * @return This builder for chaining.
-     */
-    public Builder setMaxpage(int value) {
-
-      maxpage_ = value;
-      bitField0_ |= 0x00000004;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 maxpage = 3 [json_name = "maxpage"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearMaxpage() {
-      bitField0_ = (bitField0_ & ~0x00000004);
-      maxpage_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private boolean limit_ ;
-    /**
-     * <code>bool limit = 4 [json_name = "limit"];</code>
-     * @return The limit.
-     */
-    @java.lang.Override
-    public boolean getLimit() {
-      return limit_;
-    }
-    /**
-     * <code>bool limit = 4 [json_name = "limit"];</code>
-     * @param value The limit to set.
-     * @return This builder for chaining.
-     */
-    public Builder setLimit(boolean value) {
-
-      limit_ = value;
+      totalCount_ = value;
       bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
     /**
-     * <code>bool limit = 4 [json_name = "limit"];</code>
+     * <pre>
+     * 总数量
+     * </pre>
+     *
+     * <code>int32 total_count = 4 [json_name = "totalCount"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearLimit() {
+    public Builder clearTotalCount() {
       bitField0_ = (bitField0_ & ~0x00000008);
-      limit_ = false;
+      totalCount_ = 0;
       onChanged();
       return this;
-    }
-
-    private int type_ ;
-    /**
-     * <code>int32 type = 5 [json_name = "type"];</code>
-     * @return The type.
-     */
-    @java.lang.Override
-    public int getType() {
-      return type_;
-    }
-    /**
-     * <code>int32 type = 5 [json_name = "type"];</code>
-     * @param value The type to set.
-     * @return This builder for chaining.
-     */
-    public Builder setType(int value) {
-
-      type_ = value;
-      bitField0_ |= 0x00000010;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 type = 5 [json_name = "type"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearType() {
-      bitField0_ = (bitField0_ & ~0x00000010);
-      type_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private boolean bind_ ;
-    /**
-     * <code>bool bind = 6 [json_name = "bind"];</code>
-     * @return The bind.
-     */
-    @java.lang.Override
-    public boolean getBind() {
-      return bind_;
-    }
-    /**
-     * <code>bool bind = 6 [json_name = "bind"];</code>
-     * @param value The bind to set.
-     * @return This builder for chaining.
-     */
-    public Builder setBind(boolean value) {
-
-      bind_ = value;
-      bitField0_ |= 0x00000020;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>bool bind = 6 [json_name = "bind"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearBind() {
-      bitField0_ = (bitField0_ & ~0x00000020);
-      bind_ = false;
-      onChanged();
-      return this;
-    }
-
-    private com.dnfm.mina.protobuf.generated.ContentsRewardInfo rewards_;
-    private com.google.protobuf.SingleFieldBuilder<
-        com.dnfm.mina.protobuf.generated.ContentsRewardInfo, com.dnfm.mina.protobuf.generated.ContentsRewardInfo.Builder, com.dnfm.mina.protobuf.generated.ContentsRewardInfoOrBuilder> rewardsBuilder_;
-    /**
-     * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-     * @return Whether the rewards field is set.
-     */
-    public boolean hasRewards() {
-      return ((bitField0_ & 0x00000040) != 0);
-    }
-    /**
-     * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-     * @return The rewards.
-     */
-    public com.dnfm.mina.protobuf.generated.ContentsRewardInfo getRewards() {
-      if (rewardsBuilder_ == null) {
-        return rewards_ == null ? com.dnfm.mina.protobuf.generated.ContentsRewardInfo.getDefaultInstance() : rewards_;
-      } else {
-        return rewardsBuilder_.getMessage();
-      }
-    }
-    /**
-     * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-     */
-    public Builder setRewards(com.dnfm.mina.protobuf.generated.ContentsRewardInfo value) {
-      if (rewardsBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        rewards_ = value;
-      } else {
-        rewardsBuilder_.setMessage(value);
-      }
-      bitField0_ |= 0x00000040;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-     */
-    public Builder setRewards(
-        com.dnfm.mina.protobuf.generated.ContentsRewardInfo.Builder builderForValue) {
-      if (rewardsBuilder_ == null) {
-        rewards_ = builderForValue.build();
-      } else {
-        rewardsBuilder_.setMessage(builderForValue.build());
-      }
-      bitField0_ |= 0x00000040;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-     */
-    public Builder mergeRewards(com.dnfm.mina.protobuf.generated.ContentsRewardInfo value) {
-      if (rewardsBuilder_ == null) {
-        if (((bitField0_ & 0x00000040) != 0) &&
-          rewards_ != null &&
-          rewards_ != com.dnfm.mina.protobuf.generated.ContentsRewardInfo.getDefaultInstance()) {
-          getRewardsBuilder().mergeFrom(value);
-        } else {
-          rewards_ = value;
-        }
-      } else {
-        rewardsBuilder_.mergeFrom(value);
-      }
-      if (rewards_ != null) {
-        bitField0_ |= 0x00000040;
-        onChanged();
-      }
-      return this;
-    }
-    /**
-     * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-     */
-    public Builder clearRewards() {
-      bitField0_ = (bitField0_ & ~0x00000040);
-      rewards_ = null;
-      if (rewardsBuilder_ != null) {
-        rewardsBuilder_.dispose();
-        rewardsBuilder_ = null;
-      }
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-     */
-    public com.dnfm.mina.protobuf.generated.ContentsRewardInfo.Builder getRewardsBuilder() {
-      bitField0_ |= 0x00000040;
-      onChanged();
-      return internalGetRewardsFieldBuilder().getBuilder();
-    }
-    /**
-     * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-     */
-    public com.dnfm.mina.protobuf.generated.ContentsRewardInfoOrBuilder getRewardsOrBuilder() {
-      if (rewardsBuilder_ != null) {
-        return rewardsBuilder_.getMessageOrBuilder();
-      } else {
-        return rewards_ == null ?
-            com.dnfm.mina.protobuf.generated.ContentsRewardInfo.getDefaultInstance() : rewards_;
-      }
-    }
-    /**
-     * <code>.dnf.v1.ContentsRewardInfo rewards = 7 [json_name = "rewards"];</code>
-     */
-    private com.google.protobuf.SingleFieldBuilder<
-        com.dnfm.mina.protobuf.generated.ContentsRewardInfo, com.dnfm.mina.protobuf.generated.ContentsRewardInfo.Builder, com.dnfm.mina.protobuf.generated.ContentsRewardInfoOrBuilder> 
-        internalGetRewardsFieldBuilder() {
-      if (rewardsBuilder_ == null) {
-        rewardsBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-            com.dnfm.mina.protobuf.generated.ContentsRewardInfo, com.dnfm.mina.protobuf.generated.ContentsRewardInfo.Builder, com.dnfm.mina.protobuf.generated.ContentsRewardInfoOrBuilder>(
-                getRewards(),
-                getParentForChildren(),
-                isClean());
-        rewards_ = null;
-      }
-      return rewardsBuilder_;
     }
 
     // @@protoc_insertion_point(builder_scope:dnf.v1.MailItemAllGetResponse)

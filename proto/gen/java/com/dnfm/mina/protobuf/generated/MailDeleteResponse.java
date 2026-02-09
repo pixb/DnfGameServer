@@ -7,7 +7,7 @@ package com.dnfm.mina.protobuf.generated;
 
 /**
  * <pre>
- * 删除邮件响应
+ * 邮件删除响应
  * </pre>
  *
  * Protobuf type {@code dnf.v1.MailDeleteResponse}
@@ -50,6 +50,10 @@ private static final long serialVersionUID = 0L;
   public static final int ERROR_FIELD_NUMBER = 1;
   private int error_ = 0;
   /**
+   * <pre>
+   * 错误码
+   * </pre>
+   *
    * <code>int32 error = 1 [json_name = "error"];</code>
    * @return The error.
    */
@@ -61,6 +65,10 @@ private static final long serialVersionUID = 0L;
   public static final int GUID_FIELD_NUMBER = 2;
   private long guid_ = 0L;
   /**
+   * <pre>
+   * 邮件GUID
+   * </pre>
+   *
    * <code>uint64 guid = 2 [json_name = "guid"];</code>
    * @return The guid.
    */
@@ -69,15 +77,19 @@ private static final long serialVersionUID = 0L;
     return guid_;
   }
 
-  public static final int TYPE_FIELD_NUMBER = 3;
-  private int type_ = 0;
+  public static final int SUCCESS_FIELD_NUMBER = 3;
+  private boolean success_ = false;
   /**
-   * <code>int32 type = 3 [json_name = "type"];</code>
-   * @return The type.
+   * <pre>
+   * 是否成功
+   * </pre>
+   *
+   * <code>bool success = 3 [json_name = "success"];</code>
+   * @return The success.
    */
   @java.lang.Override
-  public int getType() {
-    return type_;
+  public boolean getSuccess() {
+    return success_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -100,8 +112,8 @@ private static final long serialVersionUID = 0L;
     if (guid_ != 0L) {
       output.writeUInt64(2, guid_);
     }
-    if (type_ != 0) {
-      output.writeInt32(3, type_);
+    if (success_ != false) {
+      output.writeBool(3, success_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -120,9 +132,9 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeUInt64Size(2, guid_);
     }
-    if (type_ != 0) {
+    if (success_ != false) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(3, type_);
+        .computeBoolSize(3, success_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -143,8 +155,8 @@ private static final long serialVersionUID = 0L;
         != other.getError()) return false;
     if (getGuid()
         != other.getGuid()) return false;
-    if (getType()
-        != other.getType()) return false;
+    if (getSuccess()
+        != other.getSuccess()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -161,8 +173,9 @@ private static final long serialVersionUID = 0L;
     hash = (37 * hash) + GUID_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getGuid());
-    hash = (37 * hash) + TYPE_FIELD_NUMBER;
-    hash = (53 * hash) + getType();
+    hash = (37 * hash) + SUCCESS_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+        getSuccess());
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -262,7 +275,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * 删除邮件响应
+   * 邮件删除响应
    * </pre>
    *
    * Protobuf type {@code dnf.v1.MailDeleteResponse}
@@ -300,7 +313,7 @@ private static final long serialVersionUID = 0L;
       bitField0_ = 0;
       error_ = 0;
       guid_ = 0L;
-      type_ = 0;
+      success_ = false;
       return this;
     }
 
@@ -341,7 +354,7 @@ private static final long serialVersionUID = 0L;
         result.guid_ = guid_;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.type_ = type_;
+        result.success_ = success_;
       }
     }
 
@@ -363,8 +376,8 @@ private static final long serialVersionUID = 0L;
       if (other.getGuid() != 0L) {
         setGuid(other.getGuid());
       }
-      if (other.getType() != 0) {
-        setType(other.getType());
+      if (other.getSuccess() != false) {
+        setSuccess(other.getSuccess());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -403,7 +416,7 @@ private static final long serialVersionUID = 0L;
               break;
             } // case 16
             case 24: {
-              type_ = input.readInt32();
+              success_ = input.readBool();
               bitField0_ |= 0x00000004;
               break;
             } // case 24
@@ -426,6 +439,10 @@ private static final long serialVersionUID = 0L;
 
     private int error_ ;
     /**
+     * <pre>
+     * 错误码
+     * </pre>
+     *
      * <code>int32 error = 1 [json_name = "error"];</code>
      * @return The error.
      */
@@ -434,6 +451,10 @@ private static final long serialVersionUID = 0L;
       return error_;
     }
     /**
+     * <pre>
+     * 错误码
+     * </pre>
+     *
      * <code>int32 error = 1 [json_name = "error"];</code>
      * @param value The error to set.
      * @return This builder for chaining.
@@ -446,6 +467,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 错误码
+     * </pre>
+     *
      * <code>int32 error = 1 [json_name = "error"];</code>
      * @return This builder for chaining.
      */
@@ -458,6 +483,10 @@ private static final long serialVersionUID = 0L;
 
     private long guid_ ;
     /**
+     * <pre>
+     * 邮件GUID
+     * </pre>
+     *
      * <code>uint64 guid = 2 [json_name = "guid"];</code>
      * @return The guid.
      */
@@ -466,6 +495,10 @@ private static final long serialVersionUID = 0L;
       return guid_;
     }
     /**
+     * <pre>
+     * 邮件GUID
+     * </pre>
+     *
      * <code>uint64 guid = 2 [json_name = "guid"];</code>
      * @param value The guid to set.
      * @return This builder for chaining.
@@ -478,6 +511,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 邮件GUID
+     * </pre>
+     *
      * <code>uint64 guid = 2 [json_name = "guid"];</code>
      * @return This builder for chaining.
      */
@@ -488,34 +525,46 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int type_ ;
+    private boolean success_ ;
     /**
-     * <code>int32 type = 3 [json_name = "type"];</code>
-     * @return The type.
+     * <pre>
+     * 是否成功
+     * </pre>
+     *
+     * <code>bool success = 3 [json_name = "success"];</code>
+     * @return The success.
      */
     @java.lang.Override
-    public int getType() {
-      return type_;
+    public boolean getSuccess() {
+      return success_;
     }
     /**
-     * <code>int32 type = 3 [json_name = "type"];</code>
-     * @param value The type to set.
+     * <pre>
+     * 是否成功
+     * </pre>
+     *
+     * <code>bool success = 3 [json_name = "success"];</code>
+     * @param value The success to set.
      * @return This builder for chaining.
      */
-    public Builder setType(int value) {
+    public Builder setSuccess(boolean value) {
 
-      type_ = value;
+      success_ = value;
       bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 type = 3 [json_name = "type"];</code>
+     * <pre>
+     * 是否成功
+     * </pre>
+     *
+     * <code>bool success = 3 [json_name = "success"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearType() {
+    public Builder clearSuccess() {
       bitField0_ = (bitField0_ & ~0x00000004);
-      type_ = 0;
+      success_ = false;
       onChanged();
       return this;
     }

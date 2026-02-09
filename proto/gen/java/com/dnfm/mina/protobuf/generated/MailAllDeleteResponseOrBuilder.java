@@ -11,20 +11,42 @@ public interface MailAllDeleteResponseOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * 错误码
+   * </pre>
+   *
    * <code>int32 error = 1 [json_name = "error"];</code>
    * @return The error.
    */
   int getError();
 
   /**
+   * <pre>
+   * 邮件类型
+   * </pre>
+   *
    * <code>int32 type = 2 [json_name = "type"];</code>
    * @return The type.
    */
   int getType();
 
   /**
-   * <code>int32 removecount = 3 [json_name = "removecount"];</code>
-   * @return The removecount.
+   * <pre>
+   * 删除数量
+   * </pre>
+   *
+   * <code>int32 deleted_count = 3 [json_name = "deletedCount"];</code>
+   * @return The deletedCount.
    */
-  int getRemovecount();
+  int getDeletedCount();
+
+  /**
+   * <pre>
+   * 是否成功
+   * </pre>
+   *
+   * <code>bool success = 4 [json_name = "success"];</code>
+   * @return The success.
+   */
+  boolean getSuccess();
 }

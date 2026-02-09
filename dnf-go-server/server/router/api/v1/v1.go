@@ -41,6 +41,27 @@ func (s *APIV1Service) RegisterGRPCServices(grpcServer *grpc.Server) {
 	dnfv1.RegisterAuthServiceServer(grpcServer, s)
 }
 
+// authMiddleware Echo认证中间件
+func authMiddleware(authenticator *auth.Authenticator) echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			authHeader := c.Request().Header.Get("Authorization")
+			result := authenticator.Authenticate(c.Request().Context(), authHeader)
+
+			if result == nil {
+				return echo.NewHTTPError(http.StatusUnauthorized, `{"code": 16, "message": "authentication required"}`)
+			}
+
+			if result.Claims != nil {
+				c.Set("user_id", result.Claims.UserID)
+				c.Set("claims", result.Claims)
+			}
+
+			return next(c)
+		}
+	}
+}
+
 // RegisterGateway 注册网关处理器
 func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Echo) error {
 	// 1. 网关认证中间件
@@ -86,7 +107,7 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 		runtime.WithMiddlewares(gatewayAuthMiddleware),
 	)
 
-	// 3. 注册所有服务 (GameService没有HTTP注解，只能通过gRPC访问)
+	// 3. 注册AuthService (有HTTP注解)
 	if err := dnfv1.RegisterAuthServiceHandlerServer(ctx, gwMux, s); err != nil {
 		return err
 	}
@@ -98,6 +119,42 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 
 	// 5. 注册网关路由
 	gwGroup.Any("/api/v1/*", handler)
+
+	// 6. 添加直接的REST路由（用于GameService）
+	apiGroup := echoServer.Group("/api/v1")
+	apiGroup.Use(authMiddleware(authenticator))
+	apiGroup.Use(middleware.CORS())
+
+	// 背包路由
+	apiGroup.GET("/bag", s.handleGetBag)
+	apiGroup.GET("/bag/items", s.handleGetBagItems)
+
+	// 商店路由
+	apiGroup.GET("/shop/list", s.handleGetShopList)
+	apiGroup.POST("/shop/buy", s.handleBuyItem)
+	apiGroup.POST("/shop/sell", s.handleSellItem)
+
+	// 好友路由
+	apiGroup.GET("/friend/list", s.handleGetFriendList)
+	apiGroup.POST("/friend/add", s.handleAddFriend)
+	apiGroup.POST("/friend/remove", s.handleRemoveFriend)
+
+	// 公会路由
+	apiGroup.GET("/guild/info", s.handleGetGuildInfo)
+	apiGroup.POST("/guild/create", s.handleCreateGuild)
+	apiGroup.POST("/guild/join", s.handleJoinGuild)
+	apiGroup.POST("/guild/leave", s.handleLeaveGuild)
+
+	// 任务路由
+	apiGroup.GET("/quest/list", s.handleGetQuestList)
+	apiGroup.POST("/quest/accept", s.handleAcceptQuest)
+	apiGroup.POST("/quest/complete", s.handleCompleteQuest)
+
+	// 拍卖行路由
+	apiGroup.GET("/auction/search", s.handleSearchAuction)
+	apiGroup.POST("/auction/register", s.handleRegisterAuction)
+	apiGroup.POST("/auction/bid", s.handleBidAuction)
+	apiGroup.POST("/auction/buyout", s.handleBuyoutAuction)
 
 	return nil
 }

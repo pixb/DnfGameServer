@@ -11,20 +11,22 @@ public interface PostPackageOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>int32 value = 1 [json_name = "value"];</code>
-   * @return The value.
+   * <pre>
+   * 包裹GUID
+   * </pre>
+   *
+   * <code>uint64 guid = 1 [json_name = "guid"];</code>
+   * @return The guid.
    */
-  int getValue();
+  long getGuid();
 
   /**
-   * <code>int32 index = 2 [json_name = "index"];</code>
-   * @return The index.
+   * <pre>
+   * 数量
+   * </pre>
+   *
+   * <code>int32 count = 2 [json_name = "count"];</code>
+   * @return The count.
    */
-  int getIndex();
-
-  /**
-   * <code>int32 slotindex = 3 [json_name = "slotindex"];</code>
-   * @return The slotindex.
-   */
-  int getSlotindex();
+  int getCount();
 }

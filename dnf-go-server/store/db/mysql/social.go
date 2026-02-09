@@ -78,7 +78,35 @@ func (d *DB) GetFriend(ctx context.Context, find *store.FindFriend) (*store.Frie
 
 // UpdateFriend 更新好友
 func (d *DB) UpdateFriend(ctx context.Context, update *store.UpdateFriend) error {
-	// 简化实现
+	var sets []string
+	var args []interface{}
+
+	if update.Intimacy != nil {
+		sets = append(sets, "intimacy = ?")
+		args = append(args, *update.Intimacy)
+	}
+	if update.Group != nil {
+		sets = append(sets, "friend_group = ?")
+		args = append(args, *update.Group)
+	}
+	if update.RowStatus != nil {
+		sets = append(sets, "row_status = ?")
+		args = append(args, *update.RowStatus)
+	}
+
+	if len(sets) == 0 {
+		return nil
+	}
+
+	sets = append(sets, "updated_at = ?")
+	args = append(args, time.Now().Unix())
+	args = append(args, update.ID)
+
+	query := fmt.Sprintf("UPDATE friend SET %s WHERE id = ?", strings.Join(sets, ", "))
+	_, err := d.db.ExecContext(ctx, query, args...)
+	if err != nil {
+		return fmt.Errorf("failed to update friend: %w", err)
+	}
 	return nil
 }
 
@@ -198,7 +226,35 @@ func (d *DB) ListMails(ctx context.Context, find *store.FindMail) ([]*store.Mail
 
 // UpdateMail 更新邮件
 func (d *DB) UpdateMail(ctx context.Context, update *store.UpdateMail) error {
-	// 简化实现
+	var sets []string
+	var args []interface{}
+
+	if update.IsRead != nil {
+		sets = append(sets, "is_read = ?")
+		args = append(args, *update.IsRead)
+	}
+	if update.IsClaimed != nil {
+		sets = append(sets, "is_claimed = ?")
+		args = append(args, *update.IsClaimed)
+	}
+	if update.RowStatus != nil {
+		sets = append(sets, "row_status = ?")
+		args = append(args, *update.RowStatus)
+	}
+
+	if len(sets) == 0 {
+		return nil
+	}
+
+	sets = append(sets, "updated_at = ?")
+	args = append(args, time.Now().Unix())
+	args = append(args, update.ID)
+
+	query := fmt.Sprintf("UPDATE mail SET %s WHERE id = ?", strings.Join(sets, ", "))
+	_, err := d.db.ExecContext(ctx, query, args...)
+	if err != nil {
+		return fmt.Errorf("failed to update mail: %w", err)
+	}
 	return nil
 }
 

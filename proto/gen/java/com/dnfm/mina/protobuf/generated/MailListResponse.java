@@ -32,7 +32,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private MailListResponse() {
-    postallist_ = java.util.Collections.emptyList();
+    mails_ = java.util.Collections.emptyList();
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
@@ -51,6 +51,10 @@ private static final long serialVersionUID = 0L;
   public static final int ERROR_FIELD_NUMBER = 1;
   private int error_ = 0;
   /**
+   * <pre>
+   * 错误码
+   * </pre>
+   *
    * <code>int32 error = 1 [json_name = "error"];</code>
    * @return The error.
    */
@@ -59,67 +63,95 @@ private static final long serialVersionUID = 0L;
     return error_;
   }
 
-  public static final int COUNT_FIELD_NUMBER = 2;
-  private int count_ = 0;
-  /**
-   * <code>int32 count = 2 [json_name = "count"];</code>
-   * @return The count.
-   */
-  @java.lang.Override
-  public int getCount() {
-    return count_;
-  }
-
-  public static final int POSTALLIST_FIELD_NUMBER = 3;
+  public static final int MAILS_FIELD_NUMBER = 2;
   @SuppressWarnings("serial")
-  private java.util.List<com.dnfm.mina.protobuf.generated.PostAllList> postallist_;
+  private java.util.List<com.dnfm.mina.protobuf.generated.MailInfo> mails_;
   /**
-   * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+   * <pre>
+   * 邮件列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
    */
   @java.lang.Override
-  public java.util.List<com.dnfm.mina.protobuf.generated.PostAllList> getPostallistList() {
-    return postallist_;
+  public java.util.List<com.dnfm.mina.protobuf.generated.MailInfo> getMailsList() {
+    return mails_;
   }
   /**
-   * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+   * <pre>
+   * 邮件列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
    */
   @java.lang.Override
-  public java.util.List<? extends com.dnfm.mina.protobuf.generated.PostAllListOrBuilder> 
-      getPostallistOrBuilderList() {
-    return postallist_;
+  public java.util.List<? extends com.dnfm.mina.protobuf.generated.MailInfoOrBuilder> 
+      getMailsOrBuilderList() {
+    return mails_;
   }
   /**
-   * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+   * <pre>
+   * 邮件列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
    */
   @java.lang.Override
-  public int getPostallistCount() {
-    return postallist_.size();
+  public int getMailsCount() {
+    return mails_.size();
   }
   /**
-   * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+   * <pre>
+   * 邮件列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
    */
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.PostAllList getPostallist(int index) {
-    return postallist_.get(index);
+  public com.dnfm.mina.protobuf.generated.MailInfo getMails(int index) {
+    return mails_.get(index);
   }
   /**
-   * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+   * <pre>
+   * 邮件列表
+   * </pre>
+   *
+   * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
    */
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.PostAllListOrBuilder getPostallistOrBuilder(
+  public com.dnfm.mina.protobuf.generated.MailInfoOrBuilder getMailsOrBuilder(
       int index) {
-    return postallist_.get(index);
+    return mails_.get(index);
   }
 
-  public static final int TYPE_FIELD_NUMBER = 4;
-  private int type_ = 0;
+  public static final int TOTAL_COUNT_FIELD_NUMBER = 3;
+  private int totalCount_ = 0;
   /**
-   * <code>int32 type = 4 [json_name = "type"];</code>
-   * @return The type.
+   * <pre>
+   * 总邮件数
+   * </pre>
+   *
+   * <code>int32 total_count = 3 [json_name = "totalCount"];</code>
+   * @return The totalCount.
    */
   @java.lang.Override
-  public int getType() {
-    return type_;
+  public int getTotalCount() {
+    return totalCount_;
+  }
+
+  public static final int PAGE_FIELD_NUMBER = 4;
+  private int page_ = 0;
+  /**
+   * <pre>
+   * 当前页码
+   * </pre>
+   *
+   * <code>int32 page = 4 [json_name = "page"];</code>
+   * @return The page.
+   */
+  @java.lang.Override
+  public int getPage() {
+    return page_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -139,14 +171,14 @@ private static final long serialVersionUID = 0L;
     if (error_ != 0) {
       output.writeInt32(1, error_);
     }
-    if (count_ != 0) {
-      output.writeInt32(2, count_);
+    for (int i = 0; i < mails_.size(); i++) {
+      output.writeMessage(2, mails_.get(i));
     }
-    for (int i = 0; i < postallist_.size(); i++) {
-      output.writeMessage(3, postallist_.get(i));
+    if (totalCount_ != 0) {
+      output.writeInt32(3, totalCount_);
     }
-    if (type_ != 0) {
-      output.writeInt32(4, type_);
+    if (page_ != 0) {
+      output.writeInt32(4, page_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -161,17 +193,17 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(1, error_);
     }
-    if (count_ != 0) {
+    for (int i = 0; i < mails_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(2, count_);
+        .computeMessageSize(2, mails_.get(i));
     }
-    for (int i = 0; i < postallist_.size(); i++) {
+    if (totalCount_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(3, postallist_.get(i));
+        .computeInt32Size(3, totalCount_);
     }
-    if (type_ != 0) {
+    if (page_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(4, type_);
+        .computeInt32Size(4, page_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -190,12 +222,12 @@ private static final long serialVersionUID = 0L;
 
     if (getError()
         != other.getError()) return false;
-    if (getCount()
-        != other.getCount()) return false;
-    if (!getPostallistList()
-        .equals(other.getPostallistList())) return false;
-    if (getType()
-        != other.getType()) return false;
+    if (!getMailsList()
+        .equals(other.getMailsList())) return false;
+    if (getTotalCount()
+        != other.getTotalCount()) return false;
+    if (getPage()
+        != other.getPage()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -209,14 +241,14 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + ERROR_FIELD_NUMBER;
     hash = (53 * hash) + getError();
-    hash = (37 * hash) + COUNT_FIELD_NUMBER;
-    hash = (53 * hash) + getCount();
-    if (getPostallistCount() > 0) {
-      hash = (37 * hash) + POSTALLIST_FIELD_NUMBER;
-      hash = (53 * hash) + getPostallistList().hashCode();
+    if (getMailsCount() > 0) {
+      hash = (37 * hash) + MAILS_FIELD_NUMBER;
+      hash = (53 * hash) + getMailsList().hashCode();
     }
-    hash = (37 * hash) + TYPE_FIELD_NUMBER;
-    hash = (53 * hash) + getType();
+    hash = (37 * hash) + TOTAL_COUNT_FIELD_NUMBER;
+    hash = (53 * hash) + getTotalCount();
+    hash = (37 * hash) + PAGE_FIELD_NUMBER;
+    hash = (53 * hash) + getPage();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -353,15 +385,15 @@ private static final long serialVersionUID = 0L;
       super.clear();
       bitField0_ = 0;
       error_ = 0;
-      count_ = 0;
-      if (postallistBuilder_ == null) {
-        postallist_ = java.util.Collections.emptyList();
+      if (mailsBuilder_ == null) {
+        mails_ = java.util.Collections.emptyList();
       } else {
-        postallist_ = null;
-        postallistBuilder_.clear();
+        mails_ = null;
+        mailsBuilder_.clear();
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
-      type_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000002);
+      totalCount_ = 0;
+      page_ = 0;
       return this;
     }
 
@@ -395,14 +427,14 @@ private static final long serialVersionUID = 0L;
     }
 
     private void buildPartialRepeatedFields(com.dnfm.mina.protobuf.generated.MailListResponse result) {
-      if (postallistBuilder_ == null) {
-        if (((bitField0_ & 0x00000004) != 0)) {
-          postallist_ = java.util.Collections.unmodifiableList(postallist_);
-          bitField0_ = (bitField0_ & ~0x00000004);
+      if (mailsBuilder_ == null) {
+        if (((bitField0_ & 0x00000002) != 0)) {
+          mails_ = java.util.Collections.unmodifiableList(mails_);
+          bitField0_ = (bitField0_ & ~0x00000002);
         }
-        result.postallist_ = postallist_;
+        result.mails_ = mails_;
       } else {
-        result.postallist_ = postallistBuilder_.build();
+        result.mails_ = mailsBuilder_.build();
       }
     }
 
@@ -411,11 +443,11 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000001) != 0)) {
         result.error_ = error_;
       }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.count_ = count_;
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.totalCount_ = totalCount_;
       }
       if (((from_bitField0_ & 0x00000008) != 0)) {
-        result.type_ = type_;
+        result.page_ = page_;
       }
     }
 
@@ -434,37 +466,37 @@ private static final long serialVersionUID = 0L;
       if (other.getError() != 0) {
         setError(other.getError());
       }
-      if (other.getCount() != 0) {
-        setCount(other.getCount());
-      }
-      if (postallistBuilder_ == null) {
-        if (!other.postallist_.isEmpty()) {
-          if (postallist_.isEmpty()) {
-            postallist_ = other.postallist_;
-            bitField0_ = (bitField0_ & ~0x00000004);
+      if (mailsBuilder_ == null) {
+        if (!other.mails_.isEmpty()) {
+          if (mails_.isEmpty()) {
+            mails_ = other.mails_;
+            bitField0_ = (bitField0_ & ~0x00000002);
           } else {
-            ensurePostallistIsMutable();
-            postallist_.addAll(other.postallist_);
+            ensureMailsIsMutable();
+            mails_.addAll(other.mails_);
           }
           onChanged();
         }
       } else {
-        if (!other.postallist_.isEmpty()) {
-          if (postallistBuilder_.isEmpty()) {
-            postallistBuilder_.dispose();
-            postallistBuilder_ = null;
-            postallist_ = other.postallist_;
-            bitField0_ = (bitField0_ & ~0x00000004);
-            postallistBuilder_ = 
+        if (!other.mails_.isEmpty()) {
+          if (mailsBuilder_.isEmpty()) {
+            mailsBuilder_.dispose();
+            mailsBuilder_ = null;
+            mails_ = other.mails_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            mailsBuilder_ = 
               com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                 internalGetPostallistFieldBuilder() : null;
+                 internalGetMailsFieldBuilder() : null;
           } else {
-            postallistBuilder_.addAllMessages(other.postallist_);
+            mailsBuilder_.addAllMessages(other.mails_);
           }
         }
       }
-      if (other.getType() != 0) {
-        setType(other.getType());
+      if (other.getTotalCount() != 0) {
+        setTotalCount(other.getTotalCount());
+      }
+      if (other.getPage() != 0) {
+        setPage(other.getPage());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -497,26 +529,26 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000001;
               break;
             } // case 8
-            case 16: {
-              count_ = input.readInt32();
-              bitField0_ |= 0x00000002;
-              break;
-            } // case 16
-            case 26: {
-              com.dnfm.mina.protobuf.generated.PostAllList m =
+            case 18: {
+              com.dnfm.mina.protobuf.generated.MailInfo m =
                   input.readMessage(
-                      com.dnfm.mina.protobuf.generated.PostAllList.parser(),
+                      com.dnfm.mina.protobuf.generated.MailInfo.parser(),
                       extensionRegistry);
-              if (postallistBuilder_ == null) {
-                ensurePostallistIsMutable();
-                postallist_.add(m);
+              if (mailsBuilder_ == null) {
+                ensureMailsIsMutable();
+                mails_.add(m);
               } else {
-                postallistBuilder_.addMessage(m);
+                mailsBuilder_.addMessage(m);
               }
               break;
-            } // case 26
+            } // case 18
+            case 24: {
+              totalCount_ = input.readInt32();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
             case 32: {
-              type_ = input.readInt32();
+              page_ = input.readInt32();
               bitField0_ |= 0x00000008;
               break;
             } // case 32
@@ -539,6 +571,10 @@ private static final long serialVersionUID = 0L;
 
     private int error_ ;
     /**
+     * <pre>
+     * 错误码
+     * </pre>
+     *
      * <code>int32 error = 1 [json_name = "error"];</code>
      * @return The error.
      */
@@ -547,6 +583,10 @@ private static final long serialVersionUID = 0L;
       return error_;
     }
     /**
+     * <pre>
+     * 错误码
+     * </pre>
+     *
      * <code>int32 error = 1 [json_name = "error"];</code>
      * @param value The error to set.
      * @return This builder for chaining.
@@ -559,6 +599,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 错误码
+     * </pre>
+     *
      * <code>int32 error = 1 [json_name = "error"];</code>
      * @return This builder for chaining.
      */
@@ -569,306 +613,402 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private int count_ ;
-    /**
-     * <code>int32 count = 2 [json_name = "count"];</code>
-     * @return The count.
-     */
-    @java.lang.Override
-    public int getCount() {
-      return count_;
-    }
-    /**
-     * <code>int32 count = 2 [json_name = "count"];</code>
-     * @param value The count to set.
-     * @return This builder for chaining.
-     */
-    public Builder setCount(int value) {
-
-      count_ = value;
-      bitField0_ |= 0x00000002;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 count = 2 [json_name = "count"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearCount() {
-      bitField0_ = (bitField0_ & ~0x00000002);
-      count_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private java.util.List<com.dnfm.mina.protobuf.generated.PostAllList> postallist_ =
+    private java.util.List<com.dnfm.mina.protobuf.generated.MailInfo> mails_ =
       java.util.Collections.emptyList();
-    private void ensurePostallistIsMutable() {
-      if (!((bitField0_ & 0x00000004) != 0)) {
-        postallist_ = new java.util.ArrayList<com.dnfm.mina.protobuf.generated.PostAllList>(postallist_);
-        bitField0_ |= 0x00000004;
+    private void ensureMailsIsMutable() {
+      if (!((bitField0_ & 0x00000002) != 0)) {
+        mails_ = new java.util.ArrayList<com.dnfm.mina.protobuf.generated.MailInfo>(mails_);
+        bitField0_ |= 0x00000002;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilder<
-        com.dnfm.mina.protobuf.generated.PostAllList, com.dnfm.mina.protobuf.generated.PostAllList.Builder, com.dnfm.mina.protobuf.generated.PostAllListOrBuilder> postallistBuilder_;
+        com.dnfm.mina.protobuf.generated.MailInfo, com.dnfm.mina.protobuf.generated.MailInfo.Builder, com.dnfm.mina.protobuf.generated.MailInfoOrBuilder> mailsBuilder_;
 
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public java.util.List<com.dnfm.mina.protobuf.generated.PostAllList> getPostallistList() {
-      if (postallistBuilder_ == null) {
-        return java.util.Collections.unmodifiableList(postallist_);
+    public java.util.List<com.dnfm.mina.protobuf.generated.MailInfo> getMailsList() {
+      if (mailsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(mails_);
       } else {
-        return postallistBuilder_.getMessageList();
+        return mailsBuilder_.getMessageList();
       }
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public int getPostallistCount() {
-      if (postallistBuilder_ == null) {
-        return postallist_.size();
+    public int getMailsCount() {
+      if (mailsBuilder_ == null) {
+        return mails_.size();
       } else {
-        return postallistBuilder_.getCount();
+        return mailsBuilder_.getCount();
       }
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.PostAllList getPostallist(int index) {
-      if (postallistBuilder_ == null) {
-        return postallist_.get(index);
+    public com.dnfm.mina.protobuf.generated.MailInfo getMails(int index) {
+      if (mailsBuilder_ == null) {
+        return mails_.get(index);
       } else {
-        return postallistBuilder_.getMessage(index);
+        return mailsBuilder_.getMessage(index);
       }
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public Builder setPostallist(
-        int index, com.dnfm.mina.protobuf.generated.PostAllList value) {
-      if (postallistBuilder_ == null) {
+    public Builder setMails(
+        int index, com.dnfm.mina.protobuf.generated.MailInfo value) {
+      if (mailsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensurePostallistIsMutable();
-        postallist_.set(index, value);
+        ensureMailsIsMutable();
+        mails_.set(index, value);
         onChanged();
       } else {
-        postallistBuilder_.setMessage(index, value);
+        mailsBuilder_.setMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public Builder setPostallist(
-        int index, com.dnfm.mina.protobuf.generated.PostAllList.Builder builderForValue) {
-      if (postallistBuilder_ == null) {
-        ensurePostallistIsMutable();
-        postallist_.set(index, builderForValue.build());
+    public Builder setMails(
+        int index, com.dnfm.mina.protobuf.generated.MailInfo.Builder builderForValue) {
+      if (mailsBuilder_ == null) {
+        ensureMailsIsMutable();
+        mails_.set(index, builderForValue.build());
         onChanged();
       } else {
-        postallistBuilder_.setMessage(index, builderForValue.build());
+        mailsBuilder_.setMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public Builder addPostallist(com.dnfm.mina.protobuf.generated.PostAllList value) {
-      if (postallistBuilder_ == null) {
+    public Builder addMails(com.dnfm.mina.protobuf.generated.MailInfo value) {
+      if (mailsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensurePostallistIsMutable();
-        postallist_.add(value);
+        ensureMailsIsMutable();
+        mails_.add(value);
         onChanged();
       } else {
-        postallistBuilder_.addMessage(value);
+        mailsBuilder_.addMessage(value);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public Builder addPostallist(
-        int index, com.dnfm.mina.protobuf.generated.PostAllList value) {
-      if (postallistBuilder_ == null) {
+    public Builder addMails(
+        int index, com.dnfm.mina.protobuf.generated.MailInfo value) {
+      if (mailsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensurePostallistIsMutable();
-        postallist_.add(index, value);
+        ensureMailsIsMutable();
+        mails_.add(index, value);
         onChanged();
       } else {
-        postallistBuilder_.addMessage(index, value);
+        mailsBuilder_.addMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public Builder addPostallist(
-        com.dnfm.mina.protobuf.generated.PostAllList.Builder builderForValue) {
-      if (postallistBuilder_ == null) {
-        ensurePostallistIsMutable();
-        postallist_.add(builderForValue.build());
+    public Builder addMails(
+        com.dnfm.mina.protobuf.generated.MailInfo.Builder builderForValue) {
+      if (mailsBuilder_ == null) {
+        ensureMailsIsMutable();
+        mails_.add(builderForValue.build());
         onChanged();
       } else {
-        postallistBuilder_.addMessage(builderForValue.build());
+        mailsBuilder_.addMessage(builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public Builder addPostallist(
-        int index, com.dnfm.mina.protobuf.generated.PostAllList.Builder builderForValue) {
-      if (postallistBuilder_ == null) {
-        ensurePostallistIsMutable();
-        postallist_.add(index, builderForValue.build());
+    public Builder addMails(
+        int index, com.dnfm.mina.protobuf.generated.MailInfo.Builder builderForValue) {
+      if (mailsBuilder_ == null) {
+        ensureMailsIsMutable();
+        mails_.add(index, builderForValue.build());
         onChanged();
       } else {
-        postallistBuilder_.addMessage(index, builderForValue.build());
+        mailsBuilder_.addMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public Builder addAllPostallist(
-        java.lang.Iterable<? extends com.dnfm.mina.protobuf.generated.PostAllList> values) {
-      if (postallistBuilder_ == null) {
-        ensurePostallistIsMutable();
+    public Builder addAllMails(
+        java.lang.Iterable<? extends com.dnfm.mina.protobuf.generated.MailInfo> values) {
+      if (mailsBuilder_ == null) {
+        ensureMailsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, postallist_);
+            values, mails_);
         onChanged();
       } else {
-        postallistBuilder_.addAllMessages(values);
+        mailsBuilder_.addAllMessages(values);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public Builder clearPostallist() {
-      if (postallistBuilder_ == null) {
-        postallist_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000004);
+    public Builder clearMails() {
+      if (mailsBuilder_ == null) {
+        mails_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
       } else {
-        postallistBuilder_.clear();
+        mailsBuilder_.clear();
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public Builder removePostallist(int index) {
-      if (postallistBuilder_ == null) {
-        ensurePostallistIsMutable();
-        postallist_.remove(index);
+    public Builder removeMails(int index) {
+      if (mailsBuilder_ == null) {
+        ensureMailsIsMutable();
+        mails_.remove(index);
         onChanged();
       } else {
-        postallistBuilder_.remove(index);
+        mailsBuilder_.remove(index);
       }
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.PostAllList.Builder getPostallistBuilder(
+    public com.dnfm.mina.protobuf.generated.MailInfo.Builder getMailsBuilder(
         int index) {
-      return internalGetPostallistFieldBuilder().getBuilder(index);
+      return internalGetMailsFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.PostAllListOrBuilder getPostallistOrBuilder(
+    public com.dnfm.mina.protobuf.generated.MailInfoOrBuilder getMailsOrBuilder(
         int index) {
-      if (postallistBuilder_ == null) {
-        return postallist_.get(index);  } else {
-        return postallistBuilder_.getMessageOrBuilder(index);
+      if (mailsBuilder_ == null) {
+        return mails_.get(index);  } else {
+        return mailsBuilder_.getMessageOrBuilder(index);
       }
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public java.util.List<? extends com.dnfm.mina.protobuf.generated.PostAllListOrBuilder> 
-         getPostallistOrBuilderList() {
-      if (postallistBuilder_ != null) {
-        return postallistBuilder_.getMessageOrBuilderList();
+    public java.util.List<? extends com.dnfm.mina.protobuf.generated.MailInfoOrBuilder> 
+         getMailsOrBuilderList() {
+      if (mailsBuilder_ != null) {
+        return mailsBuilder_.getMessageOrBuilderList();
       } else {
-        return java.util.Collections.unmodifiableList(postallist_);
+        return java.util.Collections.unmodifiableList(mails_);
       }
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.PostAllList.Builder addPostallistBuilder() {
-      return internalGetPostallistFieldBuilder().addBuilder(
-          com.dnfm.mina.protobuf.generated.PostAllList.getDefaultInstance());
+    public com.dnfm.mina.protobuf.generated.MailInfo.Builder addMailsBuilder() {
+      return internalGetMailsFieldBuilder().addBuilder(
+          com.dnfm.mina.protobuf.generated.MailInfo.getDefaultInstance());
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.PostAllList.Builder addPostallistBuilder(
+    public com.dnfm.mina.protobuf.generated.MailInfo.Builder addMailsBuilder(
         int index) {
-      return internalGetPostallistFieldBuilder().addBuilder(
-          index, com.dnfm.mina.protobuf.generated.PostAllList.getDefaultInstance());
+      return internalGetMailsFieldBuilder().addBuilder(
+          index, com.dnfm.mina.protobuf.generated.MailInfo.getDefaultInstance());
     }
     /**
-     * <code>repeated .dnf.v1.PostAllList postallist = 3 [json_name = "postallist"];</code>
+     * <pre>
+     * 邮件列表
+     * </pre>
+     *
+     * <code>repeated .dnf.v1.MailInfo mails = 2 [json_name = "mails"];</code>
      */
-    public java.util.List<com.dnfm.mina.protobuf.generated.PostAllList.Builder> 
-         getPostallistBuilderList() {
-      return internalGetPostallistFieldBuilder().getBuilderList();
+    public java.util.List<com.dnfm.mina.protobuf.generated.MailInfo.Builder> 
+         getMailsBuilderList() {
+      return internalGetMailsFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilder<
-        com.dnfm.mina.protobuf.generated.PostAllList, com.dnfm.mina.protobuf.generated.PostAllList.Builder, com.dnfm.mina.protobuf.generated.PostAllListOrBuilder> 
-        internalGetPostallistFieldBuilder() {
-      if (postallistBuilder_ == null) {
-        postallistBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-            com.dnfm.mina.protobuf.generated.PostAllList, com.dnfm.mina.protobuf.generated.PostAllList.Builder, com.dnfm.mina.protobuf.generated.PostAllListOrBuilder>(
-                postallist_,
-                ((bitField0_ & 0x00000004) != 0),
+        com.dnfm.mina.protobuf.generated.MailInfo, com.dnfm.mina.protobuf.generated.MailInfo.Builder, com.dnfm.mina.protobuf.generated.MailInfoOrBuilder> 
+        internalGetMailsFieldBuilder() {
+      if (mailsBuilder_ == null) {
+        mailsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+            com.dnfm.mina.protobuf.generated.MailInfo, com.dnfm.mina.protobuf.generated.MailInfo.Builder, com.dnfm.mina.protobuf.generated.MailInfoOrBuilder>(
+                mails_,
+                ((bitField0_ & 0x00000002) != 0),
                 getParentForChildren(),
                 isClean());
-        postallist_ = null;
+        mails_ = null;
       }
-      return postallistBuilder_;
+      return mailsBuilder_;
     }
 
-    private int type_ ;
+    private int totalCount_ ;
     /**
-     * <code>int32 type = 4 [json_name = "type"];</code>
-     * @return The type.
+     * <pre>
+     * 总邮件数
+     * </pre>
+     *
+     * <code>int32 total_count = 3 [json_name = "totalCount"];</code>
+     * @return The totalCount.
      */
     @java.lang.Override
-    public int getType() {
-      return type_;
+    public int getTotalCount() {
+      return totalCount_;
     }
     /**
-     * <code>int32 type = 4 [json_name = "type"];</code>
-     * @param value The type to set.
+     * <pre>
+     * 总邮件数
+     * </pre>
+     *
+     * <code>int32 total_count = 3 [json_name = "totalCount"];</code>
+     * @param value The totalCount to set.
      * @return This builder for chaining.
      */
-    public Builder setType(int value) {
+    public Builder setTotalCount(int value) {
 
-      type_ = value;
+      totalCount_ = value;
+      bitField0_ |= 0x00000004;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * 总邮件数
+     * </pre>
+     *
+     * <code>int32 total_count = 3 [json_name = "totalCount"];</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearTotalCount() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      totalCount_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int page_ ;
+    /**
+     * <pre>
+     * 当前页码
+     * </pre>
+     *
+     * <code>int32 page = 4 [json_name = "page"];</code>
+     * @return The page.
+     */
+    @java.lang.Override
+    public int getPage() {
+      return page_;
+    }
+    /**
+     * <pre>
+     * 当前页码
+     * </pre>
+     *
+     * <code>int32 page = 4 [json_name = "page"];</code>
+     * @param value The page to set.
+     * @return This builder for chaining.
+     */
+    public Builder setPage(int value) {
+
+      page_ = value;
       bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 type = 4 [json_name = "type"];</code>
+     * <pre>
+     * 当前页码
+     * </pre>
+     *
+     * <code>int32 page = 4 [json_name = "page"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearType() {
+    public Builder clearPage() {
       bitField0_ = (bitField0_ & ~0x00000008);
-      type_ = 0;
+      page_ = 0;
       onChanged();
       return this;
     }
