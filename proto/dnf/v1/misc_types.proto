@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+// Go代码生成选项
+option go_package = "dnf/proto/v1;miscv1";
+
+// Java代码生成选项（重要）
+option java_multiple_files = true;  // 为每个消息生成独立的Java文件
+option java_package = "com.dnfm.mina.protobuf.generated";
+option java_outer_classname = "MiscTypesProto";
+
+// 钻石商店货币信息
+message CeraShopMoney {
+  int32 index = 1;  // 索引
+  int32 count = 2;  // 数量
+  int32 value = 3;  // 值
+}
+
+// 餐厅支付信息
+message DiningPay {
+  int32 index = 1;  // 索引
+  int32 type = 2;   // 类型
+  int32 count = 3;  // 数量
+}
+
+// 守护者订单信息
+message GuardianOrder {
+  int64 guardiandeal = 1;  // 守护者交易
+  int32 growtype = 2;      // 成长类型
+  int32 secondgrowtype = 3;  // 第二成长类型
+  int32 job = 4;          // 职业
+  string name = 5;          // 名称
+  int32 level = 6;         // 等级
+}
