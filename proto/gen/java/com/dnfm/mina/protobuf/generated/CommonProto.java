@@ -66,6 +66,26 @@ public final class CommonProto extends com.google.protobuf.GeneratedFile {
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_Equip_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_Artifact_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_Artifact_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_Creature_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_Creature_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SkinItem_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SkinItem_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ItemTimeBox_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ItemTimeBox_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -93,19 +113,27 @@ public final class CommonProto extends com.google.protobuf.GeneratedFile {
       "l\030\002 \001(\005R\005level\022\030\n\007quality\030\003 \001(\005R\007quality" +
       "\022\022\n\004guid\030\004 \001(\003R\004guid\022\022\n\004slot\030\005 \001(\005R\004slot" +
       "\022\'\n\017reinforce_level\030\006 \001(\005R\016reinforceLeve" +
-      "l*\230\001\n\tErrorCode\022\032\n\026ERROR_CODE_UNSPECIFIE" +
-      "D\020\000\022\013\n\007SUCCESS\020\001\022\010\n\004FAIL\020\002\022\021\n\rINVALID_PA" +
-      "RAM\020\003\022\r\n\tNOT_FOUND\020\004\022\025\n\021PERMISSION_DENIE" +
-      "D\020\005\022\013\n\007TIMEOUT\020\006\022\022\n\016ALREADY_EXISTS\020\007*\251\001\n" +
-      "\007JobType\022\030\n\024JOB_TYPE_UNSPECIFIED\020\000\022\014\n\010SW" +
-      "ORDMAN\020\001\022\013\n\007FIGHTER\020\002\022\010\n\004MAGE\020\003\022\n\n\006GUNNE" +
-      "R\020\004\022\t\n\005THIEF\020\005\022\n\n\006KNIGHT\020\006\022\020\n\014DEMON_SLAY" +
-      "ER\020\007\022\014\n\010LAUNCHER\020\010\022\020\n\014ELEMENTALIST\020\t\022\n\n\006" +
-      "PRIEST\020\nB\246\001\n com.dnfm.mina.protobuf.gene" +
-      "ratedB\013CommonProtoP\001Z<github.com/pixb/Dn" +
-      "fGameServer/dnf-go-client/gen/dnf/v1;dnf" +
-      "v1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBM" +
-      "etadata\352\002\007Dnf::V1b\006proto3"
+      "l\"B\n\010Artifact\022\016\n\002id\030\001 \001(\005R\002id\022\024\n\005level\030\002" +
+      " \001(\005R\005level\022\020\n\003exp\030\003 \001(\005R\003exp\"X\n\010Creatur" +
+      "e\022\016\n\002id\030\001 \001(\005R\002id\022\024\n\005level\030\002 \001(\005R\005level\022" +
+      "\020\n\003exp\030\003 \001(\005R\003exp\022\024\n\005grade\030\004 \001(\005R\005grade\"" +
+      ";\n\010SkinItem\022\016\n\002id\030\001 \001(\005R\002id\022\037\n\013expire_ti" +
+      "me\030\002 \001(\003R\nexpireTime\"T\n\013ItemTimeBox\022\016\n\002i" +
+      "d\030\001 \001(\005R\002id\022\037\n\013expire_time\030\002 \001(\003R\nexpire" +
+      "Time\022\024\n\005count\030\003 \001(\005R\005count*\230\001\n\tErrorCode" +
+      "\022\032\n\026ERROR_CODE_UNSPECIFIED\020\000\022\013\n\007SUCCESS\020" +
+      "\001\022\010\n\004FAIL\020\002\022\021\n\rINVALID_PARAM\020\003\022\r\n\tNOT_FO" +
+      "UND\020\004\022\025\n\021PERMISSION_DENIED\020\005\022\013\n\007TIMEOUT\020" +
+      "\006\022\022\n\016ALREADY_EXISTS\020\007*\251\001\n\007JobType\022\030\n\024JOB" +
+      "_TYPE_UNSPECIFIED\020\000\022\014\n\010SWORDMAN\020\001\022\013\n\007FIG" +
+      "HTER\020\002\022\010\n\004MAGE\020\003\022\n\n\006GUNNER\020\004\022\t\n\005THIEF\020\005\022" +
+      "\n\n\006KNIGHT\020\006\022\020\n\014DEMON_SLAYER\020\007\022\014\n\010LAUNCHE" +
+      "R\020\010\022\020\n\014ELEMENTALIST\020\t\022\n\n\006PRIEST\020\nB\246\001\n co" +
+      "m.dnfm.mina.protobuf.generatedB\013CommonPr" +
+      "otoP\001Z<github.com/pixb/DnfGameServer/dnf" +
+      "-go-client/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf." +
+      "V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf::" +
+      "V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -159,6 +187,30 @@ public final class CommonProto extends com.google.protobuf.GeneratedFile {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_Equip_descriptor,
         new java.lang.String[] { "EquipId", "Level", "Quality", "Guid", "Slot", "ReinforceLevel", });
+    internal_static_dnf_v1_Artifact_descriptor =
+      getDescriptor().getMessageType(8);
+    internal_static_dnf_v1_Artifact_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_Artifact_descriptor,
+        new java.lang.String[] { "Id", "Level", "Exp", });
+    internal_static_dnf_v1_Creature_descriptor =
+      getDescriptor().getMessageType(9);
+    internal_static_dnf_v1_Creature_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_Creature_descriptor,
+        new java.lang.String[] { "Id", "Level", "Exp", "Grade", });
+    internal_static_dnf_v1_SkinItem_descriptor =
+      getDescriptor().getMessageType(10);
+    internal_static_dnf_v1_SkinItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SkinItem_descriptor,
+        new java.lang.String[] { "Id", "ExpireTime", });
+    internal_static_dnf_v1_ItemTimeBox_descriptor =
+      getDescriptor().getMessageType(11);
+    internal_static_dnf_v1_ItemTimeBox_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ItemTimeBox_descriptor,
+        new java.lang.String[] { "Id", "ExpireTime", "Count", });
     descriptor.resolveAllFeaturesImmutable();
   }
 

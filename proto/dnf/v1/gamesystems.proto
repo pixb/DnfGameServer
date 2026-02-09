@@ -1,0 +1,165 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+import "dnf/v1/inventory_types.proto";
+import "dnf/v1/common_types.proto";
+import "dnf/v1/common.proto";
+import "dnf/v1/welfare.proto";
+
+message TowerInfoRequest {
+  int32 module_id = 1;
+  int32 cmd = 2;
+  int32 type = 3;
+}
+
+message TowerInfoResponse {
+  int32 error = 1;
+  int32 clear_floor = 2;
+  int32 type = 3;
+  int32 sweep_count = 4;
+  repeated FloorInfo list = 5;
+  int32 agp = 6;
+  int32 point = 7;
+  repeated TowerOfIllusionClearRate clear_rate = 8;
+}
+
+message TonicInfoRequest {
+  int32 module_id = 1;
+  int32 cmd = 2;
+}
+
+message TonicInfoResponse {
+  int32 error = 1;
+  repeated TonicInfo crystal_tonic = 2;
+  repeated TonicMaterialUsage crystal_tonic_point = 3;
+}
+
+message TonicInitRequest {
+  int32 module_id = 1;
+  int32 cmd = 2;
+  int32 index = 3;
+}
+
+message TonicInitResponse {
+  int32 error = 1;
+  int32 index = 2;
+  repeated TonicInfo crystal_tonic = 3;
+  repeated TonicMaterialUsage crystal_tonic_point = 4;
+  repeated MoneyItem currency = 5;
+}
+
+message TonicUpgradeRequest {
+  int32 module_id = 1;
+  int32 cmd = 2;
+  int32 index = 3;
+  bool auto_mode = 4;
+}
+
+message TonicUpgradeResponse {
+  int32 error = 1;
+  int32 index = 2;
+  repeated TonicInfo crystal_tonic = 3;
+  repeated TonicMaterialUsage crystal_tonic_point = 4;
+  repeated MoneyItem currency = 5;
+  RemoveItems remove_items = 6;
+}
+
+message WardrobeInfoRequest {
+  int32 module_id = 1;
+  int32 cmd = 2;
+}
+
+message WardrobeInfoResponse {
+  int32 error = 1;
+  WardrobeInfo wardrobe = 2;
+}
+
+message WardrobeSetSlotRequest {
+  int32 module_id = 1;
+  int32 cmd = 2;
+  int32 slot = 3;
+}
+
+message WardrobeSetSlotResponse {
+  int32 error = 1;
+  int32 slot = 2;
+}
+
+message TitleListRequest {
+  int32 module_id = 1;
+  int32 cmd = 2;
+}
+
+message TitleListResponse {
+  int32 error = 1;
+  int32 page = 2;
+  repeated Equip title = 3;
+  int32 max_count = 4;
+}
+
+message FloorInfo {
+  repeated Equip equip_items = 1;
+  repeated Equip title_items = 2;
+  repeated Equip flag_items = 3;
+  repeated Stackable material_items = 4;
+  repeated Stackable consume_items = 5;
+  repeated Stackable emblem_items = 6;
+  repeated Stackable card_items = 7;
+  repeated Stackable epic_piece_items = 8;
+  repeated Artifact artifact_items = 9;
+  repeated Creature creature_items = 10;
+  repeated SdAvatarItem avatar_items = 11;
+  int32 index = 12;
+  int32 count = 13;
+  int32 floor = 14;
+  uint64 best_clear_time = 15;
+  uint64 clear_time = 16;
+  int32 sweep_reward_count = 17;
+  int32 sweep_reward_index = 18;
+}
+
+message TowerOfIllusionClearRate {
+  int32 floor = 1;
+  float percent = 2;
+}
+
+message TonicInfo {
+  int32 index = 1;
+  int32 level = 2;
+}
+
+message TonicMaterialUsage {
+  int32 index = 1;
+  int32 total = 2;
+}
+
+message WardrobeInfo {
+  int32 extension_slot = 1;
+  repeated AvatarMannequinInfo list = 2;
+  int32 appendage_slot = 3;
+  int32 slot = 4;
+}
+
+message AvatarMannequinInfo {
+  int32 slot = 1;
+  string name = 2;
+  repeated AvatarMannequinPartInfo list = 3;
+}
+
+message AvatarMannequinPartInfo {
+  uint64 guid = 1;
+  int32 index = 2;
+}
+
+message RemoveItems {
+  repeated Stackable material_items = 1;
+  repeated Stackable emblem_items = 2;
+  repeated Stackable card_items = 3;
+  repeated Stackable consume_items = 4;
+  repeated Stackable epic_piece_items = 5;
+  repeated Stackable crack_items = 6;
+  repeated Stackable bookmark_items = 7;
+}

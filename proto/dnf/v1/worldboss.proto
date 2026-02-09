@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+message WorldBossInfoRequest {
+  int32 module_id = 1;
+  int32 cmd = 2;
+  int32 index = 3;
+}
+
+message WorldBossInfoResponse {
+  int32 error = 1;
+  int64 hp = 2;
+  int32 count = 3;
+}
+
+message WorldBossDamageRequest {
+  int32 module_id = 1;
+  int32 cmd = 2;
+  bytes damage_history = 3;
+  int64 damage = 4;
+  uint64 dungeon_guid = 5;
+}
+
+message WorldBossDamageResponse {
+  int32 error = 1;
+  int64 hp = 2;
+}
+
+message WorldBossRankingRequest {
+  int32 module_id = 1;
+  int32 cmd = 2;
+  int64 score = 3;
+  int32 type = 4;
+  int32 rank_min = 5;
+  int32 rank_max = 6;
+}
+
+message WorldBossRankingResponse {
+  int32 error = 1;
+  int32 rank = 2;
+  repeated WorldBossInfo ranking = 3;
+}
+
+message WorldBossAttackLogRequest {
+  int32 module_id = 1;
+  int32 cmd = 2;
+  uint64 dungeon_guid = 3;
+  uint64 party_guid = 4;
+  uint64 atk_threshold_value = 5;
+  uint64 boss_pattern_5s_injury_avg = 6;
+  uint64 boss_pattern_5s_injury_max = 7;
+  uint64 boss_pattern_5s_injury_min = 8;
+  string boss_pattern_injury_sequence = 9;
+  string atk_buff_id_list = 10;
+  string atk_buff_coefficient_list = 11;
+}
+
+message WorldBossInfo {
+  string name = 1;
+  int64 score = 2;
+  int32 count = 3;
+}

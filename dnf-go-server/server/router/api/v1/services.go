@@ -340,9 +340,336 @@ func (s *APIV1Service) UpdateAttributes(ctx context.Context, req *dnfv1.UpdateAt
 				MoveSpeed: attrs.MoveSpeed,
 				AtkSpeed:  attrs.AttackSpeed,
 				CastSpeed: attrs.CastSpeed,
-			},
-		}, nil
+		},
+	}, nil
+}
+
+// ==================== Batch 10: 物品系统 ====================
+
+// ItemUse 使用物品
+func (s *APIV1Service) ItemUse(ctx context.Context, req *dnfv1.ItemUseRequest) (*dnfv1.ItemUseResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.ItemUseResponse{Error: ErrCodeInvalidParam}, nil
 	}
+
+	roleID := claims.UserID
+	item, err := s.Store.GetBagItem(ctx, &store.FindBagItem{
+		FindBase: store.FindBase{ID: &req.Guid},
+		RoleID:   &roleID,
+	})
+	if err != nil {
+		if err == store.ErrNotFound {
+			return &dnfv1.ItemUseResponse{Error: ErrCodeNotFound}, nil
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get item: %v", err)
+	}
+
+	if item.Count < req.Count {
+		return &dnfv1.ItemUseResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	itemType := item.ItemID / 100
+	switch itemType {
+	case 0:
+		attrs, _ := s.Store.GetRoleAttributes(ctx, roleID)
+		if attrs != nil {
+			maxHP := attrs.MaxHP
+			hp := attrs.HP + int32(req.Count*10)
+			if hp > maxHP {
+				hp = maxHP
+			}
+			s.Store.UpdateRoleAttributes(ctx, &store.UpdateRoleAttributes{
+				RoleID: roleID,
+				HP:     &hp,
+			})
+		}
+	case 1:
+		attrs, _ := s.Store.GetRoleAttributes(ctx, roleID)
+		if attrs != nil {
+			maxMP := attrs.MaxMP
+			mp := attrs.MP + int32(req.Count*10)
+			if mp > maxMP {
+				mp = maxMP
+			}
+			s.Store.UpdateRoleAttributes(ctx, &store.UpdateRoleAttributes{
+				RoleID: roleID,
+				MP:     &mp,
+			})
+		}
+	case 2:
+		role, _ := s.Store.GetRole(ctx, &store.FindRole{FindBase: store.FindBase{ID: &roleID}})
+		if role != nil {
+			fatigue := role.Fatigue + int32(req.Count*10)
+			if fatigue > role.MaxFatigue {
+				fatigue = role.MaxFatigue
+			}
+			s.Store.UpdateRole(ctx, &store.UpdateRole{
+				ID:      role.ID,
+				Fatigue: &fatigue,
+			})
+		}
+	}
+
+	newCount := item.Count - req.Count
+	if newCount <= 0 {
+		s.Store.DeleteBagItem(ctx, &store.DeleteBagItem{ID: item.ID})
+	} else {
+		s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{
+			ID:    item.ID,
+			Count: &newCount,
+		})
+	}
+
+	return &dnfv1.ItemUseResponse{
+		Error: 0,
+	}, nil
+}
+
+// ItemReinforce 强化物品
+func (s *APIV1Service) ItemReinforce(ctx context.Context, req *dnfv1.ItemReinforceRequest) (*dnfv1.ItemReinforceResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.ItemReinforceResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	roleID := claims.UserID
+	item, err := s.Store.GetBagItem(ctx, &store.FindBagItem{
+		FindBase: store.FindBase{ID: &req.Guid},
+		RoleID:   &roleID,
+	})
+	if err != nil {
+		if err == store.ErrNotFound {
+			return &dnfv1.ItemReinforceResponse{Error: ErrCodeNotFound}, nil
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get item: %v", err)
+	}
+
+	role, _ := s.Store.GetRole(ctx, &store.FindRole{FindBase: store.FindBase{ID: &roleID}})
+	if role == nil {
+		return &dnfv1.ItemReinforceResponse{Error: ErrCodeNotFound}, nil
+	}
+
+	if role.Level < 5 {
+		return &dnfv1.ItemReinforceResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	if item.Durability <= 0 {
+		return &dnfv1.ItemReinforceResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	oldDurability := item.Durability
+	item.Durability = item.Durability - 1
+	if item.Durability < 0 {
+		item.Durability = 0
+	}
+
+	err := s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{
+		ID:       item.ID,
+		Durability: &item.Durability,
+	})
+
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to update item durability: %v", err)
+	}
+
+	level := int32(0)
+	err = s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{
+		ID:    item.ID,
+		Level: &level,
+	})
+
+ return &dnfv1.ItemReinforceResponse{
+  Error: 0,
+ }, nil
+}
+
+// ItemList 获取物品列表
+func (s *APIV1Service) ItemList(ctx context.Context, req *dnfv1.ItemListRequest) (*dnfv1.ItemListResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.ItemListResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	roleID := claims.UserID
+	items, err := s.Store.ListBagItemsByRole(ctx, roleID)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to list items: %v", err)
+	}
+
+	var itemInfos []*dnfv1.ItemInfo
+	for _, item := range items {
+		itemInfos = append(itemInfos, &dnfv1.ItemInfo{
+			Index:           item.GridIndex,
+			Guid:            item.ID,
+			Id:              item.ItemID,
+			Count:           item.Count,
+			Bind:            item.BindType == 1,
+			ReinforceLevel:  item.Level,
+			Durability:      item.Durability,
+			EnhanceLevel:    item.EnhanceLevel,
+			Attributes:      item.Attributes,
+		})
+	}
+
+	return &dnfv1.ItemListResponse{
+		Error: 0,
+		Items: itemInfos,
+	}, nil
+}
+
+// ItemMove 移动物品
+func (s *APIV1Service) ItemMove(ctx context.Context, req *dnfv1.ItemMoveRequest) (*dnfv1.ItemMoveResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.ItemMoveResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	roleID := claims.UserID
+	item, err := s.Store.GetBagItem(ctx, &store.FindBagItem{
+		FindBase: store.FindBase{ID: &req.Guid},
+		RoleID:   &roleID,
+	})
+	if err != nil {
+		if err == store.ErrNotFound {
+			return &dnfv1.ItemMoveResponse{Error: ErrCodeNotFound}, nil
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get item: %v", err)
+	}
+
+	targetItem, err := s.Store.GetBagItem(ctx, &store.FindBagItem{
+		RoleID:    &roleID,
+		GridIndex: &req.ToIndex,
+	})
+
+	if err == nil && targetItem != nil {
+		if targetItem.ItemID == item.ItemID {
+			newCount := targetItem.Count + req.Count
+			if item.Count != req.Count {
+				return &dnfv1.ItemMoveResponse{Error: ErrCodeInvalidParam}, nil
+			}
+			s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{
+				ID:    targetItem.ID,
+				Count: &newCount,
+			})
+			s.Store.DeleteBagItem(ctx, &store.DeleteBagItem{ID: item.ID})
+		} else {
+			sourceSlot := item.GridIndex
+			targetSlot := targetItem.GridIndex
+			s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{
+				ID:        item.ID,
+				GridIndex: &targetSlot,
+			})
+			s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{
+				ID:        targetItem.ID,
+				GridIndex: &sourceSlot,
+			})
+		}
+	} else {
+		newSlot := req.ToIndex
+		s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{
+			ID:        item.ID,
+			GridIndex: &newSlot,
+		})
+	}
+
+	return &dnfv1.ItemMoveResponse{
+		Error:   0,
+		Success: true,
+	}, nil
+}
+
+// ItemDrop 丢弃物品
+func (s *APIV1Service) ItemDrop(ctx context.Context, req *dnfv1.ItemDropRequest) (*dnfv1.ItemDropResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.ItemDropResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	roleID := claims.UserID
+	item, err := s.Store.GetBagItem(ctx, &store.FindBagItem{
+		FindBase: store.FindBase{ID: &req.Guid},
+		RoleID:   &roleID,
+	})
+	if err != nil {
+		if err == store.ErrNotFound {
+			return &dnfv1.ItemDropResponse{Error: ErrCodeNotFound}, nil
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get item: %v", err)
+	}
+
+	if item.Count < req.Count {
+		return &dnfv1.ItemDropResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	newCount := item.Count - req.Count
+	if newCount <= 0 {
+		s.Store.DeleteBagItem(ctx, &store.DeleteBagItem{ID: item.ID})
+	} else {
+		s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{
+			ID:    item.ID,
+			Count: &newCount,
+		})
+	}
+
+	return &dnfv1.ItemDropResponse{
+		Error:   0,
+		Success: true,
+	}, nil
+}
+
+// ItemSplit 拆分物品
+func (s *APIV1Service) ItemSplit(ctx context.Context, req *dnfv1.ItemSplitRequest) (*dnfv1.ItemSplitResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return &dnfv1.ItemSplitResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	roleID := claims.UserID
+	item, err := s.Store.GetBagItem(ctx, &store.FindBagItem{
+		FindBase: store.FindBase{ID: &req.Guid},
+		RoleID:   &roleID,
+	})
+	if err != nil {
+		if err == store.ErrNotFound {
+			return &dnfv1.ItemSplitResponse{Error: ErrCodeNotFound}, nil
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get item: %v", err)
+	}
+
+	if item.Count < req.Count+1 {
+		return &dnfv1.ItemSplitResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+	if req.Count <= 0 || req.Count >= item.Count {
+		return &dnfv1.ItemSplitResponse{Error: ErrCodeInvalidParam}, nil
+	}
+
+ item, _ = s.Store.GetBagItem(ctx, &store.FindBagItem{
+  FindBase: store.FindBase{ID: &req.Guid},
+  RoleID:   &roleID,
+ })
+
+ newCount := item.Count - req.Count
+ newItem, _ := s.Store.CreateBagItem(ctx, &store.BagItem{
+  RoleID:    roleID,
+  ItemID:    item.ItemID,
+  GridIndex: req.Count,
+  Count:     req.Count,
+  IsEquiped: false,
+  BindType:  item.BindType,
+ })
+
+ s.Store.UpdateBagItem(ctx, &store.UpdateBagItem{
+  ID:    item.ID,
+  Count: &newCount,
+ })
+
+ return &dnfv1.ItemSplitResponse{
+  Error:   0,
+  Success: true,
+ }, nil
+}
 
 	availablePoints := int32(5 + role.Level*1)
 	currentUsed := attrs.Strength + attrs.Intelligence + attrs.Vitality + attrs.Spirit - 50
