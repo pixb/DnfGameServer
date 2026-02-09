@@ -10,7 +10,7 @@ description: This skill should be used when user asks to migrate from JProtobuf 
 | 属性 | 值 |
 | :--- | :--- |
 | **名称** | pix-jptotobuf-to-proto |
-| **版本** | 1.5.0 |
+| **版本** | 1.6.0 |
 | **类型** | 工具技能 (Tool Skill) |
 | **核心功能** | JProtobuf 到标准 Protobuf 迁移 |
 | **适用环境** | Trae |
@@ -136,6 +136,20 @@ pix-jptotobuf-to-proto 会提供：
   - 修复Java编译错误（StandardProtobufDecoder中hasBuildType()方法调用问题）
   - 验证了跨语言通信正确性
   - Go单元测试11个测试用例全部通过
+  - 编解码测试验证了跨语言通信
+
+### 批次08: TOWN (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: REQ_ENTER_TO_TOWN.java, RES_ENTER_TO_TOWN.java, REQ_LEAVE_FROM_TOWN.java, RES_LEAVE_FROM_TOWN.java, REQ_CHARACTER_INFO.java, RES_CHARACTER_INFO.java, REQ_TOWN_USER_GUID_LIST.java, RES_TOWN_USER_GUID_LIST.java, REQ_TARGET_USER_DETAIL_INFO.java, RES_TARGET_USER_DETAIL_INFO.java, REQ_INTERACTION_MENU.java, RES_INTERACTION_MENU.java
+- **状态**: ✅ 完成
+- **文档**: [批次08文档](../../devdoc/protobuf/batch_08/)
+- **成果**: 
+  - 成功迁移进入/离开城镇、角色信息、城镇用户GUID列表、目标用户详情、交互菜单消息
+  - 新增town.proto文件定义城镇相关消息
+  - 新增CharacterGuid和CharacterInfo数据结构
+  - 暂缓城镇聊天消息迁移（依赖复杂数据结构）
+  - 验证了跨语言通信正确性
+  - Go单元测试8个测试用例全部通过
   - 编解码测试验证了跨语言通信
 
 ## 🌟 功能实现

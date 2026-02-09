@@ -73,6 +73,18 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
                 return adaptLoadServerSimpleDataResponse(msg);
             case 10032:
                 return adaptSaveServerSimpleDataResponse(msg);
+            case 10100:
+                return adaptEnterTownResponse(msg);
+            case 10103:
+                return adaptCharacterInfoResponse(msg);
+            case 10106:
+                return adaptTownUserGuidListResponse(msg);
+            case 10107:
+                return adaptTargetUserDetailInfoResponse(msg);
+            case 10108:
+                return adaptInteractionMenuResponse(msg);
+            case 10109:
+                return adaptLeaveFromTownResponse(msg);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -715,6 +727,395 @@ public class StandardProtobufEncoder implements ProtocolEncoder {
         
         com.dnfm.mina.protobuf.generated.PlatformProfileUpdateResponse.Builder builder = 
             com.dnfm.mina.protobuf.generated.PlatformProfileUpdateResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptEnterTownResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_ENTER_TO_TOWN oldResponse = 
+            (com.dnfm.mina.protobuf.RES_ENTER_TO_TOWN) msg;
+        
+        com.dnfm.mina.protobuf.generated.EnterTownResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.EnterTownResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.town != null) {
+            builder.setTown(oldResponse.town);
+        }
+        if (oldResponse.area != null) {
+            builder.setArea(oldResponse.area);
+        }
+        if (oldResponse.posx != null) {
+            builder.setPosx(oldResponse.posx);
+        }
+        if (oldResponse.posy != null) {
+            builder.setPosy(oldResponse.posy);
+        }
+        if (oldResponse.partyguid != null) {
+            builder.setPartyguid(oldResponse.partyguid);
+        }
+        if (oldResponse.servertime != null) {
+            builder.setServertime(oldResponse.servertime);
+        }
+        if (oldResponse.expratio != null) {
+            builder.setExpratio(oldResponse.expratio);
+        }
+        if (oldResponse.fatigueratio != null) {
+            builder.setFatigueratio(oldResponse.fatigueratio);
+        }
+        if (oldResponse.version != null) {
+            builder.setVersion(oldResponse.version);
+        }
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptCharacterInfoResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_CHARACTER_INFO oldResponse = 
+            (com.dnfm.mina.protobuf.RES_CHARACTER_INFO) msg;
+        
+        com.dnfm.mina.protobuf.generated.CharacterInfoResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.CharacterInfoResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        
+        if (oldResponse.charlist != null) {
+            for (com.dnfm.mina.protobuf.PT_CHARACTER_INFO oldCharInfo : oldResponse.charlist) {
+                com.dnfm.mina.protobuf.generated.CharacterInfo.Builder charInfoBuilder = 
+                    com.dnfm.mina.protobuf.generated.CharacterInfo.newBuilder();
+                
+                if (oldCharInfo.charguid != null) {
+                    charInfoBuilder.setCharguid(oldCharInfo.charguid);
+                }
+                if (oldCharInfo.job != null) {
+                    charInfoBuilder.setJob(oldCharInfo.job);
+                }
+                if (oldCharInfo.growtype != null) {
+                    charInfoBuilder.setGrowtype(oldCharInfo.growtype);
+                }
+                if (oldCharInfo.secondgrowtype != null) {
+                    charInfoBuilder.setSecondgrowtype(oldCharInfo.secondgrowtype);
+                }
+                if (oldCharInfo.level != null) {
+                    charInfoBuilder.setLevel(oldCharInfo.level);
+                }
+                if (oldCharInfo.name != null) {
+                    charInfoBuilder.setName(oldCharInfo.name);
+                }
+                if (oldCharInfo.gguid != null) {
+                    charInfoBuilder.setGguid(oldCharInfo.gguid);
+                }
+                if (oldCharInfo.posx != null) {
+                    charInfoBuilder.setPosx(oldCharInfo.posx);
+                }
+                if (oldCharInfo.posy != null) {
+                    charInfoBuilder.setPosy(oldCharInfo.posy);
+                }
+                if (oldCharInfo.gname != null) {
+                    charInfoBuilder.setGname(oldCharInfo.gname);
+                }
+                if (oldCharInfo.vip != null) {
+                    charInfoBuilder.setVip(oldCharInfo.vip);
+                }
+                if (oldCharInfo.vcreature != null) {
+                    charInfoBuilder.setVcreature(oldCharInfo.vcreature);
+                }
+                if (oldCharInfo.partydisturb != null) {
+                    charInfoBuilder.setPartydisturb(oldCharInfo.partydisturb);
+                }
+                if (oldCharInfo.spoint != null) {
+                    charInfoBuilder.setSpoint(oldCharInfo.spoint);
+                }
+                if (oldCharInfo.adventureunionlevel != null) {
+                    charInfoBuilder.setAdventureunionlevel(oldCharInfo.adventureunionlevel);
+                }
+                if (oldCharInfo.adventureunionexp != null) {
+                    charInfoBuilder.setAdventureunionexp(oldCharInfo.adventureunionexp);
+                }
+                if (oldCharInfo.partyguid != null) {
+                    charInfoBuilder.setPartyguid(oldCharInfo.partyguid);
+                }
+                if (oldCharInfo.partyleaderguid != null) {
+                    charInfoBuilder.setPartyleaderguid(oldCharInfo.partyleaderguid);
+                }
+                if (oldCharInfo.type != null) {
+                    charInfoBuilder.setType(oldCharInfo.type);
+                }
+                if (oldCharInfo.pvpstargrade != null) {
+                    charInfoBuilder.setPvpstargrade(oldCharInfo.pvpstargrade);
+                }
+                if (oldCharInfo.pvpstarcount != null) {
+                    charInfoBuilder.setPvpstarcount(oldCharInfo.pvpstarcount);
+                }
+                if (oldCharInfo.blackdiamond != null) {
+                    charInfoBuilder.setBlackdiamond(oldCharInfo.blackdiamond);
+                }
+                if (oldCharInfo.avatarVisibleFlags != null) {
+                    charInfoBuilder.setAvatarVisibleFlags(oldCharInfo.avatarVisibleFlags);
+                }
+                if (oldCharInfo.fairpvpstargrade != null) {
+                    charInfoBuilder.setFairpvpstargrade(oldCharInfo.fairpvpstargrade);
+                }
+                if (oldCharInfo.fairpvpstarcount != null) {
+                    charInfoBuilder.setFairpvpstarcount(oldCharInfo.fairpvpstarcount);
+                }
+                
+                builder.addCharlist(charInfoBuilder.build());
+            }
+        }
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptTownUserGuidListResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_TOWN_USER_GUID_LIST oldResponse = 
+            (com.dnfm.mina.protobuf.RES_TOWN_USER_GUID_LIST) msg;
+        
+        com.dnfm.mina.protobuf.generated.TownUserGuidListResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.TownUserGuidListResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        
+        if (oldResponse.charlist != null) {
+            for (com.dnfm.mina.protobuf.PT_CHARACTER_GUID oldCharGuid : oldResponse.charlist) {
+                com.dnfm.mina.protobuf.generated.CharacterGuid.Builder charGuidBuilder = 
+                    com.dnfm.mina.protobuf.generated.CharacterGuid.newBuilder();
+                
+                if (oldCharGuid.charguid != null) {
+                    charGuidBuilder.setCharguid(oldCharGuid.charguid);
+                }
+                if (oldCharGuid.type != null) {
+                    charGuidBuilder.setType(oldCharGuid.type);
+                }
+                if (oldCharGuid.posx != null) {
+                    charGuidBuilder.setPosx(oldCharGuid.posx);
+                }
+                if (oldCharGuid.posy != null) {
+                    charGuidBuilder.setPosy(oldCharGuid.posy);
+                }
+                
+                builder.addCharlist(charGuidBuilder.build());
+            }
+        }
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptTargetUserDetailInfoResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_TARGET_USER_DETAIL_INFO oldResponse = 
+            (com.dnfm.mina.protobuf.RES_TARGET_USER_DETAIL_INFO) msg;
+        
+        com.dnfm.mina.protobuf.generated.TargetUserDetailInfoResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.TargetUserDetailInfoResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.guid != null) {
+            builder.setGuid(oldResponse.guid);
+        }
+        if (oldResponse.world != null) {
+            builder.setWorld(oldResponse.world);
+        }
+        if (oldResponse.gguid != null) {
+            builder.setGguid(oldResponse.gguid);
+        }
+        if (oldResponse.gmastername != null) {
+            builder.setGmastername(oldResponse.gmastername);
+        }
+        if (oldResponse.name != null) {
+            builder.setName(oldResponse.name);
+        }
+        if (oldResponse.exp != null) {
+            builder.setExp(oldResponse.exp);
+        }
+        if (oldResponse.level != null) {
+            builder.setLevel(oldResponse.level);
+        }
+        if (oldResponse.job != null) {
+            builder.setJob(oldResponse.job);
+        }
+        if (oldResponse.growtype != null) {
+            builder.setGrowtype(oldResponse.growtype);
+        }
+        if (oldResponse.secgrowtype != null) {
+            builder.setSecgrowtype(oldResponse.secgrowtype);
+        }
+        if (oldResponse.equipscore != null) {
+            builder.setEquipscore(oldResponse.equipscore);
+        }
+        if (oldResponse.spoint != null) {
+            builder.setSpoint(oldResponse.spoint);
+        }
+        if (oldResponse.adventureunionlevel != null) {
+            builder.setAdventureunionlevel(oldResponse.adventureunionlevel);
+        }
+        if (oldResponse.adventureunionexp != null) {
+            builder.setAdventureunionexp(oldResponse.adventureunionexp);
+        }
+        if (oldResponse.characlistcount != null) {
+            builder.setCharaclistcount(oldResponse.characlistcount);
+        }
+        if (oldResponse.gname != null) {
+            builder.setGname(oldResponse.gname);
+        }
+        if (oldResponse.gmembergrade != null) {
+            builder.setGmembergrade(oldResponse.gmembergrade);
+        }
+        if (oldResponse.blackdiamond != null) {
+            builder.setBlackdiamond(oldResponse.blackdiamond);
+        }
+        if (oldResponse.creditscore != null) {
+            builder.setCreditscore(oldResponse.creditscore);
+        }
+        if (oldResponse.gamecenterinfo != null) {
+            builder.setGamecenterinfo(oldResponse.gamecenterinfo);
+        }
+        if (oldResponse.qqVipinfo != null) {
+            builder.setQqVipinfo(oldResponse.qqVipinfo);
+        }
+        if (oldResponse.avatarVisibleFlags != null) {
+            builder.setAvatarVisibleFlags(oldResponse.avatarVisibleFlags);
+        }
+        if (oldResponse.totallike != null) {
+            builder.setTotallike(oldResponse.totallike);
+        }
+        if (oldResponse.like != null) {
+            builder.setLike(oldResponse.like);
+        }
+        if (oldResponse.rank != null) {
+            builder.setRank(oldResponse.rank);
+        }
+        if (oldResponse.communionlevel != null) {
+            builder.setCommunionlevel(oldResponse.communionlevel);
+        }
+        if (oldResponse.fame != null) {
+            builder.setFame(oldResponse.fame);
+        }
+        if (oldResponse.charm != null) {
+            builder.setCharm(oldResponse.charm);
+        }
+        if (oldResponse.grade != null) {
+            builder.setGrade(oldResponse.grade);
+        }
+        if (oldResponse.gradeFair != null) {
+            builder.setGradeFair(oldResponse.gradeFair);
+        }
+        if (oldResponse.isadventureCondition != null) {
+            builder.setIsadventureCondition(oldResponse.isadventureCondition);
+        }
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptInteractionMenuResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_INTERACTION_MENU oldResponse = 
+            (com.dnfm.mina.protobuf.RES_INTERACTION_MENU) msg;
+        
+        com.dnfm.mina.protobuf.generated.InteractionMenuResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.InteractionMenuResponse.newBuilder();
+        
+        if (oldResponse.error != null) {
+            builder.setError(oldResponse.error);
+        }
+        if (oldResponse.charguid != null) {
+            builder.setCharguid(oldResponse.charguid);
+        }
+        if (oldResponse.online != null) {
+            builder.setOnline(oldResponse.online);
+        }
+        if (oldResponse.status != null) {
+            builder.setStatus(oldResponse.status);
+        }
+        if (oldResponse.lastlogout != null) {
+            builder.setLastlogout(oldResponse.lastlogout);
+        }
+        if (oldResponse.gguid != null) {
+            builder.setGguid(oldResponse.gguid);
+        }
+        if (oldResponse.openmenutype != null) {
+            builder.setOpenmenutype(oldResponse.openmenutype);
+        }
+        if (oldResponse.level != null) {
+            builder.setLevel(oldResponse.level);
+        }
+        if (oldResponse.job != null) {
+            builder.setJob(oldResponse.job);
+        }
+        if (oldResponse.growtype != null) {
+            builder.setGrowtype(oldResponse.growtype);
+        }
+        if (oldResponse.secgrowtype != null) {
+            builder.setSecgrowtype(oldResponse.secgrowtype);
+        }
+        if (oldResponse.name != null) {
+            builder.setName(oldResponse.name);
+        }
+        if (oldResponse.gname != null) {
+            builder.setGname(oldResponse.gname);
+        }
+        if (oldResponse.grade != null) {
+            builder.setGrade(oldResponse.grade);
+        }
+        if (oldResponse.qindex != null) {
+            builder.setQindex(oldResponse.qindex);
+        }
+        if (oldResponse.partyguid != null) {
+            builder.setPartyguid(oldResponse.partyguid);
+        }
+        if (oldResponse.partyleader != null) {
+            builder.setPartyleader(oldResponse.partyleader);
+        }
+        if (oldResponse.publictype != null) {
+            builder.setPublictype(oldResponse.publictype);
+        }
+        if (oldResponse.creditscore != null) {
+            builder.setCreditscore(oldResponse.creditscore);
+        }
+        if (oldResponse.world != null) {
+            builder.setWorld(oldResponse.world);
+        }
+        if (oldResponse.openid != null) {
+            builder.setOpenid(oldResponse.openid);
+        }
+        if (oldResponse.platform != null) {
+            builder.setPlatform(oldResponse.platform);
+        }
+        if (oldResponse.platformserverid != null) {
+            builder.setPlatformserverid(oldResponse.platformserverid);
+        }
+        if (oldResponse.adventureunionname != null) {
+            builder.setAdventureunionname(oldResponse.adventureunionname);
+        }
+        if (oldResponse.gamecenterinfo != null) {
+            builder.setGamecenterinfo(oldResponse.gamecenterinfo);
+        }
+        if (oldResponse.qqVipinfo != null) {
+            builder.setQqVipinfo(oldResponse.qqVipinfo);
+        }
+        if (oldResponse.characterframe != null) {
+            builder.setCharacterframe(oldResponse.characterframe);
+        }
+        
+        return builder.build().toByteArray();
+    }
+
+    private byte[] adaptLeaveFromTownResponse(Message msg) throws Exception {
+        com.dnfm.mina.protobuf.RES_LEAVE_FROM_TOWN oldResponse = 
+            (com.dnfm.mina.protobuf.RES_LEAVE_FROM_TOWN) msg;
+        
+        com.dnfm.mina.protobuf.generated.LeaveFromTownResponse.Builder builder = 
+            com.dnfm.mina.protobuf.generated.LeaveFromTownResponse.newBuilder();
         
         if (oldResponse.error != null) {
             builder.setError(oldResponse.error);

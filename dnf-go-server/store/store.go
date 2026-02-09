@@ -234,6 +234,11 @@ func (s *Store) UpdateBagItem(ctx context.Context, update *UpdateBagItem) error 
 	return s.driver.UpdateBagItem(ctx, update)
 }
 
+// GetBagItem 获取背包物品
+func (s *Store) GetBagItem(ctx context.Context, find *FindBagItem) (*BagItem, error) {
+	return s.driver.GetBagItem(ctx, find)
+}
+
 // ListBagItemsByRole 获取角色的背包物品(无缓存)
 func (s *Store) ListBagItemsByRole(ctx context.Context, roleID uint64) ([]*BagItem, error) {
 	return s.driver.ListBagItemsByRole(ctx, roleID)

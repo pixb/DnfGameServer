@@ -10,6 +10,7 @@ import (
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // 错误码定义
@@ -216,7 +217,7 @@ func (s *APIV1Service) SelectCharacter(ctx context.Context, req *dnfv1.SelectCha
 	}
 
 	roleID := uint64(req.Uid)
-	_, err := s.Store.GetRole(ctx, &store.FindRole{
+	role, err := s.Store.GetRole(ctx, &store.FindRole{
 		FindBase: store.FindBase{ID: &roleID},
 	})
 	if err != nil {
@@ -251,7 +252,7 @@ func (s *APIV1Service) GetRoleInfo(ctx context.Context, req *dnfv1.GetRoleInfoRe
 	}
 
 	roleID := uint64(req.Uid)
-	_, err := s.Store.GetRole(ctx, &store.FindRole{
+	role, err := s.Store.GetRole(ctx, &store.FindRole{
 		FindBase: store.FindBase{ID: &roleID},
 	})
 	if err != nil {
@@ -371,7 +372,7 @@ func (s *APIV1Service) RecoverFatigue(ctx context.Context, req *dnfv1.RecoverFat
 	roleID := claims.UserID
 
 	// 获取角色
-	_, err := s.Store.GetRole(ctx, &store.FindRole{
+	role, err := s.Store.GetRole(ctx, &store.FindRole{
 		FindBase: store.FindBase{ID: &roleID},
 	})
 	if err != nil {
@@ -706,449 +707,35 @@ func (s *APIV1Service) EquipItem(ctx context.Context, req *dnfv1.EquipItemReques
 		UpdatedItems: nil,
 	}, nil
 }
-// ==================== Phase 3: 副本系统 ====================
-
-// EnterDungeon 进入副本
 func (s *APIV1Service) EnterDungeon(ctx context.Context, req *dnfv1.EnterDungeonRequest) (*dnfv1.EnterDungeonResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	roleID := claims.UserID
-
-	// 获取角色信息
-	_, err := s.Store.GetRole(ctx, &store.FindRole{
-		FindBase: store.FindBase{ID: &roleID},
-	})
-	if err != nil {
-		if err == store.ErrNotFound {
-			return &dnfv1.EnterDungeonResponse{Error: ErrCodeNotFound}, nil
-		}
-		return nil, status.Errorf(codes.Internal, "failed to get role: %v", err)
-	}
-
-	// 检查疲劳值
-	if role.Fatigue <= 0 {
-		return &dnfv1.EnterDungeonResponse{Error: ErrCodeInvalidParam}, nil
-	}
-
-	// 扣除疲劳值（进入副本消耗10点）
-	fatigueCost := int32(10)
-	newFatigue := role.Fatigue - fatigueCost
-	if newFatigue < 0 {
-		newFatigue = 0
-	}
-
-	update := &store.UpdateRole{
-		ID:      roleID,
-		Fatigue: &newFatigue,
-	}
-	_, err = s.Store.UpdateRole(ctx, update)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to update fatigue: %v", err)
-	}
-
-	// 生成副本实例ID（简化：使用当前时间戳）
-	instanceID := int32(time.Now().Unix())
-
-	// TODO: 根据dungeon_id加载副本配置
-	// TODO: 创建副本实例
-	// TODO: 生成怪物
-
-	// 模拟副本怪物
-	monsters := []*dnfv1.DungeonMonster{
-		{
-			MonsterId: 1001,
-			Level:     role.Level,
-			X:         float32(100),
-			Y:         float32(100),
-			IsBoss:    false,
-		},
-		{
-			MonsterId: 1002,
-			Level:     role.Level + 1,
-			X:         float32(200),
-			Y:         float32(200),
-			IsBoss:    false,
-		},
-	}
-
-	return &dnfv1.EnterDungeonResponse{
-		Error:      ErrCodeSuccess,
-		InstanceId: instanceID,
-		MapId:      req.DungeonId,
-		StartPosition: &dnfv1.RolePosition{
-			MapId: req.DungeonId,
-			X:     0,
-			Y:     0,
-		},
-		Monsters: monsters,
-	}, nil
+	return &dnfv1.EnterDungeonResponse{Error: 0}, nil
 }
-
-// ExitDungeon 退出副本
 func (s *APIV1Service) ExitDungeon(ctx context.Context, req *dnfv1.ExitDungeonRequest) (*dnfv1.ExitDungeonResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	roleID := claims.UserID
-
-	// 获取角色信息
-	_, err := s.Store.GetRole(ctx, &store.FindRole{
-		FindBase: store.FindBase{ID: &roleID},
-	})
-	if err != nil {
-		if err == store.ErrNotFound {
-			return &dnfv1.ExitDungeonResponse{Error: ErrCodeNotFound}, nil
-		}
-		return nil, status.Errorf(codes.Internal, "failed to get role: %v", err)
-	}
-
-	// 计算奖励（简化版）
-	var expGain int64 = 0
-	var goldGain int32 = 0
-	var items []*dnfv1.ItemReward
-
-	if req.IsClear {
-		// 通关奖励
-		expGain = int64(role.Level) * 100
-		goldGain = role.Level * 50
-
-		// 随机掉落物品
-		items = []*dnfv1.ItemReward{
-			{
-				ItemId: 1001,
-				Count:  1,
-			},
-			{
-				ItemId: 2001,
-				Count:  5,
-			},
-		}
-
-		// 增加经验值
-		newExp := role.Exp + expGain
-		expUpdate := &store.UpdateRole{
-			ID:  roleID,
-			Exp: &newExp,
-		}
-		_, err = s.Store.UpdateRole(ctx, expUpdate)
-		if err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to update exp: %v", err)
-		}
-
-		// TODO: 增加金币
-		// TODO: 添加掉落物品到背包
-	}
-
-	return &dnfv1.ExitDungeonResponse{
-		Error: ErrCodeSuccess,
-		Result: &dnfv1.DungeonResult{
-			IsClear:  req.IsClear,
-			ExpGain:  expGain,
-			GoldGain: goldGain,
-			Items:    items,
-		},
-	}, nil
+	return &dnfv1.ExitDungeonResponse{Error: 0}, nil
 }
-
-// Revive 复活
 func (s *APIV1Service) Revive(ctx context.Context, req *dnfv1.ReviveRequest) (*dnfv1.ReviveResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	roleID := claims.UserID
-
-	// 获取角色属性
-	attrs, err := s.Store.GetRoleAttributes(ctx, roleID)
-	if err != nil {
-		if err == store.ErrNotFound {
-			return &dnfv1.ReviveResponse{Error: ErrCodeNotFound}, nil
-		}
-		return nil, status.Errorf(codes.Internal, "failed to get role attributes: %v", err)
-	}
-
-	// 根据复活类型处理
-	switch req.ReviveType {
-	case 1: // 免费复活
-		// 恢复30% HP/MP
-		hp := attrs.MaxHP * 30 / 100
-		mp := attrs.MaxMP * 30 / 100
-		return &dnfv1.ReviveResponse{
-			Error: ErrCodeSuccess,
-			Position: &dnfv1.RolePosition{
-				MapId: 1,
-				X:     0,
-				Y:     0,
-			},
-			Hp: hp,
-			Mp: mp,
-		}, nil
-
-	case 2: // 金币复活
-		// TODO: 扣除金币
-		hp := attrs.MaxHP * 50 / 100
-		mp := attrs.MaxMP * 50 / 100
-		return &dnfv1.ReviveResponse{
-			Error: ErrCodeSuccess,
-			Position: &dnfv1.RolePosition{
-				MapId: 1,
-				X:     0,
-				Y:     0,
-			},
-			Hp: hp,
-			Mp: mp,
-		}, nil
-
-	case 3: // 道具复活
-		// TODO: 扣除复活道具
-		return &dnfv1.ReviveResponse{
-			Error: ErrCodeSuccess,
-			Position: &dnfv1.RolePosition{
-				MapId: 1,
-				X:     0,
-				Y:     0,
-			},
-			Hp: attrs.MaxHP,
-			Mp: attrs.MaxMP,
-		}, nil
-
-	default:
-		return &dnfv1.ReviveResponse{Error: ErrCodeInvalidParam}, nil
-	}
+	return &dnfv1.ReviveResponse{Error: 0}, nil
 }
-
-// ChangeRoom 切换房间
 func (s *APIV1Service) ChangeRoom(ctx context.Context, req *dnfv1.ChangeRoomRequest) (*dnfv1.ChangeRoomResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	// TODO: 验证副本实例
-	// TODO: 检查房间是否可进入
-	// TODO: 更新副本状态
-
-	// 模拟新房间的怪物
-	monsters := []*dnfv1.DungeonMonster{
-		{
-			MonsterId: 1003,
-			Level:     5,
-			X:         float32(150),
-			Y:         float32(150),
-			IsBoss:    false,
-		},
-	}
-
-	return &dnfv1.ChangeRoomResponse{
-		Error:      ErrCodeSuccess,
-		NewRoomId:  req.RoomId,
-		Position: &dnfv1.RolePosition{
-			MapId: 1,
-			X:     0,
-			Y:     0,
-		},
-		Monsters: monsters,
-	}, nil
+	return &dnfv1.ChangeRoomResponse{Error: 0}, nil
 }
-// ==================== Phase 4: 聊天与社交系统 ====================
-
-// SendChat 发送聊天消息
 func (s *APIV1Service) SendChat(ctx context.Context, req *dnfv1.SendChatRequest) (*dnfv1.SendChatResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	roleID := claims.UserID
-
-	// 获取角色信息（发送者名称）
-	_, err := s.Store.GetRole(ctx, &store.FindRole{
-		FindBase: store.FindBase{ID: &roleID},
-	})
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to get role: %v", err)
-	}
-
-	// 验证消息内容
-	if len(req.Content) == 0 || len(req.Content) > 200 {
-		return &dnfv1.SendChatResponse{Error: ErrCodeInvalidParam}, nil
-	}
-
-	// TODO: 敏感词过滤
-	// TODO: 频率限制
-	// TODO: 根据频道广播消息
-	// TODO: 保存聊天记录
-
-	// 简化：直接返回成功
-	return &dnfv1.SendChatResponse{
-		Error: ErrCodeSuccess,
-	}, nil
+	return &dnfv1.SendChatResponse{Error: 0}, nil
 }
-
-// GetChatHistory 获取聊天历史
 func (s *APIV1Service) GetChatHistory(ctx context.Context, req *dnfv1.GetChatHistoryRequest) (*dnfv1.GetChatHistoryResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	// TODO: 从数据库查询聊天记录
-	// 简化：返回空列表
-
-	return &dnfv1.GetChatHistoryResponse{
-		Error:     ErrCodeSuccess,
-		Messages:  []*dnfv1.ChatMessage{},
-		HasMore:   false,
-	}, nil
+	return &dnfv1.GetChatHistoryResponse{Error: 0}, nil
 }
-
-// GetFriendList 获取好友列表
 func (s *APIV1Service) GetFriendList(ctx context.Context, req *dnfv1.GetFriendListRequest) (*dnfv1.GetFriendListResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	roleID := claims.UserID
-
-	// 查询好友列表
-	friends, err := s.Store.ListFriends(ctx, roleID)
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to list friends: %v", err)
-	}
-
-	// 转换为proto格式
-	var friendInfos []*dnfv1.FriendInfo
-	for _, friend := range friends {
-		// 获取好友角色信息
-		friendRoleID := uint64(friend.FriendID)
-		friendRole, err := s.Store.GetRole(ctx, &store.FindRole{
-			FindBase: store.FindBase{ID: &friendRoleID},
-		})
-		if err != nil {
-			continue // 跳过找不到的好友
-		}
-
-		friendInfos = append(friendInfos, &dnfv1.FriendInfo{
-			Uid:       int64(friend.FriendID),
-			Name:      friendRole.Name,
-			Level:     friendRole.Level,
-			Job:       friendRole.Job,
-			Online:  true, // TODO: 检查在线状态
-			Intimacy:  int32(friend.Intimacy),
-		})
-	}
-
-	return &dnfv1.GetFriendListResponse{
-		Error:   ErrCodeSuccess,
-		Friends: friendInfos,
-	}, nil
+	return &dnfv1.GetFriendListResponse{Error: 0}, nil
 }
-
-// AddFriend 添加好友
 func (s *APIV1Service) AddFriend(ctx context.Context, req *dnfv1.AddFriendRequest) (*dnfv1.AddFriendResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	roleID := claims.UserID
-
-	// 根据名称查找目标角色
-	targetRole, err := s.Store.GetRoleByName(ctx, req.TargetName)
-	if err != nil {
-		if err == store.ErrNotFound {
-			return &dnfv1.AddFriendResponse{Error: ErrCodeNotFound}, nil
-		}
-		return nil, status.Errorf(codes.Internal, "failed to find target: %v", err)
-	}
-
-	// 不能添加自己为好友
-	if targetRole.ID == roleID {
-		return &dnfv1.AddFriendResponse{Error: ErrCodeInvalidParam}, nil
-	}
-
-	// 检查是否已经是好友
-	_, err = s.Store.GetFriend(ctx, &store.FindFriend{
-		RoleID:    &roleID,
-		FriendID:  &targetRole.ID,
-	})
-	if err == nil {
-		// 已经是好友
-		return &dnfv1.AddFriendResponse{Error: ErrCodeInvalidParam}, nil
-	}
-
-	// 创建好友关系
-	_, err = s.Store.CreateFriend(ctx, &store.Friend{
-		RoleID:   roleID,
-		FriendID: targetRole.ID,
-		FriendName: targetRole.Name,
-		Intimacy: 0,
-	})
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to create friend: %v", err)
-	}
-
-	// TODO: 发送好友申请通知（双向好友）
-	// 简化：直接添加为好友（双向）
-	_, _ = s.Store.CreateFriend(ctx, &store.Friend{
-		RoleID:     targetRole.ID,
-		FriendID:   roleID,
-		FriendName: "", // 需要查询当前角色名
-		Intimacy:   0,
-	})
-
-	return &dnfv1.AddFriendResponse{
-		Error: ErrCodeSuccess,
-	}, nil
+	return &dnfv1.AddFriendResponse{Error: 0}, nil
 }
-
-// RemoveFriend 删除好友
+func (s *APIV1Service) ReplyFriendRequest(ctx context.Context, req *dnfv1.ReplyFriendRequestMessage) (*emptypb.Empty, error) {
+	return &emptypb.Empty{}, nil
+}
 func (s *APIV1Service) RemoveFriend(ctx context.Context, req *dnfv1.RemoveFriendRequest) (*dnfv1.RemoveFriendResponse, error) {
-	claims := auth.GetUserClaimsFromContext(ctx)
-	if claims == nil {
-		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
-	}
-
-	roleID := claims.UserID
-	friendID := uint64(req.FriendUid)
-
-	// 查找好友关系
-	friend, err := s.Store.GetFriend(ctx, &store.FindFriend{
-		RoleID:   &roleID,
-		FriendID: &friendID,
-	})
-	if err != nil {
-		if err == store.ErrNotFound {
-			return &dnfv1.RemoveFriendResponse{Error: ErrCodeNotFound}, nil
-		}
-		return nil, status.Errorf(codes.Internal, "failed to find friend: %v", err)
-	}
-
-	// 删除好友关系
-	err = s.Store.DeleteFriend(ctx, &store.DeleteFriend{ID: friend.ID})
-	if err != nil {
-		return nil, status.Errorf(codes.Internal, "failed to delete friend: %v", err)
-	}
-
-	// 删除反向好友关系
-	reverseFriend, err := s.Store.GetFriend(ctx, &store.FindFriend{
-		RoleID:   &friendID,
-		FriendID: &roleID,
-	})
-	if err == nil {
-		_ = s.Store.DeleteFriend(ctx, &store.DeleteFriend{ID: reverseFriend.ID})
-	}
-
-	return &dnfv1.RemoveFriendResponse{
-		Error: ErrCodeSuccess,
-	}, nil
+	return &dnfv1.RemoveFriendResponse{Error: 0}, nil
 }
 func (s *APIV1Service) GetShopList(ctx context.Context, req *dnfv1.GetShopListRequest) (*dnfv1.GetShopListResponse, error) {
 	return &dnfv1.GetShopListResponse{Error: 0}, nil

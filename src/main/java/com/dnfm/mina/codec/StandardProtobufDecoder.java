@@ -107,6 +107,18 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
                 return adaptLoadServerSimpleDataRequest(body);
             case 10032:
                 return adaptSaveServerSimpleDataRequest(body);
+            case 10100:
+                return adaptEnterTownRequest(body);
+            case 10103:
+                return adaptCharacterInfoRequest(body);
+            case 10106:
+                return adaptTownUserGuidListRequest(body);
+            case 10107:
+                return adaptTargetUserDetailInfoRequest(body);
+            case 10108:
+                return adaptInteractionMenuRequest(body);
+            case 10109:
+                return adaptLeaveFromTownRequest(body);
             default:
                 throw new Exception("Unknown module ID: " + moduleId);
         }
@@ -523,6 +535,91 @@ public class StandardProtobufDecoder extends CumulativeProtocolDecoder {
         oldRequest.value = newRequest.getValue();
         
         System.out.println("===== StandardProtobufDecoder.adaptSaveServerSimpleDataRequest() oldRequest=" + oldRequest + " =====");
+        
+        return oldRequest;
+    }
+
+    private Message adaptEnterTownRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptEnterTownRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.EnterTownRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.EnterTownRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_ENTER_TO_TOWN oldRequest = new com.dnfm.mina.protobuf.REQ_ENTER_TO_TOWN();
+        oldRequest.authkey = newRequest.getAuthkey();
+        oldRequest.town = (int) newRequest.getTown();
+        oldRequest.area = (int) newRequest.getArea();
+        oldRequest.posx = newRequest.getPosx();
+        oldRequest.posy = newRequest.getPosy();
+        
+        return oldRequest;
+    }
+
+    private Message adaptCharacterInfoRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptCharacterInfoRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.CharacterInfoRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.CharacterInfoRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_CHARACTER_INFO oldRequest = new com.dnfm.mina.protobuf.REQ_CHARACTER_INFO();
+        oldRequest.authkey = newRequest.getAuthkey();
+        oldRequest.option = newRequest.getOption();
+        
+        if (newRequest.getCharlistList() != null) {
+            oldRequest.charlist = new java.util.ArrayList<>();
+            for (com.dnfm.mina.protobuf.generated.CharacterGuid newCharGuid : newRequest.getCharlistList()) {
+                com.dnfm.mina.protobuf.PT_CHARACTER_GUID oldCharGuid = new com.dnfm.mina.protobuf.PT_CHARACTER_GUID();
+                oldCharGuid.charguid = newCharGuid.getCharguid();
+                oldCharGuid.type = newCharGuid.getType();
+                oldCharGuid.posx = newCharGuid.getPosx();
+                oldCharGuid.posy = newCharGuid.getPosy();
+                oldRequest.charlist.add(oldCharGuid);
+            }
+        }
+        
+        return oldRequest;
+    }
+
+    private Message adaptTownUserGuidListRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptTownUserGuidListRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.TownUserGuidListRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.TownUserGuidListRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_TOWN_USER_GUID_LIST oldRequest = new com.dnfm.mina.protobuf.REQ_TOWN_USER_GUID_LIST();
+        oldRequest.count = newRequest.getCount();
+        oldRequest.posx = newRequest.getPosx();
+        oldRequest.posy = newRequest.getPosy();
+        
+        return oldRequest;
+    }
+
+    private Message adaptTargetUserDetailInfoRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptTargetUserDetailInfoRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.TargetUserDetailInfoRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.TargetUserDetailInfoRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_TARGET_USER_DETAIL_INFO oldRequest = new com.dnfm.mina.protobuf.REQ_TARGET_USER_DETAIL_INFO();
+        oldRequest.targetguid = newRequest.getTargetguid();
+        
+        return oldRequest;
+    }
+
+    private Message adaptInteractionMenuRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptInteractionMenuRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.InteractionMenuRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.InteractionMenuRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_INTERACTION_MENU oldRequest = new com.dnfm.mina.protobuf.REQ_INTERACTION_MENU();
+        oldRequest.charguid = newRequest.getCharguid();
+        oldRequest.openmenutype = newRequest.getOpenmenutype();
+        
+        return oldRequest;
+    }
+
+    private Message adaptLeaveFromTownRequest(byte[] body) throws Exception {
+        System.out.println("===== StandardProtobufDecoder.adaptLeaveFromTownRequest() 被调用，body.length=" + body.length + " =====");
+        com.dnfm.mina.protobuf.generated.LeaveFromTownRequest newRequest = 
+            com.dnfm.mina.protobuf.generated.LeaveFromTownRequest.parseFrom(body);
+        
+        com.dnfm.mina.protobuf.REQ_LEAVE_FROM_TOWN oldRequest = new com.dnfm.mina.protobuf.REQ_LEAVE_FROM_TOWN();
         
         return oldRequest;
     }
