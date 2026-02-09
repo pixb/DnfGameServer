@@ -5,9 +5,9 @@
 """
 
 import sys
-sys.path.insert(0, '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf')
+sys.path.insert(0, '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/scripts')
 
-from migration_tracker import MigrationTracker
+from core.migration_tracker import MigrationTracker
 from datetime import datetime
 
 def generate_markdown_report(output_file: str = "migration_report.md"):

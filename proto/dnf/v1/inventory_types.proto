@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+// Go代码生成选项
+option go_package = "dnf/proto/v1;inventoryv1";
+
+// Java代码生成选项（重要）
+option java_multiple_files = true;  // 为每个消息生成独立的Java文件
+option java_package = "com.dnfm.mina.protobuf.generated";
+option java_outer_classname = "InventoryTypesProto";
+
+// 可堆叠物品信息
+message Stackable {
+  int32 index = 1;          // 索引
+  int32 count = 2;          // 数量
+  bool bind = 3;            // 绑定
+  int32 scount = 4;         // S数量
+  int32 tcount = 5;         // T数量
+  int64 expiretime = 6;      // 过期时间
+  int64 acquisitiontime = 7;  // 获取时间
+  int32 sindex = 8;         // S索引
+  int32 slotindex = 9;      // 槽位索引
+}
+
+// 可重新购买的可堆叠物品信息
+message RepurchaseStackable {
+  uint64 guid = 1;        // GUID
+  Stackable item = 2;       // 物品
+}

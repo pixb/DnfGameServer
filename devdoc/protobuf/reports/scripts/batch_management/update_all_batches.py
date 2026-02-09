@@ -5,9 +5,9 @@
 """
 
 import sys
-sys.path.insert(0, '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf')
+sys.path.insert(0, '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/scripts')
 
-from migration_tracker import MigrationTracker, Batch, MigrationFile, Issue
+from core.migration_tracker import MigrationTracker, Batch, MigrationFile, Issue
 from datetime import datetime
 
 def update_all_batches():

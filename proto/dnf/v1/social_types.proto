@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+// Go代码生成选项
+option go_package = "dnf/proto/v1;socialv1";
+
+// Java代码生成选项（重要）
+option java_multiple_files = true;  // 为每个消息生成独立的Java文件
+option java_package = "com.dnfm.mina.protobuf.generated";
+option java_outer_classname = "SocialTypesProto";
+
+// 导师任务信息
+message MentorQuestInfo {
+  int32 qindex = 1;           // 任务索引
+  int32 state = 2;            // 状态
+  int64 masterrewardtime = 3;  // 师傅奖励时间
+  int64 rewardtime = 4;        // 奖励时间
+}
+
+// 导师信息
+message MenteeInfo {
+  uint64 guid = 1;                         // GUID
+  int32 level = 2;                          // 等级
+  string name = 3;                           // 名称
+  int32 job = 4;                             // 职业
+  int32 growtype = 5;                        // 成长类型
+  int32 secondgrowtype = 6;                  // 第二成长类型
+  int32 active = 7;                          // 活跃度
+  int32 online = 8;                          // 在线状态
+  int32 followerallowgraduate = 9;           // 徒弟允许毕业
+  int32 masterallowgraduate = 10;            // 师傅允许毕业
+  int32 mentordungeonticket = 11;            // 导师地下城门票
+  int32 registlevel = 12;                    // 注册等级
+  int64 regdate = 13;                        // 注册日期
+  string seqlevelgift = 14;                  // 序列等级礼物
+  string seqlevelgiftmaster = 15;            // 序列等级礼物师傅
+  int64 sendgreeting = 16;                   // 发送问候
+  int64 recvgreeting = 17;                   // 接收问候
+  int32 questcount = 18;                     // 任务数量
+  repeated MentorQuestInfo quest = 19;         // 任务列表
+  int32 creditscore = 20;                    // 信用分数
+}
+
+// 拍卖物品价格信息
+message AuctionItemPriceInfo {
+  int32 price = 1;  // 价格
+  int32 count = 2;  // 数量
+}
+
+// 角色槽位信息
+message CharacterSlotInfo {
+  uint64 charguid = 1;  // 角色GUID
+}

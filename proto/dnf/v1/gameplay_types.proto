@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+// Go代码生成选项
+option go_package = "dnf/proto/v1;gameplayv1";
+
+// Java代码生成选项（重要）
+option java_multiple_files = true;  // 为每个消息生成独立的Java文件
+option java_package = "com.dnfm.mina.protobuf.generated";
+option java_outer_classname = "GameplayTypesProto";
+
+// 技能信息
+message Skill {
+  int32 index = 1;  // 技能索引
+  int32 level = 2;  // 技能等级
+}
+
+// 掉落对象金币信息
+message DropObjectGold {
+  uint64 charguid = 1;  // 角色GUID
+  int32 gold = 2;        // 金币数量
+}

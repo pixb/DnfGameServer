@@ -6,12 +6,12 @@
 
 import sqlite3
 import sys
-sys.path.insert(0, '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf')
+sys.path.insert(0, '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/scripts')
 
 def create_message_mappings_table():
     """创建消息文件映射表"""
     
-    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/migration_progress.db'
+    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/scripts/migration_progress.db'
     
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()

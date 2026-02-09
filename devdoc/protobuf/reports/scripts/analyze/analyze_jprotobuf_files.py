@@ -98,7 +98,7 @@ def analyze_file_categories():
 
 def get_migration_progress():
     """从数据库获取迁移进度"""
-    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/migration_progress.db'
+    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/scripts/migration_progress.db'
     
     try:
         conn = sqlite3.connect(db_path)

@@ -286,7 +286,7 @@ class MappingReportGenerator:
 
 def main():
     """主函数"""
-    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/migration_progress.db'
+    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/scripts/migration_progress.db'
     
     print("📊 正在生成消息映射报告...")
     print("=" * 60)

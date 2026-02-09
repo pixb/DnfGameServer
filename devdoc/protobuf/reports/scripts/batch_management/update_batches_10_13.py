@@ -5,9 +5,9 @@
 """
 
 import sys
-sys.path.insert(0, '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf')
+sys.path.insert(0, '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/scripts')
 
-from migration_tracker import MigrationTracker, Batch, MigrationFile
+from core.migration_tracker import MigrationTracker, Batch, MigrationFile
 
 def update_batches_10_to_13():
     """更新批次10-13为已完成状态"""

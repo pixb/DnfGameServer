@@ -67,7 +67,7 @@ def generate_report(format='markdown'):
 
 def query(old_name=None, new_name=None, module_id=None, batch_name=None):
     """查询消息映射"""
-    query = MessageMappingQuery('/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/migration_progress.db')
+    query = MessageMappingQuery('/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/scripts/migration_progress.db')
 
     if old_name:
         query.query_by_old_name(old_name)

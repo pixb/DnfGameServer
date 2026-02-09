@@ -232,7 +232,7 @@ def main():
     
     args = parser.parse_args()
     
-    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/migration_progress.db'
+    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/scripts/migration_progress.db'
     query = MessageMappingQuery(db_path)
     
     if args.old:

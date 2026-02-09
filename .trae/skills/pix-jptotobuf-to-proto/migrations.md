@@ -71,6 +71,45 @@
   - 验证了Java编译和功能测试
   - 更新了迁移文档和技能文档
 
+### 批次28: 社交数据结构 (已完成)
+- **迁移日期**: 2026-02-09
+- **迁移文件**: PT_MENTEE_INFO.java, PT_MENTOR_QUEST_INFO.java, PT_AUCTION_ITEM_PRICE_INFO.java, PT_CHARACTER_SLOT_INFO.java
+- **状态**: ✅ 完成
+- **文档**: [批次28文档](../../devdoc/protobuf/batch_28/)
+- **成果**: 
+  - 成功迁移PT_MENTEE_INFO、PT_MENTOR_QUEST_INFO、PT_AUCTION_ITEM_PRICE_INFO和PT_CHARACTER_SLOT_INFO四个社交数据结构
+  - 新增social_types.proto文件，集中管理社交数据结构
+  - 生成了Java和Go语言的代码，支持跨语言通信
+  - 编写了Go单元测试验证消息编解码
+  - 验证了Java编译和功能测试
+  - 更新了迁移文档和技能文档
+
+### 批次29: 游戏玩法数据结构 (已完成)
+- **迁移日期**: 2026-02-10
+- **迁移文件**: PT_SKILL.java, PT_DROP_OBJECT_GOLD.java
+- **状态**: ✅ 完成
+- **文档**: [批次29文档](../../devdoc/protobuf/batch_29/)
+- **成果**: 
+  - 成功迁移PT_SKILL和PT_DROP_OBJECT_GOLD两个游戏玩法数据结构
+  - 新增gameplay_types.proto文件，集中管理游戏玩法数据结构
+  - 生成了Java和Go语言的代码，支持跨语言通信
+  - 编写了Go单元测试验证消息编解码
+  - 验证了Java编译和功能测试
+  - 更新了迁移文档和技能文档
+
+### 批次30: 库存数据结构 (已完成)
+- **迁移日期**: 2026-02-10
+- **迁移文件**: PT_STACKABLE.java, PT_REPURCHASE_STACKABLE.java
+- **状态**: ✅ 完成
+- **文档**: [批次30文档](../../devdoc/protobuf/batch_30/)
+- **成果**: 
+  - 成功迁移PT_STACKABLE和PT_REPURCHASE_STACKABLE两个库存数据结构
+  - 新增inventory_types.proto文件，集中管理库存数据结构
+  - 生成了Java和Go语言的代码，支持跨语言通信
+  - 编写了Go单元测试验证消息编解码
+  - 验证了Java编译和功能测试
+  - 更新了迁移文档和技能文档
+
 ## 历史批次
 
 ### 批次22: STREAM_DATA 和 USER_INFO (已完成)
@@ -95,8 +134,8 @@
 
 ## 迁移统计
 
-- **总批次**: 27
-- **已完成批次**: 27
+- **总批次**: 30
+- **已完成批次**: 30
 - **进行中批次**: 0
 - **待开始批次**: 0
 - **完成率**: 100%
@@ -111,6 +150,15 @@
 
 ### 杂项数据结构
 - `proto/dnf/v1/misc_types.proto` - 钻石商店货币信息、餐厅支付信息、守护者订单信息
+
+### 社交数据结构
+- `proto/dnf/v1/social_types.proto` - 导师信息、导师任务信息、拍卖物品价格信息、角色槽位信息
+
+### 游戏玩法数据结构
+- `proto/dnf/v1/gameplay_types.proto` - 技能信息、掉落对象金币信息
+
+### 库存数据结构
+- `proto/dnf/v1/inventory_types.proto` - 可堆叠物品信息、可重新购买的可堆叠物品信息
 
 ### 通用数据结构
 - `proto/dnf/v1/common_types.proto` - 公会符号、avatar物品、排名信息
@@ -271,6 +319,12 @@
 - 添加批次25：系统数据结构迁移
 - 添加批次26：系统选项数据结构迁移
 - 添加批次27：杂项数据结构迁移
+- 添加批次28：社交数据结构迁移
+- 更新迁移统计信息
+
+### 2026-02-10
+- 添加批次29：游戏玩法数据结构迁移
+- 添加批次30：库存数据结构迁移
 - 更新迁移统计信息
 
 ## 注意事项
