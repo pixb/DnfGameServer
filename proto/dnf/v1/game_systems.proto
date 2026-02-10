@@ -1,0 +1,302 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+import "dnf/v1/common.proto";
+import "dnf/v1/inventory_types.proto";
+import "dnf/v1/gameplay_types.proto";
+import "dnf/v1/skill.proto";
+import "dnf/v1/character.proto";
+import "dnf/v1/multi_systems.proto";
+import "dnf/v1/chat.proto";
+import "dnf/v1/option_types.proto";
+import "dnf/v1/user_systems.proto";
+import "dnf/v1/system_types.proto";
+import "dnf/v1/welfare.proto";
+
+message BattleleagueRewardInfo {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message BattleleagueTransitionCard {
+  uint64 charguid = 1;
+  repeated int32 items = 2;
+  repeated int32 buffs = 3;
+  repeated BattleleagueBuff buff = 4;
+  int32 pvepoint = 5;
+  repeated BattleleagueRewardInfo pverewards = 6;
+}
+
+message BattlePassInfo {
+  int32 seasonpassFlag = 1;
+}
+
+message Blacklist {
+  uint64 charguid = 1;
+  string name = 2;
+  int64 time = 3;
+  int32 level = 4;
+  int32 job = 5;
+  int32 growtype = 6;
+  int32 secgrowtype = 7;
+  int32 characterframe = 8;
+}
+
+message BoardGameInfo {
+  repeated BoardTileInfo tiles = 1;
+  repeated BoardUserContentsInfo users = 2;
+  int32 sizex = 3;
+  int32 sizey = 4;
+  int32 playtime = 5;
+}
+
+message BoardMoveResult {
+  int32 result = 1;
+  int32 posx = 2;
+  int32 posy = 3;
+}
+
+message BoardInfo {
+  int32 score = 1;
+  string msg = 2;
+  uint64 noteguid = 3;
+  Character charinfo = 4;
+  int32 likecount = 5;
+  int32 hatecount = 6;
+  int64 registtime = 7;
+  int32 myreaction = 8;
+  SkinChatInfo skinchatinfo = 9;
+}
+
+message BoardTileInfo {
+  int32 posx = 1;
+  int32 posy = 2;
+  int32 type = 3;
+  int32 status = 4;
+  ExcavationBoardTileInfo excavation = 5;
+}
+
+message BoardUserContentsInfo {
+  uint64 charguid = 1;
+  int32 posx = 2;
+  int32 posy = 3;
+  int32 hp = 4;
+  int32 gold = 5;
+  int32 key = 6;
+  int32 relic = 7;
+}
+
+message BoardUserMinimumInfo {
+  uint64 charguid = 1;
+  int32 playerid = 2;
+  int32 growtype = 3;
+  int32 secgrowtype = 4;
+  int32 job = 5;
+  int32 level = 6;
+  string name = 7;
+  TeamType teamtype = 8;
+}
+
+message BookmarkItem {
+  int32 index = 1;
+  int32 count = 2;
+  bool bind = 3;
+}
+
+message Buff {
+  int32 buff = 1;
+}
+
+message BuffList {
+  int64 time = 1;
+  repeated SystemBuffAppendage appendages = 2;
+}
+
+message CardAttach {
+  int32 index = 1;
+}
+
+message CardCompose {
+  int32 index = 1;
+  int32 count = 2;
+  bool bind = 3;
+}
+
+message CeraShopBuy {
+  int32 goodsid = 1;
+  int32 count = 2;
+  int32 type = 3;
+}
+
+message CeraShopInfo {
+  repeated ShopBuyCount buy = 1;
+  repeated ShopTabReset reset = 2;
+  repeated ShopGroupReset group = 3;
+}
+
+message CeraShopMileage {
+  int32 index = 1;
+  int32 value = 2;
+}
+
+message ChampionChange {
+  int32 type = 1;
+  uint64 guid = 2;
+  uint64 objectguid = 3;
+  int32 currentMapGuid = 4;
+}
+
+message ChampionInfo {
+  bool appearance = 1;
+  repeated ChampionStageInfo detail = 2;
+}
+
+message ChampionStageInfo {
+  uint64 guid = 1;
+  int32 posx = 2;
+  int32 posy = 3;
+  bool die = 4;
+  uint64 objectguid = 5;
+  int32 skill = 6;
+  int32 value = 7;
+}
+
+message ChangeBuff {
+  int64 time = 1;
+  int64 endtime = 2;
+  int32 type = 3;
+  int32 index = 4;
+  repeated int32 values = 5;
+}
+
+message ChangeTeamUserInfo {
+  uint64 charguid = 1;
+  int32 teamtype = 2;
+}
+
+message CharacterEquipOnlyIndex {
+  repeated EquipIndexSlot equiplist = 1;
+  repeated AvatarIndexSlot avatarlist = 2;
+}
+
+message CharacterGuildRedpacketInfo {
+  int32 achvindex = 1;
+  int64 expiretime = 2;
+}
+
+message CharacterRaidDamageMeterInfo {
+  uint64 charguid = 1;
+  string name = 2;
+  int32 job = 3;
+  int32 level = 4;
+  int32 growtype = 5;
+  int32 secgrowtype = 6;
+  uint64 damage = 7;
+}
+
+message CharacterRaidRoundInfo {
+  uint64 charguid = 1;
+  string name = 2;
+  int32 job = 3;
+  int32 level = 4;
+  int32 growtype = 5;
+  int32 secgrowtype = 6;
+  int32 creditscore = 7;
+  int32 characterframe = 8;
+  PveRoundInfo roundinfo = 9;
+}
+
+message CharguidEntranceItem {
+  uint64 charguid = 1;
+  repeated EntranceItem items = 2;
+}
+
+message CharguidTicket {
+  uint64 charguid = 1;
+  repeated Ticket ticket = 2;
+}
+
+message Chat {
+  int32 error = 1;
+  int32 type = 2;
+  int32 subtype = 3;
+  uint64 charguid = 4;
+  uint64 targetguid = 5;
+  int32 job = 6;
+  int32 growtype = 7;
+  int32 level = 8;
+  string sender = 9;
+  string chat = 10;
+  string voice = 11;
+  string voicetime = 12;
+  string receiver = 13;
+  int32 hyperlinktype = 14;
+  int32 hyperlinksubtype = 15;
+  int32 secgrowtype = 16;
+  int32 online = 17;
+  repeated HyperlinkData hyperlinkdatas = 18;
+  repeated HyperlinkSystemmessageSub sub = 19;
+  uint64 partyguid = 20;
+  Equip equip = 21;
+  Equip title = 22;
+  Equip flag = 23;
+  Stackable emblem = 24;
+  Stackable material = 25;
+  AvatarItem avatar = 26;
+  Stackable card = 27;
+  Creature creature = 28;
+  Artifact cartifact = 29;
+  SkinChatInfo skinchatinfo = 30;
+  RecruitPartyInfo info = 31;
+  uint64 date = 32;
+  uint64 rpguid = 33;
+  int32 creditscore = 34;
+  Stackable crack = 35;
+  Equip crackequip = 36;
+  AvatarItem sdavatar = 37;
+}
+
+message ChatSync {
+  uint64 index = 1;
+  int32 type = 2;
+}
+
+message ChatSyncInfo {
+  uint64 lastindex = 1;
+  uint64 totalcount = 2;
+  int32 type = 3;
+  repeated Chat chatmsg = 4;
+}
+
+message ExcavationBoardTileInfo {
+  int32 index = 1;
+  int32 value = 2;
+}
+
+message ShopGroupReset {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message EntranceItem {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message HyperlinkSystemmessageSub {
+  int32 index = 1;
+  string message = 2;
+}
+
+message RecruitPartyInfo {
+  int32 type = 1;
+  string msg = 2;
+}
+
+message PveRoundInfo {
+  int32 round = 1;
+  int32 score = 2;
+}

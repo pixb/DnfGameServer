@@ -1,0 +1,315 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+import "dnf/v1/common.proto";
+import "dnf/v1/inventory_types.proto";
+import "dnf/v1/gameplay_types.proto";
+import "dnf/v1/skill.proto";
+import "dnf/v1/character.proto";
+import "dnf/v1/game_systems.proto";
+import "dnf/v1/welfare.proto";
+import "dnf/v1/channel.proto";
+
+message BoardGameMoveResult {
+  BoardTileInfo tile = 1;
+  BoardUserContentsInfo user = 2;
+}
+
+message ChivalryCurrencyDailyGain {
+  int32 type = 1;
+  int32 index = 2;
+  int32 count = 3;
+}
+
+message ChivalryMission {
+  ChivalryMissionType type = 1;
+  int32 value = 2;
+  int32 count = 3;
+}
+
+message ClearDungeonInfo {
+  int32 floor = 1;
+  int32 grade = 2;
+  int32 score = 3;
+  int32 step = 4;
+  int64 shortestcleartime = 5;
+}
+
+message ClearDungeonInfoList {
+  int32 index = 1;
+  repeated ClearDungeonInfo list = 2;
+}
+
+message ClearDungeonStarreward {
+  int32 count = 1;
+  int32 type = 2;
+}
+
+message Clientinfo {
+  uint32 platID = 1;
+  string deviceSoft = 2;
+  string deviceHard = 3;
+  string teleOper = 4;
+  string network = 5;
+  int32 scrWidth = 6;
+  int32 scrHeight = 7;
+  float density = 8;
+  string cpu = 9;
+  int32 memory = 10;
+  string glRender = 11;
+  string glVersion = 12;
+  string deviceID = 13;
+  string clientIP = 14;
+  uint32 type = 15;
+  string oAID = 16;
+  ClientBuildType buildType = 17;
+  string deviceLanguage = 18;
+  int32 deviceUTC = 19;
+}
+
+message ClosenessResultInfo {
+  uint64 fguid = 1;
+  int32 increasescore = 2;
+  int32 closenessscore = 3;
+}
+
+message CollectionInfo {
+  int32 index = 1;
+  bool reward = 2;
+  repeated CollectionItem items = 3;
+}
+
+message CollectionItem {
+  int32 index = 1;
+  bool regist = 2;
+  bool reward = 3;
+  int32 rewardindex = 4;
+}
+
+message CombackChannelInfo {
+  uint64 charguid = 1;
+  int32 channel = 2;
+  string ip = 3;
+  int32 port = 4;
+  int32 world = 5;
+}
+
+message ComebackMatchingUsers {
+  int32 channel = 1;
+  string ip = 2;
+  uint32 port = 3;
+  int32 world = 4;
+  uint64 charguid = 5;
+}
+
+message Comment {
+  uint64 writerguid = 1;
+  string name = 2;
+  string comment = 3;
+  uint64 writetime = 4;
+  int32 growtype = 5;
+  int32 secondgrowtype = 6;
+  int32 job = 7;
+}
+
+message CommunityGiftDeleteLog {
+  uint64 guid = 1;
+}
+
+message CommunityGiftGuideInfo {
+  uint64 guid = 1;
+}
+
+message CommunityGiftInfo {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message CommunityGiftReceiverInfo {
+  string name = 1;
+  int32 level = 2;
+  int32 job = 3;
+  int32 growtype = 4;
+  int32 secondgrowtype = 5;
+  int32 itemindex = 6;
+  int32 count = 7;
+  int64 charm = 8;
+  uint64 date = 9;
+  uint64 expiretime = 10;
+  uint64 charguid = 11;
+  int32 closenessscore = 12;
+  int32 check = 13;
+  string msg = 14;
+  string index = 15;
+  int32 packagingindex = 16;
+  int32 characterframe = 17;
+}
+
+message CommunityGiftSenderInfo {
+  string name = 1;
+  int32 level = 2;
+  int32 job = 3;
+  int32 growtype = 4;
+  int32 secondgrowtype = 5;
+  int32 itemindex = 6;
+  int32 count = 7;
+  int64 fame = 8;
+  uint64 date = 9;
+  uint64 expiretime = 10;
+  uint64 charguid = 11;
+  int32 closenessscore = 12;
+  string index = 13;
+  string openid = 14;
+  int32 characterframe = 15;
+}
+
+message CommunityGiftUntieInfo {
+  string index = 1;
+  uint64 charguid = 2;
+  string name = 3;
+  int32 level = 4;
+  int32 job = 5;
+  int32 growtype = 6;
+  int32 secondgrowtype = 7;
+  int32 itemindex = 8;
+  int32 count = 9;
+  int64 charm = 10;
+  int64 closenessscore = 11;
+  uint64 date = 12;
+  int32 check = 13;
+  string msg = 14;
+}
+
+message CompleteQuestInfo {
+  int32 index = 1;
+  int32 type = 2;
+  int32 state = 3;
+  int32 count = 4;
+  Removeitems removeitems = 5;
+}
+
+message ConsumeItems {
+  int32 itemindex = 1;
+  int32 count = 2;
+}
+
+message ConsumeList {
+  repeated Stackable consume = 1;
+}
+
+message ControlGroupInviteItem {
+  uint64 targetguid = 1;
+}
+
+message ControlTrainingroomClearinfo {
+  int32 index = 1;
+  int32 state = 2;
+}
+
+message CreatureCommunion {
+  int32 level = 1;
+  int32 selectedslot = 2;
+  int32 extentionslot = 3;
+  map<int32, CreatureLearnSkillInfos> slotInfos = 4;
+}
+
+message CreatureErrand {
+  int32 level = 1;
+  ErrandToday todayinfo = 2;
+  repeated ErrandClear clearlist = 3;
+  repeated ErrandInfo slotlist = 4;
+  uint64 lastresettime = 5;
+}
+
+message CreatureLearnSkillInfo {
+  int32 category = 1;
+  int32 skillindex = 2;
+  int32 skilllevel = 3;
+}
+
+message CreatureLearnSkillInfos {
+  repeated CreatureLearnSkillInfo skillInfos = 1;
+}
+
+message CreatureRandomOption {
+  int32 option = 1;
+  int32 rarity = 2;
+  bool locked = 3;
+}
+
+message CreatureSkill {
+  int32 skillindex = 1;
+  int32 pairindex = 2;
+}
+
+message CubeItems {
+  int32 itemindex = 1;
+  int32 count = 2;
+}
+
+message CurrencyDailyGain {
+  int32 index = 1;
+  int32 count = 2;
+  repeated ChivalryCurrencyDailyGain chivalrygaininfos = 3;
+}
+
+message CustomPvpData {
+  int32 type = 1;
+  int32 data = 2;
+  int32 isuse = 3;
+  int32 ishide = 4;
+  uint64 charguid = 5;
+}
+
+message CustomPvpRoomSetting {
+  repeated CustomPvpData data = 1;
+}
+
+message DamageAnalysis {
+  float time = 1;
+  int32 skillindex = 2;
+  int32 damage = 3;
+  int32 criticaldamage = 4;
+}
+
+message DetailTimeLine {
+  uint64 charguid = 1;
+  int32 index = 2;
+  int64 date = 3;
+  string charactername = 4;
+}
+
+enum ChivalryMissionType {
+  CHIVALRY_MISSION_UNKNOWN = 0;
+  CHIVALRY_MISSION_DUNGEON = 1;
+  CHIVALRY_MISSION_RAID = 2;
+  CHIVALRY_MISSION_PVP = 3;
+}
+
+message Removeitems {
+  repeated ConsumeItems items = 1;
+}
+
+message ErrandToday {
+  repeated int32 indexlist = 1;
+  int32 rewardindex = 2;
+  int32 rewardcount = 3;
+}
+
+message ErrandClear {
+  int32 rarity = 1;
+  int32 count = 2;
+}
+
+message ErrandInfo {
+  int32 errandid = 1;
+  int32 state = 2;
+  uint64 starttime = 3;
+  uint64 endtime = 4;
+  repeated uint64 guidlist = 5;
+  bool istoday = 6;
+  ErrandToday todayinfo = 7;
+}

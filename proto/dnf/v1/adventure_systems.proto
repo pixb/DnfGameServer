@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+import "dnf/v1/common.proto";
+import "dnf/v1/welfare.proto";
+import "dnf/v1/character.proto";
+
+message AdventurebookInfo {
+  int32 bindex = 1;
+  int32 bstate = 2;
+  uint64 charguid = 3;
+  string charname = 4;
+  int32 growtype = 5;
+  int32 growsecondtype = 6;
+  int32 job = 7;
+  repeated uint64 rewardedcharguid = 8;
+  bool terareward = 9;
+}
+
+message AdventurebookCondition {
+  int32 bookindex = 1;
+  int32 booktype = 2;
+  int32 conditionstate = 3;
+}
+
+message AdventurebookAchieveClearCondition {
+  int32 groupindex = 1;
+  int32 state = 2;
+  int32 conditioncount = 3;
+}
+
+message AdventurebookOpenCondition {
+  int32 cindex = 1;
+  int32 cstate = 2;
+}
+
+message AdventurebookQuest {
+  int32 qindex = 1;
+  int32 qstate = 2;
+  int32 qcount = 3;
+  int32 achieveindex = 4;
+  repeated AdventurebookAchieveClearCondition achieveclearconditions = 5;
+}
+
+message AdventureClearReward {
+  int32 exp = 1;
+  int32 index = 2;
+  int32 count = 3;
+  Items items = 4;
+  repeated MoneyItem list = 5;
+}
+
+message AdventureExpInfo {
+  int32 rewardexp = 1;
+  int32 level = 2;
+  int64 exp = 3;
+}
+
+message AdventureListItem {
+  int32 type = 1;
+  int32 count = 2;
+}
+
+message AdventureRewardInfo {
+  ContentsRewardInfo rewards = 1;
+  AdventureExpInfo adventureexp = 2;
+  repeated ExpInfo charexps = 3;
+}
+
+message AdventureRewardStep {
+  int32 step = 1;
+}
+
+message AdventureUnionCollection {
+  int32 job = 1;
+  int32 growtype = 2;
+  int32 secgrowtype = 3;
+  int32 equipscore = 4;
+}
+
+message AdventureUnionCollectionSlot {
+  int32 slot = 1;
+  int32 rewardindex = 2;
+}
+
+message AdventureUnionExpedition {
+  int32 area = 1;
+  int32 time = 2;
+  int32 consumefatigue = 3;
+  int64 regdate = 4;
+  repeated CharguidFatigue characters = 5;
+  repeated AdventureUnionExpeditionRewards rewards = 6;
+}
+
+message AdventureUnionExpeditionRewards {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message AdventureUnionLevelReward {
+  int32 level = 1;
+}
+
+message AdventureUnionLevelRewardInfo {
+  int32 level = 1;
+  int32 itemindex = 2;
+  int32 itemcount = 3;
+}
+
+message AdventureUnionShareboardBackground {
+  int32 index = 1;
+}
+
+message AdventureUnionShareboardFrame {
+  int32 index = 1;
+}
+
+message AdventureUnionShareboardSlot {
+  int32 slot = 1;
+  uint64 charguid = 2;
+  bool direction = 3;
+  int32 antievilscore = 4;
+}
+
+message AdventureUnionShareboardSlotDetailInfo {
+  int32 slot = 1;
+  bool direction = 2;
+  Character characterinfo = 3;
+}
+
+message ExpInfo {
+  int32 exp = 1;
+  uint64 charguid = 2;
+}
+
+message CharguidFatigue {
+  uint64 charguid = 1;
+  int32 fatigue = 2;
+}

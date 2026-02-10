@@ -7,6 +7,7 @@ option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv
 import "dnf/v1/common.proto";
 import "dnf/v1/common_types.proto";
 import "dnf/v1/inventory_types.proto";
+import "dnf/v1/system_misc_types.proto";
 
 enum GuildNpcType {
   NPC = 0;
@@ -149,7 +150,7 @@ message ShopBuyCount {
   uint64 supplydurationtime = 5;
 }
 
-message Ticket {
+message TicketInfo {
   string dungeontype = 1;
   int32 dailyticket = 2;
   int32 weeklyticket = 3;
@@ -162,9 +163,9 @@ message Ticket {
   int32 freeticket = 10;
 }
 
-message TicketRewardInfo {
-  repeated Ticket character = 1;
-  repeated Ticket account = 2;
+message TicketRewardList {
+  repeated TicketInfo character = 1;
+  repeated TicketInfo account = 2;
 }
 
 message TowerRewardItems {
@@ -216,13 +217,6 @@ message Tutorial {
   int32 state = 2;
   int32 type = 3;
   bool enforce = 4;
-}
-
-message SyscmdCommand {
-  int32 runtype = 1;
-  int32 targettype = 2;
-  int32 type = 3;
-  uint64 time = 4;
 }
 
 message SyscmdItemjson {
