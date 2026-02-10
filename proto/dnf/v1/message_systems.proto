@@ -1,0 +1,237 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+// Java代码生成选项
+option java_multiple_files = true;  // 为每个消息生成独立的Java文件
+option java_package = "com.dnfm.mina.protobuf.generated";
+option java_outer_classname = "MessageSystemsProto";
+
+import "dnf/v1/common.proto";
+import "dnf/v1/option_types.proto";
+import "dnf/v1/friend.proto";
+import "dnf/v1/dungeon_systems.proto";
+
+// 消息系统消息类型
+message REQ_DRAGON_BOARD_RECONNECT {
+  uint64 dungeonguid = 1;  // 副本GUID
+}
+
+message REQ_RECOVERY_CHARAC {
+  // 恢复角色请求
+}
+
+message REQ_MINIGAME_LOTTERY_LIST {
+  // 迷你游戏彩票列表请求
+}
+
+message REQ_CONTENTS_REWARD {
+  // 内容奖励请求
+}
+
+message REQ_GUILD_MEMBER_RANKING_INFO {
+  // 公会成员排名信息请求
+}
+
+message REQ_ATTACK_SQUAD_INFO_CHANGE {
+  // 攻击小队信息变更请求
+}
+
+message RES_ITEM_PRODUCTION_CANCEL {
+  int32 error = 1;  // 错误码
+  bool success = 2;  // 是否成功
+}
+
+message RES_PVP3VS3_JOIN_CHARGUID {
+  int32 error = 1;  // 错误码
+  string charGuid = 2;  // 角色GUID
+}
+
+message RES_EMBLEM_EXTRACT {
+  int32 error = 1;  // 错误码
+  int32 emblemId = 2;  // 徽章ID
+  bool success = 3;  // 是否成功
+}
+
+message NOTIFY_SYNC_DUNGEON_START_TIME {
+  int64 startTime = 1;  // 开始时间
+  int32 duration = 2;  // 持续时间
+}
+
+// JProtoBufClass 类型的消息
+message RES_MINIGAME_ADVENTURER_MAKER_REWARD {
+  int32 error = 1;  // 错误码
+  int32 rewardId = 2;  // 奖励ID
+  int32 count = 3;  // 数量
+  bool success = 4;  // 是否成功
+}
+
+message RES_COLLECTION_LEVEL_REWARD {
+  int32 error = 1;  // 错误码
+  int32 level = 2;  // 等级
+  repeated RewardInfo rewards = 3;  // 奖励列表
+}
+
+message RES_HISTORICSITE_MEMBER_RECORD {
+  int32 error = 1;  // 错误码
+  int64 memberId = 2;  // 成员ID
+  string record = 3;  // 记录
+}
+
+message RES_AUCTION_MY_REGISTERED_ITEM_LIST {
+  int32 error = 1;  // 错误码
+  repeated AuctionItem items = 2;  // 已注册物品列表
+}
+
+message REQ_FRIEND_SEND_FATIGUE {
+  int64 friendId = 1;  // 朋友ID
+  int32 fatigue = 2;  // 疲劳值
+}
+
+message RES_GUILD_STRUCTURE_RETRIEVE {
+  int32 error = 1;  // 错误码
+  int64 guildId = 2;  // 公会ID
+  string guildName = 3;  // 公会名称
+  int32 level = 4;  // 公会等级
+  int32 memberCount = 5;  // 成员数量
+}
+
+message RES_MAAS_MUST_NOTI {
+  string message = 1;  // 消息内容
+  int32 type = 2;  // 消息类型
+  bool urgent = 3;  // 是否紧急
+}
+
+message REQ_MULTI_PLAY_START_DUNGEON {
+  int32 dungeonId = 1;  // 副本ID
+  int32 difficulty = 2;  // 难度
+}
+
+message REQ_MY_RANKING {
+  int32 rankType = 1;  // 排名类型
+  int32 page = 2;  // 页码
+  int32 pageSize = 3;  // 每页大小
+}
+
+message NOTIFY_FRIENDS_INFO {
+  repeated FriendInfo friends = 1;  // 朋友信息列表
+}
+
+message REQ_GUILD_HISTORICSITE_RANKING {
+  int32 period = 1;  // 周期
+  int32 page = 2;  // 页码
+  int32 pageSize = 3;  // 每页大小
+}
+
+
+
+message REQ_BOARD_GAME_ENTER_COMPLETION {
+  int32 gameId = 1;  // 游戏ID
+  bool completed = 2;  // 是否完成
+}
+
+message REQ_CHARACTER_STAT_INFO {
+  int64 charId = 1;  // 角色ID
+}
+
+message RES_CERA_SHOP_BUY_INFO {
+  int32 error = 1;  // 错误码
+  int32 itemId = 2;  // 物品ID
+  int32 count = 3;  // 数量
+  bool success = 4;  // 是否成功
+}
+
+// 嵌套消息类型
+message AuctionItem {
+  int64 itemId = 1;  // 物品ID
+  string itemName = 2;  // 物品名称
+  int32 startingPrice = 3;  // 起拍价
+  int32 currentPrice = 4;  // 当前价
+  int64 endTime = 5;  // 结束时间
+}
+
+// 公会捐赠请求帮助完成信息
+message REQ_GUILD_DONATION_REQUEST_HELP_COMPLETE_INFO {
+  int64 date = 1;  // 日期
+}
+
+// 突袭队伍领袖投降通知
+message NOTIFY_RAID_PARTY_LEADER_SURRENDER {
+  int32 error = 1;  // 错误码
+}
+
+// 完成任务响应
+message RES_COMPLETE_QUEST {
+  int32 error = 1;  // 错误码
+  int32 qindex = 2;  // 任务索引
+}
+
+// 冒险联盟信息
+message RES_ADVENTURE_UNION_INFO {
+  int32 error = 1;  // 错误码
+  int32 exp = 2;  // 经验值
+  int32 level = 3;  // 等级
+  int32 day = 4;  // 天数
+  uint64 typicalcharacterguid = 5;  // 典型角色GUID
+  string name = 6;  // 名称
+  uint64 updatetime = 7;  // 更新时间
+  uint64 lastchangenametime = 8;  // 上次改名时间
+  PT_ADVENTURE_UNION_EXPEDITION expedition = 9;  // 远征
+  repeated PT_ADVENTURE_UNION_EXPEDITION expeditions = 10;  // 远征列表
+  repeated PT_ADVENTURE_UNION_COLLECTION collections = 11;  // 收集列表
+  repeated PT_ADVENTURE_UNION_COLLECTION_SLOT collectionslots = 12;  // 收集槽位列表
+  int32 shareboardbackground = 13;  // 分享板背景
+  int32 shareboardframe = 14;  // 分享板边框
+  repeated PT_ADVENTURE_UNION_SHAREBOARD_SLOT shareboardslotlist = 15;  // 分享板槽位列表
+  repeated PT_ADVENTURE_UNION_SHAREBOARD_BACKGROUND shareboardbackgroundlist = 16;  // 分享板背景列表
+  repeated PT_ADVENTURE_UNION_SHAREBOARD_FRAME shareboardframelist = 17;  // 分享板边框列表
+  bool shareboardshowantievilscore = 18;  // 是否显示反邪恶分数
+  int32 autosearchcount = 19;  // 自动搜索次数
+  repeated int32 receivedcollectionrewards = 20;  // 已领取的收集奖励
+  repeated PT_ADVENTURE_UNION_LEVEL_REWARD levelrewards = 21;  // 等级奖励列表
+  int32 shareboardtotalantievilscore = 22;  // 分享板总反邪恶分数
+  bool shareboardantievilscorerefresh = 23;  // 分享板反邪恶分数是否刷新
+  bool isadventureCondition = 24;  // 是否为冒险条件
+}
+
+// 系统buff附加
+message PT_SYSTEM_BUFF_APPENDAGE {
+  // 系统buff附加信息
+}
+
+// 冒险联盟远征
+message PT_ADVENTURE_UNION_EXPEDITION {
+  // 冒险联盟远征信息
+}
+
+// 冒险联盟收集
+message PT_ADVENTURE_UNION_COLLECTION {
+  // 冒险联盟收集信息
+}
+
+// 冒险联盟收集槽位
+message PT_ADVENTURE_UNION_COLLECTION_SLOT {
+  // 冒险联盟收集槽位信息
+}
+
+// 冒险联盟分享板槽位
+message PT_ADVENTURE_UNION_SHAREBOARD_SLOT {
+  // 冒险联盟分享板槽位信息
+}
+
+// 冒险联盟分享板背景
+message PT_ADVENTURE_UNION_SHAREBOARD_BACKGROUND {
+  // 冒险联盟分享板背景信息
+}
+
+// 冒险联盟分享板边框
+message PT_ADVENTURE_UNION_SHAREBOARD_FRAME {
+  // 冒险联盟分享板边框信息
+}
+
+// 冒险联盟等级奖励
+message PT_ADVENTURE_UNION_LEVEL_REWARD {
+  // 冒险联盟等级奖励信息
+}

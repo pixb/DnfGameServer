@@ -27,38 +27,23 @@ class MessageMappingQuery:
         cursor = self.conn.cursor()
         cursor.execute('''
             SELECT m.*, b.batch_name, b.description
-            FROM message_file_mappings m
+            FROM migration_files m
             JOIN batches b ON m.batch_id = b.id
-            WHERE m.old_message_name LIKE ?
-            ORDER BY m.module_id, m.cmd_id
+            WHERE m.file_name LIKE ?
+            ORDER BY m.module_id
         ''', (f'%{name}%',))
         
         results = cursor.fetchall()
-        self._print_results(results, f"旧消息名包含 '{name}'")
-    
-    def query_by_new_name(self, name: str):
-        """根据新消息名查询"""
-        cursor = self.conn.cursor()
-        cursor.execute('''
-            SELECT m.*, b.batch_name, b.description
-            FROM message_file_mappings m
-            JOIN batches b ON m.batch_id = b.id
-            WHERE m.new_message_name LIKE ?
-            ORDER BY m.module_id, m.cmd_id
-        ''', (f'%{name}%',))
-        
-        results = cursor.fetchall()
-        self._print_results(results, f"新消息名包含 '{name}'")
+        self._print_results(results, f"消息名包含 '{name}'")
     
     def query_by_module_id(self, module_id: int):
         """根据ModuleID查询"""
         cursor = self.conn.cursor()
         cursor.execute('''
             SELECT m.*, b.batch_name, b.description
-            FROM message_file_mappings m
+            FROM migration_files m
             JOIN batches b ON m.batch_id = b.id
             WHERE m.module_id = ?
-            ORDER BY m.cmd_id
         ''', (module_id,))
         
         results = cursor.fetchall()
@@ -69,10 +54,10 @@ class MessageMappingQuery:
         cursor = self.conn.cursor()
         cursor.execute('''
             SELECT m.*, b.batch_name, b.description
-            FROM message_file_mappings m
+            FROM migration_files m
             JOIN batches b ON m.batch_id = b.id
             WHERE b.batch_name = ?
-            ORDER BY m.module_id, m.cmd_id
+            ORDER BY m.module_id
         ''', (batch_name,))
         
         results = cursor.fetchall()
@@ -83,32 +68,34 @@ class MessageMappingQuery:
         cursor = self.conn.cursor()
         cursor.execute('''
             SELECT m.*, b.batch_name, b.description
-            FROM message_file_mappings m
+            FROM migration_files m
             JOIN batches b ON m.batch_id = b.id
-            WHERE m.implementation_status = ?
-            ORDER BY m.module_id, m.cmd_id
+            WHERE m.status = ?
+            ORDER BY m.module_id
         ''', (status,))
         
         results = cursor.fetchall()
         status_map = {
-            'complete': '完整实现',
-            'simplified': '简化实现',
-            'missing': '缺失实现'
+            'completed': '已完成',
+            'pending': '待处理',
+            'in_progress': '进行中',
+            'failed': '失败'
         }
-        self._print_results(results, f"实现状态 = {status_map.get(status, status)}")
+        self._print_results(results, f"状态 = {status_map.get(status, status)}")
     
     def list_all(self):
         """列出所有映射"""
         cursor = self.conn.cursor()
         cursor.execute('''
             SELECT m.*, b.batch_name, b.description
-            FROM message_file_mappings m
+            FROM migration_files m
             JOIN batches b ON m.batch_id = b.id
-            ORDER BY m.module_id, m.cmd_id
+            ORDER BY m.module_id
+            LIMIT 100
         ''')
         
         results = cursor.fetchall()
-        self._print_results(results, "所有消息")
+        self._print_results(results, "所有消息 (前100条)")
     
     def show_statistics(self):
         """显示统计信息"""
@@ -119,16 +106,17 @@ class MessageMappingQuery:
         
         # 总体统计
         cursor.execute('''
-            SELECT implementation_status, COUNT(*) as count
-            FROM message_file_mappings
-            GROUP BY implementation_status
+            SELECT status, COUNT(*) as count
+            FROM migration_files
+            GROUP BY status
         ''')
         
-        print("\n实现状态分布:")
+        print("\n状态分布:")
         status_map = {
-            'complete': '✅ 完整实现',
-            'simplified': '⚠️ 简化实现',
-            'missing': '❌ 缺失实现'
+            'completed': '✅ 已完成',
+            'pending': '⏳ 待处理',
+            'in_progress': '🔄 进行中',
+            'failed': '❌ 失败'
         }
         
         for row in cursor.fetchall():
@@ -138,27 +126,27 @@ class MessageMappingQuery:
         # 按批次统计
         cursor.execute('''
             SELECT b.batch_name, COUNT(*) as count
-            FROM message_file_mappings m
+            FROM migration_files m
             JOIN batches b ON m.batch_id = b.id
             GROUP BY b.batch_name
-            ORDER BY b.batch_number
+            ORDER BY b.id
         ''')
         
-        print("\n按批次分布:")
-        for row in cursor.fetchall():
+        print("\n按批次分布 (前10个):")
+        for i, row in enumerate(cursor.fetchall()[:10]):
             print(f"  {row[0]}: {row[1]} 个")
         
         # 按模块统计
         cursor.execute('''
-            SELECT module_id, COUNT(*) as count
-            FROM message_file_mappings
-            GROUP BY module_id
-            ORDER BY module_id
+            SELECT module_name, COUNT(*) as count
+            FROM migration_files
+            GROUP BY module_name
+            ORDER BY count DESC
         ''')
         
-        print("\n按ModuleID分布 (前10个):")
+        print("\n按模块分布 (前10个):")
         for i, row in enumerate(cursor.fetchall()[:10]):
-            print(f"  Module {row[0]}: {row[1]} 个")
+            print(f"  {row[0]}: {row[1]} 个")
     
     def _print_results(self, results, title: str):
         """打印查询结果"""
@@ -172,23 +160,22 @@ class MessageMappingQuery:
         print(f"找到 {len(results)} 条记录\n")
         
         for i, row in enumerate(results, 1):
-            print(f"【{i}】 {row['old_message_name']} → {row['new_message_name']}")
-            print(f"    ModuleID: {row['module_id']}, CMD: {row['cmd_id']}")
+            print(f"【{i}】 {row['file_name']}")
+            print(f"    模块: {row['module_name']}, ModuleID: {row['module_id']}")
             print(f"    批次: {row['batch_name']} ({row['description']})")
-            print(f"    类型: {row['old_message_type']}")
             
             # 状态图标
             status_icon = {
-                'complete': '✅',
-                'simplified': '⚠️',
-                'missing': '❌'
-            }.get(row['implementation_status'], '❓')
+                'completed': '✅',
+                'pending': '⏳',
+                'in_progress': '🔄',
+                'failed': '❌'
+            }.get(row['status'], '❓')
             
-            print(f"    实现状态: {status_icon} {row['implementation_status']}")
-            print(f"    原文件: {row['old_java_file']}")
-            print(f"    Proto: {row['new_proto_file']}")
-            print(f"    Java生成: {row['new_java_file']}")
-            print(f"    Go生成: {row['new_go_file']}")
+            print(f"    状态: {status_icon} {row['status']}")
+            print(f"    Proto文件: {row['proto_file']}")
+            print(f"    Java文件: {row['java_file']}")
+            print(f"    测试: {'✅ 通过' if row['test_passed'] else '❌ 未通过' if row['has_test'] else '⏳ 未测试'}")
             print()
 
 def main():
@@ -198,11 +185,8 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 示例:
-  # 查询旧消息名
+  # 查询消息名
   python query_mappings.py --old REQ_LOGIN
-  
-  # 查询新消息名
-  python query_mappings.py --new LoginRequest
   
   # 查询特定ModuleID
   python query_mappings.py --module 10000
@@ -211,7 +195,7 @@ def main():
   python query_mappings.py --batch batch_01
   
   # 查询实现状态
-  python query_mappings.py --status complete
+  python query_mappings.py --status completed
   
   # 列出所有
   python query_mappings.py --all
@@ -221,12 +205,11 @@ def main():
         """
     )
     
-    parser.add_argument('--old', type=str, help='根据旧消息名查询')
-    parser.add_argument('--new', type=str, help='根据新消息名查询')
+    parser.add_argument('--old', type=str, help='根据消息名查询')
     parser.add_argument('--module', type=int, help='根据ModuleID查询')
     parser.add_argument('--batch', type=str, help='根据批次查询')
-    parser.add_argument('--status', type=str, choices=['complete', 'simplified', 'missing'],
-                       help='根据实现状态查询')
+    parser.add_argument('--status', type=str, choices=['completed', 'pending', 'in_progress', 'failed'],
+                       help='根据状态查询')
     parser.add_argument('--all', action='store_true', help='列出所有映射')
     parser.add_argument('--stats', action='store_true', help='显示统计信息')
     
@@ -237,8 +220,6 @@ def main():
     
     if args.old:
         query.query_by_old_name(args.old)
-    elif args.new:
-        query.query_by_new_name(args.new)
     elif args.module:
         query.query_by_module_id(args.module)
     elif args.batch:

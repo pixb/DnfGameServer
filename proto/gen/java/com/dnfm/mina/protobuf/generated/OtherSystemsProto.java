@@ -26,6 +26,101 @@ public final class OtherSystemsProto extends com.google.protobuf.GeneratedFile {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_MINIGAME_ADVENTURER_MAKER_BABY_INFO_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_MINIGAME_ADVENTURER_MAKER_BABY_INFO_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_MAIN_EVENT_DATA_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_MAIN_EVENT_DATA_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_AVATAR_DISASAMBBLED_MATERIAL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_AVATAR_DISASAMBBLED_MATERIAL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_PARTY_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_PARTY_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_HISTORICSITE_RELIC_INFO_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_HISTORICSITE_RELIC_INFO_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_EVENT_CONDITION_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_EVENT_CONDITION_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_INTRUDE_WEDDINGHALL_INFO_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_INTRUDE_WEDDINGHALL_INFO_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_RANK_PLATFORM_FRIEND_INFO_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_RANK_PLATFORM_FRIEND_INFO_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_COMPLETE_QUEST_INFO_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_COMPLETE_QUEST_INFO_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_ITEM_DISJOINT_GUID_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_ITEM_DISJOINT_GUID_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_STREAM_DATA_REQUEST_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_STREAM_DATA_REQUEST_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_Material_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_Material_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_EventReward_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_EventReward_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_SD_AVATAR_ITEM_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_SD_AVATAR_ITEM_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_RANKING_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_RANKING_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_GUARDIAN_ORDER_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_GUARDIAN_ORDER_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_CERA_SHOP_MONEY_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_CERA_SHOP_MONEY_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_DINING_PAY_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_DINING_PAY_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PT_GUILD_SYMBOL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PT_GUILD_SYMBOL_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -37,21 +132,224 @@ public final class OtherSystemsProto extends com.google.protobuf.GeneratedFile {
     java.lang.String[] descriptorData = {
       "\n\032dnf/v1/other_systems.proto\022\006dnf.v1\032\023dn" +
       "f/v1/common.proto\032\031dnf/v1/option_types.p" +
-      "rotoB\254\001\n com.dnfm.mina.protobuf.generate" +
-      "dB\021OtherSystemsProtoP\001Z<github.com/pixb/" +
-      "DnfGameServer/dnf-go-client/gen/dnf/v1;d" +
-      "nfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GP" +
-      "BMetadata\352\002\007Dnf::V1b\006proto3"
+      "roto\032\035dnf/v1/system_buff_team.proto\"\230\001\n&" +
+      "PT_MINIGAME_ADVENTURER_MAKER_BABY_INFO\022\026" +
+      "\n\006babyId\030\001 \001(\005R\006babyId\022\032\n\010babyName\030\002 \001(\t" +
+      "R\010babyName\022\024\n\005level\030\003 \001(\005R\005level\022\020\n\003exp\030" +
+      "\004 \001(\005R\003exp\022\022\n\004mood\030\005 \001(\005R\004mood\"\313\001\n\022PT_MA" +
+      "IN_EVENT_DATA\022\030\n\007eventId\030\001 \001(\005R\007eventId\022" +
+      "\034\n\teventName\030\002 \001(\tR\teventName\022\034\n\tstartTi" +
+      "me\030\003 \001(\003R\tstartTime\022\030\n\007endTime\030\004 \001(\003R\007en" +
+      "dTime\022\026\n\006active\030\005 \001(\010R\006active\022-\n\007rewards" +
+      "\030\006 \003(\0132\023.dnf.v1.EventRewardR\007rewards\"\215\001\n" +
+      "\037PT_AVATAR_DISASAMBBLED_MATERIAL\022\032\n\010avat" +
+      "arId\030\001 \001(\005R\010avatarId\022\036\n\navatarName\030\002 \001(\t" +
+      "R\navatarName\022.\n\tmaterials\030\003 \003(\0132\020.dnf.v1" +
+      ".MaterialR\tmaterials\"\255\001\n\010PT_PARTY\022\030\n\007par" +
+      "tyId\030\001 \001(\003R\007partyId\022\034\n\tpartyName\030\002 \001(\tR\t" +
+      "partyName\022\032\n\010leaderId\030\003 \001(\005R\010leaderId\022-\n" +
+      "\007members\030\004 \003(\0132\023.dnf.v1.PartyMemberR\007mem" +
+      "bers\022\036\n\nmaxMembers\030\005 \001(\005R\nmaxMembers\"\244\001\n" +
+      "\032PT_HISTORICSITE_RELIC_INFO\022\030\n\007relicId\030\001" +
+      " \001(\005R\007relicId\022\034\n\trelicName\030\002 \001(\tR\trelicN" +
+      "ame\022\024\n\005level\030\003 \001(\005R\005level\022\026\n\006effect\030\004 \001(" +
+      "\005R\006effect\022 \n\013description\030\005 \001(\tR\013descript" +
+      "ion\"\256\001\n\022PT_EVENT_CONDITION\022 \n\013conditionI" +
+      "d\030\001 \001(\005R\013conditionId\022$\n\rconditionName\030\002 " +
+      "\001(\tR\rconditionName\022\032\n\010progress\030\003 \001(\005R\010pr" +
+      "ogress\022\026\n\006target\030\004 \001(\005R\006target\022\034\n\tcomple" +
+      "ted\030\005 \001(\010R\tcompleted\"\327\001\n\033PT_INTRUDE_WEDD" +
+      "INGHALL_INFO\022$\n\rweddingHallId\030\001 \001(\003R\rwed" +
+      "dingHallId\022\034\n\tbrideName\030\002 \001(\tR\tbrideName" +
+      "\022\034\n\tgroomName\030\003 \001(\tR\tgroomName\022\034\n\tstartT" +
+      "ime\030\004 \001(\003R\tstartTime\022\030\n\007endTime\030\005 \001(\003R\007e" +
+      "ndTime\022\036\n\ncanIntrude\030\006 \001(\010R\ncanIntrude\"\254" +
+      "\001\n\034PT_RANK_PLATFORM_FRIEND_INFO\022\032\n\010frien" +
+      "dId\030\001 \001(\003R\010friendId\022\036\n\nfriendName\030\002 \001(\tR" +
+      "\nfriendName\022\022\n\004rank\030\003 \001(\005R\004rank\022\024\n\005score" +
+      "\030\004 \001(\005R\005score\022\024\n\005level\030\005 \001(\005R\005level\022\020\n\003j" +
+      "ob\030\006 \001(\005R\003job\"\276\001\n\026PT_COMPLETE_QUEST_INFO" +
+      "\022\030\n\007questId\030\001 \001(\005R\007questId\022\034\n\tquestName\030" +
+      "\002 \001(\tR\tquestName\022\034\n\tcompleted\030\003 \001(\010R\tcom" +
+      "pleted\022\032\n\010rewarded\030\004 \001(\010R\010rewarded\022\032\n\010pr" +
+      "ogress\030\005 \001(\005R\010progress\022\026\n\006target\030\006 \001(\005R\006" +
+      "target\"u\n\025PT_ITEM_DISJOINT_GUID\022\022\n\004guid\030" +
+      "\001 \001(\tR\004guid\022\026\n\006itemId\030\002 \001(\005R\006itemId\022\032\n\010i" +
+      "temName\030\003 \001(\tR\010itemName\022\024\n\005count\030\004 \001(\005R\005" +
+      "count\"\177\n\023STREAM_DATA_REQUEST\022\032\n\010streamId" +
+      "\030\001 \001(\005R\010streamId\022\032\n\010dataType\030\002 \001(\005R\010data" +
+      "Type\022\022\n\004data\030\003 \001(\014R\004data\022\034\n\ttimestamp\030\004 " +
+      "\001(\005R\ttimestamp\"|\n\010Material\022\036\n\nmaterialId" +
+      "\030\001 \001(\005R\nmaterialId\022\"\n\014materialName\030\002 \001(\t" +
+      "R\014materialName\022\024\n\005count\030\003 \001(\005R\005count\022\026\n\006" +
+      "rarity\030\004 \001(\005R\006rarity\"\247\001\n\013EventReward\022\032\n\010" +
+      "rewardId\030\001 \001(\005R\010rewardId\022\036\n\nrewardName\030\002" +
+      " \001(\tR\nrewardName\022\024\n\005count\030\003 \001(\005R\005count\022 " +
+      "\n\013conditionId\030\004 \001(\005R\013conditionId\022$\n\rcond" +
+      "itionName\030\005 \001(\tR\rconditionName\"\323\001\n\021PT_SD" +
+      "_AVATAR_ITEM\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005co" +
+      "unt\030\002 \001(\005R\005count\022\022\n\004guid\030\003 \001(\004R\004guid\022\036\n\n" +
+      "expiretime\030\004 \001(\004R\nexpiretime\022\026\n\006option\030\005" +
+      " \001(\005R\006option\022\026\n\006locked\030\006 \001(\010R\006locked\022\026\n\006" +
+      "scount\030\007 \001(\005R\006scount\022\026\n\006tcount\030\010 \001(\005R\006tc" +
+      "ount\"\261\005\n\nPT_RANKING\022\022\n\004guid\030\001 \001(\004R\004guid\022" +
+      "\032\n\010growtype\030\002 \001(\005R\010growtype\022&\n\016secondgro" +
+      "wtype\030\003 \001(\005R\016secondgrowtype\022\020\n\003job\030\004 \001(\005" +
+      "R\003job\022\024\n\005level\030\005 \001(\005R\005level\022\022\n\004name\030\006 \001(" +
+      "\tR\004name\022\022\n\004rank\030\007 \001(\003R\004rank\022\024\n\005score\030\010 \001" +
+      "(\004R\005score\0221\n\007gsymbol\030\t \003(\0132\027.dnf.v1.PT_G" +
+      "UILD_SYMBOLR\007gsymbol\022 \n\013gmastername\030\n \001(" +
+      "\tR\013gmastername\022\036\n\nlaunchinfo\030\013 \001(\005R\nlaun" +
+      "chinfo\022\020\n\003vip\030\014 \001(\005R\003vip\022\036\n\nprofileurl\030\r" +
+      " \001(\tR\nprofileurl\022 \n\013profilename\030\016 \001(\tR\013p" +
+      "rofilename\022\032\n\010wincount\030\017 \001(\005R\010wincount\022\034" +
+      "\n\tgwinpoint\030\020 \001(\004R\tgwinpoint\022 \n\013winningr" +
+      "ate\030\021 \001(\005R\013winningrate\022\030\n\007spinfos\030\022 \003(\005R" +
+      "\007spinfos\022 \n\013creditscore\030\023 \001(\005R\013creditsco" +
+      "re\022&\n\016characterframe\030\024 \001(\005R\016characterfra" +
+      "me\022\032\n\010platform\030\025 \001(\005R\010platform\022*\n\020platfo" +
+      "rmserverid\030\026 \001(\rR\020platformserverid\022\024\n\005gn" +
+      "ame\030\027 \001(\tR\005gname\"\267\001\n\021PT_GUARDIAN_ORDER\022\"" +
+      "\n\014guardiandeal\030\001 \001(\003R\014guardiandeal\022\032\n\010gr" +
+      "owtype\030\002 \001(\005R\010growtype\022&\n\016secondgrowtype" +
+      "\030\003 \001(\005R\016secondgrowtype\022\020\n\003job\030\004 \001(\005R\003job" +
+      "\022\022\n\004name\030\005 \001(\tR\004name\022\024\n\005level\030\006 \001(\005R\005lev" +
+      "el\"V\n\022PT_CERA_SHOP_MONEY\022\024\n\005index\030\001 \001(\005R" +
+      "\005index\022\024\n\005count\030\002 \001(\005R\005count\022\024\n\005value\030\003 " +
+      "\001(\005R\005value\"O\n\rPT_DINING_PAY\022\024\n\005index\030\001 \001" +
+      "(\005R\005index\022\022\n\004type\030\002 \001(\005R\004type\022\024\n\005count\030\003" +
+      " \001(\005R\005count\"\021\n\017PT_GUILD_SYMBOLB\254\001\n com.d" +
+      "nfm.mina.protobuf.generatedB\021OtherSystem" +
+      "sProtoP\001Z<github.com/pixb/DnfGameServer/" +
+      "dnf-go-client/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006D" +
+      "nf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dn" +
+      "f::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor(),
           com.dnfm.mina.protobuf.generated.OptionTypesProto.getDescriptor(),
+          com.dnfm.mina.protobuf.generated.SystemBuffTeamProto.getDescriptor(),
         });
+    internal_static_dnf_v1_PT_MINIGAME_ADVENTURER_MAKER_BABY_INFO_descriptor =
+      getDescriptor().getMessageType(0);
+    internal_static_dnf_v1_PT_MINIGAME_ADVENTURER_MAKER_BABY_INFO_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_MINIGAME_ADVENTURER_MAKER_BABY_INFO_descriptor,
+        new java.lang.String[] { "BabyId", "BabyName", "Level", "Exp", "Mood", });
+    internal_static_dnf_v1_PT_MAIN_EVENT_DATA_descriptor =
+      getDescriptor().getMessageType(1);
+    internal_static_dnf_v1_PT_MAIN_EVENT_DATA_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_MAIN_EVENT_DATA_descriptor,
+        new java.lang.String[] { "EventId", "EventName", "StartTime", "EndTime", "Active", "Rewards", });
+    internal_static_dnf_v1_PT_AVATAR_DISASAMBBLED_MATERIAL_descriptor =
+      getDescriptor().getMessageType(2);
+    internal_static_dnf_v1_PT_AVATAR_DISASAMBBLED_MATERIAL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_AVATAR_DISASAMBBLED_MATERIAL_descriptor,
+        new java.lang.String[] { "AvatarId", "AvatarName", "Materials", });
+    internal_static_dnf_v1_PT_PARTY_descriptor =
+      getDescriptor().getMessageType(3);
+    internal_static_dnf_v1_PT_PARTY_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_PARTY_descriptor,
+        new java.lang.String[] { "PartyId", "PartyName", "LeaderId", "Members", "MaxMembers", });
+    internal_static_dnf_v1_PT_HISTORICSITE_RELIC_INFO_descriptor =
+      getDescriptor().getMessageType(4);
+    internal_static_dnf_v1_PT_HISTORICSITE_RELIC_INFO_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_HISTORICSITE_RELIC_INFO_descriptor,
+        new java.lang.String[] { "RelicId", "RelicName", "Level", "Effect", "Description", });
+    internal_static_dnf_v1_PT_EVENT_CONDITION_descriptor =
+      getDescriptor().getMessageType(5);
+    internal_static_dnf_v1_PT_EVENT_CONDITION_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_EVENT_CONDITION_descriptor,
+        new java.lang.String[] { "ConditionId", "ConditionName", "Progress", "Target", "Completed", });
+    internal_static_dnf_v1_PT_INTRUDE_WEDDINGHALL_INFO_descriptor =
+      getDescriptor().getMessageType(6);
+    internal_static_dnf_v1_PT_INTRUDE_WEDDINGHALL_INFO_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_INTRUDE_WEDDINGHALL_INFO_descriptor,
+        new java.lang.String[] { "WeddingHallId", "BrideName", "GroomName", "StartTime", "EndTime", "CanIntrude", });
+    internal_static_dnf_v1_PT_RANK_PLATFORM_FRIEND_INFO_descriptor =
+      getDescriptor().getMessageType(7);
+    internal_static_dnf_v1_PT_RANK_PLATFORM_FRIEND_INFO_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_RANK_PLATFORM_FRIEND_INFO_descriptor,
+        new java.lang.String[] { "FriendId", "FriendName", "Rank", "Score", "Level", "Job", });
+    internal_static_dnf_v1_PT_COMPLETE_QUEST_INFO_descriptor =
+      getDescriptor().getMessageType(8);
+    internal_static_dnf_v1_PT_COMPLETE_QUEST_INFO_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_COMPLETE_QUEST_INFO_descriptor,
+        new java.lang.String[] { "QuestId", "QuestName", "Completed", "Rewarded", "Progress", "Target", });
+    internal_static_dnf_v1_PT_ITEM_DISJOINT_GUID_descriptor =
+      getDescriptor().getMessageType(9);
+    internal_static_dnf_v1_PT_ITEM_DISJOINT_GUID_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_ITEM_DISJOINT_GUID_descriptor,
+        new java.lang.String[] { "Guid", "ItemId", "ItemName", "Count", });
+    internal_static_dnf_v1_STREAM_DATA_REQUEST_descriptor =
+      getDescriptor().getMessageType(10);
+    internal_static_dnf_v1_STREAM_DATA_REQUEST_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_STREAM_DATA_REQUEST_descriptor,
+        new java.lang.String[] { "StreamId", "DataType", "Data", "Timestamp", });
+    internal_static_dnf_v1_Material_descriptor =
+      getDescriptor().getMessageType(11);
+    internal_static_dnf_v1_Material_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_Material_descriptor,
+        new java.lang.String[] { "MaterialId", "MaterialName", "Count", "Rarity", });
+    internal_static_dnf_v1_EventReward_descriptor =
+      getDescriptor().getMessageType(12);
+    internal_static_dnf_v1_EventReward_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_EventReward_descriptor,
+        new java.lang.String[] { "RewardId", "RewardName", "Count", "ConditionId", "ConditionName", });
+    internal_static_dnf_v1_PT_SD_AVATAR_ITEM_descriptor =
+      getDescriptor().getMessageType(13);
+    internal_static_dnf_v1_PT_SD_AVATAR_ITEM_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_SD_AVATAR_ITEM_descriptor,
+        new java.lang.String[] { "Index", "Count", "Guid", "Expiretime", "Option", "Locked", "Scount", "Tcount", });
+    internal_static_dnf_v1_PT_RANKING_descriptor =
+      getDescriptor().getMessageType(14);
+    internal_static_dnf_v1_PT_RANKING_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_RANKING_descriptor,
+        new java.lang.String[] { "Guid", "Growtype", "Secondgrowtype", "Job", "Level", "Name", "Rank", "Score", "Gsymbol", "Gmastername", "Launchinfo", "Vip", "Profileurl", "Profilename", "Wincount", "Gwinpoint", "Winningrate", "Spinfos", "Creditscore", "Characterframe", "Platform", "Platformserverid", "Gname", });
+    internal_static_dnf_v1_PT_GUARDIAN_ORDER_descriptor =
+      getDescriptor().getMessageType(15);
+    internal_static_dnf_v1_PT_GUARDIAN_ORDER_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_GUARDIAN_ORDER_descriptor,
+        new java.lang.String[] { "Guardiandeal", "Growtype", "Secondgrowtype", "Job", "Name", "Level", });
+    internal_static_dnf_v1_PT_CERA_SHOP_MONEY_descriptor =
+      getDescriptor().getMessageType(16);
+    internal_static_dnf_v1_PT_CERA_SHOP_MONEY_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_CERA_SHOP_MONEY_descriptor,
+        new java.lang.String[] { "Index", "Count", "Value", });
+    internal_static_dnf_v1_PT_DINING_PAY_descriptor =
+      getDescriptor().getMessageType(17);
+    internal_static_dnf_v1_PT_DINING_PAY_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_DINING_PAY_descriptor,
+        new java.lang.String[] { "Index", "Type", "Count", });
+    internal_static_dnf_v1_PT_GUILD_SYMBOL_descriptor =
+      getDescriptor().getMessageType(18);
+    internal_static_dnf_v1_PT_GUILD_SYMBOL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PT_GUILD_SYMBOL_descriptor,
+        new java.lang.String[] { });
     descriptor.resolveAllFeaturesImmutable();
     com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor();
     com.dnfm.mina.protobuf.generated.OptionTypesProto.getDescriptor();
+    com.dnfm.mina.protobuf.generated.SystemBuffTeamProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)
