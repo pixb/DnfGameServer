@@ -38,6 +38,33 @@ message ActiveStatusDamage {
   uint32 tickcount = 7;
 }
 
+message AlchemyRecipeLimit {
+  int32 recipeindex = 1;
+  int32 usecount = 2;
+}
+
+message AllClearReward {
+  repeated Equip equipitems = 1;
+  repeated Equip titleitems = 2;
+  repeated Equip flagitems = 3;
+  repeated Stackable materialitems = 4;
+  repeated Stackable consumeitems = 5;
+  repeated Stackable emblemitems = 6;
+  repeated Stackable carditems = 7;
+  repeated Stackable epicpieceitems = 8;
+  repeated Artifact cartifactitems = 9;
+  repeated Creature creatureitems = 10;
+  repeated AvatarItem avataritems = 11;
+  repeated Stackable crackitems = 12;
+  repeated Equip crackequipitems = 13;
+  repeated AvatarItem sdavataritems = 14;
+  repeated Stackable bookmarkitems = 15;
+  repeated Equip scrollitems = 16;
+  int32 index = 17;
+  int32 count = 18;
+  int32 floor = 19;
+}
+
 message AiCharacterDetailInfo {
   uint64 charguid = 1;
   string name = 2;
@@ -78,6 +105,12 @@ message AiCharacterDetailInfo {
   repeated Chivalry info = 37;
   int32 communionlevel = 38;
   repeated AvatarItem sdavatarlist = 39;
+}
+
+message AiCharacterInfo {
+  uint64 charguid = 1;
+  uint64 ownerguid = 2;
+  int32 objectguid = 3;
 }
 
 message AllSkillSlot {

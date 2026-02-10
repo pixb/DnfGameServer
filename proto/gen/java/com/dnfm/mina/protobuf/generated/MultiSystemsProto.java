@@ -42,10 +42,25 @@ public final class MultiSystemsProto extends com.google.protobuf.GeneratedFile {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_ActiveStatusDamage_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_AlchemyRecipeLimit_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_AlchemyRecipeLimit_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_AllClearReward_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_AllClearReward_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dnf_v1_AiCharacterDetailInfo_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_AiCharacterDetailInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_AiCharacterInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_AiCharacterInfo_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dnf_v1_AllSkillSlot_descriptor;
   static final 
@@ -255,229 +270,257 @@ public final class MultiSystemsProto extends com.google.protobuf.GeneratedFile {
       "\n\nskillindex\030\003 \001(\005R\nskillindex\022\034\n\titemin" +
       "dex\030\004 \001(\005R\titemindex\022\036\n\nvictimguid\030\005 \001(\005" +
       "R\nvictimguid\022\036\n\nvictimtype\030\006 \001(\rR\nvictim" +
-      "type\022\034\n\ttickcount\030\007 \001(\rR\ttickcount\"\306\n\n\025A" +
-      "iCharacterDetailInfo\022\032\n\010charguid\030\001 \001(\004R\010" +
-      "charguid\022\022\n\004name\030\002 \001(\tR\004name\022\032\n\010growtype" +
-      "\030\003 \001(\005R\010growtype\022&\n\016secondgrowtype\030\004 \001(\005" +
-      "R\016secondgrowtype\022\020\n\003exp\030\005 \001(\005R\003exp\022\016\n\002hp" +
-      "\030\006 \001(\005R\002hp\022\016\n\002mp\030\007 \001(\005R\002mp\022\024\n\005level\030\010 \001(" +
-      "\005R\005level\022\020\n\003job\030\t \001(\005R\003job\022\036\n\nequipscore" +
-      "\030\n \001(\005R\nequipscore\022\024\n\005score\030\013 \001(\005R\005score" +
-      "\022\024\n\005count\030\014 \001(\005R\005count\022\022\n\004date\030\r \001(\003R\004da" +
-      "te\022\026\n\006spoint\030\016 \001(\005R\006spoint\0220\n\023adventureu" +
-      "nionlevel\030\017 \001(\005R\023adventureunionlevel\022,\n\021" +
-      "adventureunionexp\030\020 \001(\003R\021adventureunione" +
-      "xp\022+\n\tskilllist\030\021 \003(\0132\r.dnf.v1.SkillR\tsk" +
-      "illlist\022+\n\tequiplist\030\022 \003(\0132\r.dnf.v1.Equi" +
-      "pR\tequiplist\0224\n\014creaturelist\030\023 \003(\0132\020.dnf" +
-      ".v1.CreatureR\014creaturelist\0226\n\rcartifactl" +
-      "ist\030\024 \003(\0132\020.dnf.v1.ArtifactR\rcartifactli" +
-      "st\0222\n\navatarlist\030\025 \003(\0132\022.dnf.v1.AvatarIt" +
-      "emR\navatarlist\022,\n\010skinlist\030\026 \003(\0132\020.dnf.v" +
-      "1.SkinItemR\010skinlist\022\024\n\005world\030\027 \001(\005R\005wor" +
-      "ld\022\024\n\005gguid\030\030 \001(\004R\005gguid\022\024\n\005gname\030\031 \001(\tR" +
-      "\005gname\022 \n\013gmastername\030\032 \001(\tR\013gmastername" +
-      "\022\"\n\014gmembergrade\030\033 \001(\005R\014gmembergrade\022\"\n\014" +
-      "blackdiamond\030\034 \001(\004R\014blackdiamond\022.\n\022avat" +
-      "arVisibleFlags\030\035 \001(\rR\022avatarVisibleFlags" +
-      "\022&\n\016gamecenterinfo\030\036 \001(\005R\016gamecenterinfo" +
-      "\022\034\n\tqqVipinfo\030\037 \001(\005R\tqqVipinfo\0223\n\requips" +
-      "kinlist\030  \003(\0132\r.dnf.v1.EquipR\requipskinl" +
-      "ist\022:\n\016avatarskinlist\030! \003(\0132\022.dnf.v1.Ava" +
-      "tarItemR\016avatarskinlist\022\034\n\ttotallike\030\" \001" +
-      "(\005R\ttotallike\022\022\n\004like\030# \001(\005R\004like\022\022\n\004ran" +
-      "k\030$ \001(\005R\004rank\022$\n\004info\030% \003(\0132\020.dnf.v1.Chi" +
-      "valryR\004info\022&\n\016communionlevel\030& \001(\005R\016com" +
-      "munionlevel\0226\n\014sdavatarlist\030\' \003(\0132\022.dnf." +
-      "v1.AvatarItemR\014sdavatarlist\"\231\002\n\014AllSkill" +
-      "Slot\022-\n\006active\030\001 \003(\0132\025.dnf.v1.SkillSlotI" +
-      "nfoR\006active\022)\n\004buff\030\002 \003(\0132\025.dnf.v1.Skill" +
-      "SlotInfoR\004buff\022+\n\005combo\030\003 \003(\0132\025.dnf.v1.S" +
-      "killSlotInfoR\005combo\022E\n\020keyboardmatching\030" +
-      "\004 \003(\0132\031.dnf.v1.SkillSlotMatchingR\020keyboa" +
-      "rdmatching\022;\n\013padmatching\030\005 \003(\0132\031.dnf.v1" +
-      ".SkillSlotMatchingR\013padmatching\"\353\001\n\tAlta" +
-      "rInfo\022\024\n\005index\030\001 \001(\005R\005index\022\032\n\010scramble\030" +
-      "\002 \001(\005R\010scramble\022\034\n\tpoolindex\030\003 \001(\005R\tpool" +
-      "index\022\024\n\005state\030\004 \001(\005R\005state\022\030\n\007endtime\030\005" +
-      " \001(\003R\007endtime\022-\n\003red\030\006 \001(\0132\033.dnf.v1.Batt" +
-      "lefieldTeamInfoR\003red\022/\n\004blue\030\007 \001(\0132\033.dnf" +
-      ".v1.BattlefieldTeamInfoR\004blue\"\265\003\n\014ApcCha" +
-      "racter\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\016\n\002hp" +
-      "\030\002 \001(\005R\002hp\022\016\n\002mp\030\003 \001(\005R\002mp\022\020\n\003job\030\004 \001(\005R" +
-      "\003job\022\024\n\005level\030\005 \001(\005R\005level\022\020\n\003exp\030\006 \001(\005R" +
-      "\003exp\022\032\n\010growtype\030\007 \001(\005R\010growtype\022&\n\016seco" +
-      "ndgrowtype\030\010 \001(\005R\016secondgrowtype\022\022\n\004name" +
-      "\030\t \001(\tR\004name\022/\n\tequiplist\030\n \001(\0132\021.dnf.v1" +
-      ".EquipListR\tequiplist\022,\n\tskilllist\030\013 \001(\013" +
-      "2\016.dnf.v1.SkillsR\tskilllist\022\034\n\townerguid" +
-      "\030\014 \001(\004R\townerguid\022\032\n\010teamtype\030\r \001(\005R\010tea" +
-      "mtype\022\036\n\nobjectguid\030\016 \001(\005R\nobjectguid\022\036\n" +
-      "\nequipscore\030\017 \001(\005R\nequipscore\"\201\003\n\007ApcInf" +
+      "type\022\034\n\ttickcount\030\007 \001(\rR\ttickcount\"R\n\022Al" +
+      "chemyRecipeLimit\022 \n\013recipeindex\030\001 \001(\005R\013r" +
+      "ecipeindex\022\032\n\010usecount\030\002 \001(\005R\010usecount\"\246" +
+      "\007\n\016AllClearReward\022-\n\nequipitems\030\001 \003(\0132\r." +
+      "dnf.v1.EquipR\nequipitems\022-\n\ntitleitems\030\002" +
+      " \003(\0132\r.dnf.v1.EquipR\ntitleitems\022+\n\tflagi" +
+      "tems\030\003 \003(\0132\r.dnf.v1.EquipR\tflagitems\0227\n\r" +
+      "materialitems\030\004 \003(\0132\021.dnf.v1.StackableR\r" +
+      "materialitems\0225\n\014consumeitems\030\005 \003(\0132\021.dn" +
+      "f.v1.StackableR\014consumeitems\0223\n\013emblemit" +
+      "ems\030\006 \003(\0132\021.dnf.v1.StackableR\013emblemitem" +
+      "s\022/\n\tcarditems\030\007 \003(\0132\021.dnf.v1.StackableR" +
+      "\tcarditems\0229\n\016epicpieceitems\030\010 \003(\0132\021.dnf" +
+      ".v1.StackableR\016epicpieceitems\0228\n\016cartifa" +
+      "ctitems\030\t \003(\0132\020.dnf.v1.ArtifactR\016cartifa" +
+      "ctitems\0226\n\rcreatureitems\030\n \003(\0132\020.dnf.v1." +
+      "CreatureR\rcreatureitems\0224\n\013avataritems\030\013" +
+      " \003(\0132\022.dnf.v1.AvatarItemR\013avataritems\0221\n" +
+      "\ncrackitems\030\014 \003(\0132\021.dnf.v1.StackableR\ncr" +
+      "ackitems\0227\n\017crackequipitems\030\r \003(\0132\r.dnf." +
+      "v1.EquipR\017crackequipitems\0228\n\rsdavatarite" +
+      "ms\030\016 \003(\0132\022.dnf.v1.AvatarItemR\rsdavatarit" +
+      "ems\0227\n\rbookmarkitems\030\017 \003(\0132\021.dnf.v1.Stac" +
+      "kableR\rbookmarkitems\022/\n\013scrollitems\030\020 \003(" +
+      "\0132\r.dnf.v1.EquipR\013scrollitems\022\024\n\005index\030\021" +
+      " \001(\005R\005index\022\024\n\005count\030\022 \001(\005R\005count\022\024\n\005flo" +
+      "or\030\023 \001(\005R\005floor\"\306\n\n\025AiCharacterDetailInf" +
       "o\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\022\n\004name\030\002 " +
       "\001(\tR\004name\022\032\n\010growtype\030\003 \001(\005R\010growtype\022&\n" +
-      "\016secondgrowtype\030\004 \001(\005R\016secondgrowtype\022\024\n" +
-      "\005level\030\005 \001(\005R\005level\022\020\n\003job\030\006 \001(\005R\003job\022\036\n" +
-      "\nequipscore\030\007 \001(\005R\nequipscore\022\024\n\005count\030\010" +
-      " \001(\005R\005count\022\022\n\004date\030\t \001(\003R\004date\022+\n\tskill" +
-      "list\030\n \003(\0132\r.dnf.v1.SkillR\tskilllist\022/\n\t" +
-      "equiplist\030\013 \001(\0132\021.dnf.v1.EquipListR\tequi" +
-      "plist\0222\n\navatarlist\030\014 \003(\0132\022.dnf.v1.Avata" +
-      "rItemR\navatarlist\"I\n\tAppendage\022&\n\016append" +
-      "ageindex\030\001 \001(\005R\016appendageindex\022\024\n\005count\030" +
-      "\002 \001(\005R\005count\"C\n\025ArcadePvpInfoCurrency\022\024\n" +
-      "\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005coun" +
-      "t\"\\\n\022ArtifactBaseOption\022\026\n\006option\030\001 \001(\005R" +
-      "\006option\022\026\n\006rarity\030\002 \001(\005R\006rarity\022\026\n\006locke" +
-      "d\030\003 \001(\010R\006locked\">\n\022AttachCrackRequest\022\024\n" +
-      "\005index\030\001 \001(\005R\005index\022\022\n\004slot\030\002 \001(\005R\004slot\"" +
-      "6\n\030AttackSquadAdvertisement\022\032\n\010register\030" +
-      "\001 \001(\010R\010register\"\376\002\n\024AttackSquadBoardInfo" +
-      "\022\026\n\006rpguid\030\001 \001(\004R\006rpguid\022\026\n\006rpname\030\002 \001(\t" +
-      "R\006rpname\022 \n\013membercount\030\003 \001(\005R\013membercou" +
-      "nt\022$\n\rantievilscore\030\004 \001(\005R\rantievilscore" +
-      "\022\036\n\npublictype\030\005 \001(\005R\npublictype\022\026\n\006stat" +
-      "us\030\006 \001(\005R\006status\022\034\n\traidindex\030\007 \001(\005R\trai" +
-      "dindex\022\032\n\010chivalry\030\010 \001(\010R\010chivalry\022\036\n\nle" +
-      "aderguid\030\t \001(\004R\nleaderguid\022\030\n\007started\030\n " +
-      "\001(\010R\007started\022B\n\013memberinfos\030\013 \003(\0132 .dnf." +
-      "v1.AttackSquadBoardUserInfoR\013memberinfos" +
-      "\"H\n\030AttackSquadBoardUserInfo\022\020\n\003job\030\001 \001(" +
-      "\005R\003job\022\032\n\010growtype\030\002 \001(\005R\010growtype\"\354\003\n\025A" +
-      "ttackSquadDetailInfo\022\026\n\006rpguid\030\001 \001(\004R\006rp" +
-      "guid\022\026\n\006rpname\030\002 \001(\tR\006rpname\022 \n\013memberco" +
-      "unt\030\003 \001(\005R\013membercount\022$\n\rantievilscore\030" +
-      "\004 \001(\005R\rantievilscore\022\036\n\npublictype\030\005 \001(\005" +
-      "R\npublictype\022\026\n\006status\030\006 \001(\005R\006status\022 \n\013" +
-      "phasestatus\030\007 \001(\005R\013phasestatus\022\036\n\nchange" +
-      "time\030\010 \001(\003R\nchangetime\022\036\n\nleadername\030\t \001" +
-      "(\tR\nleadername\022\036\n\nleaderguid\030\n \001(\004R\nlead" +
-      "erguid\022\024\n\005world\030\013 \001(\005R\005world\022\030\n\007channel\030" +
-      "\014 \001(\005R\007channel\022\016\n\002ip\030\r \001(\tR\002ip\022\022\n\004port\030\016" +
-      " \001(\rR\004port\0223\n\005users\030\017 \003(\0132\035.dnf.v1.Attac" +
-      "kSquadMemberInfoR\005users\022\030\n\007started\030\020 \001(\010" +
-      "R\007started\"\370\001\n\025AttackSquadMemberInfo\022\034\n\tp" +
-      "artyguid\030\001 \001(\004R\tpartyguid\022\036\n\npartyindex\030" +
-      "\002 \001(\005R\npartyindex\022\034\n\tpartyslot\030\003 \001(\005R\tpa" +
-      "rtyslot\022\'\n\004user\030\004 \001(\0132\023.dnf.v1.GroupMemb" +
-      "erR\004user\022&\n\016disconnecttime\030\005 \001(\003R\016discon" +
-      "necttime\0222\n\024rewardconditioncount\030\006 \001(\005R\024" +
-      "rewardconditioncount\"4\n\020AttackSquadTimer" +
-      "\022 \n\013breakuptime\030\001 \001(\003R\013breakuptime\"\306\006\n\013A" +
-      "uctionBase\022\022\n\004guid\030\001 \001(\004R\004guid\022\030\n\007upgrad" +
-      "e\030\002 \001(\005R\007upgrade\022\030\n\007quality\030\003 \001(\005R\007quali" +
-      "ty\022\034\n\tendurance\030\004 \001(\005R\tendurance\022\030\n\007ench" +
-      "ant\030\005 \001(\005R\007enchant\022\030\n\007reforge\030\006 \001(\005R\007ref" +
-      "orge\022\030\n\007amplify\030\007 \001(\005R\007amplify\022\030\n\007aoptio" +
-      "n\030\010 \001(\005R\007aoption\022&\n\006emblem\030\t \003(\0132\016.dnf.v" +
-      "1.EmblemR\006emblem\022%\n\004card\030\n \003(\0132\021.dnf.v1." +
-      "StackableR\004card\022\026\n\006scount\030\013 \001(\005R\006scount\022" +
-      "\026\n\006tcount\030\014 \001(\005R\006tcount\022\036\n\nexpiretime\030\r " +
-      "\001(\003R\nexpiretime\022 \n\013rappearance\030\016 \001(\010R\013ra" +
-      "ppearance\0222\n\007roption\030\017 \003(\0132\030.dnf.v1.Rand" +
-      "omOptionItemR\007roption\022\022\n\004skin\030\020 \001(\005R\004ski" +
-      "n\022\032\n\010skinguid\030\021 \001(\004R\010skinguid\022\026\n\006locked\030" +
-      "\022 \001(\010R\006locked\022\022\n\004seal\030\023 \001(\010R\004seal\022\022\n\004typ" +
-      "e\030\024 \001(\005R\004type\022\022\n\004auid\030\025 \001(\004R\004auid\022\026\n\006bid" +
-      "der\030\026 \001(\004R\006bidder\022\024\n\005price\030\027 \001(\005R\005price\022" +
-      "\030\n\007enddate\030\030 \001(\004R\007enddate\022 \n\013registcount" +
-      "\030\031 \001(\005R\013registcount\022\022\n\004tera\030\032 \001(\005R\004tera\022" +
-      "\032\n\010buyprice\030\033 \001(\005R\010buyprice\022\022\n\004flag\030\034 \001(" +
-      "\010R\004flag\022\024\n\005index\030\035 \001(\005R\005index\022\024\n\005count\030\036" +
-      " \001(\005R\005count\022\026\n\006season\030\037 \001(\005R\006season\"\353\006\n\014" +
-      "AuctionEquip\022\022\n\004guid\030\001 \001(\004R\004guid\022\030\n\007upgr" +
-      "ade\030\002 \001(\005R\007upgrade\022\030\n\007quality\030\003 \001(\005R\007qua" +
-      "lity\022\034\n\tendurance\030\004 \001(\005R\tendurance\022\030\n\007re" +
-      "forge\030\005 \001(\005R\007reforge\022\030\n\007amplify\030\006 \001(\005R\007a" +
-      "mplify\022\030\n\007aoption\030\007 \001(\005R\007aoption\022&\n\006embl" +
-      "em\030\010 \003(\0132\016.dnf.v1.EmblemR\006emblem\022%\n\004card" +
-      "\030\t \003(\0132\021.dnf.v1.StackableR\004card\022\026\n\006scoun" +
-      "t\030\n \001(\005R\006scount\022\026\n\006tcount\030\013 \001(\005R\006tcount\022" +
-      "\036\n\nexpiretime\030\014 \001(\003R\nexpiretime\022 \n\013rappe" +
-      "arance\030\r \001(\010R\013rappearance\0222\n\007roption\030\016 \003" +
-      "(\0132\030.dnf.v1.RandomOptionItemR\007roption\022\022\n" +
-      "\004skin\030\017 \001(\005R\004skin\022\032\n\010skinguid\030\020 \001(\004R\010ski" +
-      "nguid\022\026\n\006locked\030\021 \001(\010R\006locked\022\022\n\004seal\030\022 " +
-      "\001(\010R\004seal\022\"\n\014enchantindex\030\023 \001(\005R\014enchant" +
-      "index\022\030\n\007enchant\030\024 \001(\005R\007enchant\022\022\n\004type\030" +
-      "\025 \001(\005R\004type\022\022\n\004auid\030\026 \001(\004R\004auid\022\026\n\006bidde" +
-      "r\030\027 \001(\004R\006bidder\022\024\n\005price\030\030 \001(\005R\005price\022\030\n" +
-      "\007enddate\030\031 \001(\004R\007enddate\022 \n\013registcount\030\032" +
-      " \001(\005R\013registcount\022\022\n\004tera\030\033 \001(\005R\004tera\022\032\n" +
-      "\010buyprice\030\034 \001(\005R\010buyprice\022\022\n\004flag\030\035 \001(\005R" +
-      "\004flag\022\024\n\005index\030\036 \001(\005R\005index\022\024\n\005count\030\037 \001" +
-      "(\005R\005count\022\026\n\006season\030  \001(\005R\006season\":\n\020Auc" +
-      "tionItemIndex\022\024\n\005index\030\001 \001(\005R\005index\022\020\n\003q" +
-      "ty\030\002 \001(\005R\003qty\"\357\006\n\020AuctionStackable\022\022\n\004gu" +
-      "id\030\001 \001(\004R\004guid\022\030\n\007upgrade\030\002 \001(\005R\007upgrade" +
-      "\022\030\n\007quality\030\003 \001(\005R\007quality\022\034\n\tendurance\030" +
-      "\004 \001(\005R\tendurance\022\030\n\007reforge\030\005 \001(\005R\007refor" +
-      "ge\022\030\n\007amplify\030\006 \001(\005R\007amplify\022\030\n\007aoption\030" +
-      "\007 \001(\005R\007aoption\022&\n\006emblem\030\010 \003(\0132\016.dnf.v1." +
-      "EmblemR\006emblem\022%\n\004card\030\t \003(\0132\021.dnf.v1.St" +
-      "ackableR\004card\022\026\n\006scount\030\n \001(\005R\006scount\022\026\n" +
-      "\006tcount\030\013 \001(\005R\006tcount\022\036\n\nexpiretime\030\014 \001(" +
-      "\003R\nexpiretime\022 \n\013rappearance\030\r \001(\010R\013rapp" +
-      "earance\0222\n\007roption\030\016 \003(\0132\030.dnf.v1.Random" +
-      "OptionItemR\007roption\022\022\n\004skin\030\017 \001(\005R\004skin\022" +
-      "\032\n\010skinguid\030\020 \001(\004R\010skinguid\022\026\n\006locked\030\021 " +
-      "\001(\010R\006locked\022\022\n\004seal\030\022 \001(\010R\004seal\022\"\n\014encha" +
-      "ntindex\030\023 \001(\005R\014enchantindex\022\030\n\007enchant\030\024" +
-      " \001(\005R\007enchant\022\022\n\004type\030\025 \001(\005R\004type\022\022\n\004aui" +
-      "d\030\026 \001(\004R\004auid\022\026\n\006bidder\030\027 \001(\004R\006bidder\022\024\n" +
-      "\005price\030\030 \001(\005R\005price\022\030\n\007enddate\030\031 \001(\004R\007en" +
-      "ddate\022 \n\013registcount\030\032 \001(\005R\013registcount\022" +
-      "\022\n\004tera\030\033 \001(\005R\004tera\022\032\n\010buyprice\030\034 \001(\005R\010b" +
-      "uyprice\022\022\n\004flag\030\035 \001(\005R\004flag\022\024\n\005index\030\036 \001" +
-      "(\005R\005index\022\024\n\005count\030\037 \001(\005R\005count\022\026\n\006seaso" +
-      "n\030  \001(\005R\006season\"C\n\025AvatarComposeMaterial" +
-      "\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005c" +
-      "ount\"H\n\032AvatarDisassembledMaterial\022\024\n\005in" +
-      "dex\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005count\" " +
-      "\n\nAvatarGuid\022\022\n\004guid\030\001 \001(\004R\004guid\"\344\001\n\nAva" +
-      "tarItem\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002" +
-      " \001(\005R\005count\022\022\n\004guid\030\003 \001(\004R\004guid\022\036\n\nexpir" +
-      "etime\030\004 \001(\004R\nexpiretime\022\026\n\006option\030\005 \001(\005R" +
-      "\006option\022\026\n\006locked\030\006 \001(\010R\006locked\022\026\n\006scoun" +
-      "t\030\007 \001(\005R\006scount\022\026\n\006tcount\030\010 \001(\005R\006tcount\022" +
-      "\026\n\006sindex\030\t \001(\005R\006sindex\"\236\002\n\024BattlefieldS" +
-      "tateInfo\022 \n\013battlefield\030\001 \001(\005R\013battlefie" +
-      "ld\022\032\n\010scramble\030\002 \001(\005R\010scramble\022\034\n\tslotin" +
-      "dex\030\003 \001(\005R\tslotindex\022\024\n\005state\030\004 \001(\005R\005sta" +
-      "te\022\030\n\007endtime\030\005 \001(\003R\007endtime\022-\n\003red\030\006 \001(" +
-      "\0132\033.dnf.v1.BattlefieldTeamInfoR\003red\022/\n\004b" +
-      "lue\030\007 \001(\0132\033.dnf.v1.BattlefieldTeamInfoR\004" +
-      "blue\022\032\n\010garrison\030\010 \001(\010R\010garrison\"\207\001\n\023Bat" +
-      "tlefieldTeamInfo\022\024\n\005state\030\001 \001(\005R\005state\022\020" +
-      "\n\003win\030\002 \001(\005R\003win\022\022\n\004date\030\003 \001(\004R\004date\022\024\n\005" +
-      "count\030\004 \001(\005R\005count\022\036\n\nclearcount\030\005 \001(\005R\n" +
-      "clearcount\"J\n\020BattleleagueBuff\022\024\n\005index\030" +
-      "\001 \001(\005R\005index\022 \n\013customvalue\030\002 \001(\005R\013custo" +
-      "mvalue\"X\n\026BattleleagueContribute\022\032\n\010char" +
-      "guid\030\001 \001(\004R\010charguid\022\"\n\014contribution\030\002 \001" +
-      "(\005R\014contribution\"W\n\025BattleleaguePveRecor" +
-      "d\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\"\n\014contrib" +
-      "ution\030\002 \001(\005R\014contribution\"W\n\025Battleleagu" +
-      "ePvpRecord\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\"" +
-      "\n\014contribution\030\002 \001(\005R\014contribution\"@\n\022Ba" +
-      "ttleleagueReward\022\024\n\005index\030\001 \001(\005R\005index\022\024" +
-      "\n\005count\030\002 \001(\005R\005count\"=\n\021SkillSlotMatchin" +
-      "g\022\024\n\005index\030\001 \001(\005R\005index\022\022\n\004slot\030\002 \001(\005R\004s" +
-      "lot\"e\n\013GroupMember\022\032\n\010charguid\030\001 \001(\004R\010ch" +
-      "arguid\022\022\n\004name\030\002 \001(\tR\004name\022\020\n\003job\030\003 \001(\005R" +
-      "\003job\022\024\n\005level\030\004 \001(\005R\005level\"4\n\006Emblem\022\024\n\005" +
-      "index\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005count" +
-      "\">\n\020RandomOptionItem\022\024\n\005index\030\001 \001(\005R\005ind" +
-      "ex\022\024\n\005value\030\002 \001(\005R\005value\"6\n\010Chivalry\022\024\n\005" +
-      "index\030\001 \001(\005R\005index\022\024\n\005value\030\002 \001(\005R\005value" +
-      "\"2\n\tEquipList\022%\n\006equips\030\001 \003(\0132\r.dnf.v1.E" +
-      "quipR\006equips\"/\n\006Skills\022%\n\006skills\030\001 \003(\0132\r" +
-      ".dnf.v1.SkillR\006skillsB\254\001\n com.dnfm.mina." +
-      "protobuf.generatedB\021MultiSystemsProtoP\001Z" +
-      "<github.com/pixb/DnfGameServer/dnf-go-cl" +
-      "ient/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006D" +
-      "nf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1b\006pr" +
-      "oto3"
+      "\016secondgrowtype\030\004 \001(\005R\016secondgrowtype\022\020\n" +
+      "\003exp\030\005 \001(\005R\003exp\022\016\n\002hp\030\006 \001(\005R\002hp\022\016\n\002mp\030\007 " +
+      "\001(\005R\002mp\022\024\n\005level\030\010 \001(\005R\005level\022\020\n\003job\030\t \001" +
+      "(\005R\003job\022\036\n\nequipscore\030\n \001(\005R\nequipscore\022" +
+      "\024\n\005score\030\013 \001(\005R\005score\022\024\n\005count\030\014 \001(\005R\005co" +
+      "unt\022\022\n\004date\030\r \001(\003R\004date\022\026\n\006spoint\030\016 \001(\005R" +
+      "\006spoint\0220\n\023adventureunionlevel\030\017 \001(\005R\023ad" +
+      "ventureunionlevel\022,\n\021adventureunionexp\030\020" +
+      " \001(\003R\021adventureunionexp\022+\n\tskilllist\030\021 \003" +
+      "(\0132\r.dnf.v1.SkillR\tskilllist\022+\n\tequiplis" +
+      "t\030\022 \003(\0132\r.dnf.v1.EquipR\tequiplist\0224\n\014cre" +
+      "aturelist\030\023 \003(\0132\020.dnf.v1.CreatureR\014creat" +
+      "urelist\0226\n\rcartifactlist\030\024 \003(\0132\020.dnf.v1." +
+      "ArtifactR\rcartifactlist\0222\n\navatarlist\030\025 " +
+      "\003(\0132\022.dnf.v1.AvatarItemR\navatarlist\022,\n\010s" +
+      "kinlist\030\026 \003(\0132\020.dnf.v1.SkinItemR\010skinlis" +
+      "t\022\024\n\005world\030\027 \001(\005R\005world\022\024\n\005gguid\030\030 \001(\004R\005" +
+      "gguid\022\024\n\005gname\030\031 \001(\tR\005gname\022 \n\013gmasterna" +
+      "me\030\032 \001(\tR\013gmastername\022\"\n\014gmembergrade\030\033 " +
+      "\001(\005R\014gmembergrade\022\"\n\014blackdiamond\030\034 \001(\004R" +
+      "\014blackdiamond\022.\n\022avatarVisibleFlags\030\035 \001(" +
+      "\rR\022avatarVisibleFlags\022&\n\016gamecenterinfo\030" +
+      "\036 \001(\005R\016gamecenterinfo\022\034\n\tqqVipinfo\030\037 \001(\005" +
+      "R\tqqVipinfo\0223\n\requipskinlist\030  \003(\0132\r.dnf" +
+      ".v1.EquipR\requipskinlist\022:\n\016avatarskinli" +
+      "st\030! \003(\0132\022.dnf.v1.AvatarItemR\016avatarskin" +
+      "list\022\034\n\ttotallike\030\" \001(\005R\ttotallike\022\022\n\004li" +
+      "ke\030# \001(\005R\004like\022\022\n\004rank\030$ \001(\005R\004rank\022$\n\004in" +
+      "fo\030% \003(\0132\020.dnf.v1.ChivalryR\004info\022&\n\016comm" +
+      "unionlevel\030& \001(\005R\016communionlevel\0226\n\014sdav" +
+      "atarlist\030\' \003(\0132\022.dnf.v1.AvatarItemR\014sdav" +
+      "atarlist\"k\n\017AiCharacterInfo\022\032\n\010charguid\030" +
+      "\001 \001(\004R\010charguid\022\034\n\townerguid\030\002 \001(\004R\towne" +
+      "rguid\022\036\n\nobjectguid\030\003 \001(\005R\nobjectguid\"\231\002" +
+      "\n\014AllSkillSlot\022-\n\006active\030\001 \003(\0132\025.dnf.v1." +
+      "SkillSlotInfoR\006active\022)\n\004buff\030\002 \003(\0132\025.dn" +
+      "f.v1.SkillSlotInfoR\004buff\022+\n\005combo\030\003 \003(\0132" +
+      "\025.dnf.v1.SkillSlotInfoR\005combo\022E\n\020keyboar" +
+      "dmatching\030\004 \003(\0132\031.dnf.v1.SkillSlotMatchi" +
+      "ngR\020keyboardmatching\022;\n\013padmatching\030\005 \003(" +
+      "\0132\031.dnf.v1.SkillSlotMatchingR\013padmatchin" +
+      "g\"\353\001\n\tAltarInfo\022\024\n\005index\030\001 \001(\005R\005index\022\032\n" +
+      "\010scramble\030\002 \001(\005R\010scramble\022\034\n\tpoolindex\030\003" +
+      " \001(\005R\tpoolindex\022\024\n\005state\030\004 \001(\005R\005state\022\030\n" +
+      "\007endtime\030\005 \001(\003R\007endtime\022-\n\003red\030\006 \001(\0132\033.d" +
+      "nf.v1.BattlefieldTeamInfoR\003red\022/\n\004blue\030\007" +
+      " \001(\0132\033.dnf.v1.BattlefieldTeamInfoR\004blue\"" +
+      "\265\003\n\014ApcCharacter\022\032\n\010charguid\030\001 \001(\004R\010char" +
+      "guid\022\016\n\002hp\030\002 \001(\005R\002hp\022\016\n\002mp\030\003 \001(\005R\002mp\022\020\n\003" +
+      "job\030\004 \001(\005R\003job\022\024\n\005level\030\005 \001(\005R\005level\022\020\n\003" +
+      "exp\030\006 \001(\005R\003exp\022\032\n\010growtype\030\007 \001(\005R\010growty" +
+      "pe\022&\n\016secondgrowtype\030\010 \001(\005R\016secondgrowty" +
+      "pe\022\022\n\004name\030\t \001(\tR\004name\022/\n\tequiplist\030\n \001(" +
+      "\0132\021.dnf.v1.EquipListR\tequiplist\022,\n\tskill" +
+      "list\030\013 \001(\0132\016.dnf.v1.SkillsR\tskilllist\022\034\n" +
+      "\townerguid\030\014 \001(\004R\townerguid\022\032\n\010teamtype\030" +
+      "\r \001(\005R\010teamtype\022\036\n\nobjectguid\030\016 \001(\005R\nobj" +
+      "ectguid\022\036\n\nequipscore\030\017 \001(\005R\nequipscore\"" +
+      "\201\003\n\007ApcInfo\022\032\n\010charguid\030\001 \001(\004R\010charguid\022" +
+      "\022\n\004name\030\002 \001(\tR\004name\022\032\n\010growtype\030\003 \001(\005R\010g" +
+      "rowtype\022&\n\016secondgrowtype\030\004 \001(\005R\016secondg" +
+      "rowtype\022\024\n\005level\030\005 \001(\005R\005level\022\020\n\003job\030\006 \001" +
+      "(\005R\003job\022\036\n\nequipscore\030\007 \001(\005R\nequipscore\022" +
+      "\024\n\005count\030\010 \001(\005R\005count\022\022\n\004date\030\t \001(\003R\004dat" +
+      "e\022+\n\tskilllist\030\n \003(\0132\r.dnf.v1.SkillR\tski" +
+      "lllist\022/\n\tequiplist\030\013 \001(\0132\021.dnf.v1.Equip" +
+      "ListR\tequiplist\0222\n\navatarlist\030\014 \003(\0132\022.dn" +
+      "f.v1.AvatarItemR\navatarlist\"I\n\tAppendage" +
+      "\022&\n\016appendageindex\030\001 \001(\005R\016appendageindex" +
+      "\022\024\n\005count\030\002 \001(\005R\005count\"C\n\025ArcadePvpInfoC" +
+      "urrency\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002" +
+      " \001(\005R\005count\"\\\n\022ArtifactBaseOption\022\026\n\006opt" +
+      "ion\030\001 \001(\005R\006option\022\026\n\006rarity\030\002 \001(\005R\006rarit" +
+      "y\022\026\n\006locked\030\003 \001(\010R\006locked\">\n\022AttachCrack" +
+      "Request\022\024\n\005index\030\001 \001(\005R\005index\022\022\n\004slot\030\002 " +
+      "\001(\005R\004slot\"6\n\030AttackSquadAdvertisement\022\032\n" +
+      "\010register\030\001 \001(\010R\010register\"\376\002\n\024AttackSqua" +
+      "dBoardInfo\022\026\n\006rpguid\030\001 \001(\004R\006rpguid\022\026\n\006rp" +
+      "name\030\002 \001(\tR\006rpname\022 \n\013membercount\030\003 \001(\005R" +
+      "\013membercount\022$\n\rantievilscore\030\004 \001(\005R\rant" +
+      "ievilscore\022\036\n\npublictype\030\005 \001(\005R\npublicty" +
+      "pe\022\026\n\006status\030\006 \001(\005R\006status\022\034\n\traidindex\030" +
+      "\007 \001(\005R\traidindex\022\032\n\010chivalry\030\010 \001(\010R\010chiv" +
+      "alry\022\036\n\nleaderguid\030\t \001(\004R\nleaderguid\022\030\n\007" +
+      "started\030\n \001(\010R\007started\022B\n\013memberinfos\030\013 " +
+      "\003(\0132 .dnf.v1.AttackSquadBoardUserInfoR\013m" +
+      "emberinfos\"H\n\030AttackSquadBoardUserInfo\022\020" +
+      "\n\003job\030\001 \001(\005R\003job\022\032\n\010growtype\030\002 \001(\005R\010grow" +
+      "type\"\354\003\n\025AttackSquadDetailInfo\022\026\n\006rpguid" +
+      "\030\001 \001(\004R\006rpguid\022\026\n\006rpname\030\002 \001(\tR\006rpname\022 " +
+      "\n\013membercount\030\003 \001(\005R\013membercount\022$\n\ranti" +
+      "evilscore\030\004 \001(\005R\rantievilscore\022\036\n\npublic" +
+      "type\030\005 \001(\005R\npublictype\022\026\n\006status\030\006 \001(\005R\006" +
+      "status\022 \n\013phasestatus\030\007 \001(\005R\013phasestatus" +
+      "\022\036\n\nchangetime\030\010 \001(\003R\nchangetime\022\036\n\nlead" +
+      "ername\030\t \001(\tR\nleadername\022\036\n\nleaderguid\030\n" +
+      " \001(\004R\nleaderguid\022\024\n\005world\030\013 \001(\005R\005world\022\030" +
+      "\n\007channel\030\014 \001(\005R\007channel\022\016\n\002ip\030\r \001(\tR\002ip" +
+      "\022\022\n\004port\030\016 \001(\rR\004port\0223\n\005users\030\017 \003(\0132\035.dn" +
+      "f.v1.AttackSquadMemberInfoR\005users\022\030\n\007sta" +
+      "rted\030\020 \001(\010R\007started\"\370\001\n\025AttackSquadMembe" +
+      "rInfo\022\034\n\tpartyguid\030\001 \001(\004R\tpartyguid\022\036\n\np" +
+      "artyindex\030\002 \001(\005R\npartyindex\022\034\n\tpartyslot" +
+      "\030\003 \001(\005R\tpartyslot\022\'\n\004user\030\004 \001(\0132\023.dnf.v1" +
+      ".GroupMemberR\004user\022&\n\016disconnecttime\030\005 \001" +
+      "(\003R\016disconnecttime\0222\n\024rewardconditioncou" +
+      "nt\030\006 \001(\005R\024rewardconditioncount\"4\n\020Attack" +
+      "SquadTimer\022 \n\013breakuptime\030\001 \001(\003R\013breakup" +
+      "time\"\306\006\n\013AuctionBase\022\022\n\004guid\030\001 \001(\004R\004guid" +
+      "\022\030\n\007upgrade\030\002 \001(\005R\007upgrade\022\030\n\007quality\030\003 " +
+      "\001(\005R\007quality\022\034\n\tendurance\030\004 \001(\005R\tenduran" +
+      "ce\022\030\n\007enchant\030\005 \001(\005R\007enchant\022\030\n\007reforge\030" +
+      "\006 \001(\005R\007reforge\022\030\n\007amplify\030\007 \001(\005R\007amplify" +
+      "\022\030\n\007aoption\030\010 \001(\005R\007aoption\022&\n\006emblem\030\t \003" +
+      "(\0132\016.dnf.v1.EmblemR\006emblem\022%\n\004card\030\n \003(\013" +
+      "2\021.dnf.v1.StackableR\004card\022\026\n\006scount\030\013 \001(" +
+      "\005R\006scount\022\026\n\006tcount\030\014 \001(\005R\006tcount\022\036\n\nexp" +
+      "iretime\030\r \001(\003R\nexpiretime\022 \n\013rappearance" +
+      "\030\016 \001(\010R\013rappearance\0222\n\007roption\030\017 \003(\0132\030.d" +
+      "nf.v1.RandomOptionItemR\007roption\022\022\n\004skin\030" +
+      "\020 \001(\005R\004skin\022\032\n\010skinguid\030\021 \001(\004R\010skinguid\022" +
+      "\026\n\006locked\030\022 \001(\010R\006locked\022\022\n\004seal\030\023 \001(\010R\004s" +
+      "eal\022\022\n\004type\030\024 \001(\005R\004type\022\022\n\004auid\030\025 \001(\004R\004a" +
+      "uid\022\026\n\006bidder\030\026 \001(\004R\006bidder\022\024\n\005price\030\027 \001" +
+      "(\005R\005price\022\030\n\007enddate\030\030 \001(\004R\007enddate\022 \n\013r" +
+      "egistcount\030\031 \001(\005R\013registcount\022\022\n\004tera\030\032 " +
+      "\001(\005R\004tera\022\032\n\010buyprice\030\033 \001(\005R\010buyprice\022\022\n" +
+      "\004flag\030\034 \001(\010R\004flag\022\024\n\005index\030\035 \001(\005R\005index\022" +
+      "\024\n\005count\030\036 \001(\005R\005count\022\026\n\006season\030\037 \001(\005R\006s" +
+      "eason\"\353\006\n\014AuctionEquip\022\022\n\004guid\030\001 \001(\004R\004gu" +
+      "id\022\030\n\007upgrade\030\002 \001(\005R\007upgrade\022\030\n\007quality\030" +
+      "\003 \001(\005R\007quality\022\034\n\tendurance\030\004 \001(\005R\tendur" +
+      "ance\022\030\n\007reforge\030\005 \001(\005R\007reforge\022\030\n\007amplif" +
+      "y\030\006 \001(\005R\007amplify\022\030\n\007aoption\030\007 \001(\005R\007aopti" +
+      "on\022&\n\006emblem\030\010 \003(\0132\016.dnf.v1.EmblemR\006embl" +
+      "em\022%\n\004card\030\t \003(\0132\021.dnf.v1.StackableR\004car" +
+      "d\022\026\n\006scount\030\n \001(\005R\006scount\022\026\n\006tcount\030\013 \001(" +
+      "\005R\006tcount\022\036\n\nexpiretime\030\014 \001(\003R\nexpiretim" +
+      "e\022 \n\013rappearance\030\r \001(\010R\013rappearance\0222\n\007r" +
+      "option\030\016 \003(\0132\030.dnf.v1.RandomOptionItemR\007" +
+      "roption\022\022\n\004skin\030\017 \001(\005R\004skin\022\032\n\010skinguid\030" +
+      "\020 \001(\004R\010skinguid\022\026\n\006locked\030\021 \001(\010R\006locked\022" +
+      "\022\n\004seal\030\022 \001(\010R\004seal\022\"\n\014enchantindex\030\023 \001(" +
+      "\005R\014enchantindex\022\030\n\007enchant\030\024 \001(\005R\007enchan" +
+      "t\022\022\n\004type\030\025 \001(\005R\004type\022\022\n\004auid\030\026 \001(\004R\004aui" +
+      "d\022\026\n\006bidder\030\027 \001(\004R\006bidder\022\024\n\005price\030\030 \001(\005" +
+      "R\005price\022\030\n\007enddate\030\031 \001(\004R\007enddate\022 \n\013reg" +
+      "istcount\030\032 \001(\005R\013registcount\022\022\n\004tera\030\033 \001(" +
+      "\005R\004tera\022\032\n\010buyprice\030\034 \001(\005R\010buyprice\022\022\n\004f" +
+      "lag\030\035 \001(\005R\004flag\022\024\n\005index\030\036 \001(\005R\005index\022\024\n" +
+      "\005count\030\037 \001(\005R\005count\022\026\n\006season\030  \001(\005R\006sea" +
+      "son\":\n\020AuctionItemIndex\022\024\n\005index\030\001 \001(\005R\005" +
+      "index\022\020\n\003qty\030\002 \001(\005R\003qty\"\357\006\n\020AuctionStack" +
+      "able\022\022\n\004guid\030\001 \001(\004R\004guid\022\030\n\007upgrade\030\002 \001(" +
+      "\005R\007upgrade\022\030\n\007quality\030\003 \001(\005R\007quality\022\034\n\t" +
+      "endurance\030\004 \001(\005R\tendurance\022\030\n\007reforge\030\005 " +
+      "\001(\005R\007reforge\022\030\n\007amplify\030\006 \001(\005R\007amplify\022\030" +
+      "\n\007aoption\030\007 \001(\005R\007aoption\022&\n\006emblem\030\010 \003(\013" +
+      "2\016.dnf.v1.EmblemR\006emblem\022%\n\004card\030\t \003(\0132\021" +
+      ".dnf.v1.StackableR\004card\022\026\n\006scount\030\n \001(\005R" +
+      "\006scount\022\026\n\006tcount\030\013 \001(\005R\006tcount\022\036\n\nexpir" +
+      "etime\030\014 \001(\003R\nexpiretime\022 \n\013rappearance\030\r" +
+      " \001(\010R\013rappearance\0222\n\007roption\030\016 \003(\0132\030.dnf" +
+      ".v1.RandomOptionItemR\007roption\022\022\n\004skin\030\017 " +
+      "\001(\005R\004skin\022\032\n\010skinguid\030\020 \001(\004R\010skinguid\022\026\n" +
+      "\006locked\030\021 \001(\010R\006locked\022\022\n\004seal\030\022 \001(\010R\004sea" +
+      "l\022\"\n\014enchantindex\030\023 \001(\005R\014enchantindex\022\030\n" +
+      "\007enchant\030\024 \001(\005R\007enchant\022\022\n\004type\030\025 \001(\005R\004t" +
+      "ype\022\022\n\004auid\030\026 \001(\004R\004auid\022\026\n\006bidder\030\027 \001(\004R" +
+      "\006bidder\022\024\n\005price\030\030 \001(\005R\005price\022\030\n\007enddate" +
+      "\030\031 \001(\004R\007enddate\022 \n\013registcount\030\032 \001(\005R\013re" +
+      "gistcount\022\022\n\004tera\030\033 \001(\005R\004tera\022\032\n\010buypric" +
+      "e\030\034 \001(\005R\010buyprice\022\022\n\004flag\030\035 \001(\005R\004flag\022\024\n" +
+      "\005index\030\036 \001(\005R\005index\022\024\n\005count\030\037 \001(\005R\005coun" +
+      "t\022\026\n\006season\030  \001(\005R\006season\"C\n\025AvatarCompo" +
+      "seMaterial\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005coun" +
+      "t\030\002 \001(\005R\005count\"H\n\032AvatarDisassembledMate" +
+      "rial\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(" +
+      "\005R\005count\" \n\nAvatarGuid\022\022\n\004guid\030\001 \001(\004R\004gu" +
+      "id\"\344\001\n\nAvatarItem\022\024\n\005index\030\001 \001(\005R\005index\022" +
+      "\024\n\005count\030\002 \001(\005R\005count\022\022\n\004guid\030\003 \001(\004R\004gui" +
+      "d\022\036\n\nexpiretime\030\004 \001(\004R\nexpiretime\022\026\n\006opt" +
+      "ion\030\005 \001(\005R\006option\022\026\n\006locked\030\006 \001(\010R\006locke" +
+      "d\022\026\n\006scount\030\007 \001(\005R\006scount\022\026\n\006tcount\030\010 \001(" +
+      "\005R\006tcount\022\026\n\006sindex\030\t \001(\005R\006sindex\"\236\002\n\024Ba" +
+      "ttlefieldStateInfo\022 \n\013battlefield\030\001 \001(\005R" +
+      "\013battlefield\022\032\n\010scramble\030\002 \001(\005R\010scramble" +
+      "\022\034\n\tslotindex\030\003 \001(\005R\tslotindex\022\024\n\005state\030" +
+      "\004 \001(\005R\005state\022\030\n\007endtime\030\005 \001(\003R\007endtime\022-" +
+      "\n\003red\030\006 \001(\0132\033.dnf.v1.BattlefieldTeamInfo" +
+      "R\003red\022/\n\004blue\030\007 \001(\0132\033.dnf.v1.Battlefield" +
+      "TeamInfoR\004blue\022\032\n\010garrison\030\010 \001(\010R\010garris" +
+      "on\"\207\001\n\023BattlefieldTeamInfo\022\024\n\005state\030\001 \001(" +
+      "\005R\005state\022\020\n\003win\030\002 \001(\005R\003win\022\022\n\004date\030\003 \001(\004" +
+      "R\004date\022\024\n\005count\030\004 \001(\005R\005count\022\036\n\nclearcou" +
+      "nt\030\005 \001(\005R\nclearcount\"J\n\020BattleleagueBuff" +
+      "\022\024\n\005index\030\001 \001(\005R\005index\022 \n\013customvalue\030\002 " +
+      "\001(\005R\013customvalue\"X\n\026BattleleagueContribu" +
+      "te\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\"\n\014contri" +
+      "bution\030\002 \001(\005R\014contribution\"W\n\025Battleleag" +
+      "uePveRecord\022\032\n\010charguid\030\001 \001(\004R\010charguid\022" +
+      "\"\n\014contribution\030\002 \001(\005R\014contribution\"W\n\025B" +
+      "attleleaguePvpRecord\022\032\n\010charguid\030\001 \001(\004R\010" +
+      "charguid\022\"\n\014contribution\030\002 \001(\005R\014contribu" +
+      "tion\"@\n\022BattleleagueReward\022\024\n\005index\030\001 \001(" +
+      "\005R\005index\022\024\n\005count\030\002 \001(\005R\005count\"=\n\021SkillS" +
+      "lotMatching\022\024\n\005index\030\001 \001(\005R\005index\022\022\n\004slo" +
+      "t\030\002 \001(\005R\004slot\"e\n\013GroupMember\022\032\n\010charguid" +
+      "\030\001 \001(\004R\010charguid\022\022\n\004name\030\002 \001(\tR\004name\022\020\n\003" +
+      "job\030\003 \001(\005R\003job\022\024\n\005level\030\004 \001(\005R\005level\"4\n\006" +
+      "Emblem\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002 " +
+      "\001(\005R\005count\">\n\020RandomOptionItem\022\024\n\005index\030" +
+      "\001 \001(\005R\005index\022\024\n\005value\030\002 \001(\005R\005value\"6\n\010Ch" +
+      "ivalry\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005value\030\002 " +
+      "\001(\005R\005value\"2\n\tEquipList\022%\n\006equips\030\001 \003(\0132" +
+      "\r.dnf.v1.EquipR\006equips\"/\n\006Skills\022%\n\006skil" +
+      "ls\030\001 \003(\0132\r.dnf.v1.SkillR\006skillsB\254\001\n com." +
+      "dnfm.mina.protobuf.generatedB\021MultiSyste" +
+      "msProtoP\001Z<github.com/pixb/DnfGameServer" +
+      "/dnf-go-client/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006" +
+      "Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007D" +
+      "nf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -508,224 +551,242 @@ public final class MultiSystemsProto extends com.google.protobuf.GeneratedFile {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ActiveStatusDamage_descriptor,
         new java.lang.String[] { "Type", "Damage", "Skillindex", "Itemindex", "Victimguid", "Victimtype", "Tickcount", });
-    internal_static_dnf_v1_AiCharacterDetailInfo_descriptor =
+    internal_static_dnf_v1_AlchemyRecipeLimit_descriptor =
       getDescriptor().getMessageType(3);
+    internal_static_dnf_v1_AlchemyRecipeLimit_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_AlchemyRecipeLimit_descriptor,
+        new java.lang.String[] { "Recipeindex", "Usecount", });
+    internal_static_dnf_v1_AllClearReward_descriptor =
+      getDescriptor().getMessageType(4);
+    internal_static_dnf_v1_AllClearReward_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_AllClearReward_descriptor,
+        new java.lang.String[] { "Equipitems", "Titleitems", "Flagitems", "Materialitems", "Consumeitems", "Emblemitems", "Carditems", "Epicpieceitems", "Cartifactitems", "Creatureitems", "Avataritems", "Crackitems", "Crackequipitems", "Sdavataritems", "Bookmarkitems", "Scrollitems", "Index", "Count", "Floor", });
+    internal_static_dnf_v1_AiCharacterDetailInfo_descriptor =
+      getDescriptor().getMessageType(5);
     internal_static_dnf_v1_AiCharacterDetailInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AiCharacterDetailInfo_descriptor,
         new java.lang.String[] { "Charguid", "Name", "Growtype", "Secondgrowtype", "Exp", "Hp", "Mp", "Level", "Job", "Equipscore", "Score", "Count", "Date", "Spoint", "Adventureunionlevel", "Adventureunionexp", "Skilllist", "Equiplist", "Creaturelist", "Cartifactlist", "Avatarlist", "Skinlist", "World", "Gguid", "Gname", "Gmastername", "Gmembergrade", "Blackdiamond", "AvatarVisibleFlags", "Gamecenterinfo", "QqVipinfo", "Equipskinlist", "Avatarskinlist", "Totallike", "Like", "Rank", "Info", "Communionlevel", "Sdavatarlist", });
+    internal_static_dnf_v1_AiCharacterInfo_descriptor =
+      getDescriptor().getMessageType(6);
+    internal_static_dnf_v1_AiCharacterInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_AiCharacterInfo_descriptor,
+        new java.lang.String[] { "Charguid", "Ownerguid", "Objectguid", });
     internal_static_dnf_v1_AllSkillSlot_descriptor =
-      getDescriptor().getMessageType(4);
+      getDescriptor().getMessageType(7);
     internal_static_dnf_v1_AllSkillSlot_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AllSkillSlot_descriptor,
         new java.lang.String[] { "Active", "Buff", "Combo", "Keyboardmatching", "Padmatching", });
     internal_static_dnf_v1_AltarInfo_descriptor =
-      getDescriptor().getMessageType(5);
+      getDescriptor().getMessageType(8);
     internal_static_dnf_v1_AltarInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AltarInfo_descriptor,
         new java.lang.String[] { "Index", "Scramble", "Poolindex", "State", "Endtime", "Red", "Blue", });
     internal_static_dnf_v1_ApcCharacter_descriptor =
-      getDescriptor().getMessageType(6);
+      getDescriptor().getMessageType(9);
     internal_static_dnf_v1_ApcCharacter_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ApcCharacter_descriptor,
         new java.lang.String[] { "Charguid", "Hp", "Mp", "Job", "Level", "Exp", "Growtype", "Secondgrowtype", "Name", "Equiplist", "Skilllist", "Ownerguid", "Teamtype", "Objectguid", "Equipscore", });
     internal_static_dnf_v1_ApcInfo_descriptor =
-      getDescriptor().getMessageType(7);
+      getDescriptor().getMessageType(10);
     internal_static_dnf_v1_ApcInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ApcInfo_descriptor,
         new java.lang.String[] { "Charguid", "Name", "Growtype", "Secondgrowtype", "Level", "Job", "Equipscore", "Count", "Date", "Skilllist", "Equiplist", "Avatarlist", });
     internal_static_dnf_v1_Appendage_descriptor =
-      getDescriptor().getMessageType(8);
+      getDescriptor().getMessageType(11);
     internal_static_dnf_v1_Appendage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_Appendage_descriptor,
         new java.lang.String[] { "Appendageindex", "Count", });
     internal_static_dnf_v1_ArcadePvpInfoCurrency_descriptor =
-      getDescriptor().getMessageType(9);
+      getDescriptor().getMessageType(12);
     internal_static_dnf_v1_ArcadePvpInfoCurrency_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ArcadePvpInfoCurrency_descriptor,
         new java.lang.String[] { "Index", "Count", });
     internal_static_dnf_v1_ArtifactBaseOption_descriptor =
-      getDescriptor().getMessageType(10);
+      getDescriptor().getMessageType(13);
     internal_static_dnf_v1_ArtifactBaseOption_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ArtifactBaseOption_descriptor,
         new java.lang.String[] { "Option", "Rarity", "Locked", });
     internal_static_dnf_v1_AttachCrackRequest_descriptor =
-      getDescriptor().getMessageType(11);
+      getDescriptor().getMessageType(14);
     internal_static_dnf_v1_AttachCrackRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AttachCrackRequest_descriptor,
         new java.lang.String[] { "Index", "Slot", });
     internal_static_dnf_v1_AttackSquadAdvertisement_descriptor =
-      getDescriptor().getMessageType(12);
+      getDescriptor().getMessageType(15);
     internal_static_dnf_v1_AttackSquadAdvertisement_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AttackSquadAdvertisement_descriptor,
         new java.lang.String[] { "Register", });
     internal_static_dnf_v1_AttackSquadBoardInfo_descriptor =
-      getDescriptor().getMessageType(13);
+      getDescriptor().getMessageType(16);
     internal_static_dnf_v1_AttackSquadBoardInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AttackSquadBoardInfo_descriptor,
         new java.lang.String[] { "Rpguid", "Rpname", "Membercount", "Antievilscore", "Publictype", "Status", "Raidindex", "Chivalry", "Leaderguid", "Started", "Memberinfos", });
     internal_static_dnf_v1_AttackSquadBoardUserInfo_descriptor =
-      getDescriptor().getMessageType(14);
+      getDescriptor().getMessageType(17);
     internal_static_dnf_v1_AttackSquadBoardUserInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AttackSquadBoardUserInfo_descriptor,
         new java.lang.String[] { "Job", "Growtype", });
     internal_static_dnf_v1_AttackSquadDetailInfo_descriptor =
-      getDescriptor().getMessageType(15);
+      getDescriptor().getMessageType(18);
     internal_static_dnf_v1_AttackSquadDetailInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AttackSquadDetailInfo_descriptor,
         new java.lang.String[] { "Rpguid", "Rpname", "Membercount", "Antievilscore", "Publictype", "Status", "Phasestatus", "Changetime", "Leadername", "Leaderguid", "World", "Channel", "Ip", "Port", "Users", "Started", });
     internal_static_dnf_v1_AttackSquadMemberInfo_descriptor =
-      getDescriptor().getMessageType(16);
+      getDescriptor().getMessageType(19);
     internal_static_dnf_v1_AttackSquadMemberInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AttackSquadMemberInfo_descriptor,
         new java.lang.String[] { "Partyguid", "Partyindex", "Partyslot", "User", "Disconnecttime", "Rewardconditioncount", });
     internal_static_dnf_v1_AttackSquadTimer_descriptor =
-      getDescriptor().getMessageType(17);
+      getDescriptor().getMessageType(20);
     internal_static_dnf_v1_AttackSquadTimer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AttackSquadTimer_descriptor,
         new java.lang.String[] { "Breakuptime", });
     internal_static_dnf_v1_AuctionBase_descriptor =
-      getDescriptor().getMessageType(18);
+      getDescriptor().getMessageType(21);
     internal_static_dnf_v1_AuctionBase_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AuctionBase_descriptor,
         new java.lang.String[] { "Guid", "Upgrade", "Quality", "Endurance", "Enchant", "Reforge", "Amplify", "Aoption", "Emblem", "Card", "Scount", "Tcount", "Expiretime", "Rappearance", "Roption", "Skin", "Skinguid", "Locked", "Seal", "Type", "Auid", "Bidder", "Price", "Enddate", "Registcount", "Tera", "Buyprice", "Flag", "Index", "Count", "Season", });
     internal_static_dnf_v1_AuctionEquip_descriptor =
-      getDescriptor().getMessageType(19);
+      getDescriptor().getMessageType(22);
     internal_static_dnf_v1_AuctionEquip_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AuctionEquip_descriptor,
         new java.lang.String[] { "Guid", "Upgrade", "Quality", "Endurance", "Reforge", "Amplify", "Aoption", "Emblem", "Card", "Scount", "Tcount", "Expiretime", "Rappearance", "Roption", "Skin", "Skinguid", "Locked", "Seal", "Enchantindex", "Enchant", "Type", "Auid", "Bidder", "Price", "Enddate", "Registcount", "Tera", "Buyprice", "Flag", "Index", "Count", "Season", });
     internal_static_dnf_v1_AuctionItemIndex_descriptor =
-      getDescriptor().getMessageType(20);
+      getDescriptor().getMessageType(23);
     internal_static_dnf_v1_AuctionItemIndex_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AuctionItemIndex_descriptor,
         new java.lang.String[] { "Index", "Qty", });
     internal_static_dnf_v1_AuctionStackable_descriptor =
-      getDescriptor().getMessageType(21);
+      getDescriptor().getMessageType(24);
     internal_static_dnf_v1_AuctionStackable_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AuctionStackable_descriptor,
         new java.lang.String[] { "Guid", "Upgrade", "Quality", "Endurance", "Reforge", "Amplify", "Aoption", "Emblem", "Card", "Scount", "Tcount", "Expiretime", "Rappearance", "Roption", "Skin", "Skinguid", "Locked", "Seal", "Enchantindex", "Enchant", "Type", "Auid", "Bidder", "Price", "Enddate", "Registcount", "Tera", "Buyprice", "Flag", "Index", "Count", "Season", });
     internal_static_dnf_v1_AvatarComposeMaterial_descriptor =
-      getDescriptor().getMessageType(22);
+      getDescriptor().getMessageType(25);
     internal_static_dnf_v1_AvatarComposeMaterial_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AvatarComposeMaterial_descriptor,
         new java.lang.String[] { "Index", "Count", });
     internal_static_dnf_v1_AvatarDisassembledMaterial_descriptor =
-      getDescriptor().getMessageType(23);
+      getDescriptor().getMessageType(26);
     internal_static_dnf_v1_AvatarDisassembledMaterial_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AvatarDisassembledMaterial_descriptor,
         new java.lang.String[] { "Index", "Count", });
     internal_static_dnf_v1_AvatarGuid_descriptor =
-      getDescriptor().getMessageType(24);
+      getDescriptor().getMessageType(27);
     internal_static_dnf_v1_AvatarGuid_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AvatarGuid_descriptor,
         new java.lang.String[] { "Guid", });
     internal_static_dnf_v1_AvatarItem_descriptor =
-      getDescriptor().getMessageType(25);
+      getDescriptor().getMessageType(28);
     internal_static_dnf_v1_AvatarItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AvatarItem_descriptor,
         new java.lang.String[] { "Index", "Count", "Guid", "Expiretime", "Option", "Locked", "Scount", "Tcount", "Sindex", });
     internal_static_dnf_v1_BattlefieldStateInfo_descriptor =
-      getDescriptor().getMessageType(26);
+      getDescriptor().getMessageType(29);
     internal_static_dnf_v1_BattlefieldStateInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BattlefieldStateInfo_descriptor,
         new java.lang.String[] { "Battlefield", "Scramble", "Slotindex", "State", "Endtime", "Red", "Blue", "Garrison", });
     internal_static_dnf_v1_BattlefieldTeamInfo_descriptor =
-      getDescriptor().getMessageType(27);
+      getDescriptor().getMessageType(30);
     internal_static_dnf_v1_BattlefieldTeamInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BattlefieldTeamInfo_descriptor,
         new java.lang.String[] { "State", "Win", "Date", "Count", "Clearcount", });
     internal_static_dnf_v1_BattleleagueBuff_descriptor =
-      getDescriptor().getMessageType(28);
+      getDescriptor().getMessageType(31);
     internal_static_dnf_v1_BattleleagueBuff_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BattleleagueBuff_descriptor,
         new java.lang.String[] { "Index", "Customvalue", });
     internal_static_dnf_v1_BattleleagueContribute_descriptor =
-      getDescriptor().getMessageType(29);
+      getDescriptor().getMessageType(32);
     internal_static_dnf_v1_BattleleagueContribute_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BattleleagueContribute_descriptor,
         new java.lang.String[] { "Charguid", "Contribution", });
     internal_static_dnf_v1_BattleleaguePveRecord_descriptor =
-      getDescriptor().getMessageType(30);
+      getDescriptor().getMessageType(33);
     internal_static_dnf_v1_BattleleaguePveRecord_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BattleleaguePveRecord_descriptor,
         new java.lang.String[] { "Charguid", "Contribution", });
     internal_static_dnf_v1_BattleleaguePvpRecord_descriptor =
-      getDescriptor().getMessageType(31);
+      getDescriptor().getMessageType(34);
     internal_static_dnf_v1_BattleleaguePvpRecord_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BattleleaguePvpRecord_descriptor,
         new java.lang.String[] { "Charguid", "Contribution", });
     internal_static_dnf_v1_BattleleagueReward_descriptor =
-      getDescriptor().getMessageType(32);
+      getDescriptor().getMessageType(35);
     internal_static_dnf_v1_BattleleagueReward_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BattleleagueReward_descriptor,
         new java.lang.String[] { "Index", "Count", });
     internal_static_dnf_v1_SkillSlotMatching_descriptor =
-      getDescriptor().getMessageType(33);
+      getDescriptor().getMessageType(36);
     internal_static_dnf_v1_SkillSlotMatching_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_SkillSlotMatching_descriptor,
         new java.lang.String[] { "Index", "Slot", });
     internal_static_dnf_v1_GroupMember_descriptor =
-      getDescriptor().getMessageType(34);
+      getDescriptor().getMessageType(37);
     internal_static_dnf_v1_GroupMember_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GroupMember_descriptor,
         new java.lang.String[] { "Charguid", "Name", "Job", "Level", });
     internal_static_dnf_v1_Emblem_descriptor =
-      getDescriptor().getMessageType(35);
+      getDescriptor().getMessageType(38);
     internal_static_dnf_v1_Emblem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_Emblem_descriptor,
         new java.lang.String[] { "Index", "Count", });
     internal_static_dnf_v1_RandomOptionItem_descriptor =
-      getDescriptor().getMessageType(36);
+      getDescriptor().getMessageType(39);
     internal_static_dnf_v1_RandomOptionItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_RandomOptionItem_descriptor,
         new java.lang.String[] { "Index", "Value", });
     internal_static_dnf_v1_Chivalry_descriptor =
-      getDescriptor().getMessageType(37);
+      getDescriptor().getMessageType(40);
     internal_static_dnf_v1_Chivalry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_Chivalry_descriptor,
         new java.lang.String[] { "Index", "Value", });
     internal_static_dnf_v1_EquipList_descriptor =
-      getDescriptor().getMessageType(38);
+      getDescriptor().getMessageType(41);
     internal_static_dnf_v1_EquipList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_EquipList_descriptor,
         new java.lang.String[] { "Equips", });
     internal_static_dnf_v1_Skills_descriptor =
-      getDescriptor().getMessageType(39);
+      getDescriptor().getMessageType(42);
     internal_static_dnf_v1_Skills_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_Skills_descriptor,

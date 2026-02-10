@@ -81,26 +81,26 @@ public interface BattleleagueTransitionCardOrBuilder extends
   int getPvepoint();
 
   /**
-   * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+   * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
    */
-  java.util.List<com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo> 
+  java.util.List<com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo> 
       getPverewardsList();
   /**
-   * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+   * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
    */
-  com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo getPverewards(int index);
+  com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo getPverewards(int index);
   /**
-   * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+   * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
    */
   int getPverewardsCount();
   /**
-   * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+   * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
    */
-  java.util.List<? extends com.dnfm.mina.protobuf.generated.BattleleagueRewardInfoOrBuilder> 
+  java.util.List<? extends com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfoOrBuilder> 
       getPverewardsOrBuilderList();
   /**
-   * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+   * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
    */
-  com.dnfm.mina.protobuf.generated.BattleleagueRewardInfoOrBuilder getPverewardsOrBuilder(
+  com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfoOrBuilder getPverewardsOrBuilder(
       int index);
 }

@@ -558,13 +558,19 @@ message BattleleagueRewardInfo {
   int32 count = 2;
 }
 
+message BattleLeagueRewardInfo {
+  int32 type = 1;
+  int32 id = 2;
+  int32 count = 3;
+}
+
 message BattleleagueTransitionCard {
   uint64 charguid = 1;
   repeated int32 items = 2;
   repeated int32 buffs = 3;
   repeated BattleleagueBuff buff = 4;
   int32 pvepoint = 5;
-  repeated BattleleagueRewardInfo pverewards = 6;
+  repeated BattleLeagueRewardInfo pverewards = 6;
 }
 
 message BattlePassInfo {
@@ -836,4 +842,61 @@ message RecruitPartyInfo {
 message PveRoundInfo {
   int32 round = 1;
   int32 score = 2;
+}
+
+// 用户名称
+message UserName {
+  string name = 1;
+}
+
+// 用户棋盘游戏结果
+message UserBoardGameResult {
+  uint64 charguid = 1;
+  int32 playtime = 2;
+  int32 mine = 3;
+  int32 gold = 4;
+  int32 hp = 5;
+  int32 relic = 6;
+}
+
+// 团队结果
+message TeamResult {
+  int32 win = 1;
+  int32 addpoint = 2;
+  int32 clearcount = 3;
+}
+
+// 塔奖励物品
+message TowerRewardItems {
+  repeated Equip equipitems = 1;
+  repeated Equip titleitems = 2;
+  repeated Equip flagitems = 3;
+  repeated Stackable materialitems = 4;
+  repeated Stackable consumeitems = 5;
+  repeated Stackable emblemitems = 6;
+  repeated Stackable carditems = 7;
+  repeated Stackable epicpieceitems = 8;
+  repeated Artifact cartifactitems = 9;
+  repeated Creature creatureitems = 10;
+  repeated AvatarItem avataritems = 11;
+  int32 index = 12;
+  int32 count = 13;
+}
+
+// 时间攻击奖励
+message TimeAttackReward {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+// 分享奖励信息
+message ShareRewardInfo {
+  int32 index = 1;
+  int32 state = 2;
+}
+
+// 皮肤装备穿戴/脱下
+message SkinEquipPutOnOff {
+  int32 index = 1;
+  int32 isequip = 2;
 }

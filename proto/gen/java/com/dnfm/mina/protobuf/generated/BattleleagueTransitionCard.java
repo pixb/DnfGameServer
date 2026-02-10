@@ -172,41 +172,41 @@ private static final long serialVersionUID = 0L;
 
   public static final int PVEREWARDS_FIELD_NUMBER = 6;
   @SuppressWarnings("serial")
-  private java.util.List<com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo> pverewards_;
+  private java.util.List<com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo> pverewards_;
   /**
-   * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+   * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
    */
   @java.lang.Override
-  public java.util.List<com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo> getPverewardsList() {
+  public java.util.List<com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo> getPverewardsList() {
     return pverewards_;
   }
   /**
-   * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+   * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
    */
   @java.lang.Override
-  public java.util.List<? extends com.dnfm.mina.protobuf.generated.BattleleagueRewardInfoOrBuilder> 
+  public java.util.List<? extends com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfoOrBuilder> 
       getPverewardsOrBuilderList() {
     return pverewards_;
   }
   /**
-   * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+   * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
    */
   @java.lang.Override
   public int getPverewardsCount() {
     return pverewards_.size();
   }
   /**
-   * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+   * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
    */
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo getPverewards(int index) {
+  public com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo getPverewards(int index) {
     return pverewards_.get(index);
   }
   /**
-   * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+   * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
    */
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.BattleleagueRewardInfoOrBuilder getPverewardsOrBuilder(
+  public com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfoOrBuilder getPverewardsOrBuilder(
       int index) {
     return pverewards_.get(index);
   }
@@ -758,9 +758,9 @@ private static final long serialVersionUID = 0L;
               break;
             } // case 40
             case 50: {
-              com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo m =
+              com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo m =
                   input.readMessage(
-                      com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo.parser(),
+                      com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo.parser(),
                       extensionRegistry);
               if (pverewardsBuilder_ == null) {
                 ensurePverewardsIsMutable();
@@ -1259,22 +1259,22 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.util.List<com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo> pverewards_ =
+    private java.util.List<com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo> pverewards_ =
       java.util.Collections.emptyList();
     private void ensurePverewardsIsMutable() {
       if (!((bitField0_ & 0x00000020) != 0)) {
-        pverewards_ = new java.util.ArrayList<com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo>(pverewards_);
+        pverewards_ = new java.util.ArrayList<com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo>(pverewards_);
         bitField0_ |= 0x00000020;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilder<
-        com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo, com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo.Builder, com.dnfm.mina.protobuf.generated.BattleleagueRewardInfoOrBuilder> pverewardsBuilder_;
+        com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo, com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo.Builder, com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfoOrBuilder> pverewardsBuilder_;
 
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
-    public java.util.List<com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo> getPverewardsList() {
+    public java.util.List<com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo> getPverewardsList() {
       if (pverewardsBuilder_ == null) {
         return java.util.Collections.unmodifiableList(pverewards_);
       } else {
@@ -1282,7 +1282,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
     public int getPverewardsCount() {
       if (pverewardsBuilder_ == null) {
@@ -1292,9 +1292,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo getPverewards(int index) {
+    public com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo getPverewards(int index) {
       if (pverewardsBuilder_ == null) {
         return pverewards_.get(index);
       } else {
@@ -1302,10 +1302,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
     public Builder setPverewards(
-        int index, com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo value) {
+        int index, com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo value) {
       if (pverewardsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1319,10 +1319,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
     public Builder setPverewards(
-        int index, com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo.Builder builderForValue) {
+        int index, com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo.Builder builderForValue) {
       if (pverewardsBuilder_ == null) {
         ensurePverewardsIsMutable();
         pverewards_.set(index, builderForValue.build());
@@ -1333,9 +1333,9 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
-    public Builder addPverewards(com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo value) {
+    public Builder addPverewards(com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo value) {
       if (pverewardsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1349,10 +1349,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
     public Builder addPverewards(
-        int index, com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo value) {
+        int index, com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo value) {
       if (pverewardsBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -1366,10 +1366,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
     public Builder addPverewards(
-        com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo.Builder builderForValue) {
+        com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo.Builder builderForValue) {
       if (pverewardsBuilder_ == null) {
         ensurePverewardsIsMutable();
         pverewards_.add(builderForValue.build());
@@ -1380,10 +1380,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
     public Builder addPverewards(
-        int index, com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo.Builder builderForValue) {
+        int index, com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo.Builder builderForValue) {
       if (pverewardsBuilder_ == null) {
         ensurePverewardsIsMutable();
         pverewards_.add(index, builderForValue.build());
@@ -1394,10 +1394,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
     public Builder addAllPverewards(
-        java.lang.Iterable<? extends com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo> values) {
+        java.lang.Iterable<? extends com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo> values) {
       if (pverewardsBuilder_ == null) {
         ensurePverewardsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -1409,7 +1409,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
     public Builder clearPverewards() {
       if (pverewardsBuilder_ == null) {
@@ -1422,7 +1422,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
     public Builder removePverewards(int index) {
       if (pverewardsBuilder_ == null) {
@@ -1435,16 +1435,16 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo.Builder getPverewardsBuilder(
+    public com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo.Builder getPverewardsBuilder(
         int index) {
       return internalGetPverewardsFieldBuilder().getBuilder(index);
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.BattleleagueRewardInfoOrBuilder getPverewardsOrBuilder(
+    public com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfoOrBuilder getPverewardsOrBuilder(
         int index) {
       if (pverewardsBuilder_ == null) {
         return pverewards_.get(index);  } else {
@@ -1452,9 +1452,9 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
-    public java.util.List<? extends com.dnfm.mina.protobuf.generated.BattleleagueRewardInfoOrBuilder> 
+    public java.util.List<? extends com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfoOrBuilder> 
          getPverewardsOrBuilderList() {
       if (pverewardsBuilder_ != null) {
         return pverewardsBuilder_.getMessageOrBuilderList();
@@ -1463,33 +1463,33 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo.Builder addPverewardsBuilder() {
+    public com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo.Builder addPverewardsBuilder() {
       return internalGetPverewardsFieldBuilder().addBuilder(
-          com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo.getDefaultInstance());
+          com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo.getDefaultInstance());
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
-    public com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo.Builder addPverewardsBuilder(
+    public com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo.Builder addPverewardsBuilder(
         int index) {
       return internalGetPverewardsFieldBuilder().addBuilder(
-          index, com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo.getDefaultInstance());
+          index, com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo.getDefaultInstance());
     }
     /**
-     * <code>repeated .dnf.v1.BattleleagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
+     * <code>repeated .dnf.v1.BattleLeagueRewardInfo pverewards = 6 [json_name = "pverewards"];</code>
      */
-    public java.util.List<com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo.Builder> 
+    public java.util.List<com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo.Builder> 
          getPverewardsBuilderList() {
       return internalGetPverewardsFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilder<
-        com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo, com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo.Builder, com.dnfm.mina.protobuf.generated.BattleleagueRewardInfoOrBuilder> 
+        com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo, com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo.Builder, com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfoOrBuilder> 
         internalGetPverewardsFieldBuilder() {
       if (pverewardsBuilder_ == null) {
         pverewardsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-            com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo, com.dnfm.mina.protobuf.generated.BattleleagueRewardInfo.Builder, com.dnfm.mina.protobuf.generated.BattleleagueRewardInfoOrBuilder>(
+            com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo, com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfo.Builder, com.dnfm.mina.protobuf.generated.BattleLeagueRewardInfoOrBuilder>(
                 pverewards_,
                 ((bitField0_ & 0x00000020) != 0),
                 getParentForChildren(),
