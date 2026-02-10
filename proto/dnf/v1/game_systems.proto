@@ -20,22 +20,443 @@ import "dnf/v1/welfare.proto";
 message SkinChatInfo {
   int32 skinId = 1;
   string chatContent = 2;
+  int32 chatframe = 3;
+  int32 characterframe = 4;
 }
 
 enum TeamType {
   TEAM_TYPE_UNKNOWN = 0;
   TEAM_TYPE_NORMAL = 1;
   TEAM_TYPE_RAID = 2;
+  TEAM_TYPE_PLAYER = 3;
 }
 
 message ShopBuyCount {
-  int32 itemId = 1;
+  int32 goodsid = 1;
   int32 count = 2;
+  int64 lastbuytime = 3;
+  int32 supplycount = 4;
+  int64 supplydurationtime = 5;
 }
 
 message ShopTabReset {
-  int32 tabId = 1;
-  int64 resetTime = 2;
+  int32 shopid = 1;
+  int32 tab = 2;
+  int32 count = 3;
+  int64 resettime = 4;
+}
+
+message SyscmdMasterbuff {
+  int32 buffid = 1;
+  uint64 endtime = 2;
+}
+
+message TutorialInfo {
+  int32 step = 1;
+  int32 coin = 2;
+}
+
+message EscortCurrentReward {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message WatingListUserInfo {
+  uint64 charguid = 1;
+  string name = 2;
+  string gname = 3;
+  int32 level = 4;
+  int32 job = 5;
+  int32 growtype = 6;
+  int32 secgrowtype = 7;
+  bool leader = 8;
+  bool ready = 9;
+  int64 customdata = 10;
+  uint64 partyguid = 11;
+}
+
+message UserMinimumInfo {
+  uint64 charguid = 1;
+  string name = 2;
+  int32 level = 3;
+  int32 job = 4;
+  int32 growtype = 5;
+  int32 secgrowtype = 6;
+  TeamType teamtype = 7;
+  int32 rank = 8;
+  int32 pvpstargrade = 9;
+  string profileurl = 10;
+  int32 world = 11;
+  SkinChatInfo skinchatinfo = 12;
+  bool iskeyboard = 13;
+}
+
+message UserLoadingStatus {
+  uint64 charguid = 1;
+  int32 status = 2;
+  bool ready = 3;
+  bool waiting = 4;
+  bool disconnect = 5;
+  bool leave = 6;
+  repeated uint64 kickoutvotes = 7;
+}
+
+message SimpleCharacter {
+  uint64 charguid = 1;
+  string name = 2;
+  int32 level = 3;
+  int32 job = 4;
+  int32 growtype = 5;
+  int32 secgrowtype = 6;
+  int32 equipscore = 7;
+  int32 characterframe = 8;
+}
+
+message RoomUserInfo {
+  uint64 charguid = 1;
+  int32 level = 2;
+  int32 job = 3;
+  int32 growtype = 4;
+  int32 secondgrowtype = 5;
+  string name = 6;
+  int32 teamtype = 7;
+  int32 creditscore = 8;
+  bool ready = 9;
+  SkinChatInfo skinchatinfo = 10;
+}
+
+message TicketInfo {
+  string dungeontype = 1;
+  int32 dailyticket = 2;
+  int32 weeklyticket = 3;
+  int32 premiumticket = 4;
+  int32 sweepticket = 5;
+  int32 dailyrewardticket = 6;
+  int32 weeklyrewardticket = 7;
+  int32 buycount = 8;
+  int64 chargetime = 9;
+  int32 freeticket = 10;
+}
+
+message TicketRewardList {
+  repeated TicketInfo character = 1;
+  repeated TicketInfo account = 2;
+}
+
+message SkinItemInfo {
+  int32 index = 1;
+  uint64 guid = 2;
+  int64 expiretime = 3;
+  int64 acquisitiontime = 4;
+  int32 favorite = 5;
+}
+
+message Tutorial {
+  int32 index = 1;
+  int32 state = 2;
+  int32 type = 3;
+  bool enforce = 4;
+}
+
+message WhisperChat {
+  uint64 charguid = 1;
+  string sender = 2;
+  string receiver = 3;
+  string chat = 4;
+  string voice = 5;
+  int32 job = 6;
+  int32 growtype = 7;
+  int32 secondgrowtype = 8;
+  int64 date = 9;
+}
+
+enum GuildNpcType {
+  GUILD_NPC_TYPE_UNKNOWN = 0;
+  GUILD_NPC_TYPE_NPC = 1;
+}
+
+enum GuildNpcStatus {
+  GUILD_NPC_STATUS_UNKNOWN = 0;
+  GUILD_NPC_STATUS_COMPLETE_PURCHASE = 1;
+}
+
+message WarehouseNpc {
+  GuildNpcType type = 1;
+  int32 index = 2;
+  uint64 guid = 3;
+  GuildNpcStatus status = 4;
+}
+
+enum GuildStructureType {
+  GUILD_STRUCTURE_TYPE_UNKNOWN = 0;
+  GUILD_STRUCTURE_TYPE_NORMAL = 1;
+}
+
+enum GuildStructureStatus {
+  GUILD_STRUCTURE_STATUS_UNKNOWN = 0;
+  GUILD_STRUCTURE_STATUS_CONSTRUCTION = 1;
+}
+
+message WarehouseStructure {
+  GuildStructureType type = 1;
+  int32 index = 2;
+  int32 count = 3;
+  uint64 guid = 4;
+  GuildStructureStatus status = 5;
+}
+
+message SeriaBuffInfo {
+  int32 number = 1;
+  int64 cooltime = 2;
+}
+
+message SdDeathMatchRewardInfo {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message SdDeathMatchReward {
+  uint64 charguid = 1;
+  int32 rewardcount = 2;
+  repeated SdDeathMatchRewardInfo list = 3;
+}
+
+message SubdueInfo {
+  int32 index = 1;
+  repeated uint64 charguids = 2;
+  int64 starttime = 3;
+  int64 endtime = 4;
+  int32 state = 5;
+  int32 count = 6;
+  int32 totalantievil = 7;
+}
+
+message Seasonpass {
+  int32 index = 1;
+  int64 dateStart = 2;
+  int64 dateEnd = 3;
+  repeated uint64 targetGuids = 4;
+}
+
+message ToyBillingVerify {
+  string stampToken = 1;
+  string orderId = 2;
+  string productId = 3;
+  string userId = 4;
+  string characterId = 5;
+  string servicePayload = 6;
+  string marketType = 7;
+  string purchaseType = 8;
+}
+
+message DiningFoodBuffInfo {
+  int32 index = 1;
+  int64 endtime = 2;
+  int32 foodId = 3;
+  int32 buffId = 4;
+  int32 duration = 5;
+  int64 startTime = 6;
+}
+
+message DragonBoardAppendage {
+  uint64 charguid = 1;
+  int32 index = 2;
+  int32 appendageId = 3;
+  int32 level = 4;
+  int32 exp = 5;
+}
+
+message DragonBoardChangeDice {
+  uint64 charguid = 1;
+  int32 type = 2;
+}
+
+message DragonBoardChangeSlot {
+  uint64 charguid = 1;
+  int32 index = 2;
+}
+
+message DragonBoardHold {
+  uint64 charguid = 1;
+  int32 count = 2;
+}
+
+message DragonBoardReward {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message DragonBoardChanceCard {
+  int32 index = 1;
+  DragonBoardChangeDice changedice = 2;
+  repeated DragonBoardChangeSlot changeslots = 3;
+  DragonBoardHold hold = 4;
+  DragonBoardChangeSlot moveslot = 5;
+  DragonBoardAppendage debuff = 6;
+  DragonBoardAppendage dotdamage = 7;
+  DragonBoardAppendage boss = 8;
+}
+
+message DragonBoardMove {
+  int32 error = 1;
+  uint64 charguid = 2;
+  int32 slot = 3;
+  int32 appendage = 4;
+  repeated DragonBoardReward rewards = 5;
+  DragonBoardChanceCard chancecard = 6;
+}
+
+message DragonBoardResult {
+  uint64 charguid = 1;
+  int32 job = 2;
+  int32 rank = 3;
+  int32 turncount = 4;
+  int32 playtime = 5;
+  repeated DragonBoardReward rewards = 6;
+  repeated DragonBoardReward slotrewards = 7;
+  int32 world = 8;
+  int32 creditscore = 9;
+}
+
+message DragonBoardGainAppendage {
+  uint64 charguid = 1;
+  int32 index = 2;
+  int32 appendageId = 3;
+  int32 count = 4;
+}
+
+message DragonBoardMember {
+  uint64 charguid = 1;
+  string name = 2;
+  int32 job = 3;
+  int32 level = 4;
+  int32 growtype = 5;
+  int32 secgrowtype = 6;
+  int32 rank = 7;
+  int32 teamtype = 8;
+  int32 creditscore = 9;
+  int32 dicetype = 10;
+  int32 slot = 11;
+  bool connected = 12;
+  bool clearboss = 13;
+  repeated DragonBoardReward rewards = 14;
+  repeated DragonBoardGainAppendage appendages = 15;
+}
+
+message DreamMazeDungeon {
+  int32 index = 1;
+  string name = 2;
+  int32 level = 3;
+  int32 difficulty = 4;
+  int32 recommendedLevel = 5;
+  int32 playerCount = 6;
+  int64 cleartime = 7;
+  int32 grade = 8;
+  int64 bosshp = 9;
+}
+
+message DropObjectItem {
+  uint64 charguid = 1;
+  int32 itemindex = 2;
+  int32 index = 3;
+  int32 count = 4;
+  int32 rarity = 5;
+  bool bind = 6;
+  int32 upgrade = 7;
+  int32 quality = 8;
+  bool isgrowthcare = 9;
+}
+
+message Dungeonrank {
+  uint64 charguid = 1;
+  string name = 2;
+  int32 job = 3;
+  int32 level = 4;
+  int32 growtype = 5;
+  int32 secgrowtype = 6;
+  int32 rank = 7;
+  int32 score = 8;
+  int32 time = 9;
+  int32 dungeonId = 10;
+  string dungeonName = 11;
+  int32 counter = 12;
+  int32 multihit = 13;
+  int32 smash = 14;
+  int64 givedamage = 15;
+  int64 receivedamage = 16;
+}
+
+message DungeonStartInfo {
+  uint64 matchingguid = 1;
+  uint64 dungeonguid = 2;
+  int32 battleworld = 3;
+  int32 bchannel = 4;
+  string bip = 5;
+  int32 bport = 6;
+  int32 matchtype = 7;
+  int32 world = 8;
+  int32 channel = 9;
+  uint64 targetguid = 10;
+  repeated uint64 users = 11;
+  repeated UserMinimumInfo detail = 12;
+}
+
+message EmblemRequest {
+  int32 index = 1;
+  int32 slot = 2;
+}
+
+message StateObjectDrop {
+  uint64 charguid = 1;
+  repeated int32 golds = 2;
+  repeated int32 items = 3;
+}
+
+message EnterStageObject {
+  repeated StateObjectDrop drops = 1;
+  uint64 guid = 2;
+  int32 type = 3;
+  int32 index = 4;
+}
+
+message EnterStageMap {
+  uint64 guid = 1;
+  repeated EnterStageObject objects = 2;
+}
+
+message EntryInfo {
+  uint64 charguid = 1;
+  string name = 2;
+  int32 level = 3;
+  int32 job = 4;
+}
+
+message EquipPutOnOff {
+  uint64 guid = 1;
+  int32 slot = 2;
+}
+
+message EscortClearReward {
+  int32 error = 1;
+  int32 type = 2;
+  int32 index = 3;
+  int32 count = 4;
+  int32 level = 5;
+  int64 totalexp = 6;
+}
+
+message EscortReward {
+  int32 type = 1;
+  int32 index = 2;
+  int32 count = 3;
+  int64 addexp = 4;
+  int64 totalexp = 5;
+  int32 wagonhp = 6;
+}
+
+message STREAM_DATA {
+  int32 type = 1;
+  bytes data = 2;
 }
 
 message BattleleagueRewardInfo {

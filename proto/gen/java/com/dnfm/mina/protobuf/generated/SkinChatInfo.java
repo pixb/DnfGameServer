@@ -98,6 +98,28 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int CHATFRAME_FIELD_NUMBER = 3;
+  private int chatframe_ = 0;
+  /**
+   * <code>int32 chatframe = 3 [json_name = "chatframe"];</code>
+   * @return The chatframe.
+   */
+  @java.lang.Override
+  public int getChatframe() {
+    return chatframe_;
+  }
+
+  public static final int CHARACTERFRAME_FIELD_NUMBER = 4;
+  private int characterframe_ = 0;
+  /**
+   * <code>int32 characterframe = 4 [json_name = "characterframe"];</code>
+   * @return The characterframe.
+   */
+  @java.lang.Override
+  public int getCharacterframe() {
+    return characterframe_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -118,6 +140,12 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(chatContent_)) {
       com.google.protobuf.GeneratedMessage.writeString(output, 2, chatContent_);
     }
+    if (chatframe_ != 0) {
+      output.writeInt32(3, chatframe_);
+    }
+    if (characterframe_ != 0) {
+      output.writeInt32(4, characterframe_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -133,6 +161,14 @@ private static final long serialVersionUID = 0L;
     }
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(chatContent_)) {
       size += com.google.protobuf.GeneratedMessage.computeStringSize(2, chatContent_);
+    }
+    if (chatframe_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(3, chatframe_);
+    }
+    if (characterframe_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(4, characterframe_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -153,6 +189,10 @@ private static final long serialVersionUID = 0L;
         != other.getSkinId()) return false;
     if (!getChatContent()
         .equals(other.getChatContent())) return false;
+    if (getChatframe()
+        != other.getChatframe()) return false;
+    if (getCharacterframe()
+        != other.getCharacterframe()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -168,6 +208,10 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getSkinId();
     hash = (37 * hash) + CHATCONTENT_FIELD_NUMBER;
     hash = (53 * hash) + getChatContent().hashCode();
+    hash = (37 * hash) + CHATFRAME_FIELD_NUMBER;
+    hash = (53 * hash) + getChatframe();
+    hash = (37 * hash) + CHARACTERFRAME_FIELD_NUMBER;
+    hash = (53 * hash) + getCharacterframe();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -305,6 +349,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = 0;
       skinId_ = 0;
       chatContent_ = "";
+      chatframe_ = 0;
+      characterframe_ = 0;
       return this;
     }
 
@@ -344,6 +390,12 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.chatContent_ = chatContent_;
       }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.chatframe_ = chatframe_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.characterframe_ = characterframe_;
+      }
     }
 
     @java.lang.Override
@@ -365,6 +417,12 @@ private static final long serialVersionUID = 0L;
         chatContent_ = other.chatContent_;
         bitField0_ |= 0x00000002;
         onChanged();
+      }
+      if (other.getChatframe() != 0) {
+        setChatframe(other.getChatframe());
+      }
+      if (other.getCharacterframe() != 0) {
+        setCharacterframe(other.getCharacterframe());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -402,6 +460,16 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000002;
               break;
             } // case 18
+            case 24: {
+              chatframe_ = input.readInt32();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
+            case 32: {
+              characterframe_ = input.readInt32();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -519,6 +587,70 @@ private static final long serialVersionUID = 0L;
       checkByteStringIsUtf8(value);
       chatContent_ = value;
       bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+
+    private int chatframe_ ;
+    /**
+     * <code>int32 chatframe = 3 [json_name = "chatframe"];</code>
+     * @return The chatframe.
+     */
+    @java.lang.Override
+    public int getChatframe() {
+      return chatframe_;
+    }
+    /**
+     * <code>int32 chatframe = 3 [json_name = "chatframe"];</code>
+     * @param value The chatframe to set.
+     * @return This builder for chaining.
+     */
+    public Builder setChatframe(int value) {
+
+      chatframe_ = value;
+      bitField0_ |= 0x00000004;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 chatframe = 3 [json_name = "chatframe"];</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearChatframe() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      chatframe_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int characterframe_ ;
+    /**
+     * <code>int32 characterframe = 4 [json_name = "characterframe"];</code>
+     * @return The characterframe.
+     */
+    @java.lang.Override
+    public int getCharacterframe() {
+      return characterframe_;
+    }
+    /**
+     * <code>int32 characterframe = 4 [json_name = "characterframe"];</code>
+     * @param value The characterframe to set.
+     * @return This builder for chaining.
+     */
+    public Builder setCharacterframe(int value) {
+
+      characterframe_ = value;
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 characterframe = 4 [json_name = "characterframe"];</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearCharacterframe() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      characterframe_ = 0;
       onChanged();
       return this;
     }

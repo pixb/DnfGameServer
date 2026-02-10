@@ -49,7 +49,7 @@ func TestBatch38UserMinimumInfo(t *testing.T) {
 		Job:          3,
 		Level:        50,
 		Name:         "TestUser",
-		Teamtype:     dnfv1.TeamType_PLAYER,
+		Teamtype:     dnfv1.TeamType_TEAM_TYPE_PLAYER,
 		Rank:         10,
 		Pvpstargrade: 5,
 		Profileurl:   "http://example.com/profile.jpg",
@@ -394,10 +394,10 @@ func TestBatch38WhisperChat(t *testing.T) {
 
 func TestBatch38WarehouseNpc(t *testing.T) {
 	npc := &dnfv1.WarehouseNpc{
-		Type:   dnfv1.GuildNpcType_NPC,
+		Type:   dnfv1.GuildNpcType_GUILD_NPC_TYPE_NPC,
 		Index:  1,
 		Guid:   123456789,
-		Status: dnfv1.GuildNpcStatus_COMPLETE_PURCHASE,
+		Status: dnfv1.GuildNpcStatus_GUILD_NPC_STATUS_COMPLETE_PURCHASE,
 	}
 
 	data, err := proto.Marshal(npc)
@@ -421,11 +421,11 @@ func TestBatch38WarehouseNpc(t *testing.T) {
 
 func TestBatch38WarehouseStructure(t *testing.T) {
 	structure := &dnfv1.WarehouseStructure{
-		Type:   dnfv1.GuildStructureType_NORMAL,
-		Index:  1,
-		Count:  5,
-		Guid:   123456789,
-		Status: dnfv1.GuildStructureStatus_CONSTRUCTION,
+		Type:   dnfv1.GuildStructureType_GUILD_STRUCTURE_TYPE_NORMAL,
+	Index:  1,
+	Count:  5,
+	Guid:   123456789,
+	Status: dnfv1.GuildStructureStatus_GUILD_STRUCTURE_STATUS_CONSTRUCTION,
 	}
 
 	data, err := proto.Marshal(structure)

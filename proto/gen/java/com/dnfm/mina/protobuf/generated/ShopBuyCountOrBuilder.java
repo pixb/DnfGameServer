@@ -11,14 +11,32 @@ public interface ShopBuyCountOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>int32 itemId = 1 [json_name = "itemId"];</code>
-   * @return The itemId.
+   * <code>int32 goodsid = 1 [json_name = "goodsid"];</code>
+   * @return The goodsid.
    */
-  int getItemId();
+  int getGoodsid();
 
   /**
    * <code>int32 count = 2 [json_name = "count"];</code>
    * @return The count.
    */
   int getCount();
+
+  /**
+   * <code>int64 lastbuytime = 3 [json_name = "lastbuytime"];</code>
+   * @return The lastbuytime.
+   */
+  long getLastbuytime();
+
+  /**
+   * <code>int32 supplycount = 4 [json_name = "supplycount"];</code>
+   * @return The supplycount.
+   */
+  int getSupplycount();
+
+  /**
+   * <code>int64 supplydurationtime = 5 [json_name = "supplydurationtime"];</code>
+   * @return The supplydurationtime.
+   */
+  long getSupplydurationtime();
 }

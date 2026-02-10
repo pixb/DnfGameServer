@@ -27,4 +27,16 @@ public interface SkinChatInfoOrBuilder extends
    */
   com.google.protobuf.ByteString
       getChatContentBytes();
+
+  /**
+   * <code>int32 chatframe = 3 [json_name = "chatframe"];</code>
+   * @return The chatframe.
+   */
+  int getChatframe();
+
+  /**
+   * <code>int32 characterframe = 4 [json_name = "characterframe"];</code>
+   * @return The characterframe.
+   */
+  int getCharacterframe();
 }

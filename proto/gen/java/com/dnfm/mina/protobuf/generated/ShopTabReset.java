@@ -43,26 +43,48 @@ private static final long serialVersionUID = 0L;
             com.dnfm.mina.protobuf.generated.ShopTabReset.class, com.dnfm.mina.protobuf.generated.ShopTabReset.Builder.class);
   }
 
-  public static final int TABID_FIELD_NUMBER = 1;
-  private int tabId_ = 0;
+  public static final int SHOPID_FIELD_NUMBER = 1;
+  private int shopid_ = 0;
   /**
-   * <code>int32 tabId = 1 [json_name = "tabId"];</code>
-   * @return The tabId.
+   * <code>int32 shopid = 1 [json_name = "shopid"];</code>
+   * @return The shopid.
    */
   @java.lang.Override
-  public int getTabId() {
-    return tabId_;
+  public int getShopid() {
+    return shopid_;
   }
 
-  public static final int RESETTIME_FIELD_NUMBER = 2;
-  private long resetTime_ = 0L;
+  public static final int TAB_FIELD_NUMBER = 2;
+  private int tab_ = 0;
   /**
-   * <code>int64 resetTime = 2 [json_name = "resetTime"];</code>
-   * @return The resetTime.
+   * <code>int32 tab = 2 [json_name = "tab"];</code>
+   * @return The tab.
    */
   @java.lang.Override
-  public long getResetTime() {
-    return resetTime_;
+  public int getTab() {
+    return tab_;
+  }
+
+  public static final int COUNT_FIELD_NUMBER = 3;
+  private int count_ = 0;
+  /**
+   * <code>int32 count = 3 [json_name = "count"];</code>
+   * @return The count.
+   */
+  @java.lang.Override
+  public int getCount() {
+    return count_;
+  }
+
+  public static final int RESETTIME_FIELD_NUMBER = 4;
+  private long resettime_ = 0L;
+  /**
+   * <code>int64 resettime = 4 [json_name = "resettime"];</code>
+   * @return The resettime.
+   */
+  @java.lang.Override
+  public long getResettime() {
+    return resettime_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -79,11 +101,17 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (tabId_ != 0) {
-      output.writeInt32(1, tabId_);
+    if (shopid_ != 0) {
+      output.writeInt32(1, shopid_);
     }
-    if (resetTime_ != 0L) {
-      output.writeInt64(2, resetTime_);
+    if (tab_ != 0) {
+      output.writeInt32(2, tab_);
+    }
+    if (count_ != 0) {
+      output.writeInt32(3, count_);
+    }
+    if (resettime_ != 0L) {
+      output.writeInt64(4, resettime_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -94,13 +122,21 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (tabId_ != 0) {
+    if (shopid_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, tabId_);
+        .computeInt32Size(1, shopid_);
     }
-    if (resetTime_ != 0L) {
+    if (tab_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeInt64Size(2, resetTime_);
+        .computeInt32Size(2, tab_);
+    }
+    if (count_ != 0) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(3, count_);
+    }
+    if (resettime_ != 0L) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt64Size(4, resettime_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -117,10 +153,14 @@ private static final long serialVersionUID = 0L;
     }
     com.dnfm.mina.protobuf.generated.ShopTabReset other = (com.dnfm.mina.protobuf.generated.ShopTabReset) obj;
 
-    if (getTabId()
-        != other.getTabId()) return false;
-    if (getResetTime()
-        != other.getResetTime()) return false;
+    if (getShopid()
+        != other.getShopid()) return false;
+    if (getTab()
+        != other.getTab()) return false;
+    if (getCount()
+        != other.getCount()) return false;
+    if (getResettime()
+        != other.getResettime()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -132,11 +172,15 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + TABID_FIELD_NUMBER;
-    hash = (53 * hash) + getTabId();
+    hash = (37 * hash) + SHOPID_FIELD_NUMBER;
+    hash = (53 * hash) + getShopid();
+    hash = (37 * hash) + TAB_FIELD_NUMBER;
+    hash = (53 * hash) + getTab();
+    hash = (37 * hash) + COUNT_FIELD_NUMBER;
+    hash = (53 * hash) + getCount();
     hash = (37 * hash) + RESETTIME_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getResetTime());
+        getResettime());
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -268,8 +312,10 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      tabId_ = 0;
-      resetTime_ = 0L;
+      shopid_ = 0;
+      tab_ = 0;
+      count_ = 0;
+      resettime_ = 0L;
       return this;
     }
 
@@ -304,10 +350,16 @@ private static final long serialVersionUID = 0L;
     private void buildPartial0(com.dnfm.mina.protobuf.generated.ShopTabReset result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.tabId_ = tabId_;
+        result.shopid_ = shopid_;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.resetTime_ = resetTime_;
+        result.tab_ = tab_;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.count_ = count_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.resettime_ = resettime_;
       }
     }
 
@@ -323,11 +375,17 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.dnfm.mina.protobuf.generated.ShopTabReset other) {
       if (other == com.dnfm.mina.protobuf.generated.ShopTabReset.getDefaultInstance()) return this;
-      if (other.getTabId() != 0) {
-        setTabId(other.getTabId());
+      if (other.getShopid() != 0) {
+        setShopid(other.getShopid());
       }
-      if (other.getResetTime() != 0L) {
-        setResetTime(other.getResetTime());
+      if (other.getTab() != 0) {
+        setTab(other.getTab());
+      }
+      if (other.getCount() != 0) {
+        setCount(other.getCount());
+      }
+      if (other.getResettime() != 0L) {
+        setResettime(other.getResettime());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -356,15 +414,25 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 8: {
-              tabId_ = input.readInt32();
+              shopid_ = input.readInt32();
               bitField0_ |= 0x00000001;
               break;
             } // case 8
             case 16: {
-              resetTime_ = input.readInt64();
+              tab_ = input.readInt32();
               bitField0_ |= 0x00000002;
               break;
             } // case 16
+            case 24: {
+              count_ = input.readInt32();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 24
+            case 32: {
+              resettime_ = input.readInt64();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -382,66 +450,130 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private int tabId_ ;
+    private int shopid_ ;
     /**
-     * <code>int32 tabId = 1 [json_name = "tabId"];</code>
-     * @return The tabId.
+     * <code>int32 shopid = 1 [json_name = "shopid"];</code>
+     * @return The shopid.
      */
     @java.lang.Override
-    public int getTabId() {
-      return tabId_;
+    public int getShopid() {
+      return shopid_;
     }
     /**
-     * <code>int32 tabId = 1 [json_name = "tabId"];</code>
-     * @param value The tabId to set.
+     * <code>int32 shopid = 1 [json_name = "shopid"];</code>
+     * @param value The shopid to set.
      * @return This builder for chaining.
      */
-    public Builder setTabId(int value) {
+    public Builder setShopid(int value) {
 
-      tabId_ = value;
+      shopid_ = value;
       bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
-     * <code>int32 tabId = 1 [json_name = "tabId"];</code>
+     * <code>int32 shopid = 1 [json_name = "shopid"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearTabId() {
+    public Builder clearShopid() {
       bitField0_ = (bitField0_ & ~0x00000001);
-      tabId_ = 0;
+      shopid_ = 0;
       onChanged();
       return this;
     }
 
-    private long resetTime_ ;
+    private int tab_ ;
     /**
-     * <code>int64 resetTime = 2 [json_name = "resetTime"];</code>
-     * @return The resetTime.
+     * <code>int32 tab = 2 [json_name = "tab"];</code>
+     * @return The tab.
      */
     @java.lang.Override
-    public long getResetTime() {
-      return resetTime_;
+    public int getTab() {
+      return tab_;
     }
     /**
-     * <code>int64 resetTime = 2 [json_name = "resetTime"];</code>
-     * @param value The resetTime to set.
+     * <code>int32 tab = 2 [json_name = "tab"];</code>
+     * @param value The tab to set.
      * @return This builder for chaining.
      */
-    public Builder setResetTime(long value) {
+    public Builder setTab(int value) {
 
-      resetTime_ = value;
+      tab_ = value;
       bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
-     * <code>int64 resetTime = 2 [json_name = "resetTime"];</code>
+     * <code>int32 tab = 2 [json_name = "tab"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearResetTime() {
+    public Builder clearTab() {
       bitField0_ = (bitField0_ & ~0x00000002);
-      resetTime_ = 0L;
+      tab_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int count_ ;
+    /**
+     * <code>int32 count = 3 [json_name = "count"];</code>
+     * @return The count.
+     */
+    @java.lang.Override
+    public int getCount() {
+      return count_;
+    }
+    /**
+     * <code>int32 count = 3 [json_name = "count"];</code>
+     * @param value The count to set.
+     * @return This builder for chaining.
+     */
+    public Builder setCount(int value) {
+
+      count_ = value;
+      bitField0_ |= 0x00000004;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 count = 3 [json_name = "count"];</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearCount() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      count_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private long resettime_ ;
+    /**
+     * <code>int64 resettime = 4 [json_name = "resettime"];</code>
+     * @return The resettime.
+     */
+    @java.lang.Override
+    public long getResettime() {
+      return resettime_;
+    }
+    /**
+     * <code>int64 resettime = 4 [json_name = "resettime"];</code>
+     * @param value The resettime to set.
+     * @return This builder for chaining.
+     */
+    public Builder setResettime(long value) {
+
+      resettime_ = value;
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int64 resettime = 4 [json_name = "resettime"];</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearResettime() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      resettime_ = 0L;
       onChanged();
       return this;
     }

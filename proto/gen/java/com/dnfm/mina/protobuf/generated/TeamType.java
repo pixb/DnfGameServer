@@ -23,6 +23,10 @@ public enum TeamType
    * <code>TEAM_TYPE_RAID = 2;</code>
    */
   TEAM_TYPE_RAID(2),
+  /**
+   * <code>TEAM_TYPE_PLAYER = 3;</code>
+   */
+  TEAM_TYPE_PLAYER(3),
   UNRECOGNIZED(-1),
   ;
 
@@ -47,6 +51,10 @@ public enum TeamType
    * <code>TEAM_TYPE_RAID = 2;</code>
    */
   public static final int TEAM_TYPE_RAID_VALUE = 2;
+  /**
+   * <code>TEAM_TYPE_PLAYER = 3;</code>
+   */
+  public static final int TEAM_TYPE_PLAYER_VALUE = 3;
 
 
   public final int getNumber() {
@@ -76,6 +84,7 @@ public enum TeamType
       case 0: return TEAM_TYPE_UNKNOWN;
       case 1: return TEAM_TYPE_NORMAL;
       case 2: return TEAM_TYPE_RAID;
+      case 3: return TEAM_TYPE_PLAYER;
       default: return null;
     }
   }

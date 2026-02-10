@@ -42,6 +42,221 @@ public final class GameSystemsProto extends com.google.protobuf.GeneratedFile {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_ShopTabReset_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SyscmdMasterbuff_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SyscmdMasterbuff_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_WatingListUserInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_WatingListUserInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_UserMinimumInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_UserMinimumInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_UserLoadingStatus_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_UserLoadingStatus_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SimpleCharacter_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SimpleCharacter_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RoomUserInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RoomUserInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_TicketInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_TicketInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_TicketRewardList_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_TicketRewardList_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SkinItemInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SkinItemInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_Tutorial_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_Tutorial_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_WhisperChat_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_WhisperChat_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_WarehouseNpc_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_WarehouseNpc_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_WarehouseStructure_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_WarehouseStructure_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SeriaBuffInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SeriaBuffInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SdDeathMatchRewardInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SdDeathMatchRewardInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SdDeathMatchReward_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SdDeathMatchReward_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SubdueInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SubdueInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_Seasonpass_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_Seasonpass_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ToyBillingVerify_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ToyBillingVerify_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DiningFoodBuffInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DiningFoodBuffInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DragonBoardAppendage_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DragonBoardAppendage_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DragonBoardChangeDice_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DragonBoardChangeDice_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DragonBoardChangeSlot_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DragonBoardChangeSlot_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DragonBoardHold_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DragonBoardHold_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DragonBoardReward_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DragonBoardReward_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DragonBoardChanceCard_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DragonBoardChanceCard_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DragonBoardMove_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DragonBoardMove_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DragonBoardResult_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DragonBoardResult_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DragonBoardGainAppendage_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DragonBoardGainAppendage_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DragonBoardMember_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DragonBoardMember_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DreamMazeDungeon_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DreamMazeDungeon_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DropObjectItem_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DropObjectItem_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_Dungeonrank_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_Dungeonrank_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DungeonStartInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DungeonStartInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_EmblemRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_EmblemRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_StateObjectDrop_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_StateObjectDrop_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_EnterStageObject_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_EnterStageObject_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_EnterStageMap_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_EnterStageMap_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_EntryInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_EntryInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_EquipPutOnOff_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_EquipPutOnOff_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_EscortClearReward_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_EscortClearReward_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_EscortReward_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_EscortReward_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_STREAM_DATA_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_STREAM_DATA_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dnf_v1_BattleleagueRewardInfo_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -247,164 +462,384 @@ public final class GameSystemsProto extends com.google.protobuf.GeneratedFile {
       "\032dnf/v1/multi_systems.proto\032\021dnf/v1/chat" +
       ".proto\032\031dnf/v1/option_types.proto\032\031dnf/v" +
       "1/user_systems.proto\032\031dnf/v1/system_type" +
-      "s.proto\032\024dnf/v1/welfare.proto\"H\n\014SkinCha" +
-      "tInfo\022\026\n\006skinId\030\001 \001(\005R\006skinId\022 \n\013chatCon" +
-      "tent\030\002 \001(\tR\013chatContent\"<\n\014ShopBuyCount\022" +
-      "\026\n\006itemId\030\001 \001(\005R\006itemId\022\024\n\005count\030\002 \001(\005R\005" +
-      "count\"B\n\014ShopTabReset\022\024\n\005tabId\030\001 \001(\005R\005ta" +
-      "bId\022\034\n\tresetTime\030\002 \001(\003R\tresetTime\"D\n\026Bat" +
-      "tleleagueRewardInfo\022\024\n\005index\030\001 \001(\005R\005inde" +
-      "x\022\024\n\005count\030\002 \001(\005R\005count\"\356\001\n\032Battleleague" +
-      "TransitionCard\022\032\n\010charguid\030\001 \001(\004R\010chargu" +
-      "id\022\024\n\005items\030\002 \003(\005R\005items\022\024\n\005buffs\030\003 \003(\005R" +
-      "\005buffs\022,\n\004buff\030\004 \003(\0132\030.dnf.v1.Battleleag" +
-      "ueBuffR\004buff\022\032\n\010pvepoint\030\005 \001(\005R\010pvepoint" +
-      "\022>\n\npverewards\030\006 \003(\0132\036.dnf.v1.Battleleag" +
-      "ueRewardInfoR\npverewards\"8\n\016BattlePassIn" +
-      "fo\022&\n\016seasonpassFlag\030\001 \001(\005R\016seasonpassFl" +
-      "ag\"\335\001\n\tBlacklist\022\032\n\010charguid\030\001 \001(\004R\010char" +
-      "guid\022\022\n\004name\030\002 \001(\tR\004name\022\022\n\004time\030\003 \001(\003R\004" +
-      "time\022\024\n\005level\030\004 \001(\005R\005level\022\020\n\003job\030\005 \001(\005R" +
-      "\003job\022\032\n\010growtype\030\006 \001(\005R\010growtype\022 \n\013secg" +
-      "rowtype\030\007 \001(\005R\013secgrowtype\022&\n\016characterf" +
-      "rame\030\010 \001(\005R\016characterframe\"\271\001\n\rBoardGame" +
-      "Info\022+\n\005tiles\030\001 \003(\0132\025.dnf.v1.BoardTileIn" +
-      "foR\005tiles\0223\n\005users\030\002 \003(\0132\035.dnf.v1.BoardU" +
-      "serContentsInfoR\005users\022\024\n\005sizex\030\003 \001(\005R\005s" +
-      "izex\022\024\n\005sizey\030\004 \001(\005R\005sizey\022\032\n\010playtime\030\005" +
-      " \001(\005R\010playtime\"Q\n\017BoardMoveResult\022\026\n\006res" +
-      "ult\030\001 \001(\005R\006result\022\022\n\004posx\030\002 \001(\005R\004posx\022\022\n" +
-      "\004posy\030\003 \001(\005R\004posy\"\264\002\n\tBoardInfo\022\024\n\005score" +
-      "\030\001 \001(\005R\005score\022\020\n\003msg\030\002 \001(\tR\003msg\022\032\n\010noteg" +
-      "uid\030\003 \001(\004R\010noteguid\022-\n\010charinfo\030\004 \001(\0132\021." +
-      "dnf.v1.CharacterR\010charinfo\022\034\n\tlikecount\030" +
-      "\005 \001(\005R\tlikecount\022\034\n\thatecount\030\006 \001(\005R\that" +
-      "ecount\022\036\n\nregisttime\030\007 \001(\003R\nregisttime\022\036" +
-      "\n\nmyreaction\030\010 \001(\005R\nmyreaction\0228\n\014skinch" +
-      "atinfo\030\t \001(\0132\024.dnf.v1.SkinChatInfoR\014skin" +
-      "chatinfo\"\244\001\n\rBoardTileInfo\022\022\n\004posx\030\001 \001(\005" +
-      "R\004posx\022\022\n\004posy\030\002 \001(\005R\004posy\022\022\n\004type\030\003 \001(\005" +
-      "R\004type\022\026\n\006status\030\004 \001(\005R\006status\022?\n\nexcava" +
-      "tion\030\005 \001(\0132\037.dnf.v1.ExcavationBoardTileI" +
-      "nfoR\nexcavation\"\247\001\n\025BoardUserContentsInf" +
-      "o\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\022\n\004posx\030\002 " +
-      "\001(\005R\004posx\022\022\n\004posy\030\003 \001(\005R\004posy\022\016\n\002hp\030\004 \001(" +
-      "\005R\002hp\022\022\n\004gold\030\005 \001(\005R\004gold\022\020\n\003key\030\006 \001(\005R\003" +
-      "key\022\024\n\005relic\030\007 \001(\005R\005relic\"\366\001\n\024BoardUserM" +
-      "inimumInfo\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\032" +
-      "\n\010playerid\030\002 \001(\005R\010playerid\022\032\n\010growtype\030\003" +
-      " \001(\005R\010growtype\022 \n\013secgrowtype\030\004 \001(\005R\013sec" +
-      "growtype\022\020\n\003job\030\005 \001(\005R\003job\022\024\n\005level\030\006 \001(" +
-      "\005R\005level\022\022\n\004name\030\007 \001(\tR\004name\022,\n\010teamtype" +
-      "\030\010 \001(\0162\020.dnf.v1.TeamTypeR\010teamtype\"N\n\014Bo" +
-      "okmarkItem\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005coun" +
-      "t\030\002 \001(\005R\005count\022\022\n\004bind\030\003 \001(\010R\004bind\"\032\n\004Bu" +
-      "ff\022\022\n\004buff\030\001 \001(\005R\004buff\"[\n\010BuffList\022\022\n\004ti" +
-      "me\030\001 \001(\003R\004time\022;\n\nappendages\030\002 \003(\0132\033.dnf" +
-      ".v1.SystemBuffAppendageR\nappendages\"\"\n\nC" +
-      "ardAttach\022\024\n\005index\030\001 \001(\005R\005index\"M\n\013CardC" +
-      "ompose\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002 " +
-      "\001(\005R\005count\022\022\n\004bind\030\003 \001(\010R\004bind\"Q\n\013CeraSh" +
-      "opBuy\022\030\n\007goodsid\030\001 \001(\005R\007goodsid\022\024\n\005count" +
-      "\030\002 \001(\005R\005count\022\022\n\004type\030\003 \001(\005R\004type\"\220\001\n\014Ce" +
-      "raShopInfo\022&\n\003buy\030\001 \003(\0132\024.dnf.v1.ShopBuy" +
-      "CountR\003buy\022*\n\005reset\030\002 \003(\0132\024.dnf.v1.ShopT" +
-      "abResetR\005reset\022,\n\005group\030\003 \003(\0132\026.dnf.v1.S" +
-      "hopGroupResetR\005group\"=\n\017CeraShopMileage\022" +
-      "\024\n\005index\030\001 \001(\005R\005index\022\024\n\005value\030\002 \001(\005R\005va" +
-      "lue\"\200\001\n\016ChampionChange\022\022\n\004type\030\001 \001(\005R\004ty" +
-      "pe\022\022\n\004guid\030\002 \001(\004R\004guid\022\036\n\nobjectguid\030\003 \001" +
-      "(\004R\nobjectguid\022&\n\016currentMapGuid\030\004 \001(\005R\016" +
-      "currentMapGuid\"a\n\014ChampionInfo\022\036\n\nappear" +
-      "ance\030\001 \001(\010R\nappearance\0221\n\006detail\030\002 \003(\0132\031" +
-      ".dnf.v1.ChampionStageInfoR\006detail\"\255\001\n\021Ch" +
-      "ampionStageInfo\022\022\n\004guid\030\001 \001(\004R\004guid\022\022\n\004p" +
-      "osx\030\002 \001(\005R\004posx\022\022\n\004posy\030\003 \001(\005R\004posy\022\020\n\003d" +
-      "ie\030\004 \001(\010R\003die\022\036\n\nobjectguid\030\005 \001(\004R\nobjec" +
-      "tguid\022\024\n\005skill\030\006 \001(\005R\005skill\022\024\n\005value\030\007 \001" +
-      "(\005R\005value\"|\n\nChangeBuff\022\022\n\004time\030\001 \001(\003R\004t" +
-      "ime\022\030\n\007endtime\030\002 \001(\003R\007endtime\022\022\n\004type\030\003 " +
-      "\001(\005R\004type\022\024\n\005index\030\004 \001(\005R\005index\022\026\n\006value" +
-      "s\030\005 \003(\005R\006values\"L\n\022ChangeTeamUserInfo\022\032\n" +
-      "\010charguid\030\001 \001(\004R\010charguid\022\032\n\010teamtype\030\002 " +
-      "\001(\005R\010teamtype\"\210\001\n\027CharacterEquipOnlyInde" +
-      "x\0224\n\tequiplist\030\001 \003(\0132\026.dnf.v1.EquipIndex" +
-      "SlotR\tequiplist\0227\n\navatarlist\030\002 \003(\0132\027.dn" +
-      "f.v1.AvatarIndexSlotR\navatarlist\"[\n\033Char" +
-      "acterGuildRedpacketInfo\022\034\n\tachvindex\030\001 \001" +
-      "(\005R\tachvindex\022\036\n\nexpiretime\030\002 \001(\003R\nexpir" +
-      "etime\"\314\001\n\034CharacterRaidDamageMeterInfo\022\032" +
+      "s.proto\032\024dnf/v1/welfare.proto\"\216\001\n\014SkinCh" +
+      "atInfo\022\026\n\006skinId\030\001 \001(\005R\006skinId\022 \n\013chatCo" +
+      "ntent\030\002 \001(\tR\013chatContent\022\034\n\tchatframe\030\003 " +
+      "\001(\005R\tchatframe\022&\n\016characterframe\030\004 \001(\005R\016" +
+      "characterframe\"\262\001\n\014ShopBuyCount\022\030\n\007goods" +
+      "id\030\001 \001(\005R\007goodsid\022\024\n\005count\030\002 \001(\005R\005count\022" +
+      " \n\013lastbuytime\030\003 \001(\003R\013lastbuytime\022 \n\013sup" +
+      "plycount\030\004 \001(\005R\013supplycount\022.\n\022supplydur" +
+      "ationtime\030\005 \001(\003R\022supplydurationtime\"l\n\014S" +
+      "hopTabReset\022\026\n\006shopid\030\001 \001(\005R\006shopid\022\020\n\003t" +
+      "ab\030\002 \001(\005R\003tab\022\024\n\005count\030\003 \001(\005R\005count\022\034\n\tr" +
+      "esettime\030\004 \001(\003R\tresettime\"D\n\020SyscmdMaste" +
+      "rbuff\022\026\n\006buffid\030\001 \001(\005R\006buffid\022\030\n\007endtime" +
+      "\030\002 \001(\004R\007endtime\"\254\002\n\022WatingListUserInfo\022\032" +
       "\n\010charguid\030\001 \001(\004R\010charguid\022\022\n\004name\030\002 \001(\t" +
-      "R\004name\022\020\n\003job\030\003 \001(\005R\003job\022\024\n\005level\030\004 \001(\005R" +
-      "\005level\022\032\n\010growtype\030\005 \001(\005R\010growtype\022 \n\013se" +
-      "cgrowtype\030\006 \001(\005R\013secgrowtype\022\026\n\006damage\030\007" +
-      " \001(\004R\006damage\"\254\002\n\026CharacterRaidRoundInfo\022" +
-      "\032\n\010charguid\030\001 \001(\004R\010charguid\022\022\n\004name\030\002 \001(" +
-      "\tR\004name\022\020\n\003job\030\003 \001(\005R\003job\022\024\n\005level\030\004 \001(\005" +
-      "R\005level\022\032\n\010growtype\030\005 \001(\005R\010growtype\022 \n\013s" +
-      "ecgrowtype\030\006 \001(\005R\013secgrowtype\022 \n\013credits" +
-      "core\030\007 \001(\005R\013creditscore\022&\n\016characterfram" +
-      "e\030\010 \001(\005R\016characterframe\0222\n\troundinfo\030\t \001" +
-      "(\0132\024.dnf.v1.PveRoundInfoR\troundinfo\"^\n\024C" +
-      "harguidEntranceItem\022\032\n\010charguid\030\001 \001(\004R\010c" +
-      "harguid\022*\n\005items\030\002 \003(\0132\024.dnf.v1.Entrance" +
-      "ItemR\005items\"T\n\016CharguidTicket\022\032\n\010chargui" +
-      "d\030\001 \001(\004R\010charguid\022&\n\006ticket\030\002 \003(\0132\016.dnf." +
-      "v1.TicketR\006ticket\"\232\n\n\004Chat\022\024\n\005error\030\001 \001(" +
-      "\005R\005error\022\022\n\004type\030\002 \001(\005R\004type\022\030\n\007subtype\030" +
-      "\003 \001(\005R\007subtype\022\032\n\010charguid\030\004 \001(\004R\010chargu" +
-      "id\022\036\n\ntargetguid\030\005 \001(\004R\ntargetguid\022\020\n\003jo" +
-      "b\030\006 \001(\005R\003job\022\032\n\010growtype\030\007 \001(\005R\010growtype" +
-      "\022\024\n\005level\030\010 \001(\005R\005level\022\026\n\006sender\030\t \001(\tR\006" +
-      "sender\022\022\n\004chat\030\n \001(\tR\004chat\022\024\n\005voice\030\013 \001(" +
-      "\tR\005voice\022\034\n\tvoicetime\030\014 \001(\tR\tvoicetime\022\032" +
-      "\n\010receiver\030\r \001(\tR\010receiver\022$\n\rhyperlinkt" +
-      "ype\030\016 \001(\005R\rhyperlinktype\022*\n\020hyperlinksub" +
-      "type\030\017 \001(\005R\020hyperlinksubtype\022 \n\013secgrowt" +
-      "ype\030\020 \001(\005R\013secgrowtype\022\026\n\006online\030\021 \001(\005R\006" +
-      "online\022=\n\016hyperlinkdatas\030\022 \003(\0132\025.dnf.v1." +
-      "HyperlinkDataR\016hyperlinkdatas\0223\n\003sub\030\023 \003" +
-      "(\0132!.dnf.v1.HyperlinkSystemmessageSubR\003s" +
-      "ub\022\034\n\tpartyguid\030\024 \001(\004R\tpartyguid\022#\n\005equi" +
-      "p\030\025 \001(\0132\r.dnf.v1.EquipR\005equip\022#\n\005title\030\026" +
-      " \001(\0132\r.dnf.v1.EquipR\005title\022!\n\004flag\030\027 \001(\013" +
-      "2\r.dnf.v1.EquipR\004flag\022)\n\006emblem\030\030 \001(\0132\021." +
-      "dnf.v1.StackableR\006emblem\022-\n\010material\030\031 \001" +
-      "(\0132\021.dnf.v1.StackableR\010material\022*\n\006avata" +
-      "r\030\032 \001(\0132\022.dnf.v1.AvatarItemR\006avatar\022%\n\004c" +
-      "ard\030\033 \001(\0132\021.dnf.v1.StackableR\004card\022,\n\010cr" +
-      "eature\030\034 \001(\0132\020.dnf.v1.CreatureR\010creature" +
-      "\022.\n\tcartifact\030\035 \001(\0132\020.dnf.v1.ArtifactR\tc" +
-      "artifact\0228\n\014skinchatinfo\030\036 \001(\0132\024.dnf.v1." +
-      "SkinChatInfoR\014skinchatinfo\022,\n\004info\030\037 \001(\013" +
-      "2\030.dnf.v1.RecruitPartyInfoR\004info\022\022\n\004date" +
-      "\030  \001(\004R\004date\022\026\n\006rpguid\030! \001(\004R\006rpguid\022 \n\013" +
-      "creditscore\030\" \001(\005R\013creditscore\022\'\n\005crack\030" +
-      "# \001(\0132\021.dnf.v1.StackableR\005crack\022-\n\ncrack" +
-      "equip\030$ \001(\0132\r.dnf.v1.EquipR\ncrackequip\022." +
-      "\n\010sdavatar\030% \001(\0132\022.dnf.v1.AvatarItemR\010sd" +
-      "avatar\"4\n\010ChatSync\022\024\n\005index\030\001 \001(\004R\005index" +
-      "\022\022\n\004type\030\002 \001(\005R\004type\"\210\001\n\014ChatSyncInfo\022\034\n" +
-      "\tlastindex\030\001 \001(\004R\tlastindex\022\036\n\ntotalcoun" +
-      "t\030\002 \001(\004R\ntotalcount\022\022\n\004type\030\003 \001(\005R\004type\022" +
-      "&\n\007chatmsg\030\004 \003(\0132\014.dnf.v1.ChatR\007chatmsg\"" +
-      "E\n\027ExcavationBoardTileInfo\022\024\n\005index\030\001 \001(" +
-      "\005R\005index\022\024\n\005value\030\002 \001(\005R\005value\"<\n\016ShopGr" +
-      "oupReset\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030" +
-      "\002 \001(\005R\005count\":\n\014EntranceItem\022\024\n\005index\030\001 " +
-      "\001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005count\"K\n\031Hype" +
-      "rlinkSystemmessageSub\022\024\n\005index\030\001 \001(\005R\005in" +
-      "dex\022\030\n\007message\030\002 \001(\tR\007message\"8\n\020Recruit" +
-      "PartyInfo\022\022\n\004type\030\001 \001(\005R\004type\022\020\n\003msg\030\002 \001" +
-      "(\tR\003msg\":\n\014PveRoundInfo\022\024\n\005round\030\001 \001(\005R\005" +
-      "round\022\024\n\005score\030\002 \001(\005R\005score*K\n\010TeamType\022" +
-      "\025\n\021TEAM_TYPE_UNKNOWN\020\000\022\024\n\020TEAM_TYPE_NORM" +
-      "AL\020\001\022\022\n\016TEAM_TYPE_RAID\020\002B\253\001\n com.dnfm.mi" +
-      "na.protobuf.generatedB\020GameSystemsProtoP" +
-      "\001Z<github.com/pixb/DnfGameServer/dnf-go-" +
-      "client/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002" +
-      "\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1b\006" +
-      "proto3"
+      "R\004name\022\024\n\005gname\030\003 \001(\tR\005gname\022\024\n\005level\030\004 " +
+      "\001(\005R\005level\022\020\n\003job\030\005 \001(\005R\003job\022\032\n\010growtype" +
+      "\030\006 \001(\005R\010growtype\022 \n\013secgrowtype\030\007 \001(\005R\013s" +
+      "ecgrowtype\022\026\n\006leader\030\010 \001(\010R\006leader\022\024\n\005re" +
+      "ady\030\t \001(\010R\005ready\022\036\n\ncustomdata\030\n \001(\003R\ncu" +
+      "stomdata\022\034\n\tpartyguid\030\013 \001(\004R\tpartyguid\"\235" +
+      "\003\n\017UserMinimumInfo\022\032\n\010charguid\030\001 \001(\004R\010ch" +
+      "arguid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005level\030\003 \001(" +
+      "\005R\005level\022\020\n\003job\030\004 \001(\005R\003job\022\032\n\010growtype\030\005" +
+      " \001(\005R\010growtype\022 \n\013secgrowtype\030\006 \001(\005R\013sec" +
+      "growtype\022,\n\010teamtype\030\007 \001(\0162\020.dnf.v1.Team" +
+      "TypeR\010teamtype\022\022\n\004rank\030\010 \001(\005R\004rank\022\"\n\014pv" +
+      "pstargrade\030\t \001(\005R\014pvpstargrade\022\036\n\nprofil" +
+      "eurl\030\n \001(\tR\nprofileurl\022\024\n\005world\030\013 \001(\005R\005w" +
+      "orld\0228\n\014skinchatinfo\030\014 \001(\0132\024.dnf.v1.Skin" +
+      "ChatInfoR\014skinchatinfo\022\036\n\niskeyboard\030\r \001" +
+      "(\010R\niskeyboard\"\321\001\n\021UserLoadingStatus\022\032\n\010" +
+      "charguid\030\001 \001(\004R\010charguid\022\026\n\006status\030\002 \001(\005" +
+      "R\006status\022\024\n\005ready\030\003 \001(\010R\005ready\022\030\n\007waitin" +
+      "g\030\004 \001(\010R\007waiting\022\036\n\ndisconnect\030\005 \001(\010R\ndi" +
+      "sconnect\022\024\n\005leave\030\006 \001(\010R\005leave\022\"\n\014kickou" +
+      "tvotes\030\007 \003(\004R\014kickoutvotes\"\357\001\n\017SimpleCha" +
+      "racter\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\022\n\004na" +
+      "me\030\002 \001(\tR\004name\022\024\n\005level\030\003 \001(\005R\005level\022\020\n\003" +
+      "job\030\004 \001(\005R\003job\022\032\n\010growtype\030\005 \001(\005R\010growty" +
+      "pe\022 \n\013secgrowtype\030\006 \001(\005R\013secgrowtype\022\036\n\n" +
+      "equipscore\030\007 \001(\005R\nequipscore\022&\n\016characte" +
+      "rframe\030\010 \001(\005R\016characterframe\"\270\002\n\014RoomUse" +
+      "rInfo\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\024\n\005lev" +
+      "el\030\002 \001(\005R\005level\022\020\n\003job\030\003 \001(\005R\003job\022\032\n\010gro" +
+      "wtype\030\004 \001(\005R\010growtype\022&\n\016secondgrowtype\030" +
+      "\005 \001(\005R\016secondgrowtype\022\022\n\004name\030\006 \001(\tR\004nam" +
+      "e\022\032\n\010teamtype\030\007 \001(\005R\010teamtype\022 \n\013credits" +
+      "core\030\010 \001(\005R\013creditscore\022\024\n\005ready\030\t \001(\010R\005" +
+      "ready\0228\n\014skinchatinfo\030\n \001(\0132\024.dnf.v1.Ski" +
+      "nChatInfoR\014skinchatinfo\"\366\002\n\nTicketInfo\022 " +
+      "\n\013dungeontype\030\001 \001(\tR\013dungeontype\022 \n\013dail" +
+      "yticket\030\002 \001(\005R\013dailyticket\022\"\n\014weeklytick" +
+      "et\030\003 \001(\005R\014weeklyticket\022$\n\rpremiumticket\030" +
+      "\004 \001(\005R\rpremiumticket\022 \n\013sweepticket\030\005 \001(" +
+      "\005R\013sweepticket\022,\n\021dailyrewardticket\030\006 \001(" +
+      "\005R\021dailyrewardticket\022.\n\022weeklyrewardtick" +
+      "et\030\007 \001(\005R\022weeklyrewardticket\022\032\n\010buycount" +
+      "\030\010 \001(\005R\010buycount\022\036\n\nchargetime\030\t \001(\003R\nch" +
+      "argetime\022\036\n\nfreeticket\030\n \001(\005R\nfreeticket" +
+      "\"r\n\020TicketRewardList\0220\n\tcharacter\030\001 \003(\0132" +
+      "\022.dnf.v1.TicketInfoR\tcharacter\022,\n\007accoun" +
+      "t\030\002 \003(\0132\022.dnf.v1.TicketInfoR\007account\"\236\001\n" +
+      "\014SkinItemInfo\022\024\n\005index\030\001 \001(\005R\005index\022\022\n\004g" +
+      "uid\030\002 \001(\004R\004guid\022\036\n\nexpiretime\030\003 \001(\003R\nexp" +
+      "iretime\022(\n\017acquisitiontime\030\004 \001(\003R\017acquis" +
+      "itiontime\022\032\n\010favorite\030\005 \001(\005R\010favorite\"d\n" +
+      "\010Tutorial\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005state" +
+      "\030\002 \001(\005R\005state\022\022\n\004type\030\003 \001(\005R\004type\022\030\n\007enf" +
+      "orce\030\004 \001(\010R\007enforce\"\361\001\n\013WhisperChat\022\032\n\010c" +
+      "harguid\030\001 \001(\004R\010charguid\022\026\n\006sender\030\002 \001(\tR" +
+      "\006sender\022\032\n\010receiver\030\003 \001(\tR\010receiver\022\022\n\004c" +
+      "hat\030\004 \001(\tR\004chat\022\024\n\005voice\030\005 \001(\tR\005voice\022\020\n" +
+      "\003job\030\006 \001(\005R\003job\022\032\n\010growtype\030\007 \001(\005R\010growt" +
+      "ype\022&\n\016secondgrowtype\030\010 \001(\005R\016secondgrowt" +
+      "ype\022\022\n\004date\030\t \001(\003R\004date\"\222\001\n\014WarehouseNpc" +
+      "\022(\n\004type\030\001 \001(\0162\024.dnf.v1.GuildNpcTypeR\004ty" +
+      "pe\022\024\n\005index\030\002 \001(\005R\005index\022\022\n\004guid\030\003 \001(\004R\004" +
+      "guid\022.\n\006status\030\004 \001(\0162\026.dnf.v1.GuildNpcSt" +
+      "atusR\006status\"\272\001\n\022WarehouseStructure\022.\n\004t" +
+      "ype\030\001 \001(\0162\032.dnf.v1.GuildStructureTypeR\004t" +
+      "ype\022\024\n\005index\030\002 \001(\005R\005index\022\024\n\005count\030\003 \001(\005" +
+      "R\005count\022\022\n\004guid\030\004 \001(\004R\004guid\0224\n\006status\030\005 " +
+      "\001(\0162\034.dnf.v1.GuildStructureStatusR\006statu" +
+      "s\"C\n\rSeriaBuffInfo\022\026\n\006number\030\001 \001(\005R\006numb" +
+      "er\022\032\n\010cooltime\030\002 \001(\003R\010cooltime\"D\n\026SdDeat" +
+      "hMatchRewardInfo\022\024\n\005index\030\001 \001(\005R\005index\022\024" +
+      "\n\005count\030\002 \001(\005R\005count\"\206\001\n\022SdDeathMatchRew" +
+      "ard\022\032\n\010charguid\030\001 \001(\004R\010charguid\022 \n\013rewar" +
+      "dcount\030\002 \001(\005R\013rewardcount\0222\n\004list\030\003 \003(\0132" +
+      "\036.dnf.v1.SdDeathMatchRewardInfoR\004list\"\312\001" +
+      "\n\nSubdueInfo\022\024\n\005index\030\001 \001(\005R\005index\022\034\n\tch" +
+      "arguids\030\002 \003(\004R\tcharguids\022\034\n\tstarttime\030\003 " +
+      "\001(\003R\tstarttime\022\030\n\007endtime\030\004 \001(\003R\007endtime" +
+      "\022\024\n\005state\030\005 \001(\005R\005state\022\024\n\005count\030\006 \001(\005R\005c" +
+      "ount\022$\n\rtotalantievil\030\007 \001(\005R\rtotalantiev" +
+      "il\"|\n\nSeasonpass\022\024\n\005index\030\001 \001(\005R\005index\022\034" +
+      "\n\tdateStart\030\002 \001(\003R\tdateStart\022\030\n\007dateEnd\030" +
+      "\003 \001(\003R\007dateEnd\022 \n\013targetGuids\030\004 \003(\004R\013tar" +
+      "getGuids\"\220\002\n\020ToyBillingVerify\022\036\n\nstampTo" +
+      "ken\030\001 \001(\tR\nstampToken\022\030\n\007orderId\030\002 \001(\tR\007" +
+      "orderId\022\034\n\tproductId\030\003 \001(\tR\tproductId\022\026\n" +
+      "\006userId\030\004 \001(\tR\006userId\022 \n\013characterId\030\005 \001" +
+      "(\tR\013characterId\022&\n\016servicePayload\030\006 \001(\tR" +
+      "\016servicePayload\022\036\n\nmarketType\030\007 \001(\tR\nmar" +
+      "ketType\022\"\n\014purchaseType\030\010 \001(\tR\014purchaseT" +
+      "ype\"\256\001\n\022DiningFoodBuffInfo\022\024\n\005index\030\001 \001(" +
+      "\005R\005index\022\030\n\007endtime\030\002 \001(\003R\007endtime\022\026\n\006fo" +
+      "odId\030\003 \001(\005R\006foodId\022\026\n\006buffId\030\004 \001(\005R\006buff" +
+      "Id\022\032\n\010duration\030\005 \001(\005R\010duration\022\034\n\tstartT" +
+      "ime\030\006 \001(\003R\tstartTime\"\222\001\n\024DragonBoardAppe" +
+      "ndage\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\024\n\005ind" +
+      "ex\030\002 \001(\005R\005index\022 \n\013appendageId\030\003 \001(\005R\013ap" +
+      "pendageId\022\024\n\005level\030\004 \001(\005R\005level\022\020\n\003exp\030\005" +
+      " \001(\005R\003exp\"G\n\025DragonBoardChangeDice\022\032\n\010ch" +
+      "arguid\030\001 \001(\004R\010charguid\022\022\n\004type\030\002 \001(\005R\004ty" +
+      "pe\"I\n\025DragonBoardChangeSlot\022\032\n\010charguid\030" +
+      "\001 \001(\004R\010charguid\022\024\n\005index\030\002 \001(\005R\005index\"C\n" +
+      "\017DragonBoardHold\022\032\n\010charguid\030\001 \001(\004R\010char" +
+      "guid\022\024\n\005count\030\002 \001(\005R\005count\"?\n\021DragonBoar" +
+      "dReward\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002" +
+      " \001(\005R\005count\"\271\003\n\025DragonBoardChanceCard\022\024\n" +
+      "\005index\030\001 \001(\005R\005index\022=\n\nchangedice\030\002 \001(\0132" +
+      "\035.dnf.v1.DragonBoardChangeDiceR\nchangedi" +
+      "ce\022?\n\013changeslots\030\003 \003(\0132\035.dnf.v1.DragonB" +
+      "oardChangeSlotR\013changeslots\022+\n\004hold\030\004 \001(" +
+      "\0132\027.dnf.v1.DragonBoardHoldR\004hold\0229\n\010move" +
+      "slot\030\005 \001(\0132\035.dnf.v1.DragonBoardChangeSlo" +
+      "tR\010moveslot\0224\n\006debuff\030\006 \001(\0132\034.dnf.v1.Dra" +
+      "gonBoardAppendageR\006debuff\022:\n\tdotdamage\030\007" +
+      " \001(\0132\034.dnf.v1.DragonBoardAppendageR\tdotd" +
+      "amage\0220\n\004boss\030\010 \001(\0132\034.dnf.v1.DragonBoard" +
+      "AppendageR\004boss\"\351\001\n\017DragonBoardMove\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\032\n\010charguid\030\002 \001(\004R\010cha" +
+      "rguid\022\022\n\004slot\030\003 \001(\005R\004slot\022\034\n\tappendage\030\004" +
+      " \001(\005R\tappendage\0223\n\007rewards\030\005 \003(\0132\031.dnf.v" +
+      "1.DragonBoardRewardR\007rewards\022=\n\nchanceca" +
+      "rd\030\006 \001(\0132\035.dnf.v1.DragonBoardChanceCardR" +
+      "\nchancecard\"\271\002\n\021DragonBoardResult\022\032\n\010cha" +
+      "rguid\030\001 \001(\004R\010charguid\022\020\n\003job\030\002 \001(\005R\003job\022" +
+      "\022\n\004rank\030\003 \001(\005R\004rank\022\034\n\tturncount\030\004 \001(\005R\t" +
+      "turncount\022\032\n\010playtime\030\005 \001(\005R\010playtime\0223\n" +
+      "\007rewards\030\006 \003(\0132\031.dnf.v1.DragonBoardRewar" +
+      "dR\007rewards\022;\n\013slotrewards\030\007 \003(\0132\031.dnf.v1" +
+      ".DragonBoardRewardR\013slotrewards\022\024\n\005world" +
+      "\030\010 \001(\005R\005world\022 \n\013creditscore\030\t \001(\005R\013cred" +
+      "itscore\"\204\001\n\030DragonBoardGainAppendage\022\032\n\010" +
+      "charguid\030\001 \001(\004R\010charguid\022\024\n\005index\030\002 \001(\005R" +
+      "\005index\022 \n\013appendageId\030\003 \001(\005R\013appendageId" +
+      "\022\024\n\005count\030\004 \001(\005R\005count\"\336\003\n\021DragonBoardMe" +
+      "mber\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\022\n\004name" +
+      "\030\002 \001(\tR\004name\022\020\n\003job\030\003 \001(\005R\003job\022\024\n\005level\030" +
+      "\004 \001(\005R\005level\022\032\n\010growtype\030\005 \001(\005R\010growtype" +
+      "\022 \n\013secgrowtype\030\006 \001(\005R\013secgrowtype\022\022\n\004ra" +
+      "nk\030\007 \001(\005R\004rank\022\032\n\010teamtype\030\010 \001(\005R\010teamty" +
+      "pe\022 \n\013creditscore\030\t \001(\005R\013creditscore\022\032\n\010" +
+      "dicetype\030\n \001(\005R\010dicetype\022\022\n\004slot\030\013 \001(\005R\004" +
+      "slot\022\034\n\tconnected\030\014 \001(\010R\tconnected\022\034\n\tcl" +
+      "earboss\030\r \001(\010R\tclearboss\0223\n\007rewards\030\016 \003(" +
+      "\0132\031.dnf.v1.DragonBoardRewardR\007rewards\022@\n" +
+      "\nappendages\030\017 \003(\0132 .dnf.v1.DragonBoardGa" +
+      "inAppendageR\nappendages\"\214\002\n\020DreamMazeDun" +
+      "geon\022\024\n\005index\030\001 \001(\005R\005index\022\022\n\004name\030\002 \001(\t" +
+      "R\004name\022\024\n\005level\030\003 \001(\005R\005level\022\036\n\ndifficul" +
+      "ty\030\004 \001(\005R\ndifficulty\022*\n\020recommendedLevel" +
+      "\030\005 \001(\005R\020recommendedLevel\022 \n\013playerCount\030" +
+      "\006 \001(\005R\013playerCount\022\034\n\tcleartime\030\007 \001(\003R\tc" +
+      "leartime\022\024\n\005grade\030\010 \001(\005R\005grade\022\026\n\006bosshp" +
+      "\030\t \001(\003R\006bosshp\"\372\001\n\016DropObjectItem\022\032\n\010cha" +
+      "rguid\030\001 \001(\004R\010charguid\022\034\n\titemindex\030\002 \001(\005" +
+      "R\titemindex\022\024\n\005index\030\003 \001(\005R\005index\022\024\n\005cou" +
+      "nt\030\004 \001(\005R\005count\022\026\n\006rarity\030\005 \001(\005R\006rarity\022" +
+      "\022\n\004bind\030\006 \001(\010R\004bind\022\030\n\007upgrade\030\007 \001(\005R\007up" +
+      "grade\022\030\n\007quality\030\010 \001(\005R\007quality\022\"\n\014isgro" +
+      "wthcare\030\t \001(\010R\014isgrowthcare\"\263\003\n\013Dungeonr" +
+      "ank\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\022\n\004name\030" +
+      "\002 \001(\tR\004name\022\020\n\003job\030\003 \001(\005R\003job\022\024\n\005level\030\004" +
+      " \001(\005R\005level\022\032\n\010growtype\030\005 \001(\005R\010growtype\022" +
+      " \n\013secgrowtype\030\006 \001(\005R\013secgrowtype\022\022\n\004ran" +
+      "k\030\007 \001(\005R\004rank\022\024\n\005score\030\010 \001(\005R\005score\022\022\n\004t" +
+      "ime\030\t \001(\005R\004time\022\034\n\tdungeonId\030\n \001(\005R\tdung" +
+      "eonId\022 \n\013dungeonName\030\013 \001(\tR\013dungeonName\022" +
+      "\030\n\007counter\030\014 \001(\005R\007counter\022\032\n\010multihit\030\r " +
+      "\001(\005R\010multihit\022\024\n\005smash\030\016 \001(\005R\005smash\022\036\n\ng" +
+      "ivedamage\030\017 \001(\003R\ngivedamage\022$\n\rreceiveda" +
+      "mage\030\020 \001(\003R\rreceivedamage\"\363\002\n\020DungeonSta" +
+      "rtInfo\022\"\n\014matchingguid\030\001 \001(\004R\014matchinggu" +
+      "id\022 \n\013dungeonguid\030\002 \001(\004R\013dungeonguid\022 \n\013" +
+      "battleworld\030\003 \001(\005R\013battleworld\022\032\n\010bchann" +
+      "el\030\004 \001(\005R\010bchannel\022\020\n\003bip\030\005 \001(\tR\003bip\022\024\n\005" +
+      "bport\030\006 \001(\005R\005bport\022\034\n\tmatchtype\030\007 \001(\005R\tm" +
+      "atchtype\022\024\n\005world\030\010 \001(\005R\005world\022\030\n\007channe" +
+      "l\030\t \001(\005R\007channel\022\036\n\ntargetguid\030\n \001(\004R\nta" +
+      "rgetguid\022\024\n\005users\030\013 \003(\004R\005users\022/\n\006detail" +
+      "\030\014 \003(\0132\027.dnf.v1.UserMinimumInfoR\006detail\"" +
+      "9\n\rEmblemRequest\022\024\n\005index\030\001 \001(\005R\005index\022\022" +
+      "\n\004slot\030\002 \001(\005R\004slot\"Y\n\017StateObjectDrop\022\032\n" +
+      "\010charguid\030\001 \001(\004R\010charguid\022\024\n\005golds\030\002 \003(\005" +
+      "R\005golds\022\024\n\005items\030\003 \003(\005R\005items\"\177\n\020EnterSt" +
+      "ageObject\022-\n\005drops\030\001 \003(\0132\027.dnf.v1.StateO" +
+      "bjectDropR\005drops\022\022\n\004guid\030\002 \001(\004R\004guid\022\022\n\004" +
+      "type\030\003 \001(\005R\004type\022\024\n\005index\030\004 \001(\005R\005index\"W" +
+      "\n\rEnterStageMap\022\022\n\004guid\030\001 \001(\004R\004guid\0222\n\007o" +
+      "bjects\030\002 \003(\0132\030.dnf.v1.EnterStageObjectR\007" +
+      "objects\"c\n\tEntryInfo\022\032\n\010charguid\030\001 \001(\004R\010" +
+      "charguid\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005level\030\003 " +
+      "\001(\005R\005level\022\020\n\003job\030\004 \001(\005R\003job\"7\n\rEquipPut" +
+      "OnOff\022\022\n\004guid\030\001 \001(\004R\004guid\022\022\n\004slot\030\002 \001(\005R" +
+      "\004slot\"\233\001\n\021EscortClearReward\022\024\n\005error\030\001 \001" +
+      "(\005R\005error\022\022\n\004type\030\002 \001(\005R\004type\022\024\n\005index\030\003" +
+      " \001(\005R\005index\022\024\n\005count\030\004 \001(\005R\005count\022\024\n\005lev" +
+      "el\030\005 \001(\005R\005level\022\032\n\010totalexp\030\006 \001(\003R\010total" +
+      "exp\"\234\001\n\014EscortReward\022\022\n\004type\030\001 \001(\005R\004type" +
+      "\022\024\n\005index\030\002 \001(\005R\005index\022\024\n\005count\030\003 \001(\005R\005c" +
+      "ount\022\026\n\006addexp\030\004 \001(\003R\006addexp\022\032\n\010totalexp" +
+      "\030\005 \001(\003R\010totalexp\022\030\n\007wagonhp\030\006 \001(\005R\007wagon" +
+      "hp\"5\n\013STREAM_DATA\022\022\n\004type\030\001 \001(\005R\004type\022\022\n" +
+      "\004data\030\002 \001(\014R\004data\"D\n\026BattleleagueRewardI" +
+      "nfo\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005" +
+      "R\005count\"\356\001\n\032BattleleagueTransitionCard\022\032" +
+      "\n\010charguid\030\001 \001(\004R\010charguid\022\024\n\005items\030\002 \003(" +
+      "\005R\005items\022\024\n\005buffs\030\003 \003(\005R\005buffs\022,\n\004buff\030\004" +
+      " \003(\0132\030.dnf.v1.BattleleagueBuffR\004buff\022\032\n\010" +
+      "pvepoint\030\005 \001(\005R\010pvepoint\022>\n\npverewards\030\006" +
+      " \003(\0132\036.dnf.v1.BattleleagueRewardInfoR\npv" +
+      "erewards\"8\n\016BattlePassInfo\022&\n\016seasonpass" +
+      "Flag\030\001 \001(\005R\016seasonpassFlag\"\335\001\n\tBlacklist" +
+      "\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\022\n\004name\030\002 \001" +
+      "(\tR\004name\022\022\n\004time\030\003 \001(\003R\004time\022\024\n\005level\030\004 " +
+      "\001(\005R\005level\022\020\n\003job\030\005 \001(\005R\003job\022\032\n\010growtype" +
+      "\030\006 \001(\005R\010growtype\022 \n\013secgrowtype\030\007 \001(\005R\013s" +
+      "ecgrowtype\022&\n\016characterframe\030\010 \001(\005R\016char" +
+      "acterframe\"\271\001\n\rBoardGameInfo\022+\n\005tiles\030\001 " +
+      "\003(\0132\025.dnf.v1.BoardTileInfoR\005tiles\0223\n\005use" +
+      "rs\030\002 \003(\0132\035.dnf.v1.BoardUserContentsInfoR" +
+      "\005users\022\024\n\005sizex\030\003 \001(\005R\005sizex\022\024\n\005sizey\030\004 " +
+      "\001(\005R\005sizey\022\032\n\010playtime\030\005 \001(\005R\010playtime\"Q" +
+      "\n\017BoardMoveResult\022\026\n\006result\030\001 \001(\005R\006resul" +
+      "t\022\022\n\004posx\030\002 \001(\005R\004posx\022\022\n\004posy\030\003 \001(\005R\004pos" +
+      "y\"\264\002\n\tBoardInfo\022\024\n\005score\030\001 \001(\005R\005score\022\020\n" +
+      "\003msg\030\002 \001(\tR\003msg\022\032\n\010noteguid\030\003 \001(\004R\010noteg" +
+      "uid\022-\n\010charinfo\030\004 \001(\0132\021.dnf.v1.Character" +
+      "R\010charinfo\022\034\n\tlikecount\030\005 \001(\005R\tlikecount" +
+      "\022\034\n\thatecount\030\006 \001(\005R\thatecount\022\036\n\nregist" +
+      "time\030\007 \001(\003R\nregisttime\022\036\n\nmyreaction\030\010 \001" +
+      "(\005R\nmyreaction\0228\n\014skinchatinfo\030\t \001(\0132\024.d" +
+      "nf.v1.SkinChatInfoR\014skinchatinfo\"\244\001\n\rBoa" +
+      "rdTileInfo\022\022\n\004posx\030\001 \001(\005R\004posx\022\022\n\004posy\030\002" +
+      " \001(\005R\004posy\022\022\n\004type\030\003 \001(\005R\004type\022\026\n\006status" +
+      "\030\004 \001(\005R\006status\022?\n\nexcavation\030\005 \001(\0132\037.dnf" +
+      ".v1.ExcavationBoardTileInfoR\nexcavation\"" +
+      "\247\001\n\025BoardUserContentsInfo\022\032\n\010charguid\030\001 " +
+      "\001(\004R\010charguid\022\022\n\004posx\030\002 \001(\005R\004posx\022\022\n\004pos" +
+      "y\030\003 \001(\005R\004posy\022\016\n\002hp\030\004 \001(\005R\002hp\022\022\n\004gold\030\005 " +
+      "\001(\005R\004gold\022\020\n\003key\030\006 \001(\005R\003key\022\024\n\005relic\030\007 \001" +
+      "(\005R\005relic\"\366\001\n\024BoardUserMinimumInfo\022\032\n\010ch" +
+      "arguid\030\001 \001(\004R\010charguid\022\032\n\010playerid\030\002 \001(\005" +
+      "R\010playerid\022\032\n\010growtype\030\003 \001(\005R\010growtype\022 " +
+      "\n\013secgrowtype\030\004 \001(\005R\013secgrowtype\022\020\n\003job\030" +
+      "\005 \001(\005R\003job\022\024\n\005level\030\006 \001(\005R\005level\022\022\n\004name" +
+      "\030\007 \001(\tR\004name\022,\n\010teamtype\030\010 \001(\0162\020.dnf.v1." +
+      "TeamTypeR\010teamtype\"N\n\014BookmarkItem\022\024\n\005in" +
+      "dex\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005count\022\022" +
+      "\n\004bind\030\003 \001(\010R\004bind\"\032\n\004Buff\022\022\n\004buff\030\001 \001(\005" +
+      "R\004buff\"[\n\010BuffList\022\022\n\004time\030\001 \001(\003R\004time\022;" +
+      "\n\nappendages\030\002 \003(\0132\033.dnf.v1.SystemBuffAp" +
+      "pendageR\nappendages\"\"\n\nCardAttach\022\024\n\005ind" +
+      "ex\030\001 \001(\005R\005index\"M\n\013CardCompose\022\024\n\005index\030" +
+      "\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005count\022\022\n\004bi" +
+      "nd\030\003 \001(\010R\004bind\"Q\n\013CeraShopBuy\022\030\n\007goodsid" +
+      "\030\001 \001(\005R\007goodsid\022\024\n\005count\030\002 \001(\005R\005count\022\022\n" +
+      "\004type\030\003 \001(\005R\004type\"\220\001\n\014CeraShopInfo\022&\n\003bu" +
+      "y\030\001 \003(\0132\024.dnf.v1.ShopBuyCountR\003buy\022*\n\005re" +
+      "set\030\002 \003(\0132\024.dnf.v1.ShopTabResetR\005reset\022," +
+      "\n\005group\030\003 \003(\0132\026.dnf.v1.ShopGroupResetR\005g" +
+      "roup\"=\n\017CeraShopMileage\022\024\n\005index\030\001 \001(\005R\005" +
+      "index\022\024\n\005value\030\002 \001(\005R\005value\"\200\001\n\016Champion" +
+      "Change\022\022\n\004type\030\001 \001(\005R\004type\022\022\n\004guid\030\002 \001(\004" +
+      "R\004guid\022\036\n\nobjectguid\030\003 \001(\004R\nobjectguid\022&" +
+      "\n\016currentMapGuid\030\004 \001(\005R\016currentMapGuid\"a" +
+      "\n\014ChampionInfo\022\036\n\nappearance\030\001 \001(\010R\nappe" +
+      "arance\0221\n\006detail\030\002 \003(\0132\031.dnf.v1.Champion" +
+      "StageInfoR\006detail\"\255\001\n\021ChampionStageInfo\022" +
+      "\022\n\004guid\030\001 \001(\004R\004guid\022\022\n\004posx\030\002 \001(\005R\004posx\022" +
+      "\022\n\004posy\030\003 \001(\005R\004posy\022\020\n\003die\030\004 \001(\010R\003die\022\036\n" +
+      "\nobjectguid\030\005 \001(\004R\nobjectguid\022\024\n\005skill\030\006" +
+      " \001(\005R\005skill\022\024\n\005value\030\007 \001(\005R\005value\"|\n\nCha" +
+      "ngeBuff\022\022\n\004time\030\001 \001(\003R\004time\022\030\n\007endtime\030\002" +
+      " \001(\003R\007endtime\022\022\n\004type\030\003 \001(\005R\004type\022\024\n\005ind" +
+      "ex\030\004 \001(\005R\005index\022\026\n\006values\030\005 \003(\005R\006values\"" +
+      "L\n\022ChangeTeamUserInfo\022\032\n\010charguid\030\001 \001(\004R" +
+      "\010charguid\022\032\n\010teamtype\030\002 \001(\005R\010teamtype\"\210\001" +
+      "\n\027CharacterEquipOnlyIndex\0224\n\tequiplist\030\001" +
+      " \003(\0132\026.dnf.v1.EquipIndexSlotR\tequiplist\022" +
+      "7\n\navatarlist\030\002 \003(\0132\027.dnf.v1.AvatarIndex" +
+      "SlotR\navatarlist\"[\n\033CharacterGuildRedpac" +
+      "ketInfo\022\034\n\tachvindex\030\001 \001(\005R\tachvindex\022\036\n" +
+      "\nexpiretime\030\002 \001(\003R\nexpiretime\"\314\001\n\034Charac" +
+      "terRaidDamageMeterInfo\022\032\n\010charguid\030\001 \001(\004" +
+      "R\010charguid\022\022\n\004name\030\002 \001(\tR\004name\022\020\n\003job\030\003 " +
+      "\001(\005R\003job\022\024\n\005level\030\004 \001(\005R\005level\022\032\n\010growty" +
+      "pe\030\005 \001(\005R\010growtype\022 \n\013secgrowtype\030\006 \001(\005R" +
+      "\013secgrowtype\022\026\n\006damage\030\007 \001(\004R\006damage\"\254\002\n" +
+      "\026CharacterRaidRoundInfo\022\032\n\010charguid\030\001 \001(" +
+      "\004R\010charguid\022\022\n\004name\030\002 \001(\tR\004name\022\020\n\003job\030\003" +
+      " \001(\005R\003job\022\024\n\005level\030\004 \001(\005R\005level\022\032\n\010growt" +
+      "ype\030\005 \001(\005R\010growtype\022 \n\013secgrowtype\030\006 \001(\005" +
+      "R\013secgrowtype\022 \n\013creditscore\030\007 \001(\005R\013cred" +
+      "itscore\022&\n\016characterframe\030\010 \001(\005R\016charact" +
+      "erframe\0222\n\troundinfo\030\t \001(\0132\024.dnf.v1.PveR" +
+      "oundInfoR\troundinfo\"^\n\024CharguidEntranceI" +
+      "tem\022\032\n\010charguid\030\001 \001(\004R\010charguid\022*\n\005items" +
+      "\030\002 \003(\0132\024.dnf.v1.EntranceItemR\005items\"T\n\016C" +
+      "harguidTicket\022\032\n\010charguid\030\001 \001(\004R\010chargui" +
+      "d\022&\n\006ticket\030\002 \003(\0132\016.dnf.v1.TicketR\006ticke" +
+      "t\"\232\n\n\004Chat\022\024\n\005error\030\001 \001(\005R\005error\022\022\n\004type" +
+      "\030\002 \001(\005R\004type\022\030\n\007subtype\030\003 \001(\005R\007subtype\022\032" +
+      "\n\010charguid\030\004 \001(\004R\010charguid\022\036\n\ntargetguid" +
+      "\030\005 \001(\004R\ntargetguid\022\020\n\003job\030\006 \001(\005R\003job\022\032\n\010" +
+      "growtype\030\007 \001(\005R\010growtype\022\024\n\005level\030\010 \001(\005R" +
+      "\005level\022\026\n\006sender\030\t \001(\tR\006sender\022\022\n\004chat\030\n" +
+      " \001(\tR\004chat\022\024\n\005voice\030\013 \001(\tR\005voice\022\034\n\tvoic" +
+      "etime\030\014 \001(\tR\tvoicetime\022\032\n\010receiver\030\r \001(\t" +
+      "R\010receiver\022$\n\rhyperlinktype\030\016 \001(\005R\rhyper" +
+      "linktype\022*\n\020hyperlinksubtype\030\017 \001(\005R\020hype" +
+      "rlinksubtype\022 \n\013secgrowtype\030\020 \001(\005R\013secgr" +
+      "owtype\022\026\n\006online\030\021 \001(\005R\006online\022=\n\016hyperl" +
+      "inkdatas\030\022 \003(\0132\025.dnf.v1.HyperlinkDataR\016h" +
+      "yperlinkdatas\0223\n\003sub\030\023 \003(\0132!.dnf.v1.Hype" +
+      "rlinkSystemmessageSubR\003sub\022\034\n\tpartyguid\030" +
+      "\024 \001(\004R\tpartyguid\022#\n\005equip\030\025 \001(\0132\r.dnf.v1" +
+      ".EquipR\005equip\022#\n\005title\030\026 \001(\0132\r.dnf.v1.Eq" +
+      "uipR\005title\022!\n\004flag\030\027 \001(\0132\r.dnf.v1.EquipR" +
+      "\004flag\022)\n\006emblem\030\030 \001(\0132\021.dnf.v1.Stackable" +
+      "R\006emblem\022-\n\010material\030\031 \001(\0132\021.dnf.v1.Stac" +
+      "kableR\010material\022*\n\006avatar\030\032 \001(\0132\022.dnf.v1" +
+      ".AvatarItemR\006avatar\022%\n\004card\030\033 \001(\0132\021.dnf." +
+      "v1.StackableR\004card\022,\n\010creature\030\034 \001(\0132\020.d" +
+      "nf.v1.CreatureR\010creature\022.\n\tcartifact\030\035 " +
+      "\001(\0132\020.dnf.v1.ArtifactR\tcartifact\0228\n\014skin" +
+      "chatinfo\030\036 \001(\0132\024.dnf.v1.SkinChatInfoR\014sk" +
+      "inchatinfo\022,\n\004info\030\037 \001(\0132\030.dnf.v1.Recrui" +
+      "tPartyInfoR\004info\022\022\n\004date\030  \001(\004R\004date\022\026\n\006" +
+      "rpguid\030! \001(\004R\006rpguid\022 \n\013creditscore\030\" \001(" +
+      "\005R\013creditscore\022\'\n\005crack\030# \001(\0132\021.dnf.v1.S" +
+      "tackableR\005crack\022-\n\ncrackequip\030$ \001(\0132\r.dn" +
+      "f.v1.EquipR\ncrackequip\022.\n\010sdavatar\030% \001(\013" +
+      "2\022.dnf.v1.AvatarItemR\010sdavatar\"4\n\010ChatSy" +
+      "nc\022\024\n\005index\030\001 \001(\004R\005index\022\022\n\004type\030\002 \001(\005R\004" +
+      "type\"\210\001\n\014ChatSyncInfo\022\034\n\tlastindex\030\001 \001(\004" +
+      "R\tlastindex\022\036\n\ntotalcount\030\002 \001(\004R\ntotalco" +
+      "unt\022\022\n\004type\030\003 \001(\005R\004type\022&\n\007chatmsg\030\004 \003(\013" +
+      "2\014.dnf.v1.ChatR\007chatmsg\"E\n\027ExcavationBoa" +
+      "rdTileInfo\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005valu" +
+      "e\030\002 \001(\005R\005value\"<\n\016ShopGroupReset\022\024\n\005inde" +
+      "x\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005count\":\n\014" +
+      "EntranceItem\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005co" +
+      "unt\030\002 \001(\005R\005count\"K\n\031HyperlinkSystemmessa" +
+      "geSub\022\024\n\005index\030\001 \001(\005R\005index\022\030\n\007message\030\002" +
+      " \001(\tR\007message\"8\n\020RecruitPartyInfo\022\022\n\004typ" +
+      "e\030\001 \001(\005R\004type\022\020\n\003msg\030\002 \001(\tR\003msg\":\n\014PveRo" +
+      "undInfo\022\024\n\005round\030\001 \001(\005R\005round\022\024\n\005score\030\002" +
+      " \001(\005R\005score*a\n\010TeamType\022\025\n\021TEAM_TYPE_UNK" +
+      "NOWN\020\000\022\024\n\020TEAM_TYPE_NORMAL\020\001\022\022\n\016TEAM_TYP" +
+      "E_RAID\020\002\022\024\n\020TEAM_TYPE_PLAYER\020\003*B\n\014GuildN" +
+      "pcType\022\032\n\026GUILD_NPC_TYPE_UNKNOWN\020\000\022\026\n\022GU" +
+      "ILD_NPC_TYPE_NPC\020\001*V\n\016GuildNpcStatus\022\034\n\030" +
+      "GUILD_NPC_STATUS_UNKNOWN\020\000\022&\n\"GUILD_NPC_" +
+      "STATUS_COMPLETE_PURCHASE\020\001*W\n\022GuildStruc" +
+      "tureType\022 \n\034GUILD_STRUCTURE_TYPE_UNKNOWN" +
+      "\020\000\022\037\n\033GUILD_STRUCTURE_TYPE_NORMAL\020\001*c\n\024G" +
+      "uildStructureStatus\022\"\n\036GUILD_STRUCTURE_S" +
+      "TATUS_UNKNOWN\020\000\022\'\n#GUILD_STRUCTURE_STATU" +
+      "S_CONSTRUCTION\020\001B\253\001\n com.dnfm.mina.proto" +
+      "buf.generatedB\020GameSystemsProtoP\001Z<githu" +
+      "b.com/pixb/DnfGameServer/dnf-go-client/g" +
+      "en/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342" +
+      "\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -426,243 +861,501 @@ public final class GameSystemsProto extends com.google.protobuf.GeneratedFile {
     internal_static_dnf_v1_SkinChatInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_SkinChatInfo_descriptor,
-        new java.lang.String[] { "SkinId", "ChatContent", });
+        new java.lang.String[] { "SkinId", "ChatContent", "Chatframe", "Characterframe", });
     internal_static_dnf_v1_ShopBuyCount_descriptor =
       getDescriptor().getMessageType(1);
     internal_static_dnf_v1_ShopBuyCount_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ShopBuyCount_descriptor,
-        new java.lang.String[] { "ItemId", "Count", });
+        new java.lang.String[] { "Goodsid", "Count", "Lastbuytime", "Supplycount", "Supplydurationtime", });
     internal_static_dnf_v1_ShopTabReset_descriptor =
       getDescriptor().getMessageType(2);
     internal_static_dnf_v1_ShopTabReset_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ShopTabReset_descriptor,
-        new java.lang.String[] { "TabId", "ResetTime", });
-    internal_static_dnf_v1_BattleleagueRewardInfo_descriptor =
+        new java.lang.String[] { "Shopid", "Tab", "Count", "Resettime", });
+    internal_static_dnf_v1_SyscmdMasterbuff_descriptor =
       getDescriptor().getMessageType(3);
+    internal_static_dnf_v1_SyscmdMasterbuff_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SyscmdMasterbuff_descriptor,
+        new java.lang.String[] { "Buffid", "Endtime", });
+    internal_static_dnf_v1_WatingListUserInfo_descriptor =
+      getDescriptor().getMessageType(4);
+    internal_static_dnf_v1_WatingListUserInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_WatingListUserInfo_descriptor,
+        new java.lang.String[] { "Charguid", "Name", "Gname", "Level", "Job", "Growtype", "Secgrowtype", "Leader", "Ready", "Customdata", "Partyguid", });
+    internal_static_dnf_v1_UserMinimumInfo_descriptor =
+      getDescriptor().getMessageType(5);
+    internal_static_dnf_v1_UserMinimumInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_UserMinimumInfo_descriptor,
+        new java.lang.String[] { "Charguid", "Name", "Level", "Job", "Growtype", "Secgrowtype", "Teamtype", "Rank", "Pvpstargrade", "Profileurl", "World", "Skinchatinfo", "Iskeyboard", });
+    internal_static_dnf_v1_UserLoadingStatus_descriptor =
+      getDescriptor().getMessageType(6);
+    internal_static_dnf_v1_UserLoadingStatus_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_UserLoadingStatus_descriptor,
+        new java.lang.String[] { "Charguid", "Status", "Ready", "Waiting", "Disconnect", "Leave", "Kickoutvotes", });
+    internal_static_dnf_v1_SimpleCharacter_descriptor =
+      getDescriptor().getMessageType(7);
+    internal_static_dnf_v1_SimpleCharacter_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SimpleCharacter_descriptor,
+        new java.lang.String[] { "Charguid", "Name", "Level", "Job", "Growtype", "Secgrowtype", "Equipscore", "Characterframe", });
+    internal_static_dnf_v1_RoomUserInfo_descriptor =
+      getDescriptor().getMessageType(8);
+    internal_static_dnf_v1_RoomUserInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RoomUserInfo_descriptor,
+        new java.lang.String[] { "Charguid", "Level", "Job", "Growtype", "Secondgrowtype", "Name", "Teamtype", "Creditscore", "Ready", "Skinchatinfo", });
+    internal_static_dnf_v1_TicketInfo_descriptor =
+      getDescriptor().getMessageType(9);
+    internal_static_dnf_v1_TicketInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_TicketInfo_descriptor,
+        new java.lang.String[] { "Dungeontype", "Dailyticket", "Weeklyticket", "Premiumticket", "Sweepticket", "Dailyrewardticket", "Weeklyrewardticket", "Buycount", "Chargetime", "Freeticket", });
+    internal_static_dnf_v1_TicketRewardList_descriptor =
+      getDescriptor().getMessageType(10);
+    internal_static_dnf_v1_TicketRewardList_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_TicketRewardList_descriptor,
+        new java.lang.String[] { "Character", "Account", });
+    internal_static_dnf_v1_SkinItemInfo_descriptor =
+      getDescriptor().getMessageType(11);
+    internal_static_dnf_v1_SkinItemInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SkinItemInfo_descriptor,
+        new java.lang.String[] { "Index", "Guid", "Expiretime", "Acquisitiontime", "Favorite", });
+    internal_static_dnf_v1_Tutorial_descriptor =
+      getDescriptor().getMessageType(12);
+    internal_static_dnf_v1_Tutorial_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_Tutorial_descriptor,
+        new java.lang.String[] { "Index", "State", "Type", "Enforce", });
+    internal_static_dnf_v1_WhisperChat_descriptor =
+      getDescriptor().getMessageType(13);
+    internal_static_dnf_v1_WhisperChat_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_WhisperChat_descriptor,
+        new java.lang.String[] { "Charguid", "Sender", "Receiver", "Chat", "Voice", "Job", "Growtype", "Secondgrowtype", "Date", });
+    internal_static_dnf_v1_WarehouseNpc_descriptor =
+      getDescriptor().getMessageType(14);
+    internal_static_dnf_v1_WarehouseNpc_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_WarehouseNpc_descriptor,
+        new java.lang.String[] { "Type", "Index", "Guid", "Status", });
+    internal_static_dnf_v1_WarehouseStructure_descriptor =
+      getDescriptor().getMessageType(15);
+    internal_static_dnf_v1_WarehouseStructure_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_WarehouseStructure_descriptor,
+        new java.lang.String[] { "Type", "Index", "Count", "Guid", "Status", });
+    internal_static_dnf_v1_SeriaBuffInfo_descriptor =
+      getDescriptor().getMessageType(16);
+    internal_static_dnf_v1_SeriaBuffInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SeriaBuffInfo_descriptor,
+        new java.lang.String[] { "Number", "Cooltime", });
+    internal_static_dnf_v1_SdDeathMatchRewardInfo_descriptor =
+      getDescriptor().getMessageType(17);
+    internal_static_dnf_v1_SdDeathMatchRewardInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SdDeathMatchRewardInfo_descriptor,
+        new java.lang.String[] { "Index", "Count", });
+    internal_static_dnf_v1_SdDeathMatchReward_descriptor =
+      getDescriptor().getMessageType(18);
+    internal_static_dnf_v1_SdDeathMatchReward_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SdDeathMatchReward_descriptor,
+        new java.lang.String[] { "Charguid", "Rewardcount", "List", });
+    internal_static_dnf_v1_SubdueInfo_descriptor =
+      getDescriptor().getMessageType(19);
+    internal_static_dnf_v1_SubdueInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SubdueInfo_descriptor,
+        new java.lang.String[] { "Index", "Charguids", "Starttime", "Endtime", "State", "Count", "Totalantievil", });
+    internal_static_dnf_v1_Seasonpass_descriptor =
+      getDescriptor().getMessageType(20);
+    internal_static_dnf_v1_Seasonpass_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_Seasonpass_descriptor,
+        new java.lang.String[] { "Index", "DateStart", "DateEnd", "TargetGuids", });
+    internal_static_dnf_v1_ToyBillingVerify_descriptor =
+      getDescriptor().getMessageType(21);
+    internal_static_dnf_v1_ToyBillingVerify_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ToyBillingVerify_descriptor,
+        new java.lang.String[] { "StampToken", "OrderId", "ProductId", "UserId", "CharacterId", "ServicePayload", "MarketType", "PurchaseType", });
+    internal_static_dnf_v1_DiningFoodBuffInfo_descriptor =
+      getDescriptor().getMessageType(22);
+    internal_static_dnf_v1_DiningFoodBuffInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DiningFoodBuffInfo_descriptor,
+        new java.lang.String[] { "Index", "Endtime", "FoodId", "BuffId", "Duration", "StartTime", });
+    internal_static_dnf_v1_DragonBoardAppendage_descriptor =
+      getDescriptor().getMessageType(23);
+    internal_static_dnf_v1_DragonBoardAppendage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DragonBoardAppendage_descriptor,
+        new java.lang.String[] { "Charguid", "Index", "AppendageId", "Level", "Exp", });
+    internal_static_dnf_v1_DragonBoardChangeDice_descriptor =
+      getDescriptor().getMessageType(24);
+    internal_static_dnf_v1_DragonBoardChangeDice_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DragonBoardChangeDice_descriptor,
+        new java.lang.String[] { "Charguid", "Type", });
+    internal_static_dnf_v1_DragonBoardChangeSlot_descriptor =
+      getDescriptor().getMessageType(25);
+    internal_static_dnf_v1_DragonBoardChangeSlot_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DragonBoardChangeSlot_descriptor,
+        new java.lang.String[] { "Charguid", "Index", });
+    internal_static_dnf_v1_DragonBoardHold_descriptor =
+      getDescriptor().getMessageType(26);
+    internal_static_dnf_v1_DragonBoardHold_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DragonBoardHold_descriptor,
+        new java.lang.String[] { "Charguid", "Count", });
+    internal_static_dnf_v1_DragonBoardReward_descriptor =
+      getDescriptor().getMessageType(27);
+    internal_static_dnf_v1_DragonBoardReward_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DragonBoardReward_descriptor,
+        new java.lang.String[] { "Index", "Count", });
+    internal_static_dnf_v1_DragonBoardChanceCard_descriptor =
+      getDescriptor().getMessageType(28);
+    internal_static_dnf_v1_DragonBoardChanceCard_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DragonBoardChanceCard_descriptor,
+        new java.lang.String[] { "Index", "Changedice", "Changeslots", "Hold", "Moveslot", "Debuff", "Dotdamage", "Boss", });
+    internal_static_dnf_v1_DragonBoardMove_descriptor =
+      getDescriptor().getMessageType(29);
+    internal_static_dnf_v1_DragonBoardMove_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DragonBoardMove_descriptor,
+        new java.lang.String[] { "Error", "Charguid", "Slot", "Appendage", "Rewards", "Chancecard", });
+    internal_static_dnf_v1_DragonBoardResult_descriptor =
+      getDescriptor().getMessageType(30);
+    internal_static_dnf_v1_DragonBoardResult_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DragonBoardResult_descriptor,
+        new java.lang.String[] { "Charguid", "Job", "Rank", "Turncount", "Playtime", "Rewards", "Slotrewards", "World", "Creditscore", });
+    internal_static_dnf_v1_DragonBoardGainAppendage_descriptor =
+      getDescriptor().getMessageType(31);
+    internal_static_dnf_v1_DragonBoardGainAppendage_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DragonBoardGainAppendage_descriptor,
+        new java.lang.String[] { "Charguid", "Index", "AppendageId", "Count", });
+    internal_static_dnf_v1_DragonBoardMember_descriptor =
+      getDescriptor().getMessageType(32);
+    internal_static_dnf_v1_DragonBoardMember_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DragonBoardMember_descriptor,
+        new java.lang.String[] { "Charguid", "Name", "Job", "Level", "Growtype", "Secgrowtype", "Rank", "Teamtype", "Creditscore", "Dicetype", "Slot", "Connected", "Clearboss", "Rewards", "Appendages", });
+    internal_static_dnf_v1_DreamMazeDungeon_descriptor =
+      getDescriptor().getMessageType(33);
+    internal_static_dnf_v1_DreamMazeDungeon_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DreamMazeDungeon_descriptor,
+        new java.lang.String[] { "Index", "Name", "Level", "Difficulty", "RecommendedLevel", "PlayerCount", "Cleartime", "Grade", "Bosshp", });
+    internal_static_dnf_v1_DropObjectItem_descriptor =
+      getDescriptor().getMessageType(34);
+    internal_static_dnf_v1_DropObjectItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DropObjectItem_descriptor,
+        new java.lang.String[] { "Charguid", "Itemindex", "Index", "Count", "Rarity", "Bind", "Upgrade", "Quality", "Isgrowthcare", });
+    internal_static_dnf_v1_Dungeonrank_descriptor =
+      getDescriptor().getMessageType(35);
+    internal_static_dnf_v1_Dungeonrank_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_Dungeonrank_descriptor,
+        new java.lang.String[] { "Charguid", "Name", "Job", "Level", "Growtype", "Secgrowtype", "Rank", "Score", "Time", "DungeonId", "DungeonName", "Counter", "Multihit", "Smash", "Givedamage", "Receivedamage", });
+    internal_static_dnf_v1_DungeonStartInfo_descriptor =
+      getDescriptor().getMessageType(36);
+    internal_static_dnf_v1_DungeonStartInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DungeonStartInfo_descriptor,
+        new java.lang.String[] { "Matchingguid", "Dungeonguid", "Battleworld", "Bchannel", "Bip", "Bport", "Matchtype", "World", "Channel", "Targetguid", "Users", "Detail", });
+    internal_static_dnf_v1_EmblemRequest_descriptor =
+      getDescriptor().getMessageType(37);
+    internal_static_dnf_v1_EmblemRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_EmblemRequest_descriptor,
+        new java.lang.String[] { "Index", "Slot", });
+    internal_static_dnf_v1_StateObjectDrop_descriptor =
+      getDescriptor().getMessageType(38);
+    internal_static_dnf_v1_StateObjectDrop_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_StateObjectDrop_descriptor,
+        new java.lang.String[] { "Charguid", "Golds", "Items", });
+    internal_static_dnf_v1_EnterStageObject_descriptor =
+      getDescriptor().getMessageType(39);
+    internal_static_dnf_v1_EnterStageObject_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_EnterStageObject_descriptor,
+        new java.lang.String[] { "Drops", "Guid", "Type", "Index", });
+    internal_static_dnf_v1_EnterStageMap_descriptor =
+      getDescriptor().getMessageType(40);
+    internal_static_dnf_v1_EnterStageMap_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_EnterStageMap_descriptor,
+        new java.lang.String[] { "Guid", "Objects", });
+    internal_static_dnf_v1_EntryInfo_descriptor =
+      getDescriptor().getMessageType(41);
+    internal_static_dnf_v1_EntryInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_EntryInfo_descriptor,
+        new java.lang.String[] { "Charguid", "Name", "Level", "Job", });
+    internal_static_dnf_v1_EquipPutOnOff_descriptor =
+      getDescriptor().getMessageType(42);
+    internal_static_dnf_v1_EquipPutOnOff_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_EquipPutOnOff_descriptor,
+        new java.lang.String[] { "Guid", "Slot", });
+    internal_static_dnf_v1_EscortClearReward_descriptor =
+      getDescriptor().getMessageType(43);
+    internal_static_dnf_v1_EscortClearReward_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_EscortClearReward_descriptor,
+        new java.lang.String[] { "Error", "Type", "Index", "Count", "Level", "Totalexp", });
+    internal_static_dnf_v1_EscortReward_descriptor =
+      getDescriptor().getMessageType(44);
+    internal_static_dnf_v1_EscortReward_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_EscortReward_descriptor,
+        new java.lang.String[] { "Type", "Index", "Count", "Addexp", "Totalexp", "Wagonhp", });
+    internal_static_dnf_v1_STREAM_DATA_descriptor =
+      getDescriptor().getMessageType(45);
+    internal_static_dnf_v1_STREAM_DATA_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_STREAM_DATA_descriptor,
+        new java.lang.String[] { "Type", "Data", });
+    internal_static_dnf_v1_BattleleagueRewardInfo_descriptor =
+      getDescriptor().getMessageType(46);
     internal_static_dnf_v1_BattleleagueRewardInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BattleleagueRewardInfo_descriptor,
         new java.lang.String[] { "Index", "Count", });
     internal_static_dnf_v1_BattleleagueTransitionCard_descriptor =
-      getDescriptor().getMessageType(4);
+      getDescriptor().getMessageType(47);
     internal_static_dnf_v1_BattleleagueTransitionCard_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BattleleagueTransitionCard_descriptor,
         new java.lang.String[] { "Charguid", "Items", "Buffs", "Buff", "Pvepoint", "Pverewards", });
     internal_static_dnf_v1_BattlePassInfo_descriptor =
-      getDescriptor().getMessageType(5);
+      getDescriptor().getMessageType(48);
     internal_static_dnf_v1_BattlePassInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BattlePassInfo_descriptor,
         new java.lang.String[] { "SeasonpassFlag", });
     internal_static_dnf_v1_Blacklist_descriptor =
-      getDescriptor().getMessageType(6);
+      getDescriptor().getMessageType(49);
     internal_static_dnf_v1_Blacklist_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_Blacklist_descriptor,
         new java.lang.String[] { "Charguid", "Name", "Time", "Level", "Job", "Growtype", "Secgrowtype", "Characterframe", });
     internal_static_dnf_v1_BoardGameInfo_descriptor =
-      getDescriptor().getMessageType(7);
+      getDescriptor().getMessageType(50);
     internal_static_dnf_v1_BoardGameInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BoardGameInfo_descriptor,
         new java.lang.String[] { "Tiles", "Users", "Sizex", "Sizey", "Playtime", });
     internal_static_dnf_v1_BoardMoveResult_descriptor =
-      getDescriptor().getMessageType(8);
+      getDescriptor().getMessageType(51);
     internal_static_dnf_v1_BoardMoveResult_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BoardMoveResult_descriptor,
         new java.lang.String[] { "Result", "Posx", "Posy", });
     internal_static_dnf_v1_BoardInfo_descriptor =
-      getDescriptor().getMessageType(9);
+      getDescriptor().getMessageType(52);
     internal_static_dnf_v1_BoardInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BoardInfo_descriptor,
         new java.lang.String[] { "Score", "Msg", "Noteguid", "Charinfo", "Likecount", "Hatecount", "Registtime", "Myreaction", "Skinchatinfo", });
     internal_static_dnf_v1_BoardTileInfo_descriptor =
-      getDescriptor().getMessageType(10);
+      getDescriptor().getMessageType(53);
     internal_static_dnf_v1_BoardTileInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BoardTileInfo_descriptor,
         new java.lang.String[] { "Posx", "Posy", "Type", "Status", "Excavation", });
     internal_static_dnf_v1_BoardUserContentsInfo_descriptor =
-      getDescriptor().getMessageType(11);
+      getDescriptor().getMessageType(54);
     internal_static_dnf_v1_BoardUserContentsInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BoardUserContentsInfo_descriptor,
         new java.lang.String[] { "Charguid", "Posx", "Posy", "Hp", "Gold", "Key", "Relic", });
     internal_static_dnf_v1_BoardUserMinimumInfo_descriptor =
-      getDescriptor().getMessageType(12);
+      getDescriptor().getMessageType(55);
     internal_static_dnf_v1_BoardUserMinimumInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BoardUserMinimumInfo_descriptor,
         new java.lang.String[] { "Charguid", "Playerid", "Growtype", "Secgrowtype", "Job", "Level", "Name", "Teamtype", });
     internal_static_dnf_v1_BookmarkItem_descriptor =
-      getDescriptor().getMessageType(13);
+      getDescriptor().getMessageType(56);
     internal_static_dnf_v1_BookmarkItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BookmarkItem_descriptor,
         new java.lang.String[] { "Index", "Count", "Bind", });
     internal_static_dnf_v1_Buff_descriptor =
-      getDescriptor().getMessageType(14);
+      getDescriptor().getMessageType(57);
     internal_static_dnf_v1_Buff_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_Buff_descriptor,
         new java.lang.String[] { "Buff", });
     internal_static_dnf_v1_BuffList_descriptor =
-      getDescriptor().getMessageType(15);
+      getDescriptor().getMessageType(58);
     internal_static_dnf_v1_BuffList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_BuffList_descriptor,
         new java.lang.String[] { "Time", "Appendages", });
     internal_static_dnf_v1_CardAttach_descriptor =
-      getDescriptor().getMessageType(16);
+      getDescriptor().getMessageType(59);
     internal_static_dnf_v1_CardAttach_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CardAttach_descriptor,
         new java.lang.String[] { "Index", });
     internal_static_dnf_v1_CardCompose_descriptor =
-      getDescriptor().getMessageType(17);
+      getDescriptor().getMessageType(60);
     internal_static_dnf_v1_CardCompose_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CardCompose_descriptor,
         new java.lang.String[] { "Index", "Count", "Bind", });
     internal_static_dnf_v1_CeraShopBuy_descriptor =
-      getDescriptor().getMessageType(18);
+      getDescriptor().getMessageType(61);
     internal_static_dnf_v1_CeraShopBuy_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CeraShopBuy_descriptor,
         new java.lang.String[] { "Goodsid", "Count", "Type", });
     internal_static_dnf_v1_CeraShopInfo_descriptor =
-      getDescriptor().getMessageType(19);
+      getDescriptor().getMessageType(62);
     internal_static_dnf_v1_CeraShopInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CeraShopInfo_descriptor,
         new java.lang.String[] { "Buy", "Reset", "Group", });
     internal_static_dnf_v1_CeraShopMileage_descriptor =
-      getDescriptor().getMessageType(20);
+      getDescriptor().getMessageType(63);
     internal_static_dnf_v1_CeraShopMileage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CeraShopMileage_descriptor,
         new java.lang.String[] { "Index", "Value", });
     internal_static_dnf_v1_ChampionChange_descriptor =
-      getDescriptor().getMessageType(21);
+      getDescriptor().getMessageType(64);
     internal_static_dnf_v1_ChampionChange_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ChampionChange_descriptor,
         new java.lang.String[] { "Type", "Guid", "Objectguid", "CurrentMapGuid", });
     internal_static_dnf_v1_ChampionInfo_descriptor =
-      getDescriptor().getMessageType(22);
+      getDescriptor().getMessageType(65);
     internal_static_dnf_v1_ChampionInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ChampionInfo_descriptor,
         new java.lang.String[] { "Appearance", "Detail", });
     internal_static_dnf_v1_ChampionStageInfo_descriptor =
-      getDescriptor().getMessageType(23);
+      getDescriptor().getMessageType(66);
     internal_static_dnf_v1_ChampionStageInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ChampionStageInfo_descriptor,
         new java.lang.String[] { "Guid", "Posx", "Posy", "Die", "Objectguid", "Skill", "Value", });
     internal_static_dnf_v1_ChangeBuff_descriptor =
-      getDescriptor().getMessageType(24);
+      getDescriptor().getMessageType(67);
     internal_static_dnf_v1_ChangeBuff_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ChangeBuff_descriptor,
         new java.lang.String[] { "Time", "Endtime", "Type", "Index", "Values", });
     internal_static_dnf_v1_ChangeTeamUserInfo_descriptor =
-      getDescriptor().getMessageType(25);
+      getDescriptor().getMessageType(68);
     internal_static_dnf_v1_ChangeTeamUserInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ChangeTeamUserInfo_descriptor,
         new java.lang.String[] { "Charguid", "Teamtype", });
     internal_static_dnf_v1_CharacterEquipOnlyIndex_descriptor =
-      getDescriptor().getMessageType(26);
+      getDescriptor().getMessageType(69);
     internal_static_dnf_v1_CharacterEquipOnlyIndex_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CharacterEquipOnlyIndex_descriptor,
         new java.lang.String[] { "Equiplist", "Avatarlist", });
     internal_static_dnf_v1_CharacterGuildRedpacketInfo_descriptor =
-      getDescriptor().getMessageType(27);
+      getDescriptor().getMessageType(70);
     internal_static_dnf_v1_CharacterGuildRedpacketInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CharacterGuildRedpacketInfo_descriptor,
         new java.lang.String[] { "Achvindex", "Expiretime", });
     internal_static_dnf_v1_CharacterRaidDamageMeterInfo_descriptor =
-      getDescriptor().getMessageType(28);
+      getDescriptor().getMessageType(71);
     internal_static_dnf_v1_CharacterRaidDamageMeterInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CharacterRaidDamageMeterInfo_descriptor,
         new java.lang.String[] { "Charguid", "Name", "Job", "Level", "Growtype", "Secgrowtype", "Damage", });
     internal_static_dnf_v1_CharacterRaidRoundInfo_descriptor =
-      getDescriptor().getMessageType(29);
+      getDescriptor().getMessageType(72);
     internal_static_dnf_v1_CharacterRaidRoundInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CharacterRaidRoundInfo_descriptor,
         new java.lang.String[] { "Charguid", "Name", "Job", "Level", "Growtype", "Secgrowtype", "Creditscore", "Characterframe", "Roundinfo", });
     internal_static_dnf_v1_CharguidEntranceItem_descriptor =
-      getDescriptor().getMessageType(30);
+      getDescriptor().getMessageType(73);
     internal_static_dnf_v1_CharguidEntranceItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CharguidEntranceItem_descriptor,
         new java.lang.String[] { "Charguid", "Items", });
     internal_static_dnf_v1_CharguidTicket_descriptor =
-      getDescriptor().getMessageType(31);
+      getDescriptor().getMessageType(74);
     internal_static_dnf_v1_CharguidTicket_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_CharguidTicket_descriptor,
         new java.lang.String[] { "Charguid", "Ticket", });
     internal_static_dnf_v1_Chat_descriptor =
-      getDescriptor().getMessageType(32);
+      getDescriptor().getMessageType(75);
     internal_static_dnf_v1_Chat_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_Chat_descriptor,
         new java.lang.String[] { "Error", "Type", "Subtype", "Charguid", "Targetguid", "Job", "Growtype", "Level", "Sender", "Chat", "Voice", "Voicetime", "Receiver", "Hyperlinktype", "Hyperlinksubtype", "Secgrowtype", "Online", "Hyperlinkdatas", "Sub", "Partyguid", "Equip", "Title", "Flag", "Emblem", "Material", "Avatar", "Card", "Creature", "Cartifact", "Skinchatinfo", "Info", "Date", "Rpguid", "Creditscore", "Crack", "Crackequip", "Sdavatar", });
     internal_static_dnf_v1_ChatSync_descriptor =
-      getDescriptor().getMessageType(33);
+      getDescriptor().getMessageType(76);
     internal_static_dnf_v1_ChatSync_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ChatSync_descriptor,
         new java.lang.String[] { "Index", "Type", });
     internal_static_dnf_v1_ChatSyncInfo_descriptor =
-      getDescriptor().getMessageType(34);
+      getDescriptor().getMessageType(77);
     internal_static_dnf_v1_ChatSyncInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ChatSyncInfo_descriptor,
         new java.lang.String[] { "Lastindex", "Totalcount", "Type", "Chatmsg", });
     internal_static_dnf_v1_ExcavationBoardTileInfo_descriptor =
-      getDescriptor().getMessageType(35);
+      getDescriptor().getMessageType(78);
     internal_static_dnf_v1_ExcavationBoardTileInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ExcavationBoardTileInfo_descriptor,
         new java.lang.String[] { "Index", "Value", });
     internal_static_dnf_v1_ShopGroupReset_descriptor =
-      getDescriptor().getMessageType(36);
+      getDescriptor().getMessageType(79);
     internal_static_dnf_v1_ShopGroupReset_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ShopGroupReset_descriptor,
         new java.lang.String[] { "Index", "Count", });
     internal_static_dnf_v1_EntranceItem_descriptor =
-      getDescriptor().getMessageType(37);
+      getDescriptor().getMessageType(80);
     internal_static_dnf_v1_EntranceItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_EntranceItem_descriptor,
         new java.lang.String[] { "Index", "Count", });
     internal_static_dnf_v1_HyperlinkSystemmessageSub_descriptor =
-      getDescriptor().getMessageType(38);
+      getDescriptor().getMessageType(81);
     internal_static_dnf_v1_HyperlinkSystemmessageSub_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_HyperlinkSystemmessageSub_descriptor,
         new java.lang.String[] { "Index", "Message", });
     internal_static_dnf_v1_RecruitPartyInfo_descriptor =
-      getDescriptor().getMessageType(39);
+      getDescriptor().getMessageType(82);
     internal_static_dnf_v1_RecruitPartyInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_RecruitPartyInfo_descriptor,
         new java.lang.String[] { "Type", "Msg", });
     internal_static_dnf_v1_PveRoundInfo_descriptor =
-      getDescriptor().getMessageType(40);
+      getDescriptor().getMessageType(83);
     internal_static_dnf_v1_PveRoundInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_PveRoundInfo_descriptor,

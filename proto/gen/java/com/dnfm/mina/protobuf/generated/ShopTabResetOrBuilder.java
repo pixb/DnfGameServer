@@ -11,14 +11,26 @@ public interface ShopTabResetOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>int32 tabId = 1 [json_name = "tabId"];</code>
-   * @return The tabId.
+   * <code>int32 shopid = 1 [json_name = "shopid"];</code>
+   * @return The shopid.
    */
-  int getTabId();
+  int getShopid();
 
   /**
-   * <code>int64 resetTime = 2 [json_name = "resetTime"];</code>
-   * @return The resetTime.
+   * <code>int32 tab = 2 [json_name = "tab"];</code>
+   * @return The tab.
    */
-  long getResetTime();
+  int getTab();
+
+  /**
+   * <code>int32 count = 3 [json_name = "count"];</code>
+   * @return The count.
+   */
+  int getCount();
+
+  /**
+   * <code>int64 resettime = 4 [json_name = "resettime"];</code>
+   * @return The resettime.
+   */
+  long getResettime();
 }

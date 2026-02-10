@@ -279,34 +279,36 @@ func testSocialSystems(t *testing.T) {
 func testUserSystems(t *testing.T) {
 	// 测试RES_TUTORIAL_SAVE
 	tutorialSave := &dnfv1.RES_TUTORIAL_SAVE{
-		Error: 0,
-		Step:  1,
+		Error:      0,
+		TutorialId: 1,
 	}
 	assert.NotNil(t, tutorialSave)
 	assert.Equal(t, int32(0), tutorialSave.Error)
-	assert.Equal(t, int32(1), tutorialSave.Step)
+	assert.Equal(t, int32(1), tutorialSave.TutorialId)
 
 	// 测试RES_USE_COIN
 	useCoin := &dnfv1.RES_USE_COIN{
-		Error: 0,
-		Coin:  100,
+		Error:         0,
+		CoinAmount:    100,
+		RemainingCoin: 900,
 	}
 	assert.NotNil(t, useCoin)
 	assert.Equal(t, int32(0), useCoin.Error)
-	assert.Equal(t, int32(100), useCoin.Coin)
+	assert.Equal(t, int64(100), useCoin.CoinAmount)
+	assert.Equal(t, int64(900), useCoin.RemainingCoin)
 
 	// 测试RES_TOWER_INFO
 	towerInfo := &dnfv1.RES_TOWER_INFO{
-		Error:    0,
-		TowerId:  1,
-		Floor:    10,
-		Progress: 50,
+		Error:        0,
+		TowerId:      1,
+		CurrentFloor: 10,
+		MaxFloor:     50,
 	}
 	assert.NotNil(t, towerInfo)
 	assert.Equal(t, int32(0), towerInfo.Error)
 	assert.Equal(t, int32(1), towerInfo.TowerId)
-	assert.Equal(t, int32(10), towerInfo.Floor)
-	assert.Equal(t, int32(50), towerInfo.Progress)
+	assert.Equal(t, int32(10), towerInfo.CurrentFloor)
+	assert.Equal(t, int32(50), towerInfo.MaxFloor)
 
 	// 测试RES_START_BOARD_GAME
 	startBoardGame := &dnfv1.RES_START_BOARD_GAME{
