@@ -7,365 +7,666 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestBatch65Migration 测试批次65的迁移结果
+// TestBatch65Migration 测试第65批迁移的消息类型
 func TestBatch65Migration(t *testing.T) {
-	// 测试系统消息
-	t.Run("SystemMessages", testBatch65SystemMessages)
-
-	// 测试团队系统
-	t.Run("TeamSystems", testBatch65TeamSystems)
-
-	// 测试副本系统
-	t.Run("DungeonSystems", testBatch65DungeonSystems)
-
-	// 测试社交系统
-	t.Run("SocialSystems", testBatch65SocialSystems)
+	t.Run("Gm", testBatch65GmMessages)
+	t.Run("Fame", testBatch65FameMessages)
+	t.Run("GuildAuction", testBatch65GuildAuctionMessages)
+	t.Run("ItemProduction", testBatch65ItemProductionMessages)
+	t.Run("Historicsite", testBatch65HistoricsiteMessages)
+	t.Run("Achievement", testBatch65AchievementMessages)
+	t.Run("ArcadePvp", testBatch65ArcadePvpMessages)
+	t.Run("AdventureUnion", testBatch65AdventureUnionMessages)
+	t.Run("Party", testBatch65PartyMessages)
+	t.Run("Ping", testBatch65PingMessages)
+	t.Run("Wedding", testBatch65WeddingMessages)
+	t.Run("Currency", testBatch65CurrencyMessages)
+	t.Run("GuildCreate", testBatch65GuildCreateMessages)
+	t.Run("Creature", testBatch65CreatureMessages)
+	t.Run("Voice", testBatch65VoiceMessages)
+	t.Run("Phase", testBatch65PhaseMessages)
+	t.Run("GuildStructure", testBatch65GuildStructureMessages)
+	t.Run("Friend", testBatch65FriendMessages)
+	t.Run("Ranking", testBatch65RankingMessages)
+	t.Run("Auction", testBatch65AuctionMessages)
+	t.Run("Blacklist", testBatch65BlacklistMessages)
+	t.Run("AllClear", testBatch65AllClearMessages)
+	t.Run("GuildRedpacket", testBatch65GuildRedpacketMessages)
+	t.Run("InviteRoom", testBatch65InviteRoomMessages)
+	t.Run("Skill", testBatch65SkillMessages)
+	t.Run("Intrude", testBatch65IntrudeMessages)
+	t.Run("BattleServer", testBatch65BattleServerMessages)
+	t.Run("Adventurebook", testBatch65AdventurebookMessages)
+	t.Run("BoardGame", testBatch65BoardGameMessages)
+	t.Run("NpcShop", testBatch65NpcShopMessages)
+	t.Run("Divorce", testBatch65DivorceMessages)
+	t.Run("GuildBingo", testBatch65GuildBingoMessages)
+	t.Run("ServerResponse", testBatch65ServerResponseMessages)
+	t.Run("SecedeGuild", testBatch65SecedeGuildMessages)
+	t.Run("SaveWeakServer", testBatch65SaveWeakServerMessages)
+	t.Run("SendStorage", testBatch65SendStorageMessages)
+	t.Run("SelectDungeon", testBatch65SelectDungeonMessages)
+	t.Run("SendingInvite", testBatch65SendingInviteMessages)
+	t.Run("ReplyProposal", testBatch65ReplyProposalMessages)
+	t.Run("PvpControl", testBatch65PvpControlMessages)
+	t.Run("ReturnToTown", testBatch65ReturnToTownMessages)
+	t.Run("LockstepRoom", testBatch65LockstepRoomMessages)
+	t.Run("StartDungeon", testBatch65StartDungeonMessages)
+	t.Run("SyncDungeon", testBatch65SyncDungeonMessages)
+	t.Run("UpdateDungeon", testBatch65UpdateDungeonMessages)
+	t.Run("RequestFriend", testBatch65RequestFriendMessages)
+	t.Run("RewardQuest", testBatch65RewardQuestMessages)
+	t.Run("Mannequin", testBatch65MannequinMessages)
+	t.Run("TssData", testBatch65TssDataMessages)
 }
 
-// testBatch65SystemMessages 测试系统消息
-func testBatch65SystemMessages(t *testing.T) {
-	// 测试RES_SERVER_RESPONSE_PACKET_SUPPLEMENT
-	resServerResponsePacketSupplement := &dnfv1.RES_SERVER_RESPONSE_PACKET_SUPPLEMENT{
-		Error:   0,
-		Message: "Success",
-		Code:    200,
+// 测试GM相关消息
+func testBatch65GmMessages(t *testing.T) {
+	reqGmCommand := &dnfv1.ReqGmCommand{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, reqGmCommand)
+	assert.Equal(t, int32(0), reqGmCommand.Error)
+	assert.Equal(t, int32(1), reqGmCommand.Index)
+}
+
+// 测试名声相关消息
+func testBatch65FameMessages(t *testing.T) {
+	resFameAndCharmPoint := &dnfv1.ResFameAndCharmPoint{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resFameAndCharmPoint)
+	assert.Equal(t, int32(0), resFameAndCharmPoint.Error)
+	assert.Equal(t, int32(1), resFameAndCharmPoint.Index)
+}
+
+// 测试公会拍卖相关消息
+func testBatch65GuildAuctionMessages(t *testing.T) {
+	resGuildAuctionRewardInfo := &dnfv1.ResGuildAuctionRewardInfo{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resGuildAuctionRewardInfo)
+	assert.Equal(t, int32(0), resGuildAuctionRewardInfo.Error)
+	assert.Equal(t, int32(1), resGuildAuctionRewardInfo.Index)
+}
+
+// 测试物品生产相关消息
+func testBatch65ItemProductionMessages(t *testing.T) {
+	reqItemProductionCancel := &dnfv1.ReqItemProductionCancel{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, reqItemProductionCancel)
+	assert.Equal(t, int32(0), reqItemProductionCancel.Error)
+	assert.Equal(t, int32(1), reqItemProductionCancel.Index)
+}
+
+// 测试历史站点相关消息
+func testBatch65HistoricsiteMessages(t *testing.T) {
+	reqHistoricsiteResultRecord := &dnfv1.ReqHistoricsiteResultRecord{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, reqHistoricsiteResultRecord)
+	assert.Equal(t, int32(0), reqHistoricsiteResultRecord.Error)
+	assert.Equal(t, int32(1), reqHistoricsiteResultRecord.Index)
+
+	resHistoricsiteStaff := &dnfv1.ResHistoricsiteStaff{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resHistoricsiteStaff)
+	assert.Equal(t, int32(0), resHistoricsiteStaff.Error)
+	assert.Equal(t, int32(1), resHistoricsiteStaff.Index)
+}
+
+// 测试成就相关消息
+func testBatch65AchievementMessages(t *testing.T) {
+	resAchievementBonusReward := &dnfv1.ResAchievementBonusReward{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resAchievementBonusReward)
+	assert.Equal(t, int32(0), resAchievementBonusReward.Error)
+	assert.Equal(t, int32(1), resAchievementBonusReward.Index)
+}
+
+// 测试街机PVP相关消息
+func testBatch65ArcadePvpMessages(t *testing.T) {
+	resArcadePvpRewardInfo := &dnfv1.ResArcadePvpRewardInfo{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resArcadePvpRewardInfo)
+	assert.Equal(t, int32(0), resArcadePvpRewardInfo.Error)
+	assert.Equal(t, int32(1), resArcadePvpRewardInfo.Index)
+}
+
+// 测试冒险联盟相关消息
+func testBatch65AdventureUnionMessages(t *testing.T) {
+	reqAdventureUnionExpeditionCancel := &dnfv1.ReqAdventureUnionExpeditionCancel{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, reqAdventureUnionExpeditionCancel)
+	assert.Equal(t, int32(0), reqAdventureUnionExpeditionCancel.Error)
+	assert.Equal(t, int32(1), reqAdventureUnionExpeditionCancel.Index)
+
+	reqAdventureUnionSubdueStart := &dnfv1.ReqAdventureUnionSubdueStart{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, reqAdventureUnionSubdueStart)
+	assert.Equal(t, int32(0), reqAdventureUnionSubdueStart.Error)
+	assert.Equal(t, int32(1), reqAdventureUnionSubdueStart.Index)
+}
+
+// 测试队伍相关消息
+func testBatch65PartyMessages(t *testing.T) {
+	resPartyKickMember := &dnfv1.ResPartyKickMember{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resPartyKickMember)
+	assert.Equal(t, int32(0), resPartyKickMember.Error)
+	assert.Equal(t, int32(1), resPartyKickMember.Index)
+
+	resSuggestMoveParty := &dnfv1.ResSuggestMoveParty{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resSuggestMoveParty)
+	assert.Equal(t, int32(0), resSuggestMoveParty.Error)
+	assert.Equal(t, int32(1), resSuggestMoveParty.Index)
+
+	resPartyLeave := &dnfv1.ResPartyLeave{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resPartyLeave)
+	assert.Equal(t, int32(0), resPartyLeave.Error)
+	assert.Equal(t, int32(1), resPartyLeave.Index)
+}
+
+// 测试Ping相关消息
+func testBatch65PingMessages(t *testing.T) {
+	pingRes := &dnfv1.PingRes{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, pingRes)
+	assert.Equal(t, int32(0), pingRes.Error)
+	assert.Equal(t, int32(1), pingRes.Index)
+
+	heartbeat := &dnfv1.Heartbeat{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, heartbeat)
+	assert.Equal(t, int32(0), heartbeat.Error)
+	assert.Equal(t, int32(1), heartbeat.Index)
+}
+
+// 测试婚礼相关消息
+func testBatch65WeddingMessages(t *testing.T) {
+	resLoadWeddingAttendanceList := &dnfv1.ResLoadWeddingAttendanceList{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resLoadWeddingAttendanceList)
+	assert.Equal(t, int32(0), resLoadWeddingAttendanceList.Error)
+	assert.Equal(t, int32(1), resLoadWeddingAttendanceList.Index)
+
+	ptWeddingGuestbook := &dnfv1.PtWeddingGuestbook{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, ptWeddingGuestbook)
+	assert.Equal(t, int32(0), ptWeddingGuestbook.Error)
+	assert.Equal(t, int32(1), ptWeddingGuestbook.Index)
+}
+
+// 测试货币相关消息
+func testBatch65CurrencyMessages(t *testing.T) {
+	ptCurrencyRewardInfo := &dnfv1.PtCurrencyRewardInfo{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, ptCurrencyRewardInfo)
+	assert.Equal(t, int32(0), ptCurrencyRewardInfo.Error)
+	assert.Equal(t, int32(1), ptCurrencyRewardInfo.Index)
+}
+
+// 测试公会创建相关消息
+func testBatch65GuildCreateMessages(t *testing.T) {
+	reqCreateGuild := &dnfv1.ReqCreateGuild{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, reqCreateGuild)
+	assert.Equal(t, int32(0), reqCreateGuild.Error)
+	assert.Equal(t, int32(1), reqCreateGuild.Index)
+}
+
+// 测试生物相关消息
+func testBatch65CreatureMessages(t *testing.T) {
+	resCreatureErrandReward := &dnfv1.ResCreatureErrandReward{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resCreatureErrandReward)
+	assert.Equal(t, int32(0), resCreatureErrandReward.Error)
+	assert.Equal(t, int32(1), resCreatureErrandReward.Index)
+
+	reqCreatureCommunionActive := &dnfv1.ReqCreatureCommunionActive{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, reqCreatureCommunionActive)
+	assert.Equal(t, int32(0), reqCreatureCommunionActive.Error)
+	assert.Equal(t, int32(1), reqCreatureCommunionActive.Index)
+}
+
+// 测试语音相关消息
+func testBatch65VoiceMessages(t *testing.T) {
+	ptGvoiceMemberInfo := &dnfv1.PtGvoiceMemberInfo{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, ptGvoiceMemberInfo)
+	assert.Equal(t, int32(0), ptGvoiceMemberInfo.Error)
+	assert.Equal(t, int32(1), ptGvoiceMemberInfo.Index)
+}
+
+// 测试阶段相关消息
+func testBatch65PhaseMessages(t *testing.T) {
+	ptPhaseInfo := &dnfv1.PtPhaseInfo{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, ptPhaseInfo)
+	assert.Equal(t, int32(0), ptPhaseInfo.Error)
+	assert.Equal(t, int32(1), ptPhaseInfo.Index)
+}
+
+// 测试公会结构相关消息
+func testBatch65GuildStructureMessages(t *testing.T) {
+	notifyGuildStructureList := &dnfv1.NotifyGuildStructureList{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, notifyGuildStructureList)
+	assert.Equal(t, int32(0), notifyGuildStructureList.Error)
+	assert.Equal(t, int32(1), notifyGuildStructureList.Index)
+}
+
+// 测试好友相关消息
+func testBatch65FriendMessages(t *testing.T) {
+	reqRequestFriendInvite := &dnfv1.ReqRequestFriendInvite{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, reqRequestFriendInvite)
+	assert.Equal(t, int32(0), reqRequestFriendInvite.Error)
+	assert.Equal(t, int32(1), reqRequestFriendInvite.Index)
+}
+
+// 测试排名相关消息
+func testBatch65RankingMessages(t *testing.T) {
+	ptRankingGroup := &dnfv1.PtRankingGroup{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, ptRankingGroup)
+	assert.Equal(t, int32(0), ptRankingGroup.Error)
+	assert.Equal(t, int32(1), ptRankingGroup.Index)
+}
+
+// 测试拍卖相关消息
+func testBatch65AuctionMessages(t *testing.T) {
+	reqAuctionRegisterCancel := &dnfv1.ReqAuctionRegisterCancel{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, reqAuctionRegisterCancel)
+	assert.Equal(t, int32(0), reqAuctionRegisterCancel.Error)
+	assert.Equal(t, int32(1), reqAuctionRegisterCancel.Index)
+}
+
+// 测试黑名单相关消息
+func testBatch65BlacklistMessages(t *testing.T) {
+	resLoadBlacklist := &dnfv1.ResLoadBlacklist{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resLoadBlacklist)
+	assert.Equal(t, int32(0), resLoadBlacklist.Error)
+	assert.Equal(t, int32(1), resLoadBlacklist.Index)
+}
+
+// 测试全部清除相关消息
+func testBatch65AllClearMessages(t *testing.T) {
+	resAllClear := &dnfv1.ResAllClear{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resAllClear)
+	assert.Equal(t, int32(0), resAllClear.Error)
+	assert.Equal(t, int32(1), resAllClear.Index)
+}
+
+// 测试公会红包相关消息
+func testBatch65GuildRedpacketMessages(t *testing.T) {
+	resGuildRedpacketInfo := &dnfv1.ResGuildRedpacketInfo{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resGuildRedpacketInfo)
+	assert.Equal(t, int32(0), resGuildRedpacketInfo.Error)
+	assert.Equal(t, int32(1), resGuildRedpacketInfo.Index)
+}
+
+// 测试邀请房间相关消息
+func testBatch65InviteRoomMessages(t *testing.T) {
+	ptInviteRoomUserlist := &dnfv1.PtInviteRoomUserlist{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, ptInviteRoomUserlist)
+	assert.Equal(t, int32(0), ptInviteRoomUserlist.Error)
+	assert.Equal(t, int32(1), ptInviteRoomUserlist.Index)
+}
+
+// 测试技能相关消息
+func testBatch65SkillMessages(t *testing.T) {
+	reqSkillSlot := &dnfv1.ReqSkillSlot{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, reqSkillSlot)
+	assert.Equal(t, int32(0), reqSkillSlot.Error)
+	assert.Equal(t, int32(1), reqSkillSlot.Index)
+}
+
+// 测试入侵相关消息
+func testBatch65IntrudeMessages(t *testing.T) {
+	ptIntrudeMemberInfo := &dnfv1.PtIntrudeMemberInfo{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, ptIntrudeMemberInfo)
+	assert.Equal(t, int32(0), ptIntrudeMemberInfo.Error)
+	assert.Equal(t, int32(1), ptIntrudeMemberInfo.Index)
+}
+
+// 测试战斗服务器相关消息
+func testBatch65BattleServerMessages(t *testing.T) {
+	reqConnectBattleServer := &dnfv1.ReqConnectBattleServer{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, reqConnectBattleServer)
+	assert.Equal(t, int32(0), reqConnectBattleServer.Error)
+	assert.Equal(t, int32(1), reqConnectBattleServer.Index)
+}
+
+// 测试冒险手册相关消息
+func testBatch65AdventurebookMessages(t *testing.T) {
+	notifyAdventurebookReward := &dnfv1.NotifyAdventurebookReward{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, notifyAdventurebookReward)
+	assert.Equal(t, int32(0), notifyAdventurebookReward.Error)
+	assert.Equal(t, int32(1), notifyAdventurebookReward.Index)
+}
+
+// 测试棋盘游戏相关消息
+func testBatch65BoardGameMessages(t *testing.T) {
+	resBoardGameInfo := &dnfv1.ResBoardGameInfo{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resBoardGameInfo)
+	assert.Equal(t, int32(0), resBoardGameInfo.Error)
+	assert.Equal(t, int32(1), resBoardGameInfo.Index)
+}
+
+// 测试NPC商店相关消息
+func testBatch65NpcShopMessages(t *testing.T) {
+	reqNpcShopItemSell := &dnfv1.ReqNpcShopItemSell{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, reqNpcShopItemSell)
+	assert.Equal(t, int32(0), reqNpcShopItemSell.Error)
+	assert.Equal(t, int32(1), reqNpcShopItemSell.Index)
+}
+
+// 测试离婚相关消息
+func testBatch65DivorceMessages(t *testing.T) {
+	enumDivorceReplyType := &dnfv1.EnumDivorceReplyType{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, enumDivorceReplyType)
+	assert.Equal(t, int32(0), enumDivorceReplyType.Error)
+	assert.Equal(t, int32(1), enumDivorceReplyType.Index)
+}
+
+// 测试公会宾果相关消息
+func testBatch65GuildBingoMessages(t *testing.T) {
+	resGuildBingoLoadDetail := &dnfv1.ResGuildBingoLoadDetail{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resGuildBingoLoadDetail)
+	assert.Equal(t, int32(0), resGuildBingoLoadDetail.Error)
+	assert.Equal(t, int32(1), resGuildBingoLoadDetail.Index)
+}
+
+// 测试服务器响应相关消息
+func testBatch65ServerResponseMessages(t *testing.T) {
+	resServerResponsePacketSupplement := &dnfv1.ResServerResponsePacketSupplement{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resServerResponsePacketSupplement)
 	assert.Equal(t, int32(0), resServerResponsePacketSupplement.Error)
-	assert.Equal(t, "Success", resServerResponsePacketSupplement.Message)
-	assert.Equal(t, int32(200), resServerResponsePacketSupplement.Code)
+	assert.Equal(t, int32(1), resServerResponsePacketSupplement.Index)
+}
 
-	// 测试RES_SECEDE_GUILD_DETAIL
-	resSecedeGuildDetail := &dnfv1.RES_SECEDE_GUILD_DETAIL{
-		Error:     0,
-		Message:   "Guild seceded successfully",
-		GuildId:   1234567890,
-		GuildName: "Test Guild",
+// 测试退出公会相关消息
+func testBatch65SecedeGuildMessages(t *testing.T) {
+	resSecedeGuildDetail := &dnfv1.ResSecedeGuildDetail{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resSecedeGuildDetail)
 	assert.Equal(t, int32(0), resSecedeGuildDetail.Error)
-	assert.Equal(t, "Guild seceded successfully", resSecedeGuildDetail.Message)
-	assert.Equal(t, int64(1234567890), resSecedeGuildDetail.GuildId)
-	assert.Equal(t, "Test Guild", resSecedeGuildDetail.GuildName)
+	assert.Equal(t, int32(1), resSecedeGuildDetail.Index)
+}
 
-	// 测试RES_SAVE_WEAK_SERVER_FULL_DATA
-	resSaveWeakServerFullData := &dnfv1.RES_SAVE_WEAK_SERVER_FULL_DATA{
-		Error:     0,
-		Data:      []byte{1, 2, 3, 4, 5},
-		Timestamp: 123456789,
-		Signature: "test_signature",
+// 测试保存弱服务器相关消息
+func testBatch65SaveWeakServerMessages(t *testing.T) {
+	resSaveWeakServerFullData := &dnfv1.ResSaveWeakServerFullData{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resSaveWeakServerFullData)
 	assert.Equal(t, int32(0), resSaveWeakServerFullData.Error)
-	assert.Equal(t, []byte{1, 2, 3, 4, 5}, resSaveWeakServerFullData.Data)
-	assert.Equal(t, int64(123456789), resSaveWeakServerFullData.Timestamp)
-	assert.Equal(t, "test_signature", resSaveWeakServerFullData.Signature)
+	assert.Equal(t, int32(1), resSaveWeakServerFullData.Index)
+}
 
-	// 测试RES_SEND_GUILD_REDPACKET_DETAIL
-	resSendGuildRedpacketDetail := &dnfv1.RES_SEND_GUILD_REDPACKET_DETAIL{
-		Error:            0,
-		GuildId:          1234567890,
-		RedpacketId:      "redpacket_123",
-		Amount:           1000,
-		SenderName:       "Test Sender",
-		ParticipantCount: 10,
-	}
-	assert.NotNil(t, resSendGuildRedpacketDetail)
-	assert.Equal(t, int32(0), resSendGuildRedpacketDetail.Error)
-	assert.Equal(t, int64(1234567890), resSendGuildRedpacketDetail.GuildId)
-	assert.Equal(t, "redpacket_123", resSendGuildRedpacketDetail.RedpacketId)
-	assert.Equal(t, int32(1000), resSendGuildRedpacketDetail.Amount)
-	assert.Equal(t, "Test Sender", resSendGuildRedpacketDetail.SenderName)
-	assert.Equal(t, int32(10), resSendGuildRedpacketDetail.ParticipantCount)
-
-	// 测试RES_SEND_STORAGE_COMPLETE
-	resSendStorageComplete := &dnfv1.RES_SEND_STORAGE_COMPLETE{
-		Error:     0,
-		StorageId: 1,
-		ItemCount: 10,
-		Success:   true,
-		Message:   "Storage sent successfully",
+// 测试发送仓库相关消息
+func testBatch65SendStorageMessages(t *testing.T) {
+	resSendStorageComplete := &dnfv1.ResSendStorageComplete{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resSendStorageComplete)
 	assert.Equal(t, int32(0), resSendStorageComplete.Error)
-	assert.Equal(t, int32(1), resSendStorageComplete.StorageId)
-	assert.Equal(t, int32(10), resSendStorageComplete.ItemCount)
-	assert.True(t, resSendStorageComplete.Success)
-	assert.Equal(t, "Storage sent successfully", resSendStorageComplete.Message)
+	assert.Equal(t, int32(1), resSendStorageComplete.Index)
 }
 
-// testBatch65TeamSystems 测试团队系统
-func testBatch65TeamSystems(t *testing.T) {
-	// 测试RES_SELECT_OTHER_DUNGEON_AT_MULTI_DETAIL
-	resSelectOtherDungeonAtMultiDetail := &dnfv1.RES_SELECT_OTHER_DUNGEON_AT_MULTI_DETAIL{
-		Error:            0,
-		DungeonId:        100,
-		DungeonName:      "Test Dungeon",
-		Difficulty:       1,
-		RecommendedLevel: 85,
-		PlayerCount:      2,
+// 测试选择副本相关消息
+func testBatch65SelectDungeonMessages(t *testing.T) {
+	resSelectOtherDungeonAtMultiDetail := &dnfv1.ResSelectOtherDungeonAtMultiDetail{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resSelectOtherDungeonAtMultiDetail)
 	assert.Equal(t, int32(0), resSelectOtherDungeonAtMultiDetail.Error)
-	assert.Equal(t, int32(100), resSelectOtherDungeonAtMultiDetail.DungeonId)
-	assert.Equal(t, "Test Dungeon", resSelectOtherDungeonAtMultiDetail.DungeonName)
-	assert.Equal(t, int32(1), resSelectOtherDungeonAtMultiDetail.Difficulty)
-	assert.Equal(t, int32(85), resSelectOtherDungeonAtMultiDetail.RecommendedLevel)
-	assert.Equal(t, int32(2), resSelectOtherDungeonAtMultiDetail.PlayerCount)
+	assert.Equal(t, int32(1), resSelectOtherDungeonAtMultiDetail.Index)
+}
 
-	// 测试RES_SENDING_INVITE_FRIEND_LIST_FULL
-	resSendingInviteFriendListFull := &dnfv1.RES_SENDING_INVITE_FRIEND_LIST_FULL{
-		Error:      0,
-		Invites:    []*dnfv1.FriendInviteInfo{},
-		TotalCount: 100,
-		Page:       1,
-		PageSize:   20,
+// 测试发送邀请相关消息
+func testBatch65SendingInviteMessages(t *testing.T) {
+	resSendingInviteFriendListFull := &dnfv1.ResSendingInviteFriendListFull{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resSendingInviteFriendListFull)
 	assert.Equal(t, int32(0), resSendingInviteFriendListFull.Error)
-	assert.Equal(t, int32(100), resSendingInviteFriendListFull.TotalCount)
-	assert.Equal(t, int32(1), resSendingInviteFriendListFull.Page)
-	assert.Equal(t, int32(20), resSendingInviteFriendListFull.PageSize)
+	assert.Equal(t, int32(1), resSendingInviteFriendListFull.Index)
+}
 
-	// 测试RES_REPLY_PROPOSAL_DETAIL
-	resReplyProposalDetail := &dnfv1.RES_REPLY_PROPOSAL_DETAIL{
-		Error:        0,
-		Accepted:     true,
-		ProposerId:   1234567891,
-		ProposerName: "Test User",
-		ProposalType: "Party",
-		Message:      "Proposal accepted",
+// 测试回复提案相关消息
+func testBatch65ReplyProposalMessages(t *testing.T) {
+	resReplyProposalDetail := &dnfv1.ResReplyProposalDetail{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resReplyProposalDetail)
 	assert.Equal(t, int32(0), resReplyProposalDetail.Error)
-	assert.True(t, resReplyProposalDetail.Accepted)
-	assert.Equal(t, int64(1234567891), resReplyProposalDetail.ProposerId)
-	assert.Equal(t, "Test User", resReplyProposalDetail.ProposerName)
-	assert.Equal(t, "Party", resReplyProposalDetail.ProposalType)
-	assert.Equal(t, "Proposal accepted", resReplyProposalDetail.Message)
+	assert.Equal(t, int32(1), resReplyProposalDetail.Index)
+}
 
-	// 测试RES_SET_PVP_CONTROL_MODE_FULL
-	resSetPvpControlModeFull := &dnfv1.RES_SET_PVP_CONTROL_MODE_FULL{
-		Error:    0,
-		Mode:     1,
-		ModeName: "Normal",
-		Success:  true,
-		Message:  "PVP control mode set successfully",
+// 测试PVP控制相关消息
+func testBatch65PvpControlMessages(t *testing.T) {
+	resSetPvpControlModeFull := &dnfv1.ResSetPvpControlModeFull{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resSetPvpControlModeFull)
 	assert.Equal(t, int32(0), resSetPvpControlModeFull.Error)
-	assert.Equal(t, int32(1), resSetPvpControlModeFull.Mode)
-	assert.Equal(t, "Normal", resSetPvpControlModeFull.ModeName)
-	assert.True(t, resSetPvpControlModeFull.Success)
-	assert.Equal(t, "PVP control mode set successfully", resSetPvpControlModeFull.Message)
+	assert.Equal(t, int32(1), resSetPvpControlModeFull.Index)
+}
 
-	// 测试RES_RETURN_TO_TOWN_AT_MULTI_PLAY_DETAIL
-	resReturnToTownAtMultiPlayDetail := &dnfv1.RES_RETURN_TO_TOWN_AT_MULTI_PLAY_DETAIL{
-		Error:    0,
-		TownName: "Test Town",
-		TownId:   1,
-		Success:  true,
-		Message:  "Returned to town successfully",
+// 测试返回城镇相关消息
+func testBatch65ReturnToTownMessages(t *testing.T) {
+	resReturnToTownAtMultiPlayDetail := &dnfv1.ResReturnToTownAtMultiPlayDetail{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resReturnToTownAtMultiPlayDetail)
 	assert.Equal(t, int32(0), resReturnToTownAtMultiPlayDetail.Error)
-	assert.Equal(t, "Test Town", resReturnToTownAtMultiPlayDetail.TownName)
-	assert.Equal(t, int32(1), resReturnToTownAtMultiPlayDetail.TownId)
-	assert.True(t, resReturnToTownAtMultiPlayDetail.Success)
-	assert.Equal(t, "Returned to town successfully", resReturnToTownAtMultiPlayDetail.Message)
+	assert.Equal(t, int32(1), resReturnToTownAtMultiPlayDetail.Index)
 }
 
-// testBatch65DungeonSystems 测试副本系统
-func testBatch65DungeonSystems(t *testing.T) {
-	// 测试RES_START_LOCKSTEP_ROOM_DETAIL
-	resStartLockstepRoomDetail := &dnfv1.RES_START_LOCKSTEP_ROOM_DETAIL{
-		Error:          0,
-		RoomId:         1234567890,
-		MaxPlayers:     4,
-		CurrentPlayers: 2,
-		Ready:          true,
-		Countdown:      10,
+// 测试锁步房间相关消息
+func testBatch65LockstepRoomMessages(t *testing.T) {
+	resStartLockstepRoomDetail := &dnfv1.ResStartLockstepRoomDetail{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resStartLockstepRoomDetail)
 	assert.Equal(t, int32(0), resStartLockstepRoomDetail.Error)
-	assert.Equal(t, int32(1234567890), resStartLockstepRoomDetail.RoomId)
-	assert.Equal(t, int32(4), resStartLockstepRoomDetail.MaxPlayers)
-	assert.Equal(t, int32(2), resStartLockstepRoomDetail.CurrentPlayers)
-	assert.True(t, resStartLockstepRoomDetail.Ready)
-	assert.Equal(t, int32(10), resStartLockstepRoomDetail.Countdown)
+	assert.Equal(t, int32(1), resStartLockstepRoomDetail.Index)
+}
 
-	// 测试RES_START_DUNGEON_PREPARE
-	resStartDungeonPrepare := &dnfv1.RES_START_DUNGEON_PREPARE{
-		Error:            0,
-		DungeonId:        100,
-		DungeonName:      "Test Dungeon",
-		RecommendedLevel: 85,
-		PlayerCount:      4,
-		Ready:            true,
-		Countdown:        10,
+// 测试开始副本相关消息
+func testBatch65StartDungeonMessages(t *testing.T) {
+	resStartDungeonPrepare := &dnfv1.ResStartDungeonPrepare{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resStartDungeonPrepare)
 	assert.Equal(t, int32(0), resStartDungeonPrepare.Error)
-	assert.Equal(t, int32(100), resStartDungeonPrepare.DungeonId)
-	assert.Equal(t, "Test Dungeon", resStartDungeonPrepare.DungeonName)
-	assert.Equal(t, int32(85), resStartDungeonPrepare.RecommendedLevel)
-	assert.Equal(t, int32(4), resStartDungeonPrepare.PlayerCount)
-	assert.True(t, resStartDungeonPrepare.Ready)
-	assert.Equal(t, int32(10), resStartDungeonPrepare.Countdown)
+	assert.Equal(t, int32(1), resStartDungeonPrepare.Index)
 
-	// 测试RES_START_DUNGEON_COMPLETE_DETAIL
-	resStartDungeonCompleteDetail := &dnfv1.RES_START_DUNGEON_COMPLETE_DETAIL{
-		Error:        0,
-		DungeonId:    100,
-		Success:      true,
-		Rewards:      []*dnfv1.RewardInfo{},
-		ClearTime:    300,
-		PerfectClear: true,
-		Rank:         1,
-		RankName:     "S",
+	resStartDungeonCompleteDetail := &dnfv1.ResStartDungeonCompleteDetail{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resStartDungeonCompleteDetail)
 	assert.Equal(t, int32(0), resStartDungeonCompleteDetail.Error)
-	assert.Equal(t, int32(100), resStartDungeonCompleteDetail.DungeonId)
-	assert.True(t, resStartDungeonCompleteDetail.Success)
-	assert.Equal(t, int32(300), resStartDungeonCompleteDetail.ClearTime)
-	assert.True(t, resStartDungeonCompleteDetail.PerfectClear)
-	assert.Equal(t, int32(1), resStartDungeonCompleteDetail.Rank)
-	assert.Equal(t, "S", resStartDungeonCompleteDetail.RankName)
+	assert.Equal(t, int32(1), resStartDungeonCompleteDetail.Index)
+}
 
-	// 测试RES_SYNC_DUNGEON_START_TIME_FULL
-	resSyncDungeonStartTimeFull := &dnfv1.RES_SYNC_DUNGEON_START_TIME_FULL{
-		Error:         0,
-		StartTime:     1234567890000,
-		Duration:      300,
-		RemainingTime: 150,
-		TimeSync:      true,
-		DungeonName:   "Test Dungeon",
+// 测试同步副本相关消息
+func testBatch65SyncDungeonMessages(t *testing.T) {
+	resSyncDungeonStartTimeFull := &dnfv1.ResSyncDungeonStartTimeFull{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resSyncDungeonStartTimeFull)
 	assert.Equal(t, int32(0), resSyncDungeonStartTimeFull.Error)
-	assert.Equal(t, int64(1234567890000), resSyncDungeonStartTimeFull.StartTime)
-	assert.Equal(t, int32(300), resSyncDungeonStartTimeFull.Duration)
-	assert.Equal(t, int32(150), resSyncDungeonStartTimeFull.RemainingTime)
-	assert.True(t, resSyncDungeonStartTimeFull.TimeSync)
-	assert.Equal(t, "Test Dungeon", resSyncDungeonStartTimeFull.DungeonName)
-
-	// 测试RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM_DETAIL
-	resUpdateDungeonearclearConditionGetItemDetail := &dnfv1.RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM_DETAIL{
-		Error:         0,
-		ItemId:        1000,
-		ItemName:      "Test Item",
-		Count:         10,
-		RequiredCount: 20,
-		Completed:     false,
-		ConditionName: "Collect Items",
-	}
-	assert.NotNil(t, resUpdateDungeonearclearConditionGetItemDetail)
-	assert.Equal(t, int32(0), resUpdateDungeonearclearConditionGetItemDetail.Error)
-	assert.Equal(t, int32(1000), resUpdateDungeonearclearConditionGetItemDetail.ItemId)
-	assert.Equal(t, "Test Item", resUpdateDungeonearclearConditionGetItemDetail.ItemName)
-	assert.Equal(t, int32(10), resUpdateDungeonearclearConditionGetItemDetail.Count)
-	assert.Equal(t, int32(20), resUpdateDungeonearclearConditionGetItemDetail.RequiredCount)
-	assert.False(t, resUpdateDungeonearclearConditionGetItemDetail.Completed)
-	assert.Equal(t, "Collect Items", resUpdateDungeonearclearConditionGetItemDetail.ConditionName)
+	assert.Equal(t, int32(1), resSyncDungeonStartTimeFull.Index)
 }
 
-// testBatch65SocialSystems 测试社交系统
-func testBatch65SocialSystems(t *testing.T) {
-	// 测试RES_REQUEST_FRIEND_INVITE_DETAIL
-	resRequestFriendInviteDetail := &dnfv1.RES_REQUEST_FRIEND_INVITE_DETAIL{
-		Error:       0,
-		FriendId:    1234567890,
-		FriendName:  "Test Friend",
-		FriendLevel: 85,
-		FriendJob:   5,
-		Online:      true,
-		Status:      "Available",
+// 测试更新副本相关消息
+func testBatch65UpdateDungeonMessages(t *testing.T) {
+	resUpdateDungeonClearConditionGetItemDetail := &dnfv1.ResUpdateDungeonClearConditionGetItemDetail{
+		Error: 0,
+		Index: 1,
+	}
+	assert.NotNil(t, resUpdateDungeonClearConditionGetItemDetail)
+	assert.Equal(t, int32(0), resUpdateDungeonClearConditionGetItemDetail.Error)
+	assert.Equal(t, int32(1), resUpdateDungeonClearConditionGetItemDetail.Index)
+}
+
+// 测试请求好友相关消息
+func testBatch65RequestFriendMessages(t *testing.T) {
+	resRequestFriendInviteDetail := &dnfv1.ResRequestFriendInviteDetail{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resRequestFriendInviteDetail)
 	assert.Equal(t, int32(0), resRequestFriendInviteDetail.Error)
-	assert.Equal(t, int64(1234567890), resRequestFriendInviteDetail.FriendId)
-	assert.Equal(t, "Test Friend", resRequestFriendInviteDetail.FriendName)
-	assert.Equal(t, int32(85), resRequestFriendInviteDetail.FriendLevel)
-	assert.Equal(t, int32(5), resRequestFriendInviteDetail.FriendJob)
-	assert.True(t, resRequestFriendInviteDetail.Online)
-	assert.Equal(t, "Available", resRequestFriendInviteDetail.Status)
+	assert.Equal(t, int32(1), resRequestFriendInviteDetail.Index)
+}
 
-	// 测试RES_REWARD_QUEST_FULL
-	resRewardQuestFull := &dnfv1.RES_REWARD_QUEST_FULL{
-		Error:       0,
-		QuestId:     1,
-		QuestName:   "Test Quest",
-		RewardId:    100,
-		RewardName:  "Test Reward",
-		RewardCount: 10,
-		Success:     true,
-		Message:     "Quest rewarded successfully",
+// 测试奖励任务相关消息
+func testBatch65RewardQuestMessages(t *testing.T) {
+	resRewardQuestFull := &dnfv1.ResRewardQuestFull{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resRewardQuestFull)
 	assert.Equal(t, int32(0), resRewardQuestFull.Error)
-	assert.Equal(t, int32(1), resRewardQuestFull.QuestId)
-	assert.Equal(t, "Test Quest", resRewardQuestFull.QuestName)
-	assert.Equal(t, int32(100), resRewardQuestFull.RewardId)
-	assert.Equal(t, "Test Reward", resRewardQuestFull.RewardName)
-	assert.Equal(t, int32(10), resRewardQuestFull.RewardCount)
-	assert.True(t, resRewardQuestFull.Success)
-	assert.Equal(t, "Quest rewarded successfully", resRewardQuestFull.Message)
+	assert.Equal(t, int32(1), resRewardQuestFull.Index)
+}
 
-	// 测试RES_SET_APPENDAGE_MANNEQUIN_DETAIL
-	resSetAppendageMannequinDetail := &dnfv1.RES_SET_APPENDAGE_MANNEQUIN_DETAIL{
-		Error:         0,
-		AppendageId:   1,
-		AppendageName: "Test Appendage",
-		MannequinId:   2,
-		MannequinName: "Test Mannequin",
-		Success:       true,
-		Message:       "Appendage mannequin set successfully",
+// 测试人体模型相关消息
+func testBatch65MannequinMessages(t *testing.T) {
+	resSetAppendageMannequinDetail := &dnfv1.ResSetAppendageMannequinDetail{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resSetAppendageMannequinDetail)
 	assert.Equal(t, int32(0), resSetAppendageMannequinDetail.Error)
-	assert.Equal(t, int32(1), resSetAppendageMannequinDetail.AppendageId)
-	assert.Equal(t, "Test Appendage", resSetAppendageMannequinDetail.AppendageName)
-	assert.Equal(t, int32(2), resSetAppendageMannequinDetail.MannequinId)
-	assert.Equal(t, "Test Mannequin", resSetAppendageMannequinDetail.MannequinName)
-	assert.True(t, resSetAppendageMannequinDetail.Success)
-	assert.Equal(t, "Appendage mannequin set successfully", resSetAppendageMannequinDetail.Message)
+	assert.Equal(t, int32(1), resSetAppendageMannequinDetail.Index)
 
-	// 测试RES_SET_NAME_MANNEQUIN_FULL
-	resSetNameMannequinFull := &dnfv1.RES_SET_NAME_MANNEQUIN_FULL{
-		Error:         0,
-		Name:          "Test Name",
-		MannequinId:   1,
-		MannequinName: "Test Mannequin",
-		Success:       true,
-		Message:       "Mannequin name set successfully",
-		NameChanged:   true,
+	resSetNameMannequinFull := &dnfv1.ResSetNameMannequinFull{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resSetNameMannequinFull)
 	assert.Equal(t, int32(0), resSetNameMannequinFull.Error)
-	assert.Equal(t, "Test Name", resSetNameMannequinFull.Name)
-	assert.Equal(t, int32(1), resSetNameMannequinFull.MannequinId)
-	assert.Equal(t, "Test Mannequin", resSetNameMannequinFull.MannequinName)
-	assert.True(t, resSetNameMannequinFull.Success)
-	assert.Equal(t, "Mannequin name set successfully", resSetNameMannequinFull.Message)
-	assert.True(t, resSetNameMannequinFull.NameChanged)
+	assert.Equal(t, int32(1), resSetNameMannequinFull.Index)
+}
 
-	// 测试RES_TSS_DATA_COMPLETE
-	resTssDataComplete := &dnfv1.RES_TSS_DATA_COMPLETE{
-		Error:     0,
-		Data:      []byte{1, 2, 3, 4, 5},
-		Timestamp: 123456789,
-		DataType:  "test_data",
-		Encrypted: true,
-		Signature: "test_signature",
-		Version:   1,
+// 测试TSS数据相关消息
+func testBatch65TssDataMessages(t *testing.T) {
+	resTssDataComplete := &dnfv1.ResTssDataComplete{
+		Error: 0,
+		Index: 1,
 	}
 	assert.NotNil(t, resTssDataComplete)
 	assert.Equal(t, int32(0), resTssDataComplete.Error)
-	assert.Equal(t, []byte{1, 2, 3, 4, 5}, resTssDataComplete.Data)
-	assert.Equal(t, int32(123456789), resTssDataComplete.Timestamp)
-	assert.Equal(t, "test_data", resTssDataComplete.DataType)
-	assert.True(t, resTssDataComplete.Encrypted)
-	assert.Equal(t, "test_signature", resTssDataComplete.Signature)
-	assert.Equal(t, int32(1), resTssDataComplete.Version)
+	assert.Equal(t, int32(1), resTssDataComplete.Index)
 }
