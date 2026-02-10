@@ -56,6 +56,31 @@ public final class DungeonSystemsProto extends com.google.protobuf.GeneratedFile
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_RewardInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_START_LOCKSTEP_ROOM_DETAIL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_START_LOCKSTEP_ROOM_DETAIL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_START_DUNGEON_PREPARE_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_START_DUNGEON_PREPARE_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_START_DUNGEON_COMPLETE_DETAIL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_START_DUNGEON_COMPLETE_DETAIL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_SYNC_DUNGEON_START_TIME_FULL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_SYNC_DUNGEON_START_TIME_FULL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM_DETAIL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM_DETAIL_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -86,7 +111,37 @@ public final class DungeonSystemsProto extends com.google.protobuf.GeneratedFile
       "ount\022\034\n\tcompleted\030\004 \001(\010R\tcompleted\"n\n\nRe" +
       "wardInfo\022\026\n\006itemId\030\001 \001(\005R\006itemId\022\032\n\010item" +
       "Name\030\002 \001(\tR\010itemName\022\024\n\005count\030\003 \001(\005R\005cou" +
-      "nt\022\026\n\006rarity\030\004 \001(\005R\006rarityB\256\001\n com.dnfm." +
+      "nt\022\026\n\006rarity\030\004 \001(\005R\006rarity\"\312\001\n\036RES_START" +
+      "_LOCKSTEP_ROOM_DETAIL\022\024\n\005error\030\001 \001(\005R\005er" +
+      "ror\022\026\n\006roomId\030\002 \001(\005R\006roomId\022\036\n\nmaxPlayer" +
+      "s\030\003 \001(\005R\nmaxPlayers\022&\n\016currentPlayers\030\004 " +
+      "\001(\005R\016currentPlayers\022\024\n\005ready\030\005 \001(\010R\005read" +
+      "y\022\034\n\tcountdown\030\006 \001(\005R\tcountdown\"\363\001\n\031RES_" +
+      "START_DUNGEON_PREPARE\022\024\n\005error\030\001 \001(\005R\005er" +
+      "ror\022\034\n\tdungeonId\030\002 \001(\005R\tdungeonId\022 \n\013dun" +
+      "geonName\030\003 \001(\tR\013dungeonName\022*\n\020recommend" +
+      "edLevel\030\004 \001(\005R\020recommendedLevel\022 \n\013playe" +
+      "rCount\030\005 \001(\005R\013playerCount\022\024\n\005ready\030\006 \001(\010" +
+      "R\005ready\022\034\n\tcountdown\030\007 \001(\005R\tcountdown\"\221\002" +
+      "\n!RES_START_DUNGEON_COMPLETE_DETAIL\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\034\n\tdungeonId\030\002 \001(\005R\tdu" +
+      "ngeonId\022\030\n\007success\030\003 \001(\010R\007success\022,\n\007rew" +
+      "ards\030\004 \003(\0132\022.dnf.v1.RewardInfoR\007rewards\022" +
+      "\034\n\tclearTime\030\005 \001(\005R\tclearTime\022\"\n\014perfect" +
+      "Clear\030\006 \001(\010R\014perfectClear\022\022\n\004rank\030\007 \001(\005R" +
+      "\004rank\022\032\n\010rankName\030\010 \001(\tR\010rankName\"\326\001\n RE" +
+      "S_SYNC_DUNGEON_START_TIME_FULL\022\024\n\005error\030" +
+      "\001 \001(\005R\005error\022\034\n\tstartTime\030\002 \001(\003R\tstartTi" +
+      "me\022\032\n\010duration\030\003 \001(\005R\010duration\022$\n\rremain" +
+      "ingTime\030\004 \001(\005R\rremainingTime\022\032\n\010timeSync" +
+      "\030\005 \001(\010R\010timeSync\022 \n\013dungeonName\030\006 \001(\tR\013d" +
+      "ungeonName\"\375\001\n1RES_UPDATE_DUNGEONCLEAR_C" +
+      "ONDITION_GET_ITEM_DETAIL\022\024\n\005error\030\001 \001(\005R" +
+      "\005error\022\026\n\006itemId\030\002 \001(\005R\006itemId\022\032\n\010itemNa" +
+      "me\030\003 \001(\tR\010itemName\022\024\n\005count\030\004 \001(\005R\005count" +
+      "\022$\n\rrequiredCount\030\005 \001(\005R\rrequiredCount\022\034" +
+      "\n\tcompleted\030\006 \001(\010R\tcompleted\022$\n\rconditio" +
+      "nName\030\007 \001(\tR\rconditionNameB\256\001\n com.dnfm." +
       "mina.protobuf.generatedB\023DungeonSystemsP" +
       "rotoP\001Z<github.com/pixb/DnfGameServer/dn" +
       "f-go-client/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf" +
@@ -135,6 +190,36 @@ public final class DungeonSystemsProto extends com.google.protobuf.GeneratedFile
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_RewardInfo_descriptor,
         new java.lang.String[] { "ItemId", "ItemName", "Count", "Rarity", });
+    internal_static_dnf_v1_RES_START_LOCKSTEP_ROOM_DETAIL_descriptor =
+      getDescriptor().getMessageType(6);
+    internal_static_dnf_v1_RES_START_LOCKSTEP_ROOM_DETAIL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_START_LOCKSTEP_ROOM_DETAIL_descriptor,
+        new java.lang.String[] { "Error", "RoomId", "MaxPlayers", "CurrentPlayers", "Ready", "Countdown", });
+    internal_static_dnf_v1_RES_START_DUNGEON_PREPARE_descriptor =
+      getDescriptor().getMessageType(7);
+    internal_static_dnf_v1_RES_START_DUNGEON_PREPARE_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_START_DUNGEON_PREPARE_descriptor,
+        new java.lang.String[] { "Error", "DungeonId", "DungeonName", "RecommendedLevel", "PlayerCount", "Ready", "Countdown", });
+    internal_static_dnf_v1_RES_START_DUNGEON_COMPLETE_DETAIL_descriptor =
+      getDescriptor().getMessageType(8);
+    internal_static_dnf_v1_RES_START_DUNGEON_COMPLETE_DETAIL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_START_DUNGEON_COMPLETE_DETAIL_descriptor,
+        new java.lang.String[] { "Error", "DungeonId", "Success", "Rewards", "ClearTime", "PerfectClear", "Rank", "RankName", });
+    internal_static_dnf_v1_RES_SYNC_DUNGEON_START_TIME_FULL_descriptor =
+      getDescriptor().getMessageType(9);
+    internal_static_dnf_v1_RES_SYNC_DUNGEON_START_TIME_FULL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_SYNC_DUNGEON_START_TIME_FULL_descriptor,
+        new java.lang.String[] { "Error", "StartTime", "Duration", "RemainingTime", "TimeSync", "DungeonName", });
+    internal_static_dnf_v1_RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM_DETAIL_descriptor =
+      getDescriptor().getMessageType(10);
+    internal_static_dnf_v1_RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM_DETAIL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM_DETAIL_descriptor,
+        new java.lang.String[] { "Error", "ItemId", "ItemName", "Count", "RequiredCount", "Completed", "ConditionName", });
     descriptor.resolveAllFeaturesImmutable();
     com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor();
     com.dnfm.mina.protobuf.generated.OptionTypesProto.getDescriptor();

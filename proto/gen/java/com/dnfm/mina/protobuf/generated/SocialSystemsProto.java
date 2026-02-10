@@ -51,6 +51,31 @@ public final class SocialSystemsProto extends com.google.protobuf.GeneratedFile 
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_RES_TSS_DATA_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_REQUEST_FRIEND_INVITE_DETAIL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_REQUEST_FRIEND_INVITE_DETAIL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_REWARD_QUEST_FULL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_REWARD_QUEST_FULL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_SET_APPENDAGE_MANNEQUIN_DETAIL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_SET_APPENDAGE_MANNEQUIN_DETAIL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_SET_NAME_MANNEQUIN_FULL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_SET_NAME_MANNEQUIN_FULL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_TSS_DATA_COMPLETE_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_TSS_DATA_COMPLETE_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -75,11 +100,41 @@ public final class SocialSystemsProto extends com.google.protobuf.GeneratedFile 
       "ame\022 \n\013mannequinId\030\003 \001(\005R\013mannequinId\"V\n" +
       "\014RES_TSS_DATA\022\024\n\005error\030\001 \001(\005R\005error\022\022\n\004d" +
       "ata\030\002 \001(\014R\004data\022\034\n\ttimestamp\030\003 \001(\005R\ttime" +
-      "stampB\255\001\n com.dnfm.mina.protobuf.generat" +
-      "edB\022SocialSystemsProtoP\001Z<github.com/pix" +
-      "b/DnfGameServer/dnf-go-client/gen/dnf/v1" +
-      ";dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\" +
-      "GPBMetadata\352\002\007Dnf::V1b\006proto3"
+      "stamp\"\344\001\n RES_REQUEST_FRIEND_INVITE_DETA" +
+      "IL\022\024\n\005error\030\001 \001(\005R\005error\022\032\n\010friendId\030\002 \001" +
+      "(\003R\010friendId\022\036\n\nfriendName\030\003 \001(\tR\nfriend" +
+      "Name\022 \n\013friendLevel\030\004 \001(\005R\013friendLevel\022\034" +
+      "\n\tfriendJob\030\005 \001(\005R\tfriendJob\022\026\n\006online\030\006" +
+      " \001(\010R\006online\022\026\n\006status\030\007 \001(\tR\006status\"\367\001\n" +
+      "\025RES_REWARD_QUEST_FULL\022\024\n\005error\030\001 \001(\005R\005e" +
+      "rror\022\030\n\007questId\030\002 \001(\005R\007questId\022\034\n\tquestN" +
+      "ame\030\003 \001(\tR\tquestName\022\032\n\010rewardId\030\004 \001(\005R\010" +
+      "rewardId\022\036\n\nrewardName\030\005 \001(\tR\nrewardName" +
+      "\022 \n\013rewardCount\030\006 \001(\005R\013rewardCount\022\030\n\007su" +
+      "ccess\030\007 \001(\010R\007success\022\030\n\007message\030\010 \001(\tR\007m" +
+      "essage\"\376\001\n\"RES_SET_APPENDAGE_MANNEQUIN_D" +
+      "ETAIL\022\024\n\005error\030\001 \001(\005R\005error\022 \n\013appendage" +
+      "Id\030\002 \001(\005R\013appendageId\022$\n\rappendageName\030\003" +
+      " \001(\tR\rappendageName\022 \n\013mannequinId\030\004 \001(\005" +
+      "R\013mannequinId\022$\n\rmannequinName\030\005 \001(\tR\rma" +
+      "nnequinName\022\030\n\007success\030\006 \001(\010R\007success\022\030\n" +
+      "\007message\030\007 \001(\tR\007message\"\345\001\n\033RES_SET_NAME" +
+      "_MANNEQUIN_FULL\022\024\n\005error\030\001 \001(\005R\005error\022\022\n" +
+      "\004name\030\002 \001(\tR\004name\022 \n\013mannequinId\030\003 \001(\005R\013" +
+      "mannequinId\022$\n\rmannequinName\030\004 \001(\tR\rmann" +
+      "equinName\022\030\n\007success\030\005 \001(\010R\007success\022\030\n\007m" +
+      "essage\030\006 \001(\tR\007message\022 \n\013nameChanged\030\007 \001" +
+      "(\010R\013nameChanged\"\321\001\n\025RES_TSS_DATA_COMPLET" +
+      "E\022\024\n\005error\030\001 \001(\005R\005error\022\022\n\004data\030\002 \001(\014R\004d" +
+      "ata\022\034\n\ttimestamp\030\003 \001(\005R\ttimestamp\022\032\n\010dat" +
+      "aType\030\004 \001(\tR\010dataType\022\034\n\tencrypted\030\005 \001(\010" +
+      "R\tencrypted\022\034\n\tsignature\030\006 \001(\tR\tsignatur" +
+      "e\022\030\n\007version\030\007 \001(\005R\007versionB\255\001\n com.dnfm" +
+      ".mina.protobuf.generatedB\022SocialSystemsP" +
+      "rotoP\001Z<github.com/pixb/DnfGameServer/dn" +
+      "f-go-client/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf" +
+      ".V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf:" +
+      ":V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -117,6 +172,36 @@ public final class SocialSystemsProto extends com.google.protobuf.GeneratedFile 
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_RES_TSS_DATA_descriptor,
         new java.lang.String[] { "Error", "Data", "Timestamp", });
+    internal_static_dnf_v1_RES_REQUEST_FRIEND_INVITE_DETAIL_descriptor =
+      getDescriptor().getMessageType(5);
+    internal_static_dnf_v1_RES_REQUEST_FRIEND_INVITE_DETAIL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_REQUEST_FRIEND_INVITE_DETAIL_descriptor,
+        new java.lang.String[] { "Error", "FriendId", "FriendName", "FriendLevel", "FriendJob", "Online", "Status", });
+    internal_static_dnf_v1_RES_REWARD_QUEST_FULL_descriptor =
+      getDescriptor().getMessageType(6);
+    internal_static_dnf_v1_RES_REWARD_QUEST_FULL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_REWARD_QUEST_FULL_descriptor,
+        new java.lang.String[] { "Error", "QuestId", "QuestName", "RewardId", "RewardName", "RewardCount", "Success", "Message", });
+    internal_static_dnf_v1_RES_SET_APPENDAGE_MANNEQUIN_DETAIL_descriptor =
+      getDescriptor().getMessageType(7);
+    internal_static_dnf_v1_RES_SET_APPENDAGE_MANNEQUIN_DETAIL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_SET_APPENDAGE_MANNEQUIN_DETAIL_descriptor,
+        new java.lang.String[] { "Error", "AppendageId", "AppendageName", "MannequinId", "MannequinName", "Success", "Message", });
+    internal_static_dnf_v1_RES_SET_NAME_MANNEQUIN_FULL_descriptor =
+      getDescriptor().getMessageType(8);
+    internal_static_dnf_v1_RES_SET_NAME_MANNEQUIN_FULL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_SET_NAME_MANNEQUIN_FULL_descriptor,
+        new java.lang.String[] { "Error", "Name", "MannequinId", "MannequinName", "Success", "Message", "NameChanged", });
+    internal_static_dnf_v1_RES_TSS_DATA_COMPLETE_descriptor =
+      getDescriptor().getMessageType(9);
+    internal_static_dnf_v1_RES_TSS_DATA_COMPLETE_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_TSS_DATA_COMPLETE_descriptor,
+        new java.lang.String[] { "Error", "Data", "Timestamp", "DataType", "Encrypted", "Signature", "Version", });
     descriptor.resolveAllFeaturesImmutable();
     com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor();
     com.dnfm.mina.protobuf.generated.OptionTypesProto.getDescriptor();

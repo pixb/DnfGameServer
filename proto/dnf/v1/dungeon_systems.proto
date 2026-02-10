@@ -47,3 +47,53 @@ message RewardInfo {
   int32 count = 3;
   int32 rarity = 4;
 }
+
+// 副本系统补充类型
+message RES_START_LOCKSTEP_ROOM_DETAIL {
+  int32 error = 1;
+  int32 roomId = 2;
+  int32 maxPlayers = 3;
+  int32 currentPlayers = 4;
+  bool ready = 5;
+  int32 countdown = 6;
+}
+
+message RES_START_DUNGEON_PREPARE {
+  int32 error = 1;
+  int32 dungeonId = 2;
+  string dungeonName = 3;
+  int32 recommendedLevel = 4;
+  int32 playerCount = 5;
+  bool ready = 6;
+  int32 countdown = 7;
+}
+
+message RES_START_DUNGEON_COMPLETE_DETAIL {
+  int32 error = 1;
+  int32 dungeonId = 2;
+  bool success = 3;
+  repeated RewardInfo rewards = 4;
+  int32 clearTime = 5;
+  bool perfectClear = 6;
+  int32 rank = 7;
+  string rankName = 8;
+}
+
+message RES_SYNC_DUNGEON_START_TIME_FULL {
+  int32 error = 1;
+  int64 startTime = 2;
+  int32 duration = 3;
+  int32 remainingTime = 4;
+  bool timeSync = 5;
+  string dungeonName = 6;
+}
+
+message RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM_DETAIL {
+  int32 error = 1;
+  int32 itemId = 2;
+  string itemName = 3;
+  int32 count = 4;
+  int32 requiredCount = 5;
+  bool completed = 6;
+  string conditionName = 7;
+}

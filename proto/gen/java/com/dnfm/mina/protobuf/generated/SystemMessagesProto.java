@@ -51,6 +51,31 @@ public final class SystemMessagesProto extends com.google.protobuf.GeneratedFile
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_RES_SEND_STORAGE_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_SERVER_RESPONSE_PACKET_SUPPLEMENT_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_SERVER_RESPONSE_PACKET_SUPPLEMENT_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_SECEDE_GUILD_DETAIL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_SECEDE_GUILD_DETAIL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_SAVE_WEAK_SERVER_FULL_DATA_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_SAVE_WEAK_SERVER_FULL_DATA_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_SEND_GUILD_REDPACKET_DETAIL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_SEND_GUILD_REDPACKET_DETAIL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_SEND_STORAGE_COMPLETE_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_SEND_STORAGE_COMPLETE_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -73,7 +98,26 @@ public final class SystemMessagesProto extends com.google.protobuf.GeneratedFile
       "mount\030\004 \001(\005R\006amount\"d\n\020RES_SEND_STORAGE\022" +
       "\024\n\005error\030\001 \001(\005R\005error\022\034\n\tstorageId\030\002 \001(\005" +
       "R\tstorageId\022\034\n\titemCount\030\003 \001(\005R\titemCoun" +
-      "tB\256\001\n com.dnfm.mina.protobuf.generatedB\023" +
+      "t\"k\n%RES_SERVER_RESPONSE_PACKET_SUPPLEME" +
+      "NT\022\024\n\005error\030\001 \001(\005R\005error\022\030\n\007message\030\002 \001(" +
+      "\tR\007message\022\022\n\004code\030\003 \001(\005R\004code\"\201\001\n\027RES_S" +
+      "ECEDE_GUILD_DETAIL\022\024\n\005error\030\001 \001(\005R\005error" +
+      "\022\030\n\007message\030\002 \001(\tR\007message\022\030\n\007guildId\030\003 " +
+      "\001(\003R\007guildId\022\034\n\tguildName\030\004 \001(\tR\tguildNa" +
+      "me\"\206\001\n\036RES_SAVE_WEAK_SERVER_FULL_DATA\022\024\n" +
+      "\005error\030\001 \001(\005R\005error\022\022\n\004data\030\002 \001(\014R\004data\022" +
+      "\034\n\ttimestamp\030\003 \001(\003R\ttimestamp\022\034\n\tsignatu" +
+      "re\030\004 \001(\tR\tsignature\"\327\001\n\037RES_SEND_GUILD_R" +
+      "EDPACKET_DETAIL\022\024\n\005error\030\001 \001(\005R\005error\022\030\n" +
+      "\007guildId\030\002 \001(\003R\007guildId\022 \n\013redpacketId\030\003" +
+      " \001(\tR\013redpacketId\022\026\n\006amount\030\004 \001(\005R\006amoun" +
+      "t\022\036\n\nsenderName\030\005 \001(\tR\nsenderName\022*\n\020par" +
+      "ticipantCount\030\006 \001(\005R\020participantCount\"\241\001" +
+      "\n\031RES_SEND_STORAGE_COMPLETE\022\024\n\005error\030\001 \001" +
+      "(\005R\005error\022\034\n\tstorageId\030\002 \001(\005R\tstorageId\022" +
+      "\034\n\titemCount\030\003 \001(\005R\titemCount\022\030\n\007success" +
+      "\030\004 \001(\010R\007success\022\030\n\007message\030\005 \001(\tR\007messag" +
+      "eB\256\001\n com.dnfm.mina.protobuf.generatedB\023" +
       "SystemMessagesProtoP\001Z<github.com/pixb/D" +
       "nfGameServer/dnf-go-client/gen/dnf/v1;dn" +
       "fv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPB" +
@@ -115,6 +159,36 @@ public final class SystemMessagesProto extends com.google.protobuf.GeneratedFile
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_RES_SEND_STORAGE_descriptor,
         new java.lang.String[] { "Error", "StorageId", "ItemCount", });
+    internal_static_dnf_v1_RES_SERVER_RESPONSE_PACKET_SUPPLEMENT_descriptor =
+      getDescriptor().getMessageType(5);
+    internal_static_dnf_v1_RES_SERVER_RESPONSE_PACKET_SUPPLEMENT_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_SERVER_RESPONSE_PACKET_SUPPLEMENT_descriptor,
+        new java.lang.String[] { "Error", "Message", "Code", });
+    internal_static_dnf_v1_RES_SECEDE_GUILD_DETAIL_descriptor =
+      getDescriptor().getMessageType(6);
+    internal_static_dnf_v1_RES_SECEDE_GUILD_DETAIL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_SECEDE_GUILD_DETAIL_descriptor,
+        new java.lang.String[] { "Error", "Message", "GuildId", "GuildName", });
+    internal_static_dnf_v1_RES_SAVE_WEAK_SERVER_FULL_DATA_descriptor =
+      getDescriptor().getMessageType(7);
+    internal_static_dnf_v1_RES_SAVE_WEAK_SERVER_FULL_DATA_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_SAVE_WEAK_SERVER_FULL_DATA_descriptor,
+        new java.lang.String[] { "Error", "Data", "Timestamp", "Signature", });
+    internal_static_dnf_v1_RES_SEND_GUILD_REDPACKET_DETAIL_descriptor =
+      getDescriptor().getMessageType(8);
+    internal_static_dnf_v1_RES_SEND_GUILD_REDPACKET_DETAIL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_SEND_GUILD_REDPACKET_DETAIL_descriptor,
+        new java.lang.String[] { "Error", "GuildId", "RedpacketId", "Amount", "SenderName", "ParticipantCount", });
+    internal_static_dnf_v1_RES_SEND_STORAGE_COMPLETE_descriptor =
+      getDescriptor().getMessageType(9);
+    internal_static_dnf_v1_RES_SEND_STORAGE_COMPLETE_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_SEND_STORAGE_COMPLETE_descriptor,
+        new java.lang.String[] { "Error", "StorageId", "ItemCount", "Success", "Message", });
     descriptor.resolveAllFeaturesImmutable();
     com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor();
     com.dnfm.mina.protobuf.generated.OptionTypesProto.getDescriptor();

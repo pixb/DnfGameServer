@@ -34,3 +34,41 @@ message RES_SEND_STORAGE {
   int32 storageId = 2;
   int32 itemCount = 3;
 }
+
+// 系统消息补充类型
+message RES_SERVER_RESPONSE_PACKET_SUPPLEMENT {
+  int32 error = 1;
+  string message = 2;
+  int32 code = 3;
+}
+
+message RES_SECEDE_GUILD_DETAIL {
+  int32 error = 1;
+  string message = 2;
+  int64 guildId = 3;
+  string guildName = 4;
+}
+
+message RES_SAVE_WEAK_SERVER_FULL_DATA {
+  int32 error = 1;
+  bytes data = 2;
+  int64 timestamp = 3;
+  string signature = 4;
+}
+
+message RES_SEND_GUILD_REDPACKET_DETAIL {
+  int32 error = 1;
+  int64 guildId = 2;
+  string redpacketId = 3;
+  int32 amount = 4;
+  string senderName = 5;
+  int32 participantCount = 6;
+}
+
+message RES_SEND_STORAGE_COMPLETE {
+  int32 error = 1;
+  int32 storageId = 2;
+  int32 itemCount = 3;
+  bool success = 4;
+  string message = 5;
+}

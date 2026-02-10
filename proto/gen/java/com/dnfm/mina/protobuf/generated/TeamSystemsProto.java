@@ -56,6 +56,31 @@ public final class TeamSystemsProto extends com.google.protobuf.GeneratedFile {
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_FriendInviteInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_SELECT_OTHER_DUNGEON_AT_MULTI_DETAIL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_SELECT_OTHER_DUNGEON_AT_MULTI_DETAIL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_SENDING_INVITE_FRIEND_LIST_FULL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_SENDING_INVITE_FRIEND_LIST_FULL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_REPLY_PROPOSAL_DETAIL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_REPLY_PROPOSAL_DETAIL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_SET_PVP_CONTROL_MODE_FULL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_SET_PVP_CONTROL_MODE_FULL_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_RES_RETURN_TO_TOWN_AT_MULTI_PLAY_DETAIL_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_RES_RETURN_TO_TOWN_AT_MULTI_PLAY_DETAIL_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -82,11 +107,36 @@ public final class TeamSystemsProto extends com.google.protobuf.GeneratedFile {
       " \001(\tR\010townName\"v\n\020FriendInviteInfo\022\032\n\010fr" +
       "iendId\030\001 \001(\003R\010friendId\022\036\n\nfriendName\030\002 \001" +
       "(\tR\nfriendName\022\024\n\005level\030\003 \001(\005R\005level\022\020\n\003" +
-      "job\030\004 \001(\005R\003jobB\253\001\n com.dnfm.mina.protobu" +
-      "f.generatedB\020TeamSystemsProtoP\001Z<github." +
-      "com/pixb/DnfGameServer/dnf-go-client/gen" +
-      "/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022" +
-      "Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
+      "job\030\004 \001(\005R\003job\"\356\001\n(RES_SELECT_OTHER_DUNG" +
+      "EON_AT_MULTI_DETAIL\022\024\n\005error\030\001 \001(\005R\005erro" +
+      "r\022\034\n\tdungeonId\030\002 \001(\005R\tdungeonId\022 \n\013dunge" +
+      "onName\030\003 \001(\tR\013dungeonName\022\036\n\ndifficulty\030" +
+      "\004 \001(\005R\ndifficulty\022*\n\020recommendedLevel\030\005 " +
+      "\001(\005R\020recommendedLevel\022 \n\013playerCount\030\006 \001" +
+      "(\005R\013playerCount\"\277\001\n#RES_SENDING_INVITE_F" +
+      "RIEND_LIST_FULL\022\024\n\005error\030\001 \001(\005R\005error\0222\n" +
+      "\007invites\030\002 \003(\0132\030.dnf.v1.FriendInviteInfo" +
+      "R\007invites\022\036\n\ntotalCount\030\003 \001(\005R\ntotalCoun" +
+      "t\022\022\n\004page\030\004 \001(\005R\004page\022\032\n\010pageSize\030\005 \001(\005R" +
+      "\010pageSize\"\317\001\n\031RES_REPLY_PROPOSAL_DETAIL\022" +
+      "\024\n\005error\030\001 \001(\005R\005error\022\032\n\010accepted\030\002 \001(\010R" +
+      "\010accepted\022\036\n\nproposerId\030\003 \001(\003R\nproposerI" +
+      "d\022\"\n\014proposerName\030\004 \001(\tR\014proposerName\022\"\n" +
+      "\014proposalType\030\005 \001(\tR\014proposalType\022\030\n\007mes" +
+      "sage\030\006 \001(\tR\007message\"\231\001\n\035RES_SET_PVP_CONT" +
+      "ROL_MODE_FULL\022\024\n\005error\030\001 \001(\005R\005error\022\022\n\004m" +
+      "ode\030\002 \001(\005R\004mode\022\032\n\010modeName\030\003 \001(\tR\010modeN" +
+      "ame\022\030\n\007success\030\004 \001(\010R\007success\022\030\n\007message" +
+      "\030\005 \001(\tR\007message\"\247\001\n\'RES_RETURN_TO_TOWN_A" +
+      "T_MULTI_PLAY_DETAIL\022\024\n\005error\030\001 \001(\005R\005erro" +
+      "r\022\032\n\010townName\030\002 \001(\tR\010townName\022\026\n\006townId\030" +
+      "\003 \001(\005R\006townId\022\030\n\007success\030\004 \001(\010R\007success\022" +
+      "\030\n\007message\030\005 \001(\tR\007messageB\253\001\n com.dnfm.m" +
+      "ina.protobuf.generatedB\020TeamSystemsProto" +
+      "P\001Z<github.com/pixb/DnfGameServer/dnf-go" +
+      "-client/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312" +
+      "\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1b" +
+      "\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -130,6 +180,36 @@ public final class TeamSystemsProto extends com.google.protobuf.GeneratedFile {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_FriendInviteInfo_descriptor,
         new java.lang.String[] { "FriendId", "FriendName", "Level", "Job", });
+    internal_static_dnf_v1_RES_SELECT_OTHER_DUNGEON_AT_MULTI_DETAIL_descriptor =
+      getDescriptor().getMessageType(6);
+    internal_static_dnf_v1_RES_SELECT_OTHER_DUNGEON_AT_MULTI_DETAIL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_SELECT_OTHER_DUNGEON_AT_MULTI_DETAIL_descriptor,
+        new java.lang.String[] { "Error", "DungeonId", "DungeonName", "Difficulty", "RecommendedLevel", "PlayerCount", });
+    internal_static_dnf_v1_RES_SENDING_INVITE_FRIEND_LIST_FULL_descriptor =
+      getDescriptor().getMessageType(7);
+    internal_static_dnf_v1_RES_SENDING_INVITE_FRIEND_LIST_FULL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_SENDING_INVITE_FRIEND_LIST_FULL_descriptor,
+        new java.lang.String[] { "Error", "Invites", "TotalCount", "Page", "PageSize", });
+    internal_static_dnf_v1_RES_REPLY_PROPOSAL_DETAIL_descriptor =
+      getDescriptor().getMessageType(8);
+    internal_static_dnf_v1_RES_REPLY_PROPOSAL_DETAIL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_REPLY_PROPOSAL_DETAIL_descriptor,
+        new java.lang.String[] { "Error", "Accepted", "ProposerId", "ProposerName", "ProposalType", "Message", });
+    internal_static_dnf_v1_RES_SET_PVP_CONTROL_MODE_FULL_descriptor =
+      getDescriptor().getMessageType(9);
+    internal_static_dnf_v1_RES_SET_PVP_CONTROL_MODE_FULL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_SET_PVP_CONTROL_MODE_FULL_descriptor,
+        new java.lang.String[] { "Error", "Mode", "ModeName", "Success", "Message", });
+    internal_static_dnf_v1_RES_RETURN_TO_TOWN_AT_MULTI_PLAY_DETAIL_descriptor =
+      getDescriptor().getMessageType(10);
+    internal_static_dnf_v1_RES_RETURN_TO_TOWN_AT_MULTI_PLAY_DETAIL_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_RES_RETURN_TO_TOWN_AT_MULTI_PLAY_DETAIL_descriptor,
+        new java.lang.String[] { "Error", "TownName", "TownId", "Success", "Message", });
     descriptor.resolveAllFeaturesImmutable();
     com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor();
     com.dnfm.mina.protobuf.generated.OptionTypesProto.getDescriptor();
