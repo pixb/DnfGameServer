@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+import "dnf/v1/common.proto";
+import "dnf/v1/option_types.proto";
+
+// 社交系统消息类型
+message RES_REQUEST_FRIEND_INVITE {
+  int32 error = 1;
+  int64 friendId = 2;
+  string friendName = 3;
+}
+
+message RES_REWARD_QUEST {
+  int32 error = 1;
+  int32 questId = 2;
+  string questName = 3;
+}
+
+message RES_SET_APPENDAGE_MANNEQUIN {
+  int32 error = 1;
+  int32 appendageId = 2;
+  int32 mannequinId = 3;
+}
+
+message RES_SET_NAME_MANNEQUIN {
+  int32 error = 1;
+  string name = 2;
+  int32 mannequinId = 3;
+}
+
+message RES_TSS_DATA {
+  int32 error = 1;
+  bytes data = 2;
+  int32 timestamp = 3;
+}

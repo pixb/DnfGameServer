@@ -203,7 +203,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
       com.google.protobuf.GeneratedMessage.writeString(output, 7, name_);
     }
-    if (teamtype_ != com.dnfm.mina.protobuf.generated.TeamType.PLAYER.getNumber()) {
+    if (teamtype_ != com.dnfm.mina.protobuf.generated.TeamType.TEAM_TYPE_UNKNOWN.getNumber()) {
       output.writeEnum(8, teamtype_);
     }
     getUnknownFields().writeTo(output);
@@ -242,7 +242,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(name_)) {
       size += com.google.protobuf.GeneratedMessage.computeStringSize(7, name_);
     }
-    if (teamtype_ != com.dnfm.mina.protobuf.generated.TeamType.PLAYER.getNumber()) {
+    if (teamtype_ != com.dnfm.mina.protobuf.generated.TeamType.TEAM_TYPE_UNKNOWN.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(8, teamtype_);
     }

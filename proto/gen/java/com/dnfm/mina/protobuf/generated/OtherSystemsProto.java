@@ -26,66 +26,6 @@ public final class OtherSystemsProto extends com.google.protobuf.GeneratedFile {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_STREAM_DATA_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_STREAM_DATA_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_WATCH_ROOM_DATA_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_WATCH_ROOM_DATA_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_SEND_ITEM_GuidInfo_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_SEND_ITEM_GuidInfo_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_SEND_ITEM_Info_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_SEND_ITEM_Info_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_SUBSYSTEM_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_SUBSYSTEM_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_TYPE_TUTORIAL_LIST_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_TYPE_TUTORIAL_LIST_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_RES_TUTORIAL_LIST_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_RES_TUTORIAL_LIST_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_RES_TUTORIAL_SAVE_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_RES_TUTORIAL_SAVE_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_SECTOR_LIST_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_SECTOR_LIST_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_SECTOR_INFO_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_SECTOR_INFO_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_RES_SERVER_CHECKUP_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_RES_SERVER_CHECKUP_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_TutorialInfo_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_TutorialInfo_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -96,115 +36,22 @@ public final class OtherSystemsProto extends com.google.protobuf.GeneratedFile {
   static {
     java.lang.String[] descriptorData = {
       "\n\032dnf/v1/other_systems.proto\022\006dnf.v1\032\023dn" +
-      "f/v1/common.proto\"5\n\013STREAM_DATA\022\022\n\004type" +
-      "\030\001 \001(\005R\004type\022\022\n\004data\030\002 \001(\014R\004data\"g\n\017WATC" +
-      "H_ROOM_DATA\022\026\n\006roomId\030\001 \001(\003R\006roomId\022\032\n\010r" +
-      "oomName\030\002 \001(\tR\010roomName\022 \n\013viewerCount\030\003" +
-      " \001(\005R\013viewerCount\"D\n\022SEND_ITEM_GuidInfo\022" +
-      "\022\n\004guid\030\001 \001(\004R\004guid\022\032\n\010quantity\030\002 \001(\005R\010q" +
-      "uantity\"D\n\016SEND_ITEM_Info\022\026\n\006itemId\030\001 \001(" +
-      "\005R\006itemId\022\032\n\010quantity\030\002 \001(\005R\010quantity\"5\n" +
-      "\tSUBSYSTEM\022\016\n\002id\030\001 \001(\005R\002id\022\030\n\007enabled\030\002 " +
-      "\001(\010R\007enabled\"6\n\022TYPE_TUTORIAL_LIST\022 \n\013tu" +
-      "torialIds\030\001 \003(\005R\013tutorialIds\"]\n\021RES_TUTO" +
-      "RIAL_LIST\022\024\n\005error\030\001 \001(\005R\005error\0222\n\ttutor" +
-      "ials\030\002 \003(\0132\024.dnf.v1.TutorialInfoR\ttutori" +
-      "als\"g\n\021RES_TUTORIAL_SAVE\022\024\n\005error\030\001 \001(\005R" +
-      "\005error\022\036\n\ntutorialId\030\002 \001(\005R\ntutorialId\022\034" +
-      "\n\tcompleted\030\003 \001(\010R\tcompleted\"<\n\013SECTOR_L" +
-      "IST\022-\n\007sectors\030\001 \003(\0132\023.dnf.v1.SECTOR_INF" +
-      "OR\007sectors\"c\n\013SECTOR_INFO\022\016\n\002id\030\001 \001(\005R\002i" +
-      "d\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005level\030\003 \001(\005R\005le" +
-      "vel\022\032\n\010unlocked\030\004 \001(\010R\010unlocked\"\\\n\022RES_S" +
-      "ERVER_CHECKUP\022\024\n\005error\030\001 \001(\005R\005error\022\026\n\006o" +
-      "nline\030\002 \001(\010R\006online\022\030\n\007version\030\003 \001(\tR\007ve" +
-      "rsion\"T\n\014TutorialInfo\022\016\n\002id\030\001 \001(\005R\002id\022\034\n" +
-      "\tcompleted\030\002 \001(\010R\tcompleted\022\026\n\006active\030\003 " +
-      "\001(\010R\006activeB\254\001\n com.dnfm.mina.protobuf.g" +
-      "eneratedB\021OtherSystemsProtoP\001Z<github.co" +
-      "m/pixb/DnfGameServer/dnf-go-client/gen/d" +
-      "nf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dn" +
-      "f\\V1\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
+      "f/v1/common.proto\032\031dnf/v1/option_types.p" +
+      "rotoB\254\001\n com.dnfm.mina.protobuf.generate" +
+      "dB\021OtherSystemsProtoP\001Z<github.com/pixb/" +
+      "DnfGameServer/dnf-go-client/gen/dnf/v1;d" +
+      "nfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GP" +
+      "BMetadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor(),
+          com.dnfm.mina.protobuf.generated.OptionTypesProto.getDescriptor(),
         });
-    internal_static_dnf_v1_STREAM_DATA_descriptor =
-      getDescriptor().getMessageType(0);
-    internal_static_dnf_v1_STREAM_DATA_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_STREAM_DATA_descriptor,
-        new java.lang.String[] { "Type", "Data", });
-    internal_static_dnf_v1_WATCH_ROOM_DATA_descriptor =
-      getDescriptor().getMessageType(1);
-    internal_static_dnf_v1_WATCH_ROOM_DATA_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_WATCH_ROOM_DATA_descriptor,
-        new java.lang.String[] { "RoomId", "RoomName", "ViewerCount", });
-    internal_static_dnf_v1_SEND_ITEM_GuidInfo_descriptor =
-      getDescriptor().getMessageType(2);
-    internal_static_dnf_v1_SEND_ITEM_GuidInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_SEND_ITEM_GuidInfo_descriptor,
-        new java.lang.String[] { "Guid", "Quantity", });
-    internal_static_dnf_v1_SEND_ITEM_Info_descriptor =
-      getDescriptor().getMessageType(3);
-    internal_static_dnf_v1_SEND_ITEM_Info_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_SEND_ITEM_Info_descriptor,
-        new java.lang.String[] { "ItemId", "Quantity", });
-    internal_static_dnf_v1_SUBSYSTEM_descriptor =
-      getDescriptor().getMessageType(4);
-    internal_static_dnf_v1_SUBSYSTEM_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_SUBSYSTEM_descriptor,
-        new java.lang.String[] { "Id", "Enabled", });
-    internal_static_dnf_v1_TYPE_TUTORIAL_LIST_descriptor =
-      getDescriptor().getMessageType(5);
-    internal_static_dnf_v1_TYPE_TUTORIAL_LIST_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_TYPE_TUTORIAL_LIST_descriptor,
-        new java.lang.String[] { "TutorialIds", });
-    internal_static_dnf_v1_RES_TUTORIAL_LIST_descriptor =
-      getDescriptor().getMessageType(6);
-    internal_static_dnf_v1_RES_TUTORIAL_LIST_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_RES_TUTORIAL_LIST_descriptor,
-        new java.lang.String[] { "Error", "Tutorials", });
-    internal_static_dnf_v1_RES_TUTORIAL_SAVE_descriptor =
-      getDescriptor().getMessageType(7);
-    internal_static_dnf_v1_RES_TUTORIAL_SAVE_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_RES_TUTORIAL_SAVE_descriptor,
-        new java.lang.String[] { "Error", "TutorialId", "Completed", });
-    internal_static_dnf_v1_SECTOR_LIST_descriptor =
-      getDescriptor().getMessageType(8);
-    internal_static_dnf_v1_SECTOR_LIST_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_SECTOR_LIST_descriptor,
-        new java.lang.String[] { "Sectors", });
-    internal_static_dnf_v1_SECTOR_INFO_descriptor =
-      getDescriptor().getMessageType(9);
-    internal_static_dnf_v1_SECTOR_INFO_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_SECTOR_INFO_descriptor,
-        new java.lang.String[] { "Id", "Name", "Level", "Unlocked", });
-    internal_static_dnf_v1_RES_SERVER_CHECKUP_descriptor =
-      getDescriptor().getMessageType(10);
-    internal_static_dnf_v1_RES_SERVER_CHECKUP_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_RES_SERVER_CHECKUP_descriptor,
-        new java.lang.String[] { "Error", "Online", "Version", });
-    internal_static_dnf_v1_TutorialInfo_descriptor =
-      getDescriptor().getMessageType(11);
-    internal_static_dnf_v1_TutorialInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_TutorialInfo_descriptor,
-        new java.lang.String[] { "Id", "Completed", "Active", });
     descriptor.resolveAllFeaturesImmutable();
     com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor();
+    com.dnfm.mina.protobuf.generated.OptionTypesProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

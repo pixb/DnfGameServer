@@ -253,6 +253,18 @@ class MigrationTracker:
         self.conn.commit()
         return cursor.rowcount > 0
     
+    def update_batch_status(self, batch_name: str, status: str, migrated_files: int = None):
+        """根据批次名称更新状态"""
+        batch = self.get_batch_by_name(batch_name)
+        if not batch:
+            return False
+        
+        kwargs = {'status': status}
+        if migrated_files is not None:
+            kwargs['migrated_files'] = migrated_files
+        
+        return self.update_batch(batch.id, **kwargs)
+    
     def list_batches(self, status: Optional[str] = None, 
                      order_by: str = "batch_number") -> List[Batch]:
         """列出批次"""

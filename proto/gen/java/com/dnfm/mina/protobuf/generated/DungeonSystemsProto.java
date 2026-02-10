@@ -27,165 +27,35 @@ public final class DungeonSystemsProto extends com.google.protobuf.GeneratedFile
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DiningFoodBuffInfo_descriptor;
+    internal_static_dnf_v1_RES_START_LOCKSTEP_ROOM_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DiningFoodBuffInfo_fieldAccessorTable;
+      internal_static_dnf_v1_RES_START_LOCKSTEP_ROOM_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DragonBoardAppendage_descriptor;
+    internal_static_dnf_v1_RES_START_DUNGEON_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DragonBoardAppendage_fieldAccessorTable;
+      internal_static_dnf_v1_RES_START_DUNGEON_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DragonBoardChanceCard_descriptor;
+    internal_static_dnf_v1_RES_START_DUNGEON_COMPLETE_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DragonBoardChanceCard_fieldAccessorTable;
+      internal_static_dnf_v1_RES_START_DUNGEON_COMPLETE_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DragonBoardChangeDice_descriptor;
+    internal_static_dnf_v1_RES_SYNC_DUNGEON_START_TIME_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DragonBoardChangeDice_fieldAccessorTable;
+      internal_static_dnf_v1_RES_SYNC_DUNGEON_START_TIME_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DragonBoardChangeSlot_descriptor;
+    internal_static_dnf_v1_RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DragonBoardChangeSlot_fieldAccessorTable;
+      internal_static_dnf_v1_RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DragonBoardGainAppendage_descriptor;
+    internal_static_dnf_v1_RewardInfo_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DragonBoardGainAppendage_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DragonBoardHold_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DragonBoardHold_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DragonBoardMove_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DragonBoardMove_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DragonBoardResult_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DragonBoardResult_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DragonBoardReward_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DragonBoardReward_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DragonBoardMember_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DragonBoardMember_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DreamMazeDungeon_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DreamMazeDungeon_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DreamMazePlayMember_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DreamMazePlayMember_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DropObjectItem_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DropObjectItem_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_Dungeonrank_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_Dungeonrank_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DungeonGetInfo_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DungeonGetInfo_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DungeonParticiate_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DungeonParticiate_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DungeonPartyCount_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DungeonPartyCount_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DungeonPartyCount2_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DungeonPartyCount2_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DungeonRankInfo_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DungeonRankInfo_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DungeonResultQuestInfo_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DungeonResultQuestInfo_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_DungeonStartInfo_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_DungeonStartInfo_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_EmblemRequest_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_EmblemRequest_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_EmblemResult_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_EmblemResult_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_EnterStageMap_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_EnterStageMap_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_EnterStageObject_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_EnterStageObject_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_EntryInfo_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_EntryInfo_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_EquipPutOnOff_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_EquipPutOnOff_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_EscortClearReward_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_EscortClearReward_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_EscortCurrentReward_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_EscortCurrentReward_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_EscortDoneReady_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_EscortDoneReady_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_EscortReward_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_EscortReward_fieldAccessorTable;
+      internal_static_dnf_v1_RewardInfo_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -196,336 +66,78 @@ public final class DungeonSystemsProto extends com.google.protobuf.GeneratedFile
   static {
     java.lang.String[] descriptorData = {
       "\n\034dnf/v1/dungeon_systems.proto\022\006dnf.v1\032\023" +
-      "dnf/v1/common.proto\032\034dnf/v1/inventory_ty" +
-      "pes.proto\032\033dnf/v1/gameplay_types.proto\032\022" +
-      "dnf/v1/skill.proto\032\026dnf/v1/character.pro" +
-      "to\032\031dnf/v1/game_systems.proto\032\035dnf/v1/ga" +
-      "meplay_systems.proto\032\032dnf/v1/multi_syste" +
-      "ms.proto\032\031dnf/v1/user_systems.proto\"D\n\022D" +
-      "iningFoodBuffInfo\022\024\n\005index\030\001 \001(\005R\005index\022" +
-      "\030\n\007endtime\030\002 \001(\004R\007endtime\"H\n\024DragonBoard" +
-      "Appendage\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\024\n" +
-      "\005index\030\002 \001(\005R\005index\"\271\003\n\025DragonBoardChanc" +
-      "eCard\022\024\n\005index\030\001 \001(\005R\005index\022=\n\nchangedic" +
-      "e\030\002 \001(\0132\035.dnf.v1.DragonBoardChangeDiceR\n" +
-      "changedice\022?\n\013changeslots\030\003 \003(\0132\035.dnf.v1" +
-      ".DragonBoardChangeSlotR\013changeslots\022+\n\004h" +
-      "old\030\004 \001(\0132\027.dnf.v1.DragonBoardHoldR\004hold" +
-      "\0229\n\010moveslot\030\005 \001(\0132\035.dnf.v1.DragonBoardC" +
-      "hangeSlotR\010moveslot\0224\n\006debuff\030\006 \001(\0132\034.dn" +
-      "f.v1.DragonBoardAppendageR\006debuff\022:\n\tdot" +
-      "damage\030\007 \001(\0132\034.dnf.v1.DragonBoardAppenda" +
-      "geR\tdotdamage\0220\n\004boss\030\010 \001(\0132\034.dnf.v1.Dra" +
-      "gonBoardAppendageR\004boss\"G\n\025DragonBoardCh" +
-      "angeDice\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\022\n\004" +
-      "type\030\002 \001(\005R\004type\"I\n\025DragonBoardChangeSlo" +
-      "t\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\024\n\005index\030\002" +
-      " \001(\005R\005index\"F\n\030DragonBoardGainAppendage\022" +
-      "\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005co" +
-      "unt\"C\n\017DragonBoardHold\022\032\n\010charguid\030\001 \001(\004" +
-      "R\010charguid\022\024\n\005count\030\002 \001(\005R\005count\"\351\001\n\017Dra" +
-      "gonBoardMove\022\024\n\005error\030\001 \001(\005R\005error\022\032\n\010ch" +
-      "arguid\030\002 \001(\004R\010charguid\022\022\n\004slot\030\003 \001(\005R\004sl" +
-      "ot\022\034\n\tappendage\030\004 \001(\005R\tappendage\0223\n\007rewa" +
-      "rds\030\005 \003(\0132\031.dnf.v1.DragonBoardRewardR\007re" +
-      "wards\022=\n\nchancecard\030\006 \001(\0132\035.dnf.v1.Drago" +
-      "nBoardChanceCardR\nchancecard\"\271\002\n\021DragonB" +
-      "oardResult\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\020" +
-      "\n\003job\030\002 \001(\005R\003job\022\022\n\004rank\030\003 \001(\005R\004rank\022\034\n\t" +
-      "turncount\030\004 \001(\005R\tturncount\022\032\n\010playtime\030\005" +
-      " \001(\005R\010playtime\0223\n\007rewards\030\006 \003(\0132\031.dnf.v1" +
-      ".DragonBoardRewardR\007rewards\022;\n\013slotrewar" +
-      "ds\030\007 \003(\0132\031.dnf.v1.DragonBoardRewardR\013slo" +
-      "trewards\022\024\n\005world\030\010 \001(\005R\005world\022 \n\013credit" +
-      "score\030\t \001(\005R\013creditscore\"?\n\021DragonBoardR" +
-      "eward\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001" +
-      "(\005R\005count\"\222\002\n\021DragonBoardMember\022\032\n\010charg" +
-      "uid\030\001 \001(\004R\010charguid\022\032\n\010dicetype\030\002 \001(\005R\010d" +
-      "icetype\022\022\n\004slot\030\003 \001(\005R\004slot\022\034\n\tconnected" +
-      "\030\004 \001(\010R\tconnected\022\034\n\tclearboss\030\005 \001(\010R\tcl" +
-      "earboss\0223\n\007rewards\030\006 \003(\0132\031.dnf.v1.Dragon" +
-      "BoardRewardR\007rewards\022@\n\nappendages\030\007 \003(\013" +
-      "2 .dnf.v1.DragonBoardGainAppendageR\nappe" +
-      "ndages\"t\n\020DreamMazeDungeon\022\024\n\005index\030\001 \001(" +
-      "\005R\005index\022\034\n\tcleartime\030\002 \001(\004R\tcleartime\022\024" +
-      "\n\005grade\030\003 \001(\005R\005grade\022\026\n\006bosshp\030\004 \001(\005R\006bo" +
-      "sshp\"e\n\023DreamMazePlayMember\022\032\n\010charguid\030" +
-      "\001 \001(\004R\010charguid\022\024\n\005point\030\002 \001(\004R\005point\022\034\n" +
-      "\tplaycount\030\003 \001(\005R\tplaycount\"\270\001\n\016DropObje" +
-      "ctItem\022\032\n\010charguid\030\001 \001(\004R\010charguid\022\034\n\tit" +
-      "emindex\030\002 \001(\005R\titemindex\022\030\n\007upgrade\030\003 \001(" +
-      "\005R\007upgrade\022\030\n\007quality\030\004 \001(\005R\007quality\022\024\n\005" +
-      "count\030\005 \001(\005R\005count\022\"\n\014isgrowthcare\030\006 \001(\010" +
-      "R\014isgrowthcare\"\237\001\n\013Dungeonrank\022\030\n\007counte" +
-      "r\030\001 \001(\005R\007counter\022\032\n\010multihit\030\002 \001(\005R\010mult" +
-      "ihit\022\024\n\005smash\030\003 \001(\005R\005smash\022\036\n\ngivedamage" +
-      "\030\004 \001(\005R\ngivedamage\022$\n\rreceivedamage\030\005 \001(" +
-      "\005R\rreceivedamage\"T\n\016DungeonGetInfo\022\"\n\014du" +
-      "ngeonindex\030\001 \001(\005R\014dungeonindex\022\036\n\nclearc" +
-      "ount\030\002 \001(\005R\nclearcount\"?\n\021DungeonPartici" +
-      "ate\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005" +
-      "R\005count\"y\n\021DungeonPartyCount\022\"\n\014dungeoni" +
-      "ndex\030\001 \001(\005R\014dungeonindex\022\024\n\005count\030\002 \001(\005R" +
-      "\005count\022\024\n\005grade\030\003 \001(\005R\005grade\022\024\n\005flist\030\004 " +
-      "\003(\004R\005flist\"\210\001\n\022DungeonPartyCount2\022\"\n\014dun" +
-      "geonindex\030\001 \001(\005R\014dungeonindex\022\024\n\005count\030\002" +
-      " \001(\005R\005count\022\024\n\005grade\030\003 \001(\005R\005grade\022\"\n\014fri" +
-      "endstatus\030\004 \001(\010R\014friendstatus\"E\n\017Dungeon" +
-      "RankInfo\022\034\n\trankscore\030\001 \001(\005R\trankscore\022\024" +
-      "\n\005score\030\002 \001(\005R\005score\"B\n\026DungeonResultQue" +
-      "stInfo\022\024\n\005index\030\001 \001(\005R\005index\022\022\n\004type\030\002 \001" +
-      "(\005R\004type\"\363\002\n\020DungeonStartInfo\022\"\n\014matchin" +
-      "gguid\030\001 \001(\004R\014matchingguid\022 \n\013dungeonguid" +
-      "\030\002 \001(\004R\013dungeonguid\022 \n\013battleworld\030\003 \001(\005" +
-      "R\013battleworld\022\032\n\010bchannel\030\004 \001(\005R\010bchanne" +
-      "l\022\020\n\003bip\030\005 \001(\tR\003bip\022\024\n\005bport\030\006 \001(\005R\005bpor" +
-      "t\022\034\n\tmatchtype\030\007 \001(\005R\tmatchtype\022\024\n\005world" +
-      "\030\010 \001(\005R\005world\022\030\n\007channel\030\t \001(\005R\007channel\022" +
-      "\036\n\ntargetguid\030\n \001(\004R\ntargetguid\022\024\n\005users" +
-      "\030\013 \003(\004R\005users\022/\n\006detail\030\014 \003(\0132\027.dnf.v1.U" +
-      "serMinimumInfoR\006detail\"9\n\rEmblemRequest\022" +
-      "\024\n\005index\030\001 \001(\005R\005index\022\022\n\004slot\030\002 \001(\005R\004slo" +
-      "t\"$\n\014EmblemResult\022\024\n\005index\030\001 \001(\005R\005index\"" +
-      "W\n\rEnterStageMap\022\022\n\004guid\030\001 \001(\005R\004guid\0222\n\007" +
-      "objects\030\002 \003(\0132\030.dnf.v1.EnterStageObjectR" +
-      "\007objects\"\177\n\020EnterStageObject\022-\n\005drops\030\001 " +
-      "\003(\0132\027.dnf.v1.StateObjectDropR\005drops\022\022\n\004g" +
-      "uid\030\002 \001(\005R\004guid\022\022\n\004type\030\003 \001(\005R\004type\022\024\n\005i" +
-      "ndex\030\004 \001(\005R\005index\"\'\n\tEntryInfo\022\032\n\010chargu" +
-      "id\030\001 \001(\004R\010charguid\"7\n\rEquipPutOnOff\022\022\n\004g" +
-      "uid\030\001 \001(\004R\004guid\022\022\n\004slot\030\002 \001(\005R\004slot\"\233\001\n\021" +
-      "EscortClearReward\022\024\n\005error\030\001 \001(\005R\005error\022" +
-      "\022\n\004type\030\002 \001(\005R\004type\022\024\n\005index\030\003 \001(\005R\005inde" +
-      "x\022\024\n\005count\030\004 \001(\005R\005count\022\024\n\005level\030\005 \001(\005R\005" +
-      "level\022\032\n\010totalexp\030\006 \001(\005R\010totalexp\"A\n\023Esc" +
-      "ortCurrentReward\022\024\n\005index\030\001 \001(\005R\005index\022\024" +
-      "\n\005count\030\002 \001(\005R\005count\";\n\017EscortDoneReady\022" +
-      "\024\n\005error\030\001 \001(\005R\005error\022\022\n\004guid\030\002 \001(\004R\004gui" +
-      "d\"\210\001\n\014EscortReward\022\026\n\006addexp\030\001 \001(\005R\006adde" +
-      "xp\022\032\n\010totalexp\030\002 \001(\005R\010totalexp\022\030\n\007wagonh" +
-      "p\030\003 \001(\005R\007wagonhp\022\024\n\005index\030\004 \001(\005R\005index\022\024" +
-      "\n\005count\030\005 \001(\005R\005countB\256\001\n com.dnfm.mina.p" +
-      "rotobuf.generatedB\023DungeonSystemsProtoP\001" +
-      "Z<github.com/pixb/DnfGameServer/dnf-go-c" +
-      "lient/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006" +
-      "Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1b\006p" +
-      "roto3"
+      "dnf/v1/common.proto\032\031dnf/v1/option_types" +
+      ".proto\"g\n\027RES_START_LOCKSTEP_ROOM\022\024\n\005err" +
+      "or\030\001 \001(\005R\005error\022\026\n\006roomId\030\002 \001(\005R\006roomId\022" +
+      "\036\n\nmaxPlayers\030\003 \001(\005R\nmaxPlayers\"\225\001\n\021RES_" +
+      "START_DUNGEON\022\024\n\005error\030\001 \001(\005R\005error\022\034\n\td" +
+      "ungeonId\030\002 \001(\005R\tdungeonId\022 \n\013dungeonName" +
+      "\030\003 \001(\tR\013dungeonName\022*\n\020recommendedLevel\030" +
+      "\004 \001(\005R\020recommendedLevel\"\230\001\n\032RES_START_DU" +
+      "NGEON_COMPLETE\022\024\n\005error\030\001 \001(\005R\005error\022\034\n\t" +
+      "dungeonId\030\002 \001(\005R\tdungeonId\022\030\n\007success\030\003 " +
+      "\001(\010R\007success\022,\n\007rewards\030\004 \003(\0132\022.dnf.v1.R" +
+      "ewardInfoR\007rewards\"m\n\033RES_SYNC_DUNGEON_S" +
+      "TART_TIME\022\024\n\005error\030\001 \001(\005R\005error\022\034\n\tstart" +
+      "Time\030\002 \001(\003R\tstartTime\022\032\n\010duration\030\003 \001(\005R" +
+      "\010duration\"\216\001\n*RES_UPDATE_DUNGEONCLEAR_CO" +
+      "NDITION_GET_ITEM\022\024\n\005error\030\001 \001(\005R\005error\022\026" +
+      "\n\006itemId\030\002 \001(\005R\006itemId\022\024\n\005count\030\003 \001(\005R\005c" +
+      "ount\022\034\n\tcompleted\030\004 \001(\010R\tcompleted\"n\n\nRe" +
+      "wardInfo\022\026\n\006itemId\030\001 \001(\005R\006itemId\022\032\n\010item" +
+      "Name\030\002 \001(\tR\010itemName\022\024\n\005count\030\003 \001(\005R\005cou" +
+      "nt\022\026\n\006rarity\030\004 \001(\005R\006rarityB\256\001\n com.dnfm." +
+      "mina.protobuf.generatedB\023DungeonSystemsP" +
+      "rotoP\001Z<github.com/pixb/DnfGameServer/dn" +
+      "f-go-client/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf" +
+      ".V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf:" +
+      ":V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor(),
-          com.dnfm.mina.protobuf.generated.InventoryTypesProto.getDescriptor(),
-          com.dnfm.mina.protobuf.generated.GameplayTypesProto.getDescriptor(),
-          com.dnfm.mina.protobuf.generated.SkillProto.getDescriptor(),
-          com.dnfm.mina.protobuf.generated.CharacterProto.getDescriptor(),
-          com.dnfm.mina.protobuf.generated.GameSystemsProto.getDescriptor(),
-          com.dnfm.mina.protobuf.generated.GameplaySystemsProto.getDescriptor(),
-          com.dnfm.mina.protobuf.generated.MultiSystemsProto.getDescriptor(),
-          com.dnfm.mina.protobuf.generated.UserSystemsProto.getDescriptor(),
+          com.dnfm.mina.protobuf.generated.OptionTypesProto.getDescriptor(),
         });
-    internal_static_dnf_v1_DiningFoodBuffInfo_descriptor =
+    internal_static_dnf_v1_RES_START_LOCKSTEP_ROOM_descriptor =
       getDescriptor().getMessageType(0);
-    internal_static_dnf_v1_DiningFoodBuffInfo_fieldAccessorTable = new
+    internal_static_dnf_v1_RES_START_LOCKSTEP_ROOM_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DiningFoodBuffInfo_descriptor,
-        new java.lang.String[] { "Index", "Endtime", });
-    internal_static_dnf_v1_DragonBoardAppendage_descriptor =
+        internal_static_dnf_v1_RES_START_LOCKSTEP_ROOM_descriptor,
+        new java.lang.String[] { "Error", "RoomId", "MaxPlayers", });
+    internal_static_dnf_v1_RES_START_DUNGEON_descriptor =
       getDescriptor().getMessageType(1);
-    internal_static_dnf_v1_DragonBoardAppendage_fieldAccessorTable = new
+    internal_static_dnf_v1_RES_START_DUNGEON_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DragonBoardAppendage_descriptor,
-        new java.lang.String[] { "Charguid", "Index", });
-    internal_static_dnf_v1_DragonBoardChanceCard_descriptor =
+        internal_static_dnf_v1_RES_START_DUNGEON_descriptor,
+        new java.lang.String[] { "Error", "DungeonId", "DungeonName", "RecommendedLevel", });
+    internal_static_dnf_v1_RES_START_DUNGEON_COMPLETE_descriptor =
       getDescriptor().getMessageType(2);
-    internal_static_dnf_v1_DragonBoardChanceCard_fieldAccessorTable = new
+    internal_static_dnf_v1_RES_START_DUNGEON_COMPLETE_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DragonBoardChanceCard_descriptor,
-        new java.lang.String[] { "Index", "Changedice", "Changeslots", "Hold", "Moveslot", "Debuff", "Dotdamage", "Boss", });
-    internal_static_dnf_v1_DragonBoardChangeDice_descriptor =
+        internal_static_dnf_v1_RES_START_DUNGEON_COMPLETE_descriptor,
+        new java.lang.String[] { "Error", "DungeonId", "Success", "Rewards", });
+    internal_static_dnf_v1_RES_SYNC_DUNGEON_START_TIME_descriptor =
       getDescriptor().getMessageType(3);
-    internal_static_dnf_v1_DragonBoardChangeDice_fieldAccessorTable = new
+    internal_static_dnf_v1_RES_SYNC_DUNGEON_START_TIME_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DragonBoardChangeDice_descriptor,
-        new java.lang.String[] { "Charguid", "Type", });
-    internal_static_dnf_v1_DragonBoardChangeSlot_descriptor =
+        internal_static_dnf_v1_RES_SYNC_DUNGEON_START_TIME_descriptor,
+        new java.lang.String[] { "Error", "StartTime", "Duration", });
+    internal_static_dnf_v1_RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM_descriptor =
       getDescriptor().getMessageType(4);
-    internal_static_dnf_v1_DragonBoardChangeSlot_fieldAccessorTable = new
+    internal_static_dnf_v1_RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DragonBoardChangeSlot_descriptor,
-        new java.lang.String[] { "Charguid", "Index", });
-    internal_static_dnf_v1_DragonBoardGainAppendage_descriptor =
+        internal_static_dnf_v1_RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM_descriptor,
+        new java.lang.String[] { "Error", "ItemId", "Count", "Completed", });
+    internal_static_dnf_v1_RewardInfo_descriptor =
       getDescriptor().getMessageType(5);
-    internal_static_dnf_v1_DragonBoardGainAppendage_fieldAccessorTable = new
+    internal_static_dnf_v1_RewardInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DragonBoardGainAppendage_descriptor,
-        new java.lang.String[] { "Index", "Count", });
-    internal_static_dnf_v1_DragonBoardHold_descriptor =
-      getDescriptor().getMessageType(6);
-    internal_static_dnf_v1_DragonBoardHold_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DragonBoardHold_descriptor,
-        new java.lang.String[] { "Charguid", "Count", });
-    internal_static_dnf_v1_DragonBoardMove_descriptor =
-      getDescriptor().getMessageType(7);
-    internal_static_dnf_v1_DragonBoardMove_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DragonBoardMove_descriptor,
-        new java.lang.String[] { "Error", "Charguid", "Slot", "Appendage", "Rewards", "Chancecard", });
-    internal_static_dnf_v1_DragonBoardResult_descriptor =
-      getDescriptor().getMessageType(8);
-    internal_static_dnf_v1_DragonBoardResult_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DragonBoardResult_descriptor,
-        new java.lang.String[] { "Charguid", "Job", "Rank", "Turncount", "Playtime", "Rewards", "Slotrewards", "World", "Creditscore", });
-    internal_static_dnf_v1_DragonBoardReward_descriptor =
-      getDescriptor().getMessageType(9);
-    internal_static_dnf_v1_DragonBoardReward_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DragonBoardReward_descriptor,
-        new java.lang.String[] { "Index", "Count", });
-    internal_static_dnf_v1_DragonBoardMember_descriptor =
-      getDescriptor().getMessageType(10);
-    internal_static_dnf_v1_DragonBoardMember_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DragonBoardMember_descriptor,
-        new java.lang.String[] { "Charguid", "Dicetype", "Slot", "Connected", "Clearboss", "Rewards", "Appendages", });
-    internal_static_dnf_v1_DreamMazeDungeon_descriptor =
-      getDescriptor().getMessageType(11);
-    internal_static_dnf_v1_DreamMazeDungeon_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DreamMazeDungeon_descriptor,
-        new java.lang.String[] { "Index", "Cleartime", "Grade", "Bosshp", });
-    internal_static_dnf_v1_DreamMazePlayMember_descriptor =
-      getDescriptor().getMessageType(12);
-    internal_static_dnf_v1_DreamMazePlayMember_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DreamMazePlayMember_descriptor,
-        new java.lang.String[] { "Charguid", "Point", "Playcount", });
-    internal_static_dnf_v1_DropObjectItem_descriptor =
-      getDescriptor().getMessageType(13);
-    internal_static_dnf_v1_DropObjectItem_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DropObjectItem_descriptor,
-        new java.lang.String[] { "Charguid", "Itemindex", "Upgrade", "Quality", "Count", "Isgrowthcare", });
-    internal_static_dnf_v1_Dungeonrank_descriptor =
-      getDescriptor().getMessageType(14);
-    internal_static_dnf_v1_Dungeonrank_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_Dungeonrank_descriptor,
-        new java.lang.String[] { "Counter", "Multihit", "Smash", "Givedamage", "Receivedamage", });
-    internal_static_dnf_v1_DungeonGetInfo_descriptor =
-      getDescriptor().getMessageType(15);
-    internal_static_dnf_v1_DungeonGetInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DungeonGetInfo_descriptor,
-        new java.lang.String[] { "Dungeonindex", "Clearcount", });
-    internal_static_dnf_v1_DungeonParticiate_descriptor =
-      getDescriptor().getMessageType(16);
-    internal_static_dnf_v1_DungeonParticiate_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DungeonParticiate_descriptor,
-        new java.lang.String[] { "Index", "Count", });
-    internal_static_dnf_v1_DungeonPartyCount_descriptor =
-      getDescriptor().getMessageType(17);
-    internal_static_dnf_v1_DungeonPartyCount_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DungeonPartyCount_descriptor,
-        new java.lang.String[] { "Dungeonindex", "Count", "Grade", "Flist", });
-    internal_static_dnf_v1_DungeonPartyCount2_descriptor =
-      getDescriptor().getMessageType(18);
-    internal_static_dnf_v1_DungeonPartyCount2_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DungeonPartyCount2_descriptor,
-        new java.lang.String[] { "Dungeonindex", "Count", "Grade", "Friendstatus", });
-    internal_static_dnf_v1_DungeonRankInfo_descriptor =
-      getDescriptor().getMessageType(19);
-    internal_static_dnf_v1_DungeonRankInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DungeonRankInfo_descriptor,
-        new java.lang.String[] { "Rankscore", "Score", });
-    internal_static_dnf_v1_DungeonResultQuestInfo_descriptor =
-      getDescriptor().getMessageType(20);
-    internal_static_dnf_v1_DungeonResultQuestInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DungeonResultQuestInfo_descriptor,
-        new java.lang.String[] { "Index", "Type", });
-    internal_static_dnf_v1_DungeonStartInfo_descriptor =
-      getDescriptor().getMessageType(21);
-    internal_static_dnf_v1_DungeonStartInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_DungeonStartInfo_descriptor,
-        new java.lang.String[] { "Matchingguid", "Dungeonguid", "Battleworld", "Bchannel", "Bip", "Bport", "Matchtype", "World", "Channel", "Targetguid", "Users", "Detail", });
-    internal_static_dnf_v1_EmblemRequest_descriptor =
-      getDescriptor().getMessageType(22);
-    internal_static_dnf_v1_EmblemRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_EmblemRequest_descriptor,
-        new java.lang.String[] { "Index", "Slot", });
-    internal_static_dnf_v1_EmblemResult_descriptor =
-      getDescriptor().getMessageType(23);
-    internal_static_dnf_v1_EmblemResult_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_EmblemResult_descriptor,
-        new java.lang.String[] { "Index", });
-    internal_static_dnf_v1_EnterStageMap_descriptor =
-      getDescriptor().getMessageType(24);
-    internal_static_dnf_v1_EnterStageMap_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_EnterStageMap_descriptor,
-        new java.lang.String[] { "Guid", "Objects", });
-    internal_static_dnf_v1_EnterStageObject_descriptor =
-      getDescriptor().getMessageType(25);
-    internal_static_dnf_v1_EnterStageObject_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_EnterStageObject_descriptor,
-        new java.lang.String[] { "Drops", "Guid", "Type", "Index", });
-    internal_static_dnf_v1_EntryInfo_descriptor =
-      getDescriptor().getMessageType(26);
-    internal_static_dnf_v1_EntryInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_EntryInfo_descriptor,
-        new java.lang.String[] { "Charguid", });
-    internal_static_dnf_v1_EquipPutOnOff_descriptor =
-      getDescriptor().getMessageType(27);
-    internal_static_dnf_v1_EquipPutOnOff_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_EquipPutOnOff_descriptor,
-        new java.lang.String[] { "Guid", "Slot", });
-    internal_static_dnf_v1_EscortClearReward_descriptor =
-      getDescriptor().getMessageType(28);
-    internal_static_dnf_v1_EscortClearReward_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_EscortClearReward_descriptor,
-        new java.lang.String[] { "Error", "Type", "Index", "Count", "Level", "Totalexp", });
-    internal_static_dnf_v1_EscortCurrentReward_descriptor =
-      getDescriptor().getMessageType(29);
-    internal_static_dnf_v1_EscortCurrentReward_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_EscortCurrentReward_descriptor,
-        new java.lang.String[] { "Index", "Count", });
-    internal_static_dnf_v1_EscortDoneReady_descriptor =
-      getDescriptor().getMessageType(30);
-    internal_static_dnf_v1_EscortDoneReady_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_EscortDoneReady_descriptor,
-        new java.lang.String[] { "Error", "Guid", });
-    internal_static_dnf_v1_EscortReward_descriptor =
-      getDescriptor().getMessageType(31);
-    internal_static_dnf_v1_EscortReward_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_EscortReward_descriptor,
-        new java.lang.String[] { "Addexp", "Totalexp", "Wagonhp", "Index", "Count", });
+        internal_static_dnf_v1_RewardInfo_descriptor,
+        new java.lang.String[] { "ItemId", "ItemName", "Count", "Rarity", });
     descriptor.resolveAllFeaturesImmutable();
     com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor();
-    com.dnfm.mina.protobuf.generated.InventoryTypesProto.getDescriptor();
-    com.dnfm.mina.protobuf.generated.GameplayTypesProto.getDescriptor();
-    com.dnfm.mina.protobuf.generated.SkillProto.getDescriptor();
-    com.dnfm.mina.protobuf.generated.CharacterProto.getDescriptor();
-    com.dnfm.mina.protobuf.generated.GameSystemsProto.getDescriptor();
-    com.dnfm.mina.protobuf.generated.GameplaySystemsProto.getDescriptor();
-    com.dnfm.mina.protobuf.generated.MultiSystemsProto.getDescriptor();
-    com.dnfm.mina.protobuf.generated.UserSystemsProto.getDescriptor();
+    com.dnfm.mina.protobuf.generated.OptionTypesProto.getDescriptor();
   }
 
   // @@protoc_insertion_point(outer_class_scope)

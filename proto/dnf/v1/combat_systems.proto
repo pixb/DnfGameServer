@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+import "dnf/v1/common.proto";
+import "dnf/v1/option_types.proto";
+
+// 战斗系统消息类型
+message RES_WORLD_RAID_RANKING {
+  int32 error = 1;
+  int32 raidId = 2;
+  repeated RaidRankItem ranks = 3;
+}
+
+message RaidRankItem {
+  int32 rank = 1;
+  int64 userId = 2;
+  string userName = 3;
+  int64 damage = 4;
+}

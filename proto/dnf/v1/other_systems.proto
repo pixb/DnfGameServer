@@ -5,68 +5,6 @@ package dnf.v1;
 option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
 
 import "dnf/v1/common.proto";
+import "dnf/v1/option_types.proto";
 
 // 其他系统消息类型
-message STREAM_DATA {
-  int32 type = 1;
-  bytes data = 2;
-}
-
-message WATCH_ROOM_DATA {
-  int64 roomId = 1;
-  string roomName = 2;
-  int32 viewerCount = 3;
-}
-
-message SEND_ITEM_GuidInfo {
-  uint64 guid = 1;
-  int32 quantity = 2;
-}
-
-message SEND_ITEM_Info {
-  int32 itemId = 1;
-  int32 quantity = 2;
-}
-
-message SUBSYSTEM {
-  int32 id = 1;
-  bool enabled = 2;
-}
-
-message TYPE_TUTORIAL_LIST {
-  repeated int32 tutorialIds = 1;
-}
-
-message RES_TUTORIAL_LIST {
-  int32 error = 1;
-  repeated TutorialInfo tutorials = 2;
-}
-
-message RES_TUTORIAL_SAVE {
-  int32 error = 1;
-  int32 tutorialId = 2;
-  bool completed = 3;
-}
-
-message SECTOR_LIST {
-  repeated SECTOR_INFO sectors = 1;
-}
-
-message SECTOR_INFO {
-  int32 id = 1;
-  string name = 2;
-  int32 level = 3;
-  bool unlocked = 4;
-}
-
-message RES_SERVER_CHECKUP {
-  int32 error = 1;
-  bool online = 2;
-  string version = 3;
-}
-
-message TutorialInfo {
-  int32 id = 1;
-  bool completed = 2;
-  bool active = 3;
-}

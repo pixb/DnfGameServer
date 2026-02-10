@@ -16,6 +16,28 @@ import "dnf/v1/user_systems.proto";
 import "dnf/v1/system_types.proto";
 import "dnf/v1/welfare.proto";
 
+// 缺失的类型定义
+message SkinChatInfo {
+  int32 skinId = 1;
+  string chatContent = 2;
+}
+
+enum TeamType {
+  TEAM_TYPE_UNKNOWN = 0;
+  TEAM_TYPE_NORMAL = 1;
+  TEAM_TYPE_RAID = 2;
+}
+
+message ShopBuyCount {
+  int32 itemId = 1;
+  int32 count = 2;
+}
+
+message ShopTabReset {
+  int32 tabId = 1;
+  int64 resetTime = 2;
+}
+
 message BattleleagueRewardInfo {
   int32 index = 1;
   int32 count = 2;

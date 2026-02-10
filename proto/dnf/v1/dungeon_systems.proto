@@ -5,224 +5,45 @@ package dnf.v1;
 option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
 
 import "dnf/v1/common.proto";
-import "dnf/v1/inventory_types.proto";
-import "dnf/v1/gameplay_types.proto";
-import "dnf/v1/skill.proto";
-import "dnf/v1/character.proto";
-import "dnf/v1/game_systems.proto";
-import "dnf/v1/gameplay_systems.proto";
-import "dnf/v1/multi_systems.proto";
-import "dnf/v1/user_systems.proto";
+import "dnf/v1/option_types.proto";
 
-message DiningFoodBuffInfo {
-  int32 index = 1;
-  uint64 endtime = 2;
-}
-
-message DragonBoardAppendage {
-  uint64 charguid = 1;
-  int32 index = 2;
-}
-
-message DragonBoardChanceCard {
-  int32 index = 1;
-  DragonBoardChangeDice changedice = 2;
-  repeated DragonBoardChangeSlot changeslots = 3;
-  DragonBoardHold hold = 4;
-  DragonBoardChangeSlot moveslot = 5;
-  DragonBoardAppendage debuff = 6;
-  DragonBoardAppendage dotdamage = 7;
-  DragonBoardAppendage boss = 8;
-}
-
-message DragonBoardChangeDice {
-  uint64 charguid = 1;
-  int32 type = 2;
-}
-
-message DragonBoardChangeSlot {
-  uint64 charguid = 1;
-  int32 index = 2;
-}
-
-message DragonBoardGainAppendage {
-  int32 index = 1;
-  int32 count = 2;
-}
-
-message DragonBoardHold {
-  uint64 charguid = 1;
-  int32 count = 2;
-}
-
-message DragonBoardMove {
+// 副本系统消息类型
+message RES_START_LOCKSTEP_ROOM {
   int32 error = 1;
-  uint64 charguid = 2;
-  int32 slot = 3;
-  int32 appendage = 4;
-  repeated DragonBoardReward rewards = 5;
-  DragonBoardChanceCard chancecard = 6;
+  int32 roomId = 2;
+  int32 maxPlayers = 3;
 }
 
-message DragonBoardResult {
-  uint64 charguid = 1;
-  int32 job = 2;
-  int32 rank = 3;
-  int32 turncount = 4;
-  int32 playtime = 5;
-  repeated DragonBoardReward rewards = 6;
-  repeated DragonBoardReward slotrewards = 7;
-  int32 world = 8;
-  int32 creditscore = 9;
-}
-
-message DragonBoardReward {
-  int32 index = 1;
-  int32 count = 2;
-}
-
-message DragonBoardMember {
-  uint64 charguid = 1;
-  int32 dicetype = 2;
-  int32 slot = 3;
-  bool connected = 4;
-  bool clearboss = 5;
-  repeated DragonBoardReward rewards = 6;
-  repeated DragonBoardGainAppendage appendages = 7;
-}
-
-message DreamMazeDungeon {
-  int32 index = 1;
-  uint64 cleartime = 2;
-  int32 grade = 3;
-  int32 bosshp = 4;
-}
-
-message DreamMazePlayMember {
-  uint64 charguid = 1;
-  uint64 point = 2;
-  int32 playcount = 3;
-}
-
-message DropObjectItem {
-  uint64 charguid = 1;
-  int32 itemindex = 2;
-  int32 upgrade = 3;
-  int32 quality = 4;
-  int32 count = 5;
-  bool isgrowthcare = 6;
-}
-
-message Dungeonrank {
-  int32 counter = 1;
-  int32 multihit = 2;
-  int32 smash = 3;
-  int32 givedamage = 4;
-  int32 receivedamage = 5;
-}
-
-message DungeonGetInfo {
-  int32 dungeonindex = 1;
-  int32 clearcount = 2;
-}
-
-message DungeonParticiate {
-  int32 index = 1;
-  int32 count = 2;
-}
-
-message DungeonPartyCount {
-  int32 dungeonindex = 1;
-  int32 count = 2;
-  int32 grade = 3;
-  repeated uint64 flist = 4;
-}
-
-message DungeonPartyCount2 {
-  int32 dungeonindex = 1;
-  int32 count = 2;
-  int32 grade = 3;
-  bool friendstatus = 4;
-}
-
-message DungeonRankInfo {
-  int32 rankscore = 1;
-  int32 score = 2;
-}
-
-message DungeonResultQuestInfo {
-  int32 index = 1;
-  int32 type = 2;
-}
-
-message DungeonStartInfo {
-  uint64 matchingguid = 1;
-  uint64 dungeonguid = 2;
-  int32 battleworld = 3;
-  int32 bchannel = 4;
-  string bip = 5;
-  int32 bport = 6;
-  int32 matchtype = 7;
-  int32 world = 8;
-  int32 channel = 9;
-  uint64 targetguid = 10;
-  repeated uint64 users = 11;
-  repeated UserMinimumInfo detail = 12;
-}
-
-message EmblemRequest {
-  int32 index = 1;
-  int32 slot = 2;
-}
-
-message EmblemResult {
-  int32 index = 1;
-}
-
-message EnterStageMap {
-  int32 guid = 1;
-  repeated EnterStageObject objects = 2;
-}
-
-message EnterStageObject {
-  repeated StateObjectDrop drops = 1;
-  int32 guid = 2;
-  int32 type = 3;
-  int32 index = 4;
-}
-
-message EntryInfo {
-  uint64 charguid = 1;
-}
-
-message EquipPutOnOff {
-  uint64 guid = 1;
-  int32 slot = 2;
-}
-
-message EscortClearReward {
+message RES_START_DUNGEON {
   int32 error = 1;
-  int32 type = 2;
-  int32 index = 3;
-  int32 count = 4;
-  int32 level = 5;
-  int32 totalexp = 6;
+  int32 dungeonId = 2;
+  string dungeonName = 3;
+  int32 recommendedLevel = 4;
 }
 
-message EscortCurrentReward {
-  int32 index = 1;
-  int32 count = 2;
-}
-
-message EscortDoneReady {
+message RES_START_DUNGEON_COMPLETE {
   int32 error = 1;
-  uint64 guid = 2;
+  int32 dungeonId = 2;
+  bool success = 3;
+  repeated RewardInfo rewards = 4;
 }
 
-message EscortReward {
-  int32 addexp = 1;
-  int32 totalexp = 2;
-  int32 wagonhp = 3;
-  int32 index = 4;
-  int32 count = 5;
+message RES_SYNC_DUNGEON_START_TIME {
+  int32 error = 1;
+  int64 startTime = 2;
+  int32 duration = 3;
+}
+
+message RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM {
+  int32 error = 1;
+  int32 itemId = 2;
+  int32 count = 3;
+  bool completed = 4;
+}
+
+message RewardInfo {
+  int32 itemId = 1;
+  string itemName = 2;
+  int32 count = 3;
+  int32 rarity = 4;
 }

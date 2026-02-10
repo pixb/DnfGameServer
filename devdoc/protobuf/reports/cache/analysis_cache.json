@@ -1,0 +1,21 @@
+{
+  "timestamp": 1770701642.467179,
+  "analysis": {
+    "file_counts": {
+      "mina_protobuf": 2138,
+      "cross_server": 0,
+      "udp_model": 21,
+      "mina_udp": 0,
+      "test": 0,
+      "total": 2159
+    },
+    "categories": {
+      "REQ (请求)": 688,
+      "PT (数据类型)": 552,
+      "RES (响应)": 733,
+      "NOTIFY (通知)": 98,
+      "OTHER (其他)": 67
+    },
+    "timestamp": 1770701642.467176
+  }
+}

@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+import "dnf/v1/common.proto";
+import "dnf/v1/option_types.proto";
+
+// 团队系统消息类型
+message RES_SELECT_OTHER_DUNGEON_AT_MULTI {
+  int32 error = 1;
+  int32 dungeonId = 2;
+  string dungeonName = 3;
+}
+
+message RES_SENDING_INVITE_FRIEND_LIST {
+  int32 error = 1;
+  repeated FriendInviteInfo invites = 2;
+}
+
+message RES_REPLY_PROPOSAL {
+  int32 error = 1;
+  bool accepted = 2;
+  int64 proposerId = 3;
+}
+
+message RES_SET_PVP_CONTROL_MODE {
+  int32 error = 1;
+  int32 mode = 2;
+}
+
+message RES_RETURN_TO_TOWN_AT_MULTI_PLAY {
+  int32 error = 1;
+  string townName = 2;
+}
+
+message FriendInviteInfo {
+  int64 friendId = 1;
+  string friendName = 2;
+  int32 level = 3;
+  int32 job = 4;
+}

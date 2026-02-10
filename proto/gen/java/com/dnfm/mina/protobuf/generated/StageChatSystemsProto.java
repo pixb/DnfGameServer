@@ -62,11 +62,6 @@ public final class StageChatSystemsProto extends com.google.protobuf.GeneratedFi
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_PT_MAP_INFO_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_dnf_v1_RewardInfo_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_dnf_v1_RewardInfo_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dnf_v1_SEND_CHAT_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -119,26 +114,24 @@ public final class StageChatSystemsProto extends com.google.protobuf.GeneratedFi
       "EST_TO_RE_ENTER_DUNGEON\022\024\n\005error\030\001 \001(\005R\005" +
       "error\022\030\n\007allowed\030\002 \001(\010R\007allowed\"E\n\013PT_MA" +
       "P_INFO\022\016\n\002id\030\001 \001(\005R\002id\022\022\n\004name\030\002 \001(\tR\004na" +
-      "me\022\022\n\004type\030\003 \001(\005R\004type\"L\n\nRewardInfo\022\016\n\002" +
-      "id\030\001 \001(\005R\002id\022\032\n\010quantity\030\002 \001(\005R\010quantity" +
-      "\022\022\n\004rare\030\003 \001(\010R\004rare\"Q\n\tSEND_CHAT\022\030\n\007con" +
-      "tent\030\001 \001(\tR\007content\022\022\n\004type\030\002 \001(\005R\004type\022" +
-      "\026\n\006target\030\003 \001(\tR\006target\"\211\001\n\rRES_TOWN_CHA" +
-      "T\022\024\n\005error\030\001 \001(\005R\005error\022\026\n\006sender\030\002 \001(\tR" +
-      "\006sender\022\030\n\007content\030\003 \001(\tR\007content\022\022\n\004typ" +
-      "e\030\004 \001(\005R\004type\022\034\n\ttimestamp\030\005 \001(\003R\ttimest" +
-      "amp\"[\n\022RES_TOWN_CHAT_LIST\022\024\n\005error\030\001 \001(\005" +
-      "R\005error\022/\n\010messages\030\002 \003(\0132\023.dnf.v1.ChatM" +
-      "essageR\010messages\"A\n\021SESSION_AUTH_CHAT\022\024\n" +
-      "\005token\030\001 \001(\tR\005token\022\026\n\006userId\030\002 \001(\003R\006use" +
-      "rId\"q\n\013ChatMessage\022\026\n\006sender\030\001 \001(\tR\006send" +
-      "er\022\030\n\007content\030\002 \001(\tR\007content\022\022\n\004type\030\003 \001" +
-      "(\005R\004type\022\034\n\ttimestamp\030\004 \001(\003R\ttimestampB\260" +
-      "\001\n com.dnfm.mina.protobuf.generatedB\025Sta" +
-      "geChatSystemsProtoP\001Z<github.com/pixb/Dn" +
-      "fGameServer/dnf-go-client/gen/dnf/v1;dnf" +
-      "v1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBM" +
-      "etadata\352\002\007Dnf::V1b\006proto3"
+      "me\022\022\n\004type\030\003 \001(\005R\004type\"Q\n\tSEND_CHAT\022\030\n\007c" +
+      "ontent\030\001 \001(\tR\007content\022\022\n\004type\030\002 \001(\005R\004typ" +
+      "e\022\026\n\006target\030\003 \001(\tR\006target\"\211\001\n\rRES_TOWN_C" +
+      "HAT\022\024\n\005error\030\001 \001(\005R\005error\022\026\n\006sender\030\002 \001(" +
+      "\tR\006sender\022\030\n\007content\030\003 \001(\tR\007content\022\022\n\004t" +
+      "ype\030\004 \001(\005R\004type\022\034\n\ttimestamp\030\005 \001(\003R\ttime" +
+      "stamp\"[\n\022RES_TOWN_CHAT_LIST\022\024\n\005error\030\001 \001" +
+      "(\005R\005error\022/\n\010messages\030\002 \003(\0132\023.dnf.v1.Cha" +
+      "tMessageR\010messages\"A\n\021SESSION_AUTH_CHAT\022" +
+      "\024\n\005token\030\001 \001(\tR\005token\022\026\n\006userId\030\002 \001(\003R\006u" +
+      "serId\"q\n\013ChatMessage\022\026\n\006sender\030\001 \001(\tR\006se" +
+      "nder\022\030\n\007content\030\002 \001(\tR\007content\022\022\n\004type\030\003" +
+      " \001(\005R\004type\022\034\n\ttimestamp\030\004 \001(\003R\ttimestamp" +
+      "B\260\001\n com.dnfm.mina.protobuf.generatedB\025S" +
+      "tageChatSystemsProtoP\001Z<github.com/pixb/" +
+      "DnfGameServer/dnf-go-client/gen/dnf/v1;d" +
+      "nfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GP" +
+      "BMetadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -188,38 +181,32 @@ public final class StageChatSystemsProto extends com.google.protobuf.GeneratedFi
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_PT_MAP_INFO_descriptor,
         new java.lang.String[] { "Id", "Name", "Type", });
-    internal_static_dnf_v1_RewardInfo_descriptor =
-      getDescriptor().getMessageType(7);
-    internal_static_dnf_v1_RewardInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_dnf_v1_RewardInfo_descriptor,
-        new java.lang.String[] { "Id", "Quantity", "Rare", });
     internal_static_dnf_v1_SEND_CHAT_descriptor =
-      getDescriptor().getMessageType(8);
+      getDescriptor().getMessageType(7);
     internal_static_dnf_v1_SEND_CHAT_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_SEND_CHAT_descriptor,
         new java.lang.String[] { "Content", "Type", "Target", });
     internal_static_dnf_v1_RES_TOWN_CHAT_descriptor =
-      getDescriptor().getMessageType(9);
+      getDescriptor().getMessageType(8);
     internal_static_dnf_v1_RES_TOWN_CHAT_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_RES_TOWN_CHAT_descriptor,
         new java.lang.String[] { "Error", "Sender", "Content", "Type", "Timestamp", });
     internal_static_dnf_v1_RES_TOWN_CHAT_LIST_descriptor =
-      getDescriptor().getMessageType(10);
+      getDescriptor().getMessageType(9);
     internal_static_dnf_v1_RES_TOWN_CHAT_LIST_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_RES_TOWN_CHAT_LIST_descriptor,
         new java.lang.String[] { "Error", "Messages", });
     internal_static_dnf_v1_SESSION_AUTH_CHAT_descriptor =
-      getDescriptor().getMessageType(11);
+      getDescriptor().getMessageType(10);
     internal_static_dnf_v1_SESSION_AUTH_CHAT_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_SESSION_AUTH_CHAT_descriptor,
         new java.lang.String[] { "Token", "UserId", });
     internal_static_dnf_v1_ChatMessage_descriptor =
-      getDescriptor().getMessageType(12);
+      getDescriptor().getMessageType(11);
     internal_static_dnf_v1_ChatMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ChatMessage_descriptor,
