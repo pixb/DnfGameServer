@@ -2831,3 +2831,642 @@ message ReqItemEmblemExtract {
   int32 error = 1;
   int32 index = 2;
 }
+
+// 第70批消息类型
+// 奖励货币信息
+message PtRewardCurrencyInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 初始化技能
+message PtInitSkill {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 徽章请求
+message PtEmblemRequest {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 中继帧数据类型请求
+message RelayFrameDataTypesReq {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知完成任务
+message NotifyCompleteQuest {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知公会钓鱼灾难
+message NotifyGuildFishingDisaster {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 攻击小队添加招募请求
+message ReqAttackSquadAddRecruit {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 生物任务取消响应
+message ResCreatureErrandCancel {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 教程列表类型
+message TypeTutoriaList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 婚礼邀请
+message PtWeddingInvitation {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 成就列表请求
+message ReqAchievementList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 拍卖基础
+message PtAuctionBase {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会战争结束结果
+message PtGuildWarEndResult {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 帧数据响应
+message FrameDataRes {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知战斗联赛下一个副本
+message NotifyBattleleagueNextDungeon {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 删除黑名单响应
+message ResDeleteBlacklist {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 发送聊天类型请求
+message SendChatTypesReq {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 玩家输入
+message PlayerInput {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知获取时间盒失败
+message NotifyFailedToAcquireTimebox {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 冒险联盟设置分享板请求
+message ReqAdventureUnionSetShareboard {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏餐厅开始响应
+message ResMinigameRestaurentStart {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 冒险联盟分享板帧
+message PtAdventureUnionShareboardFrame {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 设置PVP控制模式请求
+message ReqSetPvpControlMode {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 城镇用户指南列表响应
+message ResTownUserGuidList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 冒险手册成就清除条件
+message PtAdventurebookAchieveClearCondition {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 角色指南
+message PtCharacterGuid {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 历史站点策略槽位
+message PtHistoricsiteStrategySlot {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物品
+message PtItems {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 半开放队伍接受请求
+message ReqHalfOpenPartyAccept {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 神器装备选项变更响应
+message ResArtifactEquippedOptionChange {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 打开时间盒响应
+message ResOpenTimeBox {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 冒险联盟成长收集其他请求
+message ReqAdventureUnionGrowCollectionOther {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 排名好友信息
+message PtRankFriendInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 地图物体掉落
+message PtMapObjectDrop {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 中继装备数据类型通知
+message RelayEquipmentsDataTypesNoti {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 收集物品
+message PtCollectionItem {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 加载婚姻信息响应
+message ResLoadMarriageInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 第71批消息类型
+// 系统命令商城
+message PtSyscmdCerashop {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 获取邮件请求
+message ReqMailGet {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 接受任务响应
+message ResAcceptQuest {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 分离裂缝请求
+message ReqDetachCrack {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 加载收集响应
+message ResCollectionLoad {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 导师消息
+message PtMentorMessage {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 开始副本请求
+message ReqStartDungeon {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 发送聊天类型通知
+message SendChatTypesNoti {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 冒险列表物品
+message PtAdventureListItem {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 抽奖
+message PackLottery {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 检查认证类型响应
+message CheckAuthTypesRes {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 排名副本伤害信息请求
+message ReqRankingDungeonDamageInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 帧数据类型响应
+message FrameDataTypesRes {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 冒险经验信息
+message PtAdventureExpInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// PVE回合信息
+message PtPveRoundInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 角色槽位变更响应
+message ResCharacterSlotChange {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 拍卖分类列表响应
+message ResAuctionCategoryList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 队伍更新请求
+message ReqPartyUpdate {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 骑士任务枚举
+message EnumChivalryMission {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 队伍取消邀请响应
+message ResPartyCancelInvitation {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 队伍变更响应
+message ResTeamChange {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知无效用户响应
+message ResNotifyInvalidUser {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 玩具账单验证
+message PtToyBillingVerify {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 历史站点申请请求
+message ReqHistoricsiteApply {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 退出响应
+message ExitRes {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 自定义PVP房间设置请求
+message ReqCustomPvpRoomSetting {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会徽章调色板购买响应
+message ResGuildEmblemPaletteBuy {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 内容流
+message ContentStream {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 祈祷材料信息
+message PtPrayMaterialInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 攻击小队列表请求
+message ReqAttackSquadList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏77情人节奖励请求
+message ReqMinigame77valentineReward {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 冒险联盟显示检查其他请求
+message ReqAdventureUnionShowCheckOther {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 骑士更新任务请求
+message ReqChivalryUpdateMission {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 拍卖物品价格列表请求
+message ReqAuctionItemPriceList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 历史站点公告响应
+message ResHistoricsiteBulletin {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会徽章购买响应
+message ResGuildEmblemBuy {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 第72批消息类型
+// 公会餐厅购买请求
+message ReqGuildDiningBuy {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 控制组查询区域响应
+message ResControlGroupQueryarea {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 书签列表响应
+message ResBookmarkList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知突袭金币信息
+message NotifyRaidCoinInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 棋盘游戏同步HP响应
+message ResBoardGameSyncHp {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏迷你乒乓加载响应
+message ResMinigameMiniPongLoad {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 疲劳帮助请求响应
+message ResFatigueHelpRequest {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 裂缝装备列表响应
+message ResCrackequipList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 被服务器踢出通知
+message KickedByServerNoti {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 准备房间响应
+message ResReadyRoom {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 验证添加伤害数据
+message PtVerificationAddDamageData {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 创建角色请求
+message ReqCreateCharacter {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 组合书签响应
+message ResComposeBookmark {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// MAAS睡眠播放响应
+message ResMaasSleepPlay {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物品分离材料
+message PtItemDisjointMaterial {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 重新购买物品响应
+message ResRepurchaseItem {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 装备精炼响应
+message ResEquipmentRarify {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 熔炼裂缝响应
+message ResMeltingCrack {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏破坏清除响应
+message ResMinigameBreakingClear {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 加载观看书签响应
+message ResLoadWatchingBookmarks {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会成员排名信息响应
+message ResGuildMemberRankingInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 卡片附加响应
+message ResCardAttach {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 快速聊天请求
+message ReqQuickChatting {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 冒险收获奖励请求
+message ReqAdventureReapReward {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 被动物体
+message PtPassiveObject {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 黑名单
+message PtBlacklist {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 历史站点表情响应
+message ResHistoricsiteEmoticons {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 充值指南入口物品
+message PtCharguidEntranceItem {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 导师任务信息
+message PtMentorQuestInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会材料生产请求
+message ReqGuildMaterialProduction {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 扩展背包请求
+message ReqInvenExtend {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 刷新角色信息响应
+message ResRefreshCharacterInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知龙盘结果
+message NotifyDragonBoardResult {
+  int32 error = 1;
+  int32 index = 2;
+}
