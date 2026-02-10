@@ -6,25 +6,27 @@
 package com.dnfm.mina.protobuf.generated;
 
 @com.google.protobuf.Generated
-public interface SkinItemInfoOrBuilder extends
-    // @@protoc_insertion_point(interface_extends:dnf.v1.SkinItemInfo)
+public interface PT_STACKABLEOrBuilder extends
+    // @@protoc_insertion_point(interface_extends:dnf.v1.PT_STACKABLE)
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * 索引
+   * </pre>
+   *
    * <code>int32 index = 1 [json_name = "index"];</code>
    * @return The index.
    */
   int getIndex();
 
   /**
-   * <code>uint64 guid = 2 [json_name = "guid"];</code>
-   * @return The guid.
+   * <pre>
+   * 数量
+   * </pre>
+   *
+   * <code>int32 count = 2 [json_name = "count"];</code>
+   * @return The count.
    */
-  long getGuid();
-
-  /**
-   * <code>int64 expiretime = 3 [json_name = "expiretime"];</code>
-   * @return The expiretime.
-   */
-  long getExpiretime();
+  int getCount();
 }

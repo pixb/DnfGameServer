@@ -6,13 +6,17 @@
 package com.dnfm.mina.protobuf.generated;
 
 /**
- * Protobuf type {@code dnf.v1.SkinItemInfo}
+ * <pre>
+ * 角色GUID
+ * </pre>
+ *
+ * Protobuf type {@code dnf.v1.PT_CHARACTER_GUID}
  */
 @com.google.protobuf.Generated
-public final class SkinItemInfo extends
+public final class PT_CHARACTER_GUID extends
     com.google.protobuf.GeneratedMessage implements
-    // @@protoc_insertion_point(message_implements:dnf.v1.SkinItemInfo)
-    SkinItemInfoOrBuilder {
+    // @@protoc_insertion_point(message_implements:dnf.v1.PT_CHARACTER_GUID)
+    PT_CHARACTER_GUIDOrBuilder {
 private static final long serialVersionUID = 0L;
   static {
     com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
@@ -21,59 +25,41 @@ private static final long serialVersionUID = 0L;
       /* minor= */ 33,
       /* patch= */ 5,
       /* suffix= */ "",
-      "SkinItemInfo");
+      "PT_CHARACTER_GUID");
   }
-  // Use SkinItemInfo.newBuilder() to construct.
-  private SkinItemInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+  // Use PT_CHARACTER_GUID.newBuilder() to construct.
+  private PT_CHARACTER_GUID(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
     super(builder);
   }
-  private SkinItemInfo() {
+  private PT_CHARACTER_GUID() {
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_SkinItemInfo_descriptor;
+    return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_PT_CHARACTER_GUID_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_SkinItemInfo_fieldAccessorTable
+    return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_PT_CHARACTER_GUID_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.dnfm.mina.protobuf.generated.SkinItemInfo.class, com.dnfm.mina.protobuf.generated.SkinItemInfo.Builder.class);
+            com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID.class, com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID.Builder.class);
   }
 
-  public static final int INDEX_FIELD_NUMBER = 1;
-  private int index_ = 0;
-  /**
-   * <code>int32 index = 1 [json_name = "index"];</code>
-   * @return The index.
-   */
-  @java.lang.Override
-  public int getIndex() {
-    return index_;
-  }
-
-  public static final int GUID_FIELD_NUMBER = 2;
+  public static final int GUID_FIELD_NUMBER = 1;
   private long guid_ = 0L;
   /**
-   * <code>uint64 guid = 2 [json_name = "guid"];</code>
+   * <pre>
+   * GUID
+   * </pre>
+   *
+   * <code>uint64 guid = 1 [json_name = "guid"];</code>
    * @return The guid.
    */
   @java.lang.Override
   public long getGuid() {
     return guid_;
-  }
-
-  public static final int EXPIRETIME_FIELD_NUMBER = 3;
-  private long expiretime_ = 0L;
-  /**
-   * <code>int64 expiretime = 3 [json_name = "expiretime"];</code>
-   * @return The expiretime.
-   */
-  @java.lang.Override
-  public long getExpiretime() {
-    return expiretime_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -90,14 +76,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (index_ != 0) {
-      output.writeInt32(1, index_);
-    }
     if (guid_ != 0L) {
-      output.writeUInt64(2, guid_);
-    }
-    if (expiretime_ != 0L) {
-      output.writeInt64(3, expiretime_);
+      output.writeUInt64(1, guid_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -108,17 +88,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (index_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, index_);
-    }
     if (guid_ != 0L) {
       size += com.google.protobuf.CodedOutputStream
-        .computeUInt64Size(2, guid_);
-    }
-    if (expiretime_ != 0L) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt64Size(3, expiretime_);
+        .computeUInt64Size(1, guid_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -130,17 +102,13 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.dnfm.mina.protobuf.generated.SkinItemInfo)) {
+    if (!(obj instanceof com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID)) {
       return super.equals(obj);
     }
-    com.dnfm.mina.protobuf.generated.SkinItemInfo other = (com.dnfm.mina.protobuf.generated.SkinItemInfo) obj;
+    com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID other = (com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID) obj;
 
-    if (getIndex()
-        != other.getIndex()) return false;
     if (getGuid()
         != other.getGuid()) return false;
-    if (getExpiretime()
-        != other.getExpiretime()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -152,57 +120,52 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + INDEX_FIELD_NUMBER;
-    hash = (53 * hash) + getIndex();
     hash = (37 * hash) + GUID_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
         getGuid());
-    hash = (37 * hash) + EXPIRETIME_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getExpiretime());
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(byte[] data)
+  public static com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -210,26 +173,26 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseDelimitedFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input);
   }
 
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseDelimitedFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -242,7 +205,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.SkinItemInfo prototype) {
+  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -258,26 +221,30 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code dnf.v1.SkinItemInfo}
+   * <pre>
+   * 角色GUID
+   * </pre>
+   *
+   * Protobuf type {@code dnf.v1.PT_CHARACTER_GUID}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:dnf.v1.SkinItemInfo)
-      com.dnfm.mina.protobuf.generated.SkinItemInfoOrBuilder {
+      // @@protoc_insertion_point(builder_implements:dnf.v1.PT_CHARACTER_GUID)
+      com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUIDOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_SkinItemInfo_descriptor;
+      return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_PT_CHARACTER_GUID_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_SkinItemInfo_fieldAccessorTable
+      return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_PT_CHARACTER_GUID_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.dnfm.mina.protobuf.generated.SkinItemInfo.class, com.dnfm.mina.protobuf.generated.SkinItemInfo.Builder.class);
+              com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID.class, com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID.Builder.class);
     }
 
-    // Construct using com.dnfm.mina.protobuf.generated.SkinItemInfo.newBuilder()
+    // Construct using com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID.newBuilder()
     private Builder() {
 
     }
@@ -291,26 +258,24 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      index_ = 0;
       guid_ = 0L;
-      expiretime_ = 0L;
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_SkinItemInfo_descriptor;
+      return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_PT_CHARACTER_GUID_descriptor;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.SkinItemInfo getDefaultInstanceForType() {
-      return com.dnfm.mina.protobuf.generated.SkinItemInfo.getDefaultInstance();
+    public com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID getDefaultInstanceForType() {
+      return com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.SkinItemInfo build() {
-      com.dnfm.mina.protobuf.generated.SkinItemInfo result = buildPartial();
+    public com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID build() {
+      com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -318,46 +283,34 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.SkinItemInfo buildPartial() {
-      com.dnfm.mina.protobuf.generated.SkinItemInfo result = new com.dnfm.mina.protobuf.generated.SkinItemInfo(this);
+    public com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID buildPartial() {
+      com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID result = new com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID(this);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    private void buildPartial0(com.dnfm.mina.protobuf.generated.SkinItemInfo result) {
+    private void buildPartial0(com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.index_ = index_;
-      }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
         result.guid_ = guid_;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.expiretime_ = expiretime_;
       }
     }
 
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.dnfm.mina.protobuf.generated.SkinItemInfo) {
-        return mergeFrom((com.dnfm.mina.protobuf.generated.SkinItemInfo)other);
+      if (other instanceof com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID) {
+        return mergeFrom((com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.SkinItemInfo other) {
-      if (other == com.dnfm.mina.protobuf.generated.SkinItemInfo.getDefaultInstance()) return this;
-      if (other.getIndex() != 0) {
-        setIndex(other.getIndex());
-      }
+    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID other) {
+      if (other == com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID.getDefaultInstance()) return this;
       if (other.getGuid() != 0L) {
         setGuid(other.getGuid());
-      }
-      if (other.getExpiretime() != 0L) {
-        setExpiretime(other.getExpiretime());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -386,20 +339,10 @@ private static final long serialVersionUID = 0L;
               done = true;
               break;
             case 8: {
-              index_ = input.readInt32();
+              guid_ = input.readUInt64();
               bitField0_ |= 0x00000001;
               break;
             } // case 8
-            case 16: {
-              guid_ = input.readUInt64();
-              bitField0_ |= 0x00000002;
-              break;
-            } // case 16
-            case 24: {
-              expiretime_ = input.readInt64();
-              bitField0_ |= 0x00000004;
-              break;
-            } // case 24
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -417,41 +360,13 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private int index_ ;
-    /**
-     * <code>int32 index = 1 [json_name = "index"];</code>
-     * @return The index.
-     */
-    @java.lang.Override
-    public int getIndex() {
-      return index_;
-    }
-    /**
-     * <code>int32 index = 1 [json_name = "index"];</code>
-     * @param value The index to set.
-     * @return This builder for chaining.
-     */
-    public Builder setIndex(int value) {
-
-      index_ = value;
-      bitField0_ |= 0x00000001;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 index = 1 [json_name = "index"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearIndex() {
-      bitField0_ = (bitField0_ & ~0x00000001);
-      index_ = 0;
-      onChanged();
-      return this;
-    }
-
     private long guid_ ;
     /**
-     * <code>uint64 guid = 2 [json_name = "guid"];</code>
+     * <pre>
+     * GUID
+     * </pre>
+     *
+     * <code>uint64 guid = 1 [json_name = "guid"];</code>
      * @return The guid.
      */
     @java.lang.Override
@@ -459,77 +374,53 @@ private static final long serialVersionUID = 0L;
       return guid_;
     }
     /**
-     * <code>uint64 guid = 2 [json_name = "guid"];</code>
+     * <pre>
+     * GUID
+     * </pre>
+     *
+     * <code>uint64 guid = 1 [json_name = "guid"];</code>
      * @param value The guid to set.
      * @return This builder for chaining.
      */
     public Builder setGuid(long value) {
 
       guid_ = value;
-      bitField0_ |= 0x00000002;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
-     * <code>uint64 guid = 2 [json_name = "guid"];</code>
+     * <pre>
+     * GUID
+     * </pre>
+     *
+     * <code>uint64 guid = 1 [json_name = "guid"];</code>
      * @return This builder for chaining.
      */
     public Builder clearGuid() {
-      bitField0_ = (bitField0_ & ~0x00000002);
+      bitField0_ = (bitField0_ & ~0x00000001);
       guid_ = 0L;
       onChanged();
       return this;
     }
 
-    private long expiretime_ ;
-    /**
-     * <code>int64 expiretime = 3 [json_name = "expiretime"];</code>
-     * @return The expiretime.
-     */
-    @java.lang.Override
-    public long getExpiretime() {
-      return expiretime_;
-    }
-    /**
-     * <code>int64 expiretime = 3 [json_name = "expiretime"];</code>
-     * @param value The expiretime to set.
-     * @return This builder for chaining.
-     */
-    public Builder setExpiretime(long value) {
-
-      expiretime_ = value;
-      bitField0_ |= 0x00000004;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int64 expiretime = 3 [json_name = "expiretime"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearExpiretime() {
-      bitField0_ = (bitField0_ & ~0x00000004);
-      expiretime_ = 0L;
-      onChanged();
-      return this;
-    }
-
-    // @@protoc_insertion_point(builder_scope:dnf.v1.SkinItemInfo)
+    // @@protoc_insertion_point(builder_scope:dnf.v1.PT_CHARACTER_GUID)
   }
 
-  // @@protoc_insertion_point(class_scope:dnf.v1.SkinItemInfo)
-  private static final com.dnfm.mina.protobuf.generated.SkinItemInfo DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:dnf.v1.PT_CHARACTER_GUID)
+  private static final com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.SkinItemInfo();
+    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID();
   }
 
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo getDefaultInstance() {
+  public static com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<SkinItemInfo>
-      PARSER = new com.google.protobuf.AbstractParser<SkinItemInfo>() {
+  private static final com.google.protobuf.Parser<PT_CHARACTER_GUID>
+      PARSER = new com.google.protobuf.AbstractParser<PT_CHARACTER_GUID>() {
     @java.lang.Override
-    public SkinItemInfo parsePartialFrom(
+    public PT_CHARACTER_GUID parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -548,17 +439,17 @@ private static final long serialVersionUID = 0L;
     }
   };
 
-  public static com.google.protobuf.Parser<SkinItemInfo> parser() {
+  public static com.google.protobuf.Parser<PT_CHARACTER_GUID> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<SkinItemInfo> getParserForType() {
+  public com.google.protobuf.Parser<PT_CHARACTER_GUID> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.SkinItemInfo getDefaultInstanceForType() {
+  public com.dnfm.mina.protobuf.generated.PT_CHARACTER_GUID getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

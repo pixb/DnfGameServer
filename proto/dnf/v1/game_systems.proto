@@ -147,8 +147,102 @@ message SkinItemInfo {
   int32 index = 1;
   uint64 guid = 2;
   int64 expiretime = 3;
-  int64 acquisitiontime = 4;
-  int32 favorite = 5;
+}
+
+// 可堆叠物品信息
+message PT_STACKABLE {
+  int32 index = 1;  // 索引
+  int32 count = 2;  // 数量
+}
+
+// 分享奖励信息
+message PT_SHARE_REWARD_INFO {
+  // 分享奖励信息
+}
+
+// 用户信息
+message PT_USER_INFO {
+  // 用户信息
+}
+
+// PVP记录信息
+message PT_PVP_RECORD_INFO {
+  // PVP记录信息
+}
+
+// 福利查找奖励信息
+message PT_WELFARE_FIND_REWARD_INFO {
+  // 福利查找奖励信息
+}
+
+// 新内容信息
+message PT_NEW_CONTENTS {
+  // 新内容信息
+}
+
+// 冠军信息
+message PT_CHAMPION_INFO {
+  // 冠军信息
+}
+
+// 地图GUID信息
+message PT_MAP_GUIDS {
+  // 地图GUID信息
+}
+
+// 自定义PVP房间设置
+message PT_CUSTOM_PVP_ROOM_SETTING {
+  // 自定义PVP房间设置
+}
+
+// 战斗选项
+message PT_BATTLE_OPTION {
+  // 战斗选项
+}
+
+// 角色GUID
+message PT_CHARACTER_GUID {
+  uint64 guid = 1;  // GUID
+}
+
+// 组成员
+message PT_GROUP_MEMBER {
+  // 组成员
+}
+
+// 选中的物品
+message PT_SELECTED_ITEM {
+  // 选中的物品
+}
+
+// 邮件包裹
+message PT_POST_PACKAGE {
+  // 邮件包裹
+}
+
+// 内容奖励信息
+message PT_CONTENTS_REWARD_INFO {
+  // 内容奖励信息
+}
+
+// 消耗物品
+message PT_CONSUME_ITEMS {
+  // 消耗物品
+}
+
+// 书签物品
+message PT_BOOKMARK_ITEM {
+  // 书签物品
+}
+
+// 卡牌合成
+message PT_CARD_COMPOSE {
+  // 卡牌合成
+}
+
+// 街机PVP信息货币
+message PT_ARCADE_PVP_INFO_CURRENCY {
+  // 街机PVP信息货币
 }
 
 message Tutorial {

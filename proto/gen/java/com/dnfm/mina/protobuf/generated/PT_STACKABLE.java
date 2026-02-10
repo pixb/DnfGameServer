@@ -6,13 +6,17 @@
 package com.dnfm.mina.protobuf.generated;
 
 /**
- * Protobuf type {@code dnf.v1.SkinItemInfo}
+ * <pre>
+ * 可堆叠物品信息
+ * </pre>
+ *
+ * Protobuf type {@code dnf.v1.PT_STACKABLE}
  */
 @com.google.protobuf.Generated
-public final class SkinItemInfo extends
+public final class PT_STACKABLE extends
     com.google.protobuf.GeneratedMessage implements
-    // @@protoc_insertion_point(message_implements:dnf.v1.SkinItemInfo)
-    SkinItemInfoOrBuilder {
+    // @@protoc_insertion_point(message_implements:dnf.v1.PT_STACKABLE)
+    PT_STACKABLEOrBuilder {
 private static final long serialVersionUID = 0L;
   static {
     com.google.protobuf.RuntimeVersion.validateProtobufGencodeVersion(
@@ -21,31 +25,35 @@ private static final long serialVersionUID = 0L;
       /* minor= */ 33,
       /* patch= */ 5,
       /* suffix= */ "",
-      "SkinItemInfo");
+      "PT_STACKABLE");
   }
-  // Use SkinItemInfo.newBuilder() to construct.
-  private SkinItemInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+  // Use PT_STACKABLE.newBuilder() to construct.
+  private PT_STACKABLE(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
     super(builder);
   }
-  private SkinItemInfo() {
+  private PT_STACKABLE() {
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_SkinItemInfo_descriptor;
+    return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_PT_STACKABLE_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_SkinItemInfo_fieldAccessorTable
+    return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_PT_STACKABLE_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            com.dnfm.mina.protobuf.generated.SkinItemInfo.class, com.dnfm.mina.protobuf.generated.SkinItemInfo.Builder.class);
+            com.dnfm.mina.protobuf.generated.PT_STACKABLE.class, com.dnfm.mina.protobuf.generated.PT_STACKABLE.Builder.class);
   }
 
   public static final int INDEX_FIELD_NUMBER = 1;
   private int index_ = 0;
   /**
+   * <pre>
+   * 索引
+   * </pre>
+   *
    * <code>int32 index = 1 [json_name = "index"];</code>
    * @return The index.
    */
@@ -54,26 +62,19 @@ private static final long serialVersionUID = 0L;
     return index_;
   }
 
-  public static final int GUID_FIELD_NUMBER = 2;
-  private long guid_ = 0L;
+  public static final int COUNT_FIELD_NUMBER = 2;
+  private int count_ = 0;
   /**
-   * <code>uint64 guid = 2 [json_name = "guid"];</code>
-   * @return The guid.
+   * <pre>
+   * 数量
+   * </pre>
+   *
+   * <code>int32 count = 2 [json_name = "count"];</code>
+   * @return The count.
    */
   @java.lang.Override
-  public long getGuid() {
-    return guid_;
-  }
-
-  public static final int EXPIRETIME_FIELD_NUMBER = 3;
-  private long expiretime_ = 0L;
-  /**
-   * <code>int64 expiretime = 3 [json_name = "expiretime"];</code>
-   * @return The expiretime.
-   */
-  @java.lang.Override
-  public long getExpiretime() {
-    return expiretime_;
+  public int getCount() {
+    return count_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -93,11 +94,8 @@ private static final long serialVersionUID = 0L;
     if (index_ != 0) {
       output.writeInt32(1, index_);
     }
-    if (guid_ != 0L) {
-      output.writeUInt64(2, guid_);
-    }
-    if (expiretime_ != 0L) {
-      output.writeInt64(3, expiretime_);
+    if (count_ != 0) {
+      output.writeInt32(2, count_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -112,13 +110,9 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(1, index_);
     }
-    if (guid_ != 0L) {
+    if (count_ != 0) {
       size += com.google.protobuf.CodedOutputStream
-        .computeUInt64Size(2, guid_);
-    }
-    if (expiretime_ != 0L) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt64Size(3, expiretime_);
+        .computeInt32Size(2, count_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -130,17 +124,15 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof com.dnfm.mina.protobuf.generated.SkinItemInfo)) {
+    if (!(obj instanceof com.dnfm.mina.protobuf.generated.PT_STACKABLE)) {
       return super.equals(obj);
     }
-    com.dnfm.mina.protobuf.generated.SkinItemInfo other = (com.dnfm.mina.protobuf.generated.SkinItemInfo) obj;
+    com.dnfm.mina.protobuf.generated.PT_STACKABLE other = (com.dnfm.mina.protobuf.generated.PT_STACKABLE) obj;
 
     if (getIndex()
         != other.getIndex()) return false;
-    if (getGuid()
-        != other.getGuid()) return false;
-    if (getExpiretime()
-        != other.getExpiretime()) return false;
+    if (getCount()
+        != other.getCount()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -154,55 +146,51 @@ private static final long serialVersionUID = 0L;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + INDEX_FIELD_NUMBER;
     hash = (53 * hash) + getIndex();
-    hash = (37 * hash) + GUID_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getGuid());
-    hash = (37 * hash) + EXPIRETIME_FIELD_NUMBER;
-    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-        getExpiretime());
+    hash = (37 * hash) + COUNT_FIELD_NUMBER;
+    hash = (53 * hash) + getCount();
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_STACKABLE parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_STACKABLE parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_STACKABLE parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_STACKABLE parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(byte[] data)
+  public static com.dnfm.mina.protobuf.generated.PT_STACKABLE parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_STACKABLE parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.PT_STACKABLE parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_STACKABLE parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -210,26 +198,26 @@ private static final long serialVersionUID = 0L;
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
 
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseDelimitedFrom(java.io.InputStream input)
+  public static com.dnfm.mina.protobuf.generated.PT_STACKABLE parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input);
   }
 
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseDelimitedFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_STACKABLE parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_STACKABLE parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessage
         .parseWithIOException(PARSER, input);
   }
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo parseFrom(
+  public static com.dnfm.mina.protobuf.generated.PT_STACKABLE parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -242,7 +230,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.SkinItemInfo prototype) {
+  public static Builder newBuilder(com.dnfm.mina.protobuf.generated.PT_STACKABLE prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -258,26 +246,30 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code dnf.v1.SkinItemInfo}
+   * <pre>
+   * 可堆叠物品信息
+   * </pre>
+   *
+   * Protobuf type {@code dnf.v1.PT_STACKABLE}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:dnf.v1.SkinItemInfo)
-      com.dnfm.mina.protobuf.generated.SkinItemInfoOrBuilder {
+      // @@protoc_insertion_point(builder_implements:dnf.v1.PT_STACKABLE)
+      com.dnfm.mina.protobuf.generated.PT_STACKABLEOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_SkinItemInfo_descriptor;
+      return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_PT_STACKABLE_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_SkinItemInfo_fieldAccessorTable
+      return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_PT_STACKABLE_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.dnfm.mina.protobuf.generated.SkinItemInfo.class, com.dnfm.mina.protobuf.generated.SkinItemInfo.Builder.class);
+              com.dnfm.mina.protobuf.generated.PT_STACKABLE.class, com.dnfm.mina.protobuf.generated.PT_STACKABLE.Builder.class);
     }
 
-    // Construct using com.dnfm.mina.protobuf.generated.SkinItemInfo.newBuilder()
+    // Construct using com.dnfm.mina.protobuf.generated.PT_STACKABLE.newBuilder()
     private Builder() {
 
     }
@@ -292,25 +284,24 @@ private static final long serialVersionUID = 0L;
       super.clear();
       bitField0_ = 0;
       index_ = 0;
-      guid_ = 0L;
-      expiretime_ = 0L;
+      count_ = 0;
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_SkinItemInfo_descriptor;
+      return com.dnfm.mina.protobuf.generated.GameSystemsProto.internal_static_dnf_v1_PT_STACKABLE_descriptor;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.SkinItemInfo getDefaultInstanceForType() {
-      return com.dnfm.mina.protobuf.generated.SkinItemInfo.getDefaultInstance();
+    public com.dnfm.mina.protobuf.generated.PT_STACKABLE getDefaultInstanceForType() {
+      return com.dnfm.mina.protobuf.generated.PT_STACKABLE.getDefaultInstance();
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.SkinItemInfo build() {
-      com.dnfm.mina.protobuf.generated.SkinItemInfo result = buildPartial();
+    public com.dnfm.mina.protobuf.generated.PT_STACKABLE build() {
+      com.dnfm.mina.protobuf.generated.PT_STACKABLE result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -318,46 +309,40 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public com.dnfm.mina.protobuf.generated.SkinItemInfo buildPartial() {
-      com.dnfm.mina.protobuf.generated.SkinItemInfo result = new com.dnfm.mina.protobuf.generated.SkinItemInfo(this);
+    public com.dnfm.mina.protobuf.generated.PT_STACKABLE buildPartial() {
+      com.dnfm.mina.protobuf.generated.PT_STACKABLE result = new com.dnfm.mina.protobuf.generated.PT_STACKABLE(this);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    private void buildPartial0(com.dnfm.mina.protobuf.generated.SkinItemInfo result) {
+    private void buildPartial0(com.dnfm.mina.protobuf.generated.PT_STACKABLE result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
         result.index_ = index_;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.guid_ = guid_;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.expiretime_ = expiretime_;
+        result.count_ = count_;
       }
     }
 
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof com.dnfm.mina.protobuf.generated.SkinItemInfo) {
-        return mergeFrom((com.dnfm.mina.protobuf.generated.SkinItemInfo)other);
+      if (other instanceof com.dnfm.mina.protobuf.generated.PT_STACKABLE) {
+        return mergeFrom((com.dnfm.mina.protobuf.generated.PT_STACKABLE)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.SkinItemInfo other) {
-      if (other == com.dnfm.mina.protobuf.generated.SkinItemInfo.getDefaultInstance()) return this;
+    public Builder mergeFrom(com.dnfm.mina.protobuf.generated.PT_STACKABLE other) {
+      if (other == com.dnfm.mina.protobuf.generated.PT_STACKABLE.getDefaultInstance()) return this;
       if (other.getIndex() != 0) {
         setIndex(other.getIndex());
       }
-      if (other.getGuid() != 0L) {
-        setGuid(other.getGuid());
-      }
-      if (other.getExpiretime() != 0L) {
-        setExpiretime(other.getExpiretime());
+      if (other.getCount() != 0) {
+        setCount(other.getCount());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -391,15 +376,10 @@ private static final long serialVersionUID = 0L;
               break;
             } // case 8
             case 16: {
-              guid_ = input.readUInt64();
+              count_ = input.readInt32();
               bitField0_ |= 0x00000002;
               break;
             } // case 16
-            case 24: {
-              expiretime_ = input.readInt64();
-              bitField0_ |= 0x00000004;
-              break;
-            } // case 24
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -419,6 +399,10 @@ private static final long serialVersionUID = 0L;
 
     private int index_ ;
     /**
+     * <pre>
+     * 索引
+     * </pre>
+     *
      * <code>int32 index = 1 [json_name = "index"];</code>
      * @return The index.
      */
@@ -427,6 +411,10 @@ private static final long serialVersionUID = 0L;
       return index_;
     }
     /**
+     * <pre>
+     * 索引
+     * </pre>
+     *
      * <code>int32 index = 1 [json_name = "index"];</code>
      * @param value The index to set.
      * @return This builder for chaining.
@@ -439,6 +427,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * 索引
+     * </pre>
+     *
      * <code>int32 index = 1 [json_name = "index"];</code>
      * @return This builder for chaining.
      */
@@ -449,87 +441,67 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private long guid_ ;
+    private int count_ ;
     /**
-     * <code>uint64 guid = 2 [json_name = "guid"];</code>
-     * @return The guid.
+     * <pre>
+     * 数量
+     * </pre>
+     *
+     * <code>int32 count = 2 [json_name = "count"];</code>
+     * @return The count.
      */
     @java.lang.Override
-    public long getGuid() {
-      return guid_;
+    public int getCount() {
+      return count_;
     }
     /**
-     * <code>uint64 guid = 2 [json_name = "guid"];</code>
-     * @param value The guid to set.
+     * <pre>
+     * 数量
+     * </pre>
+     *
+     * <code>int32 count = 2 [json_name = "count"];</code>
+     * @param value The count to set.
      * @return This builder for chaining.
      */
-    public Builder setGuid(long value) {
+    public Builder setCount(int value) {
 
-      guid_ = value;
+      count_ = value;
       bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
     /**
-     * <code>uint64 guid = 2 [json_name = "guid"];</code>
+     * <pre>
+     * 数量
+     * </pre>
+     *
+     * <code>int32 count = 2 [json_name = "count"];</code>
      * @return This builder for chaining.
      */
-    public Builder clearGuid() {
+    public Builder clearCount() {
       bitField0_ = (bitField0_ & ~0x00000002);
-      guid_ = 0L;
+      count_ = 0;
       onChanged();
       return this;
     }
 
-    private long expiretime_ ;
-    /**
-     * <code>int64 expiretime = 3 [json_name = "expiretime"];</code>
-     * @return The expiretime.
-     */
-    @java.lang.Override
-    public long getExpiretime() {
-      return expiretime_;
-    }
-    /**
-     * <code>int64 expiretime = 3 [json_name = "expiretime"];</code>
-     * @param value The expiretime to set.
-     * @return This builder for chaining.
-     */
-    public Builder setExpiretime(long value) {
-
-      expiretime_ = value;
-      bitField0_ |= 0x00000004;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int64 expiretime = 3 [json_name = "expiretime"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearExpiretime() {
-      bitField0_ = (bitField0_ & ~0x00000004);
-      expiretime_ = 0L;
-      onChanged();
-      return this;
-    }
-
-    // @@protoc_insertion_point(builder_scope:dnf.v1.SkinItemInfo)
+    // @@protoc_insertion_point(builder_scope:dnf.v1.PT_STACKABLE)
   }
 
-  // @@protoc_insertion_point(class_scope:dnf.v1.SkinItemInfo)
-  private static final com.dnfm.mina.protobuf.generated.SkinItemInfo DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:dnf.v1.PT_STACKABLE)
+  private static final com.dnfm.mina.protobuf.generated.PT_STACKABLE DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.SkinItemInfo();
+    DEFAULT_INSTANCE = new com.dnfm.mina.protobuf.generated.PT_STACKABLE();
   }
 
-  public static com.dnfm.mina.protobuf.generated.SkinItemInfo getDefaultInstance() {
+  public static com.dnfm.mina.protobuf.generated.PT_STACKABLE getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<SkinItemInfo>
-      PARSER = new com.google.protobuf.AbstractParser<SkinItemInfo>() {
+  private static final com.google.protobuf.Parser<PT_STACKABLE>
+      PARSER = new com.google.protobuf.AbstractParser<PT_STACKABLE>() {
     @java.lang.Override
-    public SkinItemInfo parsePartialFrom(
+    public PT_STACKABLE parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -548,17 +520,17 @@ private static final long serialVersionUID = 0L;
     }
   };
 
-  public static com.google.protobuf.Parser<SkinItemInfo> parser() {
+  public static com.google.protobuf.Parser<PT_STACKABLE> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<SkinItemInfo> getParserForType() {
+  public com.google.protobuf.Parser<PT_STACKABLE> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.dnfm.mina.protobuf.generated.SkinItemInfo getDefaultInstanceForType() {
+  public com.dnfm.mina.protobuf.generated.PT_STACKABLE getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

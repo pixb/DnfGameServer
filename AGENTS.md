@@ -58,6 +58,9 @@ pytest -m "not slow"
 ```bash
 # Generate protobuf files (from proto/ directory)
 cd proto && buf generate
+
+# Migration guide
+# See detailed migration process in devdoc/protobuf/migration_guide.md
 ```
 
 ## Code Style Guidelines

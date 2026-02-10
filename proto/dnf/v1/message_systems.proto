@@ -13,6 +13,9 @@ import "dnf/v1/common.proto";
 import "dnf/v1/option_types.proto";
 import "dnf/v1/friend.proto";
 import "dnf/v1/dungeon_systems.proto";
+import "dnf/v1/game_systems.proto";
+import "dnf/v1/user_skills_systems.proto";
+import "dnf/v1/other_systems.proto";
 
 // 消息系统消息类型
 message REQ_DRAGON_BOARD_RECONNECT {
@@ -234,4 +237,305 @@ message PT_ADVENTURE_UNION_SHAREBOARD_FRAME {
 // 冒险联盟等级奖励
 message PT_ADVENTURE_UNION_LEVEL_REWARD {
   // 冒险联盟等级奖励信息
+}
+
+// 随机选项物品
+message PT_RANDOMOPTION_ITEM {
+  int32 index = 1;  // 索引
+  int32 rarity = 2;  // 稀有度
+  bool locked = 3;  // 是否锁定
+  bool unique = 4;  // 是否唯一
+}
+
+// 设置头像可见标志响应
+message RES_AVATAR_VISIBLE_FLAGS_SET {
+  int32 error = 1;  // 错误码
+  uint64 guid = 2;  // GUID
+  uint32 flags = 3;  // 标志
+}
+
+// 一起玩的朋友信息
+message PT_PLAY_WITH_ME_FRIEND_INFO {
+  uint64 fguid = 1;  // 朋友GUID
+  string name = 2;  // 名称
+  int32 level = 3;  // 等级
+  int32 job = 4;  // 职业
+  int32 growtype = 5;  // 成长类型
+  int32 secondgrowtype = 6;  // 第二成长类型
+  int64 time = 7;  // 时间
+  int32 dungeonindex = 8;  // 副本索引
+  int32 creditscore = 9;  // 信用分数
+  int32 world = 10;  // 世界
+  int32 gamecenterinfo = 11;  // 游戏中心信息
+  int32 qqVipInfo = 12;  // QQ VIP信息
+  int32 characterframe = 13;  // 角色边框
+}
+
+// 多人开始副本响应
+message RES_MULTI_PLAY_START_DUNGEON {
+  int32 error = 1;  // 错误码
+  uint64 dungeonguid = 2;  // 副本GUID
+  uint64 partyguid = 3;  // 队伍GUID
+  uint64 partyleaderguid = 4;  // 队长GUID
+  int32 fatigue = 5;  // 疲劳值
+  int32 grade = 6;  // 等级
+  int32 index = 7;  // 索引
+  int32 level = 8;  // 等级
+  int32 matchtype = 9;  // 匹配类型
+  bool apcmode = 10;  // APC模式
+  repeated PT_USER_INFO characinfos = 11;  // 角色信息列表
+  PT_CHAMPION_INFO champion = 12;  // 冠军信息
+  repeated PT_MAP_GUIDS mapguids = 13;  // 地图GUID列表
+  int32 partyleaderjob = 14;  // 队长职业
+  PT_CUSTOM_PVP_ROOM_SETTING customdata = 15;  // 自定义数据
+  int32 requestedindex = 16;  // 请求索引
+  int32 mazeinfoindex = 17;  // 迷宫信息索引
+  repeated PT_BATTLE_OPTION battleoptionlist = 18;  // 战斗选项列表
+}
+
+// 神器列表请求
+message REQ_ARTIFACT_LIST {
+  // 神器列表请求
+}
+
+// PVP记录信息响应
+message RES_PVP_RECORD_INFO {
+  int32 error = 1;  // 错误码
+  int32 matchtype = 2;  // 匹配类型
+  repeated PT_PVP_RECORD_INFO pvpinfos = 3;  // PVP信息列表
+}
+
+// 冒险联盟代表角色变更请求
+message REQ_ADVENTURE_UNION_REPRESENT_CHARACTER_CHANGE {
+  uint64 charguid = 1;  // 角色GUID
+}
+
+// PVP记录信息请求
+message REQ_PVP_RECORD_INFO {
+  string authkey = 1;  // 认证密钥
+  int32 matchtype = 2;  // 匹配类型
+  bool checknotification = 3;  // 检查通知
+}
+
+// 排名副本赛季信息请求
+message REQ_RANKING_DUNGEON_SEASON_INFO {
+  int32 dungeontype = 1;  // 副本类型
+}
+
+// 玩家数据
+message PLAYER_DATA {
+  int32 type = 1;  // 类型
+  int32 value = 2;  // 值
+}
+
+// 材料列表响应
+message RES_MATERIAL_LIST {
+  int32 error = 1;  // 错误码
+  int32 page = 2;  // 页码
+  repeated PT_STACKABLE material = 3;  // 材料列表
+  int32 maxcount = 4;  // 最大数量
+}
+
+// 加载分享奖励响应
+message RES_LOAD_SHARE_REWARD {
+  int32 error = 1;  // 错误码
+  repeated PT_SHARE_REWARD_INFO list = 2;  // 列表
+}
+
+// 招募队伍信息
+message PT_RECRUIT_PARTY_INFO {
+  int32 area = 1;  // 区域
+  int32 channel = 2;  // 频道
+  int32 grade = 3;  // 等级
+  string ip = 4;  // IP地址
+  string partyname = 5;  // 队伍名称
+  uint64 partyguid = 6;  // 队伍GUID
+  int32 password = 7;  // 密码
+  int32 port = 8;  // 端口
+  int32 stageindex = 9;  // 阶段索引
+  int32 subtype = 10;  // 子类型
+  int32 type = 11;  // 类型
+  int64 updatetime = 12;  // 更新时间
+  int32 minlevel = 13;  // 最小等级
+  int32 maxlevel = 14;  // 最大等级
+  int32 dungeonindex = 15;  // 副本索引
+  int32 publictype = 16;  // 公开类型
+  repeated PT_GROUP_MEMBER users = 17;  // 用户列表
+  int32 world = 18;  // 世界
+  int32 partyping = 19;  // 队伍ping
+}
+
+// 冒险联盟远征开始请求
+message REQ_ADVENTURE_UNION_EXPEDITION_START {
+  int32 area = 1;  // 区域
+  int32 time = 2;  // 时间
+  repeated PT_CHARACTER_GUID list = 3;  // 列表
+}
+
+// 队伍加入成功通知
+message NOTIFY_PARTY_JOIN_SUCCESS {
+  int32 error = 1;  // 错误码
+  PT_PARTY info = 2;  // 信息
+}
+
+// 离婚问题回复响应
+message RES_DIVORCE_QUESTION_REPLY {
+  int32 error = 1;  // 错误码
+  int32 type = 2;  // 类型
+  int64 divorcetime = 3;  // 离婚时间
+}
+
+// 物品平均价格响应
+message RES_ITEM_AVR_PRICE {
+  int32 error = 1;  // 错误码
+  int32 index = 2;  // 索引
+  int32 price = 3;  // 价格
+  repeated int32 prices = 4;  // 价格列表
+  int32 upgrade = 5;  // 升级
+  int32 amplify = 6;  // 强化
+  int32 reforge = 7;  // 重铸
+  int64 time = 8;  // 时间
+}
+
+// 新内容列表响应
+message RES_NEW_CONTENTS_LIST {
+  int32 error = 1;  // 错误码
+  repeated PT_NEW_CONTENTS list = 2;  // 列表
+  int32 type = 3;  // 类型
+}
+
+// 有趣的商品
+message PT_INTERESTING_GOODS {
+  int32 shopid = 1;  // 商店ID
+  int32 count = 2;  // 数量
+  bool isextra = 3;  // 是否额外
+}
+
+// 蜡像馆抽卡购买请求
+message REQ_CERA_GACHA_BUY {
+  string openkey = 1;  // 开放密钥
+  string paytoken = 2;  // 支付令牌
+  int32 index = 3;  // 索引
+  int32 type = 4;  // 类型
+}
+
+// 加载公告板请求
+message REQ_LOAD_BOARD {
+  int32 ordertype = 1;  // 排序类型
+  int32 boardtype = 2;  // 公告板类型
+  int32 index = 3;  // 索引
+  int32 job = 4;  // 职业
+}
+
+// 拍卖注册完成请求
+message REQ_AUCTION_REGISTER_COMPLETE {
+  uint64 auid = 1;  // 拍卖UID
+  int32 itemindex = 2;  // 物品索引
+}
+
+// 多人副本选择奖励卡请求
+message REQ_MULTI_PLAY_DUNGEON_SELECT_REWARD_CARD {
+  uint64 dungeonguid = 1;  // 副本GUID
+  int32 cardtype = 2;  // 卡牌类型
+  int32 index = 3;  // 索引
+}
+
+// 街机PVP购买门票响应
+message RES_ARCADE_PVP_BUY_TICKET {
+  int32 error = 1;  // 错误码
+  int32 total = 2;  // 总数
+  int32 purchasecount = 3;  // 购买次数
+  repeated PT_ARCADE_PVP_INFO_CURRENCY accountcurrency = 4;  // 账户货币
+}
+
+// 攻击小队公告板更新请求
+message REQ_ATTACK_SQUAD_BOARD_RENEW {
+  int32 index = 1;  // 索引
+  repeated uint64 rpguids = 2;  // RPGUID列表
+  int32 type = 3;  // 类型
+}
+
+// 技能信息
+message PT_SKILL_INFO {
+  int32 type = 1;  // 类型
+  int32 sp = 2;  // SP
+  int32 tp = 3;  // TP
+  repeated PT_SKILL skilllist = 4;  // 技能列表
+  PT_ALL_SKILL_SLOT skillslot = 5;  // 技能槽位
+}
+
+// 节点踢出通知
+message NODE_KICK_NOTI {
+  int64 targetNode = 1;  // 目标节点
+}
+
+// 成员区域信息
+message PT_MEMBER_AREA_INFO {
+  uint64 charguid = 1;  // 角色GUID
+  int32 area = 2;  // 区域
+  int32 town = 3;  // 城镇
+}
+
+// 宠物差事发送请求
+message REQ_CREATURE_ERRAND_SEND {
+  repeated int32 errandid = 1;  // 差事ID列表
+  repeated uint64 list = 2;  // 列表
+}
+
+// 邮件获取响应
+message RES_MAIL_GET {
+  int32 error = 1;  // 错误码
+  uint64 guid = 2;  // GUID
+  bool limit = 3;  // 限制
+  int32 type = 4;  // 类型
+  repeated PT_SELECTED_ITEM remaineditems = 5;  // 剩余物品
+  repeated PT_POST_PACKAGE remainedpackages = 6;  // 剩余包裹
+  PT_CONTENTS_REWARD_INFO rewards = 7;  // 奖励
+}
+
+// 物品生产注册响应
+message RES_ITEM_PRODUCTION_REGISTER {
+  int32 error = 1;  // 错误码
+  int32 slottype = 2;  // 槽位类型
+  int32 slotindex = 3;  // 槽位索引
+  int32 recipeindex = 4;  // 配方索引
+  uint64 starttime = 5;  // 开始时间
+  uint64 endtime = 6;  // 结束时间
+  int32 state = 7;  // 状态
+  repeated PT_CONSUME_ITEMS materialitems = 8;  // 材料物品
+  int32 limitrecipeusecount = 9;  // 限制配方使用次数
+  PT_CONTENTS_REWARD_INFO rewards = 10;  // 奖励
+}
+
+// 历史遗址员工请求
+message REQ_HISTORICSITE_STAFF {
+  // 历史遗址员工请求
+}
+
+// 黑钻石获取奖励响应
+message RES_BLACK_DIAMON_GET_REWARD {
+  int32 error = 1;  // 错误码
+  PT_CONTENTS_REWARD_INFO rewardinfo = 2;  // 奖励信息
+}
+
+// 加载公会聊天请求
+message REQ_LOAD_GUILD_CHAT {
+  int32 sequence = 1;  // 序列
+}
+
+// 突袭buff信息
+message PT_RAID_BUFF_INFO {
+  int32 index = 1;  // 索引
+  int64 usetime = 2;  // 使用时间
+  int32 partyindex = 3;  // 队伍索引
+}
+
+// 卡牌合成请求
+message REQ_CARD_COMPOSE {
+  repeated PT_CARD_COMPOSE usercardlist = 1;  // 用户卡牌列表
+}
+
+// 断开书签请求
+message REQ_DISJOINT_BOOKMARK {
+  repeated PT_BOOKMARK_ITEM bookmarks = 1;  // 书签列表
 }
