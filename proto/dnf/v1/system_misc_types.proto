@@ -29,3 +29,127 @@ message GuildDonationAccumulateReward {
   int32 clearcount = 1;  // 清除数量
   bool received = 2;       // 是否已领取
 }
+
+// 系统命令
+message SystemCommand {
+  SyscmdCommand commands = 1;           // 运行类型
+  int32 dungeon = 2;                     //  dungeon
+  bytes value = 3;                       //  value
+  string reason = 4;                     //  reason
+  uint32 type = 5;                       //  type
+  uint64 time = 6;                       //  time
+  int32 idip = 7;                        //  idip
+  int32 platID = 8;                      //  platID
+  uint64 charguid = 9;                   //  charguid
+  int32 subtype = 10;                    //  subtype
+  uint64 addtime = 11;                   //  addtime
+  int32 zeroBenefit = 12;                //  zeroBenefit
+  int32 unPlay = 13;                     //  unPlay
+  int32 unBanRank = 14;                  //  unBanRank
+  int32 unGag = 15;                      //  unGag
+  int32 unTitle = 16;                    //  unTitle
+  int32 cera = 17;                       //  cera
+  string title = 18;                     //  title
+  string sender = 19;                    //  sender
+  string content = 20;                   //  content
+  int32 itemflag = 21;                   //  itemflag
+  int32 subreason = 22;                  //  subreason
+  bool systemreq = 23;                   //  systemreq
+  int32 exp = 24;                        //  exp
+  int32 growtype = 25;                   //  growtype
+  int32 secgrowtype = 26;                //  secgrowtype
+  bool reset = 27;                       //  reset
+  int32 qindex = 28;                     //  qindex
+  int32 qtype = 29;                      //  qtype
+  bool flag = 30;                        //  flag
+  uint64 fguid = 31;                     //  fguid
+  int64 fromsendtime = 32;               //  fromsendtime
+  uint64 closenessguid = 33;             //  closenessguid
+  repeated SyscmdItemjson items = 34;     //  items
+  int32 cmd = 35;                        //  cmd
+  int32 source = 36;                     //  source
+  string serial = 37;                    //  serial
+  int32 dungeonindex = 38;               //  dungeonindex
+  int64 withdrawaltime = 39;             //  withdrawaltime
+  bool kickout = 40;                     //  kickout
+  int32 expireday = 41;                  //  expireday
+  int32 matchtype = 42;                  //  matchtype
+  int32 result = 43;                     //  result
+  int32 status = 44;                     //  status
+  bool ison = 45;                        //  ison
+  int32 shopid = 46;                     //  shopid
+  repeated SyscmdCerashop lists = 47;     //  lists
+  int32 goodsid = 48;                    //  goodsid
+  int32 amount = 49;                     //  amount
+  int32 count = 50;                      //  count
+  int32 buycount = 51;                   //  buycount
+  int32 packageindex = 52;               //  packageindex
+  uint64 guid = 53;                      //  guid
+  string msg = 54;                       //  msg
+  int32 itemindex = 55;                  //  itemindex
+  int32 index = 56;                      //  index
+  uint64 receiverguid = 57;              //  receiverguid
+  int32 boardtype = 58;                  //  boardtype
+  int32 reactiontype = 59;               //  reactiontype
+  uint64 noteguid = 60;                  //  noteguid
+  string fopenid = 61;                   //  fopenid
+  string openid = 62;                    //  openid
+  uint64 accountkey = 63;                //  accountkey
+  uint64 itemguid = 64;                  //  itemguid
+  int32 inventype = 65;                  //  inventype
+  int32 upgrade = 66;                    //  upgrade
+  int32 reforge = 67;                    //  reforge
+  int32 endurance = 68;                  //  endurance
+  string changename = 69;                //  changename
+  uint64 gguid = 70;                     //  gguid
+  int64 endtime = 71;                    //  endtime
+  repeated SyscmdPackages packages = 72;  //  packages
+  int32 world = 73;                      //  world
+  int32 channel = 74;                    //  channel
+  SyscmdCommandTakeItem takeitem = 75;    //  takeitem
+  int64 createtime = 76;                 //  createtime
+  SyscmdParty party = 77;                //  party
+  int32 importance = 78;                 //  importance
+  bool needcare = 79;                    //  needcare
+  bool faileddelete = 80;                //  faileddelete
+  string orderId = 81;                   //  orderId
+  string reasonOpt = 82;                 //  reasonOpt
+  repeated SyscmdMasterbuff masterbuff = 83;  //  masterbuff
+  string mailType = 84;                  //  mailType
+}
+
+// 系统命令项目
+message SyscmdItemjson {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+// 系统命令商城
+message SyscmdCerashop {
+  int32 id = 1;
+  int32 count = 2;
+}
+
+// 系统命令包
+message SyscmdPackages {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+// 系统命令取物
+message SyscmdCommandTakeItem {
+  int32 type = 1;
+  uint64 guid = 2;
+}
+
+// 系统命令公会
+message SyscmdParty {
+  int32 type = 1;
+  int32 level = 2;
+}
+
+// 系统命令大师buff
+message SyscmdMasterbuff {
+  int32 buffid = 1;
+  uint64 endtime = 2;
+}
