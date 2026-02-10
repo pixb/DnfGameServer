@@ -1096,3 +1096,479 @@ message EscortDoneReady {
   int32 error = 1;
   int32 index = 2;
 }
+
+// 第63批消息类型
+// 公会捐赠请求帮助完成信息
+message ReqGuildDonationRequestHelpCompleteInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 晋升信息响应
+message ResPromotionInfo {
+  int32 error = 1;
+  int32 level = 2;
+}
+
+// 突袭队伍队长投降通知
+message NotifyRaidPartyLeaderSurrender {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 冒险手册更新条件通知
+message NotifyAdventurebookUpdateCondition {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 塞利亚Buff列表响应
+message ResSeriaBuffList {
+  int32 error = 1;
+  repeated int32 buffs = 2;
+}
+
+// 随机选项变更响应
+message ResRandomoptionChange {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 完成任务响应
+message ResCompleteQuest {
+  int32 error = 1;
+  int32 qindex = 2;
+}
+
+// 冒险收获信息请求
+message ReqAdventureReapInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 社区礼物引导信息
+message PtCommunityGiftGuidInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 事件选择角色请求
+message ReqEventSelectCharacter {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 历史站点更新策略槽请求
+message ReqHistoricsiteUpdateStrategySlot {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 冒险联盟信息响应
+message ResAdventureUnionInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 认证信息响应
+message AuthInfoRes {
+  int32 error = 1;
+  string message = 2;
+}
+
+// 生物联盟信息响应
+message ResCreatureCommunionInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 导师获取所有成长奖励任务
+message PtMentorGetAllGrowthRewardQuest {
+  int32 error = 1;
+  repeated int32 quests = 2;
+}
+
+// 公会捐赠累积奖励响应
+message ResGuildDonationAccumulateReward {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物品生产取消响应
+message ResItemProductionCancel {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 提案通知
+message NotifyProposal {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏特殊课程开始请求
+message ReqMinigameSpecialClassStart {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 导师毕业装备信息
+message PtMentorGraduateEquipInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 第64批消息类型
+// 祈祷响应
+message ResPray {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 聊天频道
+message PtChatChannel {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 隐私聊天删除响应
+message ResHiddenChattngDelete {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 生物任务发送响应
+message ResCreatureErrandSend {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物品生产注册请求
+message ReqItemProductionRegister {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 监控响应
+message ResMonitor {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏月饼开始响应
+message ResMinigameMooncakeStart {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 表情游戏表情通知
+message NotifyBoardGameEmoticon {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 掉落金币信息
+message PtDropObjectGold {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 事件获取奖励请求
+message ReqEventGetReward {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏餐厅奖励响应
+message ResMinigameRestauranReward {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 骑士变更等级通知
+message NotifyChivalryChangeGrade {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 历史站点进入枚举
+message EnumHistoricsiteEnter {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 卡片合成响应
+message ResCardCompose {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 任务赠送请求
+message ReqQuestGiveUp {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物品徽章升级库存请求
+message ReqItemEmblemUpgradeInven {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会出席奖励
+message PtGuildAttendReward {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏彩票打开请求
+message ReqMinigameLotteryOpen {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 冒险收获奖励响应
+message ResAdventureReapReward {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 服务器响应数据包
+message ResServerResponsePacket {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 退出公会响应
+message ResSecedeGuild {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 保存弱服务器简单数据响应
+message ResSaveWeakServerSimpleData {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 发送公会红包响应
+message ResSendGuildRedpacket {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 发送仓库响应
+message ResSendStorage {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 选择其他副本多人响应
+message ResSelectOtherDungeonAtMulti {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 发送邀请好友列表响应
+message ResSendingInviteFriendList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 回复提案响应
+message ResReplyProposal {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 设置PVP控制模式响应
+message ResSetPvpControlMode {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 返回城镇多人游戏响应
+message ResReturnToTownAtMultiPlay {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 开始锁步房间响应
+message ResStartLockstepRoom {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 开始副本响应
+message ResStartDungeon {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 开始副本完成响应
+message ResStartDungeonComplete {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 同步副本开始时间响应
+message ResSyncDungeonStartTime {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 更新副本通关条件获取物品响应
+message ResUpdateDungeonClearConditionGetItem {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 请求好友邀请响应
+message ResRequestFriendInvite {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 奖励任务响应
+message ResRewardQuest {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 设置人体模型响应
+message ResSetAppendageMannequin {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 设置名字模型响应
+message ResSetNameMannequin {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// TSS数据响应
+message ResTssData {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 教程保存响应
+message ResTutorialSave {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 使用金币响应
+message ResUseCoin {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 塔信息响应
+message ResTowerInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 开始棋盘游戏响应
+message ResStartBoardGame {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 目标用户详细信息响应
+message ResTargetUserDetailInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 开始游戏响应
+message ResStartGame {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 待机响应
+message ResStandby {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 仓库步骤响应
+message ResStorageStep {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 验证简单响应
+message ResVerificationSimple {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 福利查找奖励信息响应
+message ResWelfareFindRewardInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 世界突袭排名响应
+message ResWorldRaidRanking {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 世界Boss伤害响应
+message ResWorldBossDamage {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 世界Boss排名响应
+message ResWorldbossRanking {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 世界Boss信息响应
+message ResWorldBossInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 衣柜设置模型响应
+message ResWardrobeSetMannequin {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 衣柜设置槽响应
+message ResWardrobeSetSlot {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 验证事件响应
+message ResVerificationEvent {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 福利查找奖励获取响应
+message ResWelfareFindRewardGet {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 验证开始响应
+message ResVerificationStart {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 仓库扩展响应
+message ResStorageExtend {
+  int32 error = 1;
+  int32 index = 2;
+}
