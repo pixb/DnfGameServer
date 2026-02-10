@@ -1,0 +1,345 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+import "dnf/v1/common.proto";
+import "dnf/v1/inventory_types.proto";
+import "dnf/v1/gameplay_types.proto";
+import "dnf/v1/skill.proto";
+import "dnf/v1/character.proto";
+import "dnf/v1/game_systems.proto";
+import "dnf/v1/gameplay_systems.proto";
+import "dnf/v1/multi_systems.proto";
+import "dnf/v1/user_systems.proto";
+import "dnf/v1/welfare.proto";
+import "dnf/v1/misc_data_types.proto";
+import "dnf/v1/adventure_systems.proto";
+import "dnf/v1/friend.proto";
+import "dnf/v1/system_types.proto";
+import "dnf/v1/gamesystems.proto";
+
+message Equipped {
+  int32 index = 1;
+  uint64 guid = 2;
+  int32 upgrade = 3;
+  int32 reforge = 4;
+  int32 reforgeexp = 5;
+  int32 amplify = 6;
+  int32 aoption = 7;
+  int32 quality = 8;
+  int32 endurance = 9;
+  int32 enchant = 10;
+  int32 slot = 11;
+  repeated Emblem emblem = 12;
+  repeated Stackable card = 13;
+  int32 scount = 14;
+  int32 tcount = 15;
+  int64 expiretime = 16;
+  bool rappearance = 17;
+  repeated RandomOptionItem roption = 18;
+  repeated RandomOptionItem rnoption = 19;
+  int32 skin = 20;
+  bool locked = 21;
+  int32 enchantindex = 22;
+  repeated Crack crack = 23;
+  int32 sealing = 24;
+  int32 upgradepoint = 25;
+  int32 season = 26;
+}
+
+message Crack {
+  int32 index = 1;
+  int32 count = 2;
+  int64 expiretime = 3;
+  int32 slot = 4;
+}
+
+message EscortGetInfo {
+  int32 error = 1;
+  int32 index = 2;
+  repeated PointInfo points = 3;
+}
+
+message EscortPartyInfo {
+  int32 error = 1;
+  repeated EscortGetInfo party = 2;
+}
+
+message EscortPointReward {
+  int32 error = 1;
+  int32 type = 2;
+  int32 index = 3;
+  int32 count = 4;
+  int32 level = 5;
+  int32 totalexp = 6;
+}
+
+message EscortRequestReady {
+}
+
+message EscortStart {
+  int32 error = 1;
+  int32 area = 2;
+}
+
+message EventCondition {
+  uint64 charguid = 1;
+  int32 count = 2;
+  int32 index = 3;
+  int32 type = 4;
+}
+
+message EventData {
+  int32 index = 1;
+  int32 status = 2;
+  int32 count = 3;
+  int32 value = 4;
+  int64 dateStart = 5;
+  int64 dateEnd = 6;
+}
+
+message EventDataForCharacter {
+  uint64 guid = 1;
+  repeated MainEventData eventlist = 2;
+}
+
+message EventOnTime {
+  int32 index = 1;
+  int32 active = 2;
+  repeated int32 days = 3;
+  int32 startHour = 4;
+  int32 startMinute = 5;
+  int32 endHour = 6;
+  int32 endMinute = 7;
+  int32 rewardItemId = 8;
+  int32 rewardItemCount = 9;
+  int32 rewardBuffId = 10;
+}
+
+message EventRewardInfo {
+  int32 index = 1;
+}
+
+message EventScheduler {
+  int32 index = 1;
+  uint64 startdate = 2;
+  uint64 enddate = 3;
+  bool active = 4;
+}
+
+message EventSelectInfo {
+  uint64 selectedCharguid = 1;
+  int64 eventDateEnd = 2;
+  int32 eventIndex = 3;
+}
+
+message ExpDetailinfo {
+  int32 baseexp = 1;
+  int32 rankexp = 2;
+  int32 premiumexp = 3;
+  repeated AppendageExp appendageexp = 4;
+}
+
+message FacilityInfo {
+  int32 type = 1;
+  int32 level = 2;
+}
+
+message FloorList {
+  int32 index = 1;
+  uint64 tick = 2;
+}
+
+message FloorRecord {
+  uint64 tick = 1;
+}
+
+message FriendDailyClosenessInfo {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message FriendRank {
+  uint64 guid = 1;
+  uint64 score = 2;
+  int32 job = 3;
+  int32 growtype = 4;
+  string name = 5;
+  int32 level = 6;
+  int32 launchinfo = 7;
+  int32 vip = 8;
+  string profileurl = 9;
+  string profilename = 10;
+  int32 creditscore = 11;
+  int32 characterframe = 12;
+}
+
+message GaccRemoveResultCharacter {
+  uint32 platID = 1;
+  int32 worldid = 2;
+  string name = 3;
+}
+
+message GachaMileage {
+  int32 index = 1;
+  int32 score = 2;
+}
+
+message GachaResult {
+  int32 grade = 1;
+  int32 recipe = 2;
+  int32 gachaindex = 3;
+  repeated Equip equip = 4;
+  repeated Stackable material = 5;
+  repeated AvatarItem avatar = 6;
+  repeated Stackable emblem = 7;
+  repeated Stackable card = 8;
+  repeated Creature creature = 9;
+  repeated Artifact cartifact = 10;
+  repeated Stackable consume = 11;
+  repeated Stackable crack = 12;
+  repeated Equip crackequip = 13;
+  repeated AvatarItem sdavatar = 14;
+  repeated Stackable bookmark = 15;
+  repeated Equip scroll = 16;
+}
+
+message GameChannel {
+  repeated GameChannelStatus status = 1;
+}
+
+message GameChannelStatus {
+  int32 world = 1;
+  int32 channel = 2;
+  int32 active = 3;
+  int32 cu = 4;
+  int32 session = 5;
+  int32 capacity = 6;
+}
+
+message GameFlowTlog {
+  uint64 dungeonguid = 1;
+  int32 stageguid = 2;
+  uint32 sectlogtype = 3;
+  string sectlogvalue = 4;
+}
+
+message GameWorld {
+  int32 worldid = 1;
+  repeated GameChannel channels = 2;
+}
+
+message Gauge {
+  DungeonGaugeType type = 1;
+  int32 gauge = 2;
+}
+
+message GiuldAgitBuffInfo {
+  int32 index = 1;
+  int32 level = 2;
+  int64 endtime = 3;
+}
+
+message GiuldAgitDrink {
+  int32 itemindex = 1;
+  int32 count = 2;
+}
+
+message GmCommandArg {
+  int32 subtype = 1;
+  int32 value = 2;
+  string strvalue = 3;
+}
+
+message GmCommandArgCustomBase {
+}
+
+message GoldGoblinHp {
+  int32 gghp = 1;
+}
+
+message GroupRecommendMember {
+  uint64 groupguid = 1;
+  int32 world = 2;
+  bool isPvPMember = 3;
+  bool isMentorMember = 4;
+  int32 status = 5;
+  uint64 charguid = 6;
+  int32 equipscore = 7;
+  int32 job = 8;
+  int32 level = 9;
+  string name = 10;
+  int32 growtype = 11;
+  int32 secondgrowtype = 12;
+  string gname = 13;
+  string ip = 14;
+  uint32 port = 15;
+  int32 type = 16;
+  bool isMyFriend = 17;
+  bool isMyGuild = 18;
+  int32 creditscore = 19;
+  int32 chivalrygrade = 20;
+  int32 characterframe = 21;
+  int32 pvpstargrade = 22;
+  MessageAssistantSwitchStatus switchstatus = 23;
+  bool isInvite = 24;
+  int32 inviteblockflag = 25;
+}
+
+message GrowCollectionInfo {
+  int32 job = 1;
+  int32 growtype = 2;
+  int32 secgrowtype = 3;
+  int32 level = 4;
+}
+
+message GuardianAuction {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message GuardianDeal {
+  uint64 charguid = 1;
+  int64 guardiandeal = 2;
+}
+
+message GuardianGage {
+  uint64 guid = 1;
+  int32 gage = 2;
+}
+
+message PointInfo {
+  int32 way = 1;
+  int32 point = 2;
+  int32 dungeon = 3;
+}
+
+message MainEventData {
+  int32 index = 1;
+  int32 status = 2;
+  int32 count = 3;
+  int32 value = 4;
+  int64 dateStart = 5;
+  int64 dateEnd = 6;
+  repeated EventData sub = 7;
+}
+
+enum DungeonGaugeType {
+  DUNGEON_GAUGE_UNKNOWN = 0;
+  DUNGEON_GAUGE_HP = 1;
+  DUNGEON_GAUGE_MP = 2;
+}
+
+enum Team {
+  TEAM_UNKNOWN = 0;
+  TEAM_RED = 1;
+  TEAM_BLUE = 2;
+}
+
+enum MessageAssistantSwitchStatus {
+  ASSISTANT_SWITCH_UNKNOWN = 0;
+  ASSISTANT_SWITCH_ON = 1;
+  ASSISTANT_SWITCH_OFF = 2;
+}

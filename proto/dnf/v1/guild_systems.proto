@@ -1,0 +1,299 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+import "dnf/v1/common.proto";
+import "dnf/v1/inventory_types.proto";
+import "dnf/v1/gameplay_types.proto";
+import "dnf/v1/skill.proto";
+import "dnf/v1/character.proto";
+import "dnf/v1/game_systems.proto";
+import "dnf/v1/gameplay_systems.proto";
+import "dnf/v1/multi_systems.proto";
+import "dnf/v1/user_systems.proto";
+import "dnf/v1/welfare.proto";
+import "dnf/v1/misc_data_types.proto";
+import "dnf/v1/adventure_systems.proto";
+import "dnf/v1/friend.proto";
+import "dnf/v1/system_types.proto";
+import "dnf/v1/gamesystems.proto";
+import "dnf/v1/event_systems.proto";
+import "dnf/v1/achievement.proto";
+import "dnf/v1/mail.proto";
+
+// 公会系统消息类型
+message GuildApplicant {
+  uint64 guid = 1;
+  int32 growtype = 2;
+  int32 secondgrowtype = 3;
+  int32 job = 4;
+  int32 level = 5;
+  string name = 6;
+  int32 creditscore = 7;
+  int32 characterframe = 8;
+}
+
+message GuildAttendReward {
+  int32 index = 1;
+}
+
+message GuildAuctionGetChar {
+  int32 index = 1;
+}
+
+message GuildAuctionItem {
+  int32 index = 1;
+  int32 count = 2;
+  int32 level = 3;
+}
+
+message GuildAuctionRewardInfo {
+  int32 index = 1;
+}
+
+message GuildBingoChallengeHistoryInfo {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message GuildBingoChallengersInfo {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message GuildBingoMapClearPastRewardInfo {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message GuildBingoMapClearRewardInfo {
+  int32 index = 1;
+}
+
+message GuildBingoRewardInfo {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message GuildApplyList {
+  int32 error = 1;
+  repeated GuildApplicant applicants = 2;
+}
+
+message GuildBossInfo {
+  int32 bossId = 1;
+  int32 hp = 2;
+  int32 maxHp = 3;
+  int64 lastAttackTime = 4;
+}
+
+message GuildCreate {
+  string name = 1;
+  string notice = 2;
+  int32 level = 3;
+}
+
+message GuildDetail {
+  int32 guildId = 1;
+  string name = 2;
+  string notice = 3;
+  int32 level = 4;
+  int32 memberCount = 5;
+  int32 maxMemberCount = 6;
+  string masterName = 7;
+  uint64 masterGuid = 8;
+}
+
+message GuildList {
+  int32 error = 1;
+  repeated GuildDetail guilds = 2;
+}
+
+message GuildMemberList {
+  int32 error = 1;
+  repeated GuildMember members = 2;
+}
+
+message GuildMember {
+  uint64 guid = 1;
+  string name = 2;
+  int32 job = 3;
+  int32 level = 4;
+  int32 position = 5;
+  int32 joinTime = 6;
+  int32 contribution = 7;
+}
+
+message GuildNotice {
+  string notice = 1;
+}
+
+message GuildRecruitment {
+  string content = 1;
+  int32 level = 2;
+  int32 job = 3;
+}
+
+message GuildUpgrade {
+  int32 level = 1;
+}
+
+message GuildWarInfo {
+  int32 guildId = 1;
+  int32 enemyGuildId = 2;
+  int32 state = 3;
+  int64 startTime = 4;
+  int64 endTime = 5;
+}
+
+// 任务系统消息类型
+message QuestAccept {
+  int32 qindex = 1;
+}
+
+message QuestComplete {
+  int32 qindex = 1;
+}
+
+message QuestInfo {
+  int32 qindex = 1;
+  int32 state = 2;
+  int32 count = 3;
+  bool isminequest = 4;
+}
+
+message QuestList {
+  int32 error = 1;
+  repeated QuestInfo quests = 2;
+}
+
+message QuestProgress {
+  int32 qindex = 1;
+  int32 count = 2;
+}
+
+message QuestReward {
+  int32 qindex = 1;
+  int32 rewardId = 2;
+}
+
+message QuestStatus {
+  int32 qindex = 1;
+  int32 state = 2;
+}
+
+message QuestTrack {
+  int32 qindex = 1;
+  bool track = 2;
+}
+
+// 成就系统消息类型
+message AchievementComplete {
+  int32 aid = 1;
+}
+
+message AchievementList {
+  int32 error = 1;
+  repeated AchievementInfo achievements = 2;
+}
+
+message AchievementStatus {
+  int32 aid = 1;
+  int32 state = 2;
+}
+
+// 商店系统消息类型
+message ShopBuy {
+  int32 shopId = 1;
+  int32 itemId = 2;
+  int32 count = 3;
+}
+
+message ShopInfo {
+  int32 shopId = 1;
+  string name = 2;
+  repeated ShopItem items = 3;
+}
+
+message ShopItem {
+  int32 itemId = 1;
+  int32 price = 2;
+  int32 count = 3;
+  int32 maxBuy = 4;
+  int64 restockTime = 5;
+}
+
+message ShopList {
+  int32 error = 1;
+  repeated ShopInfo shops = 2;
+}
+
+message ShopRestock {
+  int32 shopId = 1;
+}
+
+// 邮件系统消息类型
+message MailList {
+  int32 error = 1;
+  repeated MailInfo mails = 2;
+}
+
+message MailRead {
+  int32 mailId = 1;
+}
+
+message MailSend {
+  string receiver = 1;
+  string title = 2;
+  string content = 3;
+  repeated SelectedItem attachments = 4;
+}
+
+// 排行榜系统消息类型
+message RankInfo {
+  int32 rankId = 1;
+  string name = 2;
+  int32 score = 3;
+  int32 rank = 4;
+}
+
+message RankList {
+  int32 error = 1;
+  int32 rankId = 2;
+  repeated RankInfo ranks = 3;
+}
+
+message RankReward {
+  int32 rankId = 1;
+  int32 rewardId = 2;
+}
+
+message RankUpdate {
+  int32 rankId = 1;
+  int32 score = 2;
+}
+
+// 活动系统消息类型
+message ActivityInfo {
+  int32 aid = 1;
+  string name = 2;
+  int64 startTime = 3;
+  int64 endTime = 4;
+  int32 state = 5;
+}
+
+message ActivityList {
+  int32 error = 1;
+  repeated ActivityInfo activities = 2;
+}
+
+message ActivityParticipate {
+  int32 aid = 1;
+}
+
+message ActivityReward {
+  int32 aid = 1;
+  int32 rewardId = 2;
+}

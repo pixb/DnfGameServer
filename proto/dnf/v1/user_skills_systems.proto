@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+import "dnf/v1/common.proto";
+import "dnf/v1/character.proto";
+
+// 用户系统消息类型
+message USER_INFO {
+  uint64 charguid = 1;
+  int32 job = 2;
+  int32 growtype = 3;
+  int32 secgrowtype = 4;
+  int32 teamType = 5;
+  int32 world = 6;
+  int32 level = 7;
+  string name = 8;
+  string profileURL = 9;
+  string profileName = 10;
+  int32 characterFrame = 11;
+  int32 rank = 12;
+}
+
+message RES_USER_STATUS {
+  int32 error = 1;
+  int32 status = 2;
+}
+
+message RES_USER_REPORT {
+  int32 error = 1;
+  string message = 2;
+}
+
+message UPDATE_ANTIEVIL_SCORE {
+  int32 score = 1;
+}
+
+message UPDATE_ANTIEVIL_SCORE1 {
+  int32 score = 1;
+}
+
+message RES_TENCENT_CREDITSCORE_INFO {
+  int32 score = 1;
+}
+
+message RES_TITLE_LIST {
+  int32 error = 1;
+  repeated TitleInfo titles = 2;
+}
+
+message TitleInfo {
+  int32 id = 1;
+  string name = 2;
+  bool active = 3;
+}
+
+message RES_SEASON_PASS_INFO {
+  int32 error = 1;
+  int32 level = 2;
+  int32 exp = 3;
+  repeated SeasonPassReward rewards = 4;
+}
+
+message SeasonPassReward {
+  int32 id = 1;
+  bool claimed = 2;
+}
+
+message RES_VERIFICATION_AUTH {
+  int32 error = 1;
+  string token = 2;
+}
+
+message RES_VERIFICATION_FINISH {
+  int32 error = 1;
+  bool success = 2;
+}
+
+// 技能系统消息类型
+message RES_SKILL_INFO {
+  int32 error = 1;
+  int32 type = 2;
+  int32 sp = 3;
+  int32 addsp = 4;
+  int32 tp = 5;
+  int32 addtp = 6;
+  repeated PT_SKILL skilllist = 7;
+  PT_ALL_SKILL_SLOT skillslot = 8;
+}
+
+message RES_SKILL_INIT {
+  int32 error = 1;
+  repeated PT_SKILL skills = 2;
+}
+
+message RES_SKILL_SLOT {
+  int32 error = 1;
+  int32 slotId = 2;
+  int32 skillId = 3;
+}
+
+message RES_SKILL_PAGE_SET {
+  int32 error = 1;
+  int32 pageId = 2;
+}
+
+message PT_SKILL {
+  int32 id = 1;
+  int32 level = 2;
+  bool learned = 3;
+}
+
+message PT_ALL_SKILL_SLOT {
+  repeated int32 skills = 1;
+}

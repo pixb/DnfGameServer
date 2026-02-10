@@ -1,0 +1,230 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+
+import "dnf/v1/common.proto";
+import "dnf/v1/town.proto";
+import "dnf/v1/system_buff_team.proto";
+import "dnf/v1/stage_chat_systems.proto";
+
+// 其他系统消息类型
+message RES_WAITING_TO_USERS_LOADING {
+  int32 error = 1;
+  int32 loadingProgress = 2;
+}
+
+message RES_TOWN_USER_GUID_LIST {
+  int32 error = 1;
+  repeated uint64 userGuids = 2;
+}
+
+message RES_VOTE_KICK_OUT_USER {
+  int32 error = 1;
+  bool success = 2;
+}
+
+message RES_TOWN_INFO {
+  int32 error = 1;
+  string townName = 2;
+  int32 userCount = 3;
+}
+
+message RES_STANDBY {
+  int32 error = 1;
+  bool ready = 2;
+  string message = 3;
+}
+
+message RES_UPDATE_QUEST {
+  int32 error = 1;
+  int32 questId = 2;
+  int32 progress = 3;
+}
+
+message RES_SYNC_DUNGEON_START_TIME {
+  int32 error = 1;
+  int32 dungeonId = 2;
+  int64 startTime = 3;
+}
+
+message RES_START_GAME {
+  int32 error = 1;
+  int64 userId = 2;
+  string userName = 3;
+  int32 characterId = 4;
+  string characterName = 5;
+  int32 level = 6;
+  int32 job = 7;
+  int32 gold = 8;
+  int32 diamond = 9;
+}
+
+message RES_TARGET_USER_DETAIL_INFO {
+  int32 error = 1;
+  int64 userId = 2;
+  string userName = 3;
+  int32 level = 4;
+  int32 job = 5;
+  int32 guildId = 6;
+  string guildName = 7;
+  int32 power = 8;
+  repeated CharacterInfo characters = 9;
+}
+
+message RES_START_BOARD_GAME {
+  int32 error = 1;
+  int32 gameId = 2;
+  string gameName = 3;
+  bool success = 4;
+}
+
+message RES_TOWER_INFO {
+  int32 error = 1;
+  int32 towerId = 2;
+  int32 floor = 3;
+  int32 bestFloor = 4;
+  bool cleared = 5;
+}
+
+message RES_USE_COIN {
+  int32 error = 1;
+  int32 coinType = 2;
+  int32 amount = 3;
+  int32 remaining = 4;
+  bool success = 5;
+}
+
+
+
+message RES_START_DUNGEON_COMPLETE {
+  int32 error = 1;
+  int32 dungeonId = 2;
+  bool success = 3;
+  repeated RewardInfo rewards = 4;
+}
+
+message RES_TSS_DATA {
+  int32 error = 1;
+  bytes data = 2;
+}
+
+message RES_START_DUNGEON {
+  int32 error = 1;
+  int32 dungeonId = 2;
+  int32 difficulty = 3;
+  int32 remainingTime = 4;
+  repeated PartyMember members = 5;
+}
+
+message RES_WORLD_RAID_RANKING {
+  int32 error = 1;
+  repeated WorldRaidRank ranks = 2;
+}
+
+message RES_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM {
+  int32 error = 1;
+  int32 itemId = 2;
+  int32 quantity = 3;
+}
+
+message RES_SET_NAME_MANNEQUIN {
+  int32 error = 1;
+  int32 mannequinId = 2;
+  string name = 3;
+  bool success = 4;
+}
+
+message RES_SAVE_WEAK_SERVER_SIMPLE_DATA {
+  int32 error = 1;
+  bool success = 2;
+}
+
+message RES_SEND_GUILD_REDPACKET {
+  int32 error = 1;
+  int32 amount = 2;
+  bool success = 3;
+}
+
+message RES_SEND_STORAGE {
+  int32 error = 1;
+  bool success = 2;
+}
+
+message RES_SELECT_OTHER_DUNGEON_AT_MULTI {
+  int32 error = 1;
+  int32 dungeonId = 2;
+  bool success = 3;
+}
+
+message RES_SENDING_INVITE_FRIEND_LIST {
+  int32 error = 1;
+  repeated FriendInvite invites = 2;
+}
+
+message RES_REPLY_PROPOSAL {
+  int32 error = 1;
+  bool accepted = 2;
+  string proposerName = 3;
+}
+
+message RES_SET_PVP_CONTROL_MODE {
+  int32 error = 1;
+  int32 mode = 2;
+  bool success = 3;
+}
+
+message RES_REWARD_QUEST {
+  int32 error = 1;
+  int32 questId = 2;
+  repeated RewardInfo rewards = 3;
+  bool success = 4;
+}
+
+message RES_RETURN_TO_TOWN_AT_MULTI_PLAY {
+  int32 error = 1;
+  bool success = 2;
+}
+
+message RES_SET_APPENDAGE_MANNEQUIN {
+  int32 error = 1;
+  int32 mannequinId = 2;
+  int32 appendageId = 3;
+  bool success = 4;
+}
+
+message RES_SECEDE_GUILD {
+  int32 error = 1;
+  bool success = 2;
+}
+
+message RES_SERVER_RESPONSE_PACKET {
+  int32 error = 1;
+  int32 packetId = 2;
+  bytes data = 3;
+}
+
+message RES_REQUEST_FRIEND_INVITE {
+  int32 error = 1;
+  string friendName = 2;
+  bool success = 3;
+  string message = 4;
+}
+
+
+
+message FriendInvite {
+  int64 userId = 1;
+  string userName = 2;
+  int32 level = 3;
+  int32 job = 4;
+  int64 timestamp = 5;
+}
+
+message WorldRaidRank {
+  int32 rank = 1;
+  string guildName = 2;
+  int64 damage = 3;
+  int32 members = 4;
+}
