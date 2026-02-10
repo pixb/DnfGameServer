@@ -63,6 +63,16 @@ message GuildBingoChallengersInfo {
   int32 count = 2;
 }
 
+message GuildBingoMap {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+message GuildBingoMapAward {
+  int32 index = 1;
+  int32 count = 2;
+}
+
 message GuildBingoMapClearPastRewardInfo {
   int32 index = 1;
   int32 count = 2;

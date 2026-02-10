@@ -900,3 +900,199 @@ message SkinEquipPutOnOff {
   int32 index = 1;
   int32 isequip = 2;
 }
+
+// 技能信息响应
+message ResSkillInfo {
+  int32 error = 1;
+  repeated int32 skills = 2;
+}
+
+// 技能初始化响应
+message ResSkillInit {
+  int32 error = 1;
+  repeated int32 skills = 2;
+}
+
+// 技能槽响应
+message ResSkillSlot {
+  int32 error = 1;
+  repeated int32 slots = 2;
+}
+
+// 技能页面设置响应
+message ResSkillPageSet {
+  int32 error = 1;
+  int32 page = 2;
+}
+
+// 技能消息
+message PtSkill {
+  int32 id = 1;
+  int32 level = 2;
+}
+
+// 所有技能槽消息
+message PtAllSkillSlot {
+  repeated int32 slots = 1;
+}
+
+// 舞台信息响应
+message ResStageInfo {
+  int32 error = 1;
+  string name = 2;
+}
+
+// 舞台通关响应
+message ResStageClear {
+  int32 error = 1;
+  int32 stars = 2;
+}
+
+// 副本信息响应
+message ResDungeonInfo {
+  int32 error = 1;
+  string name = 2;
+}
+
+// 副本通关响应
+message ResDungeonClear {
+  int32 error = 1;
+  int32 grade = 2;
+}
+
+// 传输物品响应
+message ResTransmissionItem {
+  int32 error = 1;
+  int32 count = 2;
+}
+
+// 重新进入副本请求响应
+message ResRequestToReEnterDungeon {
+  int32 error = 1;
+  bool allowed = 2;
+}
+
+// 发送聊天消息
+message SendChat {
+  string content = 1;
+  int32 type = 2;
+}
+
+// 城镇聊天响应
+message ResTownChat {
+  int32 error = 1;
+  string message = 2;
+}
+
+// 城镇聊天列表响应
+message ResTownChatList {
+  repeated string messages = 1;
+}
+
+// 会话聊天认证
+message SessionAuthChat {
+  string token = 1;
+}
+
+// 观看房间数据
+message WatchRoomData {
+  int32 roomId = 1;
+  string roomName = 2;
+}
+
+// 发送物品GUID信息
+message SendItemGuidInfo {
+  uint64 guid = 1;
+}
+
+// 发送物品信息
+message SendItemInfo {
+  int32 id = 1;
+  int32 count = 2;
+}
+
+// 子系统
+message Subsystem {
+  int32 id = 1;
+  string name = 2;
+}
+
+// 教程列表类型
+message TypeTutorialList {
+  repeated int32 tutorials = 1;
+}
+
+// 教程列表响应
+message ResTutorialList {
+  repeated int32 tutorials = 1;
+}
+
+// 教程保存响应
+message ResTutorialSave {
+  int32 error = 1;
+  int32 tutorialId = 2;
+}
+
+// 区域列表
+message SectorList {
+  repeated int32 sectors = 1;
+}
+
+// 区域信息
+message SectorInfo {
+  int32 id = 1;
+  string name = 2;
+}
+
+// 服务器检查响应
+message ResServerCheckup {
+  int32 status = 1;
+  string message = 2;
+}
+
+message DreamMazePlayMember {
+  uint64 charguid = 1;
+  string name = 2;
+  int32 level = 3;
+  int32 job = 4;
+  int32 growtype = 5;
+  int32 secondgrowtype = 6;
+}
+
+message DungeonGetInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+message DungeonParticipate {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+message DungeonPartyCount {
+  int32 count = 1;
+}
+
+message DungeonPartyCount2 {
+  int32 count = 1;
+}
+
+message DungeonRankInfo {
+  int32 rank = 1;
+  int32 score = 2;
+}
+
+message DungeonResultQuestInfo {
+  int32 questid = 1;
+  int32 count = 2;
+}
+
+message EmblemResult {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+message EscortDoneReady {
+  int32 error = 1;
+  int32 index = 2;
+}

@@ -31,6 +31,51 @@ public final class UserInfoProto extends com.google.protobuf.GeneratedFile {
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_UserInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResUserStatus_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResUserStatus_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResUserReport_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResUserReport_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_UpdateAntievilScore_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_UpdateAntievilScore_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_UpdateAntievilScore1_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_UpdateAntievilScore1_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResTencentCreditscoreInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResTencentCreditscoreInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResTitleList_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResTitleList_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResSeasonPassInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResSeasonPassInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResVerificationAuth_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResVerificationAuth_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResVerificationFinish_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResVerificationFinish_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -49,11 +94,25 @@ public final class UserInfoProto extends com.google.protobuf.GeneratedFile {
       "R\004name\022\037\n\013profile_url\030\t \001(\tR\nprofileUrl\022" +
       "!\n\014profile_name\030\n \001(\tR\013profileName\022\'\n\017ch" +
       "aracter_frame\030\013 \001(\005R\016characterFrame\022\022\n\004r" +
-      "ank\030\014 \001(\005R\004rankB\250\001\n com.dnfm.mina.protob" +
-      "uf.generatedB\rUserInfoProtoP\001Z<github.co" +
-      "m/pixb/DnfGameServer/dnf-go-client/gen/d" +
-      "nf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dn" +
-      "f\\V1\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
+      "ank\030\014 \001(\005R\004rank\"A\n\rResUserStatus\022\026\n\006stat" +
+      "us\030\001 \001(\005R\006status\022\030\n\007message\030\002 \001(\tR\007messa" +
+      "ge\"?\n\rResUserReport\022\024\n\005error\030\001 \001(\005R\005erro" +
+      "r\022\030\n\007message\030\002 \001(\tR\007message\"+\n\023UpdateAnt" +
+      "ievilScore\022\024\n\005score\030\001 \001(\005R\005score\",\n\024Upda" +
+      "teAntievilScore1\022\024\n\005score\030\001 \001(\005R\005score\"K" +
+      "\n\031ResTencentCreditscoreInfo\022\024\n\005score\030\001 \001" +
+      "(\005R\005score\022\030\n\007message\030\002 \001(\tR\007message\"&\n\014R" +
+      "esTitleList\022\026\n\006titles\030\001 \003(\005R\006titles\";\n\021R" +
+      "esSeasonPassInfo\022\024\n\005level\030\001 \001(\005R\005level\022\020" +
+      "\n\003exp\030\002 \001(\005R\003exp\"=\n\023ResVerificationAuth\022" +
+      "\024\n\005error\030\001 \001(\005R\005error\022\020\n\003url\030\002 \001(\tR\003url\"" +
+      "G\n\025ResVerificationFinish\022\024\n\005error\030\001 \001(\005R" +
+      "\005error\022\030\n\007message\030\002 \001(\tR\007messageB\250\001\n com" +
+      ".dnfm.mina.protobuf.generatedB\rUserInfoP" +
+      "rotoP\001Z<github.com/pixb/DnfGameServer/dn" +
+      "f-go-client/gen/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf" +
+      ".V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf:" +
+      ":V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -65,6 +124,60 @@ public final class UserInfoProto extends com.google.protobuf.GeneratedFile {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_UserInfo_descriptor,
         new java.lang.String[] { "Charguid", "Job", "Growtype", "Secgrowtype", "TeamType", "World", "Level", "Name", "ProfileUrl", "ProfileName", "CharacterFrame", "Rank", });
+    internal_static_dnf_v1_ResUserStatus_descriptor =
+      getDescriptor().getMessageType(1);
+    internal_static_dnf_v1_ResUserStatus_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResUserStatus_descriptor,
+        new java.lang.String[] { "Status", "Message", });
+    internal_static_dnf_v1_ResUserReport_descriptor =
+      getDescriptor().getMessageType(2);
+    internal_static_dnf_v1_ResUserReport_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResUserReport_descriptor,
+        new java.lang.String[] { "Error", "Message", });
+    internal_static_dnf_v1_UpdateAntievilScore_descriptor =
+      getDescriptor().getMessageType(3);
+    internal_static_dnf_v1_UpdateAntievilScore_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_UpdateAntievilScore_descriptor,
+        new java.lang.String[] { "Score", });
+    internal_static_dnf_v1_UpdateAntievilScore1_descriptor =
+      getDescriptor().getMessageType(4);
+    internal_static_dnf_v1_UpdateAntievilScore1_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_UpdateAntievilScore1_descriptor,
+        new java.lang.String[] { "Score", });
+    internal_static_dnf_v1_ResTencentCreditscoreInfo_descriptor =
+      getDescriptor().getMessageType(5);
+    internal_static_dnf_v1_ResTencentCreditscoreInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResTencentCreditscoreInfo_descriptor,
+        new java.lang.String[] { "Score", "Message", });
+    internal_static_dnf_v1_ResTitleList_descriptor =
+      getDescriptor().getMessageType(6);
+    internal_static_dnf_v1_ResTitleList_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResTitleList_descriptor,
+        new java.lang.String[] { "Titles", });
+    internal_static_dnf_v1_ResSeasonPassInfo_descriptor =
+      getDescriptor().getMessageType(7);
+    internal_static_dnf_v1_ResSeasonPassInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResSeasonPassInfo_descriptor,
+        new java.lang.String[] { "Level", "Exp", });
+    internal_static_dnf_v1_ResVerificationAuth_descriptor =
+      getDescriptor().getMessageType(8);
+    internal_static_dnf_v1_ResVerificationAuth_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResVerificationAuth_descriptor,
+        new java.lang.String[] { "Error", "Url", });
+    internal_static_dnf_v1_ResVerificationFinish_descriptor =
+      getDescriptor().getMessageType(9);
+    internal_static_dnf_v1_ResVerificationFinish_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResVerificationFinish_descriptor,
+        new java.lang.String[] { "Error", "Message", });
     descriptor.resolveAllFeaturesImmutable();
   }
 

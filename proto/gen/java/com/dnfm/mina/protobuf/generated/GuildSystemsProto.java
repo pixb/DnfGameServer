@@ -62,6 +62,16 @@ public final class GuildSystemsProto extends com.google.protobuf.GeneratedFile {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_GuildBingoChallengersInfo_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_GuildBingoMap_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_GuildBingoMap_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_GuildBingoMapAward_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_GuildBingoMapAward_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_dnf_v1_GuildBingoMapClearPastRewardInfo_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -302,99 +312,102 @@ public final class GuildSystemsProto extends com.google.protobuf.GeneratedFile {
       "R\005index\"L\n\036GuildBingoChallengeHistoryInf" +
       "o\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005" +
       "count\"G\n\031GuildBingoChallengersInfo\022\024\n\005in" +
-      "dex\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005count\"N" +
-      "\n GuildBingoMapClearPastRewardInfo\022\024\n\005in" +
-      "dex\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005count\"4" +
-      "\n\034GuildBingoMapClearRewardInfo\022\024\n\005index\030" +
-      "\001 \001(\005R\005index\"B\n\024GuildBingoRewardInfo\022\024\n\005" +
-      "index\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005count" +
-      "\"^\n\016GuildApplyList\022\024\n\005error\030\001 \001(\005R\005error" +
-      "\0226\n\napplicants\030\002 \003(\0132\026.dnf.v1.GuildAppli" +
-      "cantR\napplicants\"u\n\rGuildBossInfo\022\026\n\006bos" +
-      "sId\030\001 \001(\005R\006bossId\022\016\n\002hp\030\002 \001(\005R\002hp\022\024\n\005max" +
-      "Hp\030\003 \001(\005R\005maxHp\022&\n\016lastAttackTime\030\004 \001(\003R" +
-      "\016lastAttackTime\"O\n\013GuildCreate\022\022\n\004name\030\001" +
-      " \001(\tR\004name\022\026\n\006notice\030\002 \001(\tR\006notice\022\024\n\005le" +
-      "vel\030\003 \001(\005R\005level\"\363\001\n\013GuildDetail\022\030\n\007guil" +
-      "dId\030\001 \001(\005R\007guildId\022\022\n\004name\030\002 \001(\tR\004name\022\026" +
-      "\n\006notice\030\003 \001(\tR\006notice\022\024\n\005level\030\004 \001(\005R\005l" +
-      "evel\022 \n\013memberCount\030\005 \001(\005R\013memberCount\022&" +
-      "\n\016maxMemberCount\030\006 \001(\005R\016maxMemberCount\022\036" +
-      "\n\nmasterName\030\007 \001(\tR\nmasterName\022\036\n\nmaster" +
-      "Guid\030\010 \001(\004R\nmasterGuid\"N\n\tGuildList\022\024\n\005e" +
-      "rror\030\001 \001(\005R\005error\022+\n\006guilds\030\002 \003(\0132\023.dnf." +
-      "v1.GuildDetailR\006guilds\"V\n\017GuildMemberLis" +
-      "t\022\024\n\005error\030\001 \001(\005R\005error\022-\n\007members\030\002 \003(\013" +
-      "2\023.dnf.v1.GuildMemberR\007members\"\271\001\n\013Guild" +
-      "Member\022\022\n\004guid\030\001 \001(\004R\004guid\022\022\n\004name\030\002 \001(\t" +
-      "R\004name\022\020\n\003job\030\003 \001(\005R\003job\022\024\n\005level\030\004 \001(\005R" +
-      "\005level\022\032\n\010position\030\005 \001(\005R\010position\022\032\n\010jo" +
-      "inTime\030\006 \001(\005R\010joinTime\022\"\n\014contribution\030\007" +
-      " \001(\005R\014contribution\"%\n\013GuildNotice\022\026\n\006not" +
-      "ice\030\001 \001(\tR\006notice\"T\n\020GuildRecruitment\022\030\n" +
-      "\007content\030\001 \001(\tR\007content\022\024\n\005level\030\002 \001(\005R\005" +
-      "level\022\020\n\003job\030\003 \001(\005R\003job\"$\n\014GuildUpgrade\022" +
-      "\024\n\005level\030\001 \001(\005R\005level\"\232\001\n\014GuildWarInfo\022\030" +
-      "\n\007guildId\030\001 \001(\005R\007guildId\022\"\n\014enemyGuildId" +
-      "\030\002 \001(\005R\014enemyGuildId\022\024\n\005state\030\003 \001(\005R\005sta" +
-      "te\022\034\n\tstartTime\030\004 \001(\003R\tstartTime\022\030\n\007endT" +
-      "ime\030\005 \001(\003R\007endTime\"%\n\013QuestAccept\022\026\n\006qin" +
-      "dex\030\001 \001(\005R\006qindex\"\'\n\rQuestComplete\022\026\n\006qi" +
-      "ndex\030\001 \001(\005R\006qindex\"q\n\tQuestInfo\022\026\n\006qinde" +
-      "x\030\001 \001(\005R\006qindex\022\024\n\005state\030\002 \001(\005R\005state\022\024\n" +
-      "\005count\030\003 \001(\005R\005count\022 \n\013isminequest\030\004 \001(\010" +
-      "R\013isminequest\"L\n\tQuestList\022\024\n\005error\030\001 \001(" +
-      "\005R\005error\022)\n\006quests\030\002 \003(\0132\021.dnf.v1.QuestI" +
-      "nfoR\006quests\"=\n\rQuestProgress\022\026\n\006qindex\030\001" +
-      " \001(\005R\006qindex\022\024\n\005count\030\002 \001(\005R\005count\"A\n\013Qu" +
-      "estReward\022\026\n\006qindex\030\001 \001(\005R\006qindex\022\032\n\010rew" +
-      "ardId\030\002 \001(\005R\010rewardId\";\n\013QuestStatus\022\026\n\006" +
-      "qindex\030\001 \001(\005R\006qindex\022\024\n\005state\030\002 \001(\005R\005sta" +
-      "te\":\n\nQuestTrack\022\026\n\006qindex\030\001 \001(\005R\006qindex" +
-      "\022\024\n\005track\030\002 \001(\010R\005track\"\'\n\023AchievementCom" +
-      "plete\022\020\n\003aid\030\001 \001(\005R\003aid\"d\n\017AchievementLi" +
-      "st\022\024\n\005error\030\001 \001(\005R\005error\022;\n\014achievements" +
-      "\030\002 \003(\0132\027.dnf.v1.AchievementInfoR\014achieve" +
-      "ments\";\n\021AchievementStatus\022\020\n\003aid\030\001 \001(\005R" +
-      "\003aid\022\024\n\005state\030\002 \001(\005R\005state\"O\n\007ShopBuy\022\026\n" +
-      "\006shopId\030\001 \001(\005R\006shopId\022\026\n\006itemId\030\002 \001(\005R\006i" +
-      "temId\022\024\n\005count\030\003 \001(\005R\005count\"^\n\010ShopInfo\022" +
-      "\026\n\006shopId\030\001 \001(\005R\006shopId\022\022\n\004name\030\002 \001(\tR\004n" +
-      "ame\022&\n\005items\030\003 \003(\0132\020.dnf.v1.ShopItemR\005it" +
-      "ems\"\210\001\n\010ShopItem\022\026\n\006itemId\030\001 \001(\005R\006itemId" +
-      "\022\024\n\005price\030\002 \001(\005R\005price\022\024\n\005count\030\003 \001(\005R\005c" +
-      "ount\022\026\n\006maxBuy\030\004 \001(\005R\006maxBuy\022 \n\013restockT" +
-      "ime\030\005 \001(\003R\013restockTime\"H\n\010ShopList\022\024\n\005er" +
-      "ror\030\001 \001(\005R\005error\022&\n\005shops\030\002 \003(\0132\020.dnf.v1" +
-      ".ShopInfoR\005shops\"%\n\013ShopRestock\022\026\n\006shopI" +
-      "d\030\001 \001(\005R\006shopId\"H\n\010MailList\022\024\n\005error\030\001 \001" +
-      "(\005R\005error\022&\n\005mails\030\002 \003(\0132\020.dnf.v1.MailIn" +
-      "foR\005mails\"\"\n\010MailRead\022\026\n\006mailId\030\001 \001(\005R\006m" +
-      "ailId\"\216\001\n\010MailSend\022\032\n\010receiver\030\001 \001(\tR\010re" +
-      "ceiver\022\024\n\005title\030\002 \001(\tR\005title\022\030\n\007content\030" +
-      "\003 \001(\tR\007content\0226\n\013attachments\030\004 \003(\0132\024.dn" +
-      "f.v1.SelectedItemR\013attachments\"`\n\010RankIn" +
-      "fo\022\026\n\006rankId\030\001 \001(\005R\006rankId\022\022\n\004name\030\002 \001(\t" +
-      "R\004name\022\024\n\005score\030\003 \001(\005R\005score\022\022\n\004rank\030\004 \001" +
-      "(\005R\004rank\"`\n\010RankList\022\024\n\005error\030\001 \001(\005R\005err" +
-      "or\022\026\n\006rankId\030\002 \001(\005R\006rankId\022&\n\005ranks\030\003 \003(" +
-      "\0132\020.dnf.v1.RankInfoR\005ranks\"@\n\nRankReward" +
-      "\022\026\n\006rankId\030\001 \001(\005R\006rankId\022\032\n\010rewardId\030\002 \001" +
-      "(\005R\010rewardId\":\n\nRankUpdate\022\026\n\006rankId\030\001 \001" +
-      "(\005R\006rankId\022\024\n\005score\030\002 \001(\005R\005score\"\202\001\n\014Act" +
-      "ivityInfo\022\020\n\003aid\030\001 \001(\005R\003aid\022\022\n\004name\030\002 \001(" +
-      "\tR\004name\022\034\n\tstartTime\030\003 \001(\003R\tstartTime\022\030\n" +
-      "\007endTime\030\004 \001(\003R\007endTime\022\024\n\005state\030\005 \001(\005R\005" +
-      "state\"Z\n\014ActivityList\022\024\n\005error\030\001 \001(\005R\005er" +
-      "ror\0224\n\nactivities\030\002 \003(\0132\024.dnf.v1.Activit" +
-      "yInfoR\nactivities\"\'\n\023ActivityParticipate" +
-      "\022\020\n\003aid\030\001 \001(\005R\003aid\">\n\016ActivityReward\022\020\n\003" +
-      "aid\030\001 \001(\005R\003aid\022\032\n\010rewardId\030\002 \001(\005R\010reward" +
-      "IdB\254\001\n com.dnfm.mina.protobuf.generatedB" +
-      "\021GuildSystemsProtoP\001Z<github.com/pixb/Dn" +
-      "fGameServer/dnf-go-client/gen/dnf/v1;dnf" +
-      "v1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBM" +
-      "etadata\352\002\007Dnf::V1b\006proto3"
+      "dex\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005count\";" +
+      "\n\rGuildBingoMap\022\024\n\005index\030\001 \001(\005R\005index\022\024\n" +
+      "\005count\030\002 \001(\005R\005count\"@\n\022GuildBingoMapAwar" +
+      "d\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005" +
+      "count\"N\n GuildBingoMapClearPastRewardInf" +
+      "o\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005R\005" +
+      "count\"4\n\034GuildBingoMapClearRewardInfo\022\024\n" +
+      "\005index\030\001 \001(\005R\005index\"B\n\024GuildBingoRewardI" +
+      "nfo\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005count\030\002 \001(\005" +
+      "R\005count\"^\n\016GuildApplyList\022\024\n\005error\030\001 \001(\005" +
+      "R\005error\0226\n\napplicants\030\002 \003(\0132\026.dnf.v1.Gui" +
+      "ldApplicantR\napplicants\"u\n\rGuildBossInfo" +
+      "\022\026\n\006bossId\030\001 \001(\005R\006bossId\022\016\n\002hp\030\002 \001(\005R\002hp" +
+      "\022\024\n\005maxHp\030\003 \001(\005R\005maxHp\022&\n\016lastAttackTime" +
+      "\030\004 \001(\003R\016lastAttackTime\"O\n\013GuildCreate\022\022\n" +
+      "\004name\030\001 \001(\tR\004name\022\026\n\006notice\030\002 \001(\tR\006notic" +
+      "e\022\024\n\005level\030\003 \001(\005R\005level\"\363\001\n\013GuildDetail\022" +
+      "\030\n\007guildId\030\001 \001(\005R\007guildId\022\022\n\004name\030\002 \001(\tR" +
+      "\004name\022\026\n\006notice\030\003 \001(\tR\006notice\022\024\n\005level\030\004" +
+      " \001(\005R\005level\022 \n\013memberCount\030\005 \001(\005R\013member" +
+      "Count\022&\n\016maxMemberCount\030\006 \001(\005R\016maxMember" +
+      "Count\022\036\n\nmasterName\030\007 \001(\tR\nmasterName\022\036\n" +
+      "\nmasterGuid\030\010 \001(\004R\nmasterGuid\"N\n\tGuildLi" +
+      "st\022\024\n\005error\030\001 \001(\005R\005error\022+\n\006guilds\030\002 \003(\013" +
+      "2\023.dnf.v1.GuildDetailR\006guilds\"V\n\017GuildMe" +
+      "mberList\022\024\n\005error\030\001 \001(\005R\005error\022-\n\007member" +
+      "s\030\002 \003(\0132\023.dnf.v1.GuildMemberR\007members\"\271\001" +
+      "\n\013GuildMember\022\022\n\004guid\030\001 \001(\004R\004guid\022\022\n\004nam" +
+      "e\030\002 \001(\tR\004name\022\020\n\003job\030\003 \001(\005R\003job\022\024\n\005level" +
+      "\030\004 \001(\005R\005level\022\032\n\010position\030\005 \001(\005R\010positio" +
+      "n\022\032\n\010joinTime\030\006 \001(\005R\010joinTime\022\"\n\014contrib" +
+      "ution\030\007 \001(\005R\014contribution\"%\n\013GuildNotice" +
+      "\022\026\n\006notice\030\001 \001(\tR\006notice\"T\n\020GuildRecruit" +
+      "ment\022\030\n\007content\030\001 \001(\tR\007content\022\024\n\005level\030" +
+      "\002 \001(\005R\005level\022\020\n\003job\030\003 \001(\005R\003job\"$\n\014GuildU" +
+      "pgrade\022\024\n\005level\030\001 \001(\005R\005level\"\232\001\n\014GuildWa" +
+      "rInfo\022\030\n\007guildId\030\001 \001(\005R\007guildId\022\"\n\014enemy" +
+      "GuildId\030\002 \001(\005R\014enemyGuildId\022\024\n\005state\030\003 \001" +
+      "(\005R\005state\022\034\n\tstartTime\030\004 \001(\003R\tstartTime\022" +
+      "\030\n\007endTime\030\005 \001(\003R\007endTime\"%\n\013QuestAccept" +
+      "\022\026\n\006qindex\030\001 \001(\005R\006qindex\"\'\n\rQuestComplet" +
+      "e\022\026\n\006qindex\030\001 \001(\005R\006qindex\"q\n\tQuestInfo\022\026" +
+      "\n\006qindex\030\001 \001(\005R\006qindex\022\024\n\005state\030\002 \001(\005R\005s" +
+      "tate\022\024\n\005count\030\003 \001(\005R\005count\022 \n\013ismineques" +
+      "t\030\004 \001(\010R\013isminequest\"L\n\tQuestList\022\024\n\005err" +
+      "or\030\001 \001(\005R\005error\022)\n\006quests\030\002 \003(\0132\021.dnf.v1" +
+      ".QuestInfoR\006quests\"=\n\rQuestProgress\022\026\n\006q" +
+      "index\030\001 \001(\005R\006qindex\022\024\n\005count\030\002 \001(\005R\005coun" +
+      "t\"A\n\013QuestReward\022\026\n\006qindex\030\001 \001(\005R\006qindex" +
+      "\022\032\n\010rewardId\030\002 \001(\005R\010rewardId\";\n\013QuestSta" +
+      "tus\022\026\n\006qindex\030\001 \001(\005R\006qindex\022\024\n\005state\030\002 \001" +
+      "(\005R\005state\":\n\nQuestTrack\022\026\n\006qindex\030\001 \001(\005R" +
+      "\006qindex\022\024\n\005track\030\002 \001(\010R\005track\"\'\n\023Achieve" +
+      "mentComplete\022\020\n\003aid\030\001 \001(\005R\003aid\"d\n\017Achiev" +
+      "ementList\022\024\n\005error\030\001 \001(\005R\005error\022;\n\014achie" +
+      "vements\030\002 \003(\0132\027.dnf.v1.AchievementInfoR\014" +
+      "achievements\";\n\021AchievementStatus\022\020\n\003aid" +
+      "\030\001 \001(\005R\003aid\022\024\n\005state\030\002 \001(\005R\005state\"O\n\007Sho" +
+      "pBuy\022\026\n\006shopId\030\001 \001(\005R\006shopId\022\026\n\006itemId\030\002" +
+      " \001(\005R\006itemId\022\024\n\005count\030\003 \001(\005R\005count\"^\n\010Sh" +
+      "opInfo\022\026\n\006shopId\030\001 \001(\005R\006shopId\022\022\n\004name\030\002" +
+      " \001(\tR\004name\022&\n\005items\030\003 \003(\0132\020.dnf.v1.ShopI" +
+      "temR\005items\"\210\001\n\010ShopItem\022\026\n\006itemId\030\001 \001(\005R" +
+      "\006itemId\022\024\n\005price\030\002 \001(\005R\005price\022\024\n\005count\030\003" +
+      " \001(\005R\005count\022\026\n\006maxBuy\030\004 \001(\005R\006maxBuy\022 \n\013r" +
+      "estockTime\030\005 \001(\003R\013restockTime\"H\n\010ShopLis" +
+      "t\022\024\n\005error\030\001 \001(\005R\005error\022&\n\005shops\030\002 \003(\0132\020" +
+      ".dnf.v1.ShopInfoR\005shops\"%\n\013ShopRestock\022\026" +
+      "\n\006shopId\030\001 \001(\005R\006shopId\"H\n\010MailList\022\024\n\005er" +
+      "ror\030\001 \001(\005R\005error\022&\n\005mails\030\002 \003(\0132\020.dnf.v1" +
+      ".MailInfoR\005mails\"\"\n\010MailRead\022\026\n\006mailId\030\001" +
+      " \001(\005R\006mailId\"\216\001\n\010MailSend\022\032\n\010receiver\030\001 " +
+      "\001(\tR\010receiver\022\024\n\005title\030\002 \001(\tR\005title\022\030\n\007c" +
+      "ontent\030\003 \001(\tR\007content\0226\n\013attachments\030\004 \003" +
+      "(\0132\024.dnf.v1.SelectedItemR\013attachments\"`\n" +
+      "\010RankInfo\022\026\n\006rankId\030\001 \001(\005R\006rankId\022\022\n\004nam" +
+      "e\030\002 \001(\tR\004name\022\024\n\005score\030\003 \001(\005R\005score\022\022\n\004r" +
+      "ank\030\004 \001(\005R\004rank\"`\n\010RankList\022\024\n\005error\030\001 \001" +
+      "(\005R\005error\022\026\n\006rankId\030\002 \001(\005R\006rankId\022&\n\005ran" +
+      "ks\030\003 \003(\0132\020.dnf.v1.RankInfoR\005ranks\"@\n\nRan" +
+      "kReward\022\026\n\006rankId\030\001 \001(\005R\006rankId\022\032\n\010rewar" +
+      "dId\030\002 \001(\005R\010rewardId\":\n\nRankUpdate\022\026\n\006ran" +
+      "kId\030\001 \001(\005R\006rankId\022\024\n\005score\030\002 \001(\005R\005score\"" +
+      "\202\001\n\014ActivityInfo\022\020\n\003aid\030\001 \001(\005R\003aid\022\022\n\004na" +
+      "me\030\002 \001(\tR\004name\022\034\n\tstartTime\030\003 \001(\003R\tstart" +
+      "Time\022\030\n\007endTime\030\004 \001(\003R\007endTime\022\024\n\005state\030" +
+      "\005 \001(\005R\005state\"Z\n\014ActivityList\022\024\n\005error\030\001 " +
+      "\001(\005R\005error\0224\n\nactivities\030\002 \003(\0132\024.dnf.v1." +
+      "ActivityInfoR\nactivities\"\'\n\023ActivityPart" +
+      "icipate\022\020\n\003aid\030\001 \001(\005R\003aid\">\n\016ActivityRew" +
+      "ard\022\020\n\003aid\030\001 \001(\005R\003aid\022\032\n\010rewardId\030\002 \001(\005R" +
+      "\010rewardIdB\254\001\n com.dnfm.mina.protobuf.gen" +
+      "eratedB\021GuildSystemsProtoP\001Z<github.com/" +
+      "pixb/DnfGameServer/dnf-go-client/gen/dnf" +
+      "/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\" +
+      "V1\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -460,248 +473,260 @@ public final class GuildSystemsProto extends com.google.protobuf.GeneratedFile {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildBingoChallengersInfo_descriptor,
         new java.lang.String[] { "Index", "Count", });
-    internal_static_dnf_v1_GuildBingoMapClearPastRewardInfo_descriptor =
+    internal_static_dnf_v1_GuildBingoMap_descriptor =
       getDescriptor().getMessageType(7);
+    internal_static_dnf_v1_GuildBingoMap_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_GuildBingoMap_descriptor,
+        new java.lang.String[] { "Index", "Count", });
+    internal_static_dnf_v1_GuildBingoMapAward_descriptor =
+      getDescriptor().getMessageType(8);
+    internal_static_dnf_v1_GuildBingoMapAward_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_GuildBingoMapAward_descriptor,
+        new java.lang.String[] { "Index", "Count", });
+    internal_static_dnf_v1_GuildBingoMapClearPastRewardInfo_descriptor =
+      getDescriptor().getMessageType(9);
     internal_static_dnf_v1_GuildBingoMapClearPastRewardInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildBingoMapClearPastRewardInfo_descriptor,
         new java.lang.String[] { "Index", "Count", });
     internal_static_dnf_v1_GuildBingoMapClearRewardInfo_descriptor =
-      getDescriptor().getMessageType(8);
+      getDescriptor().getMessageType(10);
     internal_static_dnf_v1_GuildBingoMapClearRewardInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildBingoMapClearRewardInfo_descriptor,
         new java.lang.String[] { "Index", });
     internal_static_dnf_v1_GuildBingoRewardInfo_descriptor =
-      getDescriptor().getMessageType(9);
+      getDescriptor().getMessageType(11);
     internal_static_dnf_v1_GuildBingoRewardInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildBingoRewardInfo_descriptor,
         new java.lang.String[] { "Index", "Count", });
     internal_static_dnf_v1_GuildApplyList_descriptor =
-      getDescriptor().getMessageType(10);
+      getDescriptor().getMessageType(12);
     internal_static_dnf_v1_GuildApplyList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildApplyList_descriptor,
         new java.lang.String[] { "Error", "Applicants", });
     internal_static_dnf_v1_GuildBossInfo_descriptor =
-      getDescriptor().getMessageType(11);
+      getDescriptor().getMessageType(13);
     internal_static_dnf_v1_GuildBossInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildBossInfo_descriptor,
         new java.lang.String[] { "BossId", "Hp", "MaxHp", "LastAttackTime", });
     internal_static_dnf_v1_GuildCreate_descriptor =
-      getDescriptor().getMessageType(12);
+      getDescriptor().getMessageType(14);
     internal_static_dnf_v1_GuildCreate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildCreate_descriptor,
         new java.lang.String[] { "Name", "Notice", "Level", });
     internal_static_dnf_v1_GuildDetail_descriptor =
-      getDescriptor().getMessageType(13);
+      getDescriptor().getMessageType(15);
     internal_static_dnf_v1_GuildDetail_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildDetail_descriptor,
         new java.lang.String[] { "GuildId", "Name", "Notice", "Level", "MemberCount", "MaxMemberCount", "MasterName", "MasterGuid", });
     internal_static_dnf_v1_GuildList_descriptor =
-      getDescriptor().getMessageType(14);
+      getDescriptor().getMessageType(16);
     internal_static_dnf_v1_GuildList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildList_descriptor,
         new java.lang.String[] { "Error", "Guilds", });
     internal_static_dnf_v1_GuildMemberList_descriptor =
-      getDescriptor().getMessageType(15);
+      getDescriptor().getMessageType(17);
     internal_static_dnf_v1_GuildMemberList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildMemberList_descriptor,
         new java.lang.String[] { "Error", "Members", });
     internal_static_dnf_v1_GuildMember_descriptor =
-      getDescriptor().getMessageType(16);
+      getDescriptor().getMessageType(18);
     internal_static_dnf_v1_GuildMember_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildMember_descriptor,
         new java.lang.String[] { "Guid", "Name", "Job", "Level", "Position", "JoinTime", "Contribution", });
     internal_static_dnf_v1_GuildNotice_descriptor =
-      getDescriptor().getMessageType(17);
+      getDescriptor().getMessageType(19);
     internal_static_dnf_v1_GuildNotice_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildNotice_descriptor,
         new java.lang.String[] { "Notice", });
     internal_static_dnf_v1_GuildRecruitment_descriptor =
-      getDescriptor().getMessageType(18);
+      getDescriptor().getMessageType(20);
     internal_static_dnf_v1_GuildRecruitment_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildRecruitment_descriptor,
         new java.lang.String[] { "Content", "Level", "Job", });
     internal_static_dnf_v1_GuildUpgrade_descriptor =
-      getDescriptor().getMessageType(19);
+      getDescriptor().getMessageType(21);
     internal_static_dnf_v1_GuildUpgrade_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildUpgrade_descriptor,
         new java.lang.String[] { "Level", });
     internal_static_dnf_v1_GuildWarInfo_descriptor =
-      getDescriptor().getMessageType(20);
+      getDescriptor().getMessageType(22);
     internal_static_dnf_v1_GuildWarInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_GuildWarInfo_descriptor,
         new java.lang.String[] { "GuildId", "EnemyGuildId", "State", "StartTime", "EndTime", });
     internal_static_dnf_v1_QuestAccept_descriptor =
-      getDescriptor().getMessageType(21);
+      getDescriptor().getMessageType(23);
     internal_static_dnf_v1_QuestAccept_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_QuestAccept_descriptor,
         new java.lang.String[] { "Qindex", });
     internal_static_dnf_v1_QuestComplete_descriptor =
-      getDescriptor().getMessageType(22);
+      getDescriptor().getMessageType(24);
     internal_static_dnf_v1_QuestComplete_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_QuestComplete_descriptor,
         new java.lang.String[] { "Qindex", });
     internal_static_dnf_v1_QuestInfo_descriptor =
-      getDescriptor().getMessageType(23);
+      getDescriptor().getMessageType(25);
     internal_static_dnf_v1_QuestInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_QuestInfo_descriptor,
         new java.lang.String[] { "Qindex", "State", "Count", "Isminequest", });
     internal_static_dnf_v1_QuestList_descriptor =
-      getDescriptor().getMessageType(24);
+      getDescriptor().getMessageType(26);
     internal_static_dnf_v1_QuestList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_QuestList_descriptor,
         new java.lang.String[] { "Error", "Quests", });
     internal_static_dnf_v1_QuestProgress_descriptor =
-      getDescriptor().getMessageType(25);
+      getDescriptor().getMessageType(27);
     internal_static_dnf_v1_QuestProgress_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_QuestProgress_descriptor,
         new java.lang.String[] { "Qindex", "Count", });
     internal_static_dnf_v1_QuestReward_descriptor =
-      getDescriptor().getMessageType(26);
+      getDescriptor().getMessageType(28);
     internal_static_dnf_v1_QuestReward_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_QuestReward_descriptor,
         new java.lang.String[] { "Qindex", "RewardId", });
     internal_static_dnf_v1_QuestStatus_descriptor =
-      getDescriptor().getMessageType(27);
+      getDescriptor().getMessageType(29);
     internal_static_dnf_v1_QuestStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_QuestStatus_descriptor,
         new java.lang.String[] { "Qindex", "State", });
     internal_static_dnf_v1_QuestTrack_descriptor =
-      getDescriptor().getMessageType(28);
+      getDescriptor().getMessageType(30);
     internal_static_dnf_v1_QuestTrack_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_QuestTrack_descriptor,
         new java.lang.String[] { "Qindex", "Track", });
     internal_static_dnf_v1_AchievementComplete_descriptor =
-      getDescriptor().getMessageType(29);
+      getDescriptor().getMessageType(31);
     internal_static_dnf_v1_AchievementComplete_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AchievementComplete_descriptor,
         new java.lang.String[] { "Aid", });
     internal_static_dnf_v1_AchievementList_descriptor =
-      getDescriptor().getMessageType(30);
+      getDescriptor().getMessageType(32);
     internal_static_dnf_v1_AchievementList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AchievementList_descriptor,
         new java.lang.String[] { "Error", "Achievements", });
     internal_static_dnf_v1_AchievementStatus_descriptor =
-      getDescriptor().getMessageType(31);
+      getDescriptor().getMessageType(33);
     internal_static_dnf_v1_AchievementStatus_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_AchievementStatus_descriptor,
         new java.lang.String[] { "Aid", "State", });
     internal_static_dnf_v1_ShopBuy_descriptor =
-      getDescriptor().getMessageType(32);
+      getDescriptor().getMessageType(34);
     internal_static_dnf_v1_ShopBuy_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ShopBuy_descriptor,
         new java.lang.String[] { "ShopId", "ItemId", "Count", });
     internal_static_dnf_v1_ShopInfo_descriptor =
-      getDescriptor().getMessageType(33);
+      getDescriptor().getMessageType(35);
     internal_static_dnf_v1_ShopInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ShopInfo_descriptor,
         new java.lang.String[] { "ShopId", "Name", "Items", });
     internal_static_dnf_v1_ShopItem_descriptor =
-      getDescriptor().getMessageType(34);
+      getDescriptor().getMessageType(36);
     internal_static_dnf_v1_ShopItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ShopItem_descriptor,
         new java.lang.String[] { "ItemId", "Price", "Count", "MaxBuy", "RestockTime", });
     internal_static_dnf_v1_ShopList_descriptor =
-      getDescriptor().getMessageType(35);
+      getDescriptor().getMessageType(37);
     internal_static_dnf_v1_ShopList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ShopList_descriptor,
         new java.lang.String[] { "Error", "Shops", });
     internal_static_dnf_v1_ShopRestock_descriptor =
-      getDescriptor().getMessageType(36);
+      getDescriptor().getMessageType(38);
     internal_static_dnf_v1_ShopRestock_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ShopRestock_descriptor,
         new java.lang.String[] { "ShopId", });
     internal_static_dnf_v1_MailList_descriptor =
-      getDescriptor().getMessageType(37);
+      getDescriptor().getMessageType(39);
     internal_static_dnf_v1_MailList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailList_descriptor,
         new java.lang.String[] { "Error", "Mails", });
     internal_static_dnf_v1_MailRead_descriptor =
-      getDescriptor().getMessageType(38);
+      getDescriptor().getMessageType(40);
     internal_static_dnf_v1_MailRead_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailRead_descriptor,
         new java.lang.String[] { "MailId", });
     internal_static_dnf_v1_MailSend_descriptor =
-      getDescriptor().getMessageType(39);
+      getDescriptor().getMessageType(41);
     internal_static_dnf_v1_MailSend_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_MailSend_descriptor,
         new java.lang.String[] { "Receiver", "Title", "Content", "Attachments", });
     internal_static_dnf_v1_RankInfo_descriptor =
-      getDescriptor().getMessageType(40);
+      getDescriptor().getMessageType(42);
     internal_static_dnf_v1_RankInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_RankInfo_descriptor,
         new java.lang.String[] { "RankId", "Name", "Score", "Rank", });
     internal_static_dnf_v1_RankList_descriptor =
-      getDescriptor().getMessageType(41);
+      getDescriptor().getMessageType(43);
     internal_static_dnf_v1_RankList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_RankList_descriptor,
         new java.lang.String[] { "Error", "RankId", "Ranks", });
     internal_static_dnf_v1_RankReward_descriptor =
-      getDescriptor().getMessageType(42);
+      getDescriptor().getMessageType(44);
     internal_static_dnf_v1_RankReward_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_RankReward_descriptor,
         new java.lang.String[] { "RankId", "RewardId", });
     internal_static_dnf_v1_RankUpdate_descriptor =
-      getDescriptor().getMessageType(43);
+      getDescriptor().getMessageType(45);
     internal_static_dnf_v1_RankUpdate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_RankUpdate_descriptor,
         new java.lang.String[] { "RankId", "Score", });
     internal_static_dnf_v1_ActivityInfo_descriptor =
-      getDescriptor().getMessageType(44);
+      getDescriptor().getMessageType(46);
     internal_static_dnf_v1_ActivityInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ActivityInfo_descriptor,
         new java.lang.String[] { "Aid", "Name", "StartTime", "EndTime", "State", });
     internal_static_dnf_v1_ActivityList_descriptor =
-      getDescriptor().getMessageType(45);
+      getDescriptor().getMessageType(47);
     internal_static_dnf_v1_ActivityList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ActivityList_descriptor,
         new java.lang.String[] { "Error", "Activities", });
     internal_static_dnf_v1_ActivityParticipate_descriptor =
-      getDescriptor().getMessageType(46);
+      getDescriptor().getMessageType(48);
     internal_static_dnf_v1_ActivityParticipate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ActivityParticipate_descriptor,
         new java.lang.String[] { "Aid", });
     internal_static_dnf_v1_ActivityReward_descriptor =
-      getDescriptor().getMessageType(47);
+      getDescriptor().getMessageType(49);
     internal_static_dnf_v1_ActivityReward_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ActivityReward_descriptor,

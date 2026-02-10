@@ -586,6 +586,181 @@ public final class GameSystemsProto extends com.google.protobuf.GeneratedFile {
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_SkinEquipPutOnOff_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResSkillInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResSkillInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResSkillInit_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResSkillInit_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResSkillSlot_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResSkillSlot_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResSkillPageSet_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResSkillPageSet_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PtSkill_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PtSkill_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PtAllSkillSlot_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PtAllSkillSlot_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResStageInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResStageInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResStageClear_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResStageClear_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResDungeonInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResDungeonInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResDungeonClear_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResDungeonClear_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResTransmissionItem_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResTransmissionItem_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResRequestToReEnterDungeon_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResRequestToReEnterDungeon_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SendChat_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SendChat_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResTownChat_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResTownChat_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResTownChatList_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResTownChatList_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SessionAuthChat_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SessionAuthChat_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_WatchRoomData_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_WatchRoomData_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SendItemGuidInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SendItemGuidInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SendItemInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SendItemInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_Subsystem_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_Subsystem_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_TypeTutorialList_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_TypeTutorialList_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResTutorialList_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResTutorialList_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResTutorialSave_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResTutorialSave_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SectorList_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SectorList_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_SectorInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_SectorInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResServerCheckup_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResServerCheckup_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DreamMazePlayMember_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DreamMazePlayMember_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DungeonGetInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DungeonGetInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DungeonParticipate_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DungeonParticipate_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DungeonPartyCount_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DungeonPartyCount_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DungeonPartyCount2_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DungeonPartyCount2_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DungeonRankInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DungeonRankInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_DungeonResultQuestInfo_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_DungeonResultQuestInfo_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_EmblemResult_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_EmblemResult_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_EscortDoneReady_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_EscortDoneReady_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1005,23 +1180,76 @@ public final class GameSystemsProto extends com.google.protobuf.GeneratedFile {
       "\022\024\n\005count\030\002 \001(\005R\005count\"=\n\017ShareRewardInf" +
       "o\022\024\n\005index\030\001 \001(\005R\005index\022\024\n\005state\030\002 \001(\005R\005" +
       "state\"C\n\021SkinEquipPutOnOff\022\024\n\005index\030\001 \001(" +
-      "\005R\005index\022\030\n\007isequip\030\002 \001(\005R\007isequip*a\n\010Te" +
-      "amType\022\025\n\021TEAM_TYPE_UNKNOWN\020\000\022\024\n\020TEAM_TY" +
-      "PE_NORMAL\020\001\022\022\n\016TEAM_TYPE_RAID\020\002\022\024\n\020TEAM_" +
-      "TYPE_PLAYER\020\003*B\n\014GuildNpcType\022\032\n\026GUILD_N" +
-      "PC_TYPE_UNKNOWN\020\000\022\026\n\022GUILD_NPC_TYPE_NPC\020" +
-      "\001*V\n\016GuildNpcStatus\022\034\n\030GUILD_NPC_STATUS_" +
-      "UNKNOWN\020\000\022&\n\"GUILD_NPC_STATUS_COMPLETE_P" +
-      "URCHASE\020\001*W\n\022GuildStructureType\022 \n\034GUILD" +
-      "_STRUCTURE_TYPE_UNKNOWN\020\000\022\037\n\033GUILD_STRUC" +
-      "TURE_TYPE_NORMAL\020\001*c\n\024GuildStructureStat" +
-      "us\022\"\n\036GUILD_STRUCTURE_STATUS_UNKNOWN\020\000\022\'" +
-      "\n#GUILD_STRUCTURE_STATUS_CONSTRUCTION\020\001B" +
-      "\253\001\n com.dnfm.mina.protobuf.generatedB\020Ga" +
-      "meSystemsProtoP\001Z<github.com/pixb/DnfGam" +
-      "eServer/dnf-go-client/gen/dnf/v1;dnfv1\242\002" +
-      "\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetad" +
-      "ata\352\002\007Dnf::V1b\006proto3"
+      "\005R\005index\022\030\n\007isequip\030\002 \001(\005R\007isequip\"<\n\014Re" +
+      "sSkillInfo\022\024\n\005error\030\001 \001(\005R\005error\022\026\n\006skil" +
+      "ls\030\002 \003(\005R\006skills\"<\n\014ResSkillInit\022\024\n\005erro" +
+      "r\030\001 \001(\005R\005error\022\026\n\006skills\030\002 \003(\005R\006skills\":" +
+      "\n\014ResSkillSlot\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005" +
+      "slots\030\002 \003(\005R\005slots\";\n\017ResSkillPageSet\022\024\n" +
+      "\005error\030\001 \001(\005R\005error\022\022\n\004page\030\002 \001(\005R\004page\"" +
+      "/\n\007PtSkill\022\016\n\002id\030\001 \001(\005R\002id\022\024\n\005level\030\002 \001(" +
+      "\005R\005level\"&\n\016PtAllSkillSlot\022\024\n\005slots\030\001 \003(" +
+      "\005R\005slots\"8\n\014ResStageInfo\022\024\n\005error\030\001 \001(\005R" +
+      "\005error\022\022\n\004name\030\002 \001(\tR\004name\";\n\rResStageCl" +
+      "ear\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005stars\030\002 \001(\005" +
+      "R\005stars\":\n\016ResDungeonInfo\022\024\n\005error\030\001 \001(\005" +
+      "R\005error\022\022\n\004name\030\002 \001(\tR\004name\"=\n\017ResDungeo" +
+      "nClear\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005grade\030\002 " +
+      "\001(\005R\005grade\"A\n\023ResTransmissionItem\022\024\n\005err" +
+      "or\030\001 \001(\005R\005error\022\024\n\005count\030\002 \001(\005R\005count\"L\n" +
+      "\032ResRequestToReEnterDungeon\022\024\n\005error\030\001 \001" +
+      "(\005R\005error\022\030\n\007allowed\030\002 \001(\010R\007allowed\"8\n\010S" +
+      "endChat\022\030\n\007content\030\001 \001(\tR\007content\022\022\n\004typ" +
+      "e\030\002 \001(\005R\004type\"=\n\013ResTownChat\022\024\n\005error\030\001 " +
+      "\001(\005R\005error\022\030\n\007message\030\002 \001(\tR\007message\"-\n\017" +
+      "ResTownChatList\022\032\n\010messages\030\001 \003(\tR\010messa" +
+      "ges\"\'\n\017SessionAuthChat\022\024\n\005token\030\001 \001(\tR\005t" +
+      "oken\"C\n\rWatchRoomData\022\026\n\006roomId\030\001 \001(\005R\006r" +
+      "oomId\022\032\n\010roomName\030\002 \001(\tR\010roomName\"&\n\020Sen" +
+      "dItemGuidInfo\022\022\n\004guid\030\001 \001(\004R\004guid\"4\n\014Sen" +
+      "dItemInfo\022\016\n\002id\030\001 \001(\005R\002id\022\024\n\005count\030\002 \001(\005" +
+      "R\005count\"/\n\tSubsystem\022\016\n\002id\030\001 \001(\005R\002id\022\022\n\004" +
+      "name\030\002 \001(\tR\004name\"0\n\020TypeTutorialList\022\034\n\t" +
+      "tutorials\030\001 \003(\005R\ttutorials\"/\n\017ResTutoria" +
+      "lList\022\034\n\ttutorials\030\001 \003(\005R\ttutorials\"G\n\017R" +
+      "esTutorialSave\022\024\n\005error\030\001 \001(\005R\005error\022\036\n\n" +
+      "tutorialId\030\002 \001(\005R\ntutorialId\"&\n\nSectorLi" +
+      "st\022\030\n\007sectors\030\001 \003(\005R\007sectors\"0\n\nSectorIn" +
+      "fo\022\016\n\002id\030\001 \001(\005R\002id\022\022\n\004name\030\002 \001(\tR\004name\"D" +
+      "\n\020ResServerCheckup\022\026\n\006status\030\001 \001(\005R\006stat" +
+      "us\022\030\n\007message\030\002 \001(\tR\007message\"\261\001\n\023DreamMa" +
+      "zePlayMember\022\032\n\010charguid\030\001 \001(\004R\010charguid" +
+      "\022\022\n\004name\030\002 \001(\tR\004name\022\024\n\005level\030\003 \001(\005R\005lev" +
+      "el\022\020\n\003job\030\004 \001(\005R\003job\022\032\n\010growtype\030\005 \001(\005R\010" +
+      "growtype\022&\n\016secondgrowtype\030\006 \001(\005R\016second" +
+      "growtype\"<\n\016DungeonGetInfo\022\024\n\005error\030\001 \001(" +
+      "\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"@\n\022Dungeo" +
+      "nParticipate\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005in" +
+      "dex\030\002 \001(\005R\005index\")\n\021DungeonPartyCount\022\024\n" +
+      "\005count\030\001 \001(\005R\005count\"*\n\022DungeonPartyCount" +
+      "2\022\024\n\005count\030\001 \001(\005R\005count\";\n\017DungeonRankIn" +
+      "fo\022\022\n\004rank\030\001 \001(\005R\004rank\022\024\n\005score\030\002 \001(\005R\005s" +
+      "core\"H\n\026DungeonResultQuestInfo\022\030\n\007questi" +
+      "d\030\001 \001(\005R\007questid\022\024\n\005count\030\002 \001(\005R\005count\":" +
+      "\n\014EmblemResult\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005" +
+      "index\030\002 \001(\005R\005index\"=\n\017EscortDoneReady\022\024\n" +
+      "\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005inde" +
+      "x*a\n\010TeamType\022\025\n\021TEAM_TYPE_UNKNOWN\020\000\022\024\n\020" +
+      "TEAM_TYPE_NORMAL\020\001\022\022\n\016TEAM_TYPE_RAID\020\002\022\024" +
+      "\n\020TEAM_TYPE_PLAYER\020\003*B\n\014GuildNpcType\022\032\n\026" +
+      "GUILD_NPC_TYPE_UNKNOWN\020\000\022\026\n\022GUILD_NPC_TY" +
+      "PE_NPC\020\001*V\n\016GuildNpcStatus\022\034\n\030GUILD_NPC_" +
+      "STATUS_UNKNOWN\020\000\022&\n\"GUILD_NPC_STATUS_COM" +
+      "PLETE_PURCHASE\020\001*W\n\022GuildStructureType\022 " +
+      "\n\034GUILD_STRUCTURE_TYPE_UNKNOWN\020\000\022\037\n\033GUIL" +
+      "D_STRUCTURE_TYPE_NORMAL\020\001*c\n\024GuildStruct" +
+      "ureStatus\022\"\n\036GUILD_STRUCTURE_STATUS_UNKN" +
+      "OWN\020\000\022\'\n#GUILD_STRUCTURE_STATUS_CONSTRUC" +
+      "TION\020\001B\253\001\n com.dnfm.mina.protobuf.genera" +
+      "tedB\020GameSystemsProtoP\001Z<github.com/pixb" +
+      "/DnfGameServer/dnf-go-client/gen/dnf/v1;" +
+      "dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\G" +
+      "PBMetadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1710,6 +1938,216 @@ public final class GameSystemsProto extends com.google.protobuf.GeneratedFile {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_SkinEquipPutOnOff_descriptor,
         new java.lang.String[] { "Index", "Isequip", });
+    internal_static_dnf_v1_ResSkillInfo_descriptor =
+      getDescriptor().getMessageType(112);
+    internal_static_dnf_v1_ResSkillInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResSkillInfo_descriptor,
+        new java.lang.String[] { "Error", "Skills", });
+    internal_static_dnf_v1_ResSkillInit_descriptor =
+      getDescriptor().getMessageType(113);
+    internal_static_dnf_v1_ResSkillInit_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResSkillInit_descriptor,
+        new java.lang.String[] { "Error", "Skills", });
+    internal_static_dnf_v1_ResSkillSlot_descriptor =
+      getDescriptor().getMessageType(114);
+    internal_static_dnf_v1_ResSkillSlot_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResSkillSlot_descriptor,
+        new java.lang.String[] { "Error", "Slots", });
+    internal_static_dnf_v1_ResSkillPageSet_descriptor =
+      getDescriptor().getMessageType(115);
+    internal_static_dnf_v1_ResSkillPageSet_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResSkillPageSet_descriptor,
+        new java.lang.String[] { "Error", "Page", });
+    internal_static_dnf_v1_PtSkill_descriptor =
+      getDescriptor().getMessageType(116);
+    internal_static_dnf_v1_PtSkill_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PtSkill_descriptor,
+        new java.lang.String[] { "Id", "Level", });
+    internal_static_dnf_v1_PtAllSkillSlot_descriptor =
+      getDescriptor().getMessageType(117);
+    internal_static_dnf_v1_PtAllSkillSlot_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PtAllSkillSlot_descriptor,
+        new java.lang.String[] { "Slots", });
+    internal_static_dnf_v1_ResStageInfo_descriptor =
+      getDescriptor().getMessageType(118);
+    internal_static_dnf_v1_ResStageInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResStageInfo_descriptor,
+        new java.lang.String[] { "Error", "Name", });
+    internal_static_dnf_v1_ResStageClear_descriptor =
+      getDescriptor().getMessageType(119);
+    internal_static_dnf_v1_ResStageClear_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResStageClear_descriptor,
+        new java.lang.String[] { "Error", "Stars", });
+    internal_static_dnf_v1_ResDungeonInfo_descriptor =
+      getDescriptor().getMessageType(120);
+    internal_static_dnf_v1_ResDungeonInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResDungeonInfo_descriptor,
+        new java.lang.String[] { "Error", "Name", });
+    internal_static_dnf_v1_ResDungeonClear_descriptor =
+      getDescriptor().getMessageType(121);
+    internal_static_dnf_v1_ResDungeonClear_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResDungeonClear_descriptor,
+        new java.lang.String[] { "Error", "Grade", });
+    internal_static_dnf_v1_ResTransmissionItem_descriptor =
+      getDescriptor().getMessageType(122);
+    internal_static_dnf_v1_ResTransmissionItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResTransmissionItem_descriptor,
+        new java.lang.String[] { "Error", "Count", });
+    internal_static_dnf_v1_ResRequestToReEnterDungeon_descriptor =
+      getDescriptor().getMessageType(123);
+    internal_static_dnf_v1_ResRequestToReEnterDungeon_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResRequestToReEnterDungeon_descriptor,
+        new java.lang.String[] { "Error", "Allowed", });
+    internal_static_dnf_v1_SendChat_descriptor =
+      getDescriptor().getMessageType(124);
+    internal_static_dnf_v1_SendChat_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SendChat_descriptor,
+        new java.lang.String[] { "Content", "Type", });
+    internal_static_dnf_v1_ResTownChat_descriptor =
+      getDescriptor().getMessageType(125);
+    internal_static_dnf_v1_ResTownChat_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResTownChat_descriptor,
+        new java.lang.String[] { "Error", "Message", });
+    internal_static_dnf_v1_ResTownChatList_descriptor =
+      getDescriptor().getMessageType(126);
+    internal_static_dnf_v1_ResTownChatList_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResTownChatList_descriptor,
+        new java.lang.String[] { "Messages", });
+    internal_static_dnf_v1_SessionAuthChat_descriptor =
+      getDescriptor().getMessageType(127);
+    internal_static_dnf_v1_SessionAuthChat_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SessionAuthChat_descriptor,
+        new java.lang.String[] { "Token", });
+    internal_static_dnf_v1_WatchRoomData_descriptor =
+      getDescriptor().getMessageType(128);
+    internal_static_dnf_v1_WatchRoomData_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_WatchRoomData_descriptor,
+        new java.lang.String[] { "RoomId", "RoomName", });
+    internal_static_dnf_v1_SendItemGuidInfo_descriptor =
+      getDescriptor().getMessageType(129);
+    internal_static_dnf_v1_SendItemGuidInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SendItemGuidInfo_descriptor,
+        new java.lang.String[] { "Guid", });
+    internal_static_dnf_v1_SendItemInfo_descriptor =
+      getDescriptor().getMessageType(130);
+    internal_static_dnf_v1_SendItemInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SendItemInfo_descriptor,
+        new java.lang.String[] { "Id", "Count", });
+    internal_static_dnf_v1_Subsystem_descriptor =
+      getDescriptor().getMessageType(131);
+    internal_static_dnf_v1_Subsystem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_Subsystem_descriptor,
+        new java.lang.String[] { "Id", "Name", });
+    internal_static_dnf_v1_TypeTutorialList_descriptor =
+      getDescriptor().getMessageType(132);
+    internal_static_dnf_v1_TypeTutorialList_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_TypeTutorialList_descriptor,
+        new java.lang.String[] { "Tutorials", });
+    internal_static_dnf_v1_ResTutorialList_descriptor =
+      getDescriptor().getMessageType(133);
+    internal_static_dnf_v1_ResTutorialList_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResTutorialList_descriptor,
+        new java.lang.String[] { "Tutorials", });
+    internal_static_dnf_v1_ResTutorialSave_descriptor =
+      getDescriptor().getMessageType(134);
+    internal_static_dnf_v1_ResTutorialSave_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResTutorialSave_descriptor,
+        new java.lang.String[] { "Error", "TutorialId", });
+    internal_static_dnf_v1_SectorList_descriptor =
+      getDescriptor().getMessageType(135);
+    internal_static_dnf_v1_SectorList_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SectorList_descriptor,
+        new java.lang.String[] { "Sectors", });
+    internal_static_dnf_v1_SectorInfo_descriptor =
+      getDescriptor().getMessageType(136);
+    internal_static_dnf_v1_SectorInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_SectorInfo_descriptor,
+        new java.lang.String[] { "Id", "Name", });
+    internal_static_dnf_v1_ResServerCheckup_descriptor =
+      getDescriptor().getMessageType(137);
+    internal_static_dnf_v1_ResServerCheckup_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResServerCheckup_descriptor,
+        new java.lang.String[] { "Status", "Message", });
+    internal_static_dnf_v1_DreamMazePlayMember_descriptor =
+      getDescriptor().getMessageType(138);
+    internal_static_dnf_v1_DreamMazePlayMember_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DreamMazePlayMember_descriptor,
+        new java.lang.String[] { "Charguid", "Name", "Level", "Job", "Growtype", "Secondgrowtype", });
+    internal_static_dnf_v1_DungeonGetInfo_descriptor =
+      getDescriptor().getMessageType(139);
+    internal_static_dnf_v1_DungeonGetInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DungeonGetInfo_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_DungeonParticipate_descriptor =
+      getDescriptor().getMessageType(140);
+    internal_static_dnf_v1_DungeonParticipate_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DungeonParticipate_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_DungeonPartyCount_descriptor =
+      getDescriptor().getMessageType(141);
+    internal_static_dnf_v1_DungeonPartyCount_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DungeonPartyCount_descriptor,
+        new java.lang.String[] { "Count", });
+    internal_static_dnf_v1_DungeonPartyCount2_descriptor =
+      getDescriptor().getMessageType(142);
+    internal_static_dnf_v1_DungeonPartyCount2_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DungeonPartyCount2_descriptor,
+        new java.lang.String[] { "Count", });
+    internal_static_dnf_v1_DungeonRankInfo_descriptor =
+      getDescriptor().getMessageType(143);
+    internal_static_dnf_v1_DungeonRankInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DungeonRankInfo_descriptor,
+        new java.lang.String[] { "Rank", "Score", });
+    internal_static_dnf_v1_DungeonResultQuestInfo_descriptor =
+      getDescriptor().getMessageType(144);
+    internal_static_dnf_v1_DungeonResultQuestInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_DungeonResultQuestInfo_descriptor,
+        new java.lang.String[] { "Questid", "Count", });
+    internal_static_dnf_v1_EmblemResult_descriptor =
+      getDescriptor().getMessageType(145);
+    internal_static_dnf_v1_EmblemResult_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_EmblemResult_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_EscortDoneReady_descriptor =
+      getDescriptor().getMessageType(146);
+    internal_static_dnf_v1_EscortDoneReady_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_EscortDoneReady_descriptor,
+        new java.lang.String[] { "Error", "Index", });
     descriptor.resolveAllFeaturesImmutable();
     com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor();
     com.dnfm.mina.protobuf.generated.InventoryTypesProto.getDescriptor();

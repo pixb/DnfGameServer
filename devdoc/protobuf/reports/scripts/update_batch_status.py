@@ -20,11 +20,19 @@ def update_batch_status(batch_name, status, migrated_files=None):
 
 def main():
     """主函数"""
-    # 更新批次44
-    update_batch_status("batch_44", "completed", 37)
+    if len(sys.argv) < 3:
+        print("用法: python3 update_batch_status.py <batch_number> <status> [migrated_files]")
+        sys.exit(1)
     
-    # 更新批次45
-    update_batch_status("batch_45", "completed", 44)
+    batch_number = sys.argv[1]
+    status = sys.argv[2]
+    migrated_files = None
+    
+    if len(sys.argv) > 3:
+        migrated_files = int(sys.argv[3])
+    
+    batch_name = f"batch_{batch_number}"
+    update_batch_status(batch_name, status, migrated_files)
 
 if __name__ == "__main__":
     main()
