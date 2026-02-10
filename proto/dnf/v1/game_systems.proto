@@ -2361,3 +2361,232 @@ message ReqDisjointBookmark {
   int32 error = 1;
   int32 index = 2;
 }
+
+// 第68批消息类型
+// 加载婚礼红包排名请求
+message ReqLoadWeddingMoneygiftRanking {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物体信息
+message PtObjectInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏彩票购买响应
+message ResMinigameLotteryBuy {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 楼层列表
+message PtFloorList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 恢复角色响应
+message ResRecoveryCharac {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会宾果使用物品响应
+message ResGuildBingoUseItem {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏特殊职业学生信息
+message PtMinigameSpecialClassStudentInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏特殊职业门票信息
+message PtMinigameSpecialClassTicketInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 邮件列表响应
+message ResMailList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 社区礼物发送红包消息请求
+message ReqCommunityGiftSendHongbaoMessage {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 代理包恢复类型请求
+message ProxyPacketRestoreTypesReq {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物品可用信息
+message PtItemUsableInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 副本门票响应
+message ResDungeonTickets {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 任务放弃响应
+message ResQuestGiveUp {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 恢复疲劳请求
+message ReqRecoveryFatigue {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 战斗联赛PVP死亡响应
+message ResBattleleaguePvpDie {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 材料列表请求
+message ReqMaterialList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// IDIP通知类型枚举
+message EnumIdipNotifyType {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会宾果奖励信息
+message PtGuildBingoRewardInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 多人游戏请求匹配取消请求
+message ReqMultiPlayRequestMatchCancel {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 社区礼物删除日志请求
+message ReqCommunityGiftDeleteLog {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会私人Buff升级响应
+message ResGuildPrivateBuffUpgrade {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 历史站点保存遗迹列表请求
+message ReqHistoricsiteKeepingRelicList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 任务更新
+message PtQuestUpdate {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会使用设施响应
+message ResGuildUseFacility {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会宾果更新方格响应
+message ResGuildBingoUpdateSquare {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知公会成员等级
+message NotifyGuildMemberGrade {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知突袭重试
+message NotifyRaidRetry {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 账单通知响应
+message ResBilingNotify {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 冒险联盟角色列表其他请求
+message ReqAdventureUnionCharacterListOther {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 队伍开放类型枚举
+message EnumPartyOpenTypes {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 突袭入口数量响应
+message ResRaidEntranceCount {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 历史站点取消注册进入响应
+message ResHistoricsiteCancelRegisteredEnter {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 排名副本赛季信息响应
+message ResRankingDungeonSeasonInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 队伍拒绝响应
+message ResPartyRefuse {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 祈祷信息响应
+message ResPrayInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏冒险家制造赞美响应
+message ResMinigameAdventurerMakerCompliment {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏特殊职业讲座请求
+message ReqMinigameSpecialClassLecture {
+  int32 error = 1;
+  int32 index = 2;
+}
