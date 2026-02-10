@@ -2590,3 +2590,244 @@ message ReqMinigameSpecialClassLecture {
   int32 error = 1;
   int32 index = 2;
 }
+
+// 第69批消息类型
+// 每日重置响应
+message ResDailyReset {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏化学清除响应
+message ResMinigameChemicalClear {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 守护者拍卖
+message PtGuardianAuction {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 攻击小队计时器
+message PtAttackSquadTimer {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 街机PVP信息货币
+message PtArcadePvpInfoCurrency {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 隐藏聊天添加响应
+message ResHiddenChattingAdd {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知战斗联赛PVE摧毁召唤石
+message NotifyBattleleaguePveDestroySummonstone {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 战斗联赛PVE记录
+message PtBattleleaguePveRecord {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 设施信息
+message PtFacilityInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 成就奖励
+message PtAchievementReward {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 经验信息
+message PtExpInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 免费转职响应
+message ResFreeChangeJob {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 福利查找奖励获取请求
+message ReqWelfareFindRewardGet {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 进入城镇响应
+message ResEnterToTown {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公告板结果类型枚举
+message EnumBoardResultType {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 等待用户加载响应
+message ResWaitingToUsersLoading {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知突袭使用Buff
+message NotifyRaidUseBuff {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 获取赛丽亚Buff响应
+message ResGetSeriaBuff {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 补剂升级响应
+message ResTonicUpgrade {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 头像指南
+message PtAvatarGuid {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会餐厅购买警报响应
+message ResAlarmGuildDiningBuy {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏特殊职业迷宫清除响应
+message ResMinigameSpecialClassMazeClear {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 任务清除
+message PtErrandClear {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 拍卖详情物品列表响应
+message ResAuctionDetailItemList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知骑士点赞
+message NotifyChivalryLike {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 验证开始请求
+message ReqVerificationStart {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 免费转职请求
+message ReqFreeChangeJob {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 删除好友请求
+message ReqDeleteFriend {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 更改角色名称响应
+message ResChangeCharacterName {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 装备索引槽位
+message PtEquipIndexSlot {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 默认物品消耗品
+message DefItemConsumable {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 龙路时间盒列表请求
+message ReqDragonRoadTimeBoxList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会捐赠响应帮助请求
+message ReqGuildDonationResponseHelp {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 协议事务
+message PtProtocolTransaction {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知历史站点注册进入数量
+message NotifyHistoricsiteRegisteredEnterCount {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 通知请求重新进入接受副本
+message NotifyRequestToReEnterAcceptDungeon {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 历史站点成员记录请求
+message ReqHistoricsiteMemberRecord {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 突袭购买Buff请求
+message ReqRaidBuyBuff {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 突袭同步节点变量请求
+message ReqRaidSyncNodeVariable {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物品徽章提取请求
+message ReqItemEmblemExtract {
+  int32 error = 1;
+  int32 index = 2;
+}
