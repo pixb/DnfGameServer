@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_package = "com.dnfm.mina.stdproto";
+option java_outer_classname = "PaymentProto";
+option go_package = "dnf/v1";
+
+
+// REQ_VERIFICATION_START
+message VerificationStartRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_VERIFICATION_FINISH
+message VerificationFinishRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_VERIFICATION_CLIENT_STATUS
+message VerificationClientStatusRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_VERIFICATION_SIMPLE
+message VerificationSimpleRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+  int32 field_6 = 6;
+  int32 field_7 = 7;
+  uint64 field_8 = 8;
+  string field_9 = 9;
+  bool field_10 = 10;
+  string field_11 = 11;
+  int32 field_12 = 12;
+}
+
+// REQ_VERIFICATION_BY_SYNC_DIFFERENCE
+message VerificationBySyncDifferenceRequest {
+  bytes field_1 = 1;
+  int32 field_2 = 2;
+  uint64 field_3 = 3;
+  int32 field_4 = 4;
+}

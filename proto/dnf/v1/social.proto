@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_package = "com.dnfm.mina.stdproto";
+option java_outer_classname = "SocialProto";
+option go_package = "dnf/v1";
+
+
+// REQ_ATTACH_CRACK
+message AttachCrackRequest {
+  uint64 field_2 = 2;
+}
+
+// REQ_DETACH_CRACK
+message DetachCrackRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_MELTING_CRACK
+message MeltingCrackRequest {
+  uint64 field_2 = 2;
+}

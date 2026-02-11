@@ -66,3 +66,579 @@ message CharacterGuildRedpacketInfoRequest {
 // 角色槽位变更请求
 message CharacterSlotChangeRequest {
 }
+
+// REQ_START_DUNGEON
+message StartDungeonRequest {
+  int32 field_1 = 1;
+  string field_2 = 2;
+  bool field_3 = 3;
+  int32 field_4 = 4;
+  uint64 field_5 = 5;
+  string field_6 = 6;
+  uint64 field_7 = 7;
+  bool field_8 = 8;
+  int32 field_10 = 10;
+  uint64 field_11 = 11;
+  string field_12 = 12;
+  string field_13 = 13;
+  int32 field_15 = 15;
+}
+
+// REQ_DUNGEON_RESULT
+message DungeonResultRequest {
+  bytes field_1 = 1;
+  string field_2 = 2;
+  uint64 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_6 = 6;
+  int32 field_7 = 7;
+  int32 field_8 = 8;
+  int32 field_9 = 9;
+  uint64 field_11 = 11;
+  string field_12 = 12;
+  uint64 field_13 = 13;
+  int64 field_16 = 16;
+  int64 field_17 = 17;
+  int32 field_19 = 19;
+  int64 field_21 = 21;
+  int64 field_22 = 22;
+  int32 field_23 = 23;
+  int64 field_24 = 24;
+  int32 field_25 = 25;
+  uint64 field_26 = 26;
+  string field_29 = 29;
+  int32 field_33 = 33;
+  int32 field_34 = 34;
+  int32 field_35 = 35;
+  int32 field_36 = 36;
+  bool field_37 = 37;
+  bool field_38 = 38;
+}
+
+// REQ_SELECT_REWARD_CARD
+message SelectRewardCardRequest {
+  int32 field_1 = 1;
+  string field_2 = 2;
+  uint64 field_3 = 3;
+}
+
+// REQ_LOOTING
+message LootingRequest {
+  string field_1 = 1;
+  int32 field_3 = 3;
+  uint64 field_4 = 4;
+  string field_5 = 5;
+  uint64 field_6 = 6;
+  int32 field_8 = 8;
+}
+
+// REQ_CLEAR_DUNGEON_INFO_LIST
+message ClearDungeonInfoListRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  string field_3 = 3;
+}
+
+// REQ_UPDATE_DUNGEONCLEAR_CONDITION_GET_ITEM
+message UpdateDungeonclearConditionGetItemRequest {
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+  uint64 field_4 = 4;
+}
+
+// REQ_USE_COIN
+message UseCoinRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_GUILD_GUARDIAN_DUNGEON_INFO
+message GuildGuardianDungeonInfoRequest {
+  // No fields
+}
+
+// REQ_START_DUNGEON_COMPLETE
+message StartDungeonCompleteRequest {
+  uint64 field_1 = 1;
+  string field_2 = 2;
+}
+
+// REQ_STAGE_CLEAR
+message StageClearRequest {
+  bytes field_1 = 1;
+  string field_2 = 2;
+  uint64 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_6 = 6;
+  int32 field_7 = 7;
+  int32 field_8 = 8;
+  int32 field_9 = 9;
+  uint64 field_11 = 11;
+  string field_12 = 12;
+  uint64 field_13 = 13;
+  int64 field_16 = 16;
+  int64 field_17 = 17;
+  int32 field_19 = 19;
+  int64 field_21 = 21;
+  int64 field_22 = 22;
+  int32 field_23 = 23;
+  int64 field_24 = 24;
+  int32 field_25 = 25;
+  uint64 field_26 = 26;
+  string field_27 = 27;
+  string field_28 = 28;
+  int32 field_30 = 30;
+}
+
+// REQ_ENTER_STAGE
+message EnterStageRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  uint64 field_3 = 3;
+  string field_4 = 4;
+  int32 field_5 = 5;
+  string field_6 = 6;
+}
+
+// REQ_ALL_CLEAR
+message AllClearRequest {
+  int32 field_1 = 1;
+  string field_2 = 2;
+  string field_3 = 3;
+}
+
+// REQ_SYNC_DUNGEON_START_TIME
+message SyncDungeonStartTimeRequest {
+  // No fields
+}
+
+// REQ_WORLD_BOSS_DAMAGE
+message WorldBossDamageRequest {
+  bytes field_1 = 1;
+  int64 field_2 = 2;
+  uint64 field_3 = 3;
+}
+
+// REQ_WORLD_BOSS_INFO
+message WorldBossInfoRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_TONIC_INFO
+message TonicInfoRequest {
+  // No fields
+}
+
+// REQ_TONIC_INIT
+message TonicInitRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_TONIC_UPGRADE
+message TonicUpgradeRequest {
+  int32 field_1 = 1;
+  bool field_2 = 2;
+}
+
+// REQ_DUNGEON_MONSTER_DIE
+message DungeonMonsterDieRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_ARCADE_PVP_REWARD_INFO
+message ArcadePvpRewardInfoRequest {
+  // No fields
+}
+
+// REQ_ARCADE_PVP_BUY_TICKET
+message ArcadePvpBuyTicketRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_DUNGEON_AUTOCLEAR
+message DungeonAutoclearRequest {
+  int32 field_1 = 1;
+  float field_2 = 2;
+  int32 field_3 = 3;
+  string field_4 = 4;
+  string field_5 = 5;
+}
+
+// REQ_LOCAL_REWARD_HISTORY
+message LocalRewardHistoryRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GET_LOCAL_REWARD
+message GetLocalRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ESCAPE_CHARACTER_STUCK
+message EscapeCharacterStuckRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_TOWER_INFO
+message TowerInfoRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_BATTLELEAGUE_NEXT_DUNGEON
+message BattleleagueNextDungeonRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_BATTLELEAGUE_PARTY_LOADING_STATUS
+message BattleleaguePartyLoadingStatusRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_BATTLELEAGUE_PVE_DESTROY_SUMMONSTONE
+message BattleleaguePveDestroySummonstoneRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_BATTLELEAGUE_CARDLIST
+message BattleleagueCardlistRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_SELECT_BATTLELEAGUE_CARD
+message SelectBattleleagueCardRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_CERA_SHOP_BUY
+message CeraShopBuyRequest {
+  int32 field_1 = 1;
+  string field_2 = 2;
+  string field_3 = 3;
+}
+
+// REQ_CERA_SHOP_BUY_INFO
+message CeraShopBuyInfoRequest {
+  // No fields
+}
+
+// REQ_CERA_GACHA_BUY
+message CeraGachaBuyRequest {
+  string field_1 = 1;
+  string field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_CERA_GACHA_MILEAGE
+message CeraGachaMileageRequest {
+  // No fields
+}
+
+// REQ_GET_PRIVATESTORE_GOODSLIST
+message GetPrivatestoreGoodslistRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_CERA_INTERESTING_GOODS_LIST
+message CeraInterestingGoodsListRequest {
+  // No fields
+}
+
+// REQ_BATTLELEAGUE_USE_ITEM
+message BattleleagueUseItemRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_BATTLELEAGUE_PVP_RECORD
+message BattleleaguePvpRecordRequest {
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_BATTLELEAGUE_PVP_DIE
+message BattleleaguePvpDieRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_BATTLELEAGUE_ADD_PARTY_MOVECHANNEL
+message BattleleagueAddPartyMovechannelRequest {
+  uint64 field_1 = 1;
+  string field_2 = 2;
+}
+
+// REQ_ATTACK_SQUAD_LIST
+message AttackSquadListRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ATTACK_SQUAD_DETAIL_INFO
+message AttackSquadDetailInfoRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_ATTACK_SQUAD_CREATE
+message AttackSquadCreateRequest {
+  int32 field_1 = 1;
+  string field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+}
+
+// REQ_ATTACK_SQUAD_BOARD_RENEW
+message AttackSquadBoardRenewRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_ATTACK_SQUAD_SEND_JOIN
+message AttackSquadSendJoinRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_ATTACK_SQUAD_JOIN_RESPONSE
+message AttackSquadJoinResponseRequest {
+  uint64 field_1 = 1;
+  bool field_2 = 2;
+}
+
+// REQ_ATTACK_SQUAD_SEND_INVITE
+message AttackSquadSendInviteRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_ATTACK_SQUAD_JOIN
+message AttackSquadJoinRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_ATTACK_SQUAD_RECEIVE_JOIN_LIST
+message AttackSquadReceiveJoinListRequest {
+  // No fields
+}
+
+// REQ_ATTACK_SQUAD_RECOMMEND_INVITE_LIST
+message AttackSquadRecommendInviteListRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_ATTACK_SQUAD_LEAVE
+message AttackSquadLeaveRequest {
+  // No fields
+}
+
+// REQ_ATTACK_SQUAD_KICK
+message AttackSquadKickRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_ATTACK_SQUAD_LEADER_CHANGE
+message AttackSquadLeaderChangeRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_ATTACK_SQUAD_MEMBER_SLOT_CHANGE
+message AttackSquadMemberSlotChangeRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_ATTACK_SQUAD_QUICK_SEARCH
+message AttackSquadQuickSearchRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ATTACK_SQUAD_INFO_CHANGE
+message AttackSquadInfoChangeRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  string field_3 = 3;
+}
+
+// REQ_ATTACK_SQUAD_DETAIL_SEARCH
+message AttackSquadDetailSearchRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  bool field_5 = 5;
+}
+
+// REQ_ATTACK_SQUAD_START_RAID
+message AttackSquadStartRaidRequest {
+  // No fields
+}
+
+// REQ_RAID_SYNC_PHASE
+message RaidSyncPhaseRequest {
+  // No fields
+}
+
+// REQ_RAID_SYNC_NODE
+message RaidSyncNodeRequest {
+  string field_1 = 1;
+}
+
+// REQ_RAID_RETRY
+message RaidRetryRequest {
+  // No fields
+}
+
+// REQ_RAID_RETRY_VOTE
+message RaidRetryVoteRequest {
+  bool field_1 = 1;
+}
+
+// REQ_RAID_BUY_BUFF
+message RaidBuyBuffRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_RAID_USE_BUFF
+message RaidUseBuffRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_RAID_DETAIL_INFO
+message RaidDetailInfoRequest {
+  // No fields
+}
+
+// REQ_RAID_ENTRANCE_COUNT
+message RaidEntranceCountRequest {
+  // No fields
+}
+
+// REQ_RAID_SYNC_NODE_VARIABLE
+message RaidSyncNodeVariableRequest {
+  // No fields
+}
+
+// REQ_RAID_SYNC_NODE_QUESTION
+message RaidSyncNodeQuestionRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_ATTACK_SQUAD_ADD_RECRUIT
+message AttackSquadAddRecruitRequest {
+  string field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_RAID_PARTY_LEADER_SURRENDER
+message RaidPartyLeaderSurrenderRequest {
+  // No fields
+}
+
+// REQ_ATTACK_SQUAD_PARTY_LEAVE
+message AttackSquadPartyLeaveRequest {
+  // No fields
+}
+
+// REQ_RAID_ROUND_INFO
+message RaidRoundInfoRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_REGISTER_RAID_DAMAGE_METER
+message RegisterRaidDamageMeterRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_RAID_DAMAGE_METER
+message RaidDamageMeterRequest {
+  // No fields
+}
+
+// REQ_INQUIRE_PERSONAL_RANKING
+message InquirePersonalRankingRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+  int32 field_6 = 6;
+}
+
+// REQ_MY_RANKING
+message MyRankingRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_RANK_FRIEND
+message RankFriendRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_INQUIRE_LOCATION_RANKING
+message InquireLocationRankingRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+  int32 field_6 = 6;
+}
+
+// REQ_INQUIRE_PARTY_RANKING
+message InquirePartyRankingRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_MY_PARTY_RANKING
+message MyPartyRankingRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_WORLDBOSS_RANKING
+message WorldbossRankingRequest {
+  int64 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_RANKING_DUNGEON_SEASON_INFO
+message RankingDungeonSeasonInfoRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_RANKING_DUNGEON_PARTY_INFO
+message RankingDungeonPartyInfoRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_RANKING_DUNGEON_DAMAGE_INFO
+message RankingDungeonDamageInfoRequest {
+  bytes field_1 = 1;
+  int64 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}

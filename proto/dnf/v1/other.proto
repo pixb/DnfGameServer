@@ -1,0 +1,684 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_package = "com.dnfm.mina.stdproto";
+option java_outer_classname = "OtherProto";
+option go_package = "dnf/v1";
+
+
+// REQ_SEND_FRAMESYNC_REPORT
+message SendFramesyncReportRequest {
+  string field_1 = 1;
+}
+
+// REQ_GM_COMMAND
+message GmCommandRequest {
+  int32 field_1 = 1;
+  string field_3 = 3;
+  string field_4 = 4;
+  uint64 field_5 = 5;
+}
+
+// REQ_LOADING_PROGRESS
+message LoadingProgressRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_CREATE_GUILD
+message CreateGuildRequest {
+  string field_1 = 1;
+  string field_3 = 3;
+  bool field_4 = 4;
+  int32 field_5 = 5;
+  int32 field_6 = 6;
+}
+
+// REQ_LOAD_GUILD_INFO
+message LoadGuildInfoRequest {
+  // No fields
+}
+
+// REQ_LOAD_GUILD_MEMBER_INFO
+message LoadGuildMemberInfoRequest {
+  // No fields
+}
+
+// REQ_RECOMMEND_GUILD_LIST
+message RecommendGuildListRequest {
+  int32 field_1 = 1;
+  bool field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+  int32 field_6 = 6;
+}
+
+// REQ_SEARCH_GUILD
+message SearchGuildRequest {
+  string field_1 = 1;
+}
+
+// REQ_SENDING_JOIN_GUILD
+message SendingJoinGuildRequest {
+  uint64 field_1 = 1;
+  bool field_2 = 2;
+}
+
+// REQ_GUILD_APPLICANT_LIST
+message GuildApplicantListRequest {
+  // No fields
+}
+
+// REQ_REPLY_JOIN_GUILD
+message ReplyJoinGuildRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_CHECK_DUPLICATION
+message CheckDuplicationRequest {
+  string field_1 = 1;
+}
+
+// REQ_APPLY_GUILD_LIST
+message ApplyGuildListRequest {
+  // No fields
+}
+
+// REQ_SECEDE_GUILD
+message SecedeGuildRequest {
+  // No fields
+}
+
+// REQ_GUILD_NOTI_BOARD
+message GuildNotiBoardRequest {
+  string field_1 = 1;
+}
+
+// REQ_GUILD_MEMBER_GRADE
+message GuildMemberGradeRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_GUILD_MEMBER_BANISH
+message GuildMemberBanishRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_GUILD_YIELD
+message GuildYieldRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_LOAD_GUILD_CHAT
+message LoadGuildChatRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_AD_MESSAGE
+message GuildAdMessageRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  bool field_3 = 3;
+  string field_4 = 4;
+}
+
+// REQ_GUILD_LOAD_HISTORY
+message GuildLoadHistoryRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_GUILD_AUCTION_LOAD
+message GuildAuctionLoadRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_AUCTION_BIDDING
+message GuildAuctionBiddingRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_GUILD_BROADCAST_MESSAGE
+message GuildBroadcastMessageRequest {
+  string field_1 = 1;
+}
+
+// REQ_GUILD_CHANEL_INFO
+message GuildChanelInfoRequest {
+  // No fields
+}
+
+// REQ_GUILD_LEVEL_UP
+message GuildLevelUpRequest {
+  // No fields
+}
+
+// REQ_GUILD_FACILITY_INFO
+message GuildFacilityInfoRequest {
+  // No fields
+}
+
+// REQ_GUILD_MEMBER_RANKING_INFO
+message GuildMemberRankingInfoRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_GUILD_EMBLEM_BUYLIST_INFO
+message GuildEmblemBuylistInfoRequest {
+  // No fields
+}
+
+// REQ_GUILD_EMBLEM_BUY
+message GuildEmblemBuyRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_EMBLEM_EQUIP
+message GuildEmblemEquipRequest {
+  // No fields
+}
+
+// REQ_GUILD_EMBLEM_PALETTE_BUY
+message GuildEmblemPaletteBuyRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_DINING_BUY
+message GuildDiningBuyRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_DINING_ACTION
+message GuildDiningActionRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_ACCUMULATE_ATTENDANCE
+message GuildAccumulateAttendanceRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_ATTENDANCE
+message GuildAttendanceRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_PRIVATE_BUFF_UPGRADE
+message GuildPrivateBuffUpgradeRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_NAME_CHANGE
+message GuildNameChangeRequest {
+  string field_1 = 1;
+}
+
+// REQ_GUILD_PUBLIC_BUFF_UPGRADE
+message GuildPublicBuffUpgradeRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_HISTORICSITE_APPLY
+message HistoricsiteApplyRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_HISTORICSITE_STATE
+message HistoricsiteStateRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_CHAT_HISTORY
+message HistoricsiteChatHistoryRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_BULLETIN
+message HistoricsiteBulletinRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_RESULT_RECORD
+message HistoricsiteResultRecordRequest {
+  string field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_HISTORICSITE_ROOM_LIST
+message HistoricsiteRoomListRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_NOTI
+message HistoricsiteNotiRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_MEMBERCOUNT
+message HistoricsiteMembercountRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_REGISTER_ENTER
+message HistoricsiteRegisterEnterRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_POINT
+message HistoricsitePointRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_CAPTURE
+message HistoricsiteCaptureRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_SET_STAFF
+message HistoricsiteSetStaffRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_HISTORICSITE_STAFF
+message HistoricsiteStaffRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_RELIC_LIST
+message HistoricsiteRelicListRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_BUY_HISTORICSITE_RELIC
+message BuyHistoricsiteRelicRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_HISTORICSITE_KEEPING_RELIC_LIST
+message HistoricsiteKeepingRelicListRequest {
+  // No fields
+}
+
+// REQ_PANDORA_PLAYTIME
+message PandoraPlaytimeRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_PANDORA_SERVICE_ON_OFF
+message PandoraServiceOnOffRequest {
+  // No fields
+}
+
+// REQ_QUERY_RANKINGS
+message QueryRankingsRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_GUILD_AGIT_MINIGAME_START
+message GuildAgitMinigameStartRequest {
+  string field_1 = 1;
+  int32 field_3 = 3;
+}
+
+// REQ_GUILD_AGIT_MINIGAME_FINISH
+message GuildAgitMinigameFinishRequest {
+  uint64 field_2 = 2;
+  uint64 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+  int32 field_6 = 6;
+  int32 field_8 = 8;
+}
+
+// REQ_MINIGAME_LOTTERY_BUY
+message MinigameLotteryBuyRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_LOTTERY_OPEN
+message MinigameLotteryOpenRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_LOTTERY_LIST
+message MinigameLotteryListRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_LOTTERY_REWARD
+message MinigameLotteryRewardRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_MOONCAKE_LOAD
+message MinigameMooncakeLoadRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_MOONCAKE_START
+message MinigameMooncakeStartRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_MOONCAKE_CLEAR
+message MinigameMooncakeClearRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_CHEMICAL_LOAD
+message MinigameChemicalLoadRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_CHEMICAL_START
+message MinigameChemicalStartRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_CHEMICAL_CLEAR
+message MinigameChemicalClearRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_CHEMICAL_REWARD
+message MinigameChemicalRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_BREAKING_LOAD
+message MinigameBreakingLoadRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_BREAKING_START
+message MinigameBreakingStartRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_BREAKING_CLEAR
+message MinigameBreakingClearRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+  int32 field_6 = 6;
+  int32 field_7 = 7;
+}
+
+// REQ_MINIGAME_BREAKING_REWARD
+message MinigameBreakingRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_ADVENTURER_MAKER_LOAD
+message MinigameAdventurerMakerLoadRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_ADVENTURER_MAKER_START
+message MinigameAdventurerMakerStartRequest {
+  string field_1 = 1;
+}
+
+// REQ_MINIGAME_ADVENTURER_MAKER_MAZE_START
+message MinigameAdventurerMakerMazeStartRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_ADVENTURER_MAKER_MAZE_CLEAR
+message MinigameAdventurerMakerMazeClearRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_ADVENTURER_MAKER_LECTURE
+message MinigameAdventurerMakerLectureRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_ADVENTURER_MAKER_COMPLIMENT
+message MinigameAdventurerMakerComplimentRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_ADVENTURER_MAKER_REWARD
+message MinigameAdventurerMakerRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_SPECIAL_CLASS_LOAD
+message MinigameSpecialClassLoadRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_SPECIAL_CLASS_START
+message MinigameSpecialClassStartRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_SPECIAL_CLASS_MAZE_START
+message MinigameSpecialClassMazeStartRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_SPECIAL_CLASS_MAZE_CLEAR
+message MinigameSpecialClassMazeClearRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_MINIGAME_SPECIAL_CLASS_LECTURE
+message MinigameSpecialClassLectureRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_SPECIAL_CLASS_COMPLIMENT
+message MinigameSpecialClassComplimentRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_SPECIAL_CLASS_REWARD
+message MinigameSpecialClassRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_MINI_PONG_LOAD
+message MinigameMiniPongLoadRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_MINI_PONG_START
+message MinigameMiniPongStartRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_MINI_PONG_CLEAR
+message MinigameMiniPongClearRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_MINI_PONG_REWARD
+message MinigameMiniPongRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_RESTAURANT_LOAD
+message MinigameRestaurantLoadRequest {
+  // No fields
+}
+
+// REQ_COMMUNITY_GIFT_SEND
+message CommunityGiftSendRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  string field_5 = 5;
+  int32 field_6 = 6;
+  string field_7 = 7;
+  string field_8 = 8;
+  int32 field_9 = 9;
+}
+
+// REQ_COMMUNITY_GIFT_SEND_LOG_LIST
+message CommunityGiftSendLogListRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_COMMUNITY_GIFT_RECEIVE_LOG_LIST
+message CommunityGiftReceiveLogListRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_COMMUNITY_GIFT_UNTIE
+message CommunityGiftUntieRequest {
+  // No fields
+}
+
+// REQ_COMMUNITY_GIFT_RECEIVE_HONGBAO
+message CommunityGiftReceiveHongbaoRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_COMMUNITY_GIFT_SEND_HONGBAO_MESSAGE
+message CommunityGiftSendHongbaoMessageRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_COMMUNITY_GIFT_RECEIPT
+message CommunityGiftReceiptRequest {
+  // No fields
+}
+
+// REQ_COMMUNITY_GIFT_DELETE_LOG
+message CommunityGiftDeleteLogRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_FAME_AND_CHARM_POINT
+message FameAndCharmPointRequest {
+  // No fields
+}
+
+// REQ_NEW_CONTENTS_LIST
+message NewContentsListRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_MAKE_ROOM
+message MakeRoomRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_JOIN_ROOM
+message JoinRoomRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+  int32 field_6 = 6;
+  bool field_7 = 7;
+  int32 field_8 = 8;
+}
+
+// REQ_LEAVE_ROOM
+message LeaveRoomRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_INVITE_ROOM
+message InviteRoomRequest {
+  // No fields
+}
+
+// REQ_TEAM_CHANGE
+message TeamChangeRequest {
+  // No fields
+}
+
+// REQ_CUSTOM_PVP_ROOM_SETTING
+message CustomPvpRoomSettingRequest {
+  // No fields
+}
+
+// REQ_ROOM_USER_INFO
+message RoomUserInfoRequest {
+  // No fields
+}
+
+// REQ_READY_ROOM
+message ReadyRoomRequest {
+  // No fields
+}
+
+// REQ_KICK_ROOM
+message KickRoomRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_GUILD_REDPACKET_INFO
+message GuildRedpacketInfoRequest {
+  // No fields
+}
+
+// REQ_SEND_GUILD_REDPACKET
+message SendGuildRedpacketRequest {
+  int32 field_1 = 1;
+  int64 field_2 = 2;
+}
+
+// REQ_RECEIVE_GUILD_REDPACKET
+message ReceiveGuildRedpacketRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_GUILD_REDPACKET_DETAIL_INFO
+message GuildRedpacketDetailInfoRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+  int64 field_4 = 4;
+}
+
+// REQ_GUILD_CONTENTS_BUFF_LOAD
+message GuildContentsBuffLoadRequest {
+  // No fields
+}
+
+// REQ_DREAM_MAZE_BASICINFO
+message DreamMazeBasicinfoRequest {
+  // No fields
+}
+
+// REQ_DREAM_MAZE_PLAYMEMBER
+message DreamMazePlaymemberRequest {
+  // No fields
+}
+
+// REQ_DREAM_MAZE_HP_SYNC
+message DreamMazeHpSyncRequest {
+  bytes field_1 = 1;
+  int32 field_2 = 2;
+  uint64 field_3 = 3;
+  uint64 field_4 = 4;
+  int32 field_5 = 5;
+}

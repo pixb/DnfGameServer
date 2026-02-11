@@ -1,0 +1,815 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_package = "com.dnfm.mina.stdproto";
+option java_outer_classname = "BasicProto";
+option go_package = "dnf/v1";
+
+
+// REQ_STANDBY
+message StandbyRequest {
+  // No fields
+}
+
+// REQ_CHARAC_LIST
+message CharacListRequest {
+  // No fields
+}
+
+// REQ_CREATE_CHARACTER
+message CreateCharacterRequest {
+  int32 field_1 = 1;
+  string field_2 = 2;
+}
+
+// REQ_REMOVE_CHARACTER
+message RemoveCharacterRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_START_GAME
+message StartGameRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  string field_3 = 3;
+  string field_4 = 4;
+  string field_5 = 5;
+  uint32 field_6 = 6;
+  uint32 field_7 = 7;
+  int32 field_8 = 8;
+  int32 field_9 = 9;
+  uint64 field_11 = 11;
+}
+
+// REQ_PING
+message PingRequest {
+  // No fields
+}
+
+// REQ_EXIT_CHARACTER
+message ExitCharacterRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_CHANNEL_LIST
+message ChannelListRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_ENTER_CHANNEL
+message EnterChannelRequest {
+  string field_1 = 1;
+  uint64 field_2 = 2;
+  string field_3 = 3;
+  string field_4 = 4;
+  string field_5 = 5;
+  int32 field_6 = 6;
+  uint64 field_7 = 7;
+  string field_9 = 9;
+  string field_10 = 10;
+  bool field_11 = 11;
+  string field_12 = 12;
+  int32 field_13 = 13;
+  string field_14 = 14;
+  string field_15 = 15;
+  string field_16 = 16;
+  string field_17 = 17;
+  bool field_18 = 18;
+}
+
+// REQ_PLATFORM_PROFILE_UPDATE
+message PlatformProfileUpdateRequest {
+  string field_1 = 1;
+  string field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_CONNECT_BATTLE_SERVER
+message ConnectBattleServerRequest {
+  string field_1 = 1;
+  string field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  uint64 field_5 = 5;
+  int32 field_6 = 6;
+  uint64 field_7 = 7;
+}
+
+// REQ_IDIP_PROHIBIT_LIST
+message IdipProhibitListRequest {
+  // No fields
+}
+
+// REQ_IDIP_NOTICES
+message IdipNoticesRequest {
+  // No fields
+}
+
+// REQ_SERVER_NOTI_ACK
+message ServerNotiAckRequest {
+  uint64 field_2 = 2;
+}
+
+// REQ_SERVER_RESPONSE_PACKET
+message ServerResponsePacketRequest {
+  // No fields
+}
+
+// REQ_DECIDE_INTRUDE
+message DecideIntrudeRequest {
+  bool field_1 = 1;
+}
+
+// REQ_LOAD_SERVER_SIMPLE_DATA
+message LoadServerSimpleDataRequest {
+  // No fields
+}
+
+// REQ_SAVE_SERVER_SIMPLE_DATA
+message SaveServerSimpleDataRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  string field_3 = 3;
+}
+
+// REQ_FREE_CHANGE_JOB
+message FreeChangeJobRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_AVATAR_VISIBLE_FLAGS_SET
+message AvatarVisibleFlagsSetRequest {
+  uint32 field_1 = 1;
+}
+
+// REQ_CHANGE_CHARACTER_NAME
+message ChangeCharacterNameRequest {
+  uint64 field_1 = 1;
+  string field_2 = 2;
+}
+
+// REQ_TOWN_INFO
+message TownInfoRequest {
+  // No fields
+}
+
+// REQ_NGS_VERIFY
+message NgsVerifyRequest {
+  bytes field_1 = 1;
+}
+
+// REQ_ACCOUNT_CONNECT_PLATFORM
+message AccountConnectPlatformRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_RECOVERY_FATIGUE
+message RecoveryFatigueRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_DAILY_RESET
+message DailyResetRequest {
+  // No fields
+}
+
+// REQ_AUCTION_CATEGORY_ITEM_LIST
+message AuctionCategoryItemListRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ITEM_AVR_PRICE
+message ItemAvrPriceRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_AUCTION_BUY_AT_ONCE
+message AuctionBuyAtOnceRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_AUCTION_ITEM_PRICE_LIST
+message AuctionItemPriceListRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_AUCTION_REGISTER_ITEM
+message AuctionRegisterItemRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  uint64 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+  int32 field_6 = 6;
+}
+
+// REQ_AUCTION_REGISTER_CANCEL
+message AuctionRegisterCancelRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_AUCTION_MY_REGISTERED_ITEM_LIST
+message AuctionMyRegisteredItemListRequest {
+  // No fields
+}
+
+// REQ_AUCTION_REGISTER_COMPLETE
+message AuctionRegisterCompleteRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_AUCTION_HISTORY
+message AuctionHistoryRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_BILING_CONFIG_CHECK
+message BilingConfigCheckRequest {
+  // No fields
+}
+
+// REQ_BILING_KR_BALANCE
+message BilingKrBalanceRequest {
+  // No fields
+}
+
+// REQ_ENTER_TO_TOWN
+message EnterToTownRequest {
+  string field_1 = 1;
+  uint32 field_2 = 2;
+  uint32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+}
+
+// REQ_TOWN_CHAT
+message TownChatRequest {
+  int32 field_1 = 1;
+  string field_2 = 2;
+  string field_3 = 3;
+  string field_4 = 4;
+  string field_5 = 5;
+  uint64 field_6 = 6;
+  int32 field_7 = 7;
+  int32 field_8 = 8;
+}
+
+// REQ_INTERACTION_MENU
+message InteractionMenuRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_LEAVE_FROM_TOWN
+message LeaveFromTownRequest {
+  // No fields
+}
+
+// REQ_NOTE_MESSENGER_LOAD
+message NoteMessengerLoadRequest {
+  // No fields
+}
+
+// REQ_NOTE_MESSENGER_READ
+message NoteMessengerReadRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_ADD_BLACKLIST
+message AddBlacklistRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_DELETE_BLACKLIST
+message DeleteBlacklistRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_LOAD_BLACKLIST
+message LoadBlacklistRequest {
+  // No fields
+}
+
+// REQ_CHECK_PROHIBITED_WORD
+message CheckProhibitedWordRequest {
+  string field_1 = 1;
+}
+
+// REQ_TENCENT_CREDITSCORE_INFO
+message TencentCreditscoreInfoRequest {
+  string field_1 = 1;
+}
+
+// REQ_ADD_GVOICE_MEMBER
+message AddGvoiceMemberRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_GVOICE_MEMBER_LIST
+message GvoiceMemberListRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_CHANGE_ROLE_GVOICE_MEMBER
+message ChangeRoleGvoiceMemberRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_IDIP_CHECK_REWARD
+message IdipCheckRewardRequest {
+  // No fields
+}
+
+// REQ_TOWN_CHAT_LIST
+message TownChatListRequest {
+  // No fields
+}
+
+// REQ_CHAT_CHANNEL_LIST
+message ChatChannelListRequest {
+  // No fields
+}
+
+// REQ_HIDDEN_CHATTING_ADD
+message HiddenChattingAddRequest {
+  // No fields
+}
+
+// REQ_HIDDEN_CHATTING_DELETE
+message HiddenChattingDeleteRequest {
+  // No fields
+}
+
+// REQ_HIDDEN_CHATTING_LOAD
+message HiddenChattingLoadRequest {
+  // No fields
+}
+
+// REQ_MESSAGE_ASSISTANT_SET_SWITCH
+message MessageAssistantSetSwitchRequest {
+  // No fields
+}
+
+// REQ_DUNGEON_TICKETS
+message DungeonTicketsRequest {
+  // No fields
+}
+
+// REQ_NOT_TRANSACTION_CHARACTER_STATE_INFO
+message NotTransactionCharacterStateInfoRequest {
+  int32 field_1 = 1;
+  bool field_2 = 2;
+}
+
+// REQ_TLOG_CONTROLLER_DATA
+message TlogControllerDataRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+  int32 field_6 = 6;
+  int32 field_7 = 7;
+  int32 field_8 = 8;
+  string field_9 = 9;
+  int32 field_10 = 10;
+}
+
+// REQ_TLOG_FRAME_SYNC_RESULT
+message TlogFrameSyncResultRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_GAME_FLOW_TLOG
+message GameFlowTlogRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  uint32 field_3 = 3;
+  string field_4 = 4;
+  string field_5 = 5;
+  uint32 field_6 = 6;
+  uint32 field_7 = 7;
+}
+
+// REQ_TLOG_FRAME_SYNC_TRACE
+message TlogFrameSyncTraceRequest {
+  string field_1 = 1;
+}
+
+// REQ_TLOG_WORLDBOSS_ATTACK
+message TlogWorldbossAttackRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  uint64 field_3 = 3;
+  uint64 field_4 = 4;
+  uint64 field_5 = 5;
+  uint64 field_6 = 6;
+  string field_7 = 7;
+  string field_8 = 8;
+  string field_9 = 9;
+}
+
+// REQ_QUEST_INFO
+message QuestInfoRequest {
+  string field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_COMPLETE_QUEST
+message CompleteQuestRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_REWARD_QUEST
+message RewardQuestRequest {
+  string field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_ACCEPT_QUEST
+message AcceptQuestRequest {
+  string field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_QUEST_GIVE_UP
+message QuestGiveUpRequest {
+  string field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_ADVENTUREBOOK_INFO
+message AdventurebookInfoRequest {
+  string field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_NPC_COUNT
+message NpcCountRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ADVENTUREBOOK_UPDATE_CONDITION
+message AdventurebookUpdateConditionRequest {
+  string field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_TUTORIAL_LIST
+message TutorialListRequest {
+  // No fields
+}
+
+// REQ_TUTORIAL_SAVE
+message TutorialSaveRequest {
+  // No fields
+}
+
+// REQ_BATTLE_TUTORIAL_SAVE
+message BattleTutorialSaveRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_INTRO_TUTORIAL_SAVE
+message IntroTutorialSaveRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_CONTENTS_PREVIEW_LOAD
+message ContentsPreviewLoadRequest {
+  // No fields
+}
+
+// REQ_CONTENTS_PREVIEW_REWARD
+message ContentsPreviewRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_LOAD_FRIENDS_INFO
+message LoadFriendsInfoRequest {
+  // No fields
+}
+
+// REQ_RECEIVED_INVITE_FRIEND_LIST
+message ReceivedInviteFriendListRequest {
+  // No fields
+}
+
+// REQ_SENDING_INVITE_FRIEND_LIST
+message SendingInviteFriendListRequest {
+  // No fields
+}
+
+// REQ_REQUEST_FRIEND_INVITE
+message RequestFriendInviteRequest {
+  uint64 field_1 = 1;
+  string field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_REPLY_FRIEND_INVITE
+message ReplyFriendInviteRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_DELETE_FRIEND
+message DeleteFriendRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_CANCEL_INVITE_FRIEND
+message CancelInviteFriendRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_FOLLOW_FRIEND
+message FollowFriendRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_LOAD_MESSENGER_FRIEND
+message LoadMessengerFriendRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_FRIEND_FIND
+message FriendFindRequest {
+  string field_1 = 1;
+}
+
+// REQ_FRIEND_SEND_FATIGUE
+message FriendSendFatigueRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_FRIEND_RECV_FATIGUE
+message FriendRecvFatigueRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_FRIEND_RECOMMEND_WITH_ME
+message FriendRecommendWithMeRequest {
+  // No fields
+}
+
+// REQ_FRIEND_RECOMMEND
+message FriendRecommendRequest {
+  // No fields
+}
+
+// REQ_FRIEND_RECV_ALL_FATIGUE
+message FriendRecvAllFatigueRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_RECOMMEND_MESSENGER_INVITE_LIST
+message RecommendMessengerInviteListRequest {
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_JOIN_PLATFORM_PARTY
+message JoinPlatformPartyRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_LOAD_PROPOSAL_LIST
+message LoadProposalListRequest {
+  // No fields
+}
+
+// REQ_PROPOSAL
+message ProposalRequest {
+  uint64 field_1 = 1;
+  bool field_2 = 2;
+}
+
+// REQ_REPLY_PROPOSAL
+message ReplyProposalRequest {
+  uint64 field_1 = 1;
+  bool field_2 = 2;
+}
+
+// REQ_LOAD_WEDDING_PREPARATION
+message LoadWeddingPreparationRequest {
+  // No fields
+}
+
+// REQ_SELECT_WEDDING_THEME
+message SelectWeddingThemeRequest {
+  // No fields
+}
+
+// REQ_RESERVE_WEDDING
+message ReserveWeddingRequest {
+  // No fields
+}
+
+// REQ_SELECT_WEDDING_TIME
+message SelectWeddingTimeRequest {
+  int64 field_1 = 1;
+  bool field_2 = 2;
+}
+
+// REQ_LOAD_WEDDING_ATTENDANCE_LIST
+message LoadWeddingAttendanceListRequest {
+  // No fields
+}
+
+// REQ_LOAD_WEDDING_INVITATION_LIST
+message LoadWeddingInvitationListRequest {
+  // No fields
+}
+
+// REQ_SEND_WEDDING_INVITATION
+message SendWeddingInvitationRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_REPLY_WEDDING_INVITATION
+message ReplyWeddingInvitationRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_SELECT_WEDDING_HALL
+message SelectWeddingHallRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_SEND_WEDDING_MONEY_GIFT
+message SendWeddingMoneyGiftRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_WRITE_WEDDING_GUESTBOOK
+message WriteWeddingGuestbookRequest {
+  uint64 field_1 = 1;
+  string field_2 = 2;
+}
+
+// REQ_LOAD_WEDDING_GUESTBOOK
+message LoadWeddingGuestbookRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_DIVORCE
+message DivorceRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_LOAD_WEDDING_MONEYGIFT_RANKING
+message LoadWeddingMoneygiftRankingRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_LOAD_MARRIAGE_INFO
+message LoadMarriageInfoRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_LOAD_WEDDINGHALL_GUEST
+message LoadWeddinghallGuestRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_DIVORCE_QUESTION_REPLY
+message DivorceQuestionReplyRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_LOAD_SHARE_REWARD
+message LoadShareRewardRequest {
+  // No fields
+}
+
+// REQ_SHARE_BIGIMAGE_REWARD
+message ShareBigimageRewardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_FATIGUE_HELP_REQUEST
+message FatigueHelpRequestRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ACHIEVEMENT_INFO
+message AchievementInfoRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ACHIEVEMENT_REWARD
+message AchievementRewardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  uint64 field_3 = 3;
+}
+
+// REQ_ACHIEVEMENT_LIST
+message AchievementListRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ACHIEVEMENT_BONUS_REWARD
+message AchievementBonusRewardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+}
+
+// REQ_SEASON_PASS_INFO
+message SeasonPassInfoRequest {
+  // No fields
+}
+
+// REQ_EVENT_LIST
+message EventListRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_EVENT_GET_REWARD
+message EventGetRewardRequest {
+  int32 field_1 = 1;
+  bool field_2 = 2;
+}
+
+// REQ_QUERY_ACCESS_TIME_BY_EVENT
+message QueryAccessTimeByEventRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_BLACK_DIAMON_INFO
+message BlackDiamonInfoRequest {
+  // No fields
+}
+
+// REQ_GUILD_DONATION_REQUEST_HELP
+message GuildDonationRequestHelpRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_GUILD_DONATION_REQUEST_HELP_INFO
+message GuildDonationRequestHelpInfoRequest {
+  int64 field_1 = 1;
+}
+
+// REQ_GUILD_DONATION_REQUEST_HELP_COMPLETE_INFO
+message GuildDonationRequestHelpCompleteInfoRequest {
+  int64 field_1 = 1;
+}
+
+// REQ_GUILD_DONATION_RESPONSE_HELP
+message GuildDonationResponseHelpRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+}
+
+// REQ_GUILD_DONATION_REQUEST_HELP_CANCEL
+message GuildDonationRequestHelpCancelRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}

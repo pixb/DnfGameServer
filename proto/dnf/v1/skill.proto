@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_package = "com.dnfm.mina.stdproto";
+option java_outer_classname = "SkillProto";
+option go_package = "dnf/v1";
+
+
+// REQ_COLLECTION_LOAD
+message CollectionLoadRequest {
+  // No fields
+}
+
+// REQ_COLLECTION_REGIST
+message CollectionRegistRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_COLLECTION_REWARD
+message CollectionRewardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_COLLECTION_LEVEL_REWARD
+message CollectionLevelRewardRequest {
+  int32 field_1 = 1;
+}

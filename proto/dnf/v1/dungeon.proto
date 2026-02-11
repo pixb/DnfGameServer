@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_package = "com.dnfm.mina.stdproto";
+option java_outer_classname = "DungeonProto";
+option go_package = "dnf/v1";
+
+
+// REQ_SKILL_INIT
+message SkillInitRequest {
+  // No fields
+}
+
+// REQ_SKILL_SET
+message SkillSetRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_SKILL_LIST
+message SkillListRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_SKILL_SLOT
+message SkillSlotRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_SKILL_PAGE_SET
+message SkillPageSetRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_SKILL_PAGE_LOAD
+message SkillPageLoadRequest {
+  // No fields
+}
+
+// REQ_SKILL_INFO
+message SkillInfoRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_LOAD_BOARD
+message LoadBoardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_ADD_BOARD
+message AddBoardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  string field_4 = 4;
+  int32 field_5 = 5;
+}
+
+// REQ_REMOVE_BOARD
+message RemoveBoardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  uint64 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_REACTION_BOARD
+message ReactionBoardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  uint64 field_4 = 4;
+  uint64 field_5 = 5;
+  int32 field_6 = 6;
+}
+
+// REQ_AVG_SCORE_BOARD
+message AvgScoreBoardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_GET_MY_BOARD
+message GetMyBoardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}

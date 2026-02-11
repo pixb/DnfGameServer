@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_package = "com.dnfm.mina.stdproto";
+option java_outer_classname = "GuildProto";
+option go_package = "dnf/v1";
+
+
+// REQ_BOARD_GAME_SYNC_MOVE
+message BoardGameSyncMoveRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_BOARD_GAME_ENTER_COMPLETION
+message BoardGameEnterCompletionRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_BOARD_GAME_SELECT_ORDER_CARD
+message BoardGameSelectOrderCardRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_BOARD_GAME_SEND_EMOTICON
+message BoardGameSendEmoticonRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_DRAGON_BOARD_RECONNECT
+message DragonBoardReconnectRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_BOARD_GAME_SYNC
+message BoardGameSyncRequest {
+  string field_1 = 1;
+}
+
+// REQ_BOARD_GAME_INFO
+message BoardGameInfoRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_START_BOARD_GAME
+message StartBoardGameRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_BOARD_GAME_RESULT
+message BoardGameResultRequest {
+  uint64 field_1 = 1;
+  string field_4 = 4;
+}
+
+// REQ_BOARD_GAME_SYNC_HP
+message BoardGameSyncHpRequest {
+  uint64 field_1 = 1;
+  int32 field_3 = 3;
+}

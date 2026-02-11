@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_package = "com.dnfm.mina.stdproto";
+option java_outer_classname = "TaskProto";
+option go_package = "dnf/v1";
+
+
+// REQ_ADVENTURE_UNION_INFO
+message AdventureUnionInfoRequest {
+  // No fields
+}
+
+// REQ_ADVENTURE_UNION_NAME_CHANGE
+message AdventureUnionNameChangeRequest {
+  string field_1 = 1;
+}
+
+// REQ_ADVENTURE_UNION_EXPEDITION_START
+message AdventureUnionExpeditionStartRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_ADVENTURE_UNION_EXPEDITION_CANCEL
+message AdventureUnionExpeditionCancelRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ADVENTURE_UNION_EXPEDITION_REWARD
+message AdventureUnionExpeditionRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ADVENTURE_UNION_SUBDUE_INFO
+message AdventureUnionSubdueInfoRequest {
+  // No fields
+}
+
+// REQ_ADVENTURE_UNION_SUBDUE_START
+message AdventureUnionSubdueStartRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  uint64 field_3 = 3;
+}
+
+// REQ_ADVENTURE_UNION_SUBDUE_REWARD
+message AdventureUnionSubdueRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ADVENTURE_UNION_OPEN_SHAREBOARD_SLOT
+message AdventureUnionOpenShareboardSlotRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ADVENTURE_UNION_SET_SHAREBOARD
+message AdventureUnionSetShareboardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  bool field_4 = 4;
+}
+
+// REQ_ADVENTURE_REAP_INFO
+message AdventureReapInfoRequest {
+  // No fields
+}
+
+// REQ_ADVENTURE_REAP_REWARD
+message AdventureReapRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ADVENTURE_UNION_SEARCH_START
+message AdventureUnionSearchStartRequest {
+  // No fields
+}
+
+// REQ_ADVENTURE_UNION_INFO_OTHER
+message AdventureUnionInfoOtherRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_ADVENTURE_UNION_CHARACTER_LIST_OTHER
+message AdventureUnionCharacterListOtherRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_ADVENTURE_UNION_SHOW_CHECK_OTHER
+message AdventureUnionShowCheckOtherRequest {
+  bool field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_ADVENTURE_UNION_GROW_COLLECTION_OTHER
+message AdventureUnionGrowCollectionOtherRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_ADVENTURE_UNION_TIME_LINE_OTHER
+message AdventureUnionTimeLineOtherRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_ADVENTURE_UNION_COLLECTION_REWARD
+message AdventureUnionCollectionRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ADVENTURE_UNION_LEVEL_REWARD
+message AdventureUnionLevelRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_CREATURE_ERRAND_LIST
+message CreatureErrandListRequest {
+  // No fields
+}
+
+// REQ_CREATURE_ERRAND_SEND
+message CreatureErrandSendRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_CREATURE_ERRAND_CANCEL
+message CreatureErrandCancelRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_CREATURE_ERRAND_REWARD
+message CreatureErrandRewardRequest {
+  int32 field_1 = 1;
+}

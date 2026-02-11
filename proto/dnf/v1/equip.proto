@@ -1,0 +1,145 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_package = "com.dnfm.mina.stdproto";
+option java_outer_classname = "EquipProto";
+option go_package = "dnf/v1";
+
+
+// REQ_MAIL_LIST
+message MailListRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_MAIL_GET
+message MailGetRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_MAIL_READ
+message MailReadRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_MAIL_DELETE
+message MailDeleteRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_MAIL_ITEM_ALL_GET
+message MailItemAllGetRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MAIL_ALL_DELETE
+message MailAllDeleteRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_RANK_TRAINING_START
+message RankTrainingStartRequest {
+  // No fields
+}
+
+// REQ_RANK_TRAINING_FINISH
+message RankTrainingFinishRequest {
+  int64 field_2 = 2;
+  bool field_3 = 3;
+}
+
+// REQ_SYSTEM_BUFF_APPENDAGE_LIST
+message SystemBuffAppendageListRequest {
+  // No fields
+}
+
+// REQ_CONTROL_TRAININGROOM_CLEAR_INFO
+message ControlTrainingroomClearInfoRequest {
+  // No fields
+}
+
+// REQ_CONTROL_TRAININGROOM_REWARD
+message ControlTrainingroomRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_PRAY_INFO
+message PrayInfoRequest {
+  // No fields
+}
+
+// REQ_PRAY
+message PrayRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MULTI_PLAY_START_DUNGEON
+message MultiPlayStartDungeonRequest {
+  uint64 field_1 = 1;
+  bool field_2 = 2;
+  string field_3 = 3;
+  string field_4 = 4;
+}
+
+// REQ_MULTI_PLAY_DUNGEON_ENTER_COMPLETE
+message MultiPlayDungeonEnterCompleteRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_MULTI_PLAY_DUNGEON_SELECT_REWARD_CARD
+message MultiPlayDungeonSelectRewardCardRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_HALF_OPEN_PARTY_JOIN
+message HalfOpenPartyJoinRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_HALF_OPEN_PARTY_ACCEPT
+message HalfOpenPartyAcceptRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_HALF_OPEN_PARTY_REFUSE
+message HalfOpenPartyRefuseRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_CHIVALRY_INFO
+message ChivalryInfoRequest {
+  // No fields
+}
+
+// REQ_CHIVALRY_UPDATE_MISSION
+message ChivalryUpdateMissionRequest {
+  uint64 field_1 = 1;
+  bool field_2 = 2;
+}
+
+// REQ_CHIVALRY_LIKE
+message ChivalryLikeRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  uint64 field_4 = 4;
+}
+
+// REQ_CHIVALRY_REWARD_MISSION
+message ChivalryRewardMissionRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_SUGGEST_MOVE_PARTY
+message SuggestMovePartyRequest {
+  uint64 field_1 = 1;
+  uint32 field_2 = 2;
+}

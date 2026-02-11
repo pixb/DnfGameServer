@@ -1,0 +1,271 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_package = "com.dnfm.mina.stdproto";
+option java_outer_classname = "TownProto";
+option go_package = "dnf/v1";
+
+
+// REQ_MULTI_PLAY_REQUEST_MATCH
+message MultiPlayRequestMatchRequest {
+  string field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  uint64 field_4 = 4;
+  uint64 field_5 = 5;
+  bool field_6 = 6;
+  uint64 field_7 = 7;
+  bool field_8 = 8;
+  bool field_9 = 9;
+}
+
+// REQ_MULTI_PLAY_REQUEST_MATCH_CANCEL
+message MultiPlayRequestMatchCancelRequest {
+  string field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_MULTI_PLAY_SYNC_DUNGEON
+message MultiPlaySyncDungeonRequest {
+  string field_1 = 1;
+  int32 field_2 = 2;
+  uint64 field_3 = 3;
+  bool field_4 = 4;
+  string field_6 = 6;
+}
+
+// REQ_READY_TO_LOCKSTEP
+message ReadyToLockstepRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_PARTY_LOADING_STATUS
+message PartyLoadingStatusRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_START_LOCKSTEP_ROOM
+message StartLockstepRoomRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_PVP_RECORD_INFO
+message PvpRecordInfoRequest {
+  string field_1 = 1;
+  int32 field_2 = 2;
+  bool field_3 = 3;
+}
+
+// REQ_RECOMMAND_GROUP
+message RecommandGroupRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+  string field_7 = 7;
+}
+
+// REQ_CONTROL_GROUP
+message ControlGroupRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  uint64 field_3 = 3;
+  uint64 field_4 = 4;
+  uint64 field_5 = 5;
+  int32 field_6 = 6;
+  int32 field_7 = 7;
+  int32 field_8 = 8;
+  int32 field_9 = 9;
+  int32 field_10 = 10;
+  int32 field_11 = 11;
+  int32 field_12 = 12;
+  int32 field_13 = 13;
+  string field_14 = 14;
+  int32 field_15 = 15;
+  int32 field_16 = 16;
+  int32 field_17 = 17;
+  int32 field_18 = 18;
+  int32 field_20 = 20;
+  int32 field_21 = 21;
+  int32 field_22 = 22;
+  int32 field_24 = 24;
+  string field_25 = 25;
+  bool field_26 = 26;
+  bool field_27 = 27;
+  bool field_28 = 28;
+}
+
+// REQ_PVP_HISTORY
+message PvpHistoryRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_START_MULTI_PLAY
+message StartMultiPlayRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  uint64 field_5 = 5;
+  int32 field_6 = 6;
+  int32 field_7 = 7;
+  int32 field_8 = 8;
+}
+
+// REQ_RETURN_TO_TOWN_AT_MULTI_PLAY
+message ReturnToTownAtMultiPlayRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_RETRY_DUNGEON_AT_MULTI
+message RetryDungeonAtMultiRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_SELECT_OTHER_DUNGEON_AT_MULTI
+message SelectOtherDungeonAtMultiRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_QUICK_CHATTING
+message QuickChattingRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_REQUEST_TO_RE_ENTER_DUNGEON
+message RequestToReEnterDungeonRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  uint64 field_5 = 5;
+}
+
+// REQ_REQUEST_TO_RE_ENTER_ACCEPT_DUNGEON
+message RequestToReEnterAcceptDungeonRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_AI_CHARACTER_INFO
+message AiCharacterInfoRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_CONTROL_GROUP_CUSTOM
+message ControlGroupCustomRequest {
+  // No fields
+}
+
+// REQ_CONTROL_GROUP_QUERYAREA
+message ControlGroupQueryareaRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_PVP_SELECT_CHARACTER_LIST
+message PvpSelectCharacterListRequest {
+  // No fields
+}
+
+// REQ_PVP_CHARACTER_UNLOCK
+message PvpCharacterUnlockRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_PVP_CHARACTER_SELECT
+message PvpCharacterSelectRequest {
+  int32 field_1 = 1;
+  bool field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_CUSTOM_GAME_CHANGE_SETTING
+message CustomGameChangeSettingRequest {
+  int32 field_1 = 1;
+  int32 field_3 = 3;
+  bool field_4 = 4;
+  int32 field_5 = 5;
+}
+
+// REQ_CUSTOM_GAME_ROOM_SETTING
+message CustomGameRoomSettingRequest {
+  // No fields
+}
+
+// REQ_SEARCH_PARTY_LIST
+message SearchPartyListRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+  int32 field_6 = 6;
+  int32 field_7 = 7;
+  bool field_8 = 8;
+  int32 field_9 = 9;
+  int32 field_10 = 10;
+  string field_11 = 11;
+}
+
+// REQ_ACQUAINTANCE_PARTY_LIST
+message AcquaintancePartyListRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_BOARD_GAME_MESSAGE
+message BoardGameMessageRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  uint64 field_5 = 5;
+  int32 field_6 = 6;
+  int32 field_7 = 7;
+  int32 field_8 = 8;
+  string field_9 = 9;
+  int32 field_11 = 11;
+  bool field_12 = 12;
+}
+
+// REQ_REFRESH_TARGET_CHARACTER_TOWN_INFO
+message RefreshTargetCharacterTownInfoRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_SD_DEATH_MATCH_SOUL_STONE
+message SdDeathMatchSoulStoneRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+}
+
+// REQ_DRAGON_ROAD_RECONNECT
+message DragonRoadReconnectRequest {
+  // No fields
+}
+
+// REQ_PARTY_DUNGEON_CONDITION
+message PartyDungeonConditionRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  uint64 field_4 = 4;
+  int32 field_5 = 5;
+}
+
+// REQ_VOTE_NICEPLAYER
+message VoteNiceplayerRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  uint64 field_3 = 3;
+}
+
+// REQ_PANDORA_BATTLE_INFO
+message PandoraBattleInfoRequest {
+  uint64 field_1 = 1;
+}

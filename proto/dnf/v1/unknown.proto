@@ -1,0 +1,605 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_package = "com.dnfm.mina.stdproto";
+option java_outer_classname = "UnknownProto";
+option go_package = "dnf/v1";
+
+
+// REQ_CERA_INTERESTING_GOODS
+message CeraInterestingGoodsRequest {
+  int32 field_1 = 1;
+  bool field_2 = 2;
+}
+
+// REQ_CERA_INTERESTING_GOODS_INFO
+message CeraInterestingGoodsInfoRequest {
+  // No fields
+}
+
+// REQ_CHANGE_GUILD_NPC
+message ChangeGuildNpcRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_COMPOSE_BOOKMARK
+message ComposeBookmarkRequest {
+  // No fields
+}
+
+// REQ_COMPOSE_SCROLL
+message ComposeScrollRequest {
+  // No fields
+}
+
+// REQ_CONTENTS_REWARD
+message ContentsRewardRequest {
+  // No fields
+}
+
+// REQ_CREATURE_ARTIFACT_UPGRADE
+message CreatureArtifactUpgradeRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_CREATURE_COMPOSE
+message CreatureComposeRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  uint64 field_3 = 3;
+}
+
+// REQ_CREATURE_EVOLVE
+message CreatureEvolveRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  uint64 field_3 = 3;
+}
+
+// REQ_CREATURE_RANDOM_OPTION_CHANGE
+message CreatureRandomOptionChangeRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_CREATURE_RANDOM_OPTION_LOCK
+message CreatureRandomOptionLockRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  bool field_3 = 3;
+}
+
+// REQ_CURRENT_RAID_PARTY_INFO
+message CurrentRaidPartyInfoRequest {
+  // No fields
+}
+
+// REQ_DEL_WATCHING_BOOKMARK
+message DelWatchingBookmarkRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_DISJOINT_BOOKMARK
+message DisjointBookmarkRequest {
+  // No fields
+}
+
+// REQ_ENTER_DUNGEON_COMPLETE
+message EnterDungeonCompleteRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_EQUIPMENT_UNSEAL
+message EquipmentUnsealRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_EVENT_SELECT_CHARACTER
+message EventSelectCharacterRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_EVENT_SELECT_RETURN_CHARACTER
+message EventSelectReturnCharacterRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_GET_SERIA_BUFF
+message GetSeriaBuffRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_AUCTION_REWARD_INFO
+message GuildAuctionRewardInfoRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_GUILD_BINGO_CHALLENGE_HISTORY
+message GuildBingoChallengeHistoryRequest {
+  // No fields
+}
+
+// REQ_GUILD_BINGO_CHALLENGE_SQUARE
+message GuildBingoChallengeSquareRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  string field_3 = 3;
+}
+
+// REQ_GUILD_BINGO_CHALLENGE_SQUARE_RESULT
+message GuildBingoChallengeSquareResultRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  bool field_4 = 4;
+}
+
+// REQ_GUILD_BINGO_GET_MAP_CLEAR_REWARD
+message GuildBingoGetMapClearRewardRequest {
+  int32 field_1 = 1;
+  bool field_2 = 2;
+}
+
+// REQ_GUILD_BINGO_GET_REWARD
+message GuildBingoGetRewardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_GUILD_BINGO_LOAD_BASE
+message GuildBingoLoadBaseRequest {
+  // No fields
+}
+
+// REQ_GUILD_BINGO_LOAD_DETAIL
+message GuildBingoLoadDetailRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_BINGO_LOAD_MAP_CLEAR_REWARD_LIST
+message GuildBingoLoadMapClearRewardListRequest {
+  // No fields
+}
+
+// REQ_GUILD_BINGO_SELECT_MAP
+message GuildBingoSelectMapRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_BINGO_USE_ITEM
+message GuildBingoUseItemRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_GUILD_BUY_CONTENT_BUFF
+message GuildBuyContentBuffRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_DINING_BUY_INFO
+message GuildDiningBuyInfoRequest {
+  // No fields
+}
+
+// REQ_GUILD_DONATE
+message GuildDonateRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_GUILD_DONATE_2
+message GuildDonate2Request {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  uint64 field_4 = 4;
+  int32 field_5 = 5;
+}
+
+// REQ_GUILD_DONATION_ACCUMULATE_REWARD
+message GuildDonationAccumulateRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_DONATION_ACCUMULATE_REWARD_2
+message GuildDonationAccumulateReward2Request {
+  int32 field_1 = 1;
+}
+
+// REQ_GUILD_FISHING_LOAD_INFO
+message GuildFishingLoadInfoRequest {
+  // No fields
+}
+
+// REQ_GUILD_HISTORICSITE_RANKING
+message GuildHistoricsiteRankingRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+}
+
+// REQ_GUILD_MATERIAL_PRODUCTION
+message GuildMaterialProductionRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_GUILD_MATERIAL_PRODUCTION_INFO
+message GuildMaterialProductionInfoRequest {
+  // No fields
+}
+
+// REQ_GUILD_NEW_DINING_BUY
+message GuildNewDiningBuyRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_GUILD_NEW_DINING_BUY_INFO
+message GuildNewDiningBuyInfoRequest {
+  // No fields
+}
+
+// REQ_GUILD_STRUCTURE_BUILD
+message GuildStructureBuildRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  string field_4 = 4;
+}
+
+// REQ_GUILD_STRUCTURE_LIST
+message GuildStructureListRequest {
+  // No fields
+}
+
+// REQ_GUILD_STRUCTURE_RETRIEVE
+message GuildStructureRetrieveRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_GUILD_STRUCTURE_SKIN_OFF
+message GuildStructureSkinOffRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_GUILD_STRUCTURE_SKIN_ON
+message GuildStructureSkinOnRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_GUILD_STRUCTURE_UPGRADE
+message GuildStructureUpgradeRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_GUILD_STRUCTURE_UPGRADE_CANCEL
+message GuildStructureUpgradeCancelRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_GUILD_USE_FACILITY
+message GuildUseFacilityRequest {
+  // No fields
+}
+
+// REQ_GUILD_WAREHOUSE_LIST
+message GuildWarehouseListRequest {
+  // No fields
+}
+
+// REQ_HIRED_GUILD_NPC_INFO
+message HiredGuildNpcInfoRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITED_DUNGEONTIMER
+message HistoricsitedDungeontimerRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_HISTORICSITE_CANCEL_REGISTERED_ENTER
+message HistoricsiteCancelRegisteredEnterRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_ENTER
+message HistoricsiteEnterRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_MEMBER_RECORD
+message HistoricsiteMemberRecordRequest {
+  string field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_HISTORICSITE_REGISTERED_ENTER_COUNT
+message HistoricsiteRegisteredEnterCountRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_SEND_EMOTICON
+message HistoricsiteSendEmoticonRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_HISTORICSITE_STRATEGY_SLOT
+message HistoricsiteStrategySlotRequest {
+  // No fields
+}
+
+// REQ_HISTORICSITE_UPDATE_STRATEGY_SLOT
+message HistoricsiteUpdateStrategySlotRequest {
+  // No fields
+}
+
+// REQ_LOAD_GUILD_DONATION_INFO_2
+message LoadGuildDonationInfo2Request {
+  // No fields
+}
+
+// REQ_LOAD_WATCHING_BOOKMARKS
+message LoadWatchingBookmarksRequest {
+  // No fields
+}
+
+// REQ_MAAS_REMIND
+message MaasRemindRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MAIL_DISTRIBUTE_ACCOUNT_TO_CHRACTER
+message MailDistributeAccountToChracterRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_MESSAGE_ASSISTANT_SEND_STRUCTMSG
+message MessageAssistantSendStructmsgRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_MINIGAME_77VALENTINE_CLEAR
+message Minigame77valentineClearRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_77VALENTINE_LOAD
+message Minigame77valentineLoadRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_77VALENTINE_REWARD
+message Minigame77valentineRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_CLEAR_LOTUS_QUIZ
+message MinigameClearLotusQuizRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_MINIGAME_LOAD_LOTUS_QUIZ
+message MinigameLoadLotusQuizRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_RESTAURANT_CLEAR
+message MinigameRestaurantClearRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_MINIGAME_RESTAURANT_REWARD
+message MinigameRestaurantRewardRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_RESTAURANT_START
+message MinigameRestaurantStartRequest {
+  // No fields
+}
+
+// REQ_MINIGAME_REWARD_LOTUS_QUIZ
+message MinigameRewardLotusQuizRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MINIGAME_START_LOTUS_QUIZ
+message MinigameStartLotusQuizRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_MONITOR
+message MonitorRequest {
+  // No fields
+}
+
+// REQ_MONITOR_VERIFY
+message MonitorVerifyRequest {
+  // No fields
+}
+
+// REQ_MOVE_STORAGE
+message MoveStorageRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_MULTI_QUICK_START_IN_MATCHING
+message MultiQuickStartInMatchingRequest {
+  string field_1 = 1;
+}
+
+// REQ_PRAY_SELECT_ITEM
+message PraySelectItemRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  bool field_3 = 3;
+}
+
+// REQ_PROMOTION_INFO
+message PromotionInfoRequest {
+  // No fields
+}
+
+// REQ_PURCHASE_GUILD_NPC
+message PurchaseGuildNpcRequest {
+  string field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_PVP3VS3_JOIN_CHARGUID
+message Pvp3vs3JoinCharguidRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_PVP3VS3_JOIN_MESSAGE
+message Pvp3vs3JoinMessageRequest {
+  bool field_1 = 1;
+}
+
+// REQ_QUERY_GACC_ACCOUNT_REMOVE
+message QueryGaccAccountRemoveRequest {
+  // No fields
+}
+
+// REQ_QUERY_RANKING_BY_SCORE
+message QueryRankingByScoreRequest {
+  int64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_RAID_PHASE_START
+message RaidPhaseStartRequest {
+  // No fields
+}
+
+// REQ_RECOVERY_CHARAC
+message RecoveryCharacRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_RELEASE_BOOKMARK
+message ReleaseBookmarkRequest {
+  // No fields
+}
+
+// REQ_REQUEST_JOIN_PLATFORM_PARTY
+message RequestJoinPlatformPartyRequest {
+  string field_1 = 1;
+}
+
+// REQ_RESET_PRIVATESTORE_GOODSLIST
+message ResetPrivatestoreGoodslistRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_SAVE_WEAK_SERVER_SIMPLE_DATA
+message SaveWeakServerSimpleDataRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  string field_3 = 3;
+}
+
+// REQ_SERIA_BUFF_LIST
+message SeriaBuffListRequest {
+  // No fields
+}
+
+// REQ_SET_APPENDAGE_MANNEQUIN
+message SetAppendageMannequinRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_SET_NAME_MANNEQUIN
+message SetNameMannequinRequest {
+  int32 field_1 = 1;
+  string field_2 = 2;
+}
+
+// REQ_SET_PVP_CONTROL_MODE
+message SetPvpControlModeRequest {
+  bool field_1 = 1;
+}
+
+// REQ_SHARE_BIGIMAGE_ACT
+message ShareBigimageActRequest {
+  // No fields
+}
+
+// REQ_SYNC_STAGE_INFO
+message SyncStageInfoRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_TLOG_SKILL_PREVIEW
+message TlogSkillPreviewRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_VERIFICATION_DATA
+message VerificationDataRequest {
+  string field_1 = 1;
+}
+
+// REQ_WARDROBE_EXTENTION_MANNEQUIN
+message WardrobeExtentionMannequinRequest {
+  // No fields
+}
+
+// REQ_WARDROBE_SET_MANNEQUIN
+message WardrobeSetMannequinRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_WARDROBE_SET_SLOT_MANNEQUIN
+message WardrobeSetSlotMannequinRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_WEDDING_RECEPTION_EVENT
+message WeddingReceptionEventRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_WELFARE_FIND_REWARD_GET
+message WelfareFindRewardGetRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_WELFARE_FIND_REWARD_INFO
+message WelfareFindRewardInfoRequest {
+  // No fields
+}
+
+// REQ_WORLD_RAID_RANKING
+message WorldRaidRankingRequest {
+  int32 field_1 = 1;
+}

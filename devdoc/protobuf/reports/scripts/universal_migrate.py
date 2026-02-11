@@ -48,6 +48,8 @@ class UniversalMigrator:
     
     def get_module_name(self, module_id: int) -> str:
         """根据 ModuleID 获取模块名"""
+        if module_id is None:
+            return 'UNKNOWN'
         if 10000 <= module_id < 11000:
             return 'BASIC'
         elif 11000 <= module_id < 12000:
