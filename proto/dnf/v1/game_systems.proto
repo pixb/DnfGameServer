@@ -6639,3 +6639,605 @@ message ResSkillLearnConfirmConfirm {
   int32 error = 1;
   int32 index = 2;
 }
+
+// 第86批消息类型
+// 公会技能重置确认确认确认请求
+message ReqGuildSkillResetConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏奖励确认确认确认请求
+message ReqMinigameRewardConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 奖励领取确认确认确认确认请求
+message ReqRewardClaimConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 控制中心信息确认确认确认请求
+message ReqControlCenterInfoConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 突袭队伍加入确认确认确认请求
+message ReqRaidTeamJoinConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 点券余额确认确认确认请求
+message ReqCeraBalanceConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 消息删除确认确认确认请求
+message ReqMessageDeleteConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 留言板置顶确认确认确认请求
+message ReqBoardPinConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 设施拆除确认确认确认请求
+message ReqFacilityDemolishConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 队伍踢人确认确认确认请求
+message ReqTeamKickConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 金钱转账确认确认确认请求
+message ReqMoneyTransferConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 道具出售确认确认确认请求
+message ReqItemSellConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 系统公告确认确认确认请求
+message ReqSysAnnouncementConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 装备镶嵌确认确认确认请求
+message ReqGemEmbedConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 疲劳值赠送确认确认确认请求
+message ReqFatigueGiftConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 仓库整理确认确认确认请求
+message ReqWarehouseSortConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 餐厅购买确认确认确认请求
+message ReqDiningBuyConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 骑士团技能确认确认确认请求
+message ReqChivalrySkillConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 控制中心建筑确认确认确认请求
+message ReqControlCenterBuildConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 历史遗址信息确认确认确认请求
+message ReqHistoricsiteInfoConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 技能学习确认确认确认请求
+message ReqSkillLearnConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会技能重置确认确认确认响应
+message ResGuildSkillResetConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏奖励确认确认确认响应
+message ResMinigameRewardConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 奖励领取确认确认确认确认响应
+message ResRewardClaimConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 控制中心信息确认确认确认响应
+message ResControlCenterInfoConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 突袭队伍加入确认确认确认响应
+message ResRaidTeamJoinConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 攻击小队成员信息确认确认确认确认响应
+message ResAttackSquadMemberInfoConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物品分解确认确认确认确认响应
+message ResItemDisassembleConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 玩家金币更新确认确认确认
+message PtUserGoldUpdateConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 战力排行榜查询确认确认确认确认响应
+message ResInquirePowerRankingConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 队伍邀请确认确认确认确认确认响应
+message ResPartyInviteConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 好友请求确认确认确认确认响应
+message ResFriendRequestConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 点券余额确认确认确认响应
+message ResCeraBalanceConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 消息删除确认确认确认响应
+message ResMessageDeleteConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 语音聊天邀请确认确认确认确认响应
+message ResVoiceChatInviteConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 留言板置顶确认确认确认响应
+message ResBoardPinConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// PVP战斗确认确认确认确认确认响应
+message ResPvpBattleConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 设施拆除确认确认确认响应
+message ResFacilityDemolishConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 队伍踢人确认确认确认响应
+message ResTeamKickConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 金钱转账确认确认确认响应
+message ResMoneyTransferConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 道具出售确认确认确认响应
+message ResItemSellConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 系统公告确认确认确认响应
+message ResSysAnnouncementConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 装备镶嵌确认确认确认响应
+message ResGemEmbedConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 疲劳值赠送确认确认确认响应
+message ResFatigueGiftConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 同步确认确认确认确认响应
+message ResLockstepConfirmConfirmConfirmConfirmResponse {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 仓库整理确认确认确认响应
+message ResWarehouseSortConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 餐厅购买确认确认确认响应
+message ResDiningBuyConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 徒弟确认确认确认确认确认响应
+message ResMenteeConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 宾果确认确认确认确认确认响应
+message ResBingoConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 骑士团技能确认确认确认响应
+message ResChivalrySkillConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 第87批消息类型
+// 公会技能重置确认确认确认确认请求
+message ReqGuildSkillResetConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏奖励确认确认确认确认请求
+message ReqMinigameRewardConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 奖励领取确认确认确认确认确认请求
+message ReqRewardClaimConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 控制中心信息确认确认确认确认请求
+message ReqControlCenterInfoConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 突袭队伍加入确认确认确认确认请求
+message ReqRaidTeamJoinConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 点券余额确认确认确认确认请求
+message ReqCeraBalanceConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 消息删除确认确认确认确认请求
+message ReqMessageDeleteConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 留言板置顶确认确认确认确认请求
+message ReqBoardPinConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 设施拆除确认确认确认确认请求
+message ReqFacilityDemolishConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 队伍踢人确认确认确认确认请求
+message ReqTeamKickConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 金钱转账确认确认确认确认请求
+message ReqMoneyTransferConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 道具出售确认确认确认确认请求
+message ReqItemSellConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 系统公告确认确认确认确认请求
+message ReqSysAnnouncementConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 装备镶嵌确认确认确认确认请求
+message ReqGemEmbedConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 疲劳值赠送确认确认确认确认请求
+message ReqFatigueGiftConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 仓库整理确认确认确认确认请求
+message ReqWarehouseSortConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 餐厅购买确认确认确认确认请求
+message ReqDiningBuyConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 骑士团技能确认确认确认确认请求
+message ReqChivalrySkillConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 控制中心建筑确认确认确认确认请求
+message ReqControlCenterBuildConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 历史遗址信息确认确认确认确认请求
+message ReqHistoricsiteInfoConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 技能学习确认确认确认确认请求
+message ReqSkillLearnConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会技能重置确认确认确认确认响应
+message ResGuildSkillResetConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏奖励确认确认确认确认响应
+message ResMinigameRewardConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 奖励领取确认确认确认确认确认响应
+message ResRewardClaimConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 控制中心信息确认确认确认确认响应
+message ResControlCenterInfoConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 突袭队伍加入确认确认确认确认响应
+message ResRaidTeamJoinConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 攻击小队成员信息确认确认确认确认确认响应
+message ResAttackSquadMemberInfoConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物品分解确认确认确认确认确认响应
+message ResItemDisassembleConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 玩家金币更新确认确认确认确认
+message PtUserGoldUpdateConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 战力排行榜查询确认确认确认确认确认响应
+message ResInquirePowerRankingConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 队伍邀请确认确认确认确认确认确认响应
+message ResPartyInviteConfirmConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 好友请求确认确认确认确认确认响应
+message ResFriendRequestConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 点券余额确认确认确认确认响应
+message ResCeraBalanceConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 消息删除确认确认确认确认响应
+message ResMessageDeleteConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 语音聊天邀请确认确认确认确认确认响应
+message ResVoiceChatInviteConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 留言板置顶确认确认确认确认响应
+message ResBoardPinConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// PVP战斗确认确认确认确认确认确认响应
+message ResPvpBattleConfirmConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 设施拆除确认确认确认确认响应
+message ResFacilityDemolishConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 队伍踢人确认确认确认确认响应
+message ResTeamKickConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 金钱转账确认确认确认确认响应
+message ResMoneyTransferConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 道具出售确认确认确认确认响应
+message ResItemSellConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 系统公告确认确认确认确认响应
+message ResSysAnnouncementConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 装备镶嵌确认确认确认确认响应
+message ResGemEmbedConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 疲劳值赠送确认确认确认确认响应
+message ResFatigueGiftConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 同步确认确认确认确认确认响应
+message ResLockstepConfirmConfirmConfirmConfirmConfirmResponse {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 仓库整理确认确认确认确认响应
+message ResWarehouseSortConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 餐厅购买确认确认确认确认响应
+message ResDiningBuyConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 徒弟确认确认确认确认确认确认响应
+message ResMenteeConfirmConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 宾果确认确认确认确认确认确认响应
+message ResBingoConfirmConfirmConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 骑士团技能确认确认确认确认响应
+message ResChivalrySkillConfirmConfirmConfirmConfirm {
+  int32 error = 1;
+  int32 index = 2;
+}
