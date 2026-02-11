@@ -5861,6 +5861,456 @@ public final class GameSystemsProto extends com.google.protobuf.GeneratedFile {
   static 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_ResChivalrySkillConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqGuildSkillResetConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqGuildSkillResetConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMinigameRewardConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMinigameRewardConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqRewardClaimConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqRewardClaimConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqControlCenterInfoConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqControlCenterInfoConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqRaidTeamJoinConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqRaidTeamJoinConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqCeraBalanceConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqCeraBalanceConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMessageDeleteConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMessageDeleteConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqBoardPinConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqBoardPinConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqFacilityDemolishConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqFacilityDemolishConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqTeamKickConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqTeamKickConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMoneyTransferConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMoneyTransferConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqItemSellConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqItemSellConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqSysAnnouncementConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqSysAnnouncementConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqGemEmbedConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqGemEmbedConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqFatigueGiftConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqFatigueGiftConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqWarehouseSortConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqWarehouseSortConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqDiningBuyConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqDiningBuyConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqChivalrySkillConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqChivalrySkillConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqControlCenterBuildConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqControlCenterBuildConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqHistoricsiteInfoConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqHistoricsiteInfoConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqSkillLearnConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqSkillLearnConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResGuildSkillResetConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResGuildSkillResetConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResMinigameRewardConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResMinigameRewardConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResRewardClaimConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResRewardClaimConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResControlCenterInfoConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResControlCenterInfoConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResRaidTeamJoinConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResRaidTeamJoinConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResAttackSquadMemberInfoConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResAttackSquadMemberInfoConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResItemDisassembleConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResItemDisassembleConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PtUserGoldUpdateConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PtUserGoldUpdateConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResInquirePowerRankingConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResInquirePowerRankingConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResPartyInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResPartyInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResFriendRequestConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResFriendRequestConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResCeraBalanceConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResCeraBalanceConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResMessageDeleteConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResMessageDeleteConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResVoiceChatInviteConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResVoiceChatInviteConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResBoardPinConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResBoardPinConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResPvpBattleConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResPvpBattleConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResFacilityDemolishConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResFacilityDemolishConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResTeamKickConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResTeamKickConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResMoneyTransferConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResMoneyTransferConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResItemSellConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResItemSellConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResSysAnnouncementConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResSysAnnouncementConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResGemEmbedConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResGemEmbedConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResFatigueGiftConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResFatigueGiftConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResLockstepConfirmConfirmConfirmConfirmConfirmConfirmResponse_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResLockstepConfirmConfirmConfirmConfirmConfirmConfirmResponse_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResWarehouseSortConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResWarehouseSortConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResDiningBuyConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResDiningBuyConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResMenteeConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResMenteeConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResBingoConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResBingoConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResChivalrySkillConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResChivalrySkillConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqGuildSkillResetConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqGuildSkillResetConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMinigameRewardConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMinigameRewardConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqRewardClaimConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqRewardClaimConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqControlCenterInfoConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqControlCenterInfoConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqRaidTeamJoinConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqRaidTeamJoinConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqCeraBalanceConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqCeraBalanceConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMessageDeleteConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMessageDeleteConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqBoardPinConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqBoardPinConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqFacilityDemolishConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqFacilityDemolishConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqTeamKickConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqTeamKickConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMoneyTransferConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMoneyTransferConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqItemSellConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqItemSellConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqSysAnnouncementConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqSysAnnouncementConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqGemEmbedConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqGemEmbedConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqFatigueGiftConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqFatigueGiftConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqWarehouseSortConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqWarehouseSortConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqDiningBuyConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqDiningBuyConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqChivalrySkillConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqChivalrySkillConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqControlCenterBuildConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqControlCenterBuildConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqHistoricsiteInfoConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqHistoricsiteInfoConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResGuildSkillResetConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResGuildSkillResetConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResMinigameRewardConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResMinigameRewardConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResRewardClaimConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResRewardClaimConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResControlCenterInfoConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResControlCenterInfoConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResRaidTeamJoinConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResRaidTeamJoinConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResAttackSquadMemberInfoConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResAttackSquadMemberInfoConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResItemDisassembleConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResItemDisassembleConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PtUserGoldUpdateConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PtUserGoldUpdateConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResInquirePowerRankingConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResInquirePowerRankingConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResPartyInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResPartyInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResFriendRequestConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResFriendRequestConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResCeraBalanceConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResCeraBalanceConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResMessageDeleteConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResMessageDeleteConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResVoiceChatInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResVoiceChatInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResBoardPinConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResBoardPinConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResPvpBattleConfirmConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResPvpBattleConfirmConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResFacilityDemolishConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResFacilityDemolishConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResTeamKickConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResTeamKickConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResMoneyTransferConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResMoneyTransferConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResItemSellConfirmConfirmConfirmConfirmConfirmConfirm_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResItemSellConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -8127,23 +8577,256 @@ public final class GameSystemsProto extends com.google.protobuf.GeneratedFile {
       "onfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005i" +
       "ndex\030\002 \001(\005R\005index\"Z\n,ResChivalrySkillCon" +
       "firmConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005" +
-      "R\005error\022\024\n\005index\030\002 \001(\005R\005index*a\n\010TeamTyp" +
-      "e\022\025\n\021TEAM_TYPE_UNKNOWN\020\000\022\024\n\020TEAM_TYPE_NO" +
-      "RMAL\020\001\022\022\n\016TEAM_TYPE_RAID\020\002\022\024\n\020TEAM_TYPE_" +
-      "PLAYER\020\003*B\n\014GuildNpcType\022\032\n\026GUILD_NPC_TY" +
-      "PE_UNKNOWN\020\000\022\026\n\022GUILD_NPC_TYPE_NPC\020\001*V\n\016" +
-      "GuildNpcStatus\022\034\n\030GUILD_NPC_STATUS_UNKNO" +
-      "WN\020\000\022&\n\"GUILD_NPC_STATUS_COMPLETE_PURCHA" +
-      "SE\020\001*W\n\022GuildStructureType\022 \n\034GUILD_STRU" +
-      "CTURE_TYPE_UNKNOWN\020\000\022\037\n\033GUILD_STRUCTURE_" +
-      "TYPE_NORMAL\020\001*c\n\024GuildStructureStatus\022\"\n" +
-      "\036GUILD_STRUCTURE_STATUS_UNKNOWN\020\000\022\'\n#GUI" +
-      "LD_STRUCTURE_STATUS_CONSTRUCTION\020\001B\253\001\n c" +
-      "om.dnfm.mina.protobuf.generatedB\020GameSys" +
-      "temsProtoP\001Z<github.com/pixb/DnfGameServ" +
-      "er/dnf-go-client/gen/dnf/v1;dnfv1\242\002\003DXX\252" +
-      "\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetadata\352\002" +
-      "\007Dnf::V1b\006proto3"
+      "R\005error\022\024\n\005index\030\002 \001(\005R\005index\"c\n5ReqGuil" +
+      "dSkillResetConfirmConfirmConfirmConfirmC" +
+      "onfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 " +
+      "\001(\005R\005index\"b\n4ReqMinigameRewardConfirmCo" +
+      "nfirmConfirmConfirmConfirm\022\024\n\005error\030\001 \001(" +
+      "\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"f\n8ReqRew" +
+      "ardClaimConfirmConfirmConfirmConfirmConf" +
+      "irmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005inde" +
+      "x\030\002 \001(\005R\005index\"e\n7ReqControlCenterInfoCo" +
+      "nfirmConfirmConfirmConfirmConfirm\022\024\n\005err" +
+      "or\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"`\n" +
+      "2ReqRaidTeamJoinConfirmConfirmConfirmCon" +
+      "firmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005ind" +
+      "ex\030\002 \001(\005R\005index\"_\n1ReqCeraBalanceConfirm" +
+      "ConfirmConfirmConfirmConfirm\022\024\n\005error\030\001 " +
+      "\001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"a\n3ReqM" +
+      "essageDeleteConfirmConfirmConfirmConfirm" +
+      "Confirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002" +
+      " \001(\005R\005index\"\\\n.ReqBoardPinConfirmConfirm" +
+      "ConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005er" +
+      "ror\022\024\n\005index\030\002 \001(\005R\005index\"d\n6ReqFacility" +
+      "DemolishConfirmConfirmConfirmConfirmConf" +
+      "irm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005" +
+      "R\005index\"\\\n.ReqTeamKickConfirmConfirmConf" +
+      "irmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022" +
+      "\024\n\005index\030\002 \001(\005R\005index\"a\n3ReqMoneyTransfe" +
+      "rConfirmConfirmConfirmConfirmConfirm\022\024\n\005" +
+      "error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index" +
+      "\"\\\n.ReqItemSellConfirmConfirmConfirmConf" +
+      "irmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005inde" +
+      "x\030\002 \001(\005R\005index\"c\n5ReqSysAnnouncementConf" +
+      "irmConfirmConfirmConfirmConfirm\022\024\n\005error" +
+      "\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"\\\n.R" +
+      "eqGemEmbedConfirmConfirmConfirmConfirmCo" +
+      "nfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001" +
+      "(\005R\005index\"_\n1ReqFatigueGiftConfirmConfir" +
+      "mConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005e" +
+      "rror\022\024\n\005index\030\002 \001(\005R\005index\"a\n3ReqWarehou" +
+      "seSortConfirmConfirmConfirmConfirmConfir" +
+      "m\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005" +
+      "index\"]\n/ReqDiningBuyConfirmConfirmConfi" +
+      "rmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024" +
+      "\n\005index\030\002 \001(\005R\005index\"a\n3ReqChivalrySkill" +
+      "ConfirmConfirmConfirmConfirmConfirm\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"" +
+      "f\n8ReqControlCenterBuildConfirmConfirmCo" +
+      "nfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005erro" +
+      "r\022\024\n\005index\030\002 \001(\005R\005index\"d\n6ReqHistoricsi" +
+      "teInfoConfirmConfirmConfirmConfirmConfir" +
+      "m\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005" +
+      "index\"^\n0ReqSkillLearnConfirmConfirmConf" +
+      "irmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022" +
+      "\024\n\005index\030\002 \001(\005R\005index\"c\n5ResGuildSkillRe" +
+      "setConfirmConfirmConfirmConfirmConfirm\022\024" +
+      "\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005ind" +
+      "ex\"b\n4ResMinigameRewardConfirmConfirmCon" +
+      "firmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error" +
+      "\022\024\n\005index\030\002 \001(\005R\005index\"f\n8ResRewardClaim" +
+      "ConfirmConfirmConfirmConfirmConfirmConfi" +
+      "rm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R" +
+      "\005index\"e\n7ResControlCenterInfoConfirmCon" +
+      "firmConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005" +
+      "R\005error\022\024\n\005index\030\002 \001(\005R\005index\"`\n2ResRaid" +
+      "TeamJoinConfirmConfirmConfirmConfirmConf" +
+      "irm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005" +
+      "R\005index\"p\nBResAttackSquadMemberInfoConfi" +
+      "rmConfirmConfirmConfirmConfirmConfirm\022\024\n" +
+      "\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005inde" +
+      "x\"j\n<ResItemDisassembleConfirmConfirmCon" +
+      "firmConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005" +
+      "R\005error\022\024\n\005index\030\002 \001(\005R\005index\"a\n3PtUserG" +
+      "oldUpdateConfirmConfirmConfirmConfirmCon" +
+      "firm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(" +
+      "\005R\005index\"n\n@ResInquirePowerRankingConfir" +
+      "mConfirmConfirmConfirmConfirmConfirm\022\024\n\005" +
+      "error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index" +
+      "\"m\n?ResPartyInviteConfirmConfirmConfirmC" +
+      "onfirmConfirmConfirmConfirm\022\024\n\005error\030\001 \001" +
+      "(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"h\n:ResFr" +
+      "iendRequestConfirmConfirmConfirmConfirmC" +
+      "onfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005i" +
+      "ndex\030\002 \001(\005R\005index\"_\n1ResCeraBalanceConfi" +
+      "rmConfirmConfirmConfirmConfirm\022\024\n\005error\030" +
+      "\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"a\n3Re" +
+      "sMessageDeleteConfirmConfirmConfirmConfi" +
+      "rmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index" +
+      "\030\002 \001(\005R\005index\"j\n<ResVoiceChatInviteConfi" +
+      "rmConfirmConfirmConfirmConfirmConfirm\022\024\n" +
+      "\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005inde" +
+      "x\"\\\n.ResBoardPinConfirmConfirmConfirmCon" +
+      "firmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005ind" +
+      "ex\030\002 \001(\005R\005index\"k\n=ResPvpBattleConfirmCo" +
+      "nfirmConfirmConfirmConfirmConfirmConfirm" +
+      "\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005i" +
+      "ndex\"d\n6ResFacilityDemolishConfirmConfir" +
+      "mConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005e" +
+      "rror\022\024\n\005index\030\002 \001(\005R\005index\"\\\n.ResTeamKic" +
+      "kConfirmConfirmConfirmConfirmConfirm\022\024\n\005" +
+      "error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index" +
+      "\"a\n3ResMoneyTransferConfirmConfirmConfir" +
+      "mConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n" +
+      "\005index\030\002 \001(\005R\005index\"\\\n.ResItemSellConfir" +
+      "mConfirmConfirmConfirmConfirm\022\024\n\005error\030\001" +
+      " \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"c\n5Res" +
+      "SysAnnouncementConfirmConfirmConfirmConf" +
+      "irmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005inde" +
+      "x\030\002 \001(\005R\005index\"\\\n.ResGemEmbedConfirmConf" +
+      "irmConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005R" +
+      "\005error\022\024\n\005index\030\002 \001(\005R\005index\"_\n1ResFatig" +
+      "ueGiftConfirmConfirmConfirmConfirmConfir" +
+      "m\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005" +
+      "index\"k\n=ResLockstepConfirmConfirmConfir" +
+      "mConfirmConfirmConfirmResponse\022\024\n\005error\030" +
+      "\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"a\n3Re" +
+      "sWarehouseSortConfirmConfirmConfirmConfi" +
+      "rmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index" +
+      "\030\002 \001(\005R\005index\"]\n/ResDiningBuyConfirmConf" +
+      "irmConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005R" +
+      "\005error\022\024\n\005index\030\002 \001(\005R\005index\"h\n:ResMente" +
+      "eConfirmConfirmConfirmConfirmConfirmConf" +
+      "irmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005inde" +
+      "x\030\002 \001(\005R\005index\"g\n9ResBingoConfirmConfirm" +
+      "ConfirmConfirmConfirmConfirmConfirm\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"" +
+      "a\n3ResChivalrySkillConfirmConfirmConfirm" +
+      "ConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005" +
+      "index\030\002 \001(\005R\005index\"j\n<ReqGuildSkillReset" +
+      "ConfirmConfirmConfirmConfirmConfirmConfi" +
+      "rm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R" +
+      "\005index\"i\n;ReqMinigameRewardConfirmConfir" +
+      "mConfirmConfirmConfirmConfirm\022\024\n\005error\030\001" +
+      " \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"m\n?Req" +
+      "RewardClaimConfirmConfirmConfirmConfirmC" +
+      "onfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005err" +
+      "or\022\024\n\005index\030\002 \001(\005R\005index\"l\n>ReqControlCe" +
+      "nterInfoConfirmConfirmConfirmConfirmConf" +
+      "irmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005inde" +
+      "x\030\002 \001(\005R\005index\"g\n9ReqRaidTeamJoinConfirm" +
+      "ConfirmConfirmConfirmConfirmConfirm\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"" +
+      "f\n8ReqCeraBalanceConfirmConfirmConfirmCo" +
+      "nfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005erro" +
+      "r\022\024\n\005index\030\002 \001(\005R\005index\"h\n:ReqMessageDel",
+      "eteConfirmConfirmConfirmConfirmConfirmCo" +
+      "nfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001" +
+      "(\005R\005index\"c\n5ReqBoardPinConfirmConfirmCo" +
+      "nfirmConfirmConfirmConfirm\022\024\n\005error\030\001 \001(" +
+      "\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"k\n=ReqFac" +
+      "ilityDemolishConfirmConfirmConfirmConfir" +
+      "mConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n" +
+      "\005index\030\002 \001(\005R\005index\"c\n5ReqTeamKickConfir" +
+      "mConfirmConfirmConfirmConfirmConfirm\022\024\n\005" +
+      "error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index" +
+      "\"h\n:ReqMoneyTransferConfirmConfirmConfir" +
+      "mConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005e" +
+      "rror\022\024\n\005index\030\002 \001(\005R\005index\"c\n5ReqItemSel" +
+      "lConfirmConfirmConfirmConfirmConfirmConf" +
+      "irm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005" +
+      "R\005index\"j\n<ReqSysAnnouncementConfirmConf" +
+      "irmConfirmConfirmConfirmConfirm\022\024\n\005error" +
+      "\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"c\n5R" +
+      "eqGemEmbedConfirmConfirmConfirmConfirmCo" +
+      "nfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005in" +
+      "dex\030\002 \001(\005R\005index\"f\n8ReqFatigueGiftConfir" +
+      "mConfirmConfirmConfirmConfirmConfirm\022\024\n\005" +
+      "error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index" +
+      "\"h\n:ReqWarehouseSortConfirmConfirmConfir" +
+      "mConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005e" +
+      "rror\022\024\n\005index\030\002 \001(\005R\005index\"d\n6ReqDiningB" +
+      "uyConfirmConfirmConfirmConfirmConfirmCon" +
+      "firm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(" +
+      "\005R\005index\"h\n:ReqChivalrySkillConfirmConfi" +
+      "rmConfirmConfirmConfirmConfirm\022\024\n\005error\030" +
+      "\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"m\n?Re" +
+      "qControlCenterBuildConfirmConfirmConfirm" +
+      "ConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005er" +
+      "ror\022\024\n\005index\030\002 \001(\005R\005index\"k\n=ReqHistoric" +
+      "siteInfoConfirmConfirmConfirmConfirmConf" +
+      "irmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005inde" +
+      "x\030\002 \001(\005R\005index\"j\n<ResGuildSkillResetConf" +
+      "irmConfirmConfirmConfirmConfirmConfirm\022\024" +
+      "\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005ind" +
+      "ex\"i\n;ResMinigameRewardConfirmConfirmCon" +
+      "firmConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005" +
+      "R\005error\022\024\n\005index\030\002 \001(\005R\005index\"m\n?ResRewa" +
+      "rdClaimConfirmConfirmConfirmConfirmConfi" +
+      "rmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024" +
+      "\n\005index\030\002 \001(\005R\005index\"l\n>ResControlCenter" +
+      "InfoConfirmConfirmConfirmConfirmConfirmC" +
+      "onfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 " +
+      "\001(\005R\005index\"g\n9ResRaidTeamJoinConfirmConf" +
+      "irmConfirmConfirmConfirmConfirm\022\024\n\005error" +
+      "\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"w\nIR" +
+      "esAttackSquadMemberInfoConfirmConfirmCon" +
+      "firmConfirmConfirmConfirmConfirm\022\024\n\005erro" +
+      "r\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"q\nC" +
+      "ResItemDisassembleConfirmConfirmConfirmC" +
+      "onfirmConfirmConfirmConfirm\022\024\n\005error\030\001 \001" +
+      "(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"h\n:PtUse" +
+      "rGoldUpdateConfirmConfirmConfirmConfirmC" +
+      "onfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005i" +
+      "ndex\030\002 \001(\005R\005index\"u\nGResInquirePowerRank" +
+      "ingConfirmConfirmConfirmConfirmConfirmCo" +
+      "nfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005in" +
+      "dex\030\002 \001(\005R\005index\"t\nFResPartyInviteConfir" +
+      "mConfirmConfirmConfirmConfirmConfirmConf" +
+      "irmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005inde" +
+      "x\030\002 \001(\005R\005index\"o\nAResFriendRequestConfir" +
+      "mConfirmConfirmConfirmConfirmConfirmConf" +
+      "irm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005" +
+      "R\005index\"f\n8ResCeraBalanceConfirmConfirmC" +
+      "onfirmConfirmConfirmConfirm\022\024\n\005error\030\001 \001" +
+      "(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"h\n:ResMe" +
+      "ssageDeleteConfirmConfirmConfirmConfirmC" +
+      "onfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005i" +
+      "ndex\030\002 \001(\005R\005index\"q\nCResVoiceChatInviteC" +
+      "onfirmConfirmConfirmConfirmConfirmConfir" +
+      "mConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030" +
+      "\002 \001(\005R\005index\"c\n5ResBoardPinConfirmConfir" +
+      "mConfirmConfirmConfirmConfirm\022\024\n\005error\030\001" +
+      " \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"r\nDRes" +
+      "PvpBattleConfirmConfirmConfirmConfirmCon" +
+      "firmConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005" +
+      "R\005error\022\024\n\005index\030\002 \001(\005R\005index\"k\n=ResFaci" +
+      "lityDemolishConfirmConfirmConfirmConfirm" +
+      "ConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005" +
+      "index\030\002 \001(\005R\005index\"c\n5ResTeamKickConfirm" +
+      "ConfirmConfirmConfirmConfirmConfirm\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"" +
+      "h\n:ResMoneyTransferConfirmConfirmConfirm" +
+      "ConfirmConfirmConfirm\022\024\n\005error\030\001 \001(\005R\005er" +
+      "ror\022\024\n\005index\030\002 \001(\005R\005index\"c\n5ResItemSell" +
+      "ConfirmConfirmConfirmConfirmConfirmConfi" +
+      "rm\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R" +
+      "\005index*a\n\010TeamType\022\025\n\021TEAM_TYPE_UNKNOWN\020" +
+      "\000\022\024\n\020TEAM_TYPE_NORMAL\020\001\022\022\n\016TEAM_TYPE_RAI" +
+      "D\020\002\022\024\n\020TEAM_TYPE_PLAYER\020\003*B\n\014GuildNpcTyp" +
+      "e\022\032\n\026GUILD_NPC_TYPE_UNKNOWN\020\000\022\026\n\022GUILD_N" +
+      "PC_TYPE_NPC\020\001*V\n\016GuildNpcStatus\022\034\n\030GUILD" +
+      "_NPC_STATUS_UNKNOWN\020\000\022&\n\"GUILD_NPC_STATU" +
+      "S_COMPLETE_PURCHASE\020\001*W\n\022GuildStructureT" +
+      "ype\022 \n\034GUILD_STRUCTURE_TYPE_UNKNOWN\020\000\022\037\n" +
+      "\033GUILD_STRUCTURE_TYPE_NORMAL\020\001*c\n\024GuildS" +
+      "tructureStatus\022\"\n\036GUILD_STRUCTURE_STATUS" +
+      "_UNKNOWN\020\000\022\'\n#GUILD_STRUCTURE_STATUS_CON" +
+      "STRUCTION\020\001B\253\001\n com.dnfm.mina.protobuf.g" +
+      "eneratedB\020GameSystemsProtoP\001Z<github.com" +
+      "/pixb/DnfGameServer/dnf-go-client/gen/dn" +
+      "f/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf" +
+      "\\V1\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -15164,6 +15847,549 @@ public final class GameSystemsProto extends com.google.protobuf.GeneratedFile {
     internal_static_dnf_v1_ResChivalrySkillConfirmConfirmConfirmConfirm_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ResChivalrySkillConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqGuildSkillResetConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1167);
+    internal_static_dnf_v1_ReqGuildSkillResetConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqGuildSkillResetConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMinigameRewardConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1168);
+    internal_static_dnf_v1_ReqMinigameRewardConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMinigameRewardConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqRewardClaimConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1169);
+    internal_static_dnf_v1_ReqRewardClaimConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqRewardClaimConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqControlCenterInfoConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1170);
+    internal_static_dnf_v1_ReqControlCenterInfoConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqControlCenterInfoConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqRaidTeamJoinConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1171);
+    internal_static_dnf_v1_ReqRaidTeamJoinConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqRaidTeamJoinConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqCeraBalanceConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1172);
+    internal_static_dnf_v1_ReqCeraBalanceConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqCeraBalanceConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMessageDeleteConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1173);
+    internal_static_dnf_v1_ReqMessageDeleteConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMessageDeleteConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqBoardPinConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1174);
+    internal_static_dnf_v1_ReqBoardPinConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqBoardPinConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqFacilityDemolishConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1175);
+    internal_static_dnf_v1_ReqFacilityDemolishConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqFacilityDemolishConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqTeamKickConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1176);
+    internal_static_dnf_v1_ReqTeamKickConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqTeamKickConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMoneyTransferConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1177);
+    internal_static_dnf_v1_ReqMoneyTransferConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMoneyTransferConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqItemSellConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1178);
+    internal_static_dnf_v1_ReqItemSellConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqItemSellConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqSysAnnouncementConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1179);
+    internal_static_dnf_v1_ReqSysAnnouncementConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqSysAnnouncementConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqGemEmbedConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1180);
+    internal_static_dnf_v1_ReqGemEmbedConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqGemEmbedConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqFatigueGiftConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1181);
+    internal_static_dnf_v1_ReqFatigueGiftConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqFatigueGiftConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqWarehouseSortConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1182);
+    internal_static_dnf_v1_ReqWarehouseSortConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqWarehouseSortConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqDiningBuyConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1183);
+    internal_static_dnf_v1_ReqDiningBuyConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqDiningBuyConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqChivalrySkillConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1184);
+    internal_static_dnf_v1_ReqChivalrySkillConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqChivalrySkillConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqControlCenterBuildConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1185);
+    internal_static_dnf_v1_ReqControlCenterBuildConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqControlCenterBuildConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqHistoricsiteInfoConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1186);
+    internal_static_dnf_v1_ReqHistoricsiteInfoConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqHistoricsiteInfoConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqSkillLearnConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1187);
+    internal_static_dnf_v1_ReqSkillLearnConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqSkillLearnConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResGuildSkillResetConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1188);
+    internal_static_dnf_v1_ResGuildSkillResetConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResGuildSkillResetConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResMinigameRewardConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1189);
+    internal_static_dnf_v1_ResMinigameRewardConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResMinigameRewardConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResRewardClaimConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1190);
+    internal_static_dnf_v1_ResRewardClaimConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResRewardClaimConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResControlCenterInfoConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1191);
+    internal_static_dnf_v1_ResControlCenterInfoConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResControlCenterInfoConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResRaidTeamJoinConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1192);
+    internal_static_dnf_v1_ResRaidTeamJoinConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResRaidTeamJoinConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResAttackSquadMemberInfoConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1193);
+    internal_static_dnf_v1_ResAttackSquadMemberInfoConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResAttackSquadMemberInfoConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResItemDisassembleConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1194);
+    internal_static_dnf_v1_ResItemDisassembleConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResItemDisassembleConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_PtUserGoldUpdateConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1195);
+    internal_static_dnf_v1_PtUserGoldUpdateConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PtUserGoldUpdateConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResInquirePowerRankingConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1196);
+    internal_static_dnf_v1_ResInquirePowerRankingConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResInquirePowerRankingConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResPartyInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1197);
+    internal_static_dnf_v1_ResPartyInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResPartyInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResFriendRequestConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1198);
+    internal_static_dnf_v1_ResFriendRequestConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResFriendRequestConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResCeraBalanceConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1199);
+    internal_static_dnf_v1_ResCeraBalanceConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResCeraBalanceConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResMessageDeleteConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1200);
+    internal_static_dnf_v1_ResMessageDeleteConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResMessageDeleteConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResVoiceChatInviteConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1201);
+    internal_static_dnf_v1_ResVoiceChatInviteConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResVoiceChatInviteConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResBoardPinConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1202);
+    internal_static_dnf_v1_ResBoardPinConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResBoardPinConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResPvpBattleConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1203);
+    internal_static_dnf_v1_ResPvpBattleConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResPvpBattleConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResFacilityDemolishConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1204);
+    internal_static_dnf_v1_ResFacilityDemolishConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResFacilityDemolishConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResTeamKickConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1205);
+    internal_static_dnf_v1_ResTeamKickConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResTeamKickConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResMoneyTransferConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1206);
+    internal_static_dnf_v1_ResMoneyTransferConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResMoneyTransferConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResItemSellConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1207);
+    internal_static_dnf_v1_ResItemSellConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResItemSellConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResSysAnnouncementConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1208);
+    internal_static_dnf_v1_ResSysAnnouncementConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResSysAnnouncementConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResGemEmbedConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1209);
+    internal_static_dnf_v1_ResGemEmbedConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResGemEmbedConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResFatigueGiftConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1210);
+    internal_static_dnf_v1_ResFatigueGiftConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResFatigueGiftConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResLockstepConfirmConfirmConfirmConfirmConfirmConfirmResponse_descriptor =
+      getDescriptor().getMessageType(1211);
+    internal_static_dnf_v1_ResLockstepConfirmConfirmConfirmConfirmConfirmConfirmResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResLockstepConfirmConfirmConfirmConfirmConfirmConfirmResponse_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResWarehouseSortConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1212);
+    internal_static_dnf_v1_ResWarehouseSortConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResWarehouseSortConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResDiningBuyConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1213);
+    internal_static_dnf_v1_ResDiningBuyConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResDiningBuyConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResMenteeConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1214);
+    internal_static_dnf_v1_ResMenteeConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResMenteeConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResBingoConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1215);
+    internal_static_dnf_v1_ResBingoConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResBingoConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResChivalrySkillConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1216);
+    internal_static_dnf_v1_ResChivalrySkillConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResChivalrySkillConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqGuildSkillResetConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1217);
+    internal_static_dnf_v1_ReqGuildSkillResetConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqGuildSkillResetConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMinigameRewardConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1218);
+    internal_static_dnf_v1_ReqMinigameRewardConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMinigameRewardConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqRewardClaimConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1219);
+    internal_static_dnf_v1_ReqRewardClaimConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqRewardClaimConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqControlCenterInfoConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1220);
+    internal_static_dnf_v1_ReqControlCenterInfoConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqControlCenterInfoConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqRaidTeamJoinConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1221);
+    internal_static_dnf_v1_ReqRaidTeamJoinConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqRaidTeamJoinConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqCeraBalanceConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1222);
+    internal_static_dnf_v1_ReqCeraBalanceConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqCeraBalanceConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMessageDeleteConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1223);
+    internal_static_dnf_v1_ReqMessageDeleteConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMessageDeleteConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqBoardPinConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1224);
+    internal_static_dnf_v1_ReqBoardPinConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqBoardPinConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqFacilityDemolishConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1225);
+    internal_static_dnf_v1_ReqFacilityDemolishConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqFacilityDemolishConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqTeamKickConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1226);
+    internal_static_dnf_v1_ReqTeamKickConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqTeamKickConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMoneyTransferConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1227);
+    internal_static_dnf_v1_ReqMoneyTransferConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMoneyTransferConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqItemSellConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1228);
+    internal_static_dnf_v1_ReqItemSellConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqItemSellConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqSysAnnouncementConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1229);
+    internal_static_dnf_v1_ReqSysAnnouncementConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqSysAnnouncementConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqGemEmbedConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1230);
+    internal_static_dnf_v1_ReqGemEmbedConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqGemEmbedConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqFatigueGiftConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1231);
+    internal_static_dnf_v1_ReqFatigueGiftConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqFatigueGiftConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqWarehouseSortConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1232);
+    internal_static_dnf_v1_ReqWarehouseSortConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqWarehouseSortConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqDiningBuyConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1233);
+    internal_static_dnf_v1_ReqDiningBuyConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqDiningBuyConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    _clinit_autosplit_dinit_2();
+  }
+  private static void _clinit_autosplit_dinit_2() {
+    internal_static_dnf_v1_ReqChivalrySkillConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1234);
+    internal_static_dnf_v1_ReqChivalrySkillConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqChivalrySkillConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqControlCenterBuildConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1235);
+    internal_static_dnf_v1_ReqControlCenterBuildConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqControlCenterBuildConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqHistoricsiteInfoConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1236);
+    internal_static_dnf_v1_ReqHistoricsiteInfoConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqHistoricsiteInfoConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResGuildSkillResetConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1237);
+    internal_static_dnf_v1_ResGuildSkillResetConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResGuildSkillResetConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResMinigameRewardConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1238);
+    internal_static_dnf_v1_ResMinigameRewardConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResMinigameRewardConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResRewardClaimConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1239);
+    internal_static_dnf_v1_ResRewardClaimConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResRewardClaimConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResControlCenterInfoConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1240);
+    internal_static_dnf_v1_ResControlCenterInfoConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResControlCenterInfoConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResRaidTeamJoinConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1241);
+    internal_static_dnf_v1_ResRaidTeamJoinConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResRaidTeamJoinConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResAttackSquadMemberInfoConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1242);
+    internal_static_dnf_v1_ResAttackSquadMemberInfoConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResAttackSquadMemberInfoConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResItemDisassembleConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1243);
+    internal_static_dnf_v1_ResItemDisassembleConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResItemDisassembleConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_PtUserGoldUpdateConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1244);
+    internal_static_dnf_v1_PtUserGoldUpdateConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PtUserGoldUpdateConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResInquirePowerRankingConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1245);
+    internal_static_dnf_v1_ResInquirePowerRankingConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResInquirePowerRankingConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResPartyInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1246);
+    internal_static_dnf_v1_ResPartyInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResPartyInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResFriendRequestConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1247);
+    internal_static_dnf_v1_ResFriendRequestConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResFriendRequestConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResCeraBalanceConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1248);
+    internal_static_dnf_v1_ResCeraBalanceConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResCeraBalanceConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResMessageDeleteConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1249);
+    internal_static_dnf_v1_ResMessageDeleteConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResMessageDeleteConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResVoiceChatInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1250);
+    internal_static_dnf_v1_ResVoiceChatInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResVoiceChatInviteConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResBoardPinConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1251);
+    internal_static_dnf_v1_ResBoardPinConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResBoardPinConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResPvpBattleConfirmConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1252);
+    internal_static_dnf_v1_ResPvpBattleConfirmConfirmConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResPvpBattleConfirmConfirmConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResFacilityDemolishConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1253);
+    internal_static_dnf_v1_ResFacilityDemolishConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResFacilityDemolishConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResTeamKickConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1254);
+    internal_static_dnf_v1_ResTeamKickConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResTeamKickConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResMoneyTransferConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1255);
+    internal_static_dnf_v1_ResMoneyTransferConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResMoneyTransferConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResItemSellConfirmConfirmConfirmConfirmConfirmConfirm_descriptor =
+      getDescriptor().getMessageType(1256);
+    internal_static_dnf_v1_ResItemSellConfirmConfirmConfirmConfirmConfirmConfirm_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResItemSellConfirmConfirmConfirmConfirmConfirmConfirm_descriptor,
         new java.lang.String[] { "Error", "Index", });
     descriptor.resolveAllFeaturesImmutable();
     com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor();
