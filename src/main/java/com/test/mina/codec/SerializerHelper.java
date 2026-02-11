@@ -48,13 +48,13 @@ public class SerializerHelper {
       return this.encoder;
    }
 
-   @SuppressWarnings({"unchecked", "rawtypes"})
    public static byte[] protobufEncodeObject(Object obj) {
       byte[] body = null;
       Class<?> msgClazz = obj.getClass();
 
       try {
-         Codec codec = ProtobufProxy.create(msgClazz);
+         @SuppressWarnings("unchecked")
+         Codec<Object> codec = (Codec<Object>) ProtobufProxy.create(msgClazz);
          body = codec.encode(obj);
       } catch (IOException e) {
          logger.error("", e);

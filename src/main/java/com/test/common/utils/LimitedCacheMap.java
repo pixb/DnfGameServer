@@ -65,7 +65,7 @@ public class LimitedCacheMap<K, V> {
       LimitedCacheMap<K, V>.Element<V> target = null;
 
       try {
-         target = (Element<V>)this.data.get(key);
+         target = (Element)this.data.get(key);
          if (target == null) {
             Object var4 = null;
             return (V)var4;

@@ -50,8 +50,6 @@ import com.dnfm.game.skill.model.SkillslotBox;
 import com.dnfm.game.task.model.TaskInfo;
 import com.dnfm.game.utils.ProtocalSet;
 import com.dnfm.mina.cache.DataCache;
-import com.dnfm.mina.codec.MessageCodecFactory;
-import com.dnfm.mina.codec.SerializerHelper;
 import com.dnfm.mina.protobuf.PT_AUCTION_EQUIP;
 import com.dnfm.mina.protobuf.PT_AUCTION_STACKABLE;
 import com.dnfm.mina.protobuf.PT_SKILL;
@@ -77,19 +75,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(3)
 public class MyApplicationRunner implements ApplicationRunner {
    Logger logger = LoggerFactory.getLogger(MyApplicationRunner.class);
    @Autowired
    Dao dao;
-   @Autowired
-   MessageCodecFactory messageCodecFactory;
 
    public static void main(String[] args) {
       MyApplicationRunner myApplicationRunner = new MyApplicationRunner();
@@ -97,13 +91,7 @@ public class MyApplicationRunner implements ApplicationRunner {
    }
 
    public void run(ApplicationArguments var1) {
-      System.out.println("===== MyApplicationRunner.run() 开始执行 =====");
       this.logger.error("MyApplicationRunner.run...");
-      this.logger.info("开始初始化SerializerHelper的MessageCodecFactory...");
-      SerializerHelper helper = SerializerHelper.getInstance();
-      helper.setCodecFactory(messageCodecFactory);
-      this.logger.info("SerializerHelper的MessageCodecFactory初始化完成");
-      System.out.println("===== SerializerHelper的MessageCodecFactory 初始化完成 =====");
       this.initTotal();
       this.initLv28();
       this.initAvatarCompoundResultList();

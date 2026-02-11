@@ -121,8 +121,8 @@ public class EquipDataPool {
    public static int changeEpic(long guid, Role role) {
       int index = 0;
       PT_EQUIPPED ptEquipped = role.getEquippedBox().getEquipped(guid);
-      List<PT_RANDOMOPTION_ITEM> roptionnew = new ArrayList();
-      new ArrayList();
+      List<PT_RANDOMOPTION_ITEM> roptionnew = new ArrayList<>();
+      new ArrayList<>();
       PT_EQUIP equip = new PT_EQUIP();
       int equipType = 0;
       int minlevel = 0;
@@ -554,7 +554,7 @@ public class EquipDataPool {
       Random rnd = new Random();
       int quality = rnd.nextInt(20) + 60;
       roleEquip.quality = quality;
-      roleEquip.score = ((Integer)index2Score.get(index)) * quality / 100;
+      roleEquip.score = (Integer)index2Score.get(index) * quality / 100;
       return roleEquip;
    }
 

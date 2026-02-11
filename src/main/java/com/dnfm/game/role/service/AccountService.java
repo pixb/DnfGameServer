@@ -135,7 +135,7 @@ public class AccountService {
       name = "adb"
    )
    public AccountLogin queryAccount(String openId) {
-      AccountLogin account = (AccountLogin)this.dao.fetch(AccountLogin.class, Cnd.where("userID", "=", openId));
+      AccountLogin account = (AccountLogin)this.dao.fetch(AccountLogin.class, Cnd.where("id", "=", openId));
       return account;
    }
 

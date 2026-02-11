@@ -791,10 +791,10 @@ public class EnterGameController {
                mailBox = new HashMap();
             }
 
-            List<PT_POST_ALL_LIST> ptPostAllLists = new ArrayList();
-            if (((Map)mailBox).size() > 0) {
+            List<PT_POST_ALL_LIST> ptPostAllLists = new ArrayList<>();
+            if (((Map<Long, PT_POST_ALL_LIST>)mailBox).size() > 0) {
                for(Map.Entry<Long, PT_POST_ALL_LIST> entry : ((Map<Long, PT_POST_ALL_LIST>)mailBox).entrySet()) {
-                  PT_POST_ALL_LIST ptPostAllList = (PT_POST_ALL_LIST)entry.getValue();
+                  PT_POST_ALL_LIST ptPostAllList = entry.getValue();
                   ptPostAllLists.add(ptPostAllList);
                }
             }
@@ -1008,8 +1008,8 @@ public class EnterGameController {
       resLogin.transId = reqLogin.transId;
       resLogin.seeds = new ArrayList();
       MessagePusher.pushMessage((IoSession)session, resLogin);
-      // RES_PING resPing = new RES_PING();
-      // MessagePusher.pushMessage((IoSession)session, resPing);
+      RES_PING resPing = new RES_PING();
+      MessagePusher.pushMessage((IoSession)session, resPing);
    }
 
    @RequestMapping
@@ -1851,11 +1851,6 @@ public class EnterGameController {
 
    @RequestMapping
    public void ReqPing(IoSession session, REQ_PING reqPing) {
-      RES_PING resPing = new RES_PING();
-      resPing.error = 0;
-      resPing.responsetime = (int)(System.currentTimeMillis() % 1000);
-      resPing.transId = reqPing.transId;
-      MessagePusher.pushMessage((IoSession)session, resPing);
    }
 
    @RequestMapping

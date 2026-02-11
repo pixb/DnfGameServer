@@ -21,11 +21,11 @@ public class EquipBox implements Serializable {
    }
 
    public PT_EQUIP getEquip(long equipGuid) {
-      return (PT_EQUIP)this.equips.get(equipGuid);
+      return this.equips.get(equipGuid);
    }
 
    public PT_EQUIP removeEquip(long equipGuid) {
-      return (PT_EQUIP)this.equips.remove(equipGuid);
+      return this.equips.remove(equipGuid);
    }
 
    public PT_EQUIP getEquipByIndex(int index) {

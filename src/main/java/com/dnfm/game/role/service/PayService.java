@@ -39,7 +39,6 @@ public class PayService {
    private String crateShortUrl(String longUrl) {
       BufferedReader reader = null;
 
-      String shortUrl;
       try {
          longUrl = URLEncoder.encode(longUrl, "GBK");
          URL url = new URL("http://api.t.sina.com.cn/short_url/shorten.json?source=2849184197&url_long=" + longUrl);
@@ -50,12 +49,10 @@ public class PayService {
          String var7 = jsonObj.getString("url_short");
          return var7;
       } catch (Exception var11) {
-         shortUrl = longUrl;
+         return longUrl;
       } finally {
          IOUtils.closeQuietly(reader);
       }
-
-      return shortUrl;
    }
 
    public void loadCommonSet(Map<String, String> commonSetMap) {

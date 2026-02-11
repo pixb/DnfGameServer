@@ -226,7 +226,7 @@ public class AuctionController {
                }
             }
 
-            res_auction_buy_at_once.categoryitemlist = new ArrayList();
+            res_auction_buy_at_once.categoryitemlist = new ArrayList<>();
 
             for(AuctionModel auctionModel : (List<AuctionModel>)DataCache.auctionCategoryMap.get(req_auction_buy_at_once.category)) {
                PT_AUCTION_ITEM_INDEX pt_auction_item_index = new PT_AUCTION_ITEM_INDEX();

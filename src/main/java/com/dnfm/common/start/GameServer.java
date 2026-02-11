@@ -5,7 +5,6 @@ import com.dnfm.common.thread.NamedThreadFactory;
 import com.dnfm.game.ServerService;
 import com.dnfm.mina.MessageDispatcher;
 import com.dnfm.mina.ServerSocketIoHandler;
-import com.dnfm.mina.codec.MessageCodecFactory;
 import com.dnfm.mina.codec.SerializerHelper;
 import com.dnfm.mina.message.MessageFactory;
 import com.dnfm.mina.task.TaskHandlerContext;
@@ -29,11 +28,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(2)
 public class GameServer implements CommandLineRunner {
    private static SocketAcceptor acceptor;
    private final Logger logger = LoggerFactory.getLogger(GameServer.class);
@@ -41,20 +38,9 @@ public class GameServer implements CommandLineRunner {
    ServerService serverService;
    @Autowired
    ScheduledService scheduledService;
-   @Autowired
-   MessageCodecFactory messageCodecFactory;
 
    public void run(String... var1) throws Exception {
-      System.out.println("===== GameServer.run() 开始执行 =====");
-      this.logger.info("GameServer.run() 开始执行");
-      this.logger.info("开始初始化SerializerHelper的MessageCodecFactory...");
-      SerializerHelper helper = SerializerHelper.getInstance();
-      helper.setCodecFactory(messageCodecFactory);
-      this.logger.info("SerializerHelper的MessageCodecFactory初始化完成");
-      this.logger.info("开始初始化游戏服务器...");
       this.initGameServer();
-      this.logger.info("游戏服务器初始化完成");
-      System.out.println("===== GameServer.run() 执行完成 =====");
    }
 
    private void initGameServer() throws Exception {
