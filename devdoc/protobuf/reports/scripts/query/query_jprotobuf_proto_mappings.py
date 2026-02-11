@@ -26,9 +26,25 @@ class JProtobufProtoMappingQuery:
         """根据JProtobuf消息名查询"""
         cursor = self.conn.cursor()
         cursor.execute('''
-            SELECT * FROM jprotobuf_proto_mappings
-            WHERE jprotobuf_message_name LIKE ?
-            ORDER BY jprotobuf_message_name
+            SELECT 
+                jm.message_name as jprotobuf_message_name,
+                jm.file_path as jprotobuf_file_path,
+                jm.module_id,
+                jm.message_type,
+                pm.message_name as proto_message_name,
+                pm.file_path as proto_file_path,
+                pm.package_name,
+                mm.mapping_type,
+                mm.mapping_confidence,
+                mm.is_verified,
+                mb.batch_number,
+                mb.batch_name
+            FROM message_mappings mm
+            JOIN jprotobuf_messages jm ON mm.jprotobuf_message_id = jm.id
+            LEFT JOIN proto_messages pm ON mm.proto_message_id = pm.id
+            LEFT JOIN migration_batches mb ON mb.batch_number = 1
+            WHERE jm.message_name LIKE ?
+            ORDER BY jm.message_name
         ''', (f'%{name}%',))
         
         results = cursor.fetchall()
@@ -38,9 +54,25 @@ class JProtobufProtoMappingQuery:
         """根据标准Protobuf消息名查询"""
         cursor = self.conn.cursor()
         cursor.execute('''
-            SELECT * FROM jprotobuf_proto_mappings
-            WHERE proto_message_name LIKE ?
-            ORDER BY proto_message_name
+            SELECT 
+                jm.message_name as jprotobuf_message_name,
+                jm.file_path as jprotobuf_file_path,
+                jm.module_id,
+                jm.message_type,
+                pm.message_name as proto_message_name,
+                pm.file_path as proto_file_path,
+                pm.package_name,
+                mm.mapping_type,
+                mm.mapping_confidence,
+                mm.is_verified,
+                mb.batch_number,
+                mb.batch_name
+            FROM message_mappings mm
+            JOIN jprotobuf_messages jm ON mm.jprotobuf_message_id = jm.id
+            JOIN proto_messages pm ON mm.proto_message_id = pm.id
+            LEFT JOIN migration_batches mb ON mb.batch_number = 1
+            WHERE pm.message_name LIKE ?
+            ORDER BY pm.message_name
         ''', (f'%{name}%',))
         
         results = cursor.fetchall()
@@ -50,9 +82,25 @@ class JProtobufProtoMappingQuery:
         """根据ModuleID查询"""
         cursor = self.conn.cursor()
         cursor.execute('''
-            SELECT * FROM jprotobuf_proto_mappings
-            WHERE module_id = ?
-            ORDER BY jprotobuf_message_name
+            SELECT 
+                jm.message_name as jprotobuf_message_name,
+                jm.file_path as jprotobuf_file_path,
+                jm.module_id,
+                jm.message_type,
+                pm.message_name as proto_message_name,
+                pm.file_path as proto_file_path,
+                pm.package_name,
+                mm.mapping_type,
+                mm.mapping_confidence,
+                mm.is_verified,
+                mb.batch_number,
+                mb.batch_name
+            FROM message_mappings mm
+            JOIN jprotobuf_messages jm ON mm.jprotobuf_message_id = jm.id
+            LEFT JOIN proto_messages pm ON mm.proto_message_id = pm.id
+            LEFT JOIN migration_batches mb ON mb.batch_number = 1
+            WHERE jm.module_id = ?
+            ORDER BY jm.message_name
         ''', (module_id,))
         
         results = cursor.fetchall()
@@ -62,9 +110,24 @@ class JProtobufProtoMappingQuery:
         """根据批次ID查询"""
         cursor = self.conn.cursor()
         cursor.execute('''
-            SELECT * FROM jprotobuf_proto_mappings
-            WHERE batch_id = ?
-            ORDER BY jprotobuf_message_name
+            SELECT 
+                jm.message_name as jprotobuf_message_name,
+                jm.file_path as jprotobuf_file_path,
+                jm.module_id,
+                jm.message_type,
+                pm.message_name as proto_message_name,
+                pm.file_path as proto_file_path,
+                pm.package_name,
+                mm.mapping_type,
+                mm.mapping_confidence,
+                mm.is_verified,
+                mb.batch_number,
+                mb.batch_name
+            FROM message_mappings mm
+            JOIN jprotobuf_messages jm ON mm.jprotobuf_message_id = jm.id
+            JOIN proto_messages pm ON mm.proto_message_id = pm.id
+            JOIN migration_batches mb ON mb.batch_number = ?
+            ORDER BY jm.message_name
         ''', (batch_id,))
         
         results = cursor.fetchall()
@@ -74,9 +137,25 @@ class JProtobufProtoMappingQuery:
         """根据消息类型查询"""
         cursor = self.conn.cursor()
         cursor.execute('''
-            SELECT * FROM jprotobuf_proto_mappings
-            WHERE message_type = ?
-            ORDER BY jprotobuf_message_name
+            SELECT 
+                jm.message_name as jprotobuf_message_name,
+                jm.file_path as jprotobuf_file_path,
+                jm.module_id,
+                jm.message_type,
+                pm.message_name as proto_message_name,
+                pm.file_path as proto_file_path,
+                pm.package_name,
+                mm.mapping_type,
+                mm.mapping_confidence,
+                mm.is_verified,
+                mb.batch_number,
+                mb.batch_name
+            FROM message_mappings mm
+            JOIN jprotobuf_messages jm ON mm.jprotobuf_message_id = jm.id
+            JOIN proto_messages pm ON mm.proto_message_id = pm.id
+            LEFT JOIN migration_batches mb ON mb.batch_number = 1
+            WHERE jm.message_type = ?
+            ORDER BY jm.message_name
         ''', (message_type,))
         
         results = cursor.fetchall()
@@ -86,9 +165,25 @@ class JProtobufProtoMappingQuery:
         """根据迁移状态查询"""
         cursor = self.conn.cursor()
         cursor.execute('''
-            SELECT * FROM jprotobuf_proto_mappings
-            WHERE is_migrated = ?
-            ORDER BY jprotobuf_message_name
+            SELECT 
+                jm.message_name as jprotobuf_message_name,
+                jm.file_path as jprotobuf_file_path,
+                jm.module_id,
+                jm.message_type,
+                pm.message_name as proto_message_name,
+                pm.file_path as proto_file_path,
+                pm.package_name,
+                mm.mapping_type,
+                mm.mapping_confidence,
+                mm.is_verified,
+                mb.batch_number,
+                mb.batch_name
+            FROM message_mappings mm
+            JOIN jprotobuf_messages jm ON mm.jprotobuf_message_id = jm.id
+            LEFT JOIN proto_messages pm ON mm.proto_message_id = pm.id
+            LEFT JOIN migration_batches mb ON mb.batch_number = 1
+            WHERE mm.is_verified = ?
+            ORDER BY jm.message_name
         ''', (1 if is_migrated else 0,))
         
         status = "已迁移" if is_migrated else "未迁移"
@@ -99,8 +194,24 @@ class JProtobufProtoMappingQuery:
         """列出所有映射"""
         cursor = self.conn.cursor()
         cursor.execute('''
-            SELECT * FROM jprotobuf_proto_mappings
-            ORDER BY jprotobuf_message_name
+            SELECT 
+                jm.message_name as jprotobuf_message_name,
+                jm.file_path as jprotobuf_file_path,
+                jm.module_id,
+                jm.message_type,
+                pm.message_name as proto_message_name,
+                pm.file_path as proto_file_path,
+                pm.package_name,
+                mm.mapping_type,
+                mm.mapping_confidence,
+                mm.is_verified,
+                mb.batch_number,
+                mb.batch_name
+            FROM message_mappings mm
+            JOIN jprotobuf_messages jm ON mm.jprotobuf_message_id = jm.id
+            LEFT JOIN proto_messages pm ON mm.proto_message_id = pm.id
+            LEFT JOIN migration_batches mb ON mb.batch_number = 1
+            ORDER BY jm.message_name
             LIMIT ?
         ''', (limit,))
         
@@ -115,26 +226,31 @@ class JProtobufProtoMappingQuery:
         print("=" * 80)
         
         # 总体统计
-        cursor.execute('SELECT COUNT(*) FROM jprotobuf_proto_mappings')
-        total = cursor.fetchone()[0]
+        cursor.execute('SELECT COUNT(*) FROM jprotobuf_messages')
+        total_jprotobuf = cursor.fetchone()[0]
         
-        cursor.execute('SELECT COUNT(*) FROM jprotobuf_proto_mappings WHERE is_migrated = 1')
-        migrated = cursor.fetchone()[0]
+        cursor.execute('SELECT COUNT(*) FROM proto_messages')
+        total_proto = cursor.fetchone()[0]
         
-        cursor.execute('SELECT COUNT(*) FROM jprotobuf_proto_mappings WHERE is_migrated = 0')
-        not_migrated = cursor.fetchone()[0]
+        cursor.execute('SELECT COUNT(*) FROM message_mappings')
+        total_mappings = cursor.fetchone()[0]
+        
+        cursor.execute('SELECT COUNT(*) FROM message_mappings WHERE is_verified = 1')
+        verified_mappings = cursor.fetchone()[0]
         
         print(f"\n总体统计:")
-        print(f"  📊 总计: {total}")
-        print(f"  ✅ 已迁移: {migrated} ({migrated/total*100:.2f}%)")
-        print(f"  ❌ 未迁移: {not_migrated} ({not_migrated/total*100:.2f}%)")
+        print(f"  📊 JProtobuf消息总数: {total_jprotobuf}")
+        print(f"  📊 标准Protobuf消息总数: {total_proto}")
+        print(f"  🔗 映射关系总数: {total_mappings}")
+        print(f"  ✅ 已验证映射: {verified_mappings} ({verified_mappings/total_mappings*100:.2f}%)" if total_mappings > 0 else "  ✅ 已验证映射: 0")
         
         # 按消息类型统计
         cursor.execute('''
-            SELECT message_type, COUNT(*) as count,
-                   SUM(CASE WHEN is_migrated = 1 THEN 1 ELSE 0 END) as migrated_count
-            FROM jprotobuf_proto_mappings
-            GROUP BY message_type
+            SELECT jm.message_type, COUNT(*) as count,
+                   SUM(CASE WHEN mm.is_verified = 1 THEN 1 ELSE 0 END) as verified_count
+            FROM jprotobuf_messages jm
+            LEFT JOIN message_mappings mm ON mm.jprotobuf_message_id = jm.id
+            GROUP BY jm.message_type
             ORDER BY count DESC
         ''')
         
@@ -142,27 +258,28 @@ class JProtobufProtoMappingQuery:
         for row in cursor.fetchall():
             msg_type = row[0]
             count = row[1]
-            migrated_count = row[2]
-            percentage = (migrated_count / count * 100) if count > 0 else 0
-            print(f"  {msg_type}: {count} (已迁移: {migrated_count}, {percentage:.2f}%)")
+            verified_count = row[2]
+            percentage = (verified_count / count * 100) if count > 0 else 0
+            print(f"  {msg_type}: {count} (已验证: {verified_count}, {percentage:.2f}%)")
         
         # 按批次统计
         cursor.execute('''
-            SELECT batch_id, COUNT(*) as count,
-                   SUM(CASE WHEN is_migrated = 1 THEN 1 ELSE 0 END) as migrated_count
-            FROM jprotobuf_proto_mappings
-            WHERE batch_id IS NOT NULL
-            GROUP BY batch_id
-            ORDER BY batch_id
+            SELECT mb.batch_number, mb.batch_name, COUNT(*) as count,
+                   SUM(CASE WHEN mm.is_verified = 1 THEN 1 ELSE 0 END) as verified_count
+            FROM message_mappings mm
+            LEFT JOIN migration_batches mb ON mb.batch_number = 1
+            GROUP BY mb.batch_number
+            ORDER BY mb.batch_number
         ''')
         
         print("\n按批次统计:")
         for row in cursor.fetchall():
-            batch_id = row[0]
-            count = row[1]
-            migrated_count = row[2]
-            percentage = (migrated_count / count * 100) if count > 0 else 0
-            print(f"  批次{batch_id}: {count} (已迁移: {migrated_count}, {percentage:.2f}%)")
+            batch_number = row[0]
+            batch_name = row[1]
+            count = row[2]
+            verified_count = row[3]
+            percentage = (verified_count / count * 100) if count > 0 else 0
+            print(f"  批次{batch_number} ({batch_name}): {count} (已验证: {verified_count}, {percentage:.2f}%)")
     
     def _print_results(self, results, title: str):
         """打印查询结果"""
@@ -176,17 +293,24 @@ class JProtobufProtoMappingQuery:
         print(f"找到 {len(results)} 条记录\n")
         
         for i, row in enumerate(results, 1):
-            status_icon = "✅" if row['is_migrated'] else "❌"
+            status_icon = "✅" if row['is_verified'] else "❌"
             
             print(f"【{i}】{status_icon} {row['jprotobuf_message_name']}")
             print(f"    JProtobuf文件: {row['jprotobuf_file_path']}")
             print(f"    ModuleID: {row['module_id']}, 消息类型: {row['message_type']}")
             
-            if row['is_migrated']:
+            if row['proto_message_name']:
                 print(f"    → 标准Protobuf消息: {row['proto_message_name']}")
                 print(f"    → Proto文件: {row['proto_file_path']}")
+                print(f"    → 包名: {row['package_name']}")
+                print(f"    → 映射类型: {row['mapping_type']}")
+                print(f"    → 置信度: {row['mapping_confidence']}")
+                print(f"    → 已验证: {'是' if row['is_verified'] else '否'}")
             else:
                 print(f"    → 未找到对应的标准Protobuf消息")
+            
+            if row['batch_number']:
+                print(f"    → 批次: {row['batch_number']} ({row['batch_name']})")
             
             print()
 
@@ -240,7 +364,7 @@ def main():
     
     args = parser.parse_args()
     
-    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/data/migration_progress.db'
+    db_path = '/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/data/migration_system.db'
     query = JProtobufProtoMappingQuery(db_path)
     
     if args.jprotobuf:
