@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -247,13 +247,13 @@ func testBatch76BookmarkMessages(t *testing.T) {
 
 // 测试帧数据相关消息
 func testBatch76FrameMessages(t *testing.T) {
-	frameDataNoti := &dnfv1.FrameDataNoti{
+	frameDataRes := &dnfv1.FrameDataRes{
 		Error: 0,
 		Index: 1,
 	}
-	assert.NotNil(t, frameDataNoti)
-	assert.Equal(t, int32(0), frameDataNoti.Error)
-	assert.Equal(t, int32(1), frameDataNoti.Index)
+	assert.NotNil(t, frameDataRes)
+	assert.Equal(t, int32(0), frameDataRes.Error)
+	assert.Equal(t, int32(1), frameDataRes.Index)
 
 	resultReasonRes := &dnfv1.ResultReasonRes{
 		Error: 0,
@@ -312,13 +312,13 @@ func testBatch76MinigameMessages(t *testing.T) {
 
 // 测试消耗相关消息
 func testBatch76ConsumeMessages(t *testing.T) {
-	ptConsumeItems := &dnfv1.PtConsumeItems{
+	ptItems := &dnfv1.PtItems{
 		Error: 0,
 		Index: 1,
 	}
-	assert.NotNil(t, ptConsumeItems)
-	assert.Equal(t, int32(0), ptConsumeItems.Error)
-	assert.Equal(t, int32(1), ptConsumeItems.Index)
+	assert.NotNil(t, ptItems)
+	assert.Equal(t, int32(0), ptItems.Error)
+	assert.Equal(t, int32(1), ptItems.Index)
 }
 
 // 测试拍卖相关消息
@@ -397,13 +397,13 @@ func testBatch76RewardMessages(t *testing.T) {
 
 // 测试棋盘相关消息
 func testBatch76BoardMessages(t *testing.T) {
-	resBoardGameSync := &dnfv1.ResBoardGameSync{
+	resBoardGameSyncHp := &dnfv1.ResBoardGameSyncHp{
 		Error: 0,
 		Index: 1,
 	}
-	assert.NotNil(t, resBoardGameSync)
-	assert.Equal(t, int32(0), resBoardGameSync.Error)
-	assert.Equal(t, int32(1), resBoardGameSync.Index)
+	assert.NotNil(t, resBoardGameSyncHp)
+	assert.Equal(t, int32(0), resBoardGameSyncHp.Error)
+	assert.Equal(t, int32(1), resBoardGameSyncHp.Index)
 }
 
 // 测试收集相关消息

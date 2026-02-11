@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -395,13 +395,13 @@ func testBatch71AttackSquadMessages(t *testing.T) {
 
 // 测试小游戏相关消息
 func testBatch71MinigameMessages(t *testing.T) {
-	reqMinigame77valentineReward := &dnfv1.ReqMinigame77valentineReward{
+	reqMinigame77ValentineReward := &dnfv1.ReqMinigame77ValentineReward{
 		Error: 0,
 		Index: 1,
 	}
-	assert.NotNil(t, reqMinigame77valentineReward)
-	assert.Equal(t, int32(0), reqMinigame77valentineReward.Error)
-	assert.Equal(t, int32(1), reqMinigame77valentineReward.Index)
+	assert.NotNil(t, reqMinigame77ValentineReward)
+	assert.Equal(t, int32(0), reqMinigame77ValentineReward.Error)
+	assert.Equal(t, int32(1), reqMinigame77ValentineReward.Index)
 }
 
 // 测试冒险联盟相关消息

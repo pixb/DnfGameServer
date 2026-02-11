@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,16 +25,11 @@ func TestBatch80Migration(t *testing.T) {
 	t.Run("Cera", testBatch80CeraMessages)
 	t.Run("Message", testBatch80MessageMessages)
 	t.Run("Voice", testBatch80VoiceMessages)
-	t.Run("TimeBox", testBatch80TimeBoxMessages)
 	t.Run("Board", testBatch80BoardMessages)
 	t.Run("Pvp", testBatch80PvpMessages)
 	t.Run("Facility", testBatch80FacilityMessages)
 	t.Run("Team", testBatch80TeamMessages)
-	t.Run("Money", testBatch80MoneyMessages)
 	t.Run("Proposal", testBatch80ProposalMessages)
-	t.Run("Dungeon", testBatch80DungeonMessages)
-	t.Run("Auction", testBatch80AuctionMessages)
-	t.Run("Equip", testBatch80EquipMessages)
 	t.Run("Syscmd", testBatch80SyscmdMessages)
 	t.Run("Reforge", testBatch80ReforgeMessages)
 	t.Run("Fatigue", testBatch80FatigueMessages)

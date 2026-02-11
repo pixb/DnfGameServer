@@ -26,7 +26,7 @@ func TestBatch67Migration(t *testing.T) {
 	t.Run("Party", testBatch67PartyMessages)
 	t.Run("Divorce", testBatch67DivorceMessages)
 	t.Run("Item", testBatch67ItemMessages)
-	t.Run("NewContents", testBatch67NewContentsMessages)
+	t.Run("NewContents", testBatch67ContentsMessages)
 	t.Run("Interesting", testBatch67InterestingMessages)
 	t.Run("Mannequin", testBatch67MannequinMessages)
 	t.Run("CeraGacha", testBatch67CeraGachaMessages)

@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -334,13 +334,13 @@ func testBatch66AchievementMessages(t *testing.T) {
 
 // 测试PVP相关消息
 func testBatch66PvpMessages(t *testing.T) {
-	resPvp3vs3JoinCharguid := &dnfv1.ResPvp3vs3JoinCharguid{
+	resPvp3Vs3JoinCharguid := &dnfv1.ResPvp3Vs3JoinCharguid{
 		Error: 0,
 		Index: 1,
 	}
-	assert.NotNil(t, resPvp3vs3JoinCharguid)
-	assert.Equal(t, int32(0), resPvp3vs3JoinCharguid.Error)
-	assert.Equal(t, int32(1), resPvp3vs3JoinCharguid.Index)
+	assert.NotNil(t, resPvp3Vs3JoinCharguid)
+	assert.Equal(t, int32(0), resPvp3Vs3JoinCharguid.Error)
+	assert.Equal(t, int32(1), resPvp3Vs3JoinCharguid.Index)
 }
 
 // 测试攻击相关消息

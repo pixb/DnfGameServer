@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -315,20 +315,20 @@ func testBatch78GuildMessages(t *testing.T) {
 // 测试技能相关消息
 func testBatch78SkillMessages(t *testing.T) {
 	resSkillInit := &dnfv1.ResSkillInit{
-		Error: 0,
-		Index: 1,
+		Error:  0,
+		Skills: []int32{1, 2, 3},
 	}
 	assert.NotNil(t, resSkillInit)
 	assert.Equal(t, int32(0), resSkillInit.Error)
-	assert.Equal(t, int32(1), resSkillInit.Index)
+	assert.Equal(t, []int32{1, 2, 3}, resSkillInit.Skills)
 
 	resSkillSlot := &dnfv1.ResSkillSlot{
 		Error: 0,
-		Index: 1,
+		Slots: []int32{1, 2, 3},
 	}
 	assert.NotNil(t, resSkillSlot)
 	assert.Equal(t, int32(0), resSkillSlot.Error)
-	assert.Equal(t, int32(1), resSkillSlot.Index)
+	assert.Equal(t, []int32{1, 2, 3}, resSkillSlot.Slots)
 }
 
 // 测试会话相关消息
@@ -377,13 +377,13 @@ func testBatch78RoomMessages(t *testing.T) {
 
 // 测试PVP相关消息
 func testBatch78PvpMessages(t *testing.T) {
-	reqPvp3vs3JoinMessage := &dnfv1.ReqPvp3vs3JoinMessage{
+	reqPvp3Vs3JoinMessage := &dnfv1.ReqPvp3Vs3JoinMessage{
 		Error: 0,
 		Index: 1,
 	}
-	assert.NotNil(t, reqPvp3vs3JoinMessage)
-	assert.Equal(t, int32(0), reqPvp3vs3JoinMessage.Error)
-	assert.Equal(t, int32(1), reqPvp3vs3JoinMessage.Index)
+	assert.NotNil(t, reqPvp3Vs3JoinMessage)
+	assert.Equal(t, int32(0), reqPvp3Vs3JoinMessage.Error)
+	assert.Equal(t, int32(1), reqPvp3Vs3JoinMessage.Index)
 }
 
 // 测试帐篷相关消息

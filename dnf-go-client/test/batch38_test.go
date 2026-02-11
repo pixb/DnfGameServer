@@ -278,11 +278,9 @@ func TestBatch38TicketRewardInfo(t *testing.T) {
 
 func TestBatch38SkinItemInfo(t *testing.T) {
 	item := &dnfv1.SkinItemInfo{
-		Index:           1001,
-		Guid:            123456789,
-		Expiretime:      9876543210,
-		Acquisitiontime: 1234567890,
-		Favorite:        1,
+		Index:      1001,
+		Guid:       123456789,
+		Expiretime: 9876543210,
 	}
 
 	data, err := proto.Marshal(item)

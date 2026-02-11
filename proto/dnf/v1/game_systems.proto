@@ -5206,3 +5206,280 @@ message ResSealItem {
   int32 error = 1;
   int32 index = 2;
 }
+
+// 第81批消息类型
+// 公会技能升级请求
+message ReqGuildSkillUpgrade {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏寻宝请求
+message ReqMinigameTreasureHunt {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 奖励领取请求
+message ReqRewardClaim {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 控制中心训练请求
+message ReqControlCenterTraining {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 突袭组队邀请
+message ReqRaidTeamInvite {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 攻击小队成员列表
+message ResAttackSquadMemberList {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物品合成响应
+message ResItemCombine {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 用户等级提升
+message PtUserLevelUp {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 询问排名响应
+message ResInquireRanking {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 派对邀请响应
+message ResPartyInvite {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 徽章升级请求
+message ReqEmblemUpgrade {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 好友添加请求
+message ReqFriendAdd {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 点券消费请求
+message ReqCeraConsume {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 消息发送请求
+message ReqMessageSend {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 语音聊天请求
+message ReqVoiceChat {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 留言板发布请求
+message ReqBoardPost {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// PVP对战请求
+message ReqPvpBattle {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 设施建造请求
+message ReqFacilityBuild {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 队伍创建请求
+message ReqTeamCreate {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 金钱交易请求
+message ReqMoneyTrade {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 道具使用请求
+message ReqItemUse {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 系统命令请求
+message ReqSyscmd {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 装备重铸请求
+message ReqReforge {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 疲劳值恢复请求
+message ReqFatigueRecover {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 同步请求
+message ReqLockstep {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 仓库操作请求
+message ReqWarehouse {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 餐厅点餐请求
+message ReqDiningOrder {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 师徒系统请求
+message ReqMentee {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 宾果游戏请求
+message ReqBingo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 骑士团请求
+message ReqChivalry {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 封印系统请求
+message ReqSeal {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 任务接受请求
+message ReqQuestAccept {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 任务完成请求
+message ReqQuestComplete {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 任务放弃请求
+message ReqQuestAbandon {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 控制中心请求
+message ReqControlCenter {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 历史遗址请求
+message ReqHistoricsite {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 突袭请求
+message ReqRaid {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 用户信息请求
+message ReqUserInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 排名请求
+message ReqRanking {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 派对请求
+message ReqParty {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 攻击小队请求
+message ReqAttackSquad {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏请求
+message ReqMinigame {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 邮件请求
+message ReqMail {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会请求
+message ReqGuild {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物品请求
+message ReqItem {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 交互请求
+message ReqInteraction {
+  int32 error = 1;
+  int32 index = 2;
+}

@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -341,13 +341,13 @@ func testBatch74QuestMessages(t *testing.T) {
 
 // 测试成就相关消息
 func testBatch74AchievementMessages(t *testing.T) {
-	achievementBonusPacketData := &dnfv1.AchievementBonusPacketData{
-		Error: 0,
-		Index: 1,
+	achievementBonusRewardRequest := &dnfv1.AchievementBonusRewardRequest{
+		CharacterId: 100,
+		BonusId:     200,
 	}
-	assert.NotNil(t, achievementBonusPacketData)
-	assert.Equal(t, int32(0), achievementBonusPacketData.Error)
-	assert.Equal(t, int32(1), achievementBonusPacketData.Index)
+	assert.NotNil(t, achievementBonusRewardRequest)
+	assert.Equal(t, int32(100), achievementBonusRewardRequest.CharacterId)
+	assert.Equal(t, int32(200), achievementBonusRewardRequest.BonusId)
 }
 
 // 测试随机选项相关消息

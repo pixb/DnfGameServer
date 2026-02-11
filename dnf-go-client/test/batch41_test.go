@@ -41,8 +41,8 @@ func TestBatch41BattleleagueTransitionCard(t *testing.T) {
 			{Index: 1, Customvalue: 100},
 		},
 		Pvepoint: 500,
-		Pverewards: []*dnfv1.BattleleagueRewardInfo{
-			{Index: 1, Count: 10},
+		Pverewards: []*dnfv1.BattleLeagueRewardInfo{
+			{Type: 1, Id: 100, Count: 10},
 		},
 	}
 
