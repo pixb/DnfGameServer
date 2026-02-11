@@ -2,72 +2,116 @@ syntax = "proto3";
 
 package dnf.v1;
 
-option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1";
-option java_multiple_files = true;
-option java_package = "com.dnfm.mina.protobuf.generated";
+option java_package = "com.dnfm.mina.stdproto";
 option java_outer_classname = "AuthLoginProto";
+option go_package = "dnf/v1;authlogin";
 
-// ========== 数据结构 ==========
-
-// 渠道信息
-message ChannelInfo {
-  int32 world = 1;
-  int32 channel = 2;
-  string ip = 3;
-  int32 port = 4;
-  int32 priority = 5;
-}
-
-// 入侵成员信息
-message IntrudeMemberInfo {
-  string name = 1;
-  int32 level = 2;
-  int32 job = 3;
-  int32 growtype = 4;
-  int32 secgrowtype = 5;
-}
-
-// 入侵信息
-message IntrudeInfo {
-  bool intrude = 1;
-  string name = 2;
-  uint64 guid = 3;
-  ChannelInfo channel = 4;
-  repeated IntrudeMemberInfo party_members = 5;
-  uint64 rp_guid = 6;
-}
-
-// ========== 请求消息 ==========
-
-// 登录请求 (module=10000, cmd=0)
+// 登录请求
 message LoginRequest {
   string openid = 1;
   uint32 type = 2;
   string token = 3;
-  uint32 platID = 4;
-  string clientIP = 5;
+  uint32 plat_id = 4;
+  string client_ip = 5;
   string version = 6;
-  string friendopenid = 7;
-  uint32 cancelunregist = 8;
-  string countrycode = 9;
-  int32 toyplatid = 10;
-  int32 agetype = 11;
+  string friend_openid = 7;
+  uint32 cancel_unregist = 8;
+  string country_code = 9;
+  int32 toy_plat_id = 10;
+  int32 age_type = 11;
 }
 
-// ========== 响应消息 ==========
+// 投票踢出用户请求
+message VoteKickOutUserRequest {
+  uint64 matching_guid = 1;
+  uint64 target_guid = 2;
+  bool kick_out = 3;
+}
 
-// 登录响应 (module=10000, cmd=1)
-message LoginResponse {
-  int32 error = 1;
-  string authkey = 2;
-  string accountkey = 3;
-  bool encrypt = 4;
-  uint64 servertime = 5;
-  string localtime = 6;
-  uint32 authority = 7;
-  string key = 8;
-  repeated ChannelInfo channel = 9;
-  IntrudeInfo intrudeinfo = 10;
-  int32 worldid = 11;
-  repeated int32 seeds = 12;
+// 目标用户详细信息请求
+message TargetUserDetailInfoRequest {
+  uint64 target_guid = 1;
+}
+
+// 城镇用户GUID列表请求
+message TownUserGuidListRequest {
+  int32 count = 1;
+  int32 posx = 2;
+  int32 posy = 3;
+}
+
+// 目标用户队伍信息请求
+message TargetUserPartyInfoRequest {
+  uint64 char_guid = 1;
+  uint64 party_guid = 2;
+}
+
+// 便签信使添加用户请求
+message NoteMessengerAddUserRequest {
+  uint64 target_guid = 1;
+}
+
+// 等待用户加载请求
+message WaitingToUsersLoadingRequest {
+  uint64 matching_guid = 1;
+}
+
+// 验证认证请求
+message VerificationAuthRequest {
+  int32 pid = 1;
+  string version = 2;
+}
+
+// 多人游戏用户离开请求
+message MultiPlayUserLeaveRequest {
+  int32 type = 1;
+}
+
+// 用户游戏日志请求
+message UserPlayLogRequest {
+  int32 step = 1;
+}
+
+// 用户举报请求
+message UserReportRequest {
+  string pic_url = 1;
+  uint64 target_guid = 2;
+  string target_name = 3;
+  int32 report_scene = 4;
+  int32 report_entrance = 5;
+  int32 report_type = 6;
+  int64 report_subtype = 7;
+  string report_desc = 8;
+  string report_chat_contents = 9;
+  string report_autograph = 10;
+  string report_pic_url = 11;
+  string report_pic_url_list = 12;
+  bool blacklist = 13;
+  uint64 party_guid = 14;
+  uint64 dungeon_guid = 15;
+  string report_chat_substance = 16;
+}
+
+// PVP其他用户信息请求
+message PvpOtherUserInfoRequest {
+}
+
+// 机器人用户属性2请求
+message RobotUserAttribute2Request {
+  string guild_buff_level = 1;
+}
+
+// 用户状态请求
+message UserStatusRequest {
+  repeated uint64 list = 1;
+}
+
+// 便签信使移除用户请求
+message NoteMessengerRemoveUserRequest {
+  uint64 target_guid = 1;
+}
+
+// 认证密钥刷新请求
+message AuthkeyRefreshRequest {
+  string authkey = 1;
 }
