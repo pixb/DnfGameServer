@@ -1,0 +1,647 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_package = "com.dnfm.mina.stdproto";
+option java_outer_classname = "ItemProto";
+option go_package = "dnf/v1";
+
+// 添加收藏书签请求
+message AddWatchingBookmarkRequest {
+  uint64 guid = 1;
+}
+
+// 冒险书特殊奖励请求
+message AdventurebookSpecialRewardRequest {
+  string authkey = 1;
+  uint64 accountkey = 2;
+  uint64 charguid = 3;
+  int32 bookindex = 4;
+  int32 booktype = 5;
+}
+
+// 冒险书 TERA 奖励请求
+message AdventurebookTeraRewardRequest {
+  string authkey = 1;
+  uint64 charguid = 2;
+}
+
+// 冒险自动搜索小游戏请求
+message AdventureAutoSearchMiniGameRequest {
+}
+
+// 冒险自动搜索奖励请求
+message AdventureAutoSearchRewardRequest {
+  string authkey = 1;
+  uint64 charguid = 2;
+}
+
+// 冒险数据请求
+message AdventureDataRequest {
+}
+
+// 冒险联合代表角色变更请求
+message AdventureUnionRepresentCharacterChangeRequest {
+  int32 type = 1;
+}
+
+// 冒险联合设置收藏槽位请求
+message AdventureUnionSetCollectionSlotRequest {
+  int32 slot = 1;
+  int32 type = 2;
+}
+
+// 应用公会 NPC 皮肤请求
+message ApplyGuildNpcSkinRequest {
+  int32 skin_id = 1;
+}
+
+// 排列公会结构请求
+message ArrangeGuildStructureRequest {
+  int32 structure_id = 1;
+  int32 position = 2;
+  int32 rotation = 3;
+  int32 scale = 4;
+}
+
+// 神器装备选项变更请求
+message ArtifactEquippedOptionChangeRequest {
+  int64 artifact_id = 1;
+  int32 option_index = 2;
+  int32 option_value = 3;
+}
+
+// 神器背包选项变更请求
+message ArtifactInvenOptionChangeRequest {
+  int64 artifact_id = 1;
+}
+
+// 拍卖详情物品列表请求
+message AuctionDetailItemListRequest {
+  int32 page = 1;
+  int32 category = 2;
+  int32 sort_type = 3;
+}
+
+// 战斗通行证排名请求
+message BattlePassRankingRequest {
+}
+
+// 账单信息请求
+message BilingInfoRequest {
+  int32 bill_id = 1;
+  int32 amount = 2;
+  string currency = 3;
+  int32 status = 4;
+}
+
+// 账单 KR 验证请求
+message BilingKrVerifyRequest {
+  string authkey = 1;
+  int32 bill_id = 2;
+  string transaction_id = 3;
+  int32 amount = 4;
+  string currency = 5;
+  int32 verify_code = 6;
+}
+
+// 黑色钻石获取桶请求
+message BlackDiamonGetBucketRequest {
+}
+
+// 黑色钻石获取奖励请求
+message BlackDiamonGetRewardRequest {
+  int32 reward_id = 1;
+}
+
+// 购买票据请求
+message BuyTicketRequest {
+  int32 ticket_id = 1;
+  int32 quantity = 2;
+}
+
+// 取消攻击小队加入请求
+message CancelAttackSquadJoinRequest {
+  int32 squad_id = 1;
+  int32 reason = 2;
+}
+
+// REQ_EQUIPPED_LIST
+message EquippedListRequest {
+  // No fields
+}
+
+// REQ_EQUIP_LIST
+message EquipListRequest {
+  // No fields
+}
+
+// REQ_MATERIAL_LIST
+message MaterialListRequest {
+  // No fields
+}
+
+// REQ_EQUIP_PUT_ON_OFF
+message EquipPutOnOffRequest {
+  bool field_2 = 2;
+}
+
+// REQ_NPC_SHOP_ITEM_SELL
+message NpcShopItemSellRequest {
+  // No fields
+}
+
+// REQ_ITEM_REINFORCE
+message ItemReinforceRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  uint64 field_5 = 5;
+}
+
+// REQ_ITEM_DISJOINT
+message ItemDisjointRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ITEM_REFORGE
+message ItemReforgeRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_DRAGON_ROAD_TIME_BOX_LIST
+message DragonRoadTimeBoxListRequest {
+  // No fields
+}
+
+// REQ_OPEN_TIME_BOX
+message OpenTimeBoxRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_BOOKMARK_LIST
+message BookmarkListRequest {
+  // No fields
+}
+
+// REQ_SCROLL_LIST
+message ScrollListRequest {
+  // No fields
+}
+
+// REQ_ITEM_REPAIR
+message ItemRepairRequest {
+  // No fields
+}
+
+// REQ_AVATAR_ITEM_LIST
+message AvatarItemListRequest {
+  // No fields
+}
+
+// REQ_EMBLEM_LIST
+message EmblemListRequest {
+  // No fields
+}
+
+// REQ_ITEM_USE
+message ItemUseRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  bool field_3 = 3;
+  uint64 field_4 = 4;
+  int32 field_5 = 5;
+  string field_6 = 6;
+  int32 field_7 = 7;
+}
+
+// REQ_EMBLEM_EQUIP
+message EmblemEquipRequest {
+  int32 field_1 = 1;
+  uint64 field_3 = 3;
+}
+
+// REQ_CARD_LIST
+message CardListRequest {
+  // No fields
+}
+
+// REQ_ESSENCE_LIST
+message EssenceListRequest {
+  // No fields
+}
+
+// REQ_ITEM_AVATAR_COMPOSE
+message ItemAvatarComposeRequest {
+  // No fields
+}
+
+// REQ_ITEM_EMBLEM_UPGRADE_INVEN
+message ItemEmblemUpgradeInvenRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_ITEM_EMBLEM_EXTRACT
+message ItemEmblemExtractRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_CREATURE_LIST
+message CreatureListRequest {
+  // No fields
+}
+
+// REQ_ARTIFACT_LIST
+message ArtifactListRequest {
+  // No fields
+}
+
+// REQ_CREATURE_FEEDING
+message CreatureFeedingRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_SHOP_LIMIT_RESET
+message ShopLimitResetRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_ITEM_COMBINE
+message ItemCombineRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_5 = 5;
+}
+
+// REQ_RANDOMOPTION_UNLOCK
+message RandomoptionUnlockRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_RANDOMOPTION_CHANGE
+message RandomoptionChangeRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_RANDOMOPTION_SELECT
+message RandomoptionSelectRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_TRANSMISSION_ITEM
+message TransmissionItemRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+  uint64 field_3 = 3;
+  bool field_4 = 4;
+}
+
+// REQ_ITEM_LOCK
+message ItemLockRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  bool field_3 = 3;
+}
+
+// REQ_TITLE_LIST
+message TitleListRequest {
+  // No fields
+}
+
+// REQ_CARD_ATTACH
+message CardAttachRequest {
+  int32 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_EPIC_PIECE_LIST
+message EpicPieceListRequest {
+  // No fields
+}
+
+// REQ_EQUIPMENT_RARIFY
+message EquipmentRarifyRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_CARD_COMPOSE
+message CardComposeRequest {
+  // No fields
+}
+
+// REQ_INVEN_EXTEND
+message InvenExtendRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_RANDOMOPTION_SLOT_LOCK
+message RandomoptionSlotLockRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  bool field_4 = 4;
+}
+
+// REQ_CONSUMABLE_LIST
+message ConsumableListRequest {
+  // No fields
+}
+
+// REQ_FLAG_LIST
+message FlagListRequest {
+  // No fields
+}
+
+// REQ_ITEM_PRODUCTION_INFO
+message ItemProductionInfoRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ITEM_PRODUCTION_REGISTER
+message ItemProductionRegisterRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_ITEM_PRODUCTION_CANCEL
+message ItemProductionCancelRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ITEM_PRODUCTION_SKIP
+message ItemProductionSkipRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_ITEM_PRODUCTION_GET
+message ItemProductionGetRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ITEM_EMBLEM_UPGRADE_QUICK
+message ItemEmblemUpgradeQuickRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_ITEM_USABLE_LIST
+message ItemUsableListRequest {
+  // No fields
+}
+
+// REQ_WARDROBE_INFO
+message WardrobeInfoRequest {
+  // No fields
+}
+
+// REQ_CREATURE_COMMUNION_INFO
+message CreatureCommunionInfoRequest {
+  // No fields
+}
+
+// REQ_CREATURE_COMMUNION_LEVELUP
+message CreatureCommunionLevelupRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_CREATURE_COMMUNION_ACTIVE
+message CreatureCommunionActiveRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_CREATURE_COMMUNION_SELECT
+message CreatureCommunionSelectRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_CREATURE_COMMUNION_SLOT
+message CreatureCommunionSlotRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_CREATURE_SKILL_LEARN
+message CreatureSkillLearnRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_CREATURE_SKILL_UPGRADE
+message CreatureSkillUpgradeRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_DAMAGE_FONT_TAB_LIST
+message DamageFontTabListRequest {
+  // No fields
+}
+
+// REQ_CHAT_FRAME_TAB_LIST
+message ChatFrameTabListRequest {
+  // No fields
+}
+
+// REQ_SKIN_EQUIP_PUT_ON_OFF
+message SkinEquipPutOnOffRequest {
+  // No fields
+}
+
+// REQ_CRACK_LIST
+message CrackListRequest {
+  // No fields
+}
+
+// REQ_CRACKEQUIP_LIST
+message CrackequipListRequest {
+  // No fields
+}
+
+// REQ_SKIN_ITEM_REMOVE
+message SkinItemRemoveRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_SKIN_ITEM_FAVORITES
+message SkinItemFavoritesRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_CHAR_STORAGE_LIST
+message CharStorageListRequest {
+  // No fields
+}
+
+// REQ_ADVENTURE_STORAGE_LIST
+message AdventureStorageListRequest {
+  // No fields
+}
+
+// REQ_SEND_STORAGE
+message SendStorageRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_SEND_INVEN
+message SendInvenRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_STORAGE_EXTEND
+message StorageExtendRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_STORAGE_STEP
+message StorageStepRequest {
+  // No fields
+}
+
+// REQ_SD_AVATAR_LIST
+message SdAvatarListRequest {
+  // No fields
+}
+
+// REQ_SEAL_ITEM
+message SealItemRequest {
+  uint64 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+// REQ_REPURCHASE_ITEM_STORAGE_LIST
+message RepurchaseItemStorageListRequest {
+  // No fields
+}
+
+// REQ_REPURCHASE_ITEM
+message RepurchaseItemRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_MONEY_ITEM_LIST
+message MoneyItemListRequest {
+  // No fields
+}
+
+// REQ_WARDROBE_SET_SLOT
+message WardrobeSetSlotRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_PARTY_CREATE
+message PartyCreateRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_6 = 6;
+  int32 field_7 = 7;
+  int32 field_8 = 8;
+  bool field_9 = 9;
+  bool field_10 = 10;
+  bool field_11 = 11;
+  string field_12 = 12;
+}
+
+// REQ_PARTY_REQUEST_TO_JOIN
+message PartyRequestToJoinRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  string field_3 = 3;
+  bool field_4 = 4;
+  bool field_5 = 5;
+}
+
+// REQ_PARTIES_LOAD
+message PartiesLoadRequest {
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+  int32 field_6 = 6;
+  int32 field_7 = 7;
+  bool field_8 = 8;
+  string field_9 = 9;
+}
+
+// REQ_PARTY_KICK_MEMBER
+message PartyKickMemberRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_PARTY_ACCEPT_TO_JOIN
+message PartyAcceptToJoinRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_PARTY_INVITE
+message PartyInviteRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_PARTY_LOAD
+message PartyLoadRequest {
+  uint64 field_1 = 1;
+  bool field_2 = 2;
+}
+
+// REQ_PARTY_REFUSE
+message PartyRefuseRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+  int32 field_3 = 3;
+}
+
+// REQ_PARTY_LEAVE
+message PartyLeaveRequest {
+  uint64 field_1 = 1;
+}
+
+// REQ_PARTY_CHANGE_LEADER
+message PartyChangeLeaderRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_PARTY_DO_NOT_DISTURB
+message PartyDoNotDisturbRequest {
+  int32 field_1 = 1;
+}
+
+// REQ_PARTY_UPDATE
+message PartyUpdateRequest {
+  // No fields
+}
+
+// REQ_PARTY_CANCEL_INVITATION
+message PartyCancelInvitationRequest {
+  uint64 field_1 = 1;
+  uint64 field_2 = 2;
+}
+
+// REQ_PARTY_RELAY
+message PartyRelayRequest {
+  uint64 field_1 = 1;
+}

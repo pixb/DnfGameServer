@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_package = "com.dnfm.mina.stdproto";
+option java_outer_classname = "CharacterProto";
+option go_package = "dnf/v1";
+
+// 角色GUID信息
+message CharacterGuid {
+  uint64 charguid = 1;
+  int32 type = 2;
+  int32 posx = 3;
+  int32 posy = 4;
+}
+
+// 角色信息请求
+message CharacterInfoRequest {
+  string authkey = 1;
+  int32 option = 2;
+  repeated CharacterGuid charlist = 3;
+}
+
+// 角色属性信息请求
+message CharacterStatInfoRequest {
+  int32 lightattribute = 1;
+  int32 iceattribute = 2;
+  int32 fireattribute = 3;
+  int32 darkattribute = 4;
+  int32 lightattribute_resistance = 5;
+  int32 iceattribute_resistance = 6;
+  int32 fireattribute_resistance = 7;
+  int32 darkattribute_resistance = 8;
+  int32 intelligencevalue = 9;
+  int32 powervalue = 10;
+  int32 strengthvalue = 11;
+  int32 spiritvalue = 12;
+  int32 magicattack = 13;
+  int32 magiccri = 14;
+  int32 magiccrirate = 15;
+  int32 physicalattack = 16;
+  int32 physicalcrit = 17;
+  int32 physicalcritrate = 18;
+  int32 attackspeed = 19;
+  int32 castingspeed = 20;
+  int32 movingspeed = 21;
+  int32 defyingdefenseattack = 22;
+  int32 accuracyrate = 23;
+  int32 accuracyvariablerate = 24;
+  int32 stuckvariablerate = 25;
+  int32 stuck = 26;
+  int32 hpregenrate = 27;
+  int32 mpregenrate = 28;
+  int32 ridgidity = 29;
+  int32 hitrecovery = 30;
+}
+
+// 角色框架标签列表请求
+message CharacterFrameTabListRequest {
+}
+
+// 角色公会红包信息请求
+message CharacterGuildRedpacketInfoRequest {
+}
+
+// 角色槽位变更请求
+message CharacterSlotChangeRequest {
+}
