@@ -5483,3 +5483,304 @@ message ReqInteraction {
   int32 error = 1;
   int32 index = 2;
 }
+
+// 第82批消息类型
+// 公会技能学习请求
+message ReqGuildSkillLearn {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏挑战请求
+message ReqMinigameChallenge {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 奖励领取响应
+message ResRewardClaim {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 控制中心任务请求
+message ReqControlCenterTask {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 突袭队伍创建
+message ReqRaidTeamCreate {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 攻击小队排行榜
+message ResAttackSquadRanking {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物品强化响应
+message ResItemEnhance {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 用户经验值
+message PtUserExp {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 询问装备排名
+message ResInquireEquipmentRanking {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 派对踢人响应
+message ResPartyKick {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 徽章合成请求
+message ReqEmblemCombine {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 好友删除请求
+message ReqFriendDelete {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 点券充值请求
+message ReqCeraRecharge {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 消息接收请求
+message ReqMessageReceive {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 语音聊天响应
+message ResVoiceChat {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 留言板删除请求
+message ReqBoardDelete {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// PVP对战响应
+message ResPvpBattle {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 设施升级请求
+message ReqFacilityUpgrade {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 队伍邀请请求
+message ReqTeamInvite {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 金钱兑换请求
+message ReqMoneyExchange {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 道具购买请求
+message ReqItemBuy {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 系统设置请求
+message ReqSysSetting {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 装备精炼请求
+message ReqRefine {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 疲劳值购买请求
+message ReqFatigueBuy {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 同步响应
+message ResLockstep {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 仓库扩容请求
+message ReqWarehouseExpand {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 餐厅烹饪请求
+message ReqDiningCook {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 师徒系统响应
+message ResMentee {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 宾果游戏响应
+message ResBingo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 骑士团任务请求
+message ReqChivalryTask {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 封印系统响应
+message ResSeal {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 任务提交请求
+message ReqQuestSubmit {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 任务奖励请求
+message ReqQuestReward {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 任务追踪请求
+message ReqQuestTrack {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 控制中心升级请求
+message ReqControlCenterUpgrade {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 历史遗址挑战请求
+message ReqHistoricsiteChallenge {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 突袭响应
+message ResRaid {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 用户信息响应
+message ResUserInfo {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 排名响应
+message ResRanking {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 派对响应
+message ResParty {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 攻击小队响应
+message ResAttackSquad {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 小游戏响应
+message ResMinigame {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 邮件响应
+message ResMail {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 公会响应
+message ResGuild {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 物品响应
+message ResItem {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 交互响应
+message ResInteraction {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 技能升级请求
+message ReqSkillUpgrade {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 任务接受响应
+message ResQuestAccept {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 任务完成响应
+message ResQuestComplete {
+  int32 error = 1;
+  int32 index = 2;
+}
+
+// 任务放弃响应
+message ResQuestAbandon {
+  int32 error = 1;
+  int32 index = 2;
+}

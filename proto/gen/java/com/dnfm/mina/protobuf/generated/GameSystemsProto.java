@@ -4171,6 +4171,486 @@ public final class GameSystemsProto extends com.google.protobuf.GeneratedFile {
   static 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_dnf_v1_ResSealItem_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqGuildSkillUpgrade_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqGuildSkillUpgrade_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMinigameTreasureHunt_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMinigameTreasureHunt_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqRewardClaim_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqRewardClaim_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqControlCenterTraining_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqControlCenterTraining_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqRaidTeamInvite_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqRaidTeamInvite_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResAttackSquadMemberList_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResAttackSquadMemberList_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResItemCombine_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResItemCombine_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PtUserLevelUp_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PtUserLevelUp_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResInquireRanking_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResInquireRanking_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResPartyInvite_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResPartyInvite_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqEmblemUpgrade_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqEmblemUpgrade_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqFriendAdd_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqFriendAdd_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqCeraConsume_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqCeraConsume_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMessageSend_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMessageSend_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqVoiceChat_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqVoiceChat_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqBoardPost_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqBoardPost_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqPvpBattle_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqPvpBattle_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqFacilityBuild_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqFacilityBuild_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqTeamCreate_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqTeamCreate_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMoneyTrade_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMoneyTrade_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqItemUse_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqItemUse_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqSyscmd_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqSyscmd_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqReforge_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqReforge_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqFatigueRecover_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqFatigueRecover_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqLockstep_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqLockstep_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqWarehouse_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqWarehouse_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqDiningOrder_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqDiningOrder_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMentee_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMentee_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqBingo_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqBingo_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqChivalry_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqChivalry_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqSeal_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqSeal_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqQuestAccept_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqQuestAccept_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqQuestComplete_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqQuestComplete_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqQuestAbandon_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqQuestAbandon_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqControlCenter_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqControlCenter_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqHistoricsite_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqHistoricsite_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqRaid_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqRaid_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqUserInfo_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqUserInfo_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqRanking_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqRanking_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqParty_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqParty_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqAttackSquad_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqAttackSquad_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMinigame_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMinigame_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMail_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMail_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqGuild_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqGuild_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqItem_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqItem_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqInteraction_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqInteraction_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqGuildSkillLearn_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqGuildSkillLearn_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMinigameChallenge_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMinigameChallenge_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResRewardClaim_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResRewardClaim_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqControlCenterTask_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqControlCenterTask_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqRaidTeamCreate_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqRaidTeamCreate_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResAttackSquadRanking_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResAttackSquadRanking_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResItemEnhance_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResItemEnhance_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_PtUserExp_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_PtUserExp_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResInquireEquipmentRanking_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResInquireEquipmentRanking_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResPartyKick_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResPartyKick_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqEmblemCombine_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqEmblemCombine_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqFriendDelete_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqFriendDelete_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqCeraRecharge_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqCeraRecharge_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMessageReceive_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMessageReceive_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResVoiceChat_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResVoiceChat_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqBoardDelete_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqBoardDelete_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResPvpBattle_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResPvpBattle_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqFacilityUpgrade_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqFacilityUpgrade_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqTeamInvite_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqTeamInvite_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqMoneyExchange_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqMoneyExchange_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqItemBuy_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqItemBuy_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqSysSetting_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqSysSetting_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqRefine_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqRefine_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqFatigueBuy_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqFatigueBuy_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResLockstep_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResLockstep_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqWarehouseExpand_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqWarehouseExpand_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqDiningCook_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqDiningCook_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResMentee_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResMentee_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResBingo_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResBingo_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqChivalryTask_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqChivalryTask_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResSeal_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResSeal_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqQuestSubmit_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqQuestSubmit_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqQuestReward_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqQuestReward_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqQuestTrack_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqQuestTrack_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqControlCenterUpgrade_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqControlCenterUpgrade_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqHistoricsiteChallenge_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqHistoricsiteChallenge_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResRaid_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResRaid_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResUserInfo_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResUserInfo_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResRanking_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResRanking_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResParty_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResParty_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResAttackSquad_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResAttackSquad_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResMinigame_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResMinigame_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResMail_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResMail_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResGuild_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResGuild_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResItem_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResItem_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResInteraction_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResInteraction_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ReqSkillUpgrade_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ReqSkillUpgrade_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResQuestAccept_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResQuestAccept_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResQuestComplete_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResQuestComplete_fieldAccessorTable;
+  static com.google.protobuf.Descriptors.Descriptor
+    internal_static_dnf_v1_ResQuestAbandon_descriptor;
+  static 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_dnf_v1_ResQuestAbandon_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -5808,22 +6288,170 @@ public final class GameSystemsProto extends com.google.protobuf.GeneratedFile {
       "\"F\n\030ResChivalryUpdateMission\022\024\n\005error\030\001 " +
       "\001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"9\n\013ResS" +
       "ealItem\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002" +
-      " \001(\005R\005index*a\n\010TeamType\022\025\n\021TEAM_TYPE_UNK" +
-      "NOWN\020\000\022\024\n\020TEAM_TYPE_NORMAL\020\001\022\022\n\016TEAM_TYP" +
-      "E_RAID\020\002\022\024\n\020TEAM_TYPE_PLAYER\020\003*B\n\014GuildN" +
-      "pcType\022\032\n\026GUILD_NPC_TYPE_UNKNOWN\020\000\022\026\n\022GU" +
-      "ILD_NPC_TYPE_NPC\020\001*V\n\016GuildNpcStatus\022\034\n\030" +
-      "GUILD_NPC_STATUS_UNKNOWN\020\000\022&\n\"GUILD_NPC_" +
-      "STATUS_COMPLETE_PURCHASE\020\001*W\n\022GuildStruc" +
-      "tureType\022 \n\034GUILD_STRUCTURE_TYPE_UNKNOWN" +
-      "\020\000\022\037\n\033GUILD_STRUCTURE_TYPE_NORMAL\020\001*c\n\024G" +
-      "uildStructureStatus\022\"\n\036GUILD_STRUCTURE_S" +
-      "TATUS_UNKNOWN\020\000\022\'\n#GUILD_STRUCTURE_STATU" +
-      "S_CONSTRUCTION\020\001B\253\001\n com.dnfm.mina.proto" +
-      "buf.generatedB\020GameSystemsProtoP\001Z<githu" +
-      "b.com/pixb/DnfGameServer/dnf-go-client/g" +
-      "en/dnf/v1;dnfv1\242\002\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342" +
-      "\002\022Dnf\\V1\\GPBMetadata\352\002\007Dnf::V1b\006proto3"
+      " \001(\005R\005index\"B\n\024ReqGuildSkillUpgrade\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"" +
+      "E\n\027ReqMinigameTreasureHunt\022\024\n\005error\030\001 \001(" +
+      "\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"<\n\016ReqRew" +
+      "ardClaim\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030" +
+      "\002 \001(\005R\005index\"F\n\030ReqControlCenterTraining" +
+      "\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005i" +
+      "ndex\"?\n\021ReqRaidTeamInvite\022\024\n\005error\030\001 \001(\005" +
+      "R\005error\022\024\n\005index\030\002 \001(\005R\005index\"F\n\030ResAtta" +
+      "ckSquadMemberList\022\024\n\005error\030\001 \001(\005R\005error\022" +
+      "\024\n\005index\030\002 \001(\005R\005index\"<\n\016ResItemCombine\022" +
+      "\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005in" +
+      "dex\";\n\rPtUserLevelUp\022\024\n\005error\030\001 \001(\005R\005err" +
+      "or\022\024\n\005index\030\002 \001(\005R\005index\"?\n\021ResInquireRa" +
+      "nking\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001" +
+      "(\005R\005index\"<\n\016ResPartyInvite\022\024\n\005error\030\001 \001" +
+      "(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\">\n\020ReqEm" +
+      "blemUpgrade\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005ind" +
+      "ex\030\002 \001(\005R\005index\":\n\014ReqFriendAdd\022\024\n\005error" +
+      "\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"<\n\016R" +
+      "eqCeraConsume\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005i" +
+      "ndex\030\002 \001(\005R\005index\"<\n\016ReqMessageSend\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"" +
+      ":\n\014ReqVoiceChat\022\024\n\005error\030\001 \001(\005R\005error\022\024\n" +
+      "\005index\030\002 \001(\005R\005index\":\n\014ReqBoardPost\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"" +
+      ":\n\014ReqPvpBattle\022\024\n\005error\030\001 \001(\005R\005error\022\024\n" +
+      "\005index\030\002 \001(\005R\005index\">\n\020ReqFacilityBuild\022" +
+      "\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005in" +
+      "dex\";\n\rReqTeamCreate\022\024\n\005error\030\001 \001(\005R\005err" +
+      "or\022\024\n\005index\030\002 \001(\005R\005index\";\n\rReqMoneyTrad" +
+      "e\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005" +
+      "index\"8\n\nReqItemUse\022\024\n\005error\030\001 \001(\005R\005erro" +
+      "r\022\024\n\005index\030\002 \001(\005R\005index\"7\n\tReqSyscmd\022\024\n\005" +
+      "error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index" +
+      "\"8\n\nReqReforge\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005" +
+      "index\030\002 \001(\005R\005index\"?\n\021ReqFatigueRecover\022" +
+      "\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005in" +
+      "dex\"9\n\013ReqLockstep\022\024\n\005error\030\001 \001(\005R\005error" +
+      "\022\024\n\005index\030\002 \001(\005R\005index\":\n\014ReqWarehouse\022\024" +
+      "\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005ind" +
+      "ex\"<\n\016ReqDiningOrder\022\024\n\005error\030\001 \001(\005R\005err" +
+      "or\022\024\n\005index\030\002 \001(\005R\005index\"7\n\tReqMentee\022\024\n" +
+      "\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005inde" +
+      "x\"6\n\010ReqBingo\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005i" +
+      "ndex\030\002 \001(\005R\005index\"9\n\013ReqChivalry\022\024\n\005erro" +
+      "r\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"5\n\007" +
+      "ReqSeal\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002" +
+      " \001(\005R\005index\"<\n\016ReqQuestAccept\022\024\n\005error\030\001" +
+      " \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\">\n\020Req" +
+      "QuestComplete\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005i" +
+      "ndex\030\002 \001(\005R\005index\"=\n\017ReqQuestAbandon\022\024\n\005" +
+      "error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index" +
+      "\">\n\020ReqControlCenter\022\024\n\005error\030\001 \001(\005R\005err" +
+      "or\022\024\n\005index\030\002 \001(\005R\005index\"=\n\017ReqHistorics" +
+      "ite\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005" +
+      "R\005index\"5\n\007ReqRaid\022\024\n\005error\030\001 \001(\005R\005error" +
+      "\022\024\n\005index\030\002 \001(\005R\005index\"9\n\013ReqUserInfo\022\024\n" +
+      "\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005inde" +
+      "x\"8\n\nReqRanking\022\024\n\005error\030\001 \001(\005R\005error\022\024\n" +
+      "\005index\030\002 \001(\005R\005index\"6\n\010ReqParty\022\024\n\005error" +
+      "\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"<\n\016R" +
+      "eqAttackSquad\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005i" +
+      "ndex\030\002 \001(\005R\005index\"9\n\013ReqMinigame\022\024\n\005erro" +
+      "r\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"5\n\007" +
+      "ReqMail\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002" +
+      " \001(\005R\005index\"6\n\010ReqGuild\022\024\n\005error\030\001 \001(\005R\005" +
+      "error\022\024\n\005index\030\002 \001(\005R\005index\"5\n\007ReqItem\022\024" +
+      "\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005ind" +
+      "ex\"<\n\016ReqInteraction\022\024\n\005error\030\001 \001(\005R\005err" +
+      "or\022\024\n\005index\030\002 \001(\005R\005index\"@\n\022ReqGuildSkil" +
+      "lLearn\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 " +
+      "\001(\005R\005index\"B\n\024ReqMinigameChallenge\022\024\n\005er" +
+      "ror\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"<" +
+      "\n\016ResRewardClaim\022\024\n\005error\030\001 \001(\005R\005error\022\024" +
+      "\n\005index\030\002 \001(\005R\005index\"B\n\024ReqControlCenter" +
+      "Task\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(" +
+      "\005R\005index\"?\n\021ReqRaidTeamCreate\022\024\n\005error\030\001" +
+      " \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"C\n\025Res" +
+      "AttackSquadRanking\022\024\n\005error\030\001 \001(\005R\005error" +
+      "\022\024\n\005index\030\002 \001(\005R\005index\"<\n\016ResItemEnhance" +
+      "\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005i" +
+      "ndex\"7\n\tPtUserExp\022\024\n\005error\030\001 \001(\005R\005error\022" +
+      "\024\n\005index\030\002 \001(\005R\005index\"H\n\032ResInquireEquip" +
+      "mentRanking\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005ind" +
+      "ex\030\002 \001(\005R\005index\":\n\014ResPartyKick\022\024\n\005error" +
+      "\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\">\n\020R" +
+      "eqEmblemCombine\022\024\n\005error\030\001 \001(\005R\005error\022\024\n" +
+      "\005index\030\002 \001(\005R\005index\"=\n\017ReqFriendDelete\022\024" +
+      "\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005ind" +
+      "ex\"=\n\017ReqCeraRecharge\022\024\n\005error\030\001 \001(\005R\005er" +
+      "ror\022\024\n\005index\030\002 \001(\005R\005index\"?\n\021ReqMessageR" +
+      "eceive\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 " +
+      "\001(\005R\005index\":\n\014ResVoiceChat\022\024\n\005error\030\001 \001(" +
+      "\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"<\n\016ReqBoa" +
+      "rdDelete\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030" +
+      "\002 \001(\005R\005index\":\n\014ResPvpBattle\022\024\n\005error\030\001 " +
+      "\001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"@\n\022ReqF" +
+      "acilityUpgrade\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005" +
+      "index\030\002 \001(\005R\005index\";\n\rReqTeamInvite\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"" +
+      ">\n\020ReqMoneyExchange\022\024\n\005error\030\001 \001(\005R\005erro" +
+      "r\022\024\n\005index\030\002 \001(\005R\005index\"8\n\nReqItemBuy\022\024\n" +
+      "\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005inde" +
+      "x\";\n\rReqSysSetting\022\024\n\005error\030\001 \001(\005R\005error" +
+      "\022\024\n\005index\030\002 \001(\005R\005index\"7\n\tReqRefine\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"" +
+      ";\n\rReqFatigueBuy\022\024\n\005error\030\001 \001(\005R\005error\022\024" +
+      "\n\005index\030\002 \001(\005R\005index\"9\n\013ResLockstep\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"" +
+      "@\n\022ReqWarehouseExpand\022\024\n\005error\030\001 \001(\005R\005er" +
+      "ror\022\024\n\005index\030\002 \001(\005R\005index\";\n\rReqDiningCo" +
+      "ok\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R" +
+      "\005index\"7\n\tResMentee\022\024\n\005error\030\001 \001(\005R\005erro" +
+      "r\022\024\n\005index\030\002 \001(\005R\005index\"6\n\010ResBingo\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"" +
+      "=\n\017ReqChivalryTask\022\024\n\005error\030\001 \001(\005R\005error" +
+      "\022\024\n\005index\030\002 \001(\005R\005index\"5\n\007ResSeal\022\024\n\005err" +
+      "or\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"<\n" +
+      "\016ReqQuestSubmit\022\024\n\005error\030\001 \001(\005R\005error\022\024\n" +
+      "\005index\030\002 \001(\005R\005index\"<\n\016ReqQuestReward\022\024\n" +
+      "\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005inde" +
+      "x\";\n\rReqQuestTrack\022\024\n\005error\030\001 \001(\005R\005error" +
+      "\022\024\n\005index\030\002 \001(\005R\005index\"E\n\027ReqControlCent" +
+      "erUpgrade\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index" +
+      "\030\002 \001(\005R\005index\"F\n\030ReqHistoricsiteChalleng" +
+      "e\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005" +
+      "index\"5\n\007ResRaid\022\024\n\005error\030\001 \001(\005R\005error\022\024" +
+      "\n\005index\030\002 \001(\005R\005index\"9\n\013ResUserInfo\022\024\n\005e" +
+      "rror\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"" +
+      "8\n\nResRanking\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005i" +
+      "ndex\030\002 \001(\005R\005index\"6\n\010ResParty\022\024\n\005error\030\001" +
+      " \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"<\n\016Res" +
+      "AttackSquad\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005ind" +
+      "ex\030\002 \001(\005R\005index\"9\n\013ResMinigame\022\024\n\005error\030" +
+      "\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index\"5\n\007Re" +
+      "sMail\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001" +
+      "(\005R\005index\"6\n\010ResGuild\022\024\n\005error\030\001 \001(\005R\005er" +
+      "ror\022\024\n\005index\030\002 \001(\005R\005index\"5\n\007ResItem\022\024\n\005" +
+      "error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index" +
+      "\"<\n\016ResInteraction\022\024\n\005error\030\001 \001(\005R\005error" +
+      "\022\024\n\005index\030\002 \001(\005R\005index\"=\n\017ReqSkillUpgrad" +
+      "e\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005" +
+      "index\"<\n\016ResQuestAccept\022\024\n\005error\030\001 \001(\005R\005" +
+      "error\022\024\n\005index\030\002 \001(\005R\005index\">\n\020ResQuestC" +
+      "omplete\022\024\n\005error\030\001 \001(\005R\005error\022\024\n\005index\030\002" +
+      " \001(\005R\005index\"=\n\017ResQuestAbandon\022\024\n\005error\030" +
+      "\001 \001(\005R\005error\022\024\n\005index\030\002 \001(\005R\005index*a\n\010Te" +
+      "amType\022\025\n\021TEAM_TYPE_UNKNOWN\020\000\022\024\n\020TEAM_TY" +
+      "PE_NORMAL\020\001\022\022\n\016TEAM_TYPE_RAID\020\002\022\024\n\020TEAM_" +
+      "TYPE_PLAYER\020\003*B\n\014GuildNpcType\022\032\n\026GUILD_N" +
+      "PC_TYPE_UNKNOWN\020\000\022\026\n\022GUILD_NPC_TYPE_NPC\020" +
+      "\001*V\n\016GuildNpcStatus\022\034\n\030GUILD_NPC_STATUS_" +
+      "UNKNOWN\020\000\022&\n\"GUILD_NPC_STATUS_COMPLETE_P" +
+      "URCHASE\020\001*W\n\022GuildStructureType\022 \n\034GUILD" +
+      "_STRUCTURE_TYPE_UNKNOWN\020\000\022\037\n\033GUILD_STRUC" +
+      "TURE_TYPE_NORMAL\020\001*c\n\024GuildStructureStat" +
+      "us\022\"\n\036GUILD_STRUCTURE_STATUS_UNKNOWN\020\000\022\'" +
+      "\n#GUILD_STRUCTURE_STATUS_CONSTRUCTION\020\001B" +
+      "\253\001\n com.dnfm.mina.protobuf.generatedB\020Ga" +
+      "meSystemsProtoP\001Z<github.com/pixb/DnfGam" +
+      "eServer/dnf-go-client/gen/dnf/v1;dnfv1\242\002" +
+      "\003DXX\252\002\006Dnf.V1\312\002\006Dnf\\V1\342\002\022Dnf\\V1\\GPBMetad" +
+      "ata\352\002\007Dnf::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -10816,6 +11444,582 @@ public final class GameSystemsProto extends com.google.protobuf.GeneratedFile {
     internal_static_dnf_v1_ResSealItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_dnf_v1_ResSealItem_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqGuildSkillUpgrade_descriptor =
+      getDescriptor().getMessageType(829);
+    internal_static_dnf_v1_ReqGuildSkillUpgrade_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqGuildSkillUpgrade_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMinigameTreasureHunt_descriptor =
+      getDescriptor().getMessageType(830);
+    internal_static_dnf_v1_ReqMinigameTreasureHunt_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMinigameTreasureHunt_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqRewardClaim_descriptor =
+      getDescriptor().getMessageType(831);
+    internal_static_dnf_v1_ReqRewardClaim_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqRewardClaim_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqControlCenterTraining_descriptor =
+      getDescriptor().getMessageType(832);
+    internal_static_dnf_v1_ReqControlCenterTraining_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqControlCenterTraining_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqRaidTeamInvite_descriptor =
+      getDescriptor().getMessageType(833);
+    internal_static_dnf_v1_ReqRaidTeamInvite_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqRaidTeamInvite_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResAttackSquadMemberList_descriptor =
+      getDescriptor().getMessageType(834);
+    internal_static_dnf_v1_ResAttackSquadMemberList_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResAttackSquadMemberList_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResItemCombine_descriptor =
+      getDescriptor().getMessageType(835);
+    internal_static_dnf_v1_ResItemCombine_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResItemCombine_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_PtUserLevelUp_descriptor =
+      getDescriptor().getMessageType(836);
+    internal_static_dnf_v1_PtUserLevelUp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PtUserLevelUp_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResInquireRanking_descriptor =
+      getDescriptor().getMessageType(837);
+    internal_static_dnf_v1_ResInquireRanking_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResInquireRanking_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResPartyInvite_descriptor =
+      getDescriptor().getMessageType(838);
+    internal_static_dnf_v1_ResPartyInvite_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResPartyInvite_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqEmblemUpgrade_descriptor =
+      getDescriptor().getMessageType(839);
+    internal_static_dnf_v1_ReqEmblemUpgrade_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqEmblemUpgrade_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqFriendAdd_descriptor =
+      getDescriptor().getMessageType(840);
+    internal_static_dnf_v1_ReqFriendAdd_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqFriendAdd_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqCeraConsume_descriptor =
+      getDescriptor().getMessageType(841);
+    internal_static_dnf_v1_ReqCeraConsume_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqCeraConsume_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMessageSend_descriptor =
+      getDescriptor().getMessageType(842);
+    internal_static_dnf_v1_ReqMessageSend_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMessageSend_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqVoiceChat_descriptor =
+      getDescriptor().getMessageType(843);
+    internal_static_dnf_v1_ReqVoiceChat_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqVoiceChat_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqBoardPost_descriptor =
+      getDescriptor().getMessageType(844);
+    internal_static_dnf_v1_ReqBoardPost_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqBoardPost_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqPvpBattle_descriptor =
+      getDescriptor().getMessageType(845);
+    internal_static_dnf_v1_ReqPvpBattle_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqPvpBattle_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqFacilityBuild_descriptor =
+      getDescriptor().getMessageType(846);
+    internal_static_dnf_v1_ReqFacilityBuild_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqFacilityBuild_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqTeamCreate_descriptor =
+      getDescriptor().getMessageType(847);
+    internal_static_dnf_v1_ReqTeamCreate_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqTeamCreate_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMoneyTrade_descriptor =
+      getDescriptor().getMessageType(848);
+    internal_static_dnf_v1_ReqMoneyTrade_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMoneyTrade_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqItemUse_descriptor =
+      getDescriptor().getMessageType(849);
+    internal_static_dnf_v1_ReqItemUse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqItemUse_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqSyscmd_descriptor =
+      getDescriptor().getMessageType(850);
+    internal_static_dnf_v1_ReqSyscmd_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqSyscmd_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqReforge_descriptor =
+      getDescriptor().getMessageType(851);
+    internal_static_dnf_v1_ReqReforge_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqReforge_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqFatigueRecover_descriptor =
+      getDescriptor().getMessageType(852);
+    internal_static_dnf_v1_ReqFatigueRecover_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqFatigueRecover_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqLockstep_descriptor =
+      getDescriptor().getMessageType(853);
+    internal_static_dnf_v1_ReqLockstep_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqLockstep_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqWarehouse_descriptor =
+      getDescriptor().getMessageType(854);
+    internal_static_dnf_v1_ReqWarehouse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqWarehouse_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqDiningOrder_descriptor =
+      getDescriptor().getMessageType(855);
+    internal_static_dnf_v1_ReqDiningOrder_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqDiningOrder_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMentee_descriptor =
+      getDescriptor().getMessageType(856);
+    internal_static_dnf_v1_ReqMentee_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMentee_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqBingo_descriptor =
+      getDescriptor().getMessageType(857);
+    internal_static_dnf_v1_ReqBingo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqBingo_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqChivalry_descriptor =
+      getDescriptor().getMessageType(858);
+    internal_static_dnf_v1_ReqChivalry_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqChivalry_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqSeal_descriptor =
+      getDescriptor().getMessageType(859);
+    internal_static_dnf_v1_ReqSeal_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqSeal_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqQuestAccept_descriptor =
+      getDescriptor().getMessageType(860);
+    internal_static_dnf_v1_ReqQuestAccept_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqQuestAccept_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqQuestComplete_descriptor =
+      getDescriptor().getMessageType(861);
+    internal_static_dnf_v1_ReqQuestComplete_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqQuestComplete_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqQuestAbandon_descriptor =
+      getDescriptor().getMessageType(862);
+    internal_static_dnf_v1_ReqQuestAbandon_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqQuestAbandon_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqControlCenter_descriptor =
+      getDescriptor().getMessageType(863);
+    internal_static_dnf_v1_ReqControlCenter_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqControlCenter_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqHistoricsite_descriptor =
+      getDescriptor().getMessageType(864);
+    internal_static_dnf_v1_ReqHistoricsite_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqHistoricsite_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqRaid_descriptor =
+      getDescriptor().getMessageType(865);
+    internal_static_dnf_v1_ReqRaid_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqRaid_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqUserInfo_descriptor =
+      getDescriptor().getMessageType(866);
+    internal_static_dnf_v1_ReqUserInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqUserInfo_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqRanking_descriptor =
+      getDescriptor().getMessageType(867);
+    internal_static_dnf_v1_ReqRanking_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqRanking_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqParty_descriptor =
+      getDescriptor().getMessageType(868);
+    internal_static_dnf_v1_ReqParty_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqParty_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqAttackSquad_descriptor =
+      getDescriptor().getMessageType(869);
+    internal_static_dnf_v1_ReqAttackSquad_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqAttackSquad_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMinigame_descriptor =
+      getDescriptor().getMessageType(870);
+    internal_static_dnf_v1_ReqMinigame_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMinigame_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMail_descriptor =
+      getDescriptor().getMessageType(871);
+    internal_static_dnf_v1_ReqMail_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMail_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqGuild_descriptor =
+      getDescriptor().getMessageType(872);
+    internal_static_dnf_v1_ReqGuild_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqGuild_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqItem_descriptor =
+      getDescriptor().getMessageType(873);
+    internal_static_dnf_v1_ReqItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqItem_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqInteraction_descriptor =
+      getDescriptor().getMessageType(874);
+    internal_static_dnf_v1_ReqInteraction_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqInteraction_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqGuildSkillLearn_descriptor =
+      getDescriptor().getMessageType(875);
+    internal_static_dnf_v1_ReqGuildSkillLearn_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqGuildSkillLearn_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMinigameChallenge_descriptor =
+      getDescriptor().getMessageType(876);
+    internal_static_dnf_v1_ReqMinigameChallenge_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMinigameChallenge_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResRewardClaim_descriptor =
+      getDescriptor().getMessageType(877);
+    internal_static_dnf_v1_ResRewardClaim_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResRewardClaim_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqControlCenterTask_descriptor =
+      getDescriptor().getMessageType(878);
+    internal_static_dnf_v1_ReqControlCenterTask_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqControlCenterTask_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqRaidTeamCreate_descriptor =
+      getDescriptor().getMessageType(879);
+    internal_static_dnf_v1_ReqRaidTeamCreate_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqRaidTeamCreate_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResAttackSquadRanking_descriptor =
+      getDescriptor().getMessageType(880);
+    internal_static_dnf_v1_ResAttackSquadRanking_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResAttackSquadRanking_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResItemEnhance_descriptor =
+      getDescriptor().getMessageType(881);
+    internal_static_dnf_v1_ResItemEnhance_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResItemEnhance_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_PtUserExp_descriptor =
+      getDescriptor().getMessageType(882);
+    internal_static_dnf_v1_PtUserExp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_PtUserExp_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResInquireEquipmentRanking_descriptor =
+      getDescriptor().getMessageType(883);
+    internal_static_dnf_v1_ResInquireEquipmentRanking_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResInquireEquipmentRanking_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResPartyKick_descriptor =
+      getDescriptor().getMessageType(884);
+    internal_static_dnf_v1_ResPartyKick_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResPartyKick_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqEmblemCombine_descriptor =
+      getDescriptor().getMessageType(885);
+    internal_static_dnf_v1_ReqEmblemCombine_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqEmblemCombine_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqFriendDelete_descriptor =
+      getDescriptor().getMessageType(886);
+    internal_static_dnf_v1_ReqFriendDelete_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqFriendDelete_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqCeraRecharge_descriptor =
+      getDescriptor().getMessageType(887);
+    internal_static_dnf_v1_ReqCeraRecharge_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqCeraRecharge_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMessageReceive_descriptor =
+      getDescriptor().getMessageType(888);
+    internal_static_dnf_v1_ReqMessageReceive_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMessageReceive_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResVoiceChat_descriptor =
+      getDescriptor().getMessageType(889);
+    internal_static_dnf_v1_ResVoiceChat_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResVoiceChat_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqBoardDelete_descriptor =
+      getDescriptor().getMessageType(890);
+    internal_static_dnf_v1_ReqBoardDelete_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqBoardDelete_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResPvpBattle_descriptor =
+      getDescriptor().getMessageType(891);
+    internal_static_dnf_v1_ResPvpBattle_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResPvpBattle_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqFacilityUpgrade_descriptor =
+      getDescriptor().getMessageType(892);
+    internal_static_dnf_v1_ReqFacilityUpgrade_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqFacilityUpgrade_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqTeamInvite_descriptor =
+      getDescriptor().getMessageType(893);
+    internal_static_dnf_v1_ReqTeamInvite_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqTeamInvite_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqMoneyExchange_descriptor =
+      getDescriptor().getMessageType(894);
+    internal_static_dnf_v1_ReqMoneyExchange_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqMoneyExchange_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqItemBuy_descriptor =
+      getDescriptor().getMessageType(895);
+    internal_static_dnf_v1_ReqItemBuy_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqItemBuy_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqSysSetting_descriptor =
+      getDescriptor().getMessageType(896);
+    internal_static_dnf_v1_ReqSysSetting_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqSysSetting_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqRefine_descriptor =
+      getDescriptor().getMessageType(897);
+    internal_static_dnf_v1_ReqRefine_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqRefine_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqFatigueBuy_descriptor =
+      getDescriptor().getMessageType(898);
+    internal_static_dnf_v1_ReqFatigueBuy_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqFatigueBuy_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResLockstep_descriptor =
+      getDescriptor().getMessageType(899);
+    internal_static_dnf_v1_ResLockstep_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResLockstep_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqWarehouseExpand_descriptor =
+      getDescriptor().getMessageType(900);
+    internal_static_dnf_v1_ReqWarehouseExpand_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqWarehouseExpand_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqDiningCook_descriptor =
+      getDescriptor().getMessageType(901);
+    internal_static_dnf_v1_ReqDiningCook_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqDiningCook_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResMentee_descriptor =
+      getDescriptor().getMessageType(902);
+    internal_static_dnf_v1_ResMentee_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResMentee_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResBingo_descriptor =
+      getDescriptor().getMessageType(903);
+    internal_static_dnf_v1_ResBingo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResBingo_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqChivalryTask_descriptor =
+      getDescriptor().getMessageType(904);
+    internal_static_dnf_v1_ReqChivalryTask_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqChivalryTask_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResSeal_descriptor =
+      getDescriptor().getMessageType(905);
+    internal_static_dnf_v1_ResSeal_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResSeal_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqQuestSubmit_descriptor =
+      getDescriptor().getMessageType(906);
+    internal_static_dnf_v1_ReqQuestSubmit_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqQuestSubmit_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqQuestReward_descriptor =
+      getDescriptor().getMessageType(907);
+    internal_static_dnf_v1_ReqQuestReward_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqQuestReward_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqQuestTrack_descriptor =
+      getDescriptor().getMessageType(908);
+    internal_static_dnf_v1_ReqQuestTrack_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqQuestTrack_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqControlCenterUpgrade_descriptor =
+      getDescriptor().getMessageType(909);
+    internal_static_dnf_v1_ReqControlCenterUpgrade_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqControlCenterUpgrade_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqHistoricsiteChallenge_descriptor =
+      getDescriptor().getMessageType(910);
+    internal_static_dnf_v1_ReqHistoricsiteChallenge_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqHistoricsiteChallenge_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResRaid_descriptor =
+      getDescriptor().getMessageType(911);
+    internal_static_dnf_v1_ResRaid_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResRaid_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResUserInfo_descriptor =
+      getDescriptor().getMessageType(912);
+    internal_static_dnf_v1_ResUserInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResUserInfo_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResRanking_descriptor =
+      getDescriptor().getMessageType(913);
+    internal_static_dnf_v1_ResRanking_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResRanking_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResParty_descriptor =
+      getDescriptor().getMessageType(914);
+    internal_static_dnf_v1_ResParty_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResParty_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResAttackSquad_descriptor =
+      getDescriptor().getMessageType(915);
+    internal_static_dnf_v1_ResAttackSquad_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResAttackSquad_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResMinigame_descriptor =
+      getDescriptor().getMessageType(916);
+    internal_static_dnf_v1_ResMinigame_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResMinigame_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResMail_descriptor =
+      getDescriptor().getMessageType(917);
+    internal_static_dnf_v1_ResMail_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResMail_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResGuild_descriptor =
+      getDescriptor().getMessageType(918);
+    internal_static_dnf_v1_ResGuild_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResGuild_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResItem_descriptor =
+      getDescriptor().getMessageType(919);
+    internal_static_dnf_v1_ResItem_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResItem_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResInteraction_descriptor =
+      getDescriptor().getMessageType(920);
+    internal_static_dnf_v1_ResInteraction_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResInteraction_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ReqSkillUpgrade_descriptor =
+      getDescriptor().getMessageType(921);
+    internal_static_dnf_v1_ReqSkillUpgrade_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ReqSkillUpgrade_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResQuestAccept_descriptor =
+      getDescriptor().getMessageType(922);
+    internal_static_dnf_v1_ResQuestAccept_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResQuestAccept_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResQuestComplete_descriptor =
+      getDescriptor().getMessageType(923);
+    internal_static_dnf_v1_ResQuestComplete_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResQuestComplete_descriptor,
+        new java.lang.String[] { "Error", "Index", });
+    internal_static_dnf_v1_ResQuestAbandon_descriptor =
+      getDescriptor().getMessageType(924);
+    internal_static_dnf_v1_ResQuestAbandon_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_dnf_v1_ResQuestAbandon_descriptor,
         new java.lang.String[] { "Error", "Index", });
     descriptor.resolveAllFeaturesImmutable();
     com.dnfm.mina.protobuf.generated.CommonProto.getDescriptor();
