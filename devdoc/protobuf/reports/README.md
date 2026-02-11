@@ -1,126 +1,203 @@
-# Protobuf迁移追踪系统
+# JProtobuf到标准Protobuf迁移系统
 
-## 📖 系统概述
+## 📋 系统简介
 
-用于追踪和管理Protobuf迁移进度的系统，支持AI自动化操作和进度统计。
+本系统提供完整的JProtobuf到标准Protobuf迁移记录和管理功能，能够完整记录迁移历史、追踪迁移状态、生成详细报告。
 
-## 🚀 快速使用
+## 🚀 快速开始
 
-### 查看状态
+### 一键完整设置
+
 ```bash
-cd devdoc/protobuf/reports/scripts
-python3 main.py status
+cd /home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/scripts
+python migration_system.py --full-setup
+```
+
+### 查看系统状态
+
+```bash
+python migration_system.py --status
+```
+
+## 📊 当前状态
+
+| 指标 | 数值 |
+|------|------|
+| JProtobuf消息总数 | 2202 |
+| 标准Protobuf消息总数 | 2148 |
+| 已映射消息数 | 14 (0.64%) |
+| 已迁移消息数 | 14 (0.64%) |
+| 迁移记录总数 | 19 |
+| 批次总数 | 90 |
+| 已完成批次 | 84 (93.33%) |
+
+## 📁 系统组件
+
+### 核心脚本
+
+1. **migration_system.py** - 主控制脚本，提供统一入口
+2. **init_migration_database.py** - 数据库初始化
+3. **jprotobuf_scanner.py** - JProtobuf文件扫描器
+4. **proto_scanner.py** - 标准Protobuf文件扫描器
+5. **mapping_analyzer.py** - 消息映射关系分析器
+6. **migration_history_system.py** - 迁移历史记录系统
+7. **migration_status_tracker.py** - 迁移状态追踪工具
+8. **migration_report_generator.py** - 迁移报告生成器
+
+### 数据库
+
+**位置**: `/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/data/migration_system.db`
+
+**表结构**:
+- jprotobuf_messages - JProtobuf消息
+- proto_messages - 标准Protobuf消息
+- message_mappings - 消息映射关系
+- migration_batches - 迁移批次
+- migration_records - 迁移记录
+- message_fields - 消息字段
+- message_dependencies - 消息依赖
+- migration_history - 迁移历史
+- message_usage_scenarios - 消息使用场景
+
+### 报告
+
+**位置**: `/home/pix/dev/code/java/DnfGameServer/devdoc/protobuf/reports/docs/`
+
+- MIGRATION_OVERALL_REPORT.md - 整体迁移报告
+- MIGRATION_MAPPING_REPORT.md - 映射关系报告
+- BATCH_XX_REPORT.md - 各批次报告
+
+## 🔧 使用方法
+
+### 初始化数据库
+
+```bash
+python init_migration_database.py --init
+```
+
+### 扫描所有文件
+
+```bash
+python jprotobuf_scanner.py --scan
+python proto_scanner.py --scan
+```
+
+### 分析映射关系
+
+```bash
+python mapping_analyzer.py --analyze
+```
+
+### 导入迁移历史
+
+```bash
+python migration_history_system.py --import-all
 ```
 
 ### 生成报告
+
 ```bash
-# Markdown 报告
-python3 main.py report markdown
-
-# HTML 报告
-python3 main.py report html
-
-# 综合报告（Markdown + JSON）
-python3 main.py report comprehensive
+python migration_report_generator.py --generate-all
 ```
 
-### 查询消息映射
+### 查询状态
+
 ```bash
-python3 main.py query --old-name PT_SKILL
+# 整体状态
+python migration_status_tracker.py --overall
+
+# 消息状态
+python migration_status_tracker.py --message PT_ACHIEVEMENT_REWARD
+
+# 批次状态
+python migration_status_tracker.py --batch 12
+
+# 未映射消息
+python migration_status_tracker.py --unmapped
+
+# 未迁移消息
+python migration_status_tracker.py --unmigrated
+
+# 按类型统计
+python migration_status_tracker.py --by-type
 ```
 
-### 分析JProtobuf
-```bash
-python3 main.py analyze
+## 📈 系统特点
+
+1. **完整的数据库设计** - 9个表结构，支持完整的迁移记录
+2. **自动化扫描** - 自动扫描JProtobuf和标准Protobuf文件
+3. **智能映射分析** - 分析消息之间的映射关系
+4. **历史记录** - 完整记录迁移历史
+5. **状态追踪** - 实时追踪迁移状态
+6. **详细报告** - 生成多维度报告
+7. **统一入口** - 提供统一的控制脚本
+
+## 📚 文档
+
+- [MIGRATION_SYSTEM_GUIDE.md](MIGRATION_SYSTEM_GUIDE.md) - 详细使用指南
+
+## 🎯 系统架构
+
+```
+迁移系统
+├── 数据库层
+│   ├── jprotobuf_messages (JProtobuf消息)
+│   ├── proto_messages (标准Protobuf消息)
+│   ├── message_mappings (消息映射)
+│   ├── migration_batches (迁移批次)
+│   ├── migration_records (迁移记录)
+│   ├── message_fields (消息字段)
+│   ├── message_dependencies (消息依赖)
+│   ├── migration_history (迁移历史)
+│   └── message_usage_scenarios (消息使用场景)
+├── 扫描层
+│   ├── JProtobuf扫描器
+│   └── Protobuf扫描器
+├── 分析层
+│   └── 映射关系分析器
+├── 记录层
+│   └── 迁移历史系统
+├── 追踪层
+│   └── 状态追踪工具
+└── 报告层
+    └── 报告生成器
 ```
 
-### 添加批次到数据库
-```bash
-python3 main.py add-batches
+## 🔍 数据流
+
+```
+JProtobuf文件 → JProtobuf扫描器 → jprotobuf_messages表
+标准Protobuf文件 → Protobuf扫描器 → proto_messages表
+批次文档 → 映射分析器 → message_mappings表
+批次文档 → 历史系统 → migration_batches表
+批次文档 → 历史系统 → migration_records表
+所有数据 → 状态追踪 → 实时状态
+所有数据 → 报告生成器 → 详细报告
 ```
 
-### 修正批次状态
+## 📝 注意事项
+
+1. **数据备份**：在进行重要操作前，建议备份数据库文件
+2. **定期更新**：定期运行扫描和映射分析，保持数据最新
+3. **验证结果**：对生成的映射关系进行人工验证
+4. **版本控制**：将报告文件纳入版本控制
+5. **团队协作**：建立团队协作流程，确保迁移记录的准确性
+
+## 🆘 帮助
+
+查看各脚本的帮助信息：
+
 ```bash
-python3 main.py fix
+python migration_system.py --help
+python init_migration_database.py --help
+python jprotobuf_scanner.py --help
+python proto_scanner.py --help
+python mapping_analyzer.py --help
+python migration_history_system.py --help
+python migration_status_tracker.py --help
+python migration_report_generator.py --help
 ```
 
-## 📁 目录说明
+## 📞 联系方式
 
-- **scripts/** - 工具脚本和主程序
-  - `main.py` - 主入口程序
-  - `migration_progress.db` - SQLite 数据库
-  - `core/` - 核心功能模块
-  - `batch_management/` - 批次管理工具
-  - `reports/` - 报告生成工具
-  - `query/` - 查询工具
-  - `analyze/` - 分析工具
-
-## 📖 详细文档
-
-- **USAGE_GUIDE.md** - 完整使用指南
-- **scripts/migration_report.md** - Markdown 格式迁移报告
-- **scripts/migration_report.html** - HTML 格式迁移报告
-- **scripts/comprehensive_migration_report.md** - 综合迁移报告
-- **scripts/migration_report.json** - JSON 格式结构化数据
-
-## 📊 当前进度
-
-- 批次: 25/25 完成
-- 文件: 124/124 完成
-- 进度: 100%
-- 测试覆盖率: 100%
-
-## 🎯 系统功能
-
-### 1. 迁移进度追踪
-- 批次管理（创建、更新、查询）
-- 文件追踪（状态、测试、问题）
-- 问题记录和跟踪
-- 迁移日志记录
-
-### 2. 报告生成
-- **Markdown 报告**: 简洁的文本格式报告
-- **HTML 报告**: 可视化的网页报告
-- **综合报告**: 包含详细统计、时间线、测试覆盖率等
-- **JSON 报告**: 结构化数据，便于程序处理
-
-### 3. 消息映射查询
-- 按旧名称查询
-- 按新名称查询
-- 按模块ID查询
-- 按批次查询
-
-### 4. JProtobuf 分析
-- 统计使用 JProtobuf 的文件数量
-- 按模块分布分析
-- 总体使用情况统计
-
-## 🛠️ 维护建议
-
-1. **定期查看进度**: `python3 main.py status`
-2. **迁移完成后更新**: 及时更新批次和文件状态
-3. **定期生成报告**: 使用 `python3 main.py report comprehensive` 生成综合报告
-4. **记录问题**: 遇到问题及时记录到数据库
-5. **备份数据库**: 定期备份 `migration_progress.db` 文件
-6. **使用版本控制**: 将报告文件纳入版本控制
-
-## 📊 数据库结构
-
-系统使用 SQLite 数据库存储迁移数据，包含以下表：
-- `batches` - 批次信息
-- `migration_files` - 迁移文件信息
-- `issues` - 问题记录
-- `migration_logs` - 迁移日志
-
-详细结构说明请参考 [USAGE_GUIDE.md](USAGE_GUIDE.md)
-
-## 🔧 扩展功能
-
-### 添加新批次
-使用 `add_batches_22_33_simple.py` 作为模板，创建新的批次添加脚本。
-
-### 自定义报告
-参考 `enhanced_report_generator.py` 创建自定义报告生成器。
-
-### 添加查询功能
-在 `query/query_mappings.py` 中添加新的查询方法。
+如有问题，请查看[MIGRATION_SYSTEM_GUIDE.md](MIGRATION_SYSTEM_GUIDE.md)获取详细文档。
