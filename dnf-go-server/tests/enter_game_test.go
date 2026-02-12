@@ -437,7 +437,7 @@ func (s *EnterGameTestSuite) TestBlackDiamonInfo() {
 // TestGetPrivateStoreGoodsList 测试获取个人商店商品列表
 func (s *EnterGameTestSuite) TestGetPrivateStoreGoodsList() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 获取个人商店商品列表
 	storeResp, err := s.Client.Post("/api/v1/game/private_store_goods_list", map[string]interface{}{
@@ -456,7 +456,7 @@ func (s *EnterGameTestSuite) TestGetPrivateStoreGoodsList() {
 // TestRecommendGuildList 测试推荐公会列表
 func (s *EnterGameTestSuite) TestRecommendGuildList() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 获取推荐公会列表
 	guildListResp, err := s.Client.Post("/api/v1/game/recommend_guild_list", map[string]interface{}{

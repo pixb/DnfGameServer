@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1";
+
+// 成就信息请求
+message AchievementInfoRequest {
+  int32 field_1 = 1;
+}
+
+// 成就信息响应
+message AchievementInfoResponse {
+  repeated AchievementInfo achievements = 1;
+  int32 error = 2;
+  string message = 3;
+}
+
+// 成就信息
+message AchievementInfo {
+  uint32 achievement_id = 1;
+  string name = 2;
+  string description = 3;
+  int32 progress = 4;
+  int32 target_value = 5;
+  bool completed = 6;
+  bool rewarded = 7;
+}
+
+// 成就奖励请求
+message AchievementRewardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  uint64 field_3 = 3;
+}
+
+// 成就奖励响应
+message AchievementRewardResponse {
+  int32 adventureunionlevel = 1;
+  uint64 adventureunionexp = 2;
+  repeated StackableItem consumeitems = 3;
+  PT_ITEMS invenitems = 4;
+  int32 error = 5;
+  string message = 6;
+}
+
+// 可堆叠物品
+message StackableItem {
+  uint32 index = 1;
+  uint32 count = 2;
+  bool bind = 3;
+  uint64 acquisitiontime = 4;
+}
+
+// 物品列表
+message PT_ITEMS {
+  repeated StackableItem consumeitems = 1;
+}
+
+// 成就列表请求
+message AchievementListRequest {
+  int32 field_1 = 1;
+}
+
+// 成就列表响应
+message AchievementListResponse {
+  repeated AchievementInfo achievements = 1;
+  int32 total = 2;
+  int32 error = 3;
+  string message = 4;
+}
+
+// 成就额外奖励请求
+message AchievementBonusRewardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  int32 field_3 = 3;
+  int32 field_4 = 4;
+  int32 field_5 = 5;
+}
+
+// 成就额外奖励响应
+message AchievementBonusRewardResponse {
+  repeated StackableItem rewards = 1;
+  int32 error = 2;
+  string message = 3;
+}

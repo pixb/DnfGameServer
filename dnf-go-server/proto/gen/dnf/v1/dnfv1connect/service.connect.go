@@ -202,6 +202,18 @@ const (
 	// AuthServicePvpBattleResultProcedure is the fully-qualified name of the AuthService's
 	// PvpBattleResult RPC.
 	AuthServicePvpBattleResultProcedure = "/dnf.v1.AuthService/PvpBattleResult"
+	// AuthServiceAchievementInfoProcedure is the fully-qualified name of the AuthService's
+	// AchievementInfo RPC.
+	AuthServiceAchievementInfoProcedure = "/dnf.v1.AuthService/AchievementInfo"
+	// AuthServiceAchievementRewardProcedure is the fully-qualified name of the AuthService's
+	// AchievementReward RPC.
+	AuthServiceAchievementRewardProcedure = "/dnf.v1.AuthService/AchievementReward"
+	// AuthServiceAchievementListProcedure is the fully-qualified name of the AuthService's
+	// AchievementList RPC.
+	AuthServiceAchievementListProcedure = "/dnf.v1.AuthService/AchievementList"
+	// AuthServiceAchievementBonusRewardProcedure is the fully-qualified name of the AuthService's
+	// AchievementBonusReward RPC.
+	AuthServiceAchievementBonusRewardProcedure = "/dnf.v1.AuthService/AchievementBonusReward"
 )
 
 // GameServiceClient is a client for the dnf.v1.GameService service.
@@ -1385,6 +1397,11 @@ type AuthServiceClient interface {
 	PvpDailyReset(context.Context, *connect.Request[v1.PvpDailyResetRequest]) (*connect.Response[v1.PvpDailyResetResponse], error)
 	PvpMatchTypes(context.Context, *connect.Request[v1.PvpMatchTypesRequest]) (*connect.Response[v1.PvpMatchTypesResponse], error)
 	PvpBattleResult(context.Context, *connect.Request[v1.PvpBattleResultRequest]) (*connect.Response[v1.PvpBattleResultResponse], error)
+	// 成就相关
+	AchievementInfo(context.Context, *connect.Request[v1.AchievementInfoRequest]) (*connect.Response[v1.AchievementInfoResponse], error)
+	AchievementReward(context.Context, *connect.Request[v1.AchievementRewardRequest]) (*connect.Response[v1.AchievementRewardResponse], error)
+	AchievementList(context.Context, *connect.Request[v1.AchievementListRequest]) (*connect.Response[v1.AchievementListResponse], error)
+	AchievementBonusReward(context.Context, *connect.Request[v1.AchievementBonusRewardRequest]) (*connect.Response[v1.AchievementBonusRewardResponse], error)
 }
 
 // NewAuthServiceClient constructs a client for the dnf.v1.AuthService service. By default, it uses
@@ -1530,6 +1547,30 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("PvpBattleResult")),
 			connect.WithClientOptions(opts...),
 		),
+		achievementInfo: connect.NewClient[v1.AchievementInfoRequest, v1.AchievementInfoResponse](
+			httpClient,
+			baseURL+AuthServiceAchievementInfoProcedure,
+			connect.WithSchema(authServiceMethods.ByName("AchievementInfo")),
+			connect.WithClientOptions(opts...),
+		),
+		achievementReward: connect.NewClient[v1.AchievementRewardRequest, v1.AchievementRewardResponse](
+			httpClient,
+			baseURL+AuthServiceAchievementRewardProcedure,
+			connect.WithSchema(authServiceMethods.ByName("AchievementReward")),
+			connect.WithClientOptions(opts...),
+		),
+		achievementList: connect.NewClient[v1.AchievementListRequest, v1.AchievementListResponse](
+			httpClient,
+			baseURL+AuthServiceAchievementListProcedure,
+			connect.WithSchema(authServiceMethods.ByName("AchievementList")),
+			connect.WithClientOptions(opts...),
+		),
+		achievementBonusReward: connect.NewClient[v1.AchievementBonusRewardRequest, v1.AchievementBonusRewardResponse](
+			httpClient,
+			baseURL+AuthServiceAchievementBonusRewardProcedure,
+			connect.WithSchema(authServiceMethods.ByName("AchievementBonusReward")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -1557,6 +1598,10 @@ type authServiceClient struct {
 	pvpDailyReset               *connect.Client[v1.PvpDailyResetRequest, v1.PvpDailyResetResponse]
 	pvpMatchTypes               *connect.Client[v1.PvpMatchTypesRequest, v1.PvpMatchTypesResponse]
 	pvpBattleResult             *connect.Client[v1.PvpBattleResultRequest, v1.PvpBattleResultResponse]
+	achievementInfo             *connect.Client[v1.AchievementInfoRequest, v1.AchievementInfoResponse]
+	achievementReward           *connect.Client[v1.AchievementRewardRequest, v1.AchievementRewardResponse]
+	achievementList             *connect.Client[v1.AchievementListRequest, v1.AchievementListResponse]
+	achievementBonusReward      *connect.Client[v1.AchievementBonusRewardRequest, v1.AchievementBonusRewardResponse]
 }
 
 // Login calls dnf.v1.AuthService.Login.
@@ -1669,6 +1714,26 @@ func (c *authServiceClient) PvpBattleResult(ctx context.Context, req *connect.Re
 	return c.pvpBattleResult.CallUnary(ctx, req)
 }
 
+// AchievementInfo calls dnf.v1.AuthService.AchievementInfo.
+func (c *authServiceClient) AchievementInfo(ctx context.Context, req *connect.Request[v1.AchievementInfoRequest]) (*connect.Response[v1.AchievementInfoResponse], error) {
+	return c.achievementInfo.CallUnary(ctx, req)
+}
+
+// AchievementReward calls dnf.v1.AuthService.AchievementReward.
+func (c *authServiceClient) AchievementReward(ctx context.Context, req *connect.Request[v1.AchievementRewardRequest]) (*connect.Response[v1.AchievementRewardResponse], error) {
+	return c.achievementReward.CallUnary(ctx, req)
+}
+
+// AchievementList calls dnf.v1.AuthService.AchievementList.
+func (c *authServiceClient) AchievementList(ctx context.Context, req *connect.Request[v1.AchievementListRequest]) (*connect.Response[v1.AchievementListResponse], error) {
+	return c.achievementList.CallUnary(ctx, req)
+}
+
+// AchievementBonusReward calls dnf.v1.AuthService.AchievementBonusReward.
+func (c *authServiceClient) AchievementBonusReward(ctx context.Context, req *connect.Request[v1.AchievementBonusRewardRequest]) (*connect.Response[v1.AchievementBonusRewardResponse], error) {
+	return c.achievementBonusReward.CallUnary(ctx, req)
+}
+
 // AuthServiceHandler is an implementation of the dnf.v1.AuthService service.
 type AuthServiceHandler interface {
 	Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error)
@@ -1694,6 +1759,11 @@ type AuthServiceHandler interface {
 	PvpDailyReset(context.Context, *connect.Request[v1.PvpDailyResetRequest]) (*connect.Response[v1.PvpDailyResetResponse], error)
 	PvpMatchTypes(context.Context, *connect.Request[v1.PvpMatchTypesRequest]) (*connect.Response[v1.PvpMatchTypesResponse], error)
 	PvpBattleResult(context.Context, *connect.Request[v1.PvpBattleResultRequest]) (*connect.Response[v1.PvpBattleResultResponse], error)
+	// 成就相关
+	AchievementInfo(context.Context, *connect.Request[v1.AchievementInfoRequest]) (*connect.Response[v1.AchievementInfoResponse], error)
+	AchievementReward(context.Context, *connect.Request[v1.AchievementRewardRequest]) (*connect.Response[v1.AchievementRewardResponse], error)
+	AchievementList(context.Context, *connect.Request[v1.AchievementListRequest]) (*connect.Response[v1.AchievementListResponse], error)
+	AchievementBonusReward(context.Context, *connect.Request[v1.AchievementBonusRewardRequest]) (*connect.Response[v1.AchievementBonusRewardResponse], error)
 }
 
 // NewAuthServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -1835,6 +1905,30 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(authServiceMethods.ByName("PvpBattleResult")),
 		connect.WithHandlerOptions(opts...),
 	)
+	authServiceAchievementInfoHandler := connect.NewUnaryHandler(
+		AuthServiceAchievementInfoProcedure,
+		svc.AchievementInfo,
+		connect.WithSchema(authServiceMethods.ByName("AchievementInfo")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceAchievementRewardHandler := connect.NewUnaryHandler(
+		AuthServiceAchievementRewardProcedure,
+		svc.AchievementReward,
+		connect.WithSchema(authServiceMethods.ByName("AchievementReward")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceAchievementListHandler := connect.NewUnaryHandler(
+		AuthServiceAchievementListProcedure,
+		svc.AchievementList,
+		connect.WithSchema(authServiceMethods.ByName("AchievementList")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceAchievementBonusRewardHandler := connect.NewUnaryHandler(
+		AuthServiceAchievementBonusRewardProcedure,
+		svc.AchievementBonusReward,
+		connect.WithSchema(authServiceMethods.ByName("AchievementBonusReward")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/dnf.v1.AuthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AuthServiceLoginProcedure:
@@ -1881,6 +1975,14 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 			authServicePvpMatchTypesHandler.ServeHTTP(w, r)
 		case AuthServicePvpBattleResultProcedure:
 			authServicePvpBattleResultHandler.ServeHTTP(w, r)
+		case AuthServiceAchievementInfoProcedure:
+			authServiceAchievementInfoHandler.ServeHTTP(w, r)
+		case AuthServiceAchievementRewardProcedure:
+			authServiceAchievementRewardHandler.ServeHTTP(w, r)
+		case AuthServiceAchievementListProcedure:
+			authServiceAchievementListHandler.ServeHTTP(w, r)
+		case AuthServiceAchievementBonusRewardProcedure:
+			authServiceAchievementBonusRewardHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -1976,4 +2078,20 @@ func (UnimplementedAuthServiceHandler) PvpMatchTypes(context.Context, *connect.R
 
 func (UnimplementedAuthServiceHandler) PvpBattleResult(context.Context, *connect.Request[v1.PvpBattleResultRequest]) (*connect.Response[v1.PvpBattleResultResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.PvpBattleResult is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) AchievementInfo(context.Context, *connect.Request[v1.AchievementInfoRequest]) (*connect.Response[v1.AchievementInfoResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.AchievementInfo is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) AchievementReward(context.Context, *connect.Request[v1.AchievementRewardRequest]) (*connect.Response[v1.AchievementRewardResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.AchievementReward is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) AchievementList(context.Context, *connect.Request[v1.AchievementListRequest]) (*connect.Response[v1.AchievementListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.AchievementList is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) AchievementBonusReward(context.Context, *connect.Request[v1.AchievementBonusRewardRequest]) (*connect.Response[v1.AchievementBonusRewardResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.AchievementBonusReward is not implemented"))
 }

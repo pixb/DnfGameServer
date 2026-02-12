@@ -13,6 +13,7 @@ import "dnf/v1/shop.proto";
 import "dnf/v1/quest.proto";
 import "dnf/v1/guild.proto";
 import "dnf/v1/pk.proto";
+import "dnf/v1/achievement.proto";
 
 option go_package = "gen/dnf/v1";
 
@@ -226,6 +227,35 @@ service AuthService {
   rpc PvpBattleResult(PvpBattleResultRequest) returns (PvpBattleResultResponse) {
     option (google.api.http) = {
       post: "/api/v1/pk/battle_result"
+      body: "*"
+    };
+  }
+
+  // 成就相关
+  rpc AchievementInfo(AchievementInfoRequest) returns (AchievementInfoResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/achievement/info"
+      body: "*"
+    };
+  }
+
+  rpc AchievementReward(AchievementRewardRequest) returns (AchievementRewardResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/achievement/reward"
+      body: "*"
+    };
+  }
+
+  rpc AchievementList(AchievementListRequest) returns (AchievementListResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/achievement/list"
+      body: "*"
+    };
+  }
+
+  rpc AchievementBonusReward(AchievementBonusRewardRequest) returns (AchievementBonusRewardResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/achievement/bonus_reward"
       body: "*"
     };
   }

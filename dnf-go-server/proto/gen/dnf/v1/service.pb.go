@@ -26,7 +26,7 @@ var File_dnf_v1_service_proto protoreflect.FileDescriptor
 
 const file_dnf_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x14dnf/v1/service.proto\x12\x06dnf.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x11dnf/v1/auth.proto\x1a\x11dnf/v1/role.proto\x1a\x11dnf/v1/item.proto\x1a\x14dnf/v1/dungeon.proto\x1a\x11dnf/v1/chat.proto\x1a\x11dnf/v1/shop.proto\x1a\x12dnf/v1/quest.proto\x1a\x12dnf/v1/guild.proto\x1a\x0fdnf/v1/pk.proto2\xa2\x18\n" +
+	"\x14dnf/v1/service.proto\x12\x06dnf.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x11dnf/v1/auth.proto\x1a\x11dnf/v1/role.proto\x1a\x11dnf/v1/item.proto\x1a\x14dnf/v1/dungeon.proto\x1a\x11dnf/v1/chat.proto\x1a\x11dnf/v1/shop.proto\x1a\x12dnf/v1/quest.proto\x1a\x12dnf/v1/guild.proto\x1a\x0fdnf/v1/pk.proto\x1a\x18dnf/v1/achievement.proto2\xa2\x18\n" +
 	"\vGameService\x12F\n" +
 	"\vGetRoleInfo\x12\x1a.dnf.v1.GetRoleInfoRequest\x1a\x1b.dnf.v1.GetRoleInfoResponse\x12U\n" +
 	"\x10UpdateAttributes\x12\x1f.dnf.v1.UpdateAttributesRequest\x1a .dnf.v1.UpdateAttributesResponse\x12C\n" +
@@ -74,7 +74,7 @@ const file_dnf_v1_service_proto_rawDesc = "" +
 	"LeaveGuild\x12\x19.dnf.v1.LeaveGuildRequest\x1a\x1a.dnf.v1.LeaveGuildResponse\x12F\n" +
 	"\vGuildDonate\x12\x1a.dnf.v1.GuildDonateRequest\x1a\x1b.dnf.v1.GuildDonateResponse\x12L\n" +
 	"\rGetGuildSkill\x12\x1c.dnf.v1.GetGuildSkillRequest\x1a\x1d.dnf.v1.GetGuildSkillResponse\x12X\n" +
-	"\x11UpgradeGuildSkill\x12 .dnf.v1.UpgradeGuildSkillRequest\x1a!.dnf.v1.UpgradeGuildSkillResponse2\x8b\x15\n" +
+	"\x11UpgradeGuildSkill\x12 .dnf.v1.UpgradeGuildSkillRequest\x1a!.dnf.v1.UpgradeGuildSkillResponse2\x95\x19\n" +
 	"\vAuthService\x12S\n" +
 	"\x05Login\x12\x14.dnf.v1.LoginRequest\x1a\x15.dnf.v1.LoginResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/v1/auth/login\x12w\n" +
 	"\x0fCreateCharacter\x12\x1e.dnf.v1.CreateCharacterRequest\x1a\x1f.dnf.v1.CreateCharacterResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/v1/character/create\x12o\n" +
@@ -98,7 +98,11 @@ const file_dnf_v1_service_proto_rawDesc = "" +
 	"\tPvpReward\x12\x18.dnf.v1.PvpRewardRequest\x1a\x19.dnf.v1.PvpRewardResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/api/v1/pk/reward\x12o\n" +
 	"\rPvpDailyReset\x12\x1c.dnf.v1.PvpDailyResetRequest\x1a\x1d.dnf.v1.PvpDailyResetResponse\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\"\x16/api/v1/pk/daily_reset\x12l\n" +
 	"\rPvpMatchTypes\x12\x1c.dnf.v1.PvpMatchTypesRequest\x1a\x1d.dnf.v1.PvpMatchTypesResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/api/v1/pk/match_types\x12w\n" +
-	"\x0fPvpBattleResult\x12\x1e.dnf.v1.PvpBattleResultRequest\x1a\x1f.dnf.v1.PvpBattleResultResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/v1/pk/battle_resultB\x97\x01\n" +
+	"\x0fPvpBattleResult\x12\x1e.dnf.v1.PvpBattleResultRequest\x1a\x1f.dnf.v1.PvpBattleResultResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/v1/pk/battle_result\x12w\n" +
+	"\x0fAchievementInfo\x12\x1e.dnf.v1.AchievementInfoRequest\x1a\x1f.dnf.v1.AchievementInfoResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/v1/achievement/info\x12\x7f\n" +
+	"\x11AchievementReward\x12 .dnf.v1.AchievementRewardRequest\x1a!.dnf.v1.AchievementRewardResponse\"%\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/v1/achievement/reward\x12w\n" +
+	"\x0fAchievementList\x12\x1e.dnf.v1.AchievementListRequest\x1a\x1f.dnf.v1.AchievementListResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/v1/achievement/list\x12\x94\x01\n" +
+	"\x16AchievementBonusReward\x12%.dnf.v1.AchievementBonusRewardRequest\x1a&.dnf.v1.AchievementBonusRewardResponse\"+\x82\xd3\xe4\x93\x02%:\x01*\" /api/v1/achievement/bonus_rewardB\x97\x01\n" +
 	"\n" +
 	"com.dnf.v1B\fServiceProtoP\x01ZBgithub.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
 
@@ -167,70 +171,78 @@ var file_dnf_v1_service_proto_goTypes = []any{
 	(*PvpDailyResetRequest)(nil),                // 61: dnf.v1.PvpDailyResetRequest
 	(*PvpMatchTypesRequest)(nil),                // 62: dnf.v1.PvpMatchTypesRequest
 	(*PvpBattleResultRequest)(nil),              // 63: dnf.v1.PvpBattleResultRequest
-	(*GetRoleInfoResponse)(nil),                 // 64: dnf.v1.GetRoleInfoResponse
-	(*UpdateAttributesResponse)(nil),            // 65: dnf.v1.UpdateAttributesResponse
-	(*LearnSkillResponse)(nil),                  // 66: dnf.v1.LearnSkillResponse
-	(*UpgradeSkillResponse)(nil),                // 67: dnf.v1.UpgradeSkillResponse
-	(*RecoverFatigueResponse)(nil),              // 68: dnf.v1.RecoverFatigueResponse
-	(*GetBagResponse)(nil),                      // 69: dnf.v1.GetBagResponse
-	(*UseItemResponse)(nil),                     // 70: dnf.v1.UseItemResponse
-	(*MoveItemResponse)(nil),                    // 71: dnf.v1.MoveItemResponse
-	(*SellItemResponse)(nil),                    // 72: dnf.v1.SellItemResponse
-	(*EquipItemResponse)(nil),                   // 73: dnf.v1.EquipItemResponse
-	(*EnterDungeonResponse)(nil),                // 74: dnf.v1.EnterDungeonResponse
-	(*ExitDungeonResponse)(nil),                 // 75: dnf.v1.ExitDungeonResponse
-	(*ReviveResponse)(nil),                      // 76: dnf.v1.ReviveResponse
-	(*ChangeRoomResponse)(nil),                  // 77: dnf.v1.ChangeRoomResponse
-	(*SendChatResponse)(nil),                    // 78: dnf.v1.SendChatResponse
-	(*GetChatHistoryResponse)(nil),              // 79: dnf.v1.GetChatHistoryResponse
-	(*GetFriendListResponse)(nil),               // 80: dnf.v1.GetFriendListResponse
-	(*AddFriendResponse)(nil),                   // 81: dnf.v1.AddFriendResponse
-	(*emptypb.Empty)(nil),                       // 82: google.protobuf.Empty
-	(*RemoveFriendResponse)(nil),                // 83: dnf.v1.RemoveFriendResponse
-	(*GetShopListResponse)(nil),                 // 84: dnf.v1.GetShopListResponse
-	(*BuyItemResponse)(nil),                     // 85: dnf.v1.BuyItemResponse
-	(*SellToShopResponse)(nil),                  // 86: dnf.v1.SellToShopResponse
-	(*SearchAuctionResponse)(nil),               // 87: dnf.v1.SearchAuctionResponse
-	(*RegisterAuctionResponse)(nil),             // 88: dnf.v1.RegisterAuctionResponse
-	(*BidAuctionResponse)(nil),                  // 89: dnf.v1.BidAuctionResponse
-	(*BuyoutAuctionResponse)(nil),               // 90: dnf.v1.BuyoutAuctionResponse
-	(*OpenPrivateStoreResponse)(nil),            // 91: dnf.v1.OpenPrivateStoreResponse
-	(*ViewPrivateStoreResponse)(nil),            // 92: dnf.v1.ViewPrivateStoreResponse
-	(*BuyFromPrivateStoreResponse)(nil),         // 93: dnf.v1.BuyFromPrivateStoreResponse
-	(*GetQuestListResponse)(nil),                // 94: dnf.v1.GetQuestListResponse
-	(*AcceptQuestResponse)(nil),                 // 95: dnf.v1.AcceptQuestResponse
-	(*CompleteQuestResponse)(nil),               // 96: dnf.v1.CompleteQuestResponse
-	(*GetQuestRewardResponse)(nil),              // 97: dnf.v1.GetQuestRewardResponse
-	(*AbandonQuestResponse)(nil),                // 98: dnf.v1.AbandonQuestResponse
-	(*GetGuildInfoResponse)(nil),                // 99: dnf.v1.GetGuildInfoResponse
-	(*CreateGuildResponse)(nil),                 // 100: dnf.v1.CreateGuildResponse
-	(*JoinGuildResponse)(nil),                   // 101: dnf.v1.JoinGuildResponse
-	(*LeaveGuildResponse)(nil),                  // 102: dnf.v1.LeaveGuildResponse
-	(*GuildDonateResponse)(nil),                 // 103: dnf.v1.GuildDonateResponse
-	(*GetGuildSkillResponse)(nil),               // 104: dnf.v1.GetGuildSkillResponse
-	(*UpgradeGuildSkillResponse)(nil),           // 105: dnf.v1.UpgradeGuildSkillResponse
-	(*LoginResponse)(nil),                       // 106: dnf.v1.LoginResponse
-	(*CreateCharacterResponse)(nil),             // 107: dnf.v1.CreateCharacterResponse
-	(*CharacterListResponse)(nil),               // 108: dnf.v1.CharacterListResponse
-	(*SelectCharacterResponse)(nil),             // 109: dnf.v1.SelectCharacterResponse
-	(*MultiPlayRequestMatchResponse)(nil),       // 110: dnf.v1.MultiPlayRequestMatchResponse
-	(*MultiPlayRequestMatchCancelResponse)(nil), // 111: dnf.v1.MultiPlayRequestMatchCancelResponse
-	(*HistoricSiteNotiResponse)(nil),            // 112: dnf.v1.HistoricSiteNotiResponse
-	(*LoadGuildDonationInfoResponse)(nil),       // 113: dnf.v1.LoadGuildDonationInfoResponse
-	(*DreamMazeBasicInfoResponse)(nil),          // 114: dnf.v1.DreamMazeBasicInfoResponse
-	(*RaidEntranceCountResponse)(nil),           // 115: dnf.v1.RaidEntranceCountResponse
-	(*LoadingProgressResponse)(nil),             // 116: dnf.v1.LoadingProgressResponse
-	(*ReturnToTownAtMultiPlayResponse)(nil),     // 117: dnf.v1.ReturnToTownAtMultiPlayResponse
-	(*CustomGameRoomSettingResponse)(nil),       // 118: dnf.v1.CustomGameRoomSettingResponse
-	(*PvpRecordResponse)(nil),                   // 119: dnf.v1.PvpRecordResponse
-	(*PvpRankingResponse)(nil),                  // 120: dnf.v1.PvpRankingResponse
-	(*PvpStatsResponse)(nil),                    // 121: dnf.v1.PvpStatsResponse
-	(*PvpMatchHistoryResponse)(nil),             // 122: dnf.v1.PvpMatchHistoryResponse
-	(*PvpSeasonInfoResponse)(nil),               // 123: dnf.v1.PvpSeasonInfoResponse
-	(*PvpRewardResponse)(nil),                   // 124: dnf.v1.PvpRewardResponse
-	(*PvpDailyResetResponse)(nil),               // 125: dnf.v1.PvpDailyResetResponse
-	(*PvpMatchTypesResponse)(nil),               // 126: dnf.v1.PvpMatchTypesResponse
-	(*PvpBattleResultResponse)(nil),             // 127: dnf.v1.PvpBattleResultResponse
+	(*AchievementInfoRequest)(nil),              // 64: dnf.v1.AchievementInfoRequest
+	(*AchievementRewardRequest)(nil),            // 65: dnf.v1.AchievementRewardRequest
+	(*AchievementListRequest)(nil),              // 66: dnf.v1.AchievementListRequest
+	(*AchievementBonusRewardRequest)(nil),       // 67: dnf.v1.AchievementBonusRewardRequest
+	(*GetRoleInfoResponse)(nil),                 // 68: dnf.v1.GetRoleInfoResponse
+	(*UpdateAttributesResponse)(nil),            // 69: dnf.v1.UpdateAttributesResponse
+	(*LearnSkillResponse)(nil),                  // 70: dnf.v1.LearnSkillResponse
+	(*UpgradeSkillResponse)(nil),                // 71: dnf.v1.UpgradeSkillResponse
+	(*RecoverFatigueResponse)(nil),              // 72: dnf.v1.RecoverFatigueResponse
+	(*GetBagResponse)(nil),                      // 73: dnf.v1.GetBagResponse
+	(*UseItemResponse)(nil),                     // 74: dnf.v1.UseItemResponse
+	(*MoveItemResponse)(nil),                    // 75: dnf.v1.MoveItemResponse
+	(*SellItemResponse)(nil),                    // 76: dnf.v1.SellItemResponse
+	(*EquipItemResponse)(nil),                   // 77: dnf.v1.EquipItemResponse
+	(*EnterDungeonResponse)(nil),                // 78: dnf.v1.EnterDungeonResponse
+	(*ExitDungeonResponse)(nil),                 // 79: dnf.v1.ExitDungeonResponse
+	(*ReviveResponse)(nil),                      // 80: dnf.v1.ReviveResponse
+	(*ChangeRoomResponse)(nil),                  // 81: dnf.v1.ChangeRoomResponse
+	(*SendChatResponse)(nil),                    // 82: dnf.v1.SendChatResponse
+	(*GetChatHistoryResponse)(nil),              // 83: dnf.v1.GetChatHistoryResponse
+	(*GetFriendListResponse)(nil),               // 84: dnf.v1.GetFriendListResponse
+	(*AddFriendResponse)(nil),                   // 85: dnf.v1.AddFriendResponse
+	(*emptypb.Empty)(nil),                       // 86: google.protobuf.Empty
+	(*RemoveFriendResponse)(nil),                // 87: dnf.v1.RemoveFriendResponse
+	(*GetShopListResponse)(nil),                 // 88: dnf.v1.GetShopListResponse
+	(*BuyItemResponse)(nil),                     // 89: dnf.v1.BuyItemResponse
+	(*SellToShopResponse)(nil),                  // 90: dnf.v1.SellToShopResponse
+	(*SearchAuctionResponse)(nil),               // 91: dnf.v1.SearchAuctionResponse
+	(*RegisterAuctionResponse)(nil),             // 92: dnf.v1.RegisterAuctionResponse
+	(*BidAuctionResponse)(nil),                  // 93: dnf.v1.BidAuctionResponse
+	(*BuyoutAuctionResponse)(nil),               // 94: dnf.v1.BuyoutAuctionResponse
+	(*OpenPrivateStoreResponse)(nil),            // 95: dnf.v1.OpenPrivateStoreResponse
+	(*ViewPrivateStoreResponse)(nil),            // 96: dnf.v1.ViewPrivateStoreResponse
+	(*BuyFromPrivateStoreResponse)(nil),         // 97: dnf.v1.BuyFromPrivateStoreResponse
+	(*GetQuestListResponse)(nil),                // 98: dnf.v1.GetQuestListResponse
+	(*AcceptQuestResponse)(nil),                 // 99: dnf.v1.AcceptQuestResponse
+	(*CompleteQuestResponse)(nil),               // 100: dnf.v1.CompleteQuestResponse
+	(*GetQuestRewardResponse)(nil),              // 101: dnf.v1.GetQuestRewardResponse
+	(*AbandonQuestResponse)(nil),                // 102: dnf.v1.AbandonQuestResponse
+	(*GetGuildInfoResponse)(nil),                // 103: dnf.v1.GetGuildInfoResponse
+	(*CreateGuildResponse)(nil),                 // 104: dnf.v1.CreateGuildResponse
+	(*JoinGuildResponse)(nil),                   // 105: dnf.v1.JoinGuildResponse
+	(*LeaveGuildResponse)(nil),                  // 106: dnf.v1.LeaveGuildResponse
+	(*GuildDonateResponse)(nil),                 // 107: dnf.v1.GuildDonateResponse
+	(*GetGuildSkillResponse)(nil),               // 108: dnf.v1.GetGuildSkillResponse
+	(*UpgradeGuildSkillResponse)(nil),           // 109: dnf.v1.UpgradeGuildSkillResponse
+	(*LoginResponse)(nil),                       // 110: dnf.v1.LoginResponse
+	(*CreateCharacterResponse)(nil),             // 111: dnf.v1.CreateCharacterResponse
+	(*CharacterListResponse)(nil),               // 112: dnf.v1.CharacterListResponse
+	(*SelectCharacterResponse)(nil),             // 113: dnf.v1.SelectCharacterResponse
+	(*MultiPlayRequestMatchResponse)(nil),       // 114: dnf.v1.MultiPlayRequestMatchResponse
+	(*MultiPlayRequestMatchCancelResponse)(nil), // 115: dnf.v1.MultiPlayRequestMatchCancelResponse
+	(*HistoricSiteNotiResponse)(nil),            // 116: dnf.v1.HistoricSiteNotiResponse
+	(*LoadGuildDonationInfoResponse)(nil),       // 117: dnf.v1.LoadGuildDonationInfoResponse
+	(*DreamMazeBasicInfoResponse)(nil),          // 118: dnf.v1.DreamMazeBasicInfoResponse
+	(*RaidEntranceCountResponse)(nil),           // 119: dnf.v1.RaidEntranceCountResponse
+	(*LoadingProgressResponse)(nil),             // 120: dnf.v1.LoadingProgressResponse
+	(*ReturnToTownAtMultiPlayResponse)(nil),     // 121: dnf.v1.ReturnToTownAtMultiPlayResponse
+	(*CustomGameRoomSettingResponse)(nil),       // 122: dnf.v1.CustomGameRoomSettingResponse
+	(*PvpRecordResponse)(nil),                   // 123: dnf.v1.PvpRecordResponse
+	(*PvpRankingResponse)(nil),                  // 124: dnf.v1.PvpRankingResponse
+	(*PvpStatsResponse)(nil),                    // 125: dnf.v1.PvpStatsResponse
+	(*PvpMatchHistoryResponse)(nil),             // 126: dnf.v1.PvpMatchHistoryResponse
+	(*PvpSeasonInfoResponse)(nil),               // 127: dnf.v1.PvpSeasonInfoResponse
+	(*PvpRewardResponse)(nil),                   // 128: dnf.v1.PvpRewardResponse
+	(*PvpDailyResetResponse)(nil),               // 129: dnf.v1.PvpDailyResetResponse
+	(*PvpMatchTypesResponse)(nil),               // 130: dnf.v1.PvpMatchTypesResponse
+	(*PvpBattleResultResponse)(nil),             // 131: dnf.v1.PvpBattleResultResponse
+	(*AchievementInfoResponse)(nil),             // 132: dnf.v1.AchievementInfoResponse
+	(*AchievementRewardResponse)(nil),           // 133: dnf.v1.AchievementRewardResponse
+	(*AchievementListResponse)(nil),             // 134: dnf.v1.AchievementListResponse
+	(*AchievementBonusRewardResponse)(nil),      // 135: dnf.v1.AchievementBonusRewardResponse
 }
 var file_dnf_v1_service_proto_depIdxs = []int32{
 	0,   // 0: dnf.v1.GameService.GetRoleInfo:input_type -> dnf.v1.GetRoleInfoRequest
@@ -297,72 +309,80 @@ var file_dnf_v1_service_proto_depIdxs = []int32{
 	61,  // 61: dnf.v1.AuthService.PvpDailyReset:input_type -> dnf.v1.PvpDailyResetRequest
 	62,  // 62: dnf.v1.AuthService.PvpMatchTypes:input_type -> dnf.v1.PvpMatchTypesRequest
 	63,  // 63: dnf.v1.AuthService.PvpBattleResult:input_type -> dnf.v1.PvpBattleResultRequest
-	64,  // 64: dnf.v1.GameService.GetRoleInfo:output_type -> dnf.v1.GetRoleInfoResponse
-	65,  // 65: dnf.v1.GameService.UpdateAttributes:output_type -> dnf.v1.UpdateAttributesResponse
-	66,  // 66: dnf.v1.GameService.LearnSkill:output_type -> dnf.v1.LearnSkillResponse
-	67,  // 67: dnf.v1.GameService.UpgradeSkill:output_type -> dnf.v1.UpgradeSkillResponse
-	68,  // 68: dnf.v1.GameService.RecoverFatigue:output_type -> dnf.v1.RecoverFatigueResponse
-	69,  // 69: dnf.v1.GameService.GetBag:output_type -> dnf.v1.GetBagResponse
-	70,  // 70: dnf.v1.GameService.UseItem:output_type -> dnf.v1.UseItemResponse
-	71,  // 71: dnf.v1.GameService.MoveItem:output_type -> dnf.v1.MoveItemResponse
-	72,  // 72: dnf.v1.GameService.SellItem:output_type -> dnf.v1.SellItemResponse
-	73,  // 73: dnf.v1.GameService.EquipItem:output_type -> dnf.v1.EquipItemResponse
-	74,  // 74: dnf.v1.GameService.EnterDungeon:output_type -> dnf.v1.EnterDungeonResponse
-	75,  // 75: dnf.v1.GameService.ExitDungeon:output_type -> dnf.v1.ExitDungeonResponse
-	76,  // 76: dnf.v1.GameService.Revive:output_type -> dnf.v1.ReviveResponse
-	77,  // 77: dnf.v1.GameService.ChangeRoom:output_type -> dnf.v1.ChangeRoomResponse
-	78,  // 78: dnf.v1.GameService.SendChat:output_type -> dnf.v1.SendChatResponse
-	79,  // 79: dnf.v1.GameService.GetChatHistory:output_type -> dnf.v1.GetChatHistoryResponse
-	80,  // 80: dnf.v1.GameService.GetFriendList:output_type -> dnf.v1.GetFriendListResponse
-	81,  // 81: dnf.v1.GameService.AddFriend:output_type -> dnf.v1.AddFriendResponse
-	82,  // 82: dnf.v1.GameService.ReplyFriendRequest:output_type -> google.protobuf.Empty
-	83,  // 83: dnf.v1.GameService.RemoveFriend:output_type -> dnf.v1.RemoveFriendResponse
-	84,  // 84: dnf.v1.GameService.GetShopList:output_type -> dnf.v1.GetShopListResponse
-	85,  // 85: dnf.v1.GameService.BuyItem:output_type -> dnf.v1.BuyItemResponse
-	86,  // 86: dnf.v1.GameService.SellToShop:output_type -> dnf.v1.SellToShopResponse
-	87,  // 87: dnf.v1.GameService.SearchAuction:output_type -> dnf.v1.SearchAuctionResponse
-	88,  // 88: dnf.v1.GameService.RegisterAuction:output_type -> dnf.v1.RegisterAuctionResponse
-	89,  // 89: dnf.v1.GameService.BidAuction:output_type -> dnf.v1.BidAuctionResponse
-	90,  // 90: dnf.v1.GameService.BuyoutAuction:output_type -> dnf.v1.BuyoutAuctionResponse
-	91,  // 91: dnf.v1.GameService.OpenPrivateStore:output_type -> dnf.v1.OpenPrivateStoreResponse
-	92,  // 92: dnf.v1.GameService.ViewPrivateStore:output_type -> dnf.v1.ViewPrivateStoreResponse
-	93,  // 93: dnf.v1.GameService.BuyFromPrivateStore:output_type -> dnf.v1.BuyFromPrivateStoreResponse
-	94,  // 94: dnf.v1.GameService.GetQuestList:output_type -> dnf.v1.GetQuestListResponse
-	95,  // 95: dnf.v1.GameService.AcceptQuest:output_type -> dnf.v1.AcceptQuestResponse
-	96,  // 96: dnf.v1.GameService.CompleteQuest:output_type -> dnf.v1.CompleteQuestResponse
-	97,  // 97: dnf.v1.GameService.GetQuestReward:output_type -> dnf.v1.GetQuestRewardResponse
-	98,  // 98: dnf.v1.GameService.AbandonQuest:output_type -> dnf.v1.AbandonQuestResponse
-	99,  // 99: dnf.v1.GameService.GetGuildInfo:output_type -> dnf.v1.GetGuildInfoResponse
-	100, // 100: dnf.v1.GameService.CreateGuild:output_type -> dnf.v1.CreateGuildResponse
-	101, // 101: dnf.v1.GameService.JoinGuild:output_type -> dnf.v1.JoinGuildResponse
-	102, // 102: dnf.v1.GameService.LeaveGuild:output_type -> dnf.v1.LeaveGuildResponse
-	103, // 103: dnf.v1.GameService.GuildDonate:output_type -> dnf.v1.GuildDonateResponse
-	104, // 104: dnf.v1.GameService.GetGuildSkill:output_type -> dnf.v1.GetGuildSkillResponse
-	105, // 105: dnf.v1.GameService.UpgradeGuildSkill:output_type -> dnf.v1.UpgradeGuildSkillResponse
-	106, // 106: dnf.v1.AuthService.Login:output_type -> dnf.v1.LoginResponse
-	107, // 107: dnf.v1.AuthService.CreateCharacter:output_type -> dnf.v1.CreateCharacterResponse
-	108, // 108: dnf.v1.AuthService.GetCharacterList:output_type -> dnf.v1.CharacterListResponse
-	109, // 109: dnf.v1.AuthService.SelectCharacter:output_type -> dnf.v1.SelectCharacterResponse
-	110, // 110: dnf.v1.AuthService.MultiPlayRequestMatch:output_type -> dnf.v1.MultiPlayRequestMatchResponse
-	111, // 111: dnf.v1.AuthService.MultiPlayRequestMatchCancel:output_type -> dnf.v1.MultiPlayRequestMatchCancelResponse
-	112, // 112: dnf.v1.AuthService.HistoricSiteNoti:output_type -> dnf.v1.HistoricSiteNotiResponse
-	113, // 113: dnf.v1.AuthService.LoadGuildDonationInfo:output_type -> dnf.v1.LoadGuildDonationInfoResponse
-	114, // 114: dnf.v1.AuthService.DreamMazeBasicInfo:output_type -> dnf.v1.DreamMazeBasicInfoResponse
-	115, // 115: dnf.v1.AuthService.RaidEntranceCount:output_type -> dnf.v1.RaidEntranceCountResponse
-	116, // 116: dnf.v1.AuthService.LoadingProgress:output_type -> dnf.v1.LoadingProgressResponse
-	117, // 117: dnf.v1.AuthService.ReturnToTownAtMultiPlay:output_type -> dnf.v1.ReturnToTownAtMultiPlayResponse
-	118, // 118: dnf.v1.AuthService.CustomGameRoomSetting:output_type -> dnf.v1.CustomGameRoomSettingResponse
-	119, // 119: dnf.v1.AuthService.PvpRecord:output_type -> dnf.v1.PvpRecordResponse
-	120, // 120: dnf.v1.AuthService.PvpRanking:output_type -> dnf.v1.PvpRankingResponse
-	121, // 121: dnf.v1.AuthService.PvpStats:output_type -> dnf.v1.PvpStatsResponse
-	122, // 122: dnf.v1.AuthService.PvpMatchHistory:output_type -> dnf.v1.PvpMatchHistoryResponse
-	123, // 123: dnf.v1.AuthService.PvpSeasonInfo:output_type -> dnf.v1.PvpSeasonInfoResponse
-	124, // 124: dnf.v1.AuthService.PvpReward:output_type -> dnf.v1.PvpRewardResponse
-	125, // 125: dnf.v1.AuthService.PvpDailyReset:output_type -> dnf.v1.PvpDailyResetResponse
-	126, // 126: dnf.v1.AuthService.PvpMatchTypes:output_type -> dnf.v1.PvpMatchTypesResponse
-	127, // 127: dnf.v1.AuthService.PvpBattleResult:output_type -> dnf.v1.PvpBattleResultResponse
-	64,  // [64:128] is the sub-list for method output_type
-	0,   // [0:64] is the sub-list for method input_type
+	64,  // 64: dnf.v1.AuthService.AchievementInfo:input_type -> dnf.v1.AchievementInfoRequest
+	65,  // 65: dnf.v1.AuthService.AchievementReward:input_type -> dnf.v1.AchievementRewardRequest
+	66,  // 66: dnf.v1.AuthService.AchievementList:input_type -> dnf.v1.AchievementListRequest
+	67,  // 67: dnf.v1.AuthService.AchievementBonusReward:input_type -> dnf.v1.AchievementBonusRewardRequest
+	68,  // 68: dnf.v1.GameService.GetRoleInfo:output_type -> dnf.v1.GetRoleInfoResponse
+	69,  // 69: dnf.v1.GameService.UpdateAttributes:output_type -> dnf.v1.UpdateAttributesResponse
+	70,  // 70: dnf.v1.GameService.LearnSkill:output_type -> dnf.v1.LearnSkillResponse
+	71,  // 71: dnf.v1.GameService.UpgradeSkill:output_type -> dnf.v1.UpgradeSkillResponse
+	72,  // 72: dnf.v1.GameService.RecoverFatigue:output_type -> dnf.v1.RecoverFatigueResponse
+	73,  // 73: dnf.v1.GameService.GetBag:output_type -> dnf.v1.GetBagResponse
+	74,  // 74: dnf.v1.GameService.UseItem:output_type -> dnf.v1.UseItemResponse
+	75,  // 75: dnf.v1.GameService.MoveItem:output_type -> dnf.v1.MoveItemResponse
+	76,  // 76: dnf.v1.GameService.SellItem:output_type -> dnf.v1.SellItemResponse
+	77,  // 77: dnf.v1.GameService.EquipItem:output_type -> dnf.v1.EquipItemResponse
+	78,  // 78: dnf.v1.GameService.EnterDungeon:output_type -> dnf.v1.EnterDungeonResponse
+	79,  // 79: dnf.v1.GameService.ExitDungeon:output_type -> dnf.v1.ExitDungeonResponse
+	80,  // 80: dnf.v1.GameService.Revive:output_type -> dnf.v1.ReviveResponse
+	81,  // 81: dnf.v1.GameService.ChangeRoom:output_type -> dnf.v1.ChangeRoomResponse
+	82,  // 82: dnf.v1.GameService.SendChat:output_type -> dnf.v1.SendChatResponse
+	83,  // 83: dnf.v1.GameService.GetChatHistory:output_type -> dnf.v1.GetChatHistoryResponse
+	84,  // 84: dnf.v1.GameService.GetFriendList:output_type -> dnf.v1.GetFriendListResponse
+	85,  // 85: dnf.v1.GameService.AddFriend:output_type -> dnf.v1.AddFriendResponse
+	86,  // 86: dnf.v1.GameService.ReplyFriendRequest:output_type -> google.protobuf.Empty
+	87,  // 87: dnf.v1.GameService.RemoveFriend:output_type -> dnf.v1.RemoveFriendResponse
+	88,  // 88: dnf.v1.GameService.GetShopList:output_type -> dnf.v1.GetShopListResponse
+	89,  // 89: dnf.v1.GameService.BuyItem:output_type -> dnf.v1.BuyItemResponse
+	90,  // 90: dnf.v1.GameService.SellToShop:output_type -> dnf.v1.SellToShopResponse
+	91,  // 91: dnf.v1.GameService.SearchAuction:output_type -> dnf.v1.SearchAuctionResponse
+	92,  // 92: dnf.v1.GameService.RegisterAuction:output_type -> dnf.v1.RegisterAuctionResponse
+	93,  // 93: dnf.v1.GameService.BidAuction:output_type -> dnf.v1.BidAuctionResponse
+	94,  // 94: dnf.v1.GameService.BuyoutAuction:output_type -> dnf.v1.BuyoutAuctionResponse
+	95,  // 95: dnf.v1.GameService.OpenPrivateStore:output_type -> dnf.v1.OpenPrivateStoreResponse
+	96,  // 96: dnf.v1.GameService.ViewPrivateStore:output_type -> dnf.v1.ViewPrivateStoreResponse
+	97,  // 97: dnf.v1.GameService.BuyFromPrivateStore:output_type -> dnf.v1.BuyFromPrivateStoreResponse
+	98,  // 98: dnf.v1.GameService.GetQuestList:output_type -> dnf.v1.GetQuestListResponse
+	99,  // 99: dnf.v1.GameService.AcceptQuest:output_type -> dnf.v1.AcceptQuestResponse
+	100, // 100: dnf.v1.GameService.CompleteQuest:output_type -> dnf.v1.CompleteQuestResponse
+	101, // 101: dnf.v1.GameService.GetQuestReward:output_type -> dnf.v1.GetQuestRewardResponse
+	102, // 102: dnf.v1.GameService.AbandonQuest:output_type -> dnf.v1.AbandonQuestResponse
+	103, // 103: dnf.v1.GameService.GetGuildInfo:output_type -> dnf.v1.GetGuildInfoResponse
+	104, // 104: dnf.v1.GameService.CreateGuild:output_type -> dnf.v1.CreateGuildResponse
+	105, // 105: dnf.v1.GameService.JoinGuild:output_type -> dnf.v1.JoinGuildResponse
+	106, // 106: dnf.v1.GameService.LeaveGuild:output_type -> dnf.v1.LeaveGuildResponse
+	107, // 107: dnf.v1.GameService.GuildDonate:output_type -> dnf.v1.GuildDonateResponse
+	108, // 108: dnf.v1.GameService.GetGuildSkill:output_type -> dnf.v1.GetGuildSkillResponse
+	109, // 109: dnf.v1.GameService.UpgradeGuildSkill:output_type -> dnf.v1.UpgradeGuildSkillResponse
+	110, // 110: dnf.v1.AuthService.Login:output_type -> dnf.v1.LoginResponse
+	111, // 111: dnf.v1.AuthService.CreateCharacter:output_type -> dnf.v1.CreateCharacterResponse
+	112, // 112: dnf.v1.AuthService.GetCharacterList:output_type -> dnf.v1.CharacterListResponse
+	113, // 113: dnf.v1.AuthService.SelectCharacter:output_type -> dnf.v1.SelectCharacterResponse
+	114, // 114: dnf.v1.AuthService.MultiPlayRequestMatch:output_type -> dnf.v1.MultiPlayRequestMatchResponse
+	115, // 115: dnf.v1.AuthService.MultiPlayRequestMatchCancel:output_type -> dnf.v1.MultiPlayRequestMatchCancelResponse
+	116, // 116: dnf.v1.AuthService.HistoricSiteNoti:output_type -> dnf.v1.HistoricSiteNotiResponse
+	117, // 117: dnf.v1.AuthService.LoadGuildDonationInfo:output_type -> dnf.v1.LoadGuildDonationInfoResponse
+	118, // 118: dnf.v1.AuthService.DreamMazeBasicInfo:output_type -> dnf.v1.DreamMazeBasicInfoResponse
+	119, // 119: dnf.v1.AuthService.RaidEntranceCount:output_type -> dnf.v1.RaidEntranceCountResponse
+	120, // 120: dnf.v1.AuthService.LoadingProgress:output_type -> dnf.v1.LoadingProgressResponse
+	121, // 121: dnf.v1.AuthService.ReturnToTownAtMultiPlay:output_type -> dnf.v1.ReturnToTownAtMultiPlayResponse
+	122, // 122: dnf.v1.AuthService.CustomGameRoomSetting:output_type -> dnf.v1.CustomGameRoomSettingResponse
+	123, // 123: dnf.v1.AuthService.PvpRecord:output_type -> dnf.v1.PvpRecordResponse
+	124, // 124: dnf.v1.AuthService.PvpRanking:output_type -> dnf.v1.PvpRankingResponse
+	125, // 125: dnf.v1.AuthService.PvpStats:output_type -> dnf.v1.PvpStatsResponse
+	126, // 126: dnf.v1.AuthService.PvpMatchHistory:output_type -> dnf.v1.PvpMatchHistoryResponse
+	127, // 127: dnf.v1.AuthService.PvpSeasonInfo:output_type -> dnf.v1.PvpSeasonInfoResponse
+	128, // 128: dnf.v1.AuthService.PvpReward:output_type -> dnf.v1.PvpRewardResponse
+	129, // 129: dnf.v1.AuthService.PvpDailyReset:output_type -> dnf.v1.PvpDailyResetResponse
+	130, // 130: dnf.v1.AuthService.PvpMatchTypes:output_type -> dnf.v1.PvpMatchTypesResponse
+	131, // 131: dnf.v1.AuthService.PvpBattleResult:output_type -> dnf.v1.PvpBattleResultResponse
+	132, // 132: dnf.v1.AuthService.AchievementInfo:output_type -> dnf.v1.AchievementInfoResponse
+	133, // 133: dnf.v1.AuthService.AchievementReward:output_type -> dnf.v1.AchievementRewardResponse
+	134, // 134: dnf.v1.AuthService.AchievementList:output_type -> dnf.v1.AchievementListResponse
+	135, // 135: dnf.v1.AuthService.AchievementBonusReward:output_type -> dnf.v1.AchievementBonusRewardResponse
+	68,  // [68:136] is the sub-list for method output_type
+	0,   // [0:68] is the sub-list for method input_type
 	0,   // [0:0] is the sub-list for extension type_name
 	0,   // [0:0] is the sub-list for extension extendee
 	0,   // [0:0] is the sub-list for field type_name
@@ -382,6 +402,7 @@ func file_dnf_v1_service_proto_init() {
 	file_dnf_v1_quest_proto_init()
 	file_dnf_v1_guild_proto_init()
 	file_dnf_v1_pk_proto_init()
+	file_dnf_v1_achievement_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

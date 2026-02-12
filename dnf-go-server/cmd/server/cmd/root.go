@@ -84,8 +84,8 @@ func initConfig() error {
 
 	// 创建profile
 	prof = &profile.Profile{
-		Driver: viper.GetString("driver"),
-		DSN:    viper.GetString("dsn"),
+		Driver: viper.GetString("database.driver"),
+		DSN:    viper.GetString("database.dsn"),
 		Mode:   viper.GetString("mode"),
 		Port:   viper.GetInt("port"),
 	}
@@ -95,9 +95,23 @@ func initConfig() error {
 		prof.Port = 8081
 	}
 
-	// 如果DSN未设置，尝试从环境变量读取
+	// 如果DSN未设置，尝试从命令行参数或环境变量读取
+	if prof.DSN == "" {
+		prof.DSN = viper.GetString("dsn")
+	}
 	if prof.DSN == "" {
 		prof.DSN = os.Getenv("DATABASE_DSN")
+	}
+
+	// 如果DSN仍然为空，使用MySQL默认配置
+	if prof.DSN == "" && prof.Driver == "mysql" {
+		host := viper.GetString("database.host")
+		port := viper.GetInt("database.port")
+		username := viper.GetString("database.username")
+		password := viper.GetString("database.password")
+		database := viper.GetString("database.database")
+		prof.DSN = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+			username, password, host, port, database)
 	}
 
 	return nil

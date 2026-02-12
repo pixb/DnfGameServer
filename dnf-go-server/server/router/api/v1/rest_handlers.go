@@ -774,6 +774,117 @@ func (s *APIV1Service) handleBuyoutAuction(c echo.Context) error {
 	})
 }
 
+func (s *APIV1Service) handleAchievementInfo(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	field1, _ := strconv.Atoi(c.FormValue("field_1"))
+
+	achievements, _ := s.Store.GetAchievements(c.Request().Context(), claims.UserID, int32(field1))
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":        0,
+		"achievements": achievements,
+	})
+}
+
+func (s *APIV1Service) handleAchievementReward(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	field1, _ := strconv.Atoi(c.FormValue("field_1"))
+	field2, _ := strconv.Atoi(c.FormValue("field_2"))
+
+	reward, err := s.Store.ClaimAchievementReward(c.Request().Context(), claims.UserID, uint32(field1), uint32(field2))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":               0,
+		"adventureunionlevel": reward.AdventureUnionLevel,
+		"adventureunionexp":   reward.AdventureUnionExp,
+		"consumeitems":        reward.ConsumeItems,
+		"invenitems":          reward.InvenItems,
+	})
+}
+
+func (s *APIV1Service) handleAchievementList(c echo.Context) error {
+	if s == nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{"code": 13, "message": "service not initialized"})
+	}
+
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	if s.Store == nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{"code": 13, "message": "store not initialized"})
+	}
+
+	var req struct {
+		Field_1 int `json:"field_1"`
+	}
+	if err := c.Bind(&req); err != nil {
+		req.Field_1 = 1
+	}
+
+	result, err := s.Store.GetAchievementList(c.Request().Context(), claims.UserID, int32(req.Field_1))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	if result == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":        0,
+			"achievements": []*store.AchievementInfo{},
+			"total":        0,
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":        0,
+		"achievements": result.Achievements,
+		"total":        result.Total,
+	})
+}
+
+func (s *APIV1Service) handleAchievementBonusReward(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	field1, _ := strconv.Atoi(c.FormValue("field_1"))
+	field2, _ := strconv.Atoi(c.FormValue("field_2"))
+	field3, _ := strconv.Atoi(c.FormValue("field_3"))
+	field4, _ := strconv.Atoi(c.FormValue("field_4"))
+
+	rewards, err := s.Store.ClaimAchievementBonusReward(c.Request().Context(), claims.UserID, uint32(field1), uint32(field2), uint32(field3), uint32(field4))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":      0,
+		"invenitems": rewards.InvenItems,
+	})
+}
+
 func getUserClaims(c echo.Context) *auth.UserClaims {
 	if v := c.Get("claims"); v != nil {
 		if claims, ok := v.(*auth.UserClaims); ok {

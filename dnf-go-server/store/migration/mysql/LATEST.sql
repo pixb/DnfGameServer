@@ -482,3 +482,161 @@ ON DUPLICATE KEY UPDATE updated_at = UNIX_TIMESTAMP();
 INSERT INTO schema_migrations (version, description) VALUES
 ('1.0.0', 'Initial schema - 兼容 Java DnfGameServer')
 ON DUPLICATE KEY UPDATE applied_at = CURRENT_TIMESTAMP;
+
+-- ============================================
+-- 20. 冒险联盟表
+-- ============================================
+CREATE TABLE IF NOT EXISTS t_adventure_union (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    
+    role_id BIGINT UNSIGNED NOT NULL UNIQUE COMMENT '角色ID',
+    name VARCHAR(64) NOT NULL COMMENT '冒险联盟名称',
+    exp BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '冒险联盟经验',
+    level INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '冒险联盟等级',
+    day INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '天数',
+    typical_character_guid BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '代表角色GUID',
+    last_change_name_time BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '最后改名时间',
+    shareboard_background INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '展示板背景',
+    shareboard_frame INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '展示板边框',
+    shareboard_show_antievil_score TINYINT(1) NOT NULL DEFAULT 0 COMMENT '展示板显示讨伐分数',
+    auto_search_count INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '自动搜索次数',
+    shareboard_total_antievil_score INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '展示板总讨伐分数',
+    shareboard_antievil_score_refresh TINYINT(1) NOT NULL DEFAULT 0 COMMENT '展示板讨伐分数刷新',
+    is_adventure_condition TINYINT(1) NOT NULL DEFAULT 0 COMMENT '冒险条件',
+    
+    INDEX idx_role_id (role_id),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险联盟表';
+
+-- ============================================
+-- 21. 冒险联盟远征表
+-- ============================================
+CREATE TABLE IF NOT EXISTS t_adventure_union_expedition (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    
+    role_id BIGINT UNSIGNED NOT NULL COMMENT '角色ID',
+    expedition_id INT UNSIGNED NOT NULL COMMENT '远征ID',
+    expedition_type INT UNSIGNED NOT NULL COMMENT '远征类型',
+    status INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '状态',
+    start_time BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '开始时间',
+    end_time BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '结束时间',
+    reward_claimed TINYINT(1) NOT NULL DEFAULT 0 COMMENT '奖励是否已领取',
+    
+    INDEX idx_role_id (role_id),
+    INDEX idx_expedition_id (expedition_id),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险联盟远征表';
+
+-- ============================================
+-- 22. 冒险联盟讨伐表
+-- ============================================
+CREATE TABLE IF NOT EXISTS t_adventure_union_subdue (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    
+    role_id BIGINT UNSIGNED NOT NULL COMMENT '角色ID',
+    subdue_id INT UNSIGNED NOT NULL COMMENT '讨伐ID',
+    subdue_type INT UNSIGNED NOT NULL COMMENT '讨伐类型',
+    character_guid BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '角色GUID',
+    status INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '状态',
+    start_time BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '开始时间',
+    end_time BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '结束时间',
+    reward_claimed TINYINT(1) NOT NULL DEFAULT 0 COMMENT '奖励是否已领取',
+    
+    INDEX idx_role_id (role_id),
+    INDEX idx_subdue_id (subdue_id),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险联盟讨伐表';
+
+-- ============================================
+-- 23. 冒险联盟收藏表
+-- ============================================
+CREATE TABLE IF NOT EXISTS t_adventure_union_collection (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    
+    role_id BIGINT UNSIGNED NOT NULL COMMENT '角色ID',
+    collection_id INT UNSIGNED NOT NULL COMMENT '收藏ID',
+    progress INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '进度',
+    completed TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否完成',
+    reward_claimed TINYINT(1) NOT NULL DEFAULT 0 COMMENT '奖励是否已领取',
+    
+    INDEX idx_role_id (role_id),
+    INDEX idx_collection_id (collection_id),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险联盟收藏表';
+
+-- ============================================
+-- 24. 冒险联盟展示板槽位表
+-- ============================================
+CREATE TABLE IF NOT EXISTS t_adventure_union_shareboard_slot (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    
+    role_id BIGINT UNSIGNED NOT NULL COMMENT '角色ID',
+    slot_id INT UNSIGNED NOT NULL COMMENT '槽位ID',
+    slot_type INT UNSIGNED NOT NULL COMMENT '槽位类型',
+    item_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '物品ID',
+    item_count INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '物品数量',
+    show TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否显示',
+    
+    INDEX idx_role_id (role_id),
+    INDEX idx_slot_id (slot_id),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险联盟展示板槽位表';
+
+-- ============================================
+-- 25. 冒险奖励表
+-- ============================================
+CREATE TABLE IF NOT EXISTS t_adventure_reap (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    
+    role_id BIGINT UNSIGNED NOT NULL COMMENT '角色ID',
+    reap_id INT UNSIGNED NOT NULL COMMENT '奖励ID',
+    reward_type INT UNSIGNED NOT NULL COMMENT '奖励类型',
+    reward_index INT UNSIGNED NOT NULL COMMENT '奖励索引',
+    reward_count INT UNSIGNED NOT NULL COMMENT '奖励数量',
+    claimed TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否已领取',
+    claim_time BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '领取时间',
+    
+    INDEX idx_role_id (role_id),
+    INDEX idx_reap_id (reap_id),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险奖励表';
+
+-- ============================================
+-- 26. 冒险联盟等级奖励表
+-- ============================================
+CREATE TABLE IF NOT EXISTS t_adventure_union_level_reward (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    
+    role_id BIGINT UNSIGNED NOT NULL COMMENT '角色ID',
+    level INT UNSIGNED NOT NULL COMMENT '等级',
+    reward_type INT UNSIGNED NOT NULL COMMENT '奖励类型',
+    reward_index INT UNSIGNED NOT NULL COMMENT '奖励索引',
+    reward_count INT UNSIGNED NOT NULL COMMENT '奖励数量',
+    claimed TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否已领取',
+    claim_time BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '领取时间',
+    
+    INDEX idx_role_id (role_id),
+    INDEX idx_level (level),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险联盟等级奖励表';

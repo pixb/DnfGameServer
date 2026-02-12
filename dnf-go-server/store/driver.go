@@ -183,4 +183,10 @@ type Driver interface {
 	CreateAdventureBookReward(ctx context.Context, create *CreateAdventureBookReward) (*AdventureBookReward, error)
 	ClaimAdventureBookReward(ctx context.Context, claim *ClaimAdventureBookReward) error
 	ListAdventureBookRewards(ctx context.Context, bookID int32) ([]*AdventureBookReward, error)
+
+	// ==================== 成就相关 ====================
+	GetAchievements(ctx context.Context, roleID uint64, queryType int32) ([]*AchievementInfo, error)
+	ClaimAchievementReward(ctx context.Context, roleID uint64, achievementID uint32, rewardType uint32) (*AchievementRewardResult, error)
+	GetAchievementList(ctx context.Context, roleID uint64, queryType int32) (*AchievementListResult, error)
+	ClaimAchievementBonusReward(ctx context.Context, roleID uint64, achievementID uint32, rewardType uint32, rewardIndex uint32, rewardCount uint32) (*AchievementBonusRewardResult, error)
 }

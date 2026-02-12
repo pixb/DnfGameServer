@@ -338,6 +338,158 @@ func (s *APIV1Service) UpdateAttributes(ctx context.Context, req *dnfv1.UpdateAt
 				MoveSpeed: attrs.MoveSpeed,
 				AtkSpeed:  attrs.AttackSpeed,
 				CastSpeed: attrs.CastSpeed,
+			},
+		}, nil
+	}
+
+	return &dnfv1.UpdateAttributesResponse{
+		Error: ErrCodeSuccess,
+		BattleInfo: &dnfv1.RoleBattleInfo{
+			Hp:        attrs.HP,
+			MaxHp:     attrs.MaxHP,
+			Mp:        attrs.MP,
+			MaxMp:     attrs.MaxMP,
+			Str:       attrs.Strength,
+			Dex:       attrs.Intelligence,
+			Vit:       attrs.Vitality,
+			Spr:       attrs.Spirit,
+			Atk:       attrs.PhysicalAttack,
+			Def:       attrs.PhysicalDefense,
+			MagicAtk:  attrs.MagicAttack,
+			MagicDef:  attrs.MagicDefense,
+			MoveSpeed: attrs.MoveSpeed,
+			AtkSpeed:  attrs.AttackSpeed,
+			CastSpeed: attrs.CastSpeed,
 		},
+	}, nil
+}
+
+// ==================== 成就系统 ====================
+
+// AchievementInfo 获取成就信息
+func (s *APIV1Service) AchievementInfo(ctx context.Context, req *dnfv1.AchievementInfoRequest) (*dnfv1.AchievementInfoResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	roleID := claims.RoleID
+	if roleID == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "role not selected")
+	}
+
+	achievements, err := s.Store.GetAchievements(ctx, roleID, req.Field_1)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get achievements: %v", err)
+	}
+
+	var pbAchievements []*dnfv1.AchievementInfo
+	for _, a := range achievements {
+		pbAchievements = append(pbAchievements, &dnfv1.AchievementInfo{
+			AchievementId: a.AchievementID,
+			Name:          a.Name,
+			Description:   a.Description,
+			Progress:      a.Progress,
+			TargetValue:   a.TargetValue,
+			Completed:     a.Completed,
+			Rewarded:      a.Rewarded,
+		})
+	}
+
+	return &dnfv1.AchievementInfoResponse{
+		Achievements: pbAchievements,
+		Error:        ErrCodeSuccess,
+	}, nil
+}
+
+// AchievementReward 领取成就奖励
+func (s *APIV1Service) AchievementReward(ctx context.Context, req *dnfv1.AchievementRewardRequest) (*dnfv1.AchievementRewardResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	roleID := claims.RoleID
+	if roleID == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "role not selected")
+	}
+
+	reward, err := s.Store.ClaimAchievementReward(ctx, roleID, uint32(req.Field_1), uint32(req.Field_2))
+	if err != nil {
+		return &dnfv1.AchievementRewardResponse{
+			Error:   1,
+			Message: err.Error(),
+		}, nil
+	}
+
+	return &dnfv1.AchievementRewardResponse{
+		Adventureunionlevel: reward.AdventureUnionLevel,
+		Adventureunionexp:   reward.AdventureUnionExp,
+		Consumeitems:        reward.ConsumeItems,
+		Invenitems:          reward.InvenItems,
+		Error:               ErrCodeSuccess,
+	}, nil
+}
+
+// AchievementList 获取成就列表
+func (s *APIV1Service) AchievementList(ctx context.Context, req *dnfv1.AchievementListRequest) (*dnfv1.AchievementListResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	roleID := claims.RoleID
+	if roleID == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "role not selected")
+	}
+
+	result, err := s.Store.GetAchievementList(ctx, roleID, req.Field_1)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get achievement list: %v", err)
+	}
+
+	var pbAchievements []*dnfv1.AchievementInfo
+	for _, a := range result.Achievements {
+		pbAchievements = append(pbAchievements, &dnfv1.AchievementInfo{
+			AchievementId: a.AchievementID,
+			Name:          a.Name,
+			Description:   a.Description,
+			Progress:      a.Progress,
+			TargetValue:   a.TargetValue,
+			Completed:     a.Completed,
+			Rewarded:      a.Rewarded,
+		})
+	}
+
+	return &dnfv1.AchievementListResponse{
+		Achievements: pbAchievements,
+		Total:        result.Total,
+		Error:        ErrCodeSuccess,
+	}, nil
+}
+
+// AchievementBonusReward 领取成就额外奖励
+func (s *APIV1Service) AchievementBonusReward(ctx context.Context, req *dnfv1.AchievementBonusRewardRequest) (*dnfv1.AchievementBonusRewardResponse, error) {
+	claims := auth.GetUserClaimsFromContext(ctx)
+	if claims == nil {
+		return nil, status.Errorf(codes.Unauthenticated, "not authenticated")
+	}
+
+	roleID := claims.RoleID
+	if roleID == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "role not selected")
+	}
+
+	rewards, err := s.Store.ClaimAchievementBonusReward(ctx, roleID, uint32(req.Field_1), uint32(req.Field_2), uint32(req.Field_3), uint32(req.Field_4))
+	if err != nil {
+		return &dnfv1.AchievementBonusRewardResponse{
+			Error:   1,
+			Message: err.Error(),
+		}, nil
+	}
+
+	return &dnfv1.AchievementBonusRewardResponse{
+		Rewards: rewards.InvenItems.Consumeitems,
+		Error:   ErrCodeSuccess,
 	}, nil
 }

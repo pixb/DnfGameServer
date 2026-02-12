@@ -223,3 +223,125 @@ CREATE TABLE IF NOT EXISTS system_setting (
 -- 插入默认系统设置
 INSERT OR IGNORE INTO system_setting (name, value, description) VALUES 
 ('basic', '{"version":"1.0.0","name":"DNF Go Server"}', '实例基本设置');
+
+-- 冒险联盟表
+CREATE TABLE IF NOT EXISTS t_adventure_union (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL UNIQUE,
+    name TEXT NOT NULL,
+    exp INTEGER DEFAULT 0,
+    level INTEGER DEFAULT 1,
+    day INTEGER DEFAULT 1,
+    typical_character_guid INTEGER DEFAULT 0,
+    last_change_name_time INTEGER DEFAULT 0,
+    shareboard_background INTEGER DEFAULT 0,
+    shareboard_frame INTEGER DEFAULT 0,
+    shareboard_show_antievil_score INTEGER DEFAULT 0,
+    auto_search_count INTEGER DEFAULT 0,
+    shareboard_total_antievil_score INTEGER DEFAULT 0,
+    shareboard_antievil_score_refresh INTEGER DEFAULT 0,
+    is_adventure_condition INTEGER DEFAULT 0,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    update_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_adventure_union_role ON t_adventure_union(role_id);
+
+-- 冒险联盟远征表
+CREATE TABLE IF NOT EXISTS t_adventure_union_expedition (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    expedition_id INTEGER NOT NULL,
+    expedition_type INTEGER NOT NULL,
+    status INTEGER DEFAULT 0,
+    start_time INTEGER DEFAULT 0,
+    end_time INTEGER DEFAULT 0,
+    reward_claimed INTEGER DEFAULT 0,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    update_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_adventure_union_expedition_role ON t_adventure_union_expedition(role_id);
+
+-- 冒险联盟讨伐表
+CREATE TABLE IF NOT EXISTS t_adventure_union_subdue (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    subdue_id INTEGER NOT NULL,
+    subdue_type INTEGER NOT NULL,
+    character_guid INTEGER DEFAULT 0,
+    status INTEGER DEFAULT 0,
+    start_time INTEGER DEFAULT 0,
+    end_time INTEGER DEFAULT 0,
+    reward_claimed INTEGER DEFAULT 0,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    update_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_adventure_union_subdue_role ON t_adventure_union_subdue(role_id);
+
+-- 冒险联盟收藏表
+CREATE TABLE IF NOT EXISTS t_adventure_union_collection (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    collection_id INTEGER NOT NULL,
+    progress INTEGER DEFAULT 0,
+    completed INTEGER DEFAULT 0,
+    reward_claimed INTEGER DEFAULT 0,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    update_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_adventure_union_collection_role ON t_adventure_union_collection(role_id);
+
+-- 冒险联盟展示板槽位表
+CREATE TABLE IF NOT EXISTS t_adventure_union_shareboard_slot (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    slot_id INTEGER NOT NULL,
+    slot_type INTEGER NOT NULL,
+    item_id INTEGER DEFAULT 0,
+    item_count INTEGER DEFAULT 0,
+    show INTEGER DEFAULT 0,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    update_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_adventure_union_shareboard_slot_role ON t_adventure_union_shareboard_slot(role_id);
+
+-- 冒险奖励表
+CREATE TABLE IF NOT EXISTS t_adventure_reap (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    reap_id INTEGER NOT NULL,
+    reward_type INTEGER NOT NULL,
+    reward_index INTEGER NOT NULL,
+    reward_count INTEGER NOT NULL,
+    claimed INTEGER DEFAULT 0,
+    claim_time INTEGER DEFAULT 0,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_adventure_reap_role ON t_adventure_reap(role_id);
+
+-- 冒险联盟等级奖励表
+CREATE TABLE IF NOT EXISTS t_adventure_union_level_reward (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    level INTEGER NOT NULL,
+    reward_type INTEGER NOT NULL,
+    reward_index INTEGER NOT NULL,
+    reward_count INTEGER NOT NULL,
+    claimed INTEGER DEFAULT 0,
+    claim_time INTEGER DEFAULT 0,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_adventure_union_level_reward_role ON t_adventure_union_level_reward(role_id);

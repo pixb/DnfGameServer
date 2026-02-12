@@ -1726,6 +1726,10 @@ const (
 	AuthService_PvpDailyReset_FullMethodName               = "/dnf.v1.AuthService/PvpDailyReset"
 	AuthService_PvpMatchTypes_FullMethodName               = "/dnf.v1.AuthService/PvpMatchTypes"
 	AuthService_PvpBattleResult_FullMethodName             = "/dnf.v1.AuthService/PvpBattleResult"
+	AuthService_AchievementInfo_FullMethodName             = "/dnf.v1.AuthService/AchievementInfo"
+	AuthService_AchievementReward_FullMethodName           = "/dnf.v1.AuthService/AchievementReward"
+	AuthService_AchievementList_FullMethodName             = "/dnf.v1.AuthService/AchievementList"
+	AuthService_AchievementBonusReward_FullMethodName      = "/dnf.v1.AuthService/AchievementBonusReward"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -1757,6 +1761,11 @@ type AuthServiceClient interface {
 	PvpDailyReset(ctx context.Context, in *PvpDailyResetRequest, opts ...grpc.CallOption) (*PvpDailyResetResponse, error)
 	PvpMatchTypes(ctx context.Context, in *PvpMatchTypesRequest, opts ...grpc.CallOption) (*PvpMatchTypesResponse, error)
 	PvpBattleResult(ctx context.Context, in *PvpBattleResultRequest, opts ...grpc.CallOption) (*PvpBattleResultResponse, error)
+	// 成就相关
+	AchievementInfo(ctx context.Context, in *AchievementInfoRequest, opts ...grpc.CallOption) (*AchievementInfoResponse, error)
+	AchievementReward(ctx context.Context, in *AchievementRewardRequest, opts ...grpc.CallOption) (*AchievementRewardResponse, error)
+	AchievementList(ctx context.Context, in *AchievementListRequest, opts ...grpc.CallOption) (*AchievementListResponse, error)
+	AchievementBonusReward(ctx context.Context, in *AchievementBonusRewardRequest, opts ...grpc.CallOption) (*AchievementBonusRewardResponse, error)
 }
 
 type authServiceClient struct {
@@ -1987,6 +1996,46 @@ func (c *authServiceClient) PvpBattleResult(ctx context.Context, in *PvpBattleRe
 	return out, nil
 }
 
+func (c *authServiceClient) AchievementInfo(ctx context.Context, in *AchievementInfoRequest, opts ...grpc.CallOption) (*AchievementInfoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AchievementInfoResponse)
+	err := c.cc.Invoke(ctx, AuthService_AchievementInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) AchievementReward(ctx context.Context, in *AchievementRewardRequest, opts ...grpc.CallOption) (*AchievementRewardResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AchievementRewardResponse)
+	err := c.cc.Invoke(ctx, AuthService_AchievementReward_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) AchievementList(ctx context.Context, in *AchievementListRequest, opts ...grpc.CallOption) (*AchievementListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AchievementListResponse)
+	err := c.cc.Invoke(ctx, AuthService_AchievementList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) AchievementBonusReward(ctx context.Context, in *AchievementBonusRewardRequest, opts ...grpc.CallOption) (*AchievementBonusRewardResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AchievementBonusRewardResponse)
+	err := c.cc.Invoke(ctx, AuthService_AchievementBonusReward_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility.
@@ -2016,6 +2065,11 @@ type AuthServiceServer interface {
 	PvpDailyReset(context.Context, *PvpDailyResetRequest) (*PvpDailyResetResponse, error)
 	PvpMatchTypes(context.Context, *PvpMatchTypesRequest) (*PvpMatchTypesResponse, error)
 	PvpBattleResult(context.Context, *PvpBattleResultRequest) (*PvpBattleResultResponse, error)
+	// 成就相关
+	AchievementInfo(context.Context, *AchievementInfoRequest) (*AchievementInfoResponse, error)
+	AchievementReward(context.Context, *AchievementRewardRequest) (*AchievementRewardResponse, error)
+	AchievementList(context.Context, *AchievementListRequest) (*AchievementListResponse, error)
+	AchievementBonusReward(context.Context, *AchievementBonusRewardRequest) (*AchievementBonusRewardResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -2091,6 +2145,18 @@ func (UnimplementedAuthServiceServer) PvpMatchTypes(context.Context, *PvpMatchTy
 }
 func (UnimplementedAuthServiceServer) PvpBattleResult(context.Context, *PvpBattleResultRequest) (*PvpBattleResultResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method PvpBattleResult not implemented")
+}
+func (UnimplementedAuthServiceServer) AchievementInfo(context.Context, *AchievementInfoRequest) (*AchievementInfoResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AchievementInfo not implemented")
+}
+func (UnimplementedAuthServiceServer) AchievementReward(context.Context, *AchievementRewardRequest) (*AchievementRewardResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AchievementReward not implemented")
+}
+func (UnimplementedAuthServiceServer) AchievementList(context.Context, *AchievementListRequest) (*AchievementListResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AchievementList not implemented")
+}
+func (UnimplementedAuthServiceServer) AchievementBonusReward(context.Context, *AchievementBonusRewardRequest) (*AchievementBonusRewardResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AchievementBonusReward not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 func (UnimplementedAuthServiceServer) testEmbeddedByValue()                     {}
@@ -2509,6 +2575,78 @@ func _AuthService_PvpBattleResult_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_AchievementInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AchievementInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).AchievementInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_AchievementInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).AchievementInfo(ctx, req.(*AchievementInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_AchievementReward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AchievementRewardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).AchievementReward(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_AchievementReward_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).AchievementReward(ctx, req.(*AchievementRewardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_AchievementList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AchievementListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).AchievementList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_AchievementList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).AchievementList(ctx, req.(*AchievementListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_AchievementBonusReward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AchievementBonusRewardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).AchievementBonusReward(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_AchievementBonusReward_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).AchievementBonusReward(ctx, req.(*AchievementBonusRewardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2603,6 +2741,22 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PvpBattleResult",
 			Handler:    _AuthService_PvpBattleResult_Handler,
+		},
+		{
+			MethodName: "AchievementInfo",
+			Handler:    _AuthService_AchievementInfo_Handler,
+		},
+		{
+			MethodName: "AchievementReward",
+			Handler:    _AuthService_AchievementReward_Handler,
+		},
+		{
+			MethodName: "AchievementList",
+			Handler:    _AuthService_AchievementList_Handler,
+		},
+		{
+			MethodName: "AchievementBonusReward",
+			Handler:    _AuthService_AchievementBonusReward_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

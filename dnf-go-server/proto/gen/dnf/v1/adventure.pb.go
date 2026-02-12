@@ -7,6 +7,7 @@
 package dnfv1
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -21,31 +22,26 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// 冒险存储物品
-type AdventureStorageItem struct {
+type AdventureUnionInfoRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ItemId        int32                  `protobuf:"varint,1,opt,name=item_id,json=itemId,proto3" json:"item_id,omitempty"`                // 物品ID
-	Count         int32                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`                                // 数量
-	IsBound       bool                   `protobuf:"varint,3,opt,name=is_bound,json=isBound,proto3" json:"is_bound,omitempty"`             // 是否绑定
-	StorageTime   int64                  `protobuf:"varint,4,opt,name=storage_time,json=storageTime,proto3" json:"storage_time,omitempty"` // 存储时间
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AdventureStorageItem) Reset() {
-	*x = AdventureStorageItem{}
+func (x *AdventureUnionInfoRequest) Reset() {
+	*x = AdventureUnionInfoRequest{}
 	mi := &file_dnf_v1_adventure_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AdventureStorageItem) String() string {
+func (x *AdventureUnionInfoRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AdventureStorageItem) ProtoMessage() {}
+func (*AdventureUnionInfoRequest) ProtoMessage() {}
 
-func (x *AdventureStorageItem) ProtoReflect() protoreflect.Message {
+func (x *AdventureUnionInfoRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_dnf_v1_adventure_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -57,66 +53,55 @@ func (x *AdventureStorageItem) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AdventureStorageItem.ProtoReflect.Descriptor instead.
-func (*AdventureStorageItem) Descriptor() ([]byte, []int) {
+// Deprecated: Use AdventureUnionInfoRequest.ProtoReflect.Descriptor instead.
+func (*AdventureUnionInfoRequest) Descriptor() ([]byte, []int) {
 	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *AdventureStorageItem) GetItemId() int32 {
-	if x != nil {
-		return x.ItemId
-	}
-	return 0
+type AdventureUnionInfoResponse struct {
+	state                          protoimpl.MessageState                `protogen:"open.v1"`
+	Error                          int32                                 `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	Exp                            uint64                                `protobuf:"varint,2,opt,name=exp,proto3" json:"exp,omitempty"`
+	Level                          uint32                                `protobuf:"varint,3,opt,name=level,proto3" json:"level,omitempty"`
+	Day                            uint32                                `protobuf:"varint,4,opt,name=day,proto3" json:"day,omitempty"`
+	Typicalcharacterguid           uint64                                `protobuf:"varint,5,opt,name=typicalcharacterguid,proto3" json:"typicalcharacterguid,omitempty"`
+	Name                           string                                `protobuf:"bytes,6,opt,name=name,proto3" json:"name,omitempty"`
+	Updatetime                     uint64                                `protobuf:"varint,7,opt,name=updatetime,proto3" json:"updatetime,omitempty"`
+	Lastchangenametime             uint64                                `protobuf:"varint,8,opt,name=lastchangenametime,proto3" json:"lastchangenametime,omitempty"`
+	Expedition                     *AdventureUnionExpedition             `protobuf:"bytes,9,opt,name=expedition,proto3" json:"expedition,omitempty"`
+	Expeditions                    []*AdventureUnionExpedition           `protobuf:"bytes,10,rep,name=expeditions,proto3" json:"expeditions,omitempty"`
+	Collections                    []*AdventureUnionCollection           `protobuf:"bytes,11,rep,name=collections,proto3" json:"collections,omitempty"`
+	Collectionslots                []*AdventureUnionCollectionSlot       `protobuf:"bytes,12,rep,name=collectionslots,proto3" json:"collectionslots,omitempty"`
+	Shareboardbackground           uint32                                `protobuf:"varint,13,opt,name=shareboardbackground,proto3" json:"shareboardbackground,omitempty"`
+	Shareboardframe                uint32                                `protobuf:"varint,14,opt,name=shareboardframe,proto3" json:"shareboardframe,omitempty"`
+	Shareboardslotlist             []*AdventureUnionShareboardSlot       `protobuf:"bytes,15,rep,name=shareboardslotlist,proto3" json:"shareboardslotlist,omitempty"`
+	Shareboardbackgroundlist       []*AdventureUnionShareboardBackground `protobuf:"bytes,16,rep,name=shareboardbackgroundlist,proto3" json:"shareboardbackgroundlist,omitempty"`
+	Shareboardframelist            []*AdventureUnionShareboardFrame      `protobuf:"bytes,17,rep,name=shareboardframelist,proto3" json:"shareboardframelist,omitempty"`
+	Shareboardshowantievilscore    bool                                  `protobuf:"varint,18,opt,name=shareboardshowantievilscore,proto3" json:"shareboardshowantievilscore,omitempty"`
+	Autosearchcount                uint32                                `protobuf:"varint,19,opt,name=autosearchcount,proto3" json:"autosearchcount,omitempty"`
+	Receivedcollectionrewards      []uint32                              `protobuf:"varint,20,rep,packed,name=receivedcollectionrewards,proto3" json:"receivedcollectionrewards,omitempty"`
+	Levelrewards                   []*AdventureUnionLevelReward          `protobuf:"bytes,21,rep,name=levelrewards,proto3" json:"levelrewards,omitempty"`
+	Shareboardtotalantievilscore   uint32                                `protobuf:"varint,22,opt,name=shareboardtotalantievilscore,proto3" json:"shareboardtotalantievilscore,omitempty"`
+	Shareboardantievilscorerefresh bool                                  `protobuf:"varint,23,opt,name=shareboardantievilscorerefresh,proto3" json:"shareboardantievilscorerefresh,omitempty"`
+	IsadventureCondition           bool                                  `protobuf:"varint,24,opt,name=isadventureCondition,proto3" json:"isadventureCondition,omitempty"`
+	unknownFields                  protoimpl.UnknownFields
+	sizeCache                      protoimpl.SizeCache
 }
 
-func (x *AdventureStorageItem) GetCount() int32 {
-	if x != nil {
-		return x.Count
-	}
-	return 0
-}
-
-func (x *AdventureStorageItem) GetIsBound() bool {
-	if x != nil {
-		return x.IsBound
-	}
-	return false
-}
-
-func (x *AdventureStorageItem) GetStorageTime() int64 {
-	if x != nil {
-		return x.StorageTime
-	}
-	return 0
-}
-
-// 冒险收获信息
-type AdventureReapInfo struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ReapId        int32                  `protobuf:"varint,1,opt,name=reap_id,json=reapId,proto3" json:"reap_id,omitempty"`                // 收获ID
-	Progress      int32                  `protobuf:"varint,2,opt,name=progress,proto3" json:"progress,omitempty"`                          // 进度
-	Total         int32                  `protobuf:"varint,3,opt,name=total,proto3" json:"total,omitempty"`                                // 总数
-	IsCompleted   bool                   `protobuf:"varint,4,opt,name=is_completed,json=isCompleted,proto3" json:"is_completed,omitempty"` // 是否完成
-	StartTime     int64                  `protobuf:"varint,5,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`       // 开始时间
-	EndTime       int64                  `protobuf:"varint,6,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`             // 结束时间
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureReapInfo) Reset() {
-	*x = AdventureReapInfo{}
+func (x *AdventureUnionInfoResponse) Reset() {
+	*x = AdventureUnionInfoResponse{}
 	mi := &file_dnf_v1_adventure_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AdventureReapInfo) String() string {
+func (x *AdventureUnionInfoResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AdventureReapInfo) ProtoMessage() {}
+func (*AdventureUnionInfoResponse) ProtoMessage() {}
 
-func (x *AdventureReapInfo) ProtoReflect() protoreflect.Message {
+func (x *AdventureUnionInfoResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_dnf_v1_adventure_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -128,632 +113,1528 @@ func (x *AdventureReapInfo) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AdventureReapInfo.ProtoReflect.Descriptor instead.
-func (*AdventureReapInfo) Descriptor() ([]byte, []int) {
+// Deprecated: Use AdventureUnionInfoResponse.ProtoReflect.Descriptor instead.
+func (*AdventureUnionInfoResponse) Descriptor() ([]byte, []int) {
 	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AdventureReapInfo) GetReapId() int32 {
-	if x != nil {
-		return x.ReapId
-	}
-	return 0
-}
-
-func (x *AdventureReapInfo) GetProgress() int32 {
-	if x != nil {
-		return x.Progress
-	}
-	return 0
-}
-
-func (x *AdventureReapInfo) GetTotal() int32 {
-	if x != nil {
-		return x.Total
-	}
-	return 0
-}
-
-func (x *AdventureReapInfo) GetIsCompleted() bool {
-	if x != nil {
-		return x.IsCompleted
-	}
-	return false
-}
-
-func (x *AdventureReapInfo) GetStartTime() int64 {
-	if x != nil {
-		return x.StartTime
-	}
-	return 0
-}
-
-func (x *AdventureReapInfo) GetEndTime() int64 {
-	if x != nil {
-		return x.EndTime
-	}
-	return 0
-}
-
-// 冒险收获奖励
-type AdventureReapReward struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RewardId      int32                  `protobuf:"varint,1,opt,name=reward_id,json=rewardId,proto3" json:"reward_id,omitempty"`    // 奖励ID
-	Type          int32                  `protobuf:"varint,2,opt,name=type,proto3" json:"type,omitempty"`                            // 奖励类型
-	Amount        int32                  `protobuf:"varint,3,opt,name=amount,proto3" json:"amount,omitempty"`                        // 奖励数量
-	IsClaimed     bool                   `protobuf:"varint,4,opt,name=is_claimed,json=isClaimed,proto3" json:"is_claimed,omitempty"` // 是否已领取
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureReapReward) Reset() {
-	*x = AdventureReapReward{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureReapReward) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureReapReward) ProtoMessage() {}
-
-func (x *AdventureReapReward) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureReapReward.ProtoReflect.Descriptor instead.
-func (*AdventureReapReward) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *AdventureReapReward) GetRewardId() int32 {
-	if x != nil {
-		return x.RewardId
-	}
-	return 0
-}
-
-func (x *AdventureReapReward) GetType() int32 {
-	if x != nil {
-		return x.Type
-	}
-	return 0
-}
-
-func (x *AdventureReapReward) GetAmount() int32 {
-	if x != nil {
-		return x.Amount
-	}
-	return 0
-}
-
-func (x *AdventureReapReward) GetIsClaimed() bool {
-	if x != nil {
-		return x.IsClaimed
-	}
-	return false
-}
-
-// 冒险自动搜索
-type AdventureAutoSearch struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SearchId      int32                  `protobuf:"varint,1,opt,name=search_id,json=searchId,proto3" json:"search_id,omitempty"`          // 搜索ID
-	Duration      int32                  `protobuf:"varint,2,opt,name=duration,proto3" json:"duration,omitempty"`                          // 持续时间（分钟）
-	Progress      int32                  `protobuf:"varint,3,opt,name=progress,proto3" json:"progress,omitempty"`                          // 进度
-	IsCompleted   bool                   `protobuf:"varint,4,opt,name=is_completed,json=isCompleted,proto3" json:"is_completed,omitempty"` // 是否完成
-	StartTime     int64                  `protobuf:"varint,5,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`       // 开始时间
-	EndTime       int64                  `protobuf:"varint,6,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`             // 结束时间
-	Rewards       []*AdventureReapReward `protobuf:"bytes,7,rep,name=rewards,proto3" json:"rewards,omitempty"`                             // 奖励列表
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureAutoSearch) Reset() {
-	*x = AdventureAutoSearch{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureAutoSearch) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureAutoSearch) ProtoMessage() {}
-
-func (x *AdventureAutoSearch) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureAutoSearch.ProtoReflect.Descriptor instead.
-func (*AdventureAutoSearch) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *AdventureAutoSearch) GetSearchId() int32 {
-	if x != nil {
-		return x.SearchId
-	}
-	return 0
-}
-
-func (x *AdventureAutoSearch) GetDuration() int32 {
-	if x != nil {
-		return x.Duration
-	}
-	return 0
-}
-
-func (x *AdventureAutoSearch) GetProgress() int32 {
-	if x != nil {
-		return x.Progress
-	}
-	return 0
-}
-
-func (x *AdventureAutoSearch) GetIsCompleted() bool {
-	if x != nil {
-		return x.IsCompleted
-	}
-	return false
-}
-
-func (x *AdventureAutoSearch) GetStartTime() int64 {
-	if x != nil {
-		return x.StartTime
-	}
-	return 0
-}
-
-func (x *AdventureAutoSearch) GetEndTime() int64 {
-	if x != nil {
-		return x.EndTime
-	}
-	return 0
-}
-
-func (x *AdventureAutoSearch) GetRewards() []*AdventureReapReward {
-	if x != nil {
-		return x.Rewards
-	}
-	return nil
-}
-
-// 冒险书条件
-type AdventureBookCondition struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ConditionId   int32                  `protobuf:"varint,1,opt,name=condition_id,json=conditionId,proto3" json:"condition_id,omitempty"` // 条件ID
-	Current       int32                  `protobuf:"varint,2,opt,name=current,proto3" json:"current,omitempty"`                            // 当前值
-	Target        int32                  `protobuf:"varint,3,opt,name=target,proto3" json:"target,omitempty"`                              // 目标值
-	IsCompleted   bool                   `protobuf:"varint,4,opt,name=is_completed,json=isCompleted,proto3" json:"is_completed,omitempty"` // 是否完成
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureBookCondition) Reset() {
-	*x = AdventureBookCondition{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureBookCondition) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureBookCondition) ProtoMessage() {}
-
-func (x *AdventureBookCondition) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureBookCondition.ProtoReflect.Descriptor instead.
-func (*AdventureBookCondition) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *AdventureBookCondition) GetConditionId() int32 {
-	if x != nil {
-		return x.ConditionId
-	}
-	return 0
-}
-
-func (x *AdventureBookCondition) GetCurrent() int32 {
-	if x != nil {
-		return x.Current
-	}
-	return 0
-}
-
-func (x *AdventureBookCondition) GetTarget() int32 {
-	if x != nil {
-		return x.Target
-	}
-	return 0
-}
-
-func (x *AdventureBookCondition) GetIsCompleted() bool {
-	if x != nil {
-		return x.IsCompleted
-	}
-	return false
-}
-
-// 冒险书奖励
-type AdventureBookReward struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RewardId      int32                  `protobuf:"varint,1,opt,name=reward_id,json=rewardId,proto3" json:"reward_id,omitempty"`    // 奖励ID
-	Type          int32                  `protobuf:"varint,2,opt,name=type,proto3" json:"type,omitempty"`                            // 奖励类型
-	Amount        int32                  `protobuf:"varint,3,opt,name=amount,proto3" json:"amount,omitempty"`                        // 奖励数量
-	IsClaimed     bool                   `protobuf:"varint,4,opt,name=is_claimed,json=isClaimed,proto3" json:"is_claimed,omitempty"` // 是否已领取
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureBookReward) Reset() {
-	*x = AdventureBookReward{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureBookReward) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureBookReward) ProtoMessage() {}
-
-func (x *AdventureBookReward) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureBookReward.ProtoReflect.Descriptor instead.
-func (*AdventureBookReward) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *AdventureBookReward) GetRewardId() int32 {
-	if x != nil {
-		return x.RewardId
-	}
-	return 0
-}
-
-func (x *AdventureBookReward) GetType() int32 {
-	if x != nil {
-		return x.Type
-	}
-	return 0
-}
-
-func (x *AdventureBookReward) GetAmount() int32 {
-	if x != nil {
-		return x.Amount
-	}
-	return 0
-}
-
-func (x *AdventureBookReward) GetIsClaimed() bool {
-	if x != nil {
-		return x.IsClaimed
-	}
-	return false
-}
-
-// 冒险书信息
-type AdventureBookInfo struct {
-	state         protoimpl.MessageState    `protogen:"open.v1"`
-	BookId        int32                     `protobuf:"varint,1,opt,name=book_id,json=bookId,proto3" json:"book_id,omitempty"` // 冒险书ID
-	Name          string                    `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`                    // 冒险书名称
-	Level         int32                     `protobuf:"varint,3,opt,name=level,proto3" json:"level,omitempty"`                 // 等级
-	Experience    int32                     `protobuf:"varint,4,opt,name=experience,proto3" json:"experience,omitempty"`       // 经验值
-	Conditions    []*AdventureBookCondition `protobuf:"bytes,5,rep,name=conditions,proto3" json:"conditions,omitempty"`        // 条件列表
-	Rewards       []*AdventureBookReward    `protobuf:"bytes,6,rep,name=rewards,proto3" json:"rewards,omitempty"`              // 奖励列表
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureBookInfo) Reset() {
-	*x = AdventureBookInfo{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureBookInfo) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureBookInfo) ProtoMessage() {}
-
-func (x *AdventureBookInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureBookInfo.ProtoReflect.Descriptor instead.
-func (*AdventureBookInfo) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *AdventureBookInfo) GetBookId() int32 {
-	if x != nil {
-		return x.BookId
-	}
-	return 0
-}
-
-func (x *AdventureBookInfo) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *AdventureBookInfo) GetLevel() int32 {
-	if x != nil {
-		return x.Level
-	}
-	return 0
-}
-
-func (x *AdventureBookInfo) GetExperience() int32 {
-	if x != nil {
-		return x.Experience
-	}
-	return 0
-}
-
-func (x *AdventureBookInfo) GetConditions() []*AdventureBookCondition {
-	if x != nil {
-		return x.Conditions
-	}
-	return nil
-}
-
-func (x *AdventureBookInfo) GetRewards() []*AdventureBookReward {
-	if x != nil {
-		return x.Rewards
-	}
-	return nil
-}
-
-// 冒险数据
-type AdventureData struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	AdventureLevel     int32                  `protobuf:"varint,1,opt,name=adventure_level,json=adventureLevel,proto3" json:"adventure_level,omitempty"`               // 冒险等级
-	AdventureExp       int32                  `protobuf:"varint,2,opt,name=adventure_exp,json=adventureExp,proto3" json:"adventure_exp,omitempty"`                     // 冒险经验
-	Energy             int32                  `protobuf:"varint,3,opt,name=energy,proto3" json:"energy,omitempty"`                                                     // 能量值
-	MaxEnergy          int32                  `protobuf:"varint,4,opt,name=max_energy,json=maxEnergy,proto3" json:"max_energy,omitempty"`                              // 最大能量值
-	LastEnergyRecovery int64                  `protobuf:"varint,5,opt,name=last_energy_recovery,json=lastEnergyRecovery,proto3" json:"last_energy_recovery,omitempty"` // 上次能量恢复时间
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
-}
-
-func (x *AdventureData) Reset() {
-	*x = AdventureData{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureData) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureData) ProtoMessage() {}
-
-func (x *AdventureData) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureData.ProtoReflect.Descriptor instead.
-func (*AdventureData) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *AdventureData) GetAdventureLevel() int32 {
-	if x != nil {
-		return x.AdventureLevel
-	}
-	return 0
-}
-
-func (x *AdventureData) GetAdventureExp() int32 {
-	if x != nil {
-		return x.AdventureExp
-	}
-	return 0
-}
-
-func (x *AdventureData) GetEnergy() int32 {
-	if x != nil {
-		return x.Energy
-	}
-	return 0
-}
-
-func (x *AdventureData) GetMaxEnergy() int32 {
-	if x != nil {
-		return x.MaxEnergy
-	}
-	return 0
-}
-
-func (x *AdventureData) GetLastEnergyRecovery() int64 {
-	if x != nil {
-		return x.LastEnergyRecovery
-	}
-	return 0
-}
-
-// 冒险数据请求
-type AdventureDataRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureDataRequest) Reset() {
-	*x = AdventureDataRequest{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureDataRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureDataRequest) ProtoMessage() {}
-
-func (x *AdventureDataRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureDataRequest.ProtoReflect.Descriptor instead.
-func (*AdventureDataRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *AdventureDataRequest) GetCharacterId() int32 {
-	if x != nil {
-		return x.CharacterId
-	}
-	return 0
-}
-
-// 冒险数据响应
-type AdventureDataResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`                                // 错误码
-	CharacterId   int32                  `protobuf:"varint,2,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	Data          *AdventureData         `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`                                   // 冒险数据
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureDataResponse) Reset() {
-	*x = AdventureDataResponse{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureDataResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureDataResponse) ProtoMessage() {}
-
-func (x *AdventureDataResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureDataResponse.ProtoReflect.Descriptor instead.
-func (*AdventureDataResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *AdventureDataResponse) GetError() int32 {
+func (x *AdventureUnionInfoResponse) GetError() int32 {
 	if x != nil {
 		return x.Error
 	}
 	return 0
 }
 
-func (x *AdventureDataResponse) GetCharacterId() int32 {
+func (x *AdventureUnionInfoResponse) GetExp() uint64 {
 	if x != nil {
-		return x.CharacterId
+		return x.Exp
 	}
 	return 0
 }
 
-func (x *AdventureDataResponse) GetData() *AdventureData {
+func (x *AdventureUnionInfoResponse) GetLevel() uint32 {
 	if x != nil {
-		return x.Data
+		return x.Level
+	}
+	return 0
+}
+
+func (x *AdventureUnionInfoResponse) GetDay() uint32 {
+	if x != nil {
+		return x.Day
+	}
+	return 0
+}
+
+func (x *AdventureUnionInfoResponse) GetTypicalcharacterguid() uint64 {
+	if x != nil {
+		return x.Typicalcharacterguid
+	}
+	return 0
+}
+
+func (x *AdventureUnionInfoResponse) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *AdventureUnionInfoResponse) GetUpdatetime() uint64 {
+	if x != nil {
+		return x.Updatetime
+	}
+	return 0
+}
+
+func (x *AdventureUnionInfoResponse) GetLastchangenametime() uint64 {
+	if x != nil {
+		return x.Lastchangenametime
+	}
+	return 0
+}
+
+func (x *AdventureUnionInfoResponse) GetExpedition() *AdventureUnionExpedition {
+	if x != nil {
+		return x.Expedition
 	}
 	return nil
 }
 
-// 冒险收获信息请求
+func (x *AdventureUnionInfoResponse) GetExpeditions() []*AdventureUnionExpedition {
+	if x != nil {
+		return x.Expeditions
+	}
+	return nil
+}
+
+func (x *AdventureUnionInfoResponse) GetCollections() []*AdventureUnionCollection {
+	if x != nil {
+		return x.Collections
+	}
+	return nil
+}
+
+func (x *AdventureUnionInfoResponse) GetCollectionslots() []*AdventureUnionCollectionSlot {
+	if x != nil {
+		return x.Collectionslots
+	}
+	return nil
+}
+
+func (x *AdventureUnionInfoResponse) GetShareboardbackground() uint32 {
+	if x != nil {
+		return x.Shareboardbackground
+	}
+	return 0
+}
+
+func (x *AdventureUnionInfoResponse) GetShareboardframe() uint32 {
+	if x != nil {
+		return x.Shareboardframe
+	}
+	return 0
+}
+
+func (x *AdventureUnionInfoResponse) GetShareboardslotlist() []*AdventureUnionShareboardSlot {
+	if x != nil {
+		return x.Shareboardslotlist
+	}
+	return nil
+}
+
+func (x *AdventureUnionInfoResponse) GetShareboardbackgroundlist() []*AdventureUnionShareboardBackground {
+	if x != nil {
+		return x.Shareboardbackgroundlist
+	}
+	return nil
+}
+
+func (x *AdventureUnionInfoResponse) GetShareboardframelist() []*AdventureUnionShareboardFrame {
+	if x != nil {
+		return x.Shareboardframelist
+	}
+	return nil
+}
+
+func (x *AdventureUnionInfoResponse) GetShareboardshowantievilscore() bool {
+	if x != nil {
+		return x.Shareboardshowantievilscore
+	}
+	return false
+}
+
+func (x *AdventureUnionInfoResponse) GetAutosearchcount() uint32 {
+	if x != nil {
+		return x.Autosearchcount
+	}
+	return 0
+}
+
+func (x *AdventureUnionInfoResponse) GetReceivedcollectionrewards() []uint32 {
+	if x != nil {
+		return x.Receivedcollectionrewards
+	}
+	return nil
+}
+
+func (x *AdventureUnionInfoResponse) GetLevelrewards() []*AdventureUnionLevelReward {
+	if x != nil {
+		return x.Levelrewards
+	}
+	return nil
+}
+
+func (x *AdventureUnionInfoResponse) GetShareboardtotalantievilscore() uint32 {
+	if x != nil {
+		return x.Shareboardtotalantievilscore
+	}
+	return 0
+}
+
+func (x *AdventureUnionInfoResponse) GetShareboardantievilscorerefresh() bool {
+	if x != nil {
+		return x.Shareboardantievilscorerefresh
+	}
+	return false
+}
+
+func (x *AdventureUnionInfoResponse) GetIsadventureCondition() bool {
+	if x != nil {
+		return x.IsadventureCondition
+	}
+	return false
+}
+
+type AdventureUnionExpedition struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	ExpeditionId   uint32                 `protobuf:"varint,1,opt,name=expedition_id,json=expeditionId,proto3" json:"expedition_id,omitempty"`
+	ExpeditionType uint32                 `protobuf:"varint,2,opt,name=expedition_type,json=expeditionType,proto3" json:"expedition_type,omitempty"`
+	Status         uint32                 `protobuf:"varint,3,opt,name=status,proto3" json:"status,omitempty"`
+	StartTime      uint64                 `protobuf:"varint,4,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
+	EndTime        uint64                 `protobuf:"varint,5,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *AdventureUnionExpedition) Reset() {
+	*x = AdventureUnionExpedition{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionExpedition) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionExpedition) ProtoMessage() {}
+
+func (x *AdventureUnionExpedition) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionExpedition.ProtoReflect.Descriptor instead.
+func (*AdventureUnionExpedition) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *AdventureUnionExpedition) GetExpeditionId() uint32 {
+	if x != nil {
+		return x.ExpeditionId
+	}
+	return 0
+}
+
+func (x *AdventureUnionExpedition) GetExpeditionType() uint32 {
+	if x != nil {
+		return x.ExpeditionType
+	}
+	return 0
+}
+
+func (x *AdventureUnionExpedition) GetStatus() uint32 {
+	if x != nil {
+		return x.Status
+	}
+	return 0
+}
+
+func (x *AdventureUnionExpedition) GetStartTime() uint64 {
+	if x != nil {
+		return x.StartTime
+	}
+	return 0
+}
+
+func (x *AdventureUnionExpedition) GetEndTime() uint64 {
+	if x != nil {
+		return x.EndTime
+	}
+	return 0
+}
+
+type AdventureUnionCollection struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CollectionId  uint32                 `protobuf:"varint,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
+	Progress      uint32                 `protobuf:"varint,2,opt,name=progress,proto3" json:"progress,omitempty"`
+	Completed     bool                   `protobuf:"varint,3,opt,name=completed,proto3" json:"completed,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionCollection) Reset() {
+	*x = AdventureUnionCollection{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionCollection) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionCollection) ProtoMessage() {}
+
+func (x *AdventureUnionCollection) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionCollection.ProtoReflect.Descriptor instead.
+func (*AdventureUnionCollection) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *AdventureUnionCollection) GetCollectionId() uint32 {
+	if x != nil {
+		return x.CollectionId
+	}
+	return 0
+}
+
+func (x *AdventureUnionCollection) GetProgress() uint32 {
+	if x != nil {
+		return x.Progress
+	}
+	return 0
+}
+
+func (x *AdventureUnionCollection) GetCompleted() bool {
+	if x != nil {
+		return x.Completed
+	}
+	return false
+}
+
+type AdventureUnionCollectionSlot struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SlotId        uint32                 `protobuf:"varint,1,opt,name=slot_id,json=slotId,proto3" json:"slot_id,omitempty"`
+	SlotType      uint32                 `protobuf:"varint,2,opt,name=slot_type,json=slotType,proto3" json:"slot_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionCollectionSlot) Reset() {
+	*x = AdventureUnionCollectionSlot{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionCollectionSlot) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionCollectionSlot) ProtoMessage() {}
+
+func (x *AdventureUnionCollectionSlot) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionCollectionSlot.ProtoReflect.Descriptor instead.
+func (*AdventureUnionCollectionSlot) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *AdventureUnionCollectionSlot) GetSlotId() uint32 {
+	if x != nil {
+		return x.SlotId
+	}
+	return 0
+}
+
+func (x *AdventureUnionCollectionSlot) GetSlotType() uint32 {
+	if x != nil {
+		return x.SlotType
+	}
+	return 0
+}
+
+type AdventureUnionShareboardSlot struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SlotId        uint32                 `protobuf:"varint,1,opt,name=slot_id,json=slotId,proto3" json:"slot_id,omitempty"`
+	SlotType      uint32                 `protobuf:"varint,2,opt,name=slot_type,json=slotType,proto3" json:"slot_type,omitempty"`
+	ItemId        uint32                 `protobuf:"varint,3,opt,name=item_id,json=itemId,proto3" json:"item_id,omitempty"`
+	ItemCount     uint32                 `protobuf:"varint,4,opt,name=item_count,json=itemCount,proto3" json:"item_count,omitempty"`
+	Show          bool                   `protobuf:"varint,5,opt,name=show,proto3" json:"show,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionShareboardSlot) Reset() {
+	*x = AdventureUnionShareboardSlot{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionShareboardSlot) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionShareboardSlot) ProtoMessage() {}
+
+func (x *AdventureUnionShareboardSlot) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionShareboardSlot.ProtoReflect.Descriptor instead.
+func (*AdventureUnionShareboardSlot) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *AdventureUnionShareboardSlot) GetSlotId() uint32 {
+	if x != nil {
+		return x.SlotId
+	}
+	return 0
+}
+
+func (x *AdventureUnionShareboardSlot) GetSlotType() uint32 {
+	if x != nil {
+		return x.SlotType
+	}
+	return 0
+}
+
+func (x *AdventureUnionShareboardSlot) GetItemId() uint32 {
+	if x != nil {
+		return x.ItemId
+	}
+	return 0
+}
+
+func (x *AdventureUnionShareboardSlot) GetItemCount() uint32 {
+	if x != nil {
+		return x.ItemCount
+	}
+	return 0
+}
+
+func (x *AdventureUnionShareboardSlot) GetShow() bool {
+	if x != nil {
+		return x.Show
+	}
+	return false
+}
+
+type AdventureUnionShareboardBackground struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BackgroundId  uint32                 `protobuf:"varint,1,opt,name=background_id,json=backgroundId,proto3" json:"background_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionShareboardBackground) Reset() {
+	*x = AdventureUnionShareboardBackground{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionShareboardBackground) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionShareboardBackground) ProtoMessage() {}
+
+func (x *AdventureUnionShareboardBackground) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionShareboardBackground.ProtoReflect.Descriptor instead.
+func (*AdventureUnionShareboardBackground) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *AdventureUnionShareboardBackground) GetBackgroundId() uint32 {
+	if x != nil {
+		return x.BackgroundId
+	}
+	return 0
+}
+
+func (x *AdventureUnionShareboardBackground) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type AdventureUnionShareboardFrame struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FrameId       uint32                 `protobuf:"varint,1,opt,name=frame_id,json=frameId,proto3" json:"frame_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionShareboardFrame) Reset() {
+	*x = AdventureUnionShareboardFrame{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionShareboardFrame) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionShareboardFrame) ProtoMessage() {}
+
+func (x *AdventureUnionShareboardFrame) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionShareboardFrame.ProtoReflect.Descriptor instead.
+func (*AdventureUnionShareboardFrame) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *AdventureUnionShareboardFrame) GetFrameId() uint32 {
+	if x != nil {
+		return x.FrameId
+	}
+	return 0
+}
+
+func (x *AdventureUnionShareboardFrame) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type AdventureUnionLevelReward struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Level         uint32                 `protobuf:"varint,1,opt,name=level,proto3" json:"level,omitempty"`
+	RewardType    uint32                 `protobuf:"varint,2,opt,name=reward_type,json=rewardType,proto3" json:"reward_type,omitempty"`
+	RewardIndex   uint32                 `protobuf:"varint,3,opt,name=reward_index,json=rewardIndex,proto3" json:"reward_index,omitempty"`
+	RewardCount   uint32                 `protobuf:"varint,4,opt,name=reward_count,json=rewardCount,proto3" json:"reward_count,omitempty"`
+	Claimed       bool                   `protobuf:"varint,5,opt,name=claimed,proto3" json:"claimed,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionLevelReward) Reset() {
+	*x = AdventureUnionLevelReward{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionLevelReward) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionLevelReward) ProtoMessage() {}
+
+func (x *AdventureUnionLevelReward) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionLevelReward.ProtoReflect.Descriptor instead.
+func (*AdventureUnionLevelReward) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *AdventureUnionLevelReward) GetLevel() uint32 {
+	if x != nil {
+		return x.Level
+	}
+	return 0
+}
+
+func (x *AdventureUnionLevelReward) GetRewardType() uint32 {
+	if x != nil {
+		return x.RewardType
+	}
+	return 0
+}
+
+func (x *AdventureUnionLevelReward) GetRewardIndex() uint32 {
+	if x != nil {
+		return x.RewardIndex
+	}
+	return 0
+}
+
+func (x *AdventureUnionLevelReward) GetRewardCount() uint32 {
+	if x != nil {
+		return x.RewardCount
+	}
+	return 0
+}
+
+func (x *AdventureUnionLevelReward) GetClaimed() bool {
+	if x != nil {
+		return x.Claimed
+	}
+	return false
+}
+
+type AdventureUnionNameChangeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Field_1       string                 `protobuf:"bytes,1,opt,name=field_1,json=field1,proto3" json:"field_1,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionNameChangeRequest) Reset() {
+	*x = AdventureUnionNameChangeRequest{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionNameChangeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionNameChangeRequest) ProtoMessage() {}
+
+func (x *AdventureUnionNameChangeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionNameChangeRequest.ProtoReflect.Descriptor instead.
+func (*AdventureUnionNameChangeRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *AdventureUnionNameChangeRequest) GetField_1() string {
+	if x != nil {
+		return x.Field_1
+	}
+	return ""
+}
+
+type AdventureUnionNameChangeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	TransId       uint64                 `protobuf:"varint,2,opt,name=transId,proto3" json:"transId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionNameChangeResponse) Reset() {
+	*x = AdventureUnionNameChangeResponse{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionNameChangeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionNameChangeResponse) ProtoMessage() {}
+
+func (x *AdventureUnionNameChangeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionNameChangeResponse.ProtoReflect.Descriptor instead.
+func (*AdventureUnionNameChangeResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *AdventureUnionNameChangeResponse) GetError() int32 {
+	if x != nil {
+		return x.Error
+	}
+	return 0
+}
+
+func (x *AdventureUnionNameChangeResponse) GetTransId() uint64 {
+	if x != nil {
+		return x.TransId
+	}
+	return 0
+}
+
+type AdventureUnionExpeditionStartRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Field_1       int32                  `protobuf:"varint,1,opt,name=field_1,json=field1,proto3" json:"field_1,omitempty"`
+	Field_2       int32                  `protobuf:"varint,2,opt,name=field_2,json=field2,proto3" json:"field_2,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionExpeditionStartRequest) Reset() {
+	*x = AdventureUnionExpeditionStartRequest{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionExpeditionStartRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionExpeditionStartRequest) ProtoMessage() {}
+
+func (x *AdventureUnionExpeditionStartRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionExpeditionStartRequest.ProtoReflect.Descriptor instead.
+func (*AdventureUnionExpeditionStartRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *AdventureUnionExpeditionStartRequest) GetField_1() int32 {
+	if x != nil {
+		return x.Field_1
+	}
+	return 0
+}
+
+func (x *AdventureUnionExpeditionStartRequest) GetField_2() int32 {
+	if x != nil {
+		return x.Field_2
+	}
+	return 0
+}
+
+type AdventureUnionExpeditionStartResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	TransId       uint64                 `protobuf:"varint,2,opt,name=transId,proto3" json:"transId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionExpeditionStartResponse) Reset() {
+	*x = AdventureUnionExpeditionStartResponse{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionExpeditionStartResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionExpeditionStartResponse) ProtoMessage() {}
+
+func (x *AdventureUnionExpeditionStartResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionExpeditionStartResponse.ProtoReflect.Descriptor instead.
+func (*AdventureUnionExpeditionStartResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *AdventureUnionExpeditionStartResponse) GetError() int32 {
+	if x != nil {
+		return x.Error
+	}
+	return 0
+}
+
+func (x *AdventureUnionExpeditionStartResponse) GetTransId() uint64 {
+	if x != nil {
+		return x.TransId
+	}
+	return 0
+}
+
+type AdventureUnionExpeditionCancelRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Field_1       int32                  `protobuf:"varint,1,opt,name=field_1,json=field1,proto3" json:"field_1,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionExpeditionCancelRequest) Reset() {
+	*x = AdventureUnionExpeditionCancelRequest{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionExpeditionCancelRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionExpeditionCancelRequest) ProtoMessage() {}
+
+func (x *AdventureUnionExpeditionCancelRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionExpeditionCancelRequest.ProtoReflect.Descriptor instead.
+func (*AdventureUnionExpeditionCancelRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *AdventureUnionExpeditionCancelRequest) GetField_1() int32 {
+	if x != nil {
+		return x.Field_1
+	}
+	return 0
+}
+
+type AdventureUnionExpeditionCancelResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	TransId       uint64                 `protobuf:"varint,2,opt,name=transId,proto3" json:"transId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionExpeditionCancelResponse) Reset() {
+	*x = AdventureUnionExpeditionCancelResponse{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionExpeditionCancelResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionExpeditionCancelResponse) ProtoMessage() {}
+
+func (x *AdventureUnionExpeditionCancelResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionExpeditionCancelResponse.ProtoReflect.Descriptor instead.
+func (*AdventureUnionExpeditionCancelResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *AdventureUnionExpeditionCancelResponse) GetError() int32 {
+	if x != nil {
+		return x.Error
+	}
+	return 0
+}
+
+func (x *AdventureUnionExpeditionCancelResponse) GetTransId() uint64 {
+	if x != nil {
+		return x.TransId
+	}
+	return 0
+}
+
+type AdventureUnionExpeditionRewardRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Field_1       int32                  `protobuf:"varint,1,opt,name=field_1,json=field1,proto3" json:"field_1,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionExpeditionRewardRequest) Reset() {
+	*x = AdventureUnionExpeditionRewardRequest{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionExpeditionRewardRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionExpeditionRewardRequest) ProtoMessage() {}
+
+func (x *AdventureUnionExpeditionRewardRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionExpeditionRewardRequest.ProtoReflect.Descriptor instead.
+func (*AdventureUnionExpeditionRewardRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *AdventureUnionExpeditionRewardRequest) GetField_1() int32 {
+	if x != nil {
+		return x.Field_1
+	}
+	return 0
+}
+
+type AdventureUnionExpeditionRewardResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	TransId       uint64                 `protobuf:"varint,2,opt,name=transId,proto3" json:"transId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionExpeditionRewardResponse) Reset() {
+	*x = AdventureUnionExpeditionRewardResponse{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionExpeditionRewardResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionExpeditionRewardResponse) ProtoMessage() {}
+
+func (x *AdventureUnionExpeditionRewardResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionExpeditionRewardResponse.ProtoReflect.Descriptor instead.
+func (*AdventureUnionExpeditionRewardResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *AdventureUnionExpeditionRewardResponse) GetError() int32 {
+	if x != nil {
+		return x.Error
+	}
+	return 0
+}
+
+func (x *AdventureUnionExpeditionRewardResponse) GetTransId() uint64 {
+	if x != nil {
+		return x.TransId
+	}
+	return 0
+}
+
+type AdventureUnionSubdueInfoRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionSubdueInfoRequest) Reset() {
+	*x = AdventureUnionSubdueInfoRequest{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionSubdueInfoRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionSubdueInfoRequest) ProtoMessage() {}
+
+func (x *AdventureUnionSubdueInfoRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionSubdueInfoRequest.ProtoReflect.Descriptor instead.
+func (*AdventureUnionSubdueInfoRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{17}
+}
+
+type AdventureUnionSubdueInfoResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	TransId       uint64                 `protobuf:"varint,2,opt,name=transId,proto3" json:"transId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionSubdueInfoResponse) Reset() {
+	*x = AdventureUnionSubdueInfoResponse{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionSubdueInfoResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionSubdueInfoResponse) ProtoMessage() {}
+
+func (x *AdventureUnionSubdueInfoResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionSubdueInfoResponse.ProtoReflect.Descriptor instead.
+func (*AdventureUnionSubdueInfoResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *AdventureUnionSubdueInfoResponse) GetError() int32 {
+	if x != nil {
+		return x.Error
+	}
+	return 0
+}
+
+func (x *AdventureUnionSubdueInfoResponse) GetTransId() uint64 {
+	if x != nil {
+		return x.TransId
+	}
+	return 0
+}
+
+type AdventureUnionSubdueStartRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Field_1       int32                  `protobuf:"varint,1,opt,name=field_1,json=field1,proto3" json:"field_1,omitempty"`
+	Field_2       int32                  `protobuf:"varint,2,opt,name=field_2,json=field2,proto3" json:"field_2,omitempty"`
+	Field_3       uint64                 `protobuf:"varint,3,opt,name=field_3,json=field3,proto3" json:"field_3,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionSubdueStartRequest) Reset() {
+	*x = AdventureUnionSubdueStartRequest{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionSubdueStartRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionSubdueStartRequest) ProtoMessage() {}
+
+func (x *AdventureUnionSubdueStartRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionSubdueStartRequest.ProtoReflect.Descriptor instead.
+func (*AdventureUnionSubdueStartRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *AdventureUnionSubdueStartRequest) GetField_1() int32 {
+	if x != nil {
+		return x.Field_1
+	}
+	return 0
+}
+
+func (x *AdventureUnionSubdueStartRequest) GetField_2() int32 {
+	if x != nil {
+		return x.Field_2
+	}
+	return 0
+}
+
+func (x *AdventureUnionSubdueStartRequest) GetField_3() uint64 {
+	if x != nil {
+		return x.Field_3
+	}
+	return 0
+}
+
+type AdventureUnionSubdueStartResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	TransId       uint64                 `protobuf:"varint,2,opt,name=transId,proto3" json:"transId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionSubdueStartResponse) Reset() {
+	*x = AdventureUnionSubdueStartResponse{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionSubdueStartResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionSubdueStartResponse) ProtoMessage() {}
+
+func (x *AdventureUnionSubdueStartResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionSubdueStartResponse.ProtoReflect.Descriptor instead.
+func (*AdventureUnionSubdueStartResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *AdventureUnionSubdueStartResponse) GetError() int32 {
+	if x != nil {
+		return x.Error
+	}
+	return 0
+}
+
+func (x *AdventureUnionSubdueStartResponse) GetTransId() uint64 {
+	if x != nil {
+		return x.TransId
+	}
+	return 0
+}
+
+type AdventureUnionSubdueRewardRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Field_1       int32                  `protobuf:"varint,1,opt,name=field_1,json=field1,proto3" json:"field_1,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionSubdueRewardRequest) Reset() {
+	*x = AdventureUnionSubdueRewardRequest{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionSubdueRewardRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionSubdueRewardRequest) ProtoMessage() {}
+
+func (x *AdventureUnionSubdueRewardRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionSubdueRewardRequest.ProtoReflect.Descriptor instead.
+func (*AdventureUnionSubdueRewardRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *AdventureUnionSubdueRewardRequest) GetField_1() int32 {
+	if x != nil {
+		return x.Field_1
+	}
+	return 0
+}
+
+type AdventureUnionSubdueRewardResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	TransId       uint64                 `protobuf:"varint,2,opt,name=transId,proto3" json:"transId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionSubdueRewardResponse) Reset() {
+	*x = AdventureUnionSubdueRewardResponse{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionSubdueRewardResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionSubdueRewardResponse) ProtoMessage() {}
+
+func (x *AdventureUnionSubdueRewardResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionSubdueRewardResponse.ProtoReflect.Descriptor instead.
+func (*AdventureUnionSubdueRewardResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *AdventureUnionSubdueRewardResponse) GetError() int32 {
+	if x != nil {
+		return x.Error
+	}
+	return 0
+}
+
+func (x *AdventureUnionSubdueRewardResponse) GetTransId() uint64 {
+	if x != nil {
+		return x.TransId
+	}
+	return 0
+}
+
+type AdventureUnionOpenShareboardSlotRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Field_1       int32                  `protobuf:"varint,1,opt,name=field_1,json=field1,proto3" json:"field_1,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionOpenShareboardSlotRequest) Reset() {
+	*x = AdventureUnionOpenShareboardSlotRequest{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionOpenShareboardSlotRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionOpenShareboardSlotRequest) ProtoMessage() {}
+
+func (x *AdventureUnionOpenShareboardSlotRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionOpenShareboardSlotRequest.ProtoReflect.Descriptor instead.
+func (*AdventureUnionOpenShareboardSlotRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *AdventureUnionOpenShareboardSlotRequest) GetField_1() int32 {
+	if x != nil {
+		return x.Field_1
+	}
+	return 0
+}
+
+type AdventureUnionOpenShareboardSlotResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	TransId       uint64                 `protobuf:"varint,2,opt,name=transId,proto3" json:"transId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionOpenShareboardSlotResponse) Reset() {
+	*x = AdventureUnionOpenShareboardSlotResponse{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionOpenShareboardSlotResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionOpenShareboardSlotResponse) ProtoMessage() {}
+
+func (x *AdventureUnionOpenShareboardSlotResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionOpenShareboardSlotResponse.ProtoReflect.Descriptor instead.
+func (*AdventureUnionOpenShareboardSlotResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *AdventureUnionOpenShareboardSlotResponse) GetError() int32 {
+	if x != nil {
+		return x.Error
+	}
+	return 0
+}
+
+func (x *AdventureUnionOpenShareboardSlotResponse) GetTransId() uint64 {
+	if x != nil {
+		return x.TransId
+	}
+	return 0
+}
+
+type AdventureUnionSetShareboardRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Field_1       int32                  `protobuf:"varint,1,opt,name=field_1,json=field1,proto3" json:"field_1,omitempty"`
+	Field_2       int32                  `protobuf:"varint,2,opt,name=field_2,json=field2,proto3" json:"field_2,omitempty"`
+	Field_4       bool                   `protobuf:"varint,4,opt,name=field_4,json=field4,proto3" json:"field_4,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionSetShareboardRequest) Reset() {
+	*x = AdventureUnionSetShareboardRequest{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionSetShareboardRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionSetShareboardRequest) ProtoMessage() {}
+
+func (x *AdventureUnionSetShareboardRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionSetShareboardRequest.ProtoReflect.Descriptor instead.
+func (*AdventureUnionSetShareboardRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *AdventureUnionSetShareboardRequest) GetField_1() int32 {
+	if x != nil {
+		return x.Field_1
+	}
+	return 0
+}
+
+func (x *AdventureUnionSetShareboardRequest) GetField_2() int32 {
+	if x != nil {
+		return x.Field_2
+	}
+	return 0
+}
+
+func (x *AdventureUnionSetShareboardRequest) GetField_4() bool {
+	if x != nil {
+		return x.Field_4
+	}
+	return false
+}
+
+type AdventureUnionSetShareboardResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	TransId       uint64                 `protobuf:"varint,2,opt,name=transId,proto3" json:"transId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdventureUnionSetShareboardResponse) Reset() {
+	*x = AdventureUnionSetShareboardResponse{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdventureUnionSetShareboardResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdventureUnionSetShareboardResponse) ProtoMessage() {}
+
+func (x *AdventureUnionSetShareboardResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdventureUnionSetShareboardResponse.ProtoReflect.Descriptor instead.
+func (*AdventureUnionSetShareboardResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *AdventureUnionSetShareboardResponse) GetError() int32 {
+	if x != nil {
+		return x.Error
+	}
+	return 0
+}
+
+func (x *AdventureUnionSetShareboardResponse) GetTransId() uint64 {
+	if x != nil {
+		return x.TransId
+	}
+	return 0
+}
+
 type AdventureReapInfoRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AdventureReapInfoRequest) Reset() {
 	*x = AdventureReapInfoRequest{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[10]
+	mi := &file_dnf_v1_adventure_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -765,7 +1646,7 @@ func (x *AdventureReapInfoRequest) String() string {
 func (*AdventureReapInfoRequest) ProtoMessage() {}
 
 func (x *AdventureReapInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[10]
+	mi := &file_dnf_v1_adventure_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -778,29 +1659,21 @@ func (x *AdventureReapInfoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdventureReapInfoRequest.ProtoReflect.Descriptor instead.
 func (*AdventureReapInfoRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{10}
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{27}
 }
 
-func (x *AdventureReapInfoRequest) GetCharacterId() int32 {
-	if x != nil {
-		return x.CharacterId
-	}
-	return 0
-}
-
-// 冒险收获信息响应
 type AdventureReapInfoResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`                                // 错误码
-	CharacterId   int32                  `protobuf:"varint,2,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	Reaps         []*AdventureReapInfo   `protobuf:"bytes,3,rep,name=reaps,proto3" json:"reaps,omitempty"`                                 // 收获信息列表
+	Rewards       []*ReapReward          `protobuf:"bytes,1,rep,name=rewards,proto3" json:"rewards,omitempty"`
+	Starttime     uint64                 `protobuf:"varint,2,opt,name=starttime,proto3" json:"starttime,omitempty"`
+	Error         int32                  `protobuf:"varint,3,opt,name=error,proto3" json:"error,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AdventureReapInfoResponse) Reset() {
 	*x = AdventureReapInfoResponse{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[11]
+	mi := &file_dnf_v1_adventure_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -812,7 +1685,7 @@ func (x *AdventureReapInfoResponse) String() string {
 func (*AdventureReapInfoResponse) ProtoMessage() {}
 
 func (x *AdventureReapInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[11]
+	mi := &file_dnf_v1_adventure_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -825,7 +1698,21 @@ func (x *AdventureReapInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdventureReapInfoResponse.ProtoReflect.Descriptor instead.
 func (*AdventureReapInfoResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{11}
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *AdventureReapInfoResponse) GetRewards() []*ReapReward {
+	if x != nil {
+		return x.Rewards
+	}
+	return nil
+}
+
+func (x *AdventureReapInfoResponse) GetStarttime() uint64 {
+	if x != nil {
+		return x.Starttime
+	}
+	return 0
 }
 
 func (x *AdventureReapInfoResponse) GetError() int32 {
@@ -835,32 +1722,76 @@ func (x *AdventureReapInfoResponse) GetError() int32 {
 	return 0
 }
 
-func (x *AdventureReapInfoResponse) GetCharacterId() int32 {
+type ReapReward struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RewardType    uint32                 `protobuf:"varint,1,opt,name=reward_type,json=rewardType,proto3" json:"reward_type,omitempty"`
+	RewardIndex   uint32                 `protobuf:"varint,2,opt,name=reward_index,json=rewardIndex,proto3" json:"reward_index,omitempty"`
+	RewardCount   uint32                 `protobuf:"varint,3,opt,name=reward_count,json=rewardCount,proto3" json:"reward_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReapReward) Reset() {
+	*x = ReapReward{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReapReward) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReapReward) ProtoMessage() {}
+
+func (x *ReapReward) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[29]
 	if x != nil {
-		return x.CharacterId
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReapReward.ProtoReflect.Descriptor instead.
+func (*ReapReward) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *ReapReward) GetRewardType() uint32 {
+	if x != nil {
+		return x.RewardType
 	}
 	return 0
 }
 
-func (x *AdventureReapInfoResponse) GetReaps() []*AdventureReapInfo {
+func (x *ReapReward) GetRewardIndex() uint32 {
 	if x != nil {
-		return x.Reaps
+		return x.RewardIndex
 	}
-	return nil
+	return 0
 }
 
-// 冒险收获奖励请求
+func (x *ReapReward) GetRewardCount() uint32 {
+	if x != nil {
+		return x.RewardCount
+	}
+	return 0
+}
+
 type AdventureReapRewardRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	ReapId        int32                  `protobuf:"varint,2,opt,name=reap_id,json=reapId,proto3" json:"reap_id,omitempty"`                // 收获ID
+	Field_1       int32                  `protobuf:"varint,1,opt,name=field_1,json=field1,proto3" json:"field_1,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AdventureReapRewardRequest) Reset() {
 	*x = AdventureReapRewardRequest{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[12]
+	mi := &file_dnf_v1_adventure_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -872,7 +1803,7 @@ func (x *AdventureReapRewardRequest) String() string {
 func (*AdventureReapRewardRequest) ProtoMessage() {}
 
 func (x *AdventureReapRewardRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[12]
+	mi := &file_dnf_v1_adventure_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -885,38 +1816,27 @@ func (x *AdventureReapRewardRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdventureReapRewardRequest.ProtoReflect.Descriptor instead.
 func (*AdventureReapRewardRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{12}
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{30}
 }
 
-func (x *AdventureReapRewardRequest) GetCharacterId() int32 {
+func (x *AdventureReapRewardRequest) GetField_1() int32 {
 	if x != nil {
-		return x.CharacterId
+		return x.Field_1
 	}
 	return 0
 }
 
-func (x *AdventureReapRewardRequest) GetReapId() int32 {
-	if x != nil {
-		return x.ReapId
-	}
-	return 0
-}
-
-// 冒险收获奖励响应
 type AdventureReapRewardResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`                                // 错误码
-	CharacterId   int32                  `protobuf:"varint,2,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	ReapId        int32                  `protobuf:"varint,3,opt,name=reap_id,json=reapId,proto3" json:"reap_id,omitempty"`                // 收获ID
-	IsSuccess     bool                   `protobuf:"varint,4,opt,name=is_success,json=isSuccess,proto3" json:"is_success,omitempty"`       // 是否成功
-	Rewards       []*AdventureReapReward `protobuf:"bytes,5,rep,name=rewards,proto3" json:"rewards,omitempty"`                             // 奖励列表
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	TransId       uint64                 `protobuf:"varint,2,opt,name=transId,proto3" json:"transId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *AdventureReapRewardResponse) Reset() {
 	*x = AdventureReapRewardResponse{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[13]
+	mi := &file_dnf_v1_adventure_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -928,7 +1848,7 @@ func (x *AdventureReapRewardResponse) String() string {
 func (*AdventureReapRewardResponse) ProtoMessage() {}
 
 func (x *AdventureReapRewardResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[13]
+	mi := &file_dnf_v1_adventure_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -941,7 +1861,7 @@ func (x *AdventureReapRewardResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdventureReapRewardResponse.ProtoReflect.Descriptor instead.
 func (*AdventureReapRewardResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{13}
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *AdventureReapRewardResponse) GetError() int32 {
@@ -951,59 +1871,34 @@ func (x *AdventureReapRewardResponse) GetError() int32 {
 	return 0
 }
 
-func (x *AdventureReapRewardResponse) GetCharacterId() int32 {
+func (x *AdventureReapRewardResponse) GetTransId() uint64 {
 	if x != nil {
-		return x.CharacterId
+		return x.TransId
 	}
 	return 0
 }
 
-func (x *AdventureReapRewardResponse) GetReapId() int32 {
-	if x != nil {
-		return x.ReapId
-	}
-	return 0
-}
-
-func (x *AdventureReapRewardResponse) GetIsSuccess() bool {
-	if x != nil {
-		return x.IsSuccess
-	}
-	return false
-}
-
-func (x *AdventureReapRewardResponse) GetRewards() []*AdventureReapReward {
-	if x != nil {
-		return x.Rewards
-	}
-	return nil
-}
-
-// 冒险存储列表请求
-type AdventureStorageListRequest struct {
+type AdventureUnionSearchStartRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	Page          int32                  `protobuf:"varint,2,opt,name=page,proto3" json:"page,omitempty"`                                  // 页码
-	PageSize      int32                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`          // 每页数量
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AdventureStorageListRequest) Reset() {
-	*x = AdventureStorageListRequest{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[14]
+func (x *AdventureUnionSearchStartRequest) Reset() {
+	*x = AdventureUnionSearchStartRequest{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AdventureStorageListRequest) String() string {
+func (x *AdventureUnionSearchStartRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AdventureStorageListRequest) ProtoMessage() {}
+func (*AdventureUnionSearchStartRequest) ProtoMessage() {}
 
-func (x *AdventureStorageListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[14]
+func (x *AdventureUnionSearchStartRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1014,60 +1909,34 @@ func (x *AdventureStorageListRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AdventureStorageListRequest.ProtoReflect.Descriptor instead.
-func (*AdventureStorageListRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{14}
+// Deprecated: Use AdventureUnionSearchStartRequest.ProtoReflect.Descriptor instead.
+func (*AdventureUnionSearchStartRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{32}
 }
 
-func (x *AdventureStorageListRequest) GetCharacterId() int32 {
-	if x != nil {
-		return x.CharacterId
-	}
-	return 0
-}
-
-func (x *AdventureStorageListRequest) GetPage() int32 {
-	if x != nil {
-		return x.Page
-	}
-	return 0
-}
-
-func (x *AdventureStorageListRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-// 冒险存储列表响应
-type AdventureStorageListResponse struct {
-	state         protoimpl.MessageState  `protogen:"open.v1"`
-	Error         int32                   `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`                                // 错误码
-	CharacterId   int32                   `protobuf:"varint,2,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	Total         int32                   `protobuf:"varint,3,opt,name=total,proto3" json:"total,omitempty"`                                // 总数量
-	Page          int32                   `protobuf:"varint,4,opt,name=page,proto3" json:"page,omitempty"`                                  // 当前页码
-	PageSize      int32                   `protobuf:"varint,5,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`          // 每页数量
-	Items         []*AdventureStorageItem `protobuf:"bytes,6,rep,name=items,proto3" json:"items,omitempty"`                                 // 存储物品列表
+type AdventureUnionSearchStartResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	TransId       uint64                 `protobuf:"varint,2,opt,name=transId,proto3" json:"transId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AdventureStorageListResponse) Reset() {
-	*x = AdventureStorageListResponse{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[15]
+func (x *AdventureUnionSearchStartResponse) Reset() {
+	*x = AdventureUnionSearchStartResponse{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AdventureStorageListResponse) String() string {
+func (x *AdventureUnionSearchStartResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AdventureStorageListResponse) ProtoMessage() {}
+func (*AdventureUnionSearchStartResponse) ProtoMessage() {}
 
-func (x *AdventureStorageListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[15]
+func (x *AdventureUnionSearchStartResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1078,77 +1947,47 @@ func (x *AdventureStorageListResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AdventureStorageListResponse.ProtoReflect.Descriptor instead.
-func (*AdventureStorageListResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{15}
+// Deprecated: Use AdventureUnionSearchStartResponse.ProtoReflect.Descriptor instead.
+func (*AdventureUnionSearchStartResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{33}
 }
 
-func (x *AdventureStorageListResponse) GetError() int32 {
+func (x *AdventureUnionSearchStartResponse) GetError() int32 {
 	if x != nil {
 		return x.Error
 	}
 	return 0
 }
 
-func (x *AdventureStorageListResponse) GetCharacterId() int32 {
+func (x *AdventureUnionSearchStartResponse) GetTransId() uint64 {
 	if x != nil {
-		return x.CharacterId
+		return x.TransId
 	}
 	return 0
 }
 
-func (x *AdventureStorageListResponse) GetTotal() int32 {
-	if x != nil {
-		return x.Total
-	}
-	return 0
-}
-
-func (x *AdventureStorageListResponse) GetPage() int32 {
-	if x != nil {
-		return x.Page
-	}
-	return 0
-}
-
-func (x *AdventureStorageListResponse) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *AdventureStorageListResponse) GetItems() []*AdventureStorageItem {
-	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-// 冒险自动搜索请求
-type AdventureAutoSearchRequest struct {
+type AdventureUnionCollectionRewardRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	Duration      int32                  `protobuf:"varint,2,opt,name=duration,proto3" json:"duration,omitempty"`                          // 持续时间（分钟）
+	Field_1       int32                  `protobuf:"varint,1,opt,name=field_1,json=field1,proto3" json:"field_1,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AdventureAutoSearchRequest) Reset() {
-	*x = AdventureAutoSearchRequest{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[16]
+func (x *AdventureUnionCollectionRewardRequest) Reset() {
+	*x = AdventureUnionCollectionRewardRequest{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AdventureAutoSearchRequest) String() string {
+func (x *AdventureUnionCollectionRewardRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AdventureAutoSearchRequest) ProtoMessage() {}
+func (*AdventureUnionCollectionRewardRequest) ProtoMessage() {}
 
-func (x *AdventureAutoSearchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[16]
+func (x *AdventureUnionCollectionRewardRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1159,51 +1998,41 @@ func (x *AdventureAutoSearchRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AdventureAutoSearchRequest.ProtoReflect.Descriptor instead.
-func (*AdventureAutoSearchRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{16}
+// Deprecated: Use AdventureUnionCollectionRewardRequest.ProtoReflect.Descriptor instead.
+func (*AdventureUnionCollectionRewardRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{34}
 }
 
-func (x *AdventureAutoSearchRequest) GetCharacterId() int32 {
+func (x *AdventureUnionCollectionRewardRequest) GetField_1() int32 {
 	if x != nil {
-		return x.CharacterId
+		return x.Field_1
 	}
 	return 0
 }
 
-func (x *AdventureAutoSearchRequest) GetDuration() int32 {
-	if x != nil {
-		return x.Duration
-	}
-	return 0
-}
-
-// 冒险自动搜索响应
-type AdventureAutoSearchResponse struct {
+type AdventureUnionCollectionRewardResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`                                // 错误码
-	CharacterId   int32                  `protobuf:"varint,2,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	IsSuccess     bool                   `protobuf:"varint,3,opt,name=is_success,json=isSuccess,proto3" json:"is_success,omitempty"`       // 是否成功
-	Search        *AdventureAutoSearch   `protobuf:"bytes,4,opt,name=search,proto3" json:"search,omitempty"`                               // 自动搜索信息
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	TransId       uint64                 `protobuf:"varint,2,opt,name=transId,proto3" json:"transId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AdventureAutoSearchResponse) Reset() {
-	*x = AdventureAutoSearchResponse{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[17]
+func (x *AdventureUnionCollectionRewardResponse) Reset() {
+	*x = AdventureUnionCollectionRewardResponse{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AdventureAutoSearchResponse) String() string {
+func (x *AdventureUnionCollectionRewardResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AdventureAutoSearchResponse) ProtoMessage() {}
+func (*AdventureUnionCollectionRewardResponse) ProtoMessage() {}
 
-func (x *AdventureAutoSearchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[17]
+func (x *AdventureUnionCollectionRewardResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1214,63 +2043,47 @@ func (x *AdventureAutoSearchResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AdventureAutoSearchResponse.ProtoReflect.Descriptor instead.
-func (*AdventureAutoSearchResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{17}
+// Deprecated: Use AdventureUnionCollectionRewardResponse.ProtoReflect.Descriptor instead.
+func (*AdventureUnionCollectionRewardResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{35}
 }
 
-func (x *AdventureAutoSearchResponse) GetError() int32 {
+func (x *AdventureUnionCollectionRewardResponse) GetError() int32 {
 	if x != nil {
 		return x.Error
 	}
 	return 0
 }
 
-func (x *AdventureAutoSearchResponse) GetCharacterId() int32 {
+func (x *AdventureUnionCollectionRewardResponse) GetTransId() uint64 {
 	if x != nil {
-		return x.CharacterId
+		return x.TransId
 	}
 	return 0
 }
 
-func (x *AdventureAutoSearchResponse) GetIsSuccess() bool {
-	if x != nil {
-		return x.IsSuccess
-	}
-	return false
-}
-
-func (x *AdventureAutoSearchResponse) GetSearch() *AdventureAutoSearch {
-	if x != nil {
-		return x.Search
-	}
-	return nil
-}
-
-// 冒险自动搜索奖励请求
-type AdventureAutoSearchRewardRequest struct {
+type AdventureUnionLevelRewardRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	SearchId      int32                  `protobuf:"varint,2,opt,name=search_id,json=searchId,proto3" json:"search_id,omitempty"`          // 搜索ID
+	Field_1       int32                  `protobuf:"varint,1,opt,name=field_1,json=field1,proto3" json:"field_1,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AdventureAutoSearchRewardRequest) Reset() {
-	*x = AdventureAutoSearchRewardRequest{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[18]
+func (x *AdventureUnionLevelRewardRequest) Reset() {
+	*x = AdventureUnionLevelRewardRequest{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AdventureAutoSearchRewardRequest) String() string {
+func (x *AdventureUnionLevelRewardRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AdventureAutoSearchRewardRequest) ProtoMessage() {}
+func (*AdventureUnionLevelRewardRequest) ProtoMessage() {}
 
-func (x *AdventureAutoSearchRewardRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[18]
+func (x *AdventureUnionLevelRewardRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1281,52 +2094,41 @@ func (x *AdventureAutoSearchRewardRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AdventureAutoSearchRewardRequest.ProtoReflect.Descriptor instead.
-func (*AdventureAutoSearchRewardRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{18}
+// Deprecated: Use AdventureUnionLevelRewardRequest.ProtoReflect.Descriptor instead.
+func (*AdventureUnionLevelRewardRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{36}
 }
 
-func (x *AdventureAutoSearchRewardRequest) GetCharacterId() int32 {
+func (x *AdventureUnionLevelRewardRequest) GetField_1() int32 {
 	if x != nil {
-		return x.CharacterId
+		return x.Field_1
 	}
 	return 0
 }
 
-func (x *AdventureAutoSearchRewardRequest) GetSearchId() int32 {
-	if x != nil {
-		return x.SearchId
-	}
-	return 0
-}
-
-// 冒险自动搜索奖励响应
-type AdventureAutoSearchRewardResponse struct {
+type AdventureUnionLevelRewardResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`                                // 错误码
-	CharacterId   int32                  `protobuf:"varint,2,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	SearchId      int32                  `protobuf:"varint,3,opt,name=search_id,json=searchId,proto3" json:"search_id,omitempty"`          // 搜索ID
-	IsSuccess     bool                   `protobuf:"varint,4,opt,name=is_success,json=isSuccess,proto3" json:"is_success,omitempty"`       // 是否成功
-	Rewards       []*AdventureReapReward `protobuf:"bytes,5,rep,name=rewards,proto3" json:"rewards,omitempty"`                             // 奖励列表
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`
+	TransId       uint64                 `protobuf:"varint,2,opt,name=transId,proto3" json:"transId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AdventureAutoSearchRewardResponse) Reset() {
-	*x = AdventureAutoSearchRewardResponse{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[19]
+func (x *AdventureUnionLevelRewardResponse) Reset() {
+	*x = AdventureUnionLevelRewardResponse{}
+	mi := &file_dnf_v1_adventure_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AdventureAutoSearchRewardResponse) String() string {
+func (x *AdventureUnionLevelRewardResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AdventureAutoSearchRewardResponse) ProtoMessage() {}
+func (*AdventureUnionLevelRewardResponse) ProtoMessage() {}
 
-func (x *AdventureAutoSearchRewardResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[19]
+func (x *AdventureUnionLevelRewardResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_adventure_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1337,746 +2139,175 @@ func (x *AdventureAutoSearchRewardResponse) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AdventureAutoSearchRewardResponse.ProtoReflect.Descriptor instead.
-func (*AdventureAutoSearchRewardResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{19}
+// Deprecated: Use AdventureUnionLevelRewardResponse.ProtoReflect.Descriptor instead.
+func (*AdventureUnionLevelRewardResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{37}
 }
 
-func (x *AdventureAutoSearchRewardResponse) GetError() int32 {
+func (x *AdventureUnionLevelRewardResponse) GetError() int32 {
 	if x != nil {
 		return x.Error
 	}
 	return 0
 }
 
-func (x *AdventureAutoSearchRewardResponse) GetCharacterId() int32 {
+func (x *AdventureUnionLevelRewardResponse) GetTransId() uint64 {
 	if x != nil {
-		return x.CharacterId
+		return x.TransId
 	}
 	return 0
-}
-
-func (x *AdventureAutoSearchRewardResponse) GetSearchId() int32 {
-	if x != nil {
-		return x.SearchId
-	}
-	return 0
-}
-
-func (x *AdventureAutoSearchRewardResponse) GetIsSuccess() bool {
-	if x != nil {
-		return x.IsSuccess
-	}
-	return false
-}
-
-func (x *AdventureAutoSearchRewardResponse) GetRewards() []*AdventureReapReward {
-	if x != nil {
-		return x.Rewards
-	}
-	return nil
-}
-
-// 冒险书信息请求
-type AdventureBookInfoRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	BookId        int32                  `protobuf:"varint,2,opt,name=book_id,json=bookId,proto3" json:"book_id,omitempty"`                // 冒险书ID（0表示所有）
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureBookInfoRequest) Reset() {
-	*x = AdventureBookInfoRequest{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[20]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureBookInfoRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureBookInfoRequest) ProtoMessage() {}
-
-func (x *AdventureBookInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[20]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureBookInfoRequest.ProtoReflect.Descriptor instead.
-func (*AdventureBookInfoRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{20}
-}
-
-func (x *AdventureBookInfoRequest) GetCharacterId() int32 {
-	if x != nil {
-		return x.CharacterId
-	}
-	return 0
-}
-
-func (x *AdventureBookInfoRequest) GetBookId() int32 {
-	if x != nil {
-		return x.BookId
-	}
-	return 0
-}
-
-// 冒险书信息响应
-type AdventureBookInfoResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`                                // 错误码
-	CharacterId   int32                  `protobuf:"varint,2,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	Books         []*AdventureBookInfo   `protobuf:"bytes,3,rep,name=books,proto3" json:"books,omitempty"`                                 // 冒险书列表
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureBookInfoResponse) Reset() {
-	*x = AdventureBookInfoResponse{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[21]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureBookInfoResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureBookInfoResponse) ProtoMessage() {}
-
-func (x *AdventureBookInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[21]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureBookInfoResponse.ProtoReflect.Descriptor instead.
-func (*AdventureBookInfoResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{21}
-}
-
-func (x *AdventureBookInfoResponse) GetError() int32 {
-	if x != nil {
-		return x.Error
-	}
-	return 0
-}
-
-func (x *AdventureBookInfoResponse) GetCharacterId() int32 {
-	if x != nil {
-		return x.CharacterId
-	}
-	return 0
-}
-
-func (x *AdventureBookInfoResponse) GetBooks() []*AdventureBookInfo {
-	if x != nil {
-		return x.Books
-	}
-	return nil
-}
-
-// 冒险书特殊奖励请求
-type AdventureBookSpecialRewardRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	BookId        int32                  `protobuf:"varint,2,opt,name=book_id,json=bookId,proto3" json:"book_id,omitempty"`                // 冒险书ID
-	RewardId      int32                  `protobuf:"varint,3,opt,name=reward_id,json=rewardId,proto3" json:"reward_id,omitempty"`          // 奖励ID
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureBookSpecialRewardRequest) Reset() {
-	*x = AdventureBookSpecialRewardRequest{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[22]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureBookSpecialRewardRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureBookSpecialRewardRequest) ProtoMessage() {}
-
-func (x *AdventureBookSpecialRewardRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[22]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureBookSpecialRewardRequest.ProtoReflect.Descriptor instead.
-func (*AdventureBookSpecialRewardRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{22}
-}
-
-func (x *AdventureBookSpecialRewardRequest) GetCharacterId() int32 {
-	if x != nil {
-		return x.CharacterId
-	}
-	return 0
-}
-
-func (x *AdventureBookSpecialRewardRequest) GetBookId() int32 {
-	if x != nil {
-		return x.BookId
-	}
-	return 0
-}
-
-func (x *AdventureBookSpecialRewardRequest) GetRewardId() int32 {
-	if x != nil {
-		return x.RewardId
-	}
-	return 0
-}
-
-// 冒险书特殊奖励响应
-type AdventureBookSpecialRewardResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`                                // 错误码
-	CharacterId   int32                  `protobuf:"varint,2,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	BookId        int32                  `protobuf:"varint,3,opt,name=book_id,json=bookId,proto3" json:"book_id,omitempty"`                // 冒险书ID
-	RewardId      int32                  `protobuf:"varint,4,opt,name=reward_id,json=rewardId,proto3" json:"reward_id,omitempty"`          // 奖励ID
-	IsSuccess     bool                   `protobuf:"varint,5,opt,name=is_success,json=isSuccess,proto3" json:"is_success,omitempty"`       // 是否成功
-	Reward        *AdventureBookReward   `protobuf:"bytes,6,opt,name=reward,proto3" json:"reward,omitempty"`                               // 奖励信息
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureBookSpecialRewardResponse) Reset() {
-	*x = AdventureBookSpecialRewardResponse{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureBookSpecialRewardResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureBookSpecialRewardResponse) ProtoMessage() {}
-
-func (x *AdventureBookSpecialRewardResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureBookSpecialRewardResponse.ProtoReflect.Descriptor instead.
-func (*AdventureBookSpecialRewardResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{23}
-}
-
-func (x *AdventureBookSpecialRewardResponse) GetError() int32 {
-	if x != nil {
-		return x.Error
-	}
-	return 0
-}
-
-func (x *AdventureBookSpecialRewardResponse) GetCharacterId() int32 {
-	if x != nil {
-		return x.CharacterId
-	}
-	return 0
-}
-
-func (x *AdventureBookSpecialRewardResponse) GetBookId() int32 {
-	if x != nil {
-		return x.BookId
-	}
-	return 0
-}
-
-func (x *AdventureBookSpecialRewardResponse) GetRewardId() int32 {
-	if x != nil {
-		return x.RewardId
-	}
-	return 0
-}
-
-func (x *AdventureBookSpecialRewardResponse) GetIsSuccess() bool {
-	if x != nil {
-		return x.IsSuccess
-	}
-	return false
-}
-
-func (x *AdventureBookSpecialRewardResponse) GetReward() *AdventureBookReward {
-	if x != nil {
-		return x.Reward
-	}
-	return nil
-}
-
-// 冒险书泰拉奖励请求
-type AdventureBookTeraRewardRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	BookId        int32                  `protobuf:"varint,2,opt,name=book_id,json=bookId,proto3" json:"book_id,omitempty"`                // 冒险书ID
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureBookTeraRewardRequest) Reset() {
-	*x = AdventureBookTeraRewardRequest{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[24]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureBookTeraRewardRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureBookTeraRewardRequest) ProtoMessage() {}
-
-func (x *AdventureBookTeraRewardRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[24]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureBookTeraRewardRequest.ProtoReflect.Descriptor instead.
-func (*AdventureBookTeraRewardRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{24}
-}
-
-func (x *AdventureBookTeraRewardRequest) GetCharacterId() int32 {
-	if x != nil {
-		return x.CharacterId
-	}
-	return 0
-}
-
-func (x *AdventureBookTeraRewardRequest) GetBookId() int32 {
-	if x != nil {
-		return x.BookId
-	}
-	return 0
-}
-
-// 冒险书泰拉奖励响应
-type AdventureBookTeraRewardResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`                                // 错误码
-	CharacterId   int32                  `protobuf:"varint,2,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	BookId        int32                  `protobuf:"varint,3,opt,name=book_id,json=bookId,proto3" json:"book_id,omitempty"`                // 冒险书ID
-	IsSuccess     bool                   `protobuf:"varint,4,opt,name=is_success,json=isSuccess,proto3" json:"is_success,omitempty"`       // 是否成功
-	Rewards       []*AdventureBookReward `protobuf:"bytes,5,rep,name=rewards,proto3" json:"rewards,omitempty"`                             // 奖励列表
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureBookTeraRewardResponse) Reset() {
-	*x = AdventureBookTeraRewardResponse{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[25]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureBookTeraRewardResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureBookTeraRewardResponse) ProtoMessage() {}
-
-func (x *AdventureBookTeraRewardResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[25]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureBookTeraRewardResponse.ProtoReflect.Descriptor instead.
-func (*AdventureBookTeraRewardResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{25}
-}
-
-func (x *AdventureBookTeraRewardResponse) GetError() int32 {
-	if x != nil {
-		return x.Error
-	}
-	return 0
-}
-
-func (x *AdventureBookTeraRewardResponse) GetCharacterId() int32 {
-	if x != nil {
-		return x.CharacterId
-	}
-	return 0
-}
-
-func (x *AdventureBookTeraRewardResponse) GetBookId() int32 {
-	if x != nil {
-		return x.BookId
-	}
-	return 0
-}
-
-func (x *AdventureBookTeraRewardResponse) GetIsSuccess() bool {
-	if x != nil {
-		return x.IsSuccess
-	}
-	return false
-}
-
-func (x *AdventureBookTeraRewardResponse) GetRewards() []*AdventureBookReward {
-	if x != nil {
-		return x.Rewards
-	}
-	return nil
-}
-
-// 冒险书条件更新请求
-type AdventureBookUpdateConditionRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CharacterId   int32                  `protobuf:"varint,1,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	BookId        int32                  `protobuf:"varint,2,opt,name=book_id,json=bookId,proto3" json:"book_id,omitempty"`                // 冒险书ID
-	ConditionId   int32                  `protobuf:"varint,3,opt,name=condition_id,json=conditionId,proto3" json:"condition_id,omitempty"` // 条件ID
-	Value         int32                  `protobuf:"varint,4,opt,name=value,proto3" json:"value,omitempty"`                                // 更新值
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureBookUpdateConditionRequest) Reset() {
-	*x = AdventureBookUpdateConditionRequest{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[26]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureBookUpdateConditionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureBookUpdateConditionRequest) ProtoMessage() {}
-
-func (x *AdventureBookUpdateConditionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[26]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureBookUpdateConditionRequest.ProtoReflect.Descriptor instead.
-func (*AdventureBookUpdateConditionRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{26}
-}
-
-func (x *AdventureBookUpdateConditionRequest) GetCharacterId() int32 {
-	if x != nil {
-		return x.CharacterId
-	}
-	return 0
-}
-
-func (x *AdventureBookUpdateConditionRequest) GetBookId() int32 {
-	if x != nil {
-		return x.BookId
-	}
-	return 0
-}
-
-func (x *AdventureBookUpdateConditionRequest) GetConditionId() int32 {
-	if x != nil {
-		return x.ConditionId
-	}
-	return 0
-}
-
-func (x *AdventureBookUpdateConditionRequest) GetValue() int32 {
-	if x != nil {
-		return x.Value
-	}
-	return 0
-}
-
-// 冒险书条件更新响应
-type AdventureBookUpdateConditionResponse struct {
-	state         protoimpl.MessageState  `protogen:"open.v1"`
-	Error         int32                   `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"`                                // 错误码
-	CharacterId   int32                   `protobuf:"varint,2,opt,name=character_id,json=characterId,proto3" json:"character_id,omitempty"` // 角色ID
-	BookId        int32                   `protobuf:"varint,3,opt,name=book_id,json=bookId,proto3" json:"book_id,omitempty"`                // 冒险书ID
-	ConditionId   int32                   `protobuf:"varint,4,opt,name=condition_id,json=conditionId,proto3" json:"condition_id,omitempty"` // 条件ID
-	IsSuccess     bool                    `protobuf:"varint,5,opt,name=is_success,json=isSuccess,proto3" json:"is_success,omitempty"`       // 是否成功
-	Condition     *AdventureBookCondition `protobuf:"bytes,6,opt,name=condition,proto3" json:"condition,omitempty"`                         // 更新后的条件
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AdventureBookUpdateConditionResponse) Reset() {
-	*x = AdventureBookUpdateConditionResponse{}
-	mi := &file_dnf_v1_adventure_proto_msgTypes[27]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AdventureBookUpdateConditionResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AdventureBookUpdateConditionResponse) ProtoMessage() {}
-
-func (x *AdventureBookUpdateConditionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_adventure_proto_msgTypes[27]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AdventureBookUpdateConditionResponse.ProtoReflect.Descriptor instead.
-func (*AdventureBookUpdateConditionResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_adventure_proto_rawDescGZIP(), []int{27}
-}
-
-func (x *AdventureBookUpdateConditionResponse) GetError() int32 {
-	if x != nil {
-		return x.Error
-	}
-	return 0
-}
-
-func (x *AdventureBookUpdateConditionResponse) GetCharacterId() int32 {
-	if x != nil {
-		return x.CharacterId
-	}
-	return 0
-}
-
-func (x *AdventureBookUpdateConditionResponse) GetBookId() int32 {
-	if x != nil {
-		return x.BookId
-	}
-	return 0
-}
-
-func (x *AdventureBookUpdateConditionResponse) GetConditionId() int32 {
-	if x != nil {
-		return x.ConditionId
-	}
-	return 0
-}
-
-func (x *AdventureBookUpdateConditionResponse) GetIsSuccess() bool {
-	if x != nil {
-		return x.IsSuccess
-	}
-	return false
-}
-
-func (x *AdventureBookUpdateConditionResponse) GetCondition() *AdventureBookCondition {
-	if x != nil {
-		return x.Condition
-	}
-	return nil
 }
 
 var File_dnf_v1_adventure_proto protoreflect.FileDescriptor
 
 const file_dnf_v1_adventure_proto_rawDesc = "" +
 	"\n" +
-	"\x16dnf/v1/adventure.proto\x12\x06dnf.v1\"\x83\x01\n" +
-	"\x14AdventureStorageItem\x12\x17\n" +
-	"\aitem_id\x18\x01 \x01(\x05R\x06itemId\x12\x14\n" +
-	"\x05count\x18\x02 \x01(\x05R\x05count\x12\x19\n" +
-	"\bis_bound\x18\x03 \x01(\bR\aisBound\x12!\n" +
-	"\fstorage_time\x18\x04 \x01(\x03R\vstorageTime\"\xbb\x01\n" +
-	"\x11AdventureReapInfo\x12\x17\n" +
-	"\areap_id\x18\x01 \x01(\x05R\x06reapId\x12\x1a\n" +
-	"\bprogress\x18\x02 \x01(\x05R\bprogress\x12\x14\n" +
-	"\x05total\x18\x03 \x01(\x05R\x05total\x12!\n" +
-	"\fis_completed\x18\x04 \x01(\bR\visCompleted\x12\x1d\n" +
+	"\x16dnf/v1/adventure.proto\x12\x06dnf.v1\x1a\x1cgoogle/api/annotations.proto\"\x1b\n" +
+	"\x19AdventureUnionInfoRequest\"\xc4\n" +
 	"\n" +
-	"start_time\x18\x05 \x01(\x03R\tstartTime\x12\x19\n" +
-	"\bend_time\x18\x06 \x01(\x03R\aendTime\"}\n" +
-	"\x13AdventureReapReward\x12\x1b\n" +
-	"\treward_id\x18\x01 \x01(\x05R\brewardId\x12\x12\n" +
-	"\x04type\x18\x02 \x01(\x05R\x04type\x12\x16\n" +
-	"\x06amount\x18\x03 \x01(\x05R\x06amount\x12\x1d\n" +
+	"\x1aAdventureUnionInfoResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x10\n" +
+	"\x03exp\x18\x02 \x01(\x04R\x03exp\x12\x14\n" +
+	"\x05level\x18\x03 \x01(\rR\x05level\x12\x10\n" +
+	"\x03day\x18\x04 \x01(\rR\x03day\x122\n" +
+	"\x14typicalcharacterguid\x18\x05 \x01(\x04R\x14typicalcharacterguid\x12\x12\n" +
+	"\x04name\x18\x06 \x01(\tR\x04name\x12\x1e\n" +
 	"\n" +
-	"is_claimed\x18\x04 \x01(\bR\tisClaimed\"\xfe\x01\n" +
-	"\x13AdventureAutoSearch\x12\x1b\n" +
-	"\tsearch_id\x18\x01 \x01(\x05R\bsearchId\x12\x1a\n" +
-	"\bduration\x18\x02 \x01(\x05R\bduration\x12\x1a\n" +
-	"\bprogress\x18\x03 \x01(\x05R\bprogress\x12!\n" +
-	"\fis_completed\x18\x04 \x01(\bR\visCompleted\x12\x1d\n" +
+	"updatetime\x18\a \x01(\x04R\n" +
+	"updatetime\x12.\n" +
+	"\x12lastchangenametime\x18\b \x01(\x04R\x12lastchangenametime\x12@\n" +
 	"\n" +
-	"start_time\x18\x05 \x01(\x03R\tstartTime\x12\x19\n" +
-	"\bend_time\x18\x06 \x01(\x03R\aendTime\x125\n" +
-	"\arewards\x18\a \x03(\v2\x1b.dnf.v1.AdventureReapRewardR\arewards\"\x90\x01\n" +
-	"\x16AdventureBookCondition\x12!\n" +
-	"\fcondition_id\x18\x01 \x01(\x05R\vconditionId\x12\x18\n" +
-	"\acurrent\x18\x02 \x01(\x05R\acurrent\x12\x16\n" +
-	"\x06target\x18\x03 \x01(\x05R\x06target\x12!\n" +
-	"\fis_completed\x18\x04 \x01(\bR\visCompleted\"}\n" +
-	"\x13AdventureBookReward\x12\x1b\n" +
-	"\treward_id\x18\x01 \x01(\x05R\brewardId\x12\x12\n" +
-	"\x04type\x18\x02 \x01(\x05R\x04type\x12\x16\n" +
-	"\x06amount\x18\x03 \x01(\x05R\x06amount\x12\x1d\n" +
+	"expedition\x18\t \x01(\v2 .dnf.v1.AdventureUnionExpeditionR\n" +
+	"expedition\x12B\n" +
+	"\vexpeditions\x18\n" +
+	" \x03(\v2 .dnf.v1.AdventureUnionExpeditionR\vexpeditions\x12B\n" +
+	"\vcollections\x18\v \x03(\v2 .dnf.v1.AdventureUnionCollectionR\vcollections\x12N\n" +
+	"\x0fcollectionslots\x18\f \x03(\v2$.dnf.v1.AdventureUnionCollectionSlotR\x0fcollectionslots\x122\n" +
+	"\x14shareboardbackground\x18\r \x01(\rR\x14shareboardbackground\x12(\n" +
+	"\x0fshareboardframe\x18\x0e \x01(\rR\x0fshareboardframe\x12T\n" +
+	"\x12shareboardslotlist\x18\x0f \x03(\v2$.dnf.v1.AdventureUnionShareboardSlotR\x12shareboardslotlist\x12f\n" +
+	"\x18shareboardbackgroundlist\x18\x10 \x03(\v2*.dnf.v1.AdventureUnionShareboardBackgroundR\x18shareboardbackgroundlist\x12W\n" +
+	"\x13shareboardframelist\x18\x11 \x03(\v2%.dnf.v1.AdventureUnionShareboardFrameR\x13shareboardframelist\x12@\n" +
+	"\x1bshareboardshowantievilscore\x18\x12 \x01(\bR\x1bshareboardshowantievilscore\x12(\n" +
+	"\x0fautosearchcount\x18\x13 \x01(\rR\x0fautosearchcount\x12<\n" +
+	"\x19receivedcollectionrewards\x18\x14 \x03(\rR\x19receivedcollectionrewards\x12E\n" +
+	"\flevelrewards\x18\x15 \x03(\v2!.dnf.v1.AdventureUnionLevelRewardR\flevelrewards\x12B\n" +
+	"\x1cshareboardtotalantievilscore\x18\x16 \x01(\rR\x1cshareboardtotalantievilscore\x12F\n" +
+	"\x1eshareboardantievilscorerefresh\x18\x17 \x01(\bR\x1eshareboardantievilscorerefresh\x122\n" +
+	"\x14isadventureCondition\x18\x18 \x01(\bR\x14isadventureCondition\"\xba\x01\n" +
+	"\x18AdventureUnionExpedition\x12#\n" +
+	"\rexpedition_id\x18\x01 \x01(\rR\fexpeditionId\x12'\n" +
+	"\x0fexpedition_type\x18\x02 \x01(\rR\x0eexpeditionType\x12\x16\n" +
+	"\x06status\x18\x03 \x01(\rR\x06status\x12\x1d\n" +
 	"\n" +
-	"is_claimed\x18\x04 \x01(\bR\tisClaimed\"\xed\x01\n" +
-	"\x11AdventureBookInfo\x12\x17\n" +
-	"\abook_id\x18\x01 \x01(\x05R\x06bookId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
-	"\x05level\x18\x03 \x01(\x05R\x05level\x12\x1e\n" +
+	"start_time\x18\x04 \x01(\x04R\tstartTime\x12\x19\n" +
+	"\bend_time\x18\x05 \x01(\x04R\aendTime\"y\n" +
+	"\x18AdventureUnionCollection\x12#\n" +
+	"\rcollection_id\x18\x01 \x01(\rR\fcollectionId\x12\x1a\n" +
+	"\bprogress\x18\x02 \x01(\rR\bprogress\x12\x1c\n" +
+	"\tcompleted\x18\x03 \x01(\bR\tcompleted\"T\n" +
+	"\x1cAdventureUnionCollectionSlot\x12\x17\n" +
+	"\aslot_id\x18\x01 \x01(\rR\x06slotId\x12\x1b\n" +
+	"\tslot_type\x18\x02 \x01(\rR\bslotType\"\xa0\x01\n" +
+	"\x1cAdventureUnionShareboardSlot\x12\x17\n" +
+	"\aslot_id\x18\x01 \x01(\rR\x06slotId\x12\x1b\n" +
+	"\tslot_type\x18\x02 \x01(\rR\bslotType\x12\x17\n" +
+	"\aitem_id\x18\x03 \x01(\rR\x06itemId\x12\x1d\n" +
 	"\n" +
-	"experience\x18\x04 \x01(\x05R\n" +
-	"experience\x12>\n" +
+	"item_count\x18\x04 \x01(\rR\titemCount\x12\x12\n" +
+	"\x04show\x18\x05 \x01(\bR\x04show\"]\n" +
+	"\"AdventureUnionShareboardBackground\x12#\n" +
+	"\rbackground_id\x18\x01 \x01(\rR\fbackgroundId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"N\n" +
+	"\x1dAdventureUnionShareboardFrame\x12\x19\n" +
+	"\bframe_id\x18\x01 \x01(\rR\aframeId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\xb2\x01\n" +
+	"\x19AdventureUnionLevelReward\x12\x14\n" +
+	"\x05level\x18\x01 \x01(\rR\x05level\x12\x1f\n" +
+	"\vreward_type\x18\x02 \x01(\rR\n" +
+	"rewardType\x12!\n" +
+	"\freward_index\x18\x03 \x01(\rR\vrewardIndex\x12!\n" +
+	"\freward_count\x18\x04 \x01(\rR\vrewardCount\x12\x18\n" +
+	"\aclaimed\x18\x05 \x01(\bR\aclaimed\":\n" +
+	"\x1fAdventureUnionNameChangeRequest\x12\x17\n" +
+	"\afield_1\x18\x01 \x01(\tR\x06field1\"R\n" +
+	" AdventureUnionNameChangeResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\atransId\x18\x02 \x01(\x04R\atransId\"X\n" +
+	"$AdventureUnionExpeditionStartRequest\x12\x17\n" +
+	"\afield_1\x18\x01 \x01(\x05R\x06field1\x12\x17\n" +
+	"\afield_2\x18\x02 \x01(\x05R\x06field2\"W\n" +
+	"%AdventureUnionExpeditionStartResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\atransId\x18\x02 \x01(\x04R\atransId\"@\n" +
+	"%AdventureUnionExpeditionCancelRequest\x12\x17\n" +
+	"\afield_1\x18\x01 \x01(\x05R\x06field1\"X\n" +
+	"&AdventureUnionExpeditionCancelResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\atransId\x18\x02 \x01(\x04R\atransId\"@\n" +
+	"%AdventureUnionExpeditionRewardRequest\x12\x17\n" +
+	"\afield_1\x18\x01 \x01(\x05R\x06field1\"X\n" +
+	"&AdventureUnionExpeditionRewardResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\atransId\x18\x02 \x01(\x04R\atransId\"!\n" +
+	"\x1fAdventureUnionSubdueInfoRequest\"R\n" +
+	" AdventureUnionSubdueInfoResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\atransId\x18\x02 \x01(\x04R\atransId\"m\n" +
+	" AdventureUnionSubdueStartRequest\x12\x17\n" +
+	"\afield_1\x18\x01 \x01(\x05R\x06field1\x12\x17\n" +
+	"\afield_2\x18\x02 \x01(\x05R\x06field2\x12\x17\n" +
+	"\afield_3\x18\x03 \x01(\x04R\x06field3\"S\n" +
+	"!AdventureUnionSubdueStartResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\atransId\x18\x02 \x01(\x04R\atransId\"<\n" +
+	"!AdventureUnionSubdueRewardRequest\x12\x17\n" +
+	"\afield_1\x18\x01 \x01(\x05R\x06field1\"T\n" +
+	"\"AdventureUnionSubdueRewardResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\atransId\x18\x02 \x01(\x04R\atransId\"B\n" +
+	"'AdventureUnionOpenShareboardSlotRequest\x12\x17\n" +
+	"\afield_1\x18\x01 \x01(\x05R\x06field1\"Z\n" +
+	"(AdventureUnionOpenShareboardSlotResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\atransId\x18\x02 \x01(\x04R\atransId\"o\n" +
+	"\"AdventureUnionSetShareboardRequest\x12\x17\n" +
+	"\afield_1\x18\x01 \x01(\x05R\x06field1\x12\x17\n" +
+	"\afield_2\x18\x02 \x01(\x05R\x06field2\x12\x17\n" +
+	"\afield_4\x18\x04 \x01(\bR\x06field4\"U\n" +
+	"#AdventureUnionSetShareboardResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\atransId\x18\x02 \x01(\x04R\atransId\"\x1a\n" +
+	"\x18AdventureReapInfoRequest\"}\n" +
+	"\x19AdventureReapInfoResponse\x12,\n" +
+	"\arewards\x18\x01 \x03(\v2\x12.dnf.v1.ReapRewardR\arewards\x12\x1c\n" +
+	"\tstarttime\x18\x02 \x01(\x04R\tstarttime\x12\x14\n" +
+	"\x05error\x18\x03 \x01(\x05R\x05error\"s\n" +
 	"\n" +
-	"conditions\x18\x05 \x03(\v2\x1e.dnf.v1.AdventureBookConditionR\n" +
-	"conditions\x125\n" +
-	"\arewards\x18\x06 \x03(\v2\x1b.dnf.v1.AdventureBookRewardR\arewards\"\xc6\x01\n" +
-	"\rAdventureData\x12'\n" +
-	"\x0fadventure_level\x18\x01 \x01(\x05R\x0eadventureLevel\x12#\n" +
-	"\radventure_exp\x18\x02 \x01(\x05R\fadventureExp\x12\x16\n" +
-	"\x06energy\x18\x03 \x01(\x05R\x06energy\x12\x1d\n" +
-	"\n" +
-	"max_energy\x18\x04 \x01(\x05R\tmaxEnergy\x120\n" +
-	"\x14last_energy_recovery\x18\x05 \x01(\x03R\x12lastEnergyRecovery\"9\n" +
-	"\x14AdventureDataRequest\x12!\n" +
-	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\"{\n" +
-	"\x15AdventureDataResponse\x12\x14\n" +
-	"\x05error\x18\x01 \x01(\x05R\x05error\x12!\n" +
-	"\fcharacter_id\x18\x02 \x01(\x05R\vcharacterId\x12)\n" +
-	"\x04data\x18\x03 \x01(\v2\x15.dnf.v1.AdventureDataR\x04data\"=\n" +
-	"\x18AdventureReapInfoRequest\x12!\n" +
-	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\"\x85\x01\n" +
-	"\x19AdventureReapInfoResponse\x12\x14\n" +
-	"\x05error\x18\x01 \x01(\x05R\x05error\x12!\n" +
-	"\fcharacter_id\x18\x02 \x01(\x05R\vcharacterId\x12/\n" +
-	"\x05reaps\x18\x03 \x03(\v2\x19.dnf.v1.AdventureReapInfoR\x05reaps\"X\n" +
-	"\x1aAdventureReapRewardRequest\x12!\n" +
-	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\x12\x17\n" +
-	"\areap_id\x18\x02 \x01(\x05R\x06reapId\"\xc5\x01\n" +
+	"ReapReward\x12\x1f\n" +
+	"\vreward_type\x18\x01 \x01(\rR\n" +
+	"rewardType\x12!\n" +
+	"\freward_index\x18\x02 \x01(\rR\vrewardIndex\x12!\n" +
+	"\freward_count\x18\x03 \x01(\rR\vrewardCount\"5\n" +
+	"\x1aAdventureReapRewardRequest\x12\x17\n" +
+	"\afield_1\x18\x01 \x01(\x05R\x06field1\"M\n" +
 	"\x1bAdventureReapRewardResponse\x12\x14\n" +
-	"\x05error\x18\x01 \x01(\x05R\x05error\x12!\n" +
-	"\fcharacter_id\x18\x02 \x01(\x05R\vcharacterId\x12\x17\n" +
-	"\areap_id\x18\x03 \x01(\x05R\x06reapId\x12\x1d\n" +
-	"\n" +
-	"is_success\x18\x04 \x01(\bR\tisSuccess\x125\n" +
-	"\arewards\x18\x05 \x03(\v2\x1b.dnf.v1.AdventureReapRewardR\arewards\"q\n" +
-	"\x1bAdventureStorageListRequest\x12!\n" +
-	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\x12\x12\n" +
-	"\x04page\x18\x02 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\"\xd2\x01\n" +
-	"\x1cAdventureStorageListResponse\x12\x14\n" +
-	"\x05error\x18\x01 \x01(\x05R\x05error\x12!\n" +
-	"\fcharacter_id\x18\x02 \x01(\x05R\vcharacterId\x12\x14\n" +
-	"\x05total\x18\x03 \x01(\x05R\x05total\x12\x12\n" +
-	"\x04page\x18\x04 \x01(\x05R\x04page\x12\x1b\n" +
-	"\tpage_size\x18\x05 \x01(\x05R\bpageSize\x122\n" +
-	"\x05items\x18\x06 \x03(\v2\x1c.dnf.v1.AdventureStorageItemR\x05items\"[\n" +
-	"\x1aAdventureAutoSearchRequest\x12!\n" +
-	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\x12\x1a\n" +
-	"\bduration\x18\x02 \x01(\x05R\bduration\"\xaa\x01\n" +
-	"\x1bAdventureAutoSearchResponse\x12\x14\n" +
-	"\x05error\x18\x01 \x01(\x05R\x05error\x12!\n" +
-	"\fcharacter_id\x18\x02 \x01(\x05R\vcharacterId\x12\x1d\n" +
-	"\n" +
-	"is_success\x18\x03 \x01(\bR\tisSuccess\x123\n" +
-	"\x06search\x18\x04 \x01(\v2\x1b.dnf.v1.AdventureAutoSearchR\x06search\"b\n" +
-	" AdventureAutoSearchRewardRequest\x12!\n" +
-	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\x12\x1b\n" +
-	"\tsearch_id\x18\x02 \x01(\x05R\bsearchId\"\xcf\x01\n" +
-	"!AdventureAutoSearchRewardResponse\x12\x14\n" +
-	"\x05error\x18\x01 \x01(\x05R\x05error\x12!\n" +
-	"\fcharacter_id\x18\x02 \x01(\x05R\vcharacterId\x12\x1b\n" +
-	"\tsearch_id\x18\x03 \x01(\x05R\bsearchId\x12\x1d\n" +
-	"\n" +
-	"is_success\x18\x04 \x01(\bR\tisSuccess\x125\n" +
-	"\arewards\x18\x05 \x03(\v2\x1b.dnf.v1.AdventureReapRewardR\arewards\"V\n" +
-	"\x18AdventureBookInfoRequest\x12!\n" +
-	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\x12\x17\n" +
-	"\abook_id\x18\x02 \x01(\x05R\x06bookId\"\x85\x01\n" +
-	"\x19AdventureBookInfoResponse\x12\x14\n" +
-	"\x05error\x18\x01 \x01(\x05R\x05error\x12!\n" +
-	"\fcharacter_id\x18\x02 \x01(\x05R\vcharacterId\x12/\n" +
-	"\x05books\x18\x03 \x03(\v2\x19.dnf.v1.AdventureBookInfoR\x05books\"|\n" +
-	"!AdventureBookSpecialRewardRequest\x12!\n" +
-	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\x12\x17\n" +
-	"\abook_id\x18\x02 \x01(\x05R\x06bookId\x12\x1b\n" +
-	"\treward_id\x18\x03 \x01(\x05R\brewardId\"\xe7\x01\n" +
-	"\"AdventureBookSpecialRewardResponse\x12\x14\n" +
-	"\x05error\x18\x01 \x01(\x05R\x05error\x12!\n" +
-	"\fcharacter_id\x18\x02 \x01(\x05R\vcharacterId\x12\x17\n" +
-	"\abook_id\x18\x03 \x01(\x05R\x06bookId\x12\x1b\n" +
-	"\treward_id\x18\x04 \x01(\x05R\brewardId\x12\x1d\n" +
-	"\n" +
-	"is_success\x18\x05 \x01(\bR\tisSuccess\x123\n" +
-	"\x06reward\x18\x06 \x01(\v2\x1b.dnf.v1.AdventureBookRewardR\x06reward\"\\\n" +
-	"\x1eAdventureBookTeraRewardRequest\x12!\n" +
-	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\x12\x17\n" +
-	"\abook_id\x18\x02 \x01(\x05R\x06bookId\"\xc9\x01\n" +
-	"\x1fAdventureBookTeraRewardResponse\x12\x14\n" +
-	"\x05error\x18\x01 \x01(\x05R\x05error\x12!\n" +
-	"\fcharacter_id\x18\x02 \x01(\x05R\vcharacterId\x12\x17\n" +
-	"\abook_id\x18\x03 \x01(\x05R\x06bookId\x12\x1d\n" +
-	"\n" +
-	"is_success\x18\x04 \x01(\bR\tisSuccess\x125\n" +
-	"\arewards\x18\x05 \x03(\v2\x1b.dnf.v1.AdventureBookRewardR\arewards\"\x9a\x01\n" +
-	"#AdventureBookUpdateConditionRequest\x12!\n" +
-	"\fcharacter_id\x18\x01 \x01(\x05R\vcharacterId\x12\x17\n" +
-	"\abook_id\x18\x02 \x01(\x05R\x06bookId\x12!\n" +
-	"\fcondition_id\x18\x03 \x01(\x05R\vconditionId\x12\x14\n" +
-	"\x05value\x18\x04 \x01(\x05R\x05value\"\xf8\x01\n" +
-	"$AdventureBookUpdateConditionResponse\x12\x14\n" +
-	"\x05error\x18\x01 \x01(\x05R\x05error\x12!\n" +
-	"\fcharacter_id\x18\x02 \x01(\x05R\vcharacterId\x12\x17\n" +
-	"\abook_id\x18\x03 \x01(\x05R\x06bookId\x12!\n" +
-	"\fcondition_id\x18\x04 \x01(\x05R\vconditionId\x12\x1d\n" +
-	"\n" +
-	"is_success\x18\x05 \x01(\bR\tisSuccess\x12<\n" +
-	"\tcondition\x18\x06 \x01(\v2\x1e.dnf.v1.AdventureBookConditionR\tconditionB\x99\x01\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\atransId\x18\x02 \x01(\x04R\atransId\"\"\n" +
+	" AdventureUnionSearchStartRequest\"S\n" +
+	"!AdventureUnionSearchStartResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\atransId\x18\x02 \x01(\x04R\atransId\"@\n" +
+	"%AdventureUnionCollectionRewardRequest\x12\x17\n" +
+	"\afield_1\x18\x01 \x01(\x05R\x06field1\"X\n" +
+	"&AdventureUnionCollectionRewardResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\atransId\x18\x02 \x01(\x04R\atransId\";\n" +
+	" AdventureUnionLevelRewardRequest\x12\x17\n" +
+	"\afield_1\x18\x01 \x01(\x05R\x06field1\"S\n" +
+	"!AdventureUnionLevelRewardResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x18\n" +
+	"\atransId\x18\x02 \x01(\x04R\atransIdB\x99\x01\n" +
 	"\n" +
 	"com.dnf.v1B\x0eAdventureProtoP\x01ZBgithub.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1\xa2\x02\x03DXX\xaa\x02\x06Dnf.V1\xca\x02\x06Dnf\\V1\xe2\x02\x12Dnf\\V1\\GPBMetadata\xea\x02\aDnf::V1b\x06proto3"
 
@@ -2092,56 +2323,62 @@ func file_dnf_v1_adventure_proto_rawDescGZIP() []byte {
 	return file_dnf_v1_adventure_proto_rawDescData
 }
 
-var file_dnf_v1_adventure_proto_msgTypes = make([]protoimpl.MessageInfo, 28)
+var file_dnf_v1_adventure_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
 var file_dnf_v1_adventure_proto_goTypes = []any{
-	(*AdventureStorageItem)(nil),                 // 0: dnf.v1.AdventureStorageItem
-	(*AdventureReapInfo)(nil),                    // 1: dnf.v1.AdventureReapInfo
-	(*AdventureReapReward)(nil),                  // 2: dnf.v1.AdventureReapReward
-	(*AdventureAutoSearch)(nil),                  // 3: dnf.v1.AdventureAutoSearch
-	(*AdventureBookCondition)(nil),               // 4: dnf.v1.AdventureBookCondition
-	(*AdventureBookReward)(nil),                  // 5: dnf.v1.AdventureBookReward
-	(*AdventureBookInfo)(nil),                    // 6: dnf.v1.AdventureBookInfo
-	(*AdventureData)(nil),                        // 7: dnf.v1.AdventureData
-	(*AdventureDataRequest)(nil),                 // 8: dnf.v1.AdventureDataRequest
-	(*AdventureDataResponse)(nil),                // 9: dnf.v1.AdventureDataResponse
-	(*AdventureReapInfoRequest)(nil),             // 10: dnf.v1.AdventureReapInfoRequest
-	(*AdventureReapInfoResponse)(nil),            // 11: dnf.v1.AdventureReapInfoResponse
-	(*AdventureReapRewardRequest)(nil),           // 12: dnf.v1.AdventureReapRewardRequest
-	(*AdventureReapRewardResponse)(nil),          // 13: dnf.v1.AdventureReapRewardResponse
-	(*AdventureStorageListRequest)(nil),          // 14: dnf.v1.AdventureStorageListRequest
-	(*AdventureStorageListResponse)(nil),         // 15: dnf.v1.AdventureStorageListResponse
-	(*AdventureAutoSearchRequest)(nil),           // 16: dnf.v1.AdventureAutoSearchRequest
-	(*AdventureAutoSearchResponse)(nil),          // 17: dnf.v1.AdventureAutoSearchResponse
-	(*AdventureAutoSearchRewardRequest)(nil),     // 18: dnf.v1.AdventureAutoSearchRewardRequest
-	(*AdventureAutoSearchRewardResponse)(nil),    // 19: dnf.v1.AdventureAutoSearchRewardResponse
-	(*AdventureBookInfoRequest)(nil),             // 20: dnf.v1.AdventureBookInfoRequest
-	(*AdventureBookInfoResponse)(nil),            // 21: dnf.v1.AdventureBookInfoResponse
-	(*AdventureBookSpecialRewardRequest)(nil),    // 22: dnf.v1.AdventureBookSpecialRewardRequest
-	(*AdventureBookSpecialRewardResponse)(nil),   // 23: dnf.v1.AdventureBookSpecialRewardResponse
-	(*AdventureBookTeraRewardRequest)(nil),       // 24: dnf.v1.AdventureBookTeraRewardRequest
-	(*AdventureBookTeraRewardResponse)(nil),      // 25: dnf.v1.AdventureBookTeraRewardResponse
-	(*AdventureBookUpdateConditionRequest)(nil),  // 26: dnf.v1.AdventureBookUpdateConditionRequest
-	(*AdventureBookUpdateConditionResponse)(nil), // 27: dnf.v1.AdventureBookUpdateConditionResponse
+	(*AdventureUnionInfoRequest)(nil),                // 0: dnf.v1.AdventureUnionInfoRequest
+	(*AdventureUnionInfoResponse)(nil),               // 1: dnf.v1.AdventureUnionInfoResponse
+	(*AdventureUnionExpedition)(nil),                 // 2: dnf.v1.AdventureUnionExpedition
+	(*AdventureUnionCollection)(nil),                 // 3: dnf.v1.AdventureUnionCollection
+	(*AdventureUnionCollectionSlot)(nil),             // 4: dnf.v1.AdventureUnionCollectionSlot
+	(*AdventureUnionShareboardSlot)(nil),             // 5: dnf.v1.AdventureUnionShareboardSlot
+	(*AdventureUnionShareboardBackground)(nil),       // 6: dnf.v1.AdventureUnionShareboardBackground
+	(*AdventureUnionShareboardFrame)(nil),            // 7: dnf.v1.AdventureUnionShareboardFrame
+	(*AdventureUnionLevelReward)(nil),                // 8: dnf.v1.AdventureUnionLevelReward
+	(*AdventureUnionNameChangeRequest)(nil),          // 9: dnf.v1.AdventureUnionNameChangeRequest
+	(*AdventureUnionNameChangeResponse)(nil),         // 10: dnf.v1.AdventureUnionNameChangeResponse
+	(*AdventureUnionExpeditionStartRequest)(nil),     // 11: dnf.v1.AdventureUnionExpeditionStartRequest
+	(*AdventureUnionExpeditionStartResponse)(nil),    // 12: dnf.v1.AdventureUnionExpeditionStartResponse
+	(*AdventureUnionExpeditionCancelRequest)(nil),    // 13: dnf.v1.AdventureUnionExpeditionCancelRequest
+	(*AdventureUnionExpeditionCancelResponse)(nil),   // 14: dnf.v1.AdventureUnionExpeditionCancelResponse
+	(*AdventureUnionExpeditionRewardRequest)(nil),    // 15: dnf.v1.AdventureUnionExpeditionRewardRequest
+	(*AdventureUnionExpeditionRewardResponse)(nil),   // 16: dnf.v1.AdventureUnionExpeditionRewardResponse
+	(*AdventureUnionSubdueInfoRequest)(nil),          // 17: dnf.v1.AdventureUnionSubdueInfoRequest
+	(*AdventureUnionSubdueInfoResponse)(nil),         // 18: dnf.v1.AdventureUnionSubdueInfoResponse
+	(*AdventureUnionSubdueStartRequest)(nil),         // 19: dnf.v1.AdventureUnionSubdueStartRequest
+	(*AdventureUnionSubdueStartResponse)(nil),        // 20: dnf.v1.AdventureUnionSubdueStartResponse
+	(*AdventureUnionSubdueRewardRequest)(nil),        // 21: dnf.v1.AdventureUnionSubdueRewardRequest
+	(*AdventureUnionSubdueRewardResponse)(nil),       // 22: dnf.v1.AdventureUnionSubdueRewardResponse
+	(*AdventureUnionOpenShareboardSlotRequest)(nil),  // 23: dnf.v1.AdventureUnionOpenShareboardSlotRequest
+	(*AdventureUnionOpenShareboardSlotResponse)(nil), // 24: dnf.v1.AdventureUnionOpenShareboardSlotResponse
+	(*AdventureUnionSetShareboardRequest)(nil),       // 25: dnf.v1.AdventureUnionSetShareboardRequest
+	(*AdventureUnionSetShareboardResponse)(nil),      // 26: dnf.v1.AdventureUnionSetShareboardResponse
+	(*AdventureReapInfoRequest)(nil),                 // 27: dnf.v1.AdventureReapInfoRequest
+	(*AdventureReapInfoResponse)(nil),                // 28: dnf.v1.AdventureReapInfoResponse
+	(*ReapReward)(nil),                               // 29: dnf.v1.ReapReward
+	(*AdventureReapRewardRequest)(nil),               // 30: dnf.v1.AdventureReapRewardRequest
+	(*AdventureReapRewardResponse)(nil),              // 31: dnf.v1.AdventureReapRewardResponse
+	(*AdventureUnionSearchStartRequest)(nil),         // 32: dnf.v1.AdventureUnionSearchStartRequest
+	(*AdventureUnionSearchStartResponse)(nil),        // 33: dnf.v1.AdventureUnionSearchStartResponse
+	(*AdventureUnionCollectionRewardRequest)(nil),    // 34: dnf.v1.AdventureUnionCollectionRewardRequest
+	(*AdventureUnionCollectionRewardResponse)(nil),   // 35: dnf.v1.AdventureUnionCollectionRewardResponse
+	(*AdventureUnionLevelRewardRequest)(nil),         // 36: dnf.v1.AdventureUnionLevelRewardRequest
+	(*AdventureUnionLevelRewardResponse)(nil),        // 37: dnf.v1.AdventureUnionLevelRewardResponse
 }
 var file_dnf_v1_adventure_proto_depIdxs = []int32{
-	2,  // 0: dnf.v1.AdventureAutoSearch.rewards:type_name -> dnf.v1.AdventureReapReward
-	4,  // 1: dnf.v1.AdventureBookInfo.conditions:type_name -> dnf.v1.AdventureBookCondition
-	5,  // 2: dnf.v1.AdventureBookInfo.rewards:type_name -> dnf.v1.AdventureBookReward
-	7,  // 3: dnf.v1.AdventureDataResponse.data:type_name -> dnf.v1.AdventureData
-	1,  // 4: dnf.v1.AdventureReapInfoResponse.reaps:type_name -> dnf.v1.AdventureReapInfo
-	2,  // 5: dnf.v1.AdventureReapRewardResponse.rewards:type_name -> dnf.v1.AdventureReapReward
-	0,  // 6: dnf.v1.AdventureStorageListResponse.items:type_name -> dnf.v1.AdventureStorageItem
-	3,  // 7: dnf.v1.AdventureAutoSearchResponse.search:type_name -> dnf.v1.AdventureAutoSearch
-	2,  // 8: dnf.v1.AdventureAutoSearchRewardResponse.rewards:type_name -> dnf.v1.AdventureReapReward
-	6,  // 9: dnf.v1.AdventureBookInfoResponse.books:type_name -> dnf.v1.AdventureBookInfo
-	5,  // 10: dnf.v1.AdventureBookSpecialRewardResponse.reward:type_name -> dnf.v1.AdventureBookReward
-	5,  // 11: dnf.v1.AdventureBookTeraRewardResponse.rewards:type_name -> dnf.v1.AdventureBookReward
-	4,  // 12: dnf.v1.AdventureBookUpdateConditionResponse.condition:type_name -> dnf.v1.AdventureBookCondition
-	13, // [13:13] is the sub-list for method output_type
-	13, // [13:13] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	2,  // 0: dnf.v1.AdventureUnionInfoResponse.expedition:type_name -> dnf.v1.AdventureUnionExpedition
+	2,  // 1: dnf.v1.AdventureUnionInfoResponse.expeditions:type_name -> dnf.v1.AdventureUnionExpedition
+	3,  // 2: dnf.v1.AdventureUnionInfoResponse.collections:type_name -> dnf.v1.AdventureUnionCollection
+	4,  // 3: dnf.v1.AdventureUnionInfoResponse.collectionslots:type_name -> dnf.v1.AdventureUnionCollectionSlot
+	5,  // 4: dnf.v1.AdventureUnionInfoResponse.shareboardslotlist:type_name -> dnf.v1.AdventureUnionShareboardSlot
+	6,  // 5: dnf.v1.AdventureUnionInfoResponse.shareboardbackgroundlist:type_name -> dnf.v1.AdventureUnionShareboardBackground
+	7,  // 6: dnf.v1.AdventureUnionInfoResponse.shareboardframelist:type_name -> dnf.v1.AdventureUnionShareboardFrame
+	8,  // 7: dnf.v1.AdventureUnionInfoResponse.levelrewards:type_name -> dnf.v1.AdventureUnionLevelReward
+	29, // 8: dnf.v1.AdventureReapInfoResponse.rewards:type_name -> dnf.v1.ReapReward
+	9,  // [9:9] is the sub-list for method output_type
+	9,  // [9:9] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_dnf_v1_adventure_proto_init() }
@@ -2155,7 +2392,7 @@ func file_dnf_v1_adventure_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dnf_v1_adventure_proto_rawDesc), len(file_dnf_v1_adventure_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   28,
+			NumMessages:   38,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

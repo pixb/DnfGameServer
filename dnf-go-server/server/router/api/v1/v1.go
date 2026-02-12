@@ -161,6 +161,12 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/auction/bid", s.handleBidAuction)
 	apiGroup.POST("/auction/buyout", s.handleBuyoutAuction)
 
+	// 成就路由
+	apiGroup.POST("/achievement/info", s.handleAchievementInfo)
+	apiGroup.POST("/achievement/reward", s.handleAchievementReward)
+	apiGroup.POST("/achievement/list", s.handleAchievementList)
+	apiGroup.POST("/achievement/bonus_reward", s.handleAchievementBonusReward)
+
 	return nil
 }
 

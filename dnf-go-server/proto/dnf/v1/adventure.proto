@@ -2,230 +2,219 @@ syntax = "proto3";
 
 package dnf.v1;
 
-// Go代码生成选项
-option go_package = "github.com/pixb/DnfGameServer/dnf-go-client/gen/dnf/v1;dnfv1";
+option java_multiple_files = true;
+option java_outer_classname = "AdventureProto";
+option java_package = "com.dnfm.mina.protobuf";
+option go_package = "dnf/v1";
 
-// Java代码生成选项（重要）
-option java_multiple_files = true;  // 为每个消息生成独立的Java文件
-option java_package = "com.dnfm.mina.protobuf.generated";  // 指定Java包名
-option java_outer_classname = "AdventureProto";  // 指定外层类名
+import "google/api/annotations.proto";
 
-// 冒险存储物品
-message AdventureStorageItem {
-  int32 item_id = 1;         // 物品ID
-  int32 count = 2;            // 数量
-  bool is_bound = 3;          // 是否绑定
-  int64 storage_time = 4;     // 存储时间
+message AdventureUnionInfoRequest {
 }
 
-// 冒险收获信息
-message AdventureReapInfo {
-  int32 reap_id = 1;          // 收获ID
-  int32 progress = 2;         // 进度
-  int32 total = 3;            // 总数
-  bool is_completed = 4;      // 是否完成
-  int64 start_time = 5;       // 开始时间
-  int64 end_time = 6;         // 结束时间
+message AdventureUnionInfoResponse {
+  int32 error = 1;
+  uint64 exp = 2;
+  uint32 level = 3;
+  uint32 day = 4;
+  uint64 typicalcharacterguid = 5;
+  string name = 6;
+  uint64 updatetime = 7;
+  uint64 lastchangenametime = 8;
+  AdventureUnionExpedition expedition = 9;
+  repeated AdventureUnionExpedition expeditions = 10;
+  repeated AdventureUnionCollection collections = 11;
+  repeated AdventureUnionCollectionSlot collectionslots = 12;
+  uint32 shareboardbackground = 13;
+  uint32 shareboardframe = 14;
+  repeated AdventureUnionShareboardSlot shareboardslotlist = 15;
+  repeated AdventureUnionShareboardBackground shareboardbackgroundlist = 16;
+  repeated AdventureUnionShareboardFrame shareboardframelist = 17;
+  bool shareboardshowantievilscore = 18;
+  uint32 autosearchcount = 19;
+  repeated uint32 receivedcollectionrewards = 20;
+  repeated AdventureUnionLevelReward levelrewards = 21;
+  uint32 shareboardtotalantievilscore = 22;
+  bool shareboardantievilscorerefresh = 23;
+  bool isadventureCondition = 24;
 }
 
-// 冒险收获奖励
-message AdventureReapReward {
-  int32 reward_id = 1;        // 奖励ID
-  int32 type = 2;             // 奖励类型
-  int32 amount = 3;           // 奖励数量
-  bool is_claimed = 4;        // 是否已领取
+message AdventureUnionExpedition {
+  uint32 expedition_id = 1;
+  uint32 expedition_type = 2;
+  uint32 status = 3;
+  uint64 start_time = 4;
+  uint64 end_time = 5;
 }
 
-// 冒险自动搜索
-message AdventureAutoSearch {
-  int32 search_id = 1;        // 搜索ID
-  int32 duration = 2;          // 持续时间（分钟）
-  int32 progress = 3;          // 进度
-  bool is_completed = 4;       // 是否完成
-  int64 start_time = 5;        // 开始时间
-  int64 end_time = 6;          // 结束时间
-  repeated AdventureReapReward rewards = 7;  // 奖励列表
+message AdventureUnionCollection {
+  uint32 collection_id = 1;
+  uint32 progress = 2;
+  bool completed = 3;
 }
 
-// 冒险书条件
-message AdventureBookCondition {
-  int32 condition_id = 1;     // 条件ID
-  int32 current = 2;           // 当前值
-  int32 target = 3;            // 目标值
-  bool is_completed = 4;       // 是否完成
+message AdventureUnionCollectionSlot {
+  uint32 slot_id = 1;
+  uint32 slot_type = 2;
 }
 
-// 冒险书奖励
-message AdventureBookReward {
-  int32 reward_id = 1;         // 奖励ID
-  int32 type = 2;              // 奖励类型
-  int32 amount = 3;            // 奖励数量
-  bool is_claimed = 4;         // 是否已领取
+message AdventureUnionShareboardSlot {
+  uint32 slot_id = 1;
+  uint32 slot_type = 2;
+  uint32 item_id = 3;
+  uint32 item_count = 4;
+  bool show = 5;
 }
 
-// 冒险书信息
-message AdventureBookInfo {
-  int32 book_id = 1;           // 冒险书ID
-  string name = 2;             // 冒险书名称
-  int32 level = 3;             // 等级
-  int32 experience = 4;        // 经验值
-  repeated AdventureBookCondition conditions = 5;  // 条件列表
-  repeated AdventureBookReward rewards = 6;        // 奖励列表
+message AdventureUnionShareboardBackground {
+  uint32 background_id = 1;
+  string name = 2;
 }
 
-// 冒险数据
-message AdventureData {
-  int32 adventure_level = 1;    // 冒险等级
-  int32 adventure_exp = 2;      // 冒险经验
-  int32 energy = 3;             // 能量值
-  int32 max_energy = 4;         // 最大能量值
-  int64 last_energy_recovery = 5;  // 上次能量恢复时间
+message AdventureUnionShareboardFrame {
+  uint32 frame_id = 1;
+  string name = 2;
 }
 
-// 冒险数据请求
-message AdventureDataRequest {
-  int32 character_id = 1;       // 角色ID
+message AdventureUnionLevelReward {
+  uint32 level = 1;
+  uint32 reward_type = 2;
+  uint32 reward_index = 3;
+  uint32 reward_count = 4;
+  bool claimed = 5;
 }
 
-// 冒险数据响应
-message AdventureDataResponse {
-  int32 error = 1;              // 错误码
-  int32 character_id = 2;       // 角色ID
-  AdventureData data = 3;       // 冒险数据
+message AdventureUnionNameChangeRequest {
+  string field_1 = 1;
 }
 
-// 冒险收获信息请求
+message AdventureUnionNameChangeResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message AdventureUnionExpeditionStartRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+}
+
+message AdventureUnionExpeditionStartResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message AdventureUnionExpeditionCancelRequest {
+  int32 field_1 = 1;
+}
+
+message AdventureUnionExpeditionCancelResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message AdventureUnionExpeditionRewardRequest {
+  int32 field_1 = 1;
+}
+
+message AdventureUnionExpeditionRewardResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message AdventureUnionSubdueInfoRequest {
+}
+
+message AdventureUnionSubdueInfoResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message AdventureUnionSubdueStartRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  uint64 field_3 = 3;
+}
+
+message AdventureUnionSubdueStartResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message AdventureUnionSubdueRewardRequest {
+  int32 field_1 = 1;
+}
+
+message AdventureUnionSubdueRewardResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message AdventureUnionOpenShareboardSlotRequest {
+  int32 field_1 = 1;
+}
+
+message AdventureUnionOpenShareboardSlotResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message AdventureUnionSetShareboardRequest {
+  int32 field_1 = 1;
+  int32 field_2 = 2;
+  bool field_4 = 4;
+}
+
+message AdventureUnionSetShareboardResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
 message AdventureReapInfoRequest {
-  int32 character_id = 1;       // 角色ID
 }
 
-// 冒险收获信息响应
 message AdventureReapInfoResponse {
-  int32 error = 1;              // 错误码
-  int32 character_id = 2;       // 角色ID
-  repeated AdventureReapInfo reaps = 3;  // 收获信息列表
+  repeated ReapReward rewards = 1;
+  uint64 starttime = 2;
+  int32 error = 3;
 }
 
-// 冒险收获奖励请求
+message ReapReward {
+  uint32 reward_type = 1;
+  uint32 reward_index = 2;
+  uint32 reward_count = 3;
+}
+
 message AdventureReapRewardRequest {
-  int32 character_id = 1;       // 角色ID
-  int32 reap_id = 2;            // 收获ID
+  int32 field_1 = 1;
 }
 
-// 冒险收获奖励响应
 message AdventureReapRewardResponse {
-  int32 error = 1;              // 错误码
-  int32 character_id = 2;       // 角色ID
-  int32 reap_id = 3;            // 收获ID
-  bool is_success = 4;          // 是否成功
-  repeated AdventureReapReward rewards = 5;  // 奖励列表
+  int32 error = 1;
+  uint64 transId = 2;
 }
 
-// 冒险存储列表请求
-message AdventureStorageListRequest {
-  int32 character_id = 1;       // 角色ID
-  int32 page = 2;               // 页码
-  int32 page_size = 3;          // 每页数量
+message AdventureUnionSearchStartRequest {
 }
 
-// 冒险存储列表响应
-message AdventureStorageListResponse {
-  int32 error = 1;              // 错误码
-  int32 character_id = 2;       // 角色ID
-  int32 total = 3;              // 总数量
-  int32 page = 4;               // 当前页码
-  int32 page_size = 5;          // 每页数量
-  repeated AdventureStorageItem items = 6;  // 存储物品列表
+message AdventureUnionSearchStartResponse {
+  int32 error = 1;
+  uint64 transId = 2;
 }
 
-// 冒险自动搜索请求
-message AdventureAutoSearchRequest {
-  int32 character_id = 1;       // 角色ID
-  int32 duration = 2;           // 持续时间（分钟）
+message AdventureUnionCollectionRewardRequest {
+  int32 field_1 = 1;
 }
 
-// 冒险自动搜索响应
-message AdventureAutoSearchResponse {
-  int32 error = 1;              // 错误码
-  int32 character_id = 2;       // 角色ID
-  bool is_success = 3;          // 是否成功
-  AdventureAutoSearch search = 4;  // 自动搜索信息
+message AdventureUnionCollectionRewardResponse {
+  int32 error = 1;
+  uint64 transId = 2;
 }
 
-// 冒险自动搜索奖励请求
-message AdventureAutoSearchRewardRequest {
-  int32 character_id = 1;       // 角色ID
-  int32 search_id = 2;          // 搜索ID
+message AdventureUnionLevelRewardRequest {
+  int32 field_1 = 1;
 }
 
-// 冒险自动搜索奖励响应
-message AdventureAutoSearchRewardResponse {
-  int32 error = 1;              // 错误码
-  int32 character_id = 2;       // 角色ID
-  int32 search_id = 3;          // 搜索ID
-  bool is_success = 4;          // 是否成功
-  repeated AdventureReapReward rewards = 5;  // 奖励列表
-}
-
-// 冒险书信息请求
-message AdventureBookInfoRequest {
-  int32 character_id = 1;       // 角色ID
-  int32 book_id = 2;            // 冒险书ID（0表示所有）
-}
-
-// 冒险书信息响应
-message AdventureBookInfoResponse {
-  int32 error = 1;              // 错误码
-  int32 character_id = 2;       // 角色ID
-  repeated AdventureBookInfo books = 3;  // 冒险书列表
-}
-
-// 冒险书特殊奖励请求
-message AdventureBookSpecialRewardRequest {
-  int32 character_id = 1;       // 角色ID
-  int32 book_id = 2;            // 冒险书ID
-  int32 reward_id = 3;          // 奖励ID
-}
-
-// 冒险书特殊奖励响应
-message AdventureBookSpecialRewardResponse {
-  int32 error = 1;              // 错误码
-  int32 character_id = 2;       // 角色ID
-  int32 book_id = 3;            // 冒险书ID
-  int32 reward_id = 4;          // 奖励ID
-  bool is_success = 5;          // 是否成功
-  AdventureBookReward reward = 6;  // 奖励信息
-}
-
-// 冒险书泰拉奖励请求
-message AdventureBookTeraRewardRequest {
-  int32 character_id = 1;       // 角色ID
-  int32 book_id = 2;            // 冒险书ID
-}
-
-// 冒险书泰拉奖励响应
-message AdventureBookTeraRewardResponse {
-  int32 error = 1;              // 错误码
-  int32 character_id = 2;       // 角色ID
-  int32 book_id = 3;            // 冒险书ID
-  bool is_success = 4;          // 是否成功
-  repeated AdventureBookReward rewards = 5;  // 奖励列表
-}
-
-// 冒险书条件更新请求
-message AdventureBookUpdateConditionRequest {
-  int32 character_id = 1;       // 角色ID
-  int32 book_id = 2;            // 冒险书ID
-  int32 condition_id = 3;       // 条件ID
-  int32 value = 4;              // 更新值
-}
-
-// 冒险书条件更新响应
-message AdventureBookUpdateConditionResponse {
-  int32 error = 1;              // 错误码
-  int32 character_id = 2;       // 角色ID
-  int32 book_id = 3;            // 冒险书ID
-  int32 condition_id = 4;       // 条件ID
-  bool is_success = 5;          // 是否成功
-  AdventureBookCondition condition = 6;  // 更新后的条件
+message AdventureUnionLevelRewardResponse {
+  int32 error = 1;
+  uint64 transId = 2;
 }

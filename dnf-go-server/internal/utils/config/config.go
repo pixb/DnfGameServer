@@ -31,6 +31,7 @@ type ServerConfig struct {
 // DatabaseConfig 数据库配置
 type DatabaseConfig struct {
 	Driver          string `mapstructure:"driver"`
+	DSN             string `mapstructure:"dsn"`
 	Host            string `mapstructure:"host"`
 	Port            int    `mapstructure:"port"`
 	Username        string `mapstructure:"username"`
@@ -136,6 +137,9 @@ func GetConfig() *Config {
 
 // GetDSN 获取数据库连接字符串
 func (d *DatabaseConfig) GetDSN() string {
+	if d.DSN != "" {
+		return d.DSN
+	}
 	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		d.Username, d.Password, d.Host, d.Port, d.Database)
 }
