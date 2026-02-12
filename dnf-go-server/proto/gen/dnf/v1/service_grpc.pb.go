@@ -1704,10 +1704,28 @@ var GameService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	AuthService_Login_FullMethodName            = "/dnf.v1.AuthService/Login"
-	AuthService_CreateCharacter_FullMethodName  = "/dnf.v1.AuthService/CreateCharacter"
-	AuthService_GetCharacterList_FullMethodName = "/dnf.v1.AuthService/GetCharacterList"
-	AuthService_SelectCharacter_FullMethodName  = "/dnf.v1.AuthService/SelectCharacter"
+	AuthService_Login_FullMethodName                       = "/dnf.v1.AuthService/Login"
+	AuthService_CreateCharacter_FullMethodName             = "/dnf.v1.AuthService/CreateCharacter"
+	AuthService_GetCharacterList_FullMethodName            = "/dnf.v1.AuthService/GetCharacterList"
+	AuthService_SelectCharacter_FullMethodName             = "/dnf.v1.AuthService/SelectCharacter"
+	AuthService_MultiPlayRequestMatch_FullMethodName       = "/dnf.v1.AuthService/MultiPlayRequestMatch"
+	AuthService_MultiPlayRequestMatchCancel_FullMethodName = "/dnf.v1.AuthService/MultiPlayRequestMatchCancel"
+	AuthService_HistoricSiteNoti_FullMethodName            = "/dnf.v1.AuthService/HistoricSiteNoti"
+	AuthService_LoadGuildDonationInfo_FullMethodName       = "/dnf.v1.AuthService/LoadGuildDonationInfo"
+	AuthService_DreamMazeBasicInfo_FullMethodName          = "/dnf.v1.AuthService/DreamMazeBasicInfo"
+	AuthService_RaidEntranceCount_FullMethodName           = "/dnf.v1.AuthService/RaidEntranceCount"
+	AuthService_LoadingProgress_FullMethodName             = "/dnf.v1.AuthService/LoadingProgress"
+	AuthService_ReturnToTownAtMultiPlay_FullMethodName     = "/dnf.v1.AuthService/ReturnToTownAtMultiPlay"
+	AuthService_CustomGameRoomSetting_FullMethodName       = "/dnf.v1.AuthService/CustomGameRoomSetting"
+	AuthService_PvpRecord_FullMethodName                   = "/dnf.v1.AuthService/PvpRecord"
+	AuthService_PvpRanking_FullMethodName                  = "/dnf.v1.AuthService/PvpRanking"
+	AuthService_PvpStats_FullMethodName                    = "/dnf.v1.AuthService/PvpStats"
+	AuthService_PvpMatchHistory_FullMethodName             = "/dnf.v1.AuthService/PvpMatchHistory"
+	AuthService_PvpSeasonInfo_FullMethodName               = "/dnf.v1.AuthService/PvpSeasonInfo"
+	AuthService_PvpReward_FullMethodName                   = "/dnf.v1.AuthService/PvpReward"
+	AuthService_PvpDailyReset_FullMethodName               = "/dnf.v1.AuthService/PvpDailyReset"
+	AuthService_PvpMatchTypes_FullMethodName               = "/dnf.v1.AuthService/PvpMatchTypes"
+	AuthService_PvpBattleResult_FullMethodName             = "/dnf.v1.AuthService/PvpBattleResult"
 )
 
 // AuthServiceClient is the client API for AuthService service.
@@ -1720,6 +1738,25 @@ type AuthServiceClient interface {
 	CreateCharacter(ctx context.Context, in *CreateCharacterRequest, opts ...grpc.CallOption) (*CreateCharacterResponse, error)
 	GetCharacterList(ctx context.Context, in *CharacterListRequest, opts ...grpc.CallOption) (*CharacterListResponse, error)
 	SelectCharacter(ctx context.Context, in *SelectCharacterRequest, opts ...grpc.CallOption) (*SelectCharacterResponse, error)
+	// PK 相关
+	MultiPlayRequestMatch(ctx context.Context, in *MultiPlayRequestMatchRequest, opts ...grpc.CallOption) (*MultiPlayRequestMatchResponse, error)
+	MultiPlayRequestMatchCancel(ctx context.Context, in *MultiPlayRequestMatchCancelRequest, opts ...grpc.CallOption) (*MultiPlayRequestMatchCancelResponse, error)
+	HistoricSiteNoti(ctx context.Context, in *HistoricSiteNotiRequest, opts ...grpc.CallOption) (*HistoricSiteNotiResponse, error)
+	LoadGuildDonationInfo(ctx context.Context, in *LoadGuildDonationInfoRequest, opts ...grpc.CallOption) (*LoadGuildDonationInfoResponse, error)
+	DreamMazeBasicInfo(ctx context.Context, in *DreamMazeBasicInfoRequest, opts ...grpc.CallOption) (*DreamMazeBasicInfoResponse, error)
+	RaidEntranceCount(ctx context.Context, in *RaidEntranceCountRequest, opts ...grpc.CallOption) (*RaidEntranceCountResponse, error)
+	LoadingProgress(ctx context.Context, in *LoadingProgressRequest, opts ...grpc.CallOption) (*LoadingProgressResponse, error)
+	ReturnToTownAtMultiPlay(ctx context.Context, in *ReturnToTownAtMultiPlayRequest, opts ...grpc.CallOption) (*ReturnToTownAtMultiPlayResponse, error)
+	CustomGameRoomSetting(ctx context.Context, in *CustomGameRoomSettingRequest, opts ...grpc.CallOption) (*CustomGameRoomSettingResponse, error)
+	PvpRecord(ctx context.Context, in *PvpRecordRequest, opts ...grpc.CallOption) (*PvpRecordResponse, error)
+	PvpRanking(ctx context.Context, in *PvpRankingRequest, opts ...grpc.CallOption) (*PvpRankingResponse, error)
+	PvpStats(ctx context.Context, in *PvpStatsRequest, opts ...grpc.CallOption) (*PvpStatsResponse, error)
+	PvpMatchHistory(ctx context.Context, in *PvpMatchHistoryRequest, opts ...grpc.CallOption) (*PvpMatchHistoryResponse, error)
+	PvpSeasonInfo(ctx context.Context, in *PvpSeasonInfoRequest, opts ...grpc.CallOption) (*PvpSeasonInfoResponse, error)
+	PvpReward(ctx context.Context, in *PvpRewardRequest, opts ...grpc.CallOption) (*PvpRewardResponse, error)
+	PvpDailyReset(ctx context.Context, in *PvpDailyResetRequest, opts ...grpc.CallOption) (*PvpDailyResetResponse, error)
+	PvpMatchTypes(ctx context.Context, in *PvpMatchTypesRequest, opts ...grpc.CallOption) (*PvpMatchTypesResponse, error)
+	PvpBattleResult(ctx context.Context, in *PvpBattleResultRequest, opts ...grpc.CallOption) (*PvpBattleResultResponse, error)
 }
 
 type authServiceClient struct {
@@ -1770,6 +1807,186 @@ func (c *authServiceClient) SelectCharacter(ctx context.Context, in *SelectChara
 	return out, nil
 }
 
+func (c *authServiceClient) MultiPlayRequestMatch(ctx context.Context, in *MultiPlayRequestMatchRequest, opts ...grpc.CallOption) (*MultiPlayRequestMatchResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MultiPlayRequestMatchResponse)
+	err := c.cc.Invoke(ctx, AuthService_MultiPlayRequestMatch_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) MultiPlayRequestMatchCancel(ctx context.Context, in *MultiPlayRequestMatchCancelRequest, opts ...grpc.CallOption) (*MultiPlayRequestMatchCancelResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MultiPlayRequestMatchCancelResponse)
+	err := c.cc.Invoke(ctx, AuthService_MultiPlayRequestMatchCancel_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) HistoricSiteNoti(ctx context.Context, in *HistoricSiteNotiRequest, opts ...grpc.CallOption) (*HistoricSiteNotiResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HistoricSiteNotiResponse)
+	err := c.cc.Invoke(ctx, AuthService_HistoricSiteNoti_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) LoadGuildDonationInfo(ctx context.Context, in *LoadGuildDonationInfoRequest, opts ...grpc.CallOption) (*LoadGuildDonationInfoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LoadGuildDonationInfoResponse)
+	err := c.cc.Invoke(ctx, AuthService_LoadGuildDonationInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) DreamMazeBasicInfo(ctx context.Context, in *DreamMazeBasicInfoRequest, opts ...grpc.CallOption) (*DreamMazeBasicInfoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DreamMazeBasicInfoResponse)
+	err := c.cc.Invoke(ctx, AuthService_DreamMazeBasicInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) RaidEntranceCount(ctx context.Context, in *RaidEntranceCountRequest, opts ...grpc.CallOption) (*RaidEntranceCountResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RaidEntranceCountResponse)
+	err := c.cc.Invoke(ctx, AuthService_RaidEntranceCount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) LoadingProgress(ctx context.Context, in *LoadingProgressRequest, opts ...grpc.CallOption) (*LoadingProgressResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LoadingProgressResponse)
+	err := c.cc.Invoke(ctx, AuthService_LoadingProgress_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) ReturnToTownAtMultiPlay(ctx context.Context, in *ReturnToTownAtMultiPlayRequest, opts ...grpc.CallOption) (*ReturnToTownAtMultiPlayResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReturnToTownAtMultiPlayResponse)
+	err := c.cc.Invoke(ctx, AuthService_ReturnToTownAtMultiPlay_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) CustomGameRoomSetting(ctx context.Context, in *CustomGameRoomSettingRequest, opts ...grpc.CallOption) (*CustomGameRoomSettingResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CustomGameRoomSettingResponse)
+	err := c.cc.Invoke(ctx, AuthService_CustomGameRoomSetting_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) PvpRecord(ctx context.Context, in *PvpRecordRequest, opts ...grpc.CallOption) (*PvpRecordResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PvpRecordResponse)
+	err := c.cc.Invoke(ctx, AuthService_PvpRecord_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) PvpRanking(ctx context.Context, in *PvpRankingRequest, opts ...grpc.CallOption) (*PvpRankingResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PvpRankingResponse)
+	err := c.cc.Invoke(ctx, AuthService_PvpRanking_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) PvpStats(ctx context.Context, in *PvpStatsRequest, opts ...grpc.CallOption) (*PvpStatsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PvpStatsResponse)
+	err := c.cc.Invoke(ctx, AuthService_PvpStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) PvpMatchHistory(ctx context.Context, in *PvpMatchHistoryRequest, opts ...grpc.CallOption) (*PvpMatchHistoryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PvpMatchHistoryResponse)
+	err := c.cc.Invoke(ctx, AuthService_PvpMatchHistory_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) PvpSeasonInfo(ctx context.Context, in *PvpSeasonInfoRequest, opts ...grpc.CallOption) (*PvpSeasonInfoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PvpSeasonInfoResponse)
+	err := c.cc.Invoke(ctx, AuthService_PvpSeasonInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) PvpReward(ctx context.Context, in *PvpRewardRequest, opts ...grpc.CallOption) (*PvpRewardResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PvpRewardResponse)
+	err := c.cc.Invoke(ctx, AuthService_PvpReward_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) PvpDailyReset(ctx context.Context, in *PvpDailyResetRequest, opts ...grpc.CallOption) (*PvpDailyResetResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PvpDailyResetResponse)
+	err := c.cc.Invoke(ctx, AuthService_PvpDailyReset_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) PvpMatchTypes(ctx context.Context, in *PvpMatchTypesRequest, opts ...grpc.CallOption) (*PvpMatchTypesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PvpMatchTypesResponse)
+	err := c.cc.Invoke(ctx, AuthService_PvpMatchTypes_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) PvpBattleResult(ctx context.Context, in *PvpBattleResultRequest, opts ...grpc.CallOption) (*PvpBattleResultResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PvpBattleResultResponse)
+	err := c.cc.Invoke(ctx, AuthService_PvpBattleResult_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility.
@@ -1780,6 +1997,25 @@ type AuthServiceServer interface {
 	CreateCharacter(context.Context, *CreateCharacterRequest) (*CreateCharacterResponse, error)
 	GetCharacterList(context.Context, *CharacterListRequest) (*CharacterListResponse, error)
 	SelectCharacter(context.Context, *SelectCharacterRequest) (*SelectCharacterResponse, error)
+	// PK 相关
+	MultiPlayRequestMatch(context.Context, *MultiPlayRequestMatchRequest) (*MultiPlayRequestMatchResponse, error)
+	MultiPlayRequestMatchCancel(context.Context, *MultiPlayRequestMatchCancelRequest) (*MultiPlayRequestMatchCancelResponse, error)
+	HistoricSiteNoti(context.Context, *HistoricSiteNotiRequest) (*HistoricSiteNotiResponse, error)
+	LoadGuildDonationInfo(context.Context, *LoadGuildDonationInfoRequest) (*LoadGuildDonationInfoResponse, error)
+	DreamMazeBasicInfo(context.Context, *DreamMazeBasicInfoRequest) (*DreamMazeBasicInfoResponse, error)
+	RaidEntranceCount(context.Context, *RaidEntranceCountRequest) (*RaidEntranceCountResponse, error)
+	LoadingProgress(context.Context, *LoadingProgressRequest) (*LoadingProgressResponse, error)
+	ReturnToTownAtMultiPlay(context.Context, *ReturnToTownAtMultiPlayRequest) (*ReturnToTownAtMultiPlayResponse, error)
+	CustomGameRoomSetting(context.Context, *CustomGameRoomSettingRequest) (*CustomGameRoomSettingResponse, error)
+	PvpRecord(context.Context, *PvpRecordRequest) (*PvpRecordResponse, error)
+	PvpRanking(context.Context, *PvpRankingRequest) (*PvpRankingResponse, error)
+	PvpStats(context.Context, *PvpStatsRequest) (*PvpStatsResponse, error)
+	PvpMatchHistory(context.Context, *PvpMatchHistoryRequest) (*PvpMatchHistoryResponse, error)
+	PvpSeasonInfo(context.Context, *PvpSeasonInfoRequest) (*PvpSeasonInfoResponse, error)
+	PvpReward(context.Context, *PvpRewardRequest) (*PvpRewardResponse, error)
+	PvpDailyReset(context.Context, *PvpDailyResetRequest) (*PvpDailyResetResponse, error)
+	PvpMatchTypes(context.Context, *PvpMatchTypesRequest) (*PvpMatchTypesResponse, error)
+	PvpBattleResult(context.Context, *PvpBattleResultRequest) (*PvpBattleResultResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -1801,6 +2037,60 @@ func (UnimplementedAuthServiceServer) GetCharacterList(context.Context, *Charact
 }
 func (UnimplementedAuthServiceServer) SelectCharacter(context.Context, *SelectCharacterRequest) (*SelectCharacterResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SelectCharacter not implemented")
+}
+func (UnimplementedAuthServiceServer) MultiPlayRequestMatch(context.Context, *MultiPlayRequestMatchRequest) (*MultiPlayRequestMatchResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method MultiPlayRequestMatch not implemented")
+}
+func (UnimplementedAuthServiceServer) MultiPlayRequestMatchCancel(context.Context, *MultiPlayRequestMatchCancelRequest) (*MultiPlayRequestMatchCancelResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method MultiPlayRequestMatchCancel not implemented")
+}
+func (UnimplementedAuthServiceServer) HistoricSiteNoti(context.Context, *HistoricSiteNotiRequest) (*HistoricSiteNotiResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method HistoricSiteNoti not implemented")
+}
+func (UnimplementedAuthServiceServer) LoadGuildDonationInfo(context.Context, *LoadGuildDonationInfoRequest) (*LoadGuildDonationInfoResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method LoadGuildDonationInfo not implemented")
+}
+func (UnimplementedAuthServiceServer) DreamMazeBasicInfo(context.Context, *DreamMazeBasicInfoRequest) (*DreamMazeBasicInfoResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DreamMazeBasicInfo not implemented")
+}
+func (UnimplementedAuthServiceServer) RaidEntranceCount(context.Context, *RaidEntranceCountRequest) (*RaidEntranceCountResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RaidEntranceCount not implemented")
+}
+func (UnimplementedAuthServiceServer) LoadingProgress(context.Context, *LoadingProgressRequest) (*LoadingProgressResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method LoadingProgress not implemented")
+}
+func (UnimplementedAuthServiceServer) ReturnToTownAtMultiPlay(context.Context, *ReturnToTownAtMultiPlayRequest) (*ReturnToTownAtMultiPlayResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ReturnToTownAtMultiPlay not implemented")
+}
+func (UnimplementedAuthServiceServer) CustomGameRoomSetting(context.Context, *CustomGameRoomSettingRequest) (*CustomGameRoomSettingResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CustomGameRoomSetting not implemented")
+}
+func (UnimplementedAuthServiceServer) PvpRecord(context.Context, *PvpRecordRequest) (*PvpRecordResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PvpRecord not implemented")
+}
+func (UnimplementedAuthServiceServer) PvpRanking(context.Context, *PvpRankingRequest) (*PvpRankingResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PvpRanking not implemented")
+}
+func (UnimplementedAuthServiceServer) PvpStats(context.Context, *PvpStatsRequest) (*PvpStatsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PvpStats not implemented")
+}
+func (UnimplementedAuthServiceServer) PvpMatchHistory(context.Context, *PvpMatchHistoryRequest) (*PvpMatchHistoryResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PvpMatchHistory not implemented")
+}
+func (UnimplementedAuthServiceServer) PvpSeasonInfo(context.Context, *PvpSeasonInfoRequest) (*PvpSeasonInfoResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PvpSeasonInfo not implemented")
+}
+func (UnimplementedAuthServiceServer) PvpReward(context.Context, *PvpRewardRequest) (*PvpRewardResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PvpReward not implemented")
+}
+func (UnimplementedAuthServiceServer) PvpDailyReset(context.Context, *PvpDailyResetRequest) (*PvpDailyResetResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PvpDailyReset not implemented")
+}
+func (UnimplementedAuthServiceServer) PvpMatchTypes(context.Context, *PvpMatchTypesRequest) (*PvpMatchTypesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PvpMatchTypes not implemented")
+}
+func (UnimplementedAuthServiceServer) PvpBattleResult(context.Context, *PvpBattleResultRequest) (*PvpBattleResultResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PvpBattleResult not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 func (UnimplementedAuthServiceServer) testEmbeddedByValue()                     {}
@@ -1895,6 +2185,330 @@ func _AuthService_SelectCharacter_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_MultiPlayRequestMatch_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MultiPlayRequestMatchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).MultiPlayRequestMatch(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_MultiPlayRequestMatch_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).MultiPlayRequestMatch(ctx, req.(*MultiPlayRequestMatchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_MultiPlayRequestMatchCancel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MultiPlayRequestMatchCancelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).MultiPlayRequestMatchCancel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_MultiPlayRequestMatchCancel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).MultiPlayRequestMatchCancel(ctx, req.(*MultiPlayRequestMatchCancelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_HistoricSiteNoti_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HistoricSiteNotiRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).HistoricSiteNoti(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_HistoricSiteNoti_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).HistoricSiteNoti(ctx, req.(*HistoricSiteNotiRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_LoadGuildDonationInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoadGuildDonationInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).LoadGuildDonationInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_LoadGuildDonationInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).LoadGuildDonationInfo(ctx, req.(*LoadGuildDonationInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_DreamMazeBasicInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DreamMazeBasicInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).DreamMazeBasicInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_DreamMazeBasicInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).DreamMazeBasicInfo(ctx, req.(*DreamMazeBasicInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_RaidEntranceCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RaidEntranceCountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).RaidEntranceCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_RaidEntranceCount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).RaidEntranceCount(ctx, req.(*RaidEntranceCountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_LoadingProgress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoadingProgressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).LoadingProgress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_LoadingProgress_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).LoadingProgress(ctx, req.(*LoadingProgressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_ReturnToTownAtMultiPlay_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReturnToTownAtMultiPlayRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).ReturnToTownAtMultiPlay(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_ReturnToTownAtMultiPlay_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).ReturnToTownAtMultiPlay(ctx, req.(*ReturnToTownAtMultiPlayRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_CustomGameRoomSetting_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CustomGameRoomSettingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).CustomGameRoomSetting(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_CustomGameRoomSetting_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).CustomGameRoomSetting(ctx, req.(*CustomGameRoomSettingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_PvpRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PvpRecordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).PvpRecord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_PvpRecord_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).PvpRecord(ctx, req.(*PvpRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_PvpRanking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PvpRankingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).PvpRanking(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_PvpRanking_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).PvpRanking(ctx, req.(*PvpRankingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_PvpStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PvpStatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).PvpStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_PvpStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).PvpStats(ctx, req.(*PvpStatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_PvpMatchHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PvpMatchHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).PvpMatchHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_PvpMatchHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).PvpMatchHistory(ctx, req.(*PvpMatchHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_PvpSeasonInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PvpSeasonInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).PvpSeasonInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_PvpSeasonInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).PvpSeasonInfo(ctx, req.(*PvpSeasonInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_PvpReward_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PvpRewardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).PvpReward(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_PvpReward_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).PvpReward(ctx, req.(*PvpRewardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_PvpDailyReset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PvpDailyResetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).PvpDailyReset(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_PvpDailyReset_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).PvpDailyReset(ctx, req.(*PvpDailyResetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_PvpMatchTypes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PvpMatchTypesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).PvpMatchTypes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_PvpMatchTypes_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).PvpMatchTypes(ctx, req.(*PvpMatchTypesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_PvpBattleResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PvpBattleResultRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).PvpBattleResult(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_PvpBattleResult_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).PvpBattleResult(ctx, req.(*PvpBattleResultRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1917,6 +2531,78 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SelectCharacter",
 			Handler:    _AuthService_SelectCharacter_Handler,
+		},
+		{
+			MethodName: "MultiPlayRequestMatch",
+			Handler:    _AuthService_MultiPlayRequestMatch_Handler,
+		},
+		{
+			MethodName: "MultiPlayRequestMatchCancel",
+			Handler:    _AuthService_MultiPlayRequestMatchCancel_Handler,
+		},
+		{
+			MethodName: "HistoricSiteNoti",
+			Handler:    _AuthService_HistoricSiteNoti_Handler,
+		},
+		{
+			MethodName: "LoadGuildDonationInfo",
+			Handler:    _AuthService_LoadGuildDonationInfo_Handler,
+		},
+		{
+			MethodName: "DreamMazeBasicInfo",
+			Handler:    _AuthService_DreamMazeBasicInfo_Handler,
+		},
+		{
+			MethodName: "RaidEntranceCount",
+			Handler:    _AuthService_RaidEntranceCount_Handler,
+		},
+		{
+			MethodName: "LoadingProgress",
+			Handler:    _AuthService_LoadingProgress_Handler,
+		},
+		{
+			MethodName: "ReturnToTownAtMultiPlay",
+			Handler:    _AuthService_ReturnToTownAtMultiPlay_Handler,
+		},
+		{
+			MethodName: "CustomGameRoomSetting",
+			Handler:    _AuthService_CustomGameRoomSetting_Handler,
+		},
+		{
+			MethodName: "PvpRecord",
+			Handler:    _AuthService_PvpRecord_Handler,
+		},
+		{
+			MethodName: "PvpRanking",
+			Handler:    _AuthService_PvpRanking_Handler,
+		},
+		{
+			MethodName: "PvpStats",
+			Handler:    _AuthService_PvpStats_Handler,
+		},
+		{
+			MethodName: "PvpMatchHistory",
+			Handler:    _AuthService_PvpMatchHistory_Handler,
+		},
+		{
+			MethodName: "PvpSeasonInfo",
+			Handler:    _AuthService_PvpSeasonInfo_Handler,
+		},
+		{
+			MethodName: "PvpReward",
+			Handler:    _AuthService_PvpReward_Handler,
+		},
+		{
+			MethodName: "PvpDailyReset",
+			Handler:    _AuthService_PvpDailyReset_Handler,
+		},
+		{
+			MethodName: "PvpMatchTypes",
+			Handler:    _AuthService_PvpMatchTypes_Handler,
+		},
+		{
+			MethodName: "PvpBattleResult",
+			Handler:    _AuthService_PvpBattleResult_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

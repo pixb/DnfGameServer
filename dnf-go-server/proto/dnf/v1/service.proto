@@ -12,6 +12,7 @@ import "dnf/v1/chat.proto";
 import "dnf/v1/shop.proto";
 import "dnf/v1/quest.proto";
 import "dnf/v1/guild.proto";
+import "dnf/v1/pk.proto";
 
 option go_package = "gen/dnf/v1";
 
@@ -105,6 +106,126 @@ service AuthService {
   rpc SelectCharacter(SelectCharacterRequest) returns (SelectCharacterResponse) {
     option (google.api.http) = {
       post: "/api/v1/character/select"
+      body: "*"
+    };
+  }
+
+  // PK 相关
+  rpc MultiPlayRequestMatch(MultiPlayRequestMatchRequest) returns (MultiPlayRequestMatchResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/pk/multi_play_request_match"
+      body: "*"
+    };
+  }
+
+  rpc MultiPlayRequestMatchCancel(MultiPlayRequestMatchCancelRequest) returns (MultiPlayRequestMatchCancelResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/pk/multi_play_request_match_cancel"
+      body: "*"
+    };
+  }
+
+  rpc HistoricSiteNoti(HistoricSiteNotiRequest) returns (HistoricSiteNotiResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/pk/historic_site_noti"
+      body: "*"
+    };
+  }
+
+  rpc LoadGuildDonationInfo(LoadGuildDonationInfoRequest) returns (LoadGuildDonationInfoResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/pk/load_guild_donation_info"
+      body: "*"
+    };
+  }
+
+  rpc DreamMazeBasicInfo(DreamMazeBasicInfoRequest) returns (DreamMazeBasicInfoResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/pk/dream_maze_basic_info"
+      body: "*"
+    };
+  }
+
+  rpc RaidEntranceCount(RaidEntranceCountRequest) returns (RaidEntranceCountResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/pk/raid_entrance_count"
+      body: "*"
+    };
+  }
+
+  rpc LoadingProgress(LoadingProgressRequest) returns (LoadingProgressResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/pk/loading_progress"
+      body: "*"
+    };
+  }
+
+  rpc ReturnToTownAtMultiPlay(ReturnToTownAtMultiPlayRequest) returns (ReturnToTownAtMultiPlayResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/pk/return_to_town"
+      body: "*"
+    };
+  }
+
+  rpc CustomGameRoomSetting(CustomGameRoomSettingRequest) returns (CustomGameRoomSettingResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/pk/custom_game_room_setting"
+      body: "*"
+    };
+  }
+
+  rpc PvpRecord(PvpRecordRequest) returns (PvpRecordResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/pk/record"
+    };
+  }
+
+  rpc PvpRanking(PvpRankingRequest) returns (PvpRankingResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/pk/ranking"
+    };
+  }
+
+  rpc PvpStats(PvpStatsRequest) returns (PvpStatsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/pk/stats"
+    };
+  }
+
+  rpc PvpMatchHistory(PvpMatchHistoryRequest) returns (PvpMatchHistoryResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/pk/match_history"
+    };
+  }
+
+  rpc PvpSeasonInfo(PvpSeasonInfoRequest) returns (PvpSeasonInfoResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/pk/season_info"
+    };
+  }
+
+  rpc PvpReward(PvpRewardRequest) returns (PvpRewardResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/pk/reward"
+    };
+  }
+
+  rpc PvpDailyReset(PvpDailyResetRequest) returns (PvpDailyResetResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/pk/daily_reset"
+      body: "*"
+    };
+  }
+
+  rpc PvpMatchTypes(PvpMatchTypesRequest) returns (PvpMatchTypesResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/pk/match_types"
+    };
+  }
+
+  rpc PvpBattleResult(PvpBattleResultRequest) returns (PvpBattleResultResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/pk/battle_result"
       body: "*"
     };
   }

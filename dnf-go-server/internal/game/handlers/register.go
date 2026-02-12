@@ -63,4 +63,24 @@ func RegisterAllHandlers(dispatcher *network.MessageDispatcher) {
 	dispatcher.RegisterHandler(10007, 8, GuildDonateHandler)        // 公会贡献
 	dispatcher.RegisterHandler(10007, 10, GetGuildSkillHandler)     // 获取公会技能
 	dispatcher.RegisterHandler(10007, 12, UpgradeGuildSkillHandler) // 升级公会技能
+
+	// ==================== PK 模块 (Module = 10008) ====================
+	dispatcher.RegisterHandler(10008, 0, MultiPlayRequestMatchHandler)      // 多人游戏请求匹配
+	dispatcher.RegisterHandler(10008, 2, MultiPlayRequestMatchCancelHandler) // 取消多人游戏请求匹配
+	dispatcher.RegisterHandler(10008, 4, HistoricSiteNotiHandler)          // 历史遗迹通知
+	dispatcher.RegisterHandler(10008, 6, LoadGuildDonationInfoHandler)      // 加载公会捐赠信息
+	dispatcher.RegisterHandler(10008, 8, DreamMazeBasicInfoHandler)         // 梦境迷宫基本信息
+	dispatcher.RegisterHandler(10008, 10, RaidEntranceCountHandler)          // 副本入场次数
+	dispatcher.RegisterHandler(10008, 12, LoadingProgressHandler)           // 加载进度
+	dispatcher.RegisterHandler(10008, 14, ReturnToTownAtMultiPlayHandler)   // 返回城镇
+	dispatcher.RegisterHandler(10008, 16, CustomGameRoomSettingHandler)    // 自定义游戏房间设置
+	dispatcher.RegisterHandler(10008, 20, PvpRecordHandler)                 // PK 记录
+	dispatcher.RegisterHandler(10008, 22, PvpRankingHandler)                // PK 排名
+	dispatcher.RegisterHandler(10008, 24, PvpStatsHandler)                  // PK 统计
+	dispatcher.RegisterHandler(10008, 26, PvpMatchHistoryHandler)           // PK 匹配历史
+	dispatcher.RegisterHandler(10008, 28, PvpSeasonInfoHandler)            // PK 赛季信息
+	dispatcher.RegisterHandler(10008, 30, PvpRewardHandler)                 // PK 奖励
+	dispatcher.RegisterHandler(10008, 32, PvpDailyResetHandler)             // PK 每日重置
+	dispatcher.RegisterHandler(10008, 34, PvpMatchTypesHandler)             // PK 匹配类型
+	dispatcher.RegisterHandler(10008, 36, PvpBattleResultHandler)           // PK 战斗结果
 }

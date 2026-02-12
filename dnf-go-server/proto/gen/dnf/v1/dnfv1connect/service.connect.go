@@ -152,6 +152,56 @@ const (
 	// AuthServiceSelectCharacterProcedure is the fully-qualified name of the AuthService's
 	// SelectCharacter RPC.
 	AuthServiceSelectCharacterProcedure = "/dnf.v1.AuthService/SelectCharacter"
+	// AuthServiceMultiPlayRequestMatchProcedure is the fully-qualified name of the AuthService's
+	// MultiPlayRequestMatch RPC.
+	AuthServiceMultiPlayRequestMatchProcedure = "/dnf.v1.AuthService/MultiPlayRequestMatch"
+	// AuthServiceMultiPlayRequestMatchCancelProcedure is the fully-qualified name of the AuthService's
+	// MultiPlayRequestMatchCancel RPC.
+	AuthServiceMultiPlayRequestMatchCancelProcedure = "/dnf.v1.AuthService/MultiPlayRequestMatchCancel"
+	// AuthServiceHistoricSiteNotiProcedure is the fully-qualified name of the AuthService's
+	// HistoricSiteNoti RPC.
+	AuthServiceHistoricSiteNotiProcedure = "/dnf.v1.AuthService/HistoricSiteNoti"
+	// AuthServiceLoadGuildDonationInfoProcedure is the fully-qualified name of the AuthService's
+	// LoadGuildDonationInfo RPC.
+	AuthServiceLoadGuildDonationInfoProcedure = "/dnf.v1.AuthService/LoadGuildDonationInfo"
+	// AuthServiceDreamMazeBasicInfoProcedure is the fully-qualified name of the AuthService's
+	// DreamMazeBasicInfo RPC.
+	AuthServiceDreamMazeBasicInfoProcedure = "/dnf.v1.AuthService/DreamMazeBasicInfo"
+	// AuthServiceRaidEntranceCountProcedure is the fully-qualified name of the AuthService's
+	// RaidEntranceCount RPC.
+	AuthServiceRaidEntranceCountProcedure = "/dnf.v1.AuthService/RaidEntranceCount"
+	// AuthServiceLoadingProgressProcedure is the fully-qualified name of the AuthService's
+	// LoadingProgress RPC.
+	AuthServiceLoadingProgressProcedure = "/dnf.v1.AuthService/LoadingProgress"
+	// AuthServiceReturnToTownAtMultiPlayProcedure is the fully-qualified name of the AuthService's
+	// ReturnToTownAtMultiPlay RPC.
+	AuthServiceReturnToTownAtMultiPlayProcedure = "/dnf.v1.AuthService/ReturnToTownAtMultiPlay"
+	// AuthServiceCustomGameRoomSettingProcedure is the fully-qualified name of the AuthService's
+	// CustomGameRoomSetting RPC.
+	AuthServiceCustomGameRoomSettingProcedure = "/dnf.v1.AuthService/CustomGameRoomSetting"
+	// AuthServicePvpRecordProcedure is the fully-qualified name of the AuthService's PvpRecord RPC.
+	AuthServicePvpRecordProcedure = "/dnf.v1.AuthService/PvpRecord"
+	// AuthServicePvpRankingProcedure is the fully-qualified name of the AuthService's PvpRanking RPC.
+	AuthServicePvpRankingProcedure = "/dnf.v1.AuthService/PvpRanking"
+	// AuthServicePvpStatsProcedure is the fully-qualified name of the AuthService's PvpStats RPC.
+	AuthServicePvpStatsProcedure = "/dnf.v1.AuthService/PvpStats"
+	// AuthServicePvpMatchHistoryProcedure is the fully-qualified name of the AuthService's
+	// PvpMatchHistory RPC.
+	AuthServicePvpMatchHistoryProcedure = "/dnf.v1.AuthService/PvpMatchHistory"
+	// AuthServicePvpSeasonInfoProcedure is the fully-qualified name of the AuthService's PvpSeasonInfo
+	// RPC.
+	AuthServicePvpSeasonInfoProcedure = "/dnf.v1.AuthService/PvpSeasonInfo"
+	// AuthServicePvpRewardProcedure is the fully-qualified name of the AuthService's PvpReward RPC.
+	AuthServicePvpRewardProcedure = "/dnf.v1.AuthService/PvpReward"
+	// AuthServicePvpDailyResetProcedure is the fully-qualified name of the AuthService's PvpDailyReset
+	// RPC.
+	AuthServicePvpDailyResetProcedure = "/dnf.v1.AuthService/PvpDailyReset"
+	// AuthServicePvpMatchTypesProcedure is the fully-qualified name of the AuthService's PvpMatchTypes
+	// RPC.
+	AuthServicePvpMatchTypesProcedure = "/dnf.v1.AuthService/PvpMatchTypes"
+	// AuthServicePvpBattleResultProcedure is the fully-qualified name of the AuthService's
+	// PvpBattleResult RPC.
+	AuthServicePvpBattleResultProcedure = "/dnf.v1.AuthService/PvpBattleResult"
 )
 
 // GameServiceClient is a client for the dnf.v1.GameService service.
@@ -1316,6 +1366,25 @@ type AuthServiceClient interface {
 	CreateCharacter(context.Context, *connect.Request[v1.CreateCharacterRequest]) (*connect.Response[v1.CreateCharacterResponse], error)
 	GetCharacterList(context.Context, *connect.Request[v1.CharacterListRequest]) (*connect.Response[v1.CharacterListResponse], error)
 	SelectCharacter(context.Context, *connect.Request[v1.SelectCharacterRequest]) (*connect.Response[v1.SelectCharacterResponse], error)
+	// PK 相关
+	MultiPlayRequestMatch(context.Context, *connect.Request[v1.MultiPlayRequestMatchRequest]) (*connect.Response[v1.MultiPlayRequestMatchResponse], error)
+	MultiPlayRequestMatchCancel(context.Context, *connect.Request[v1.MultiPlayRequestMatchCancelRequest]) (*connect.Response[v1.MultiPlayRequestMatchCancelResponse], error)
+	HistoricSiteNoti(context.Context, *connect.Request[v1.HistoricSiteNotiRequest]) (*connect.Response[v1.HistoricSiteNotiResponse], error)
+	LoadGuildDonationInfo(context.Context, *connect.Request[v1.LoadGuildDonationInfoRequest]) (*connect.Response[v1.LoadGuildDonationInfoResponse], error)
+	DreamMazeBasicInfo(context.Context, *connect.Request[v1.DreamMazeBasicInfoRequest]) (*connect.Response[v1.DreamMazeBasicInfoResponse], error)
+	RaidEntranceCount(context.Context, *connect.Request[v1.RaidEntranceCountRequest]) (*connect.Response[v1.RaidEntranceCountResponse], error)
+	LoadingProgress(context.Context, *connect.Request[v1.LoadingProgressRequest]) (*connect.Response[v1.LoadingProgressResponse], error)
+	ReturnToTownAtMultiPlay(context.Context, *connect.Request[v1.ReturnToTownAtMultiPlayRequest]) (*connect.Response[v1.ReturnToTownAtMultiPlayResponse], error)
+	CustomGameRoomSetting(context.Context, *connect.Request[v1.CustomGameRoomSettingRequest]) (*connect.Response[v1.CustomGameRoomSettingResponse], error)
+	PvpRecord(context.Context, *connect.Request[v1.PvpRecordRequest]) (*connect.Response[v1.PvpRecordResponse], error)
+	PvpRanking(context.Context, *connect.Request[v1.PvpRankingRequest]) (*connect.Response[v1.PvpRankingResponse], error)
+	PvpStats(context.Context, *connect.Request[v1.PvpStatsRequest]) (*connect.Response[v1.PvpStatsResponse], error)
+	PvpMatchHistory(context.Context, *connect.Request[v1.PvpMatchHistoryRequest]) (*connect.Response[v1.PvpMatchHistoryResponse], error)
+	PvpSeasonInfo(context.Context, *connect.Request[v1.PvpSeasonInfoRequest]) (*connect.Response[v1.PvpSeasonInfoResponse], error)
+	PvpReward(context.Context, *connect.Request[v1.PvpRewardRequest]) (*connect.Response[v1.PvpRewardResponse], error)
+	PvpDailyReset(context.Context, *connect.Request[v1.PvpDailyResetRequest]) (*connect.Response[v1.PvpDailyResetResponse], error)
+	PvpMatchTypes(context.Context, *connect.Request[v1.PvpMatchTypesRequest]) (*connect.Response[v1.PvpMatchTypesResponse], error)
+	PvpBattleResult(context.Context, *connect.Request[v1.PvpBattleResultRequest]) (*connect.Response[v1.PvpBattleResultResponse], error)
 }
 
 // NewAuthServiceClient constructs a client for the dnf.v1.AuthService service. By default, it uses
@@ -1353,15 +1422,141 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("SelectCharacter")),
 			connect.WithClientOptions(opts...),
 		),
+		multiPlayRequestMatch: connect.NewClient[v1.MultiPlayRequestMatchRequest, v1.MultiPlayRequestMatchResponse](
+			httpClient,
+			baseURL+AuthServiceMultiPlayRequestMatchProcedure,
+			connect.WithSchema(authServiceMethods.ByName("MultiPlayRequestMatch")),
+			connect.WithClientOptions(opts...),
+		),
+		multiPlayRequestMatchCancel: connect.NewClient[v1.MultiPlayRequestMatchCancelRequest, v1.MultiPlayRequestMatchCancelResponse](
+			httpClient,
+			baseURL+AuthServiceMultiPlayRequestMatchCancelProcedure,
+			connect.WithSchema(authServiceMethods.ByName("MultiPlayRequestMatchCancel")),
+			connect.WithClientOptions(opts...),
+		),
+		historicSiteNoti: connect.NewClient[v1.HistoricSiteNotiRequest, v1.HistoricSiteNotiResponse](
+			httpClient,
+			baseURL+AuthServiceHistoricSiteNotiProcedure,
+			connect.WithSchema(authServiceMethods.ByName("HistoricSiteNoti")),
+			connect.WithClientOptions(opts...),
+		),
+		loadGuildDonationInfo: connect.NewClient[v1.LoadGuildDonationInfoRequest, v1.LoadGuildDonationInfoResponse](
+			httpClient,
+			baseURL+AuthServiceLoadGuildDonationInfoProcedure,
+			connect.WithSchema(authServiceMethods.ByName("LoadGuildDonationInfo")),
+			connect.WithClientOptions(opts...),
+		),
+		dreamMazeBasicInfo: connect.NewClient[v1.DreamMazeBasicInfoRequest, v1.DreamMazeBasicInfoResponse](
+			httpClient,
+			baseURL+AuthServiceDreamMazeBasicInfoProcedure,
+			connect.WithSchema(authServiceMethods.ByName("DreamMazeBasicInfo")),
+			connect.WithClientOptions(opts...),
+		),
+		raidEntranceCount: connect.NewClient[v1.RaidEntranceCountRequest, v1.RaidEntranceCountResponse](
+			httpClient,
+			baseURL+AuthServiceRaidEntranceCountProcedure,
+			connect.WithSchema(authServiceMethods.ByName("RaidEntranceCount")),
+			connect.WithClientOptions(opts...),
+		),
+		loadingProgress: connect.NewClient[v1.LoadingProgressRequest, v1.LoadingProgressResponse](
+			httpClient,
+			baseURL+AuthServiceLoadingProgressProcedure,
+			connect.WithSchema(authServiceMethods.ByName("LoadingProgress")),
+			connect.WithClientOptions(opts...),
+		),
+		returnToTownAtMultiPlay: connect.NewClient[v1.ReturnToTownAtMultiPlayRequest, v1.ReturnToTownAtMultiPlayResponse](
+			httpClient,
+			baseURL+AuthServiceReturnToTownAtMultiPlayProcedure,
+			connect.WithSchema(authServiceMethods.ByName("ReturnToTownAtMultiPlay")),
+			connect.WithClientOptions(opts...),
+		),
+		customGameRoomSetting: connect.NewClient[v1.CustomGameRoomSettingRequest, v1.CustomGameRoomSettingResponse](
+			httpClient,
+			baseURL+AuthServiceCustomGameRoomSettingProcedure,
+			connect.WithSchema(authServiceMethods.ByName("CustomGameRoomSetting")),
+			connect.WithClientOptions(opts...),
+		),
+		pvpRecord: connect.NewClient[v1.PvpRecordRequest, v1.PvpRecordResponse](
+			httpClient,
+			baseURL+AuthServicePvpRecordProcedure,
+			connect.WithSchema(authServiceMethods.ByName("PvpRecord")),
+			connect.WithClientOptions(opts...),
+		),
+		pvpRanking: connect.NewClient[v1.PvpRankingRequest, v1.PvpRankingResponse](
+			httpClient,
+			baseURL+AuthServicePvpRankingProcedure,
+			connect.WithSchema(authServiceMethods.ByName("PvpRanking")),
+			connect.WithClientOptions(opts...),
+		),
+		pvpStats: connect.NewClient[v1.PvpStatsRequest, v1.PvpStatsResponse](
+			httpClient,
+			baseURL+AuthServicePvpStatsProcedure,
+			connect.WithSchema(authServiceMethods.ByName("PvpStats")),
+			connect.WithClientOptions(opts...),
+		),
+		pvpMatchHistory: connect.NewClient[v1.PvpMatchHistoryRequest, v1.PvpMatchHistoryResponse](
+			httpClient,
+			baseURL+AuthServicePvpMatchHistoryProcedure,
+			connect.WithSchema(authServiceMethods.ByName("PvpMatchHistory")),
+			connect.WithClientOptions(opts...),
+		),
+		pvpSeasonInfo: connect.NewClient[v1.PvpSeasonInfoRequest, v1.PvpSeasonInfoResponse](
+			httpClient,
+			baseURL+AuthServicePvpSeasonInfoProcedure,
+			connect.WithSchema(authServiceMethods.ByName("PvpSeasonInfo")),
+			connect.WithClientOptions(opts...),
+		),
+		pvpReward: connect.NewClient[v1.PvpRewardRequest, v1.PvpRewardResponse](
+			httpClient,
+			baseURL+AuthServicePvpRewardProcedure,
+			connect.WithSchema(authServiceMethods.ByName("PvpReward")),
+			connect.WithClientOptions(opts...),
+		),
+		pvpDailyReset: connect.NewClient[v1.PvpDailyResetRequest, v1.PvpDailyResetResponse](
+			httpClient,
+			baseURL+AuthServicePvpDailyResetProcedure,
+			connect.WithSchema(authServiceMethods.ByName("PvpDailyReset")),
+			connect.WithClientOptions(opts...),
+		),
+		pvpMatchTypes: connect.NewClient[v1.PvpMatchTypesRequest, v1.PvpMatchTypesResponse](
+			httpClient,
+			baseURL+AuthServicePvpMatchTypesProcedure,
+			connect.WithSchema(authServiceMethods.ByName("PvpMatchTypes")),
+			connect.WithClientOptions(opts...),
+		),
+		pvpBattleResult: connect.NewClient[v1.PvpBattleResultRequest, v1.PvpBattleResultResponse](
+			httpClient,
+			baseURL+AuthServicePvpBattleResultProcedure,
+			connect.WithSchema(authServiceMethods.ByName("PvpBattleResult")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // authServiceClient implements AuthServiceClient.
 type authServiceClient struct {
-	login            *connect.Client[v1.LoginRequest, v1.LoginResponse]
-	createCharacter  *connect.Client[v1.CreateCharacterRequest, v1.CreateCharacterResponse]
-	getCharacterList *connect.Client[v1.CharacterListRequest, v1.CharacterListResponse]
-	selectCharacter  *connect.Client[v1.SelectCharacterRequest, v1.SelectCharacterResponse]
+	login                       *connect.Client[v1.LoginRequest, v1.LoginResponse]
+	createCharacter             *connect.Client[v1.CreateCharacterRequest, v1.CreateCharacterResponse]
+	getCharacterList            *connect.Client[v1.CharacterListRequest, v1.CharacterListResponse]
+	selectCharacter             *connect.Client[v1.SelectCharacterRequest, v1.SelectCharacterResponse]
+	multiPlayRequestMatch       *connect.Client[v1.MultiPlayRequestMatchRequest, v1.MultiPlayRequestMatchResponse]
+	multiPlayRequestMatchCancel *connect.Client[v1.MultiPlayRequestMatchCancelRequest, v1.MultiPlayRequestMatchCancelResponse]
+	historicSiteNoti            *connect.Client[v1.HistoricSiteNotiRequest, v1.HistoricSiteNotiResponse]
+	loadGuildDonationInfo       *connect.Client[v1.LoadGuildDonationInfoRequest, v1.LoadGuildDonationInfoResponse]
+	dreamMazeBasicInfo          *connect.Client[v1.DreamMazeBasicInfoRequest, v1.DreamMazeBasicInfoResponse]
+	raidEntranceCount           *connect.Client[v1.RaidEntranceCountRequest, v1.RaidEntranceCountResponse]
+	loadingProgress             *connect.Client[v1.LoadingProgressRequest, v1.LoadingProgressResponse]
+	returnToTownAtMultiPlay     *connect.Client[v1.ReturnToTownAtMultiPlayRequest, v1.ReturnToTownAtMultiPlayResponse]
+	customGameRoomSetting       *connect.Client[v1.CustomGameRoomSettingRequest, v1.CustomGameRoomSettingResponse]
+	pvpRecord                   *connect.Client[v1.PvpRecordRequest, v1.PvpRecordResponse]
+	pvpRanking                  *connect.Client[v1.PvpRankingRequest, v1.PvpRankingResponse]
+	pvpStats                    *connect.Client[v1.PvpStatsRequest, v1.PvpStatsResponse]
+	pvpMatchHistory             *connect.Client[v1.PvpMatchHistoryRequest, v1.PvpMatchHistoryResponse]
+	pvpSeasonInfo               *connect.Client[v1.PvpSeasonInfoRequest, v1.PvpSeasonInfoResponse]
+	pvpReward                   *connect.Client[v1.PvpRewardRequest, v1.PvpRewardResponse]
+	pvpDailyReset               *connect.Client[v1.PvpDailyResetRequest, v1.PvpDailyResetResponse]
+	pvpMatchTypes               *connect.Client[v1.PvpMatchTypesRequest, v1.PvpMatchTypesResponse]
+	pvpBattleResult             *connect.Client[v1.PvpBattleResultRequest, v1.PvpBattleResultResponse]
 }
 
 // Login calls dnf.v1.AuthService.Login.
@@ -1384,12 +1579,121 @@ func (c *authServiceClient) SelectCharacter(ctx context.Context, req *connect.Re
 	return c.selectCharacter.CallUnary(ctx, req)
 }
 
+// MultiPlayRequestMatch calls dnf.v1.AuthService.MultiPlayRequestMatch.
+func (c *authServiceClient) MultiPlayRequestMatch(ctx context.Context, req *connect.Request[v1.MultiPlayRequestMatchRequest]) (*connect.Response[v1.MultiPlayRequestMatchResponse], error) {
+	return c.multiPlayRequestMatch.CallUnary(ctx, req)
+}
+
+// MultiPlayRequestMatchCancel calls dnf.v1.AuthService.MultiPlayRequestMatchCancel.
+func (c *authServiceClient) MultiPlayRequestMatchCancel(ctx context.Context, req *connect.Request[v1.MultiPlayRequestMatchCancelRequest]) (*connect.Response[v1.MultiPlayRequestMatchCancelResponse], error) {
+	return c.multiPlayRequestMatchCancel.CallUnary(ctx, req)
+}
+
+// HistoricSiteNoti calls dnf.v1.AuthService.HistoricSiteNoti.
+func (c *authServiceClient) HistoricSiteNoti(ctx context.Context, req *connect.Request[v1.HistoricSiteNotiRequest]) (*connect.Response[v1.HistoricSiteNotiResponse], error) {
+	return c.historicSiteNoti.CallUnary(ctx, req)
+}
+
+// LoadGuildDonationInfo calls dnf.v1.AuthService.LoadGuildDonationInfo.
+func (c *authServiceClient) LoadGuildDonationInfo(ctx context.Context, req *connect.Request[v1.LoadGuildDonationInfoRequest]) (*connect.Response[v1.LoadGuildDonationInfoResponse], error) {
+	return c.loadGuildDonationInfo.CallUnary(ctx, req)
+}
+
+// DreamMazeBasicInfo calls dnf.v1.AuthService.DreamMazeBasicInfo.
+func (c *authServiceClient) DreamMazeBasicInfo(ctx context.Context, req *connect.Request[v1.DreamMazeBasicInfoRequest]) (*connect.Response[v1.DreamMazeBasicInfoResponse], error) {
+	return c.dreamMazeBasicInfo.CallUnary(ctx, req)
+}
+
+// RaidEntranceCount calls dnf.v1.AuthService.RaidEntranceCount.
+func (c *authServiceClient) RaidEntranceCount(ctx context.Context, req *connect.Request[v1.RaidEntranceCountRequest]) (*connect.Response[v1.RaidEntranceCountResponse], error) {
+	return c.raidEntranceCount.CallUnary(ctx, req)
+}
+
+// LoadingProgress calls dnf.v1.AuthService.LoadingProgress.
+func (c *authServiceClient) LoadingProgress(ctx context.Context, req *connect.Request[v1.LoadingProgressRequest]) (*connect.Response[v1.LoadingProgressResponse], error) {
+	return c.loadingProgress.CallUnary(ctx, req)
+}
+
+// ReturnToTownAtMultiPlay calls dnf.v1.AuthService.ReturnToTownAtMultiPlay.
+func (c *authServiceClient) ReturnToTownAtMultiPlay(ctx context.Context, req *connect.Request[v1.ReturnToTownAtMultiPlayRequest]) (*connect.Response[v1.ReturnToTownAtMultiPlayResponse], error) {
+	return c.returnToTownAtMultiPlay.CallUnary(ctx, req)
+}
+
+// CustomGameRoomSetting calls dnf.v1.AuthService.CustomGameRoomSetting.
+func (c *authServiceClient) CustomGameRoomSetting(ctx context.Context, req *connect.Request[v1.CustomGameRoomSettingRequest]) (*connect.Response[v1.CustomGameRoomSettingResponse], error) {
+	return c.customGameRoomSetting.CallUnary(ctx, req)
+}
+
+// PvpRecord calls dnf.v1.AuthService.PvpRecord.
+func (c *authServiceClient) PvpRecord(ctx context.Context, req *connect.Request[v1.PvpRecordRequest]) (*connect.Response[v1.PvpRecordResponse], error) {
+	return c.pvpRecord.CallUnary(ctx, req)
+}
+
+// PvpRanking calls dnf.v1.AuthService.PvpRanking.
+func (c *authServiceClient) PvpRanking(ctx context.Context, req *connect.Request[v1.PvpRankingRequest]) (*connect.Response[v1.PvpRankingResponse], error) {
+	return c.pvpRanking.CallUnary(ctx, req)
+}
+
+// PvpStats calls dnf.v1.AuthService.PvpStats.
+func (c *authServiceClient) PvpStats(ctx context.Context, req *connect.Request[v1.PvpStatsRequest]) (*connect.Response[v1.PvpStatsResponse], error) {
+	return c.pvpStats.CallUnary(ctx, req)
+}
+
+// PvpMatchHistory calls dnf.v1.AuthService.PvpMatchHistory.
+func (c *authServiceClient) PvpMatchHistory(ctx context.Context, req *connect.Request[v1.PvpMatchHistoryRequest]) (*connect.Response[v1.PvpMatchHistoryResponse], error) {
+	return c.pvpMatchHistory.CallUnary(ctx, req)
+}
+
+// PvpSeasonInfo calls dnf.v1.AuthService.PvpSeasonInfo.
+func (c *authServiceClient) PvpSeasonInfo(ctx context.Context, req *connect.Request[v1.PvpSeasonInfoRequest]) (*connect.Response[v1.PvpSeasonInfoResponse], error) {
+	return c.pvpSeasonInfo.CallUnary(ctx, req)
+}
+
+// PvpReward calls dnf.v1.AuthService.PvpReward.
+func (c *authServiceClient) PvpReward(ctx context.Context, req *connect.Request[v1.PvpRewardRequest]) (*connect.Response[v1.PvpRewardResponse], error) {
+	return c.pvpReward.CallUnary(ctx, req)
+}
+
+// PvpDailyReset calls dnf.v1.AuthService.PvpDailyReset.
+func (c *authServiceClient) PvpDailyReset(ctx context.Context, req *connect.Request[v1.PvpDailyResetRequest]) (*connect.Response[v1.PvpDailyResetResponse], error) {
+	return c.pvpDailyReset.CallUnary(ctx, req)
+}
+
+// PvpMatchTypes calls dnf.v1.AuthService.PvpMatchTypes.
+func (c *authServiceClient) PvpMatchTypes(ctx context.Context, req *connect.Request[v1.PvpMatchTypesRequest]) (*connect.Response[v1.PvpMatchTypesResponse], error) {
+	return c.pvpMatchTypes.CallUnary(ctx, req)
+}
+
+// PvpBattleResult calls dnf.v1.AuthService.PvpBattleResult.
+func (c *authServiceClient) PvpBattleResult(ctx context.Context, req *connect.Request[v1.PvpBattleResultRequest]) (*connect.Response[v1.PvpBattleResultResponse], error) {
+	return c.pvpBattleResult.CallUnary(ctx, req)
+}
+
 // AuthServiceHandler is an implementation of the dnf.v1.AuthService service.
 type AuthServiceHandler interface {
 	Login(context.Context, *connect.Request[v1.LoginRequest]) (*connect.Response[v1.LoginResponse], error)
 	CreateCharacter(context.Context, *connect.Request[v1.CreateCharacterRequest]) (*connect.Response[v1.CreateCharacterResponse], error)
 	GetCharacterList(context.Context, *connect.Request[v1.CharacterListRequest]) (*connect.Response[v1.CharacterListResponse], error)
 	SelectCharacter(context.Context, *connect.Request[v1.SelectCharacterRequest]) (*connect.Response[v1.SelectCharacterResponse], error)
+	// PK 相关
+	MultiPlayRequestMatch(context.Context, *connect.Request[v1.MultiPlayRequestMatchRequest]) (*connect.Response[v1.MultiPlayRequestMatchResponse], error)
+	MultiPlayRequestMatchCancel(context.Context, *connect.Request[v1.MultiPlayRequestMatchCancelRequest]) (*connect.Response[v1.MultiPlayRequestMatchCancelResponse], error)
+	HistoricSiteNoti(context.Context, *connect.Request[v1.HistoricSiteNotiRequest]) (*connect.Response[v1.HistoricSiteNotiResponse], error)
+	LoadGuildDonationInfo(context.Context, *connect.Request[v1.LoadGuildDonationInfoRequest]) (*connect.Response[v1.LoadGuildDonationInfoResponse], error)
+	DreamMazeBasicInfo(context.Context, *connect.Request[v1.DreamMazeBasicInfoRequest]) (*connect.Response[v1.DreamMazeBasicInfoResponse], error)
+	RaidEntranceCount(context.Context, *connect.Request[v1.RaidEntranceCountRequest]) (*connect.Response[v1.RaidEntranceCountResponse], error)
+	LoadingProgress(context.Context, *connect.Request[v1.LoadingProgressRequest]) (*connect.Response[v1.LoadingProgressResponse], error)
+	ReturnToTownAtMultiPlay(context.Context, *connect.Request[v1.ReturnToTownAtMultiPlayRequest]) (*connect.Response[v1.ReturnToTownAtMultiPlayResponse], error)
+	CustomGameRoomSetting(context.Context, *connect.Request[v1.CustomGameRoomSettingRequest]) (*connect.Response[v1.CustomGameRoomSettingResponse], error)
+	PvpRecord(context.Context, *connect.Request[v1.PvpRecordRequest]) (*connect.Response[v1.PvpRecordResponse], error)
+	PvpRanking(context.Context, *connect.Request[v1.PvpRankingRequest]) (*connect.Response[v1.PvpRankingResponse], error)
+	PvpStats(context.Context, *connect.Request[v1.PvpStatsRequest]) (*connect.Response[v1.PvpStatsResponse], error)
+	PvpMatchHistory(context.Context, *connect.Request[v1.PvpMatchHistoryRequest]) (*connect.Response[v1.PvpMatchHistoryResponse], error)
+	PvpSeasonInfo(context.Context, *connect.Request[v1.PvpSeasonInfoRequest]) (*connect.Response[v1.PvpSeasonInfoResponse], error)
+	PvpReward(context.Context, *connect.Request[v1.PvpRewardRequest]) (*connect.Response[v1.PvpRewardResponse], error)
+	PvpDailyReset(context.Context, *connect.Request[v1.PvpDailyResetRequest]) (*connect.Response[v1.PvpDailyResetResponse], error)
+	PvpMatchTypes(context.Context, *connect.Request[v1.PvpMatchTypesRequest]) (*connect.Response[v1.PvpMatchTypesResponse], error)
+	PvpBattleResult(context.Context, *connect.Request[v1.PvpBattleResultRequest]) (*connect.Response[v1.PvpBattleResultResponse], error)
 }
 
 // NewAuthServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -1423,6 +1727,114 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(authServiceMethods.ByName("SelectCharacter")),
 		connect.WithHandlerOptions(opts...),
 	)
+	authServiceMultiPlayRequestMatchHandler := connect.NewUnaryHandler(
+		AuthServiceMultiPlayRequestMatchProcedure,
+		svc.MultiPlayRequestMatch,
+		connect.WithSchema(authServiceMethods.ByName("MultiPlayRequestMatch")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceMultiPlayRequestMatchCancelHandler := connect.NewUnaryHandler(
+		AuthServiceMultiPlayRequestMatchCancelProcedure,
+		svc.MultiPlayRequestMatchCancel,
+		connect.WithSchema(authServiceMethods.ByName("MultiPlayRequestMatchCancel")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceHistoricSiteNotiHandler := connect.NewUnaryHandler(
+		AuthServiceHistoricSiteNotiProcedure,
+		svc.HistoricSiteNoti,
+		connect.WithSchema(authServiceMethods.ByName("HistoricSiteNoti")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceLoadGuildDonationInfoHandler := connect.NewUnaryHandler(
+		AuthServiceLoadGuildDonationInfoProcedure,
+		svc.LoadGuildDonationInfo,
+		connect.WithSchema(authServiceMethods.ByName("LoadGuildDonationInfo")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceDreamMazeBasicInfoHandler := connect.NewUnaryHandler(
+		AuthServiceDreamMazeBasicInfoProcedure,
+		svc.DreamMazeBasicInfo,
+		connect.WithSchema(authServiceMethods.ByName("DreamMazeBasicInfo")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceRaidEntranceCountHandler := connect.NewUnaryHandler(
+		AuthServiceRaidEntranceCountProcedure,
+		svc.RaidEntranceCount,
+		connect.WithSchema(authServiceMethods.ByName("RaidEntranceCount")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceLoadingProgressHandler := connect.NewUnaryHandler(
+		AuthServiceLoadingProgressProcedure,
+		svc.LoadingProgress,
+		connect.WithSchema(authServiceMethods.ByName("LoadingProgress")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceReturnToTownAtMultiPlayHandler := connect.NewUnaryHandler(
+		AuthServiceReturnToTownAtMultiPlayProcedure,
+		svc.ReturnToTownAtMultiPlay,
+		connect.WithSchema(authServiceMethods.ByName("ReturnToTownAtMultiPlay")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceCustomGameRoomSettingHandler := connect.NewUnaryHandler(
+		AuthServiceCustomGameRoomSettingProcedure,
+		svc.CustomGameRoomSetting,
+		connect.WithSchema(authServiceMethods.ByName("CustomGameRoomSetting")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServicePvpRecordHandler := connect.NewUnaryHandler(
+		AuthServicePvpRecordProcedure,
+		svc.PvpRecord,
+		connect.WithSchema(authServiceMethods.ByName("PvpRecord")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServicePvpRankingHandler := connect.NewUnaryHandler(
+		AuthServicePvpRankingProcedure,
+		svc.PvpRanking,
+		connect.WithSchema(authServiceMethods.ByName("PvpRanking")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServicePvpStatsHandler := connect.NewUnaryHandler(
+		AuthServicePvpStatsProcedure,
+		svc.PvpStats,
+		connect.WithSchema(authServiceMethods.ByName("PvpStats")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServicePvpMatchHistoryHandler := connect.NewUnaryHandler(
+		AuthServicePvpMatchHistoryProcedure,
+		svc.PvpMatchHistory,
+		connect.WithSchema(authServiceMethods.ByName("PvpMatchHistory")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServicePvpSeasonInfoHandler := connect.NewUnaryHandler(
+		AuthServicePvpSeasonInfoProcedure,
+		svc.PvpSeasonInfo,
+		connect.WithSchema(authServiceMethods.ByName("PvpSeasonInfo")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServicePvpRewardHandler := connect.NewUnaryHandler(
+		AuthServicePvpRewardProcedure,
+		svc.PvpReward,
+		connect.WithSchema(authServiceMethods.ByName("PvpReward")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServicePvpDailyResetHandler := connect.NewUnaryHandler(
+		AuthServicePvpDailyResetProcedure,
+		svc.PvpDailyReset,
+		connect.WithSchema(authServiceMethods.ByName("PvpDailyReset")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServicePvpMatchTypesHandler := connect.NewUnaryHandler(
+		AuthServicePvpMatchTypesProcedure,
+		svc.PvpMatchTypes,
+		connect.WithSchema(authServiceMethods.ByName("PvpMatchTypes")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServicePvpBattleResultHandler := connect.NewUnaryHandler(
+		AuthServicePvpBattleResultProcedure,
+		svc.PvpBattleResult,
+		connect.WithSchema(authServiceMethods.ByName("PvpBattleResult")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/dnf.v1.AuthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AuthServiceLoginProcedure:
@@ -1433,6 +1845,42 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 			authServiceGetCharacterListHandler.ServeHTTP(w, r)
 		case AuthServiceSelectCharacterProcedure:
 			authServiceSelectCharacterHandler.ServeHTTP(w, r)
+		case AuthServiceMultiPlayRequestMatchProcedure:
+			authServiceMultiPlayRequestMatchHandler.ServeHTTP(w, r)
+		case AuthServiceMultiPlayRequestMatchCancelProcedure:
+			authServiceMultiPlayRequestMatchCancelHandler.ServeHTTP(w, r)
+		case AuthServiceHistoricSiteNotiProcedure:
+			authServiceHistoricSiteNotiHandler.ServeHTTP(w, r)
+		case AuthServiceLoadGuildDonationInfoProcedure:
+			authServiceLoadGuildDonationInfoHandler.ServeHTTP(w, r)
+		case AuthServiceDreamMazeBasicInfoProcedure:
+			authServiceDreamMazeBasicInfoHandler.ServeHTTP(w, r)
+		case AuthServiceRaidEntranceCountProcedure:
+			authServiceRaidEntranceCountHandler.ServeHTTP(w, r)
+		case AuthServiceLoadingProgressProcedure:
+			authServiceLoadingProgressHandler.ServeHTTP(w, r)
+		case AuthServiceReturnToTownAtMultiPlayProcedure:
+			authServiceReturnToTownAtMultiPlayHandler.ServeHTTP(w, r)
+		case AuthServiceCustomGameRoomSettingProcedure:
+			authServiceCustomGameRoomSettingHandler.ServeHTTP(w, r)
+		case AuthServicePvpRecordProcedure:
+			authServicePvpRecordHandler.ServeHTTP(w, r)
+		case AuthServicePvpRankingProcedure:
+			authServicePvpRankingHandler.ServeHTTP(w, r)
+		case AuthServicePvpStatsProcedure:
+			authServicePvpStatsHandler.ServeHTTP(w, r)
+		case AuthServicePvpMatchHistoryProcedure:
+			authServicePvpMatchHistoryHandler.ServeHTTP(w, r)
+		case AuthServicePvpSeasonInfoProcedure:
+			authServicePvpSeasonInfoHandler.ServeHTTP(w, r)
+		case AuthServicePvpRewardProcedure:
+			authServicePvpRewardHandler.ServeHTTP(w, r)
+		case AuthServicePvpDailyResetProcedure:
+			authServicePvpDailyResetHandler.ServeHTTP(w, r)
+		case AuthServicePvpMatchTypesProcedure:
+			authServicePvpMatchTypesHandler.ServeHTTP(w, r)
+		case AuthServicePvpBattleResultProcedure:
+			authServicePvpBattleResultHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -1456,4 +1904,76 @@ func (UnimplementedAuthServiceHandler) GetCharacterList(context.Context, *connec
 
 func (UnimplementedAuthServiceHandler) SelectCharacter(context.Context, *connect.Request[v1.SelectCharacterRequest]) (*connect.Response[v1.SelectCharacterResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.SelectCharacter is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) MultiPlayRequestMatch(context.Context, *connect.Request[v1.MultiPlayRequestMatchRequest]) (*connect.Response[v1.MultiPlayRequestMatchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.MultiPlayRequestMatch is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) MultiPlayRequestMatchCancel(context.Context, *connect.Request[v1.MultiPlayRequestMatchCancelRequest]) (*connect.Response[v1.MultiPlayRequestMatchCancelResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.MultiPlayRequestMatchCancel is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) HistoricSiteNoti(context.Context, *connect.Request[v1.HistoricSiteNotiRequest]) (*connect.Response[v1.HistoricSiteNotiResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.HistoricSiteNoti is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) LoadGuildDonationInfo(context.Context, *connect.Request[v1.LoadGuildDonationInfoRequest]) (*connect.Response[v1.LoadGuildDonationInfoResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.LoadGuildDonationInfo is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) DreamMazeBasicInfo(context.Context, *connect.Request[v1.DreamMazeBasicInfoRequest]) (*connect.Response[v1.DreamMazeBasicInfoResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.DreamMazeBasicInfo is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) RaidEntranceCount(context.Context, *connect.Request[v1.RaidEntranceCountRequest]) (*connect.Response[v1.RaidEntranceCountResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.RaidEntranceCount is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) LoadingProgress(context.Context, *connect.Request[v1.LoadingProgressRequest]) (*connect.Response[v1.LoadingProgressResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.LoadingProgress is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) ReturnToTownAtMultiPlay(context.Context, *connect.Request[v1.ReturnToTownAtMultiPlayRequest]) (*connect.Response[v1.ReturnToTownAtMultiPlayResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.ReturnToTownAtMultiPlay is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) CustomGameRoomSetting(context.Context, *connect.Request[v1.CustomGameRoomSettingRequest]) (*connect.Response[v1.CustomGameRoomSettingResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.CustomGameRoomSetting is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) PvpRecord(context.Context, *connect.Request[v1.PvpRecordRequest]) (*connect.Response[v1.PvpRecordResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.PvpRecord is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) PvpRanking(context.Context, *connect.Request[v1.PvpRankingRequest]) (*connect.Response[v1.PvpRankingResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.PvpRanking is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) PvpStats(context.Context, *connect.Request[v1.PvpStatsRequest]) (*connect.Response[v1.PvpStatsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.PvpStats is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) PvpMatchHistory(context.Context, *connect.Request[v1.PvpMatchHistoryRequest]) (*connect.Response[v1.PvpMatchHistoryResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.PvpMatchHistory is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) PvpSeasonInfo(context.Context, *connect.Request[v1.PvpSeasonInfoRequest]) (*connect.Response[v1.PvpSeasonInfoResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.PvpSeasonInfo is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) PvpReward(context.Context, *connect.Request[v1.PvpRewardRequest]) (*connect.Response[v1.PvpRewardResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.PvpReward is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) PvpDailyReset(context.Context, *connect.Request[v1.PvpDailyResetRequest]) (*connect.Response[v1.PvpDailyResetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.PvpDailyReset is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) PvpMatchTypes(context.Context, *connect.Request[v1.PvpMatchTypesRequest]) (*connect.Response[v1.PvpMatchTypesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.PvpMatchTypes is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) PvpBattleResult(context.Context, *connect.Request[v1.PvpBattleResultRequest]) (*connect.Response[v1.PvpBattleResultResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("dnf.v1.AuthService.PvpBattleResult is not implemented"))
 }

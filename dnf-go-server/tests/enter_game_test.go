@@ -159,7 +159,7 @@ func (s *EnterGameTestSuite) TestPing() {
 // TestEnterTown 测试进入城镇
 func (s *EnterGameTestSuite) TestEnterTown() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 进入城镇
 	enterTownResp, err := s.Client.Post("/api/v1/game/enter_town", map[string]interface{}{
@@ -179,7 +179,7 @@ func (s *EnterGameTestSuite) TestEnterTown() {
 // TestLeaveTown 测试离开城镇
 func (s *EnterGameTestSuite) TestLeaveTown() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 先进入城镇
 	enterTownResp, err := s.Client.Post("/api/v1/game/enter_town", map[string]interface{}{
@@ -204,7 +204,7 @@ func (s *EnterGameTestSuite) TestLeaveTown() {
 // TestDailyReset 测试每日重置
 func (s *EnterGameTestSuite) TestDailyReset() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 执行每日重置
 	dailyResetResp, err := s.Client.Post("/api/v1/game/daily_reset", map[string]interface{}{})
@@ -255,7 +255,7 @@ func (s *EnterGameTestSuite) TestInteractionMenu() {
 // TestNotTransactionCharacterState 测试非交易角色状态
 func (s *EnterGameTestSuite) TestNotTransactionCharacterState() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 获取非交易角色状态
 	stateResp, err := s.Client.Post("/api/v1/game/not_transaction_state", map[string]interface{}{
@@ -272,12 +272,12 @@ func (s *EnterGameTestSuite) TestNotTransactionCharacterState() {
 // TestPvpRecordInfo 测试 PVP 记录信息
 func (s *EnterGameTestSuite) TestPvpRecordInfo() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 获取 PVP 记录
 	pvpResp, err := s.Client.Post("/api/v1/game/pvp_record", map[string]interface{}{
 		"matchtype": uint32(1),
-		"transid":  uint32(1),
+		"transid":   uint32(1),
 	})
 	s.NoError(err)
 	s.NotNil(pvpResp)
@@ -291,7 +291,7 @@ func (s *EnterGameTestSuite) TestPvpRecordInfo() {
 // TestAdventureUnionSubdueInfo 测试冒险联盟讨伐信息
 func (s *EnterGameTestSuite) TestAdventureUnionSubdueInfo() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 获取冒险联盟讨伐信息
 	adventureResp, err := s.Client.Post("/api/v1/game/adventure_union_subdue", map[string]interface{}{
@@ -311,7 +311,7 @@ func (s *EnterGameTestSuite) TestAdventureUnionSubdueInfo() {
 // TestSendingInviteFriendList 测试发送邀请好友列表
 func (s *EnterGameTestSuite) TestSendingInviteFriendList() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 获取发送邀请的好友列表
 	friendListResp, err := s.Client.Post("/api/v1/game/sending_invite_friend_list", map[string]interface{}{
@@ -329,7 +329,7 @@ func (s *EnterGameTestSuite) TestSendingInviteFriendList() {
 // TestLoadServerSimpleData 测试加载服务器简单数据
 func (s *EnterGameTestSuite) TestLoadServerSimpleData() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 加载服务器简单数据
 	loadDataResp, err := s.Client.Post("/api/v1/game/load_server_simple_data", map[string]interface{}{
@@ -348,7 +348,7 @@ func (s *EnterGameTestSuite) TestLoadServerSimpleData() {
 // TestSaveServerSimpleData 测试保存服务器简单数据
 func (s *EnterGameTestSuite) TestSaveServerSimpleData() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 保存服务器简单数据
 	saveDataResp, err := s.Client.Post("/api/v1/game/save_server_simple_data", map[string]interface{}{
@@ -368,7 +368,7 @@ func (s *EnterGameTestSuite) TestSaveServerSimpleData() {
 // TestEnterChannel 测试进入频道
 func (s *EnterGameTestSuite) TestEnterChannel() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 进入频道
 	enterChannelResp, err := s.Client.Post("/api/v1/game/enter_channel", map[string]interface{}{
@@ -386,7 +386,7 @@ func (s *EnterGameTestSuite) TestEnterChannel() {
 // TestStandby 测试待机
 func (s *EnterGameTestSuite) TestStandby() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 待机
 	standbyResp, err := s.Client.Post("/api/v1/game/standby", map[string]interface{}{
@@ -403,7 +403,7 @@ func (s *EnterGameTestSuite) TestStandby() {
 // TestIdipNotices 测试 IDIP 通知
 func (s *EnterGameTestSuite) TestIdipNotices() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 获取 IDIP 通知
 	idipResp, err := s.Client.Post("/api/v1/game/idip_notices", map[string]interface{}{
@@ -420,7 +420,7 @@ func (s *EnterGameTestSuite) TestIdipNotices() {
 // TestBlackDiamonInfo 测试黑色钻石信息
 func (s *EnterGameTestSuite) TestBlackDiamonInfo() {
 	// 1. 登录并选择角色
-	charguid := s.loginAndSelectCharacter()
+	_ = s.loginAndSelectCharacter()
 
 	// 2. 获取黑色钻石信息
 	blackDiamonResp, err := s.Client.Post("/api/v1/game/black_diamon_info", map[string]interface{}{
