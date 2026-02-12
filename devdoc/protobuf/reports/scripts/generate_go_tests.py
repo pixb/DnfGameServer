@@ -51,11 +51,10 @@ class GoTestGenerator:
                 pm.file_path as proto_file,
                 pm.package_name,
                 pm.field_count
-            FROM message_mappings mm
-            JOIN jprotobuf_messages jm ON mm.jprotobuf_message_id = jm.id
-            JOIN proto_messages pm ON mm.proto_message_id = pm.id
-            JOIN migration_records mr ON mr.jprotobuf_message_id = jm.id AND mr.proto_message_id = pm.id
-            WHERE mr.batch_id = ?
+            FROM migration_records mr
+            JOIN jprotobuf_messages jm ON mr.jprotobuf_message_id = jm.id
+            JOIN proto_messages pm ON mr.proto_message_id = pm.id
+            WHERE mr.batch_id = ? AND pm.message_name IS NOT NULL AND pm.message_name != ''
             ORDER BY pm.message_name
         ''', (batch_number,))
         

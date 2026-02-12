@@ -8,202 +8,202 @@ import (
 )
 
 
-func TestApplyGuildListRequest(t *testing.T) {
-	// Test ApplyGuildListRequest - basic message structure verification
+func TestCommunityGiftDeleteLogRequest(t *testing.T) {
+	// Test CommunityGiftDeleteLogRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message ApplyGuildListRequest should be available in the generated protobuf code.
+	// The message CommunityGiftDeleteLogRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message ApplyGuildListRequest with 0 fields - placeholder test")
+	t.Logf("Message CommunityGiftDeleteLogRequest with 1 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestCheckDuplicationRequest(t *testing.T) {
-	// Test CheckDuplicationRequest - basic message structure verification
+func TestCommunityGiftReceiptRequest(t *testing.T) {
+	// Test CommunityGiftReceiptRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message CheckDuplicationRequest should be available in the generated protobuf code.
+	// The message CommunityGiftReceiptRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message CheckDuplicationRequest with 1 fields - placeholder test")
+	t.Logf("Message CommunityGiftReceiptRequest with 0 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestCreateGuildRequest(t *testing.T) {
-	// Test CreateGuildRequest - basic message structure verification
+func TestCustomPvpRoomSettingRequest(t *testing.T) {
+	// Test CustomPvpRoomSettingRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message CreateGuildRequest should be available in the generated protobuf code.
+	// The message CustomPvpRoomSettingRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message CreateGuildRequest with 5 fields - placeholder test")
+	t.Logf("Message CustomPvpRoomSettingRequest with 1 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestGmCommandRequest(t *testing.T) {
-	// Test GmCommandRequest - basic message structure verification
+func TestDreamMazeBasicinfoRequest(t *testing.T) {
+	// Test DreamMazeBasicinfoRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message GmCommandRequest should be available in the generated protobuf code.
+	// The message DreamMazeBasicinfoRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message GmCommandRequest with 4 fields - placeholder test")
+	t.Logf("Message DreamMazeBasicinfoRequest with 0 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestGuildAdMessageRequest(t *testing.T) {
-	// Test GuildAdMessageRequest - basic message structure verification
+func TestDreamMazePlaymemberRequest(t *testing.T) {
+	// Test DreamMazePlaymemberRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message GuildAdMessageRequest should be available in the generated protobuf code.
+	// The message DreamMazePlaymemberRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message GuildAdMessageRequest with 4 fields - placeholder test")
+	t.Logf("Message DreamMazePlaymemberRequest with 0 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestGuildApplicantListRequest(t *testing.T) {
-	// Test GuildApplicantListRequest - basic message structure verification
+func TestFameAndCharmPointRequest(t *testing.T) {
+	// Test FameAndCharmPointRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message GuildApplicantListRequest should be available in the generated protobuf code.
+	// The message FameAndCharmPointRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message GuildApplicantListRequest with 0 fields - placeholder test")
+	t.Logf("Message FameAndCharmPointRequest with 0 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestGuildMemberBanishRequest(t *testing.T) {
-	// Test GuildMemberBanishRequest - basic message structure verification
+func TestGuildContentsBuffLoadRequest(t *testing.T) {
+	// Test GuildContentsBuffLoadRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message GuildMemberBanishRequest should be available in the generated protobuf code.
+	// The message GuildContentsBuffLoadRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message GuildMemberBanishRequest with 1 fields - placeholder test")
+	t.Logf("Message GuildContentsBuffLoadRequest with 0 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestGuildMemberGradeRequest(t *testing.T) {
-	// Test GuildMemberGradeRequest - basic message structure verification
+func TestGuildRedpacketDetailInfoRequest(t *testing.T) {
+	// Test GuildRedpacketDetailInfoRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message GuildMemberGradeRequest should be available in the generated protobuf code.
+	// The message GuildRedpacketDetailInfoRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message GuildMemberGradeRequest with 2 fields - placeholder test")
+	t.Logf("Message GuildRedpacketDetailInfoRequest with 4 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestGuildNotiBoardRequest(t *testing.T) {
-	// Test GuildNotiBoardRequest - basic message structure verification
+func TestGuildRedpacketInfoRequest(t *testing.T) {
+	// Test GuildRedpacketInfoRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message GuildNotiBoardRequest should be available in the generated protobuf code.
+	// The message GuildRedpacketInfoRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message GuildNotiBoardRequest with 1 fields - placeholder test")
+	t.Logf("Message GuildRedpacketInfoRequest with 0 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestGuildYieldRequest(t *testing.T) {
-	// Test GuildYieldRequest - basic message structure verification
+func TestInviteRoomRequest(t *testing.T) {
+	// Test InviteRoomRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message GuildYieldRequest should be available in the generated protobuf code.
+	// The message InviteRoomRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message GuildYieldRequest with 1 fields - placeholder test")
+	t.Logf("Message InviteRoomRequest with 0 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestLoadGuildChatRequest(t *testing.T) {
-	// Test LoadGuildChatRequest - basic message structure verification
+func TestJoinRoomRequest(t *testing.T) {
+	// Test JoinRoomRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message LoadGuildChatRequest should be available in the generated protobuf code.
+	// The message JoinRoomRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message LoadGuildChatRequest with 1 fields - placeholder test")
+	t.Logf("Message JoinRoomRequest with 8 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestLoadGuildInfoRequest(t *testing.T) {
-	// Test LoadGuildInfoRequest - basic message structure verification
+func TestKickRoomRequest(t *testing.T) {
+	// Test KickRoomRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message LoadGuildInfoRequest should be available in the generated protobuf code.
+	// The message KickRoomRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message LoadGuildInfoRequest with 0 fields - placeholder test")
+	t.Logf("Message KickRoomRequest with 1 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestLoadGuildMemberInfoRequest(t *testing.T) {
-	// Test LoadGuildMemberInfoRequest - basic message structure verification
+func TestLeaveRoomRequest(t *testing.T) {
+	// Test LeaveRoomRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message LoadGuildMemberInfoRequest should be available in the generated protobuf code.
+	// The message LeaveRoomRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message LoadGuildMemberInfoRequest with 0 fields - placeholder test")
+	t.Logf("Message LeaveRoomRequest with 1 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestLoadingProgressRequest(t *testing.T) {
-	// Test LoadingProgressRequest - basic message structure verification
+func TestMakeRoomRequest(t *testing.T) {
+	// Test MakeRoomRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message LoadingProgressRequest should be available in the generated protobuf code.
+	// The message MakeRoomRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message LoadingProgressRequest with 3 fields - placeholder test")
+	t.Logf("Message MakeRoomRequest with 2 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestRecommendGuildListRequest(t *testing.T) {
-	// Test RecommendGuildListRequest - basic message structure verification
+func TestNewContentsListRequest(t *testing.T) {
+	// Test NewContentsListRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message RecommendGuildListRequest should be available in the generated protobuf code.
+	// The message NewContentsListRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message RecommendGuildListRequest with 6 fields - placeholder test")
+	t.Logf("Message NewContentsListRequest with 2 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestReplyJoinGuildRequest(t *testing.T) {
-	// Test ReplyJoinGuildRequest - basic message structure verification
+func TestReadyRoomRequest(t *testing.T) {
+	// Test ReadyRoomRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message ReplyJoinGuildRequest should be available in the generated protobuf code.
+	// The message ReadyRoomRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message ReplyJoinGuildRequest with 2 fields - placeholder test")
+	t.Logf("Message ReadyRoomRequest with 0 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestSearchGuildRequest(t *testing.T) {
-	// Test SearchGuildRequest - basic message structure verification
+func TestReceiveGuildRedpacketRequest(t *testing.T) {
+	// Test ReceiveGuildRedpacketRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message SearchGuildRequest should be available in the generated protobuf code.
+	// The message ReceiveGuildRedpacketRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message SearchGuildRequest with 1 fields - placeholder test")
+	t.Logf("Message ReceiveGuildRedpacketRequest with 3 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestSecedeGuildRequest(t *testing.T) {
-	// Test SecedeGuildRequest - basic message structure verification
+func TestRoomUserInfoRequest(t *testing.T) {
+	// Test RoomUserInfoRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message SecedeGuildRequest should be available in the generated protobuf code.
+	// The message RoomUserInfoRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message SecedeGuildRequest with 0 fields - placeholder test")
+	t.Logf("Message RoomUserInfoRequest with 0 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestSendFramesyncReportRequest(t *testing.T) {
-	// Test SendFramesyncReportRequest - basic message structure verification
+func TestSendGuildRedpacketRequest(t *testing.T) {
+	// Test SendGuildRedpacketRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message SendFramesyncReportRequest should be available in the generated protobuf code.
+	// The message SendGuildRedpacketRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message SendFramesyncReportRequest with 1 fields - placeholder test")
+	t.Logf("Message SendGuildRedpacketRequest with 2 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestSendingJoinGuildRequest(t *testing.T) {
-	// Test SendingJoinGuildRequest - basic message structure verification
+func TestTeamChangeRequest(t *testing.T) {
+	// Test TeamChangeRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message SendingJoinGuildRequest should be available in the generated protobuf code.
+	// The message TeamChangeRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message SendingJoinGuildRequest with 2 fields - placeholder test")
+	t.Logf("Message TeamChangeRequest with 0 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 

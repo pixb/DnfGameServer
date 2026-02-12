@@ -8,202 +8,72 @@ import (
 )
 
 
-func TestCeraInterestingGoodsInfoRequest(t *testing.T) {
-	// Test CeraInterestingGoodsInfoRequest - basic message structure verification
+func TestWardrobeExtentionMannequinRequest(t *testing.T) {
+	// Test WardrobeExtentionMannequinRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message CeraInterestingGoodsInfoRequest should be available in the generated protobuf code.
+	// The message WardrobeExtentionMannequinRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message CeraInterestingGoodsInfoRequest with 0 fields - placeholder test")
+	t.Logf("Message WardrobeExtentionMannequinRequest with 0 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestCeraInterestingGoodsRequest(t *testing.T) {
-	// Test CeraInterestingGoodsRequest - basic message structure verification
+func TestWardrobeSetMannequinRequest(t *testing.T) {
+	// Test WardrobeSetMannequinRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message CeraInterestingGoodsRequest should be available in the generated protobuf code.
+	// The message WardrobeSetMannequinRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message CeraInterestingGoodsRequest with 2 fields - placeholder test")
+	t.Logf("Message WardrobeSetMannequinRequest with 2 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestChangeGuildNpcRequest(t *testing.T) {
-	// Test ChangeGuildNpcRequest - basic message structure verification
+func TestWardrobeSetSlotMannequinRequest(t *testing.T) {
+	// Test WardrobeSetSlotMannequinRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message ChangeGuildNpcRequest should be available in the generated protobuf code.
+	// The message WardrobeSetSlotMannequinRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message ChangeGuildNpcRequest with 2 fields - placeholder test")
+	t.Logf("Message WardrobeSetSlotMannequinRequest with 0 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestComposeBookmarkRequest(t *testing.T) {
-	// Test ComposeBookmarkRequest - basic message structure verification
+func TestWeddingReceptionEventRequest(t *testing.T) {
+	// Test WeddingReceptionEventRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message ComposeBookmarkRequest should be available in the generated protobuf code.
+	// The message WeddingReceptionEventRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message ComposeBookmarkRequest with 0 fields - placeholder test")
+	t.Logf("Message WeddingReceptionEventRequest with 2 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestComposeScrollRequest(t *testing.T) {
-	// Test ComposeScrollRequest - basic message structure verification
+func TestWelfareFindRewardGetRequest(t *testing.T) {
+	// Test WelfareFindRewardGetRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message ComposeScrollRequest should be available in the generated protobuf code.
+	// The message WelfareFindRewardGetRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message ComposeScrollRequest with 0 fields - placeholder test")
+	t.Logf("Message WelfareFindRewardGetRequest with 3 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestContentsRewardRequest(t *testing.T) {
-	// Test ContentsRewardRequest - basic message structure verification
+func TestWelfareFindRewardInfoRequest(t *testing.T) {
+	// Test WelfareFindRewardInfoRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message ContentsRewardRequest should be available in the generated protobuf code.
+	// The message WelfareFindRewardInfoRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message ContentsRewardRequest with 2 fields - placeholder test")
+	t.Logf("Message WelfareFindRewardInfoRequest with 0 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
 
-func TestCreatureArtifactUpgradeRequest(t *testing.T) {
-	// Test CreatureArtifactUpgradeRequest - basic message structure verification
+func TestWorldRaidRankingRequest(t *testing.T) {
+	// Test WorldRaidRankingRequest - basic message structure verification
 	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message CreatureArtifactUpgradeRequest should be available in the generated protobuf code.
+	// The message WorldRaidRankingRequest should be available in the generated protobuf code.
 	
-	t.Logf("Message CreatureArtifactUpgradeRequest with 2 fields - placeholder test")
-	t.Log("This test verifies that the message structure is properly defined in the generated code")
-}
-
-
-func TestCreatureComposeRequest(t *testing.T) {
-	// Test CreatureComposeRequest - basic message structure verification
-	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message CreatureComposeRequest should be available in the generated protobuf code.
-	
-	t.Logf("Message CreatureComposeRequest with 2 fields - placeholder test")
-	t.Log("This test verifies that the message structure is properly defined in the generated code")
-}
-
-
-func TestCreatureEvolveRequest(t *testing.T) {
-	// Test CreatureEvolveRequest - basic message structure verification
-	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message CreatureEvolveRequest should be available in the generated protobuf code.
-	
-	t.Logf("Message CreatureEvolveRequest with 3 fields - placeholder test")
-	t.Log("This test verifies that the message structure is properly defined in the generated code")
-}
-
-
-func TestCreatureRandomOptionChangeRequest(t *testing.T) {
-	// Test CreatureRandomOptionChangeRequest - basic message structure verification
-	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message CreatureRandomOptionChangeRequest should be available in the generated protobuf code.
-	
-	t.Logf("Message CreatureRandomOptionChangeRequest with 1 fields - placeholder test")
-	t.Log("This test verifies that the message structure is properly defined in the generated code")
-}
-
-
-func TestCreatureRandomOptionLockRequest(t *testing.T) {
-	// Test CreatureRandomOptionLockRequest - basic message structure verification
-	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message CreatureRandomOptionLockRequest should be available in the generated protobuf code.
-	
-	t.Logf("Message CreatureRandomOptionLockRequest with 3 fields - placeholder test")
-	t.Log("This test verifies that the message structure is properly defined in the generated code")
-}
-
-
-func TestCurrentRaidPartyInfoRequest(t *testing.T) {
-	// Test CurrentRaidPartyInfoRequest - basic message structure verification
-	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message CurrentRaidPartyInfoRequest should be available in the generated protobuf code.
-	
-	t.Logf("Message CurrentRaidPartyInfoRequest with 0 fields - placeholder test")
-	t.Log("This test verifies that the message structure is properly defined in the generated code")
-}
-
-
-func TestDelWatchingBookmarkRequest(t *testing.T) {
-	// Test DelWatchingBookmarkRequest - basic message structure verification
-	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message DelWatchingBookmarkRequest should be available in the generated protobuf code.
-	
-	t.Logf("Message DelWatchingBookmarkRequest with 1 fields - placeholder test")
-	t.Log("This test verifies that the message structure is properly defined in the generated code")
-}
-
-
-func TestDisjointBookmarkRequest(t *testing.T) {
-	// Test DisjointBookmarkRequest - basic message structure verification
-	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message DisjointBookmarkRequest should be available in the generated protobuf code.
-	
-	t.Logf("Message DisjointBookmarkRequest with 0 fields - placeholder test")
-	t.Log("This test verifies that the message structure is properly defined in the generated code")
-}
-
-
-func TestEnterDungeonCompleteRequest(t *testing.T) {
-	// Test EnterDungeonCompleteRequest - basic message structure verification
-	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message EnterDungeonCompleteRequest should be available in the generated protobuf code.
-	
-	t.Logf("Message EnterDungeonCompleteRequest with 2 fields - placeholder test")
-	t.Log("This test verifies that the message structure is properly defined in the generated code")
-}
-
-
-func TestEquipmentUnsealRequest(t *testing.T) {
-	// Test EquipmentUnsealRequest - basic message structure verification
-	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message EquipmentUnsealRequest should be available in the generated protobuf code.
-	
-	t.Logf("Message EquipmentUnsealRequest with 1 fields - placeholder test")
-	t.Log("This test verifies that the message structure is properly defined in the generated code")
-}
-
-
-func TestEventSelectCharacterRequest(t *testing.T) {
-	// Test EventSelectCharacterRequest - basic message structure verification
-	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message EventSelectCharacterRequest should be available in the generated protobuf code.
-	
-	t.Logf("Message EventSelectCharacterRequest with 2 fields - placeholder test")
-	t.Log("This test verifies that the message structure is properly defined in the generated code")
-}
-
-
-func TestEventSelectReturnCharacterRequest(t *testing.T) {
-	// Test EventSelectReturnCharacterRequest - basic message structure verification
-	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message EventSelectReturnCharacterRequest should be available in the generated protobuf code.
-	
-	t.Logf("Message EventSelectReturnCharacterRequest with 1 fields - placeholder test")
-	t.Log("This test verifies that the message structure is properly defined in the generated code")
-}
-
-
-func TestGetSeriaBuffRequest(t *testing.T) {
-	// Test GetSeriaBuffRequest - basic message structure verification
-	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message GetSeriaBuffRequest should be available in the generated protobuf code.
-	
-	t.Logf("Message GetSeriaBuffRequest with 1 fields - placeholder test")
-	t.Log("This test verifies that the message structure is properly defined in the generated code")
-}
-
-
-func TestGuildAuctionRewardInfoRequest(t *testing.T) {
-	// Test GuildAuctionRewardInfoRequest - basic message structure verification
-	// Note: This is a placeholder test. The actual message type is defined in the generated Go code.
-	// The message GuildAuctionRewardInfoRequest should be available in the generated protobuf code.
-	
-	t.Logf("Message GuildAuctionRewardInfoRequest with 1 fields - placeholder test")
+	t.Logf("Message WorldRaidRankingRequest with 1 fields - placeholder test")
 	t.Log("This test verifies that the message structure is properly defined in the generated code")
 }
 
