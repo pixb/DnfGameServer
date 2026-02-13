@@ -461,3 +461,107 @@ func (s *Store) CreateRoleSkill(ctx context.Context, create *CreateRoleSkill) (*
 func (s *Store) UpdateRoleSkill(ctx context.Context, update *UpdateRoleSkill) error {
 	return s.driver.UpdateRoleSkill(ctx, update)
 }
+
+// ==================== 冒险Store方法 ====================
+
+// GetAdventureData 获取冒险数据
+func (s *Store) GetAdventureData(ctx context.Context, find *FindAdventureData) (*AdventureData, error) {
+	return s.driver.GetAdventureData(ctx, find)
+}
+
+// CreateAdventureData 创建冒险数据
+func (s *Store) CreateAdventureData(ctx context.Context, create *CreateAdventureData) (*AdventureData, error) {
+	return s.driver.CreateAdventureData(ctx, create)
+}
+
+// UpdateAdventureData 更新冒险数据
+func (s *Store) UpdateAdventureData(ctx context.Context, update *UpdateAdventureData) error {
+	return s.driver.UpdateAdventureData(ctx, update)
+}
+
+// CreateAdventureStorageItem 创建冒险仓库物品
+func (s *Store) CreateAdventureStorageItem(ctx context.Context, create *CreateAdventureStorageItem) (*AdventureStorageItem, error) {
+	return s.driver.CreateAdventureStorageItem(ctx, create)
+}
+
+// UpdateAdventureStorageItem 更新冒险仓库物品
+func (s *Store) UpdateAdventureStorageItem(ctx context.Context, update *UpdateAdventureStorageItem) error {
+	return s.driver.UpdateAdventureStorageItem(ctx, update)
+}
+
+// ListAdventureStorageItems 获取冒险仓库物品列表
+func (s *Store) ListAdventureStorageItems(ctx context.Context, find *FindAdventureStorageItem) ([]*AdventureStorageItem, error) {
+	return s.driver.ListAdventureStorageItems(ctx, find)
+}
+
+// DeleteAdventureStorageItem 删除冒险仓库物品
+func (s *Store) DeleteAdventureStorageItem(ctx context.Context, id uint64) error {
+	return s.driver.DeleteAdventureStorageItem(ctx, id)
+}
+
+// CreateAdventureReap 创建冒险收获
+func (s *Store) CreateAdventureReap(ctx context.Context, create *CreateAdventureReap) (*AdventureReap, error) {
+	return s.driver.CreateAdventureReap(ctx, create)
+}
+
+// UpdateAdventureReap 更新冒险收获
+func (s *Store) UpdateAdventureReap(ctx context.Context, update *UpdateAdventureReap) error {
+	return s.driver.UpdateAdventureReap(ctx, update)
+}
+
+// ListAdventureReaps 获取冒险收获列表
+func (s *Store) ListAdventureReaps(ctx context.Context, roleID uint64) ([]*AdventureReap, error) {
+	return s.driver.ListAdventureReaps(ctx, roleID)
+}
+
+// DeleteAdventureReap 删除冒险收获
+func (s *Store) DeleteAdventureReap(ctx context.Context, id uint64) error {
+	return s.driver.DeleteAdventureReap(ctx, id)
+}
+
+// CreateAdventureBook 创建冒险图鉴
+func (s *Store) CreateAdventureBook(ctx context.Context, create *CreateAdventureBook) (*AdventureBook, error) {
+	return s.driver.CreateAdventureBook(ctx, create)
+}
+
+// UpdateAdventureBook 更新冒险图鉴
+func (s *Store) UpdateAdventureBook(ctx context.Context, update *UpdateAdventureBook) error {
+	return s.driver.UpdateAdventureBook(ctx, update)
+}
+
+// GetAdventureBook 获取冒险图鉴
+func (s *Store) GetAdventureBook(ctx context.Context, find *FindAdventureBook) (*AdventureBook, error) {
+	return s.driver.GetAdventureBook(ctx, find)
+}
+
+// ListAdventureBooks 获取冒险图鉴列表
+func (s *Store) ListAdventureBooks(ctx context.Context, roleID uint64) ([]*AdventureBook, error) {
+	return s.driver.ListAdventureBooks(ctx, roleID)
+}
+
+// CreateAdventureBookCondition 创建冒险图鉴条件
+func (s *Store) CreateAdventureBookCondition(ctx context.Context, create *CreateAdventureBookCondition) (*AdventureBookCondition, error) {
+	return s.driver.CreateAdventureBookCondition(ctx, create)
+}
+
+// UpdateAdventureBookCondition 更新冒险图鉴条件
+func (s *Store) UpdateAdventureBookCondition(ctx context.Context, update *UpdateAdventureBookCondition) error {
+	return s.driver.UpdateAdventureBookCondition(ctx, update)
+}
+
+// CreateAdventureBookReward 创建冒险图鉴奖励
+func (s *Store) CreateAdventureBookReward(ctx context.Context, create *CreateAdventureBookReward) (*AdventureBookReward, error) {
+	return s.driver.CreateAdventureBookReward(ctx, create)
+}
+
+// ClaimAdventureBookReward 领取冒险图鉴奖励
+func (s *Store) ClaimAdventureBookReward(ctx context.Context, claim *ClaimAdventureBookReward) error {
+	return s.driver.ClaimAdventureBookReward(ctx, claim)
+}
+
+// ListAdventureBookRewards 获取冒险图鉴奖励列表
+func (s *Store) ListAdventureBookRewards(ctx context.Context, bookID int32) ([]*AdventureBookReward, error) {
+	return s.driver.ListAdventureBookRewards(ctx, bookID)
+}
+
+// ==================== 制作Store方法 ====================

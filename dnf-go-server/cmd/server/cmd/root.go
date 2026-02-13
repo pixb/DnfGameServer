@@ -84,10 +84,24 @@ func initConfig() error {
 
 	// 创建profile
 	prof = &profile.Profile{
-		Driver: viper.GetString("database.driver"),
-		DSN:    viper.GetString("database.dsn"),
+		Driver: viper.GetString("driver"),
+		DSN:    viper.GetString("dsn"),
 		Mode:   viper.GetString("mode"),
 		Port:   viper.GetInt("port"),
+	}
+
+	// 从配置文件的根级别读取
+	if prof.Driver == "" {
+		prof.Driver = viper.GetString("driver")
+	}
+	if prof.DSN == "" {
+		prof.DSN = viper.GetString("dsn")
+	}
+	if prof.Mode == "" {
+		prof.Mode = viper.GetString("mode")
+	}
+	if prof.Port == 0 {
+		prof.Port = viper.GetInt("port")
 	}
 
 	// 如果端口未设置，使用默认值

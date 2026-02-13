@@ -1366,6 +1366,727 @@ func (x *EquipItemResponse) GetUpdatedItems() []*BagItem {
 	return nil
 }
 
+// 可堆叠物品
+type StackableItem struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Index           uint32                 `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
+	Count           uint32                 `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	Bind            bool                   `protobuf:"varint,3,opt,name=bind,proto3" json:"bind,omitempty"`
+	AcquisitionTime uint64                 `protobuf:"varint,4,opt,name=acquisition_time,json=acquisitionTime,proto3" json:"acquisition_time,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *StackableItem) Reset() {
+	*x = StackableItem{}
+	mi := &file_dnf_v1_item_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StackableItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StackableItem) ProtoMessage() {}
+
+func (x *StackableItem) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_item_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StackableItem.ProtoReflect.Descriptor instead.
+func (*StackableItem) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_item_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *StackableItem) GetIndex() uint32 {
+	if x != nil {
+		return x.Index
+	}
+	return 0
+}
+
+func (x *StackableItem) GetCount() uint32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+func (x *StackableItem) GetBind() bool {
+	if x != nil {
+		return x.Bind
+	}
+	return false
+}
+
+func (x *StackableItem) GetAcquisitionTime() uint64 {
+	if x != nil {
+		return x.AcquisitionTime
+	}
+	return 0
+}
+
+// 索引数量
+type IndexCount struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Index         int32                  `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
+	Count         int32                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IndexCount) Reset() {
+	*x = IndexCount{}
+	mi := &file_dnf_v1_item_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IndexCount) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IndexCount) ProtoMessage() {}
+
+func (x *IndexCount) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_item_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IndexCount.ProtoReflect.Descriptor instead.
+func (*IndexCount) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_item_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *IndexCount) GetIndex() int32 {
+	if x != nil {
+		return x.Index
+	}
+	return 0
+}
+
+func (x *IndexCount) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+// 材料物品
+type MaterialItem struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Index         int32                  `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
+	Count         int32                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MaterialItem) Reset() {
+	*x = MaterialItem{}
+	mi := &file_dnf_v1_item_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MaterialItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MaterialItem) ProtoMessage() {}
+
+func (x *MaterialItem) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_item_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MaterialItem.ProtoReflect.Descriptor instead.
+func (*MaterialItem) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_item_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *MaterialItem) GetIndex() int32 {
+	if x != nil {
+		return x.Index
+	}
+	return 0
+}
+
+func (x *MaterialItem) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+// 卡片合成
+type CardCompose struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Index         int32                  `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
+	Count         int32                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CardCompose) Reset() {
+	*x = CardCompose{}
+	mi := &file_dnf_v1_item_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CardCompose) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CardCompose) ProtoMessage() {}
+
+func (x *CardCompose) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_item_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CardCompose.ProtoReflect.Descriptor instead.
+func (*CardCompose) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_item_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *CardCompose) GetIndex() int32 {
+	if x != nil {
+		return x.Index
+	}
+	return 0
+}
+
+func (x *CardCompose) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+// 货币物品
+type MoneyItem struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Count         int64                  `protobuf:"varint,1,opt,name=count,proto3" json:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MoneyItem) Reset() {
+	*x = MoneyItem{}
+	mi := &file_dnf_v1_item_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MoneyItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MoneyItem) ProtoMessage() {}
+
+func (x *MoneyItem) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_item_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MoneyItem.ProtoReflect.Descriptor instead.
+func (*MoneyItem) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_item_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *MoneyItem) GetCount() int64 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+// 消耗物品
+type ConsumeItems struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ItemIndex     int32                  `protobuf:"varint,1,opt,name=item_index,json=itemIndex,proto3" json:"item_index,omitempty"`
+	Count         int32                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ConsumeItems) Reset() {
+	*x = ConsumeItems{}
+	mi := &file_dnf_v1_item_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConsumeItems) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConsumeItems) ProtoMessage() {}
+
+func (x *ConsumeItems) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_item_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConsumeItems.ProtoReflect.Descriptor instead.
+func (*ConsumeItems) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_item_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *ConsumeItems) GetItemIndex() int32 {
+	if x != nil {
+		return x.ItemIndex
+	}
+	return 0
+}
+
+func (x *ConsumeItems) GetCount() int32 {
+	if x != nil {
+		return x.Count
+	}
+	return 0
+}
+
+// 物品列表
+type PT_ITEMS struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ConsumeItems  []*StackableItem       `protobuf:"bytes,1,rep,name=consume_items,json=consumeItems,proto3" json:"consume_items,omitempty"`
+	MaterialItems []*StackableItem       `protobuf:"bytes,2,rep,name=material_items,json=materialItems,proto3" json:"material_items,omitempty"`
+	EmblemItems   []*StackableItem       `protobuf:"bytes,3,rep,name=emblem_items,json=emblemItems,proto3" json:"emblem_items,omitempty"`
+	EquipItems    []*EquipmentInfo       `protobuf:"bytes,4,rep,name=equip_items,json=equipItems,proto3" json:"equip_items,omitempty"`
+	AvatarItems   []*AvatarItem          `protobuf:"bytes,5,rep,name=avatar_items,json=avatarItems,proto3" json:"avatar_items,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PT_ITEMS) Reset() {
+	*x = PT_ITEMS{}
+	mi := &file_dnf_v1_item_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PT_ITEMS) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PT_ITEMS) ProtoMessage() {}
+
+func (x *PT_ITEMS) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_item_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PT_ITEMS.ProtoReflect.Descriptor instead.
+func (*PT_ITEMS) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_item_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *PT_ITEMS) GetConsumeItems() []*StackableItem {
+	if x != nil {
+		return x.ConsumeItems
+	}
+	return nil
+}
+
+func (x *PT_ITEMS) GetMaterialItems() []*StackableItem {
+	if x != nil {
+		return x.MaterialItems
+	}
+	return nil
+}
+
+func (x *PT_ITEMS) GetEmblemItems() []*StackableItem {
+	if x != nil {
+		return x.EmblemItems
+	}
+	return nil
+}
+
+func (x *PT_ITEMS) GetEquipItems() []*EquipmentInfo {
+	if x != nil {
+		return x.EquipItems
+	}
+	return nil
+}
+
+func (x *PT_ITEMS) GetAvatarItems() []*AvatarItem {
+	if x != nil {
+		return x.AvatarItems
+	}
+	return nil
+}
+
+// 时装物品
+type AvatarItem struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Index         int32                  `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
+	Guid          uint64                 `protobuf:"varint,2,opt,name=guid,proto3" json:"guid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AvatarItem) Reset() {
+	*x = AvatarItem{}
+	mi := &file_dnf_v1_item_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AvatarItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AvatarItem) ProtoMessage() {}
+
+func (x *AvatarItem) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_item_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AvatarItem.ProtoReflect.Descriptor instead.
+func (*AvatarItem) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_item_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *AvatarItem) GetIndex() int32 {
+	if x != nil {
+		return x.Index
+	}
+	return 0
+}
+
+func (x *AvatarItem) GetGuid() uint64 {
+	if x != nil {
+		return x.Guid
+	}
+	return 0
+}
+
+// 装备
+type PT_EQUIP struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Guid          uint64                 `protobuf:"varint,1,opt,name=guid,proto3" json:"guid,omitempty"`
+	Index         int32                  `protobuf:"varint,2,opt,name=index,proto3" json:"index,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PT_EQUIP) Reset() {
+	*x = PT_EQUIP{}
+	mi := &file_dnf_v1_item_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PT_EQUIP) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PT_EQUIP) ProtoMessage() {}
+
+func (x *PT_EQUIP) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_item_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PT_EQUIP.ProtoReflect.Descriptor instead.
+func (*PT_EQUIP) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_item_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *PT_EQUIP) GetGuid() uint64 {
+	if x != nil {
+		return x.Guid
+	}
+	return 0
+}
+
+func (x *PT_EQUIP) GetIndex() int32 {
+	if x != nil {
+		return x.Index
+	}
+	return 0
+}
+
+// 内容奖励信息
+type PT_CONTENTS_REWARD_INFO struct {
+	state         protoimpl.MessageState   `protogen:"open.v1"`
+	Items         *PT_ITEMS                `protobuf:"bytes,1,opt,name=items,proto3" json:"items,omitempty"`
+	Currency      *PT_CURRENCY_REWARD_INFO `protobuf:"bytes,2,opt,name=currency,proto3" json:"currency,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PT_CONTENTS_REWARD_INFO) Reset() {
+	*x = PT_CONTENTS_REWARD_INFO{}
+	mi := &file_dnf_v1_item_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PT_CONTENTS_REWARD_INFO) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PT_CONTENTS_REWARD_INFO) ProtoMessage() {}
+
+func (x *PT_CONTENTS_REWARD_INFO) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_item_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PT_CONTENTS_REWARD_INFO.ProtoReflect.Descriptor instead.
+func (*PT_CONTENTS_REWARD_INFO) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_item_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *PT_CONTENTS_REWARD_INFO) GetItems() *PT_ITEMS {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *PT_CONTENTS_REWARD_INFO) GetCurrency() *PT_CURRENCY_REWARD_INFO {
+	if x != nil {
+		return x.Currency
+	}
+	return nil
+}
+
+// 货币奖励信息
+type PT_CURRENCY_REWARD_INFO struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Currency      []*MoneyItem           `protobuf:"bytes,1,rep,name=currency,proto3" json:"currency,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PT_CURRENCY_REWARD_INFO) Reset() {
+	*x = PT_CURRENCY_REWARD_INFO{}
+	mi := &file_dnf_v1_item_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PT_CURRENCY_REWARD_INFO) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PT_CURRENCY_REWARD_INFO) ProtoMessage() {}
+
+func (x *PT_CURRENCY_REWARD_INFO) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_item_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PT_CURRENCY_REWARD_INFO.ProtoReflect.Descriptor instead.
+func (*PT_CURRENCY_REWARD_INFO) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_item_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *PT_CURRENCY_REWARD_INFO) GetCurrency() []*MoneyItem {
+	if x != nil {
+		return x.Currency
+	}
+	return nil
+}
+
+// 移除物品
+type PT_REMOVEITEMS struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ConsumeItems  []*ConsumeItems        `protobuf:"bytes,1,rep,name=consume_items,json=consumeItems,proto3" json:"consume_items,omitempty"`
+	MaterialItems []*StackableItem       `protobuf:"bytes,2,rep,name=material_items,json=materialItems,proto3" json:"material_items,omitempty"`
+	EmblemItems   []*StackableItem       `protobuf:"bytes,3,rep,name=emblem_items,json=emblemItems,proto3" json:"emblem_items,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PT_REMOVEITEMS) Reset() {
+	*x = PT_REMOVEITEMS{}
+	mi := &file_dnf_v1_item_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PT_REMOVEITEMS) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PT_REMOVEITEMS) ProtoMessage() {}
+
+func (x *PT_REMOVEITEMS) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_item_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PT_REMOVEITEMS.ProtoReflect.Descriptor instead.
+func (*PT_REMOVEITEMS) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_item_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *PT_REMOVEITEMS) GetConsumeItems() []*ConsumeItems {
+	if x != nil {
+		return x.ConsumeItems
+	}
+	return nil
+}
+
+func (x *PT_REMOVEITEMS) GetMaterialItems() []*StackableItem {
+	if x != nil {
+		return x.MaterialItems
+	}
+	return nil
+}
+
+func (x *PT_REMOVEITEMS) GetEmblemItems() []*StackableItem {
+	if x != nil {
+		return x.EmblemItems
+	}
+	return nil
+}
+
+// 物品制作槽位
+type PT_ITEM_PRODUCTION_SLOT struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SlotIndex     int32                  `protobuf:"varint,1,opt,name=slot_index,json=slotIndex,proto3" json:"slot_index,omitempty"`
+	UsableCount   int32                  `protobuf:"varint,2,opt,name=usable_count,json=usableCount,proto3" json:"usable_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PT_ITEM_PRODUCTION_SLOT) Reset() {
+	*x = PT_ITEM_PRODUCTION_SLOT{}
+	mi := &file_dnf_v1_item_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PT_ITEM_PRODUCTION_SLOT) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PT_ITEM_PRODUCTION_SLOT) ProtoMessage() {}
+
+func (x *PT_ITEM_PRODUCTION_SLOT) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_item_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PT_ITEM_PRODUCTION_SLOT.ProtoReflect.Descriptor instead.
+func (*PT_ITEM_PRODUCTION_SLOT) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_item_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *PT_ITEM_PRODUCTION_SLOT) GetSlotIndex() int32 {
+	if x != nil {
+		return x.SlotIndex
+	}
+	return 0
+}
+
+func (x *PT_ITEM_PRODUCTION_SLOT) GetUsableCount() int32 {
+	if x != nil {
+		return x.UsableCount
+	}
+	return 0
+}
+
 var File_dnf_v1_item_proto protoreflect.FileDescriptor
 
 const file_dnf_v1_item_proto_rawDesc = "" +
@@ -1451,7 +2172,55 @@ const file_dnf_v1_item_proto_rawDesc = "" +
 	"\x05equip\x18\x02 \x01(\bR\x05equip\"_\n" +
 	"\x11EquipItemResponse\x12\x14\n" +
 	"\x05error\x18\x01 \x01(\x05R\x05error\x124\n" +
-	"\rupdated_items\x18\x02 \x03(\v2\x0f.dnf.v1.BagItemR\fupdatedItems*\xc5\x01\n" +
+	"\rupdated_items\x18\x02 \x03(\v2\x0f.dnf.v1.BagItemR\fupdatedItems\"z\n" +
+	"\rStackableItem\x12\x14\n" +
+	"\x05index\x18\x01 \x01(\rR\x05index\x12\x14\n" +
+	"\x05count\x18\x02 \x01(\rR\x05count\x12\x12\n" +
+	"\x04bind\x18\x03 \x01(\bR\x04bind\x12)\n" +
+	"\x10acquisition_time\x18\x04 \x01(\x04R\x0facquisitionTime\"8\n" +
+	"\n" +
+	"IndexCount\x12\x14\n" +
+	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x14\n" +
+	"\x05count\x18\x02 \x01(\x05R\x05count\":\n" +
+	"\fMaterialItem\x12\x14\n" +
+	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x14\n" +
+	"\x05count\x18\x02 \x01(\x05R\x05count\"9\n" +
+	"\vCardCompose\x12\x14\n" +
+	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x14\n" +
+	"\x05count\x18\x02 \x01(\x05R\x05count\"!\n" +
+	"\tMoneyItem\x12\x14\n" +
+	"\x05count\x18\x01 \x01(\x03R\x05count\"C\n" +
+	"\fConsumeItems\x12\x1d\n" +
+	"\n" +
+	"item_index\x18\x01 \x01(\x05R\titemIndex\x12\x14\n" +
+	"\x05count\x18\x02 \x01(\x05R\x05count\"\xad\x02\n" +
+	"\bPT_ITEMS\x12:\n" +
+	"\rconsume_items\x18\x01 \x03(\v2\x15.dnf.v1.StackableItemR\fconsumeItems\x12<\n" +
+	"\x0ematerial_items\x18\x02 \x03(\v2\x15.dnf.v1.StackableItemR\rmaterialItems\x128\n" +
+	"\femblem_items\x18\x03 \x03(\v2\x15.dnf.v1.StackableItemR\vemblemItems\x126\n" +
+	"\vequip_items\x18\x04 \x03(\v2\x15.dnf.v1.EquipmentInfoR\n" +
+	"equipItems\x125\n" +
+	"\favatar_items\x18\x05 \x03(\v2\x12.dnf.v1.AvatarItemR\vavatarItems\"6\n" +
+	"\n" +
+	"AvatarItem\x12\x14\n" +
+	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x12\n" +
+	"\x04guid\x18\x02 \x01(\x04R\x04guid\"4\n" +
+	"\bPT_EQUIP\x12\x12\n" +
+	"\x04guid\x18\x01 \x01(\x04R\x04guid\x12\x14\n" +
+	"\x05index\x18\x02 \x01(\x05R\x05index\"~\n" +
+	"\x17PT_CONTENTS_REWARD_INFO\x12&\n" +
+	"\x05items\x18\x01 \x01(\v2\x10.dnf.v1.PT_ITEMSR\x05items\x12;\n" +
+	"\bcurrency\x18\x02 \x01(\v2\x1f.dnf.v1.PT_CURRENCY_REWARD_INFOR\bcurrency\"H\n" +
+	"\x17PT_CURRENCY_REWARD_INFO\x12-\n" +
+	"\bcurrency\x18\x01 \x03(\v2\x11.dnf.v1.MoneyItemR\bcurrency\"\xc3\x01\n" +
+	"\x0ePT_REMOVEITEMS\x129\n" +
+	"\rconsume_items\x18\x01 \x03(\v2\x14.dnf.v1.ConsumeItemsR\fconsumeItems\x12<\n" +
+	"\x0ematerial_items\x18\x02 \x03(\v2\x15.dnf.v1.StackableItemR\rmaterialItems\x128\n" +
+	"\femblem_items\x18\x03 \x03(\v2\x15.dnf.v1.StackableItemR\vemblemItems\"[\n" +
+	"\x17PT_ITEM_PRODUCTION_SLOT\x12\x1d\n" +
+	"\n" +
+	"slot_index\x18\x01 \x01(\x05R\tslotIndex\x12!\n" +
+	"\fusable_count\x18\x02 \x01(\x05R\vusableCount*\xc5\x01\n" +
 	"\tEquipSlot\x12\x1a\n" +
 	"\x16EQUIP_SLOT_UNSPECIFIED\x10\x00\x12\n" +
 	"\n" +
@@ -1509,29 +2278,42 @@ func file_dnf_v1_item_proto_rawDescGZIP() []byte {
 }
 
 var file_dnf_v1_item_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_dnf_v1_item_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_dnf_v1_item_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_dnf_v1_item_proto_goTypes = []any{
-	(EquipSlot)(0),            // 0: dnf.v1.EquipSlot
-	(EquipPart)(0),            // 1: dnf.v1.EquipPart
-	(ItemQuality)(0),          // 2: dnf.v1.ItemQuality
-	(ItemType)(0),             // 3: dnf.v1.ItemType
-	(*ItemBase)(nil),          // 4: dnf.v1.ItemBase
-	(*EquipmentInfo)(nil),     // 5: dnf.v1.EquipmentInfo
-	(*EquipmentOption)(nil),   // 6: dnf.v1.EquipmentOption
-	(*BagItem)(nil),           // 7: dnf.v1.BagItem
-	(*ConsumableInfo)(nil),    // 8: dnf.v1.ConsumableInfo
-	(*Currency)(nil),          // 9: dnf.v1.Currency
-	(*BagInfo)(nil),           // 10: dnf.v1.BagInfo
-	(*GetBagRequest)(nil),     // 11: dnf.v1.GetBagRequest
-	(*GetBagResponse)(nil),    // 12: dnf.v1.GetBagResponse
-	(*UseItemRequest)(nil),    // 13: dnf.v1.UseItemRequest
-	(*UseItemResponse)(nil),   // 14: dnf.v1.UseItemResponse
-	(*MoveItemRequest)(nil),   // 15: dnf.v1.MoveItemRequest
-	(*MoveItemResponse)(nil),  // 16: dnf.v1.MoveItemResponse
-	(*SellItemRequest)(nil),   // 17: dnf.v1.SellItemRequest
-	(*SellItemResponse)(nil),  // 18: dnf.v1.SellItemResponse
-	(*EquipItemRequest)(nil),  // 19: dnf.v1.EquipItemRequest
-	(*EquipItemResponse)(nil), // 20: dnf.v1.EquipItemResponse
+	(EquipSlot)(0),                  // 0: dnf.v1.EquipSlot
+	(EquipPart)(0),                  // 1: dnf.v1.EquipPart
+	(ItemQuality)(0),                // 2: dnf.v1.ItemQuality
+	(ItemType)(0),                   // 3: dnf.v1.ItemType
+	(*ItemBase)(nil),                // 4: dnf.v1.ItemBase
+	(*EquipmentInfo)(nil),           // 5: dnf.v1.EquipmentInfo
+	(*EquipmentOption)(nil),         // 6: dnf.v1.EquipmentOption
+	(*BagItem)(nil),                 // 7: dnf.v1.BagItem
+	(*ConsumableInfo)(nil),          // 8: dnf.v1.ConsumableInfo
+	(*Currency)(nil),                // 9: dnf.v1.Currency
+	(*BagInfo)(nil),                 // 10: dnf.v1.BagInfo
+	(*GetBagRequest)(nil),           // 11: dnf.v1.GetBagRequest
+	(*GetBagResponse)(nil),          // 12: dnf.v1.GetBagResponse
+	(*UseItemRequest)(nil),          // 13: dnf.v1.UseItemRequest
+	(*UseItemResponse)(nil),         // 14: dnf.v1.UseItemResponse
+	(*MoveItemRequest)(nil),         // 15: dnf.v1.MoveItemRequest
+	(*MoveItemResponse)(nil),        // 16: dnf.v1.MoveItemResponse
+	(*SellItemRequest)(nil),         // 17: dnf.v1.SellItemRequest
+	(*SellItemResponse)(nil),        // 18: dnf.v1.SellItemResponse
+	(*EquipItemRequest)(nil),        // 19: dnf.v1.EquipItemRequest
+	(*EquipItemResponse)(nil),       // 20: dnf.v1.EquipItemResponse
+	(*StackableItem)(nil),           // 21: dnf.v1.StackableItem
+	(*IndexCount)(nil),              // 22: dnf.v1.IndexCount
+	(*MaterialItem)(nil),            // 23: dnf.v1.MaterialItem
+	(*CardCompose)(nil),             // 24: dnf.v1.CardCompose
+	(*MoneyItem)(nil),               // 25: dnf.v1.MoneyItem
+	(*ConsumeItems)(nil),            // 26: dnf.v1.ConsumeItems
+	(*PT_ITEMS)(nil),                // 27: dnf.v1.PT_ITEMS
+	(*AvatarItem)(nil),              // 28: dnf.v1.AvatarItem
+	(*PT_EQUIP)(nil),                // 29: dnf.v1.PT_EQUIP
+	(*PT_CONTENTS_REWARD_INFO)(nil), // 30: dnf.v1.PT_CONTENTS_REWARD_INFO
+	(*PT_CURRENCY_REWARD_INFO)(nil), // 31: dnf.v1.PT_CURRENCY_REWARD_INFO
+	(*PT_REMOVEITEMS)(nil),          // 32: dnf.v1.PT_REMOVEITEMS
+	(*PT_ITEM_PRODUCTION_SLOT)(nil), // 33: dnf.v1.PT_ITEM_PRODUCTION_SLOT
 }
 var file_dnf_v1_item_proto_depIdxs = []int32{
 	3,  // 0: dnf.v1.ItemBase.item_type:type_name -> dnf.v1.ItemType
@@ -1544,11 +2326,22 @@ var file_dnf_v1_item_proto_depIdxs = []int32{
 	10, // 7: dnf.v1.GetBagResponse.bag:type_name -> dnf.v1.BagInfo
 	7,  // 8: dnf.v1.UseItemResponse.updated_items:type_name -> dnf.v1.BagItem
 	7,  // 9: dnf.v1.EquipItemResponse.updated_items:type_name -> dnf.v1.BagItem
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	21, // 10: dnf.v1.PT_ITEMS.consume_items:type_name -> dnf.v1.StackableItem
+	21, // 11: dnf.v1.PT_ITEMS.material_items:type_name -> dnf.v1.StackableItem
+	21, // 12: dnf.v1.PT_ITEMS.emblem_items:type_name -> dnf.v1.StackableItem
+	5,  // 13: dnf.v1.PT_ITEMS.equip_items:type_name -> dnf.v1.EquipmentInfo
+	28, // 14: dnf.v1.PT_ITEMS.avatar_items:type_name -> dnf.v1.AvatarItem
+	27, // 15: dnf.v1.PT_CONTENTS_REWARD_INFO.items:type_name -> dnf.v1.PT_ITEMS
+	31, // 16: dnf.v1.PT_CONTENTS_REWARD_INFO.currency:type_name -> dnf.v1.PT_CURRENCY_REWARD_INFO
+	25, // 17: dnf.v1.PT_CURRENCY_REWARD_INFO.currency:type_name -> dnf.v1.MoneyItem
+	26, // 18: dnf.v1.PT_REMOVEITEMS.consume_items:type_name -> dnf.v1.ConsumeItems
+	21, // 19: dnf.v1.PT_REMOVEITEMS.material_items:type_name -> dnf.v1.StackableItem
+	21, // 20: dnf.v1.PT_REMOVEITEMS.emblem_items:type_name -> dnf.v1.StackableItem
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_dnf_v1_item_proto_init() }
@@ -1566,7 +2359,7 @@ func file_dnf_v1_item_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dnf_v1_item_proto_rawDesc), len(file_dnf_v1_item_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   17,
+			NumMessages:   30,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

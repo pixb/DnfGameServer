@@ -588,3 +588,341 @@ func (d *DB) ListAdventureBookRewards(ctx context.Context, bookID int32) ([]*sto
 
 	return rewards, nil
 }
+
+// ==================== 冒险联盟相关实现 ====================
+
+func (d *DB) GetAdventureUnionInfo(ctx context.Context, roleID uint64) (*store.AdventureUnionInfo, error) {
+	query := `
+		SELECT role_id, name, exp, level, day, typical_character_guid,
+		       last_change_name_time, shareboard_background, shareboard_frame,
+		       shareboard_show_antievil_score, auto_search_count,
+		       shareboard_total_antievil_score, shareboard_antievil_score_refresh,
+		       is_adventure_condition, created_at, updated_at
+		FROM t_adventure_union
+		WHERE role_id = ? AND row_status = 'NORMAL'
+	`
+
+	var info store.AdventureUnionInfo
+	var createTime, updateTime, lastChangeNameTime int64
+
+	err := d.db.QueryRowContext(ctx, query, roleID).Scan(
+		&info.Name, &info.Exp, &info.Level, &info.Day, &info.TypicalCharacterGUID,
+		&lastChangeNameTime, &info.ShareboardBackground, &info.ShareboardFrame,
+		&info.ShareboardShowAntiEvilScore, &info.AutoSearchCount,
+		&info.ShareboardTotalAntiEvilScore, &info.ShareboardAntiEvilScoreRefresh,
+		&info.IsAdventureCondition, &createTime, &updateTime,
+	)
+
+	if err != nil {
+		if err.Error() == "sql: no rows in result set" {
+			return nil, store.ErrNotFound
+		}
+		return nil, fmt.Errorf("failed to get adventure union info: %w", err)
+	}
+
+	info.UpdateTime = time.Unix(updateTime, 0)
+	info.LastChangeNameTime = time.Unix(lastChangeNameTime, 0)
+
+	return &info, nil
+}
+
+func (d *DB) ChangeAdventureUnionName(ctx context.Context, roleID uint64, name string) error {
+	query := `
+		UPDATE t_adventure_union
+		SET name = ?, last_change_name_time = ?, updated_at = ?
+		WHERE role_id = ? AND row_status = 'NORMAL'
+	`
+
+	now := time.Now().Unix()
+	result, err := d.db.ExecContext(ctx, query, name, now, now, roleID)
+	if err != nil {
+		return fmt.Errorf("failed to change adventure union name: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return store.ErrNotFound
+	}
+
+	return nil
+}
+
+func (d *DB) StartAdventureUnionExpedition(ctx context.Context, roleID uint64, expeditionID uint32, expeditionType uint32) error {
+	query := `
+		INSERT INTO t_adventure_union_expedition
+		(role_id, expedition_id, expedition_type, status, start_time, created_at, updated_at)
+		VALUES (?, ?, ?, 0, ?, ?, ?)
+	`
+
+	now := time.Now().Unix()
+	_, err := d.db.ExecContext(ctx, query, roleID, expeditionID, expeditionType, now, now, now)
+	if err != nil {
+		return fmt.Errorf("failed to start adventure union expedition: %w", err)
+	}
+
+	return nil
+}
+
+func (d *DB) CancelAdventureUnionExpedition(ctx context.Context, roleID uint64, expeditionID uint32) error {
+	query := `
+		UPDATE t_adventure_union_expedition
+		SET status = 2, end_time = ?, updated_at = ?
+		WHERE role_id = ? AND expedition_id = ? AND status = 0 AND row_status = 'NORMAL'
+	`
+
+	now := time.Now().Unix()
+	result, err := d.db.ExecContext(ctx, query, now, now, roleID, expeditionID)
+	if err != nil {
+		return fmt.Errorf("failed to cancel adventure union expedition: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("expedition not found or not in progress")
+	}
+
+	return nil
+}
+
+func (d *DB) ClaimAdventureUnionExpeditionReward(ctx context.Context, roleID uint64, expeditionID uint32) error {
+	query := `
+		UPDATE t_adventure_union_expedition
+		SET reward_claimed = 1, updated_at = ?
+		WHERE role_id = ? AND expedition_id = ? AND status = 1 AND row_status = 'NORMAL'
+	`
+
+	now := time.Now().Unix()
+	result, err := d.db.ExecContext(ctx, query, now, roleID, expeditionID)
+	if err != nil {
+		return fmt.Errorf("failed to claim adventure union expedition reward: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("expedition not found or not completed")
+	}
+
+	return nil
+}
+
+func (d *DB) StartAdventureUnionSubdue(ctx context.Context, roleID uint64, subdueID uint32, subdueType uint32, characterGUID uint64) error {
+	query := `
+		INSERT INTO t_adventure_union_subdue
+		(role_id, subdue_id, subdue_type, character_guid, status, start_time, created_at, updated_at)
+		VALUES (?, ?, ?, ?, 0, ?, ?, ?)
+	`
+
+	now := time.Now().Unix()
+	_, err := d.db.ExecContext(ctx, query, roleID, subdueID, subdueType, characterGUID, now, now, now)
+	if err != nil {
+		return fmt.Errorf("failed to start adventure union subdue: %w", err)
+	}
+
+	return nil
+}
+
+func (d *DB) ClaimAdventureUnionSubdueReward(ctx context.Context, roleID uint64, subdueID uint32) error {
+	query := `
+		UPDATE t_adventure_union_subdue
+		SET reward_claimed = 1, updated_at = ?
+		WHERE role_id = ? AND subdue_id = ? AND status = 1 AND row_status = 'NORMAL'
+	`
+
+	now := time.Now().Unix()
+	result, err := d.db.ExecContext(ctx, query, now, roleID, subdueID)
+	if err != nil {
+		return fmt.Errorf("failed to claim adventure union subdue reward: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("subdue not found or not completed")
+	}
+
+	return nil
+}
+
+func (d *DB) OpenAdventureUnionShareboardSlot(ctx context.Context, roleID uint64, slotID uint32) error {
+	query := `
+		INSERT INTO t_adventure_union_shareboard_slot
+		(role_id, slot_id, slot_type, created_at, updated_at)
+		VALUES (?, ?, 1, ?, ?)
+	`
+
+	now := time.Now().Unix()
+	_, err := d.db.ExecContext(ctx, query, roleID, slotID, now, now)
+	if err != nil {
+		return fmt.Errorf("failed to open adventure union shareboard slot: %w", err)
+	}
+
+	return nil
+}
+
+func (d *DB) SetAdventureUnionShareboard(ctx context.Context, roleID uint64, slotID uint32, slotType uint32, show bool) error {
+	query := `
+		UPDATE t_adventure_union_shareboard_slot
+		SET slot_type = ?, show = ?, updated_at = ?
+		WHERE role_id = ? AND slot_id = ? AND row_status = 'NORMAL'
+	`
+
+	now := time.Now().Unix()
+	result, err := d.db.ExecContext(ctx, query, slotType, show, now, roleID, slotID)
+	if err != nil {
+		return fmt.Errorf("failed to set adventure union shareboard: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("shareboard slot not found")
+	}
+
+	return nil
+}
+
+func (d *DB) ClaimAdventureReapReward(ctx context.Context, roleID uint64, reapID uint32) error {
+	query := `
+		UPDATE t_adventure_reap
+		SET claimed = 1, claim_time = ?, updated_at = ?
+		WHERE role_id = ? AND reap_id = ? AND row_status = 'NORMAL'
+	`
+
+	now := time.Now().Unix()
+	result, err := d.db.ExecContext(ctx, query, now, now, roleID, reapID)
+	if err != nil {
+		return fmt.Errorf("failed to claim adventure reap reward: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("adventure reap not found")
+	}
+
+	return nil
+}
+
+func (d *DB) StartAdventureUnionSearch(ctx context.Context, roleID uint64) error {
+	query := `
+		UPDATE t_adventure_union
+		SET auto_search_count = auto_search_count + 1, updated_at = ?
+		WHERE role_id = ? AND row_status = 'NORMAL'
+	`
+
+	now := time.Now().Unix()
+	result, err := d.db.ExecContext(ctx, query, now, roleID)
+	if err != nil {
+		return fmt.Errorf("failed to start adventure union search: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return store.ErrNotFound
+	}
+
+	return nil
+}
+
+func (d *DB) ClaimAdventureUnionCollectionReward(ctx context.Context, roleID uint64, collectionID uint32) error {
+	query := `
+		UPDATE t_adventure_union_collection
+		SET reward_claimed = 1, updated_at = ?
+		WHERE role_id = ? AND collection_id = ? AND completed = 1 AND row_status = 'NORMAL'
+	`
+
+	now := time.Now().Unix()
+	result, err := d.db.ExecContext(ctx, query, now, roleID, collectionID)
+	if err != nil {
+		return fmt.Errorf("failed to claim adventure union collection reward: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("collection not found or not completed")
+	}
+
+	return nil
+}
+
+func (d *DB) ClaimAdventureUnionLevelReward(ctx context.Context, roleID uint64, level uint32) error {
+	tx, err := d.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
+	}
+	defer tx.Rollback()
+
+	var unionLevel uint32
+	err = tx.QueryRowContext(ctx, "SELECT level FROM t_adventure_union WHERE role_id = ? AND row_status = 'NORMAL'", roleID).Scan(&unionLevel)
+	if err != nil {
+		if err.Error() == "sql: no rows in result set" {
+			return store.ErrNotFound
+		}
+		return fmt.Errorf("failed to get adventure union level: %w", err)
+	}
+
+	if unionLevel < level {
+		return fmt.Errorf("level not reached")
+	}
+
+	now := time.Now().Unix()
+	result, err := tx.ExecContext(ctx, `
+		UPDATE t_adventure_union_level_reward
+		SET claimed = 1, claim_time = ?, updated_at = ?
+		WHERE role_id = ? AND level = ? AND row_status = 'NORMAL'
+	`, now, now, roleID, level)
+	if err != nil {
+		return fmt.Errorf("failed to claim level reward: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		_, err = tx.ExecContext(ctx, `
+			INSERT INTO t_adventure_union_level_reward
+			(role_id, level, reward_type, reward_index, reward_count, claimed, claim_time, created_at, updated_at)
+			VALUES (?, ?, 1, 1, 100, 1, ?, ?, ?)
+		`, roleID, level, now, now, now)
+		if err != nil {
+			return fmt.Errorf("failed to create level reward: %w", err)
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction: %w", err)
+	}
+
+	return nil
+}

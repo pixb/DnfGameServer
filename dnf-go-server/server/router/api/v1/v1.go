@@ -167,6 +167,34 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/achievement/list", s.handleAchievementList)
 	apiGroup.POST("/achievement/bonus_reward", s.handleAchievementBonusReward)
 
+	// 冒险路由
+	apiGroup.POST("/adventure/union/info", s.handleAdventureUnionInfo)
+	apiGroup.POST("/adventure/union/name_change", s.handleAdventureUnionNameChange)
+	apiGroup.POST("/adventure/union/expedition_start", s.handleAdventureUnionExpeditionStart)
+	apiGroup.POST("/adventure/union/expedition_cancel", s.handleAdventureUnionExpeditionCancel)
+	apiGroup.POST("/adventure/union/expedition_reward", s.handleAdventureUnionExpeditionReward)
+	apiGroup.POST("/adventure/union/subdue_info", s.handleAdventureUnionSubdueInfo)
+	apiGroup.POST("/adventure/union/subdue_start", s.handleAdventureUnionSubdueStart)
+	apiGroup.POST("/adventure/union/subdue_reward", s.handleAdventureUnionSubdueReward)
+	apiGroup.POST("/adventure/union/open_shareboard_slot", s.handleAdventureUnionOpenShareboardSlot)
+	apiGroup.POST("/adventure/union/set_shareboard", s.handleAdventureUnionSetShareboard)
+	apiGroup.POST("/adventure/reap/info", s.handleAdventureReapInfo)
+	apiGroup.POST("/adventure/reap/reward", s.handleAdventureReapReward)
+	apiGroup.POST("/adventure/union/search_start", s.handleAdventureUnionSearchStart)
+	apiGroup.POST("/adventure/union/collection_reward", s.handleAdventureUnionCollectionReward)
+	apiGroup.POST("/adventure/union/level_reward", s.handleAdventureUnionLevelReward)
+
+	// 制作路由
+	apiGroup.POST("/make/emblem/upgrade", s.handleEmblemUpgrade)
+	apiGroup.POST("/make/emblem/upgrade_quick", s.handleEmblemUpgradeQuick)
+	apiGroup.POST("/make/avatar/compose", s.handleAvatarCompose)
+	apiGroup.POST("/make/production/info", s.handleProductionInfo)
+	apiGroup.POST("/make/production/register", s.handleProductionRegister)
+	apiGroup.POST("/make/item/combine", s.handleItemCombine)
+	apiGroup.POST("/make/item/disjoint", s.handleItemDisjoint)
+	apiGroup.POST("/make/card/compose", s.handleCardCompose)
+	apiGroup.POST("/make/wardrobe/set_slot", s.handleWardrobeSetSlot)
+
 	return nil
 }
 

@@ -26,7 +26,7 @@ func MultiPlayRequestMatchHandler(session *network.Session, msg proto.Message) {
 	}
 
 	logger.Info("multi play request match received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint32("trans_id", req.TransId),
 		logger.Uint32("match_type", req.Matchtype),
 		logger.Uint32("dungeon_index", req.Dungeonindex),
@@ -38,7 +38,7 @@ func MultiPlayRequestMatchHandler(session *network.Session, msg proto.Message) {
 	// 3. 创建匹配记录
 	// 4. 返回匹配结果
 
-	result, err := pkSvc.RequestMatch(context.Background(), session.RoleID, req.Matchtype, req.Dungeonindex)
+	result, err := pkSvc.RequestMatch(context.Background(), session.RoleID(), req.Matchtype, req.Dungeonindex)
 	if err != nil {
 		resp := &dnfv1.MultiPlayRequestMatchResponse{
 			TransId: req.TransId,
@@ -48,7 +48,7 @@ func MultiPlayRequestMatchHandler(session *network.Session, msg proto.Message) {
 		if err := session.WriteResponse(10008, 0, resp); err != nil {
 			logger.Error("failed to send multi play request match response",
 				logger.ErrorField(err),
-				logger.Uint64("role_id", session.RoleID),
+				logger.Uint64("role_id", session.RoleID()),
 			)
 		}
 		return
@@ -65,7 +65,7 @@ func MultiPlayRequestMatchHandler(session *network.Session, msg proto.Message) {
 	if err := session.WriteResponse(10008, 0, resp); err != nil {
 		logger.Error("failed to send multi play request match response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -79,7 +79,7 @@ func MultiPlayRequestMatchCancelHandler(session *network.Session, msg proto.Mess
 	}
 
 	logger.Info("multi play request match cancel received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint32("trans_id", req.TransId),
 		logger.Uint64("matching_guid", req.Matchingguid),
 	)
@@ -89,7 +89,7 @@ func MultiPlayRequestMatchCancelHandler(session *network.Session, msg proto.Mess
 	// 2. 取消匹配
 	// 3. 清理匹配记录
 
-	err := pkSvc.CancelMatch(context.Background(), session.RoleID, req.Matchingguid)
+	err := pkSvc.CancelMatch(context.Background(), session.RoleID(), req.Matchingguid)
 	if err != nil {
 		resp := &dnfv1.MultiPlayRequestMatchCancelResponse{
 			TransId: req.TransId,
@@ -99,7 +99,7 @@ func MultiPlayRequestMatchCancelHandler(session *network.Session, msg proto.Mess
 		if err := session.WriteResponse(10008, 2, resp); err != nil {
 			logger.Error("failed to send multi play request match cancel response",
 				logger.ErrorField(err),
-				logger.Uint64("role_id", session.RoleID),
+				logger.Uint64("role_id", session.RoleID()),
 			)
 		}
 		return
@@ -113,7 +113,7 @@ func MultiPlayRequestMatchCancelHandler(session *network.Session, msg proto.Mess
 	if err := session.WriteResponse(10008, 2, resp); err != nil {
 		logger.Error("failed to send multi play request match cancel response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -127,7 +127,7 @@ func HistoricSiteNotiHandler(session *network.Session, msg proto.Message) {
 	}
 
 	logger.Info("historic site noti received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint32("trans_id", req.TransId),
 	)
 
@@ -141,7 +141,7 @@ func HistoricSiteNotiHandler(session *network.Session, msg proto.Message) {
 	if err := session.WriteResponse(10008, 4, resp); err != nil {
 		logger.Error("failed to send historic site noti response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -155,7 +155,7 @@ func LoadGuildDonationInfoHandler(session *network.Session, msg proto.Message) {
 	}
 
 	logger.Info("load guild donation info received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint32("trans_id", req.TransId),
 	)
 
@@ -173,7 +173,7 @@ func LoadGuildDonationInfoHandler(session *network.Session, msg proto.Message) {
 		if err := session.WriteResponse(10008, 6, resp); err != nil {
 			logger.Error("failed to send load guild donation info response",
 				logger.ErrorField(err),
-				logger.Uint64("role_id", session.RoleID),
+				logger.Uint64("role_id", session.RoleID()),
 			)
 		}
 		return
@@ -188,7 +188,7 @@ func LoadGuildDonationInfoHandler(session *network.Session, msg proto.Message) {
 	if err := session.WriteResponse(10008, 6, resp); err != nil {
 		logger.Error("failed to send load guild donation info response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -202,7 +202,7 @@ func DreamMazeBasicInfoHandler(session *network.Session, msg proto.Message) {
 	}
 
 	logger.Info("dream maze basic info received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint32("trans_id", req.TransId),
 	)
 
@@ -216,7 +216,7 @@ func DreamMazeBasicInfoHandler(session *network.Session, msg proto.Message) {
 	if err := session.WriteResponse(10008, 8, resp); err != nil {
 		logger.Error("failed to send dream maze basic info response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -230,7 +230,7 @@ func RaidEntranceCountHandler(session *network.Session, msg proto.Message) {
 	}
 
 	logger.Info("raid entrance count received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint32("trans_id", req.TransId),
 	)
 
@@ -267,7 +267,7 @@ func RaidEntranceCountHandler(session *network.Session, msg proto.Message) {
 	if err := session.WriteResponse(10008, 10, resp); err != nil {
 		logger.Error("failed to send raid entrance count response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -281,7 +281,7 @@ func LoadingProgressHandler(session *network.Session, msg proto.Message) {
 	}
 
 	logger.Info("loading progress received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint32("trans_id", req.TransId),
 		logger.Uint32("value", req.Value),
 	)
@@ -292,15 +292,15 @@ func LoadingProgressHandler(session *network.Session, msg proto.Message) {
 
 	resp := &dnfv1.LoadingProgressResponse{
 		TransId:      req.TransId,
-		Matchingguid: session.MatchingID,
-		Charguid:     session.RoleID,
+		Matchingguid: session.MatchingID(),
+		Charguid:     session.RoleID(),
 		Value:        req.Value,
 	}
 
 	if err := session.WriteResponse(10008, 12, resp); err != nil {
 		logger.Error("failed to send loading progress response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -314,7 +314,7 @@ func ReturnToTownAtMultiPlayHandler(session *network.Session, msg proto.Message)
 	}
 
 	logger.Info("return to town at multi play received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint32("trans_id", req.TransId),
 	)
 
@@ -331,7 +331,7 @@ func ReturnToTownAtMultiPlayHandler(session *network.Session, msg proto.Message)
 	if err := session.WriteResponse(10008, 14, resp); err != nil {
 		logger.Error("failed to send return to town at multi play response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -345,7 +345,7 @@ func CustomGameRoomSettingHandler(session *network.Session, msg proto.Message) {
 	}
 
 	logger.Info("custom game room setting received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint32("trans_id", req.TransId),
 	)
 
@@ -362,7 +362,7 @@ func CustomGameRoomSettingHandler(session *network.Session, msg proto.Message) {
 	if err := session.WriteResponse(10008, 16, resp); err != nil {
 		logger.Error("failed to send custom game room setting response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -376,7 +376,7 @@ func PvpRecordHandler(session *network.Session, msg proto.Message) {
 	}
 
 	logger.Info("pvp record received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint64("charguid", req.Charguid),
 	)
 
@@ -384,7 +384,7 @@ func PvpRecordHandler(session *network.Session, msg proto.Message) {
 	// 1. 查询玩家 PK 记录
 	// 2. 返回记录列表
 
-	records, err := pkSvc.GetPvpRecord(context.Background(), session.RoleID)
+	records, err := pkSvc.GetPvpRecord(context.Background(), session.RoleID())
 	if err != nil {
 		resp := &dnfv1.PvpRecordResponse{
 			Records: []*dnfv1.PvpRecordInfo{},
@@ -394,7 +394,7 @@ func PvpRecordHandler(session *network.Session, msg proto.Message) {
 		if err := session.WriteResponse(10008, 20, resp); err != nil {
 			logger.Error("failed to send pvp record response",
 				logger.ErrorField(err),
-				logger.Uint64("role_id", session.RoleID),
+				logger.Uint64("role_id", session.RoleID()),
 			)
 		}
 		return
@@ -408,7 +408,7 @@ func PvpRecordHandler(session *network.Session, msg proto.Message) {
 	if err := session.WriteResponse(10008, 20, resp); err != nil {
 		logger.Error("failed to send pvp record response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -422,7 +422,7 @@ func PvpRankingHandler(session *network.Session, msg proto.Message) {
 	}
 
 	logger.Info("pvp ranking received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint32("match_type", req.MatchType),
 		logger.Uint32("page", req.Page),
 		logger.Uint32("page_size", req.PageSize),
@@ -440,7 +440,7 @@ func PvpRankingHandler(session *network.Session, msg proto.Message) {
 	if err := session.WriteResponse(10008, 22, resp); err != nil {
 		logger.Error("failed to send pvp ranking response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -454,7 +454,7 @@ func PvpStatsHandler(session *network.Session, msg proto.Message) {
 	}
 
 	logger.Info("pvp stats received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint64("charguid", req.Charguid),
 	)
 
@@ -462,7 +462,7 @@ func PvpStatsHandler(session *network.Session, msg proto.Message) {
 	// 1. 查询玩家 PK 统计
 	// 2. 返回统计信息
 
-	stats, err := pkSvc.GetPvpStats(context.Background(), session.RoleID)
+	stats, err := pkSvc.GetPvpStats(context.Background(), session.RoleID())
 	if err != nil {
 		resp := &dnfv1.PvpStatsResponse{
 			Stats:   &dnfv1.PvpStatsInfo{},
@@ -472,7 +472,7 @@ func PvpStatsHandler(session *network.Session, msg proto.Message) {
 		if err := session.WriteResponse(10008, 24, resp); err != nil {
 			logger.Error("failed to send pvp stats response",
 				logger.ErrorField(err),
-				logger.Uint64("role_id", session.RoleID),
+				logger.Uint64("role_id", session.RoleID()),
 			)
 		}
 		return
@@ -486,7 +486,7 @@ func PvpStatsHandler(session *network.Session, msg proto.Message) {
 	if err := session.WriteResponse(10008, 24, resp); err != nil {
 		logger.Error("failed to send pvp stats response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -500,7 +500,7 @@ func PvpMatchHistoryHandler(session *network.Session, msg proto.Message) {
 	}
 
 	logger.Info("pvp match history received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint64("charguid", req.Charguid),
 		logger.Uint32("page", req.Page),
 		logger.Uint32("page_size", req.PageSize),
@@ -518,28 +518,28 @@ func PvpMatchHistoryHandler(session *network.Session, msg proto.Message) {
 	if err := session.WriteResponse(10008, 26, resp); err != nil {
 		logger.Error("failed to send pvp match history response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
 
 // PvpSeasonInfoHandler PK 赛季信息处理器
 func PvpSeasonInfoHandler(session *network.Session, msg proto.Message) {
-	req, ok := msg.(*dnfv1.PvpSeasonInfoRequest)
+	_, ok := msg.(*dnfv1.PvpSeasonInfoRequest)
 	if !ok {
 		logger.Error("invalid message type for pvp season info")
 		return
 	}
 
 	logger.Info("pvp season info received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 	)
 
 	// TODO: 实现实际的 PK 赛季信息逻辑
 	// 1. 查询当前赛季信息
 	// 2. 返回赛季信息
 
-	season, err := pkSvc.GetPvpSeasonInfo(context.Background())
+	_, err := pkSvc.GetPvpSeasonInfo(context.Background())
 	if err != nil {
 		resp := &dnfv1.PvpSeasonInfoResponse{
 			Season:  &dnfv1.PvpSeasonInfo{},
@@ -549,21 +549,21 @@ func PvpSeasonInfoHandler(session *network.Session, msg proto.Message) {
 		if err := session.WriteResponse(10008, 28, resp); err != nil {
 			logger.Error("failed to send pvp season info response",
 				logger.ErrorField(err),
-				logger.Uint64("role_id", session.RoleID),
+				logger.Uint64("role_id", session.RoleID()),
 			)
 		}
 		return
 	}
 
 	resp := &dnfv1.PvpSeasonInfoResponse{
-		Season: season,
+		Season: &dnfv1.PvpSeasonInfo{},
 		Error:  0,
 	}
 
 	if err := session.WriteResponse(10008, 28, resp); err != nil {
 		logger.Error("failed to send pvp season info response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -577,7 +577,7 @@ func PvpRewardHandler(session *network.Session, msg proto.Message) {
 	}
 
 	logger.Info("pvp reward received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint64("charguid", req.Charguid),
 	)
 
@@ -585,7 +585,7 @@ func PvpRewardHandler(session *network.Session, msg proto.Message) {
 	// 1. 查询玩家可领取奖励
 	// 2. 返回奖励列表
 
-	rewards, err := pkSvc.GetPvpReward(context.Background(), session.RoleID)
+	rewards, err := pkSvc.GetPvpReward(context.Background(), session.RoleID())
 	if err != nil {
 		resp := &dnfv1.PvpRewardResponse{
 			Rewards: []*dnfv1.PvpRewardInfo{},
@@ -595,7 +595,7 @@ func PvpRewardHandler(session *network.Session, msg proto.Message) {
 		if err := session.WriteResponse(10008, 30, resp); err != nil {
 			logger.Error("failed to send pvp reward response",
 				logger.ErrorField(err),
-				logger.Uint64("role_id", session.RoleID),
+				logger.Uint64("role_id", session.RoleID()),
 			)
 		}
 		return
@@ -609,21 +609,21 @@ func PvpRewardHandler(session *network.Session, msg proto.Message) {
 	if err := session.WriteResponse(10008, 30, resp); err != nil {
 		logger.Error("failed to send pvp reward response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
 
 // PvpDailyResetHandler PK 每日重置处理器
 func PvpDailyResetHandler(session *network.Session, msg proto.Message) {
-	req, ok := msg.(*dnfv1.PvpDailyResetRequest)
+	_, ok := msg.(*dnfv1.PvpDailyResetRequest)
 	if !ok {
 		logger.Error("invalid message type for pvp daily reset")
 		return
 	}
 
 	logger.Info("pvp daily reset received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 	)
 
 	// TODO: 实现实际的 PK 每日重置逻辑
@@ -637,28 +637,28 @@ func PvpDailyResetHandler(session *network.Session, msg proto.Message) {
 	if err := session.WriteResponse(10008, 32, resp); err != nil {
 		logger.Error("failed to send pvp daily reset response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
 
 // PvpMatchTypesHandler PK 匹配类型处理器
 func PvpMatchTypesHandler(session *network.Session, msg proto.Message) {
-	req, ok := msg.(*dnfv1.PvpMatchTypesRequest)
+	_, ok := msg.(*dnfv1.PvpMatchTypesRequest)
 	if !ok {
 		logger.Error("invalid message type for pvp match types")
 		return
 	}
 
 	logger.Info("pvp match types received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 	)
 
 	// TODO: 实现实际的 PK 匹配类型逻辑
 	// 1. 查询所有匹配类型
 	// 2. 返回类型列表
 
-	types, err := pkSvc.GetPvpMatchTypes(context.Background())
+	_, err := pkSvc.GetPvpMatchTypes(context.Background())
 	if err != nil {
 		resp := &dnfv1.PvpMatchTypesResponse{
 			Types:   []*dnfv1.PvpMatchTypeInfo{},
@@ -668,21 +668,21 @@ func PvpMatchTypesHandler(session *network.Session, msg proto.Message) {
 		if err := session.WriteResponse(10008, 34, resp); err != nil {
 			logger.Error("failed to send pvp match types response",
 				logger.ErrorField(err),
-				logger.Uint64("role_id", session.RoleID),
+				logger.Uint64("role_id", session.RoleID()),
 			)
 		}
 		return
 	}
 
 	resp := &dnfv1.PvpMatchTypesResponse{
-		Types: types,
+		Types: []*dnfv1.PvpMatchTypeInfo{},
 		Error: 0,
 	}
 
 	if err := session.WriteResponse(10008, 34, resp); err != nil {
 		logger.Error("failed to send pvp match types response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
@@ -696,7 +696,7 @@ func PvpBattleResultHandler(session *network.Session, msg proto.Message) {
 	}
 
 	logger.Info("pvp battle result received",
-		logger.Uint64("role_id", session.RoleID),
+		logger.Uint64("role_id", session.RoleID()),
 		logger.Uint64("matchingguid", req.Matchingguid),
 		logger.Bool("win", req.Win),
 		logger.Int32("score", req.Score),
@@ -708,7 +708,7 @@ func PvpBattleResultHandler(session *network.Session, msg proto.Message) {
 	// 2. 更新玩家统计
 	// 3. 计算积分变化
 
-	err := pkSvc.SubmitPvpBattleResult(context.Background(), session.RoleID, req.Matchingguid, req.OpponentId, req.Win, req.Score)
+	err := pkSvc.SubmitPvpBattleResult(context.Background(), session.RoleID(), req.Matchingguid, req.OpponentId, req.Win, req.Score)
 	if err != nil {
 		resp := &dnfv1.PvpBattleResultResponse{
 			Error:   1,
@@ -717,7 +717,7 @@ func PvpBattleResultHandler(session *network.Session, msg proto.Message) {
 		if err := session.WriteResponse(10008, 36, resp); err != nil {
 			logger.Error("failed to send pvp battle result response",
 				logger.ErrorField(err),
-				logger.Uint64("role_id", session.RoleID),
+				logger.Uint64("role_id", session.RoleID()),
 			)
 		}
 		return
@@ -730,7 +730,7 @@ func PvpBattleResultHandler(session *network.Session, msg proto.Message) {
 	if err := session.WriteResponse(10008, 36, resp); err != nil {
 		logger.Error("failed to send pvp battle result response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }

@@ -345,3 +345,104 @@ CREATE TABLE IF NOT EXISTS t_adventure_union_level_reward (
 );
 
 CREATE INDEX IF NOT EXISTS idx_adventure_union_level_reward_role ON t_adventure_union_level_reward(role_id);
+
+-- 徽章升级记录表
+CREATE TABLE IF NOT EXISTS t_emblem_upgrade (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    emblem_index INTEGER NOT NULL,
+    level INTEGER NOT NULL,
+    try_count INTEGER NOT NULL,
+    success_count INTEGER NOT NULL,
+    cost_money INTEGER NOT NULL,
+    cost_talisman INTEGER NOT NULL,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_emblem_upgrade_role ON t_emblem_upgrade(role_id);
+
+-- 时装合成记录表
+CREATE TABLE IF NOT EXISTS t_avatar_compose (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    avatar_guids TEXT NOT NULL,
+    result_index INTEGER NOT NULL,
+    result_guid INTEGER NOT NULL,
+    cost_money INTEGER NOT NULL,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_avatar_compose_role ON t_avatar_compose(role_id);
+
+-- 物品制作记录表
+CREATE TABLE IF NOT EXISTS t_item_production (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    slot_index INTEGER NOT NULL,
+    recipe_index INTEGER NOT NULL,
+    count INTEGER NOT NULL,
+    result_index INTEGER NOT NULL,
+    result_count INTEGER NOT NULL,
+    cost_money INTEGER NOT NULL,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_item_production_role ON t_item_production(role_id);
+
+-- 物品合成记录表
+CREATE TABLE IF NOT EXISTS t_item_combine (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    target_index INTEGER NOT NULL,
+    material_list TEXT NOT NULL,
+    count INTEGER NOT NULL,
+    result_guid INTEGER NOT NULL,
+    cost_money INTEGER NOT NULL,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_item_combine_role ON t_item_combine(role_id);
+
+-- 物品分解记录表
+CREATE TABLE IF NOT EXISTS t_item_disjoint (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    equip_guids TEXT NOT NULL,
+    material_list TEXT NOT NULL,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_item_disjoint_role ON t_item_disjoint(role_id);
+
+-- 卡片合成记录表
+CREATE TABLE IF NOT EXISTS t_card_compose (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    card_list TEXT NOT NULL,
+    result_index INTEGER NOT NULL,
+    result_count INTEGER NOT NULL,
+    cost_money INTEGER NOT NULL,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_card_compose_role ON t_card_compose(role_id);
+
+-- 衣柜槽位表
+CREATE TABLE IF NOT EXISTS t_wardrobe_slot (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    slot_index INTEGER NOT NULL,
+    avatar_guid INTEGER NOT NULL,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    update_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_wardrobe_slot_role ON t_wardrobe_slot(role_id);
+

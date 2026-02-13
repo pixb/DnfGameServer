@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/achievement_service"
-	"github.com/pixb/DnfGameServer/dnf-go-server/internal/logger"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 )
 
@@ -17,11 +17,11 @@ func InitAchievementService(svc *achievement_service.AchievementService) {
 
 func AchievementInfoHandler(session *network.Session, msg dnfv1.AchievementInfoRequest) {
 	logger.Info("achievement info request received",
-		logger.Uint64("role_id", session.RoleID),
-		logger.Int32("field_1", msg.Field1),
+		logger.Uint64("role_id", session.RoleID()),
+		logger.Int32("field_1", msg.Field_1),
 	)
 
-	achievements, err := achievementSvc.GetAchievementInfo(context.Background(), session.RoleID, msg.Field1)
+	achievements, err := achievementSvc.GetAchievementInfo(context.Background(), session.RoleID(), msg.Field_1)
 	if err != nil {
 		resp := &dnfv1.AchievementInfoResponse{
 			Error:   1,
@@ -30,7 +30,7 @@ func AchievementInfoHandler(session *network.Session, msg dnfv1.AchievementInfoR
 		if err := session.WriteResponse(10700, 0, resp); err != nil {
 			logger.Error("failed to send achievement info response",
 				logger.ErrorField(err),
-				logger.Uint64("role_id", session.RoleID),
+				logger.Uint64("role_id", session.RoleID()),
 			)
 		}
 		return
@@ -57,20 +57,20 @@ func AchievementInfoHandler(session *network.Session, msg dnfv1.AchievementInfoR
 	if err := session.WriteResponse(10700, 0, resp); err != nil {
 		logger.Error("failed to send achievement info response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
 
 func AchievementRewardHandler(session *network.Session, msg dnfv1.AchievementRewardRequest) {
 	logger.Info("achievement reward request received",
-		logger.Uint64("role_id", session.RoleID),
-		logger.Int32("field_1", msg.Field1),
-		logger.Int32("field_2", msg.Field2),
-		logger.Uint64("field_3", msg.Field3),
+		logger.Uint64("role_id", session.RoleID()),
+		logger.Int32("field_1", msg.Field_1),
+		logger.Int32("field_2", msg.Field_2),
+		logger.Uint64("field_3", msg.Field_3),
 	)
 
-	result, err := achievementSvc.ClaimAchievementReward(context.Background(), session.RoleID, uint32(msg.Field1), uint32(msg.Field2))
+	result, err := achievementSvc.ClaimAchievementReward(context.Background(), session.RoleID(), uint32(msg.Field_1), uint32(msg.Field_2))
 	if err != nil {
 		resp := &dnfv1.AchievementRewardResponse{
 			Error:   1,
@@ -79,7 +79,7 @@ func AchievementRewardHandler(session *network.Session, msg dnfv1.AchievementRew
 		if err := session.WriteResponse(10701, 0, resp); err != nil {
 			logger.Error("failed to send achievement reward response",
 				logger.ErrorField(err),
-				logger.Uint64("role_id", session.RoleID),
+				logger.Uint64("role_id", session.RoleID()),
 			)
 		}
 		return
@@ -90,24 +90,24 @@ func AchievementRewardHandler(session *network.Session, msg dnfv1.AchievementRew
 		Adventureunionexp:   result.AdventureUnionExp,
 		Consumeitems:        result.ConsumeItems,
 		Invenitems:          result.InvenItems,
-		Error:                0,
+		Error:               0,
 	}
 
 	if err := session.WriteResponse(10701, 0, resp); err != nil {
 		logger.Error("failed to send achievement reward response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
 
 func AchievementListHandler(session *network.Session, msg dnfv1.AchievementListRequest) {
 	logger.Info("achievement list request received",
-		logger.Uint64("role_id", session.RoleID),
-		logger.Int32("field_1", msg.Field1),
+		logger.Uint64("role_id", session.RoleID()),
+		logger.Int32("field_1", msg.Field_1),
 	)
 
-	result, err := achievementSvc.GetAchievementList(context.Background(), session.RoleID, msg.Field1)
+	result, err := achievementSvc.GetAchievementList(context.Background(), session.RoleID(), msg.Field_1)
 	if err != nil {
 		resp := &dnfv1.AchievementListResponse{
 			Error:   1,
@@ -116,7 +116,7 @@ func AchievementListHandler(session *network.Session, msg dnfv1.AchievementListR
 		if err := session.WriteResponse(10704, 0, resp); err != nil {
 			logger.Error("failed to send achievement list response",
 				logger.ErrorField(err),
-				logger.Uint64("role_id", session.RoleID),
+				logger.Uint64("role_id", session.RoleID()),
 			)
 		}
 		return
@@ -144,22 +144,22 @@ func AchievementListHandler(session *network.Session, msg dnfv1.AchievementListR
 	if err := session.WriteResponse(10704, 0, resp); err != nil {
 		logger.Error("failed to send achievement list response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }
 
 func AchievementBonusRewardHandler(session *network.Session, msg dnfv1.AchievementBonusRewardRequest) {
 	logger.Info("achievement bonus reward request received",
-		logger.Uint64("role_id", session.RoleID),
-		logger.Int32("field_1", msg.Field1),
-		logger.Int32("field_2", msg.Field2),
-		logger.Int32("field_3", msg.Field3),
-		logger.Int32("field_4", msg.Field4),
-		logger.Int32("field_5", msg.Field5),
+		logger.Uint64("role_id", session.RoleID()),
+		logger.Int32("field_1", msg.Field_1),
+		logger.Int32("field_2", msg.Field_2),
+		logger.Int32("field_3", msg.Field_3),
+		logger.Int32("field_4", msg.Field_4),
+		logger.Int32("field_5", msg.Field_5),
 	)
 
-	rewards, err := achievementSvc.ClaimAchievementBonusReward(context.Background(), session.RoleID, uint32(msg.Field1), uint32(msg.Field2), uint32(msg.Field3), uint32(msg.Field4))
+	rewards, err := achievementSvc.ClaimAchievementBonusReward(context.Background(), session.RoleID(), uint32(msg.Field_1), uint32(msg.Field_2), uint32(msg.Field_3), uint32(msg.Field_4))
 	if err != nil {
 		resp := &dnfv1.AchievementBonusRewardResponse{
 			Error:   1,
@@ -168,7 +168,7 @@ func AchievementBonusRewardHandler(session *network.Session, msg dnfv1.Achieveme
 		if err := session.WriteResponse(10706, 0, resp); err != nil {
 			logger.Error("failed to send achievement bonus reward response",
 				logger.ErrorField(err),
-				logger.Uint64("role_id", session.RoleID),
+				logger.Uint64("role_id", session.RoleID()),
 			)
 		}
 		return
@@ -182,7 +182,7 @@ func AchievementBonusRewardHandler(session *network.Session, msg dnfv1.Achieveme
 	if err := session.WriteResponse(10706, 0, resp); err != nil {
 		logger.Error("failed to send achievement bonus reward response",
 			logger.ErrorField(err),
-			logger.Uint64("role_id", session.RoleID),
+			logger.Uint64("role_id", session.RoleID()),
 		)
 	}
 }

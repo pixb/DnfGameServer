@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 )
 
 // 全局错误定义
@@ -189,4 +191,30 @@ type Driver interface {
 	ClaimAchievementReward(ctx context.Context, roleID uint64, achievementID uint32, rewardType uint32) (*AchievementRewardResult, error)
 	GetAchievementList(ctx context.Context, roleID uint64, queryType int32) (*AchievementListResult, error)
 	ClaimAchievementBonusReward(ctx context.Context, roleID uint64, achievementID uint32, rewardType uint32, rewardIndex uint32, rewardCount uint32) (*AchievementBonusRewardResult, error)
+
+	// ==================== 冒险联盟相关 ====================
+	GetAdventureUnionInfo(ctx context.Context, roleID uint64) (*AdventureUnionInfo, error)
+	ChangeAdventureUnionName(ctx context.Context, roleID uint64, name string) error
+	StartAdventureUnionExpedition(ctx context.Context, roleID uint64, expeditionID uint32, expeditionType uint32) error
+	CancelAdventureUnionExpedition(ctx context.Context, roleID uint64, expeditionID uint32) error
+	ClaimAdventureUnionExpeditionReward(ctx context.Context, roleID uint64, expeditionID uint32) error
+	StartAdventureUnionSubdue(ctx context.Context, roleID uint64, subdueID uint32, subdueType uint32, characterGUID uint64) error
+	ClaimAdventureUnionSubdueReward(ctx context.Context, roleID uint64, subdueID uint32) error
+	OpenAdventureUnionShareboardSlot(ctx context.Context, roleID uint64, slotID uint32) error
+	SetAdventureUnionShareboard(ctx context.Context, roleID uint64, slotID uint32, slotType uint32, show bool) error
+	ClaimAdventureReapReward(ctx context.Context, roleID uint64, reapID uint32) error
+	StartAdventureUnionSearch(ctx context.Context, roleID uint64) error
+	ClaimAdventureUnionCollectionReward(ctx context.Context, roleID uint64, collectionID uint32) error
+	ClaimAdventureUnionLevelReward(ctx context.Context, roleID uint64, level uint32) error
+
+	// ==================== 制作相关 ====================
+	EmblemUpgrade(ctx context.Context, roleID uint64, index int32, tryCount int32, talisman int32) (*EmblemUpgradeResult, error)
+	EmblemUpgradeQuick(ctx context.Context, roleID uint64, source []*dnfv1.IndexCount, target int32) (*EmblemUpgradeQuickResult, error)
+	AvatarCompose(ctx context.Context, roleID uint64, guids []uint64) (*AvatarComposeResult, error)
+	GetProductionInfo(ctx context.Context, roleID uint64, slotType int32) (*ProductionInfoResult, error)
+	ProductionRegister(ctx context.Context, roleID uint64, slotIndex int32, recipeIndex int32, count int32) (*ProductionRegisterResult, error)
+	ItemCombine(ctx context.Context, roleID uint64, index int32, materialItems []*dnfv1.MaterialItem, count int32) (*ItemCombineResult, error)
+	ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*ItemDisjointResult, error)
+	CardCompose(ctx context.Context, roleID uint64, userCardList []*dnfv1.CardCompose) (*CardComposeResult, error)
+	WardrobeSetSlot(ctx context.Context, roleID uint64) error
 }

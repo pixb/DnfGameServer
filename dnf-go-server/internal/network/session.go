@@ -10,11 +10,13 @@ import (
 
 // Session 网络会话 (替代 MINA IoSession)
 type Session struct {
-	id      int64
-	conn    net.Conn
-	attrs   map[string]interface{}
-	attrsMu sync.RWMutex
-	closed  atomic.Bool
+	id         int64
+	conn       net.Conn
+	attrs      map[string]interface{}
+	attrsMu    sync.RWMutex
+	closed     atomic.Bool
+	roleID     uint64
+	matchingID uint64
 }
 
 // NewSession 创建新会话
@@ -24,6 +26,26 @@ func NewSession(conn net.Conn, id int64) *Session {
 		conn:  conn,
 		attrs: make(map[string]interface{}),
 	}
+}
+
+// RoleID 返回角色ID
+func (s *Session) RoleID() uint64 {
+	return s.roleID
+}
+
+// SetRoleID 设置角色ID
+func (s *Session) SetRoleID(roleID uint64) {
+	s.roleID = roleID
+}
+
+// MatchingID 返回匹配ID
+func (s *Session) MatchingID() uint64 {
+	return s.matchingID
+}
+
+// SetMatchingID 设置匹配ID
+func (s *Session) SetMatchingID(matchingID uint64) {
+	s.matchingID = matchingID
 }
 
 // ID 返回会话ID

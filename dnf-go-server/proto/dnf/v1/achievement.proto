@@ -3,6 +3,7 @@ syntax = "proto3";
 package dnf.v1;
 
 import "google/api/annotations.proto";
+import "dnf/v1/item.proto";
 
 option go_package = "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1";
 
@@ -44,19 +45,6 @@ message AchievementRewardResponse {
   PT_ITEMS invenitems = 4;
   int32 error = 5;
   string message = 6;
-}
-
-// 可堆叠物品
-message StackableItem {
-  uint32 index = 1;
-  uint32 count = 2;
-  bool bind = 3;
-  uint64 acquisitiontime = 4;
-}
-
-// 物品列表
-message PT_ITEMS {
-  repeated StackableItem consumeitems = 1;
 }
 
 // 成就列表请求

@@ -885,6 +885,317 @@ func (s *APIV1Service) handleAchievementBonusReward(c echo.Context) error {
 	})
 }
 
+func (s *APIV1Service) handleAdventureUnionInfo(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	roleID := claims.RoleID
+	info, err := s.Store.GetAdventureUnionInfo(c.Request().Context(), roleID)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":                          0,
+		"exp":                            info.Exp,
+		"level":                          info.Level,
+		"day":                            info.Day,
+		"typicalcharacterguid":           info.TypicalCharacterGUID,
+		"name":                           info.Name,
+		"updatetime":                     info.UpdateTime.Unix(),
+		"lastchangenametime":             info.LastChangeNameTime.Unix(),
+		"shareboardbackground":           info.ShareboardBackground,
+		"shareboardframe":                info.ShareboardFrame,
+		"shareboardshowantievilscore":    info.ShareboardShowAntiEvilScore,
+		"autosearchcount":                info.AutoSearchCount,
+		"shareboardtotalantievilscore":   info.ShareboardTotalAntiEvilScore,
+		"shareboardantievilscorerefresh": info.ShareboardAntiEvilScoreRefresh,
+		"isadventureCondition":           info.IsAdventureCondition,
+	})
+}
+
+func (s *APIV1Service) handleAdventureUnionNameChange(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Field1 string `json:"field_1"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	err := s.Store.ChangeAdventureUnionName(c.Request().Context(), roleID, req.Field1)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+func (s *APIV1Service) handleAdventureUnionExpeditionStart(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Field1 int32 `json:"field_1"`
+		Field2 int32 `json:"field_2"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	err := s.Store.StartAdventureUnionExpedition(c.Request().Context(), roleID, uint32(req.Field1), uint32(req.Field2))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+func (s *APIV1Service) handleAdventureUnionExpeditionCancel(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Field1 int32 `json:"field_1"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	err := s.Store.CancelAdventureUnionExpedition(c.Request().Context(), roleID, uint32(req.Field1))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+func (s *APIV1Service) handleAdventureUnionExpeditionReward(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Field1 int32 `json:"field_1"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	err := s.Store.ClaimAdventureUnionExpeditionReward(c.Request().Context(), roleID, uint32(req.Field1))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+func (s *APIV1Service) handleAdventureUnionSubdueInfo(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+}
+
+func (s *APIV1Service) handleAdventureUnionSubdueStart(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Field1 int32  `json:"field_1"`
+		Field2 int32  `json:"field_2"`
+		Field3 uint64 `json:"field_3"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	err := s.Store.StartAdventureUnionSubdue(c.Request().Context(), roleID, uint32(req.Field1), uint32(req.Field2), req.Field3)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+func (s *APIV1Service) handleAdventureUnionSubdueReward(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Field1 int32 `json:"field_1"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	err := s.Store.ClaimAdventureUnionSubdueReward(c.Request().Context(), roleID, uint32(req.Field1))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+func (s *APIV1Service) handleAdventureUnionOpenShareboardSlot(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Field1 int32 `json:"field_1"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	err := s.Store.OpenAdventureUnionShareboardSlot(c.Request().Context(), roleID, uint32(req.Field1))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+func (s *APIV1Service) handleAdventureUnionSetShareboard(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Field1 int32 `json:"field_1"`
+		Field2 int32 `json:"field_2"`
+		Field4 bool  `json:"field_4"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	err := s.Store.SetAdventureUnionShareboard(c.Request().Context(), roleID, uint32(req.Field1), uint32(req.Field2), req.Field4)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+func (s *APIV1Service) handleAdventureReapInfo(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+}
+
+func (s *APIV1Service) handleAdventureReapReward(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Field1 int32 `json:"field_1"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	err := s.Store.ClaimAdventureReapReward(c.Request().Context(), roleID, uint32(req.Field1))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+func (s *APIV1Service) handleAdventureUnionSearchStart(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	roleID := claims.RoleID
+	err := s.Store.StartAdventureUnionSearch(c.Request().Context(), roleID)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+func (s *APIV1Service) handleAdventureUnionCollectionReward(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Field1 int32 `json:"field_1"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	err := s.Store.ClaimAdventureUnionCollectionReward(c.Request().Context(), roleID, uint32(req.Field1))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+func (s *APIV1Service) handleAdventureUnionLevelReward(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Field1 int32 `json:"field_1"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	err := s.Store.ClaimAdventureUnionLevelReward(c.Request().Context(), roleID, uint32(req.Field1))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
 func getUserClaims(c echo.Context) *auth.UserClaims {
 	if v := c.Get("claims"); v != nil {
 		if claims, ok := v.(*auth.UserClaims); ok {
@@ -892,4 +1203,263 @@ func getUserClaims(c echo.Context) *auth.UserClaims {
 		}
 	}
 	return nil
+}
+
+func (s *APIV1Service) handleEmblemUpgrade(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Index    int32 `json:"index"`
+		Trycount int32 `json:"trycount"`
+		Talisman int32 `json:"talisman"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.EmblemUpgrade(c.Request().Context(), roleID, req.Index, req.Trycount, req.Talisman)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":        0,
+		"successcount": result.SuccessCount,
+		"rewards":      result.Rewards,
+		"removeitems":  result.RemoveItems,
+	})
+}
+
+func (s *APIV1Service) handleEmblemUpgradeQuick(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Source []*dnfv1.IndexCount `json:"source"`
+		Target int32               `json:"target"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.EmblemUpgradeQuick(c.Request().Context(), roleID, req.Source, req.Target)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":       0,
+		"rewards":     result.Rewards,
+		"removeitems": result.RemoveItems,
+	})
+}
+
+func (s *APIV1Service) handleAvatarCompose(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Guids []uint64 `json:"guids"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.AvatarCompose(c.Request().Context(), roleID, req.Guids)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":       0,
+		"rewards":     result.Rewards,
+		"removeitems": result.RemoveItems,
+	})
+}
+
+func (s *APIV1Service) handleProductionInfo(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		SlotType int32 `json:"slot_type"`
+	}
+	if err := c.Bind(&req); err != nil {
+		req.SlotType = 1
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.GetProductionInfo(c.Request().Context(), roleID, req.SlotType)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error": 0,
+		"infos": result.Infos,
+	})
+}
+
+func (s *APIV1Service) handleProductionRegister(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		SlotIndex   int32 `json:"slot_index"`
+		RecipeIndex int32 `json:"recipe_index"`
+		Count       int32 `json:"count"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.ProductionRegister(c.Request().Context(), roleID, req.SlotIndex, req.RecipeIndex, req.Count)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":         0,
+		"rewards":       result.Rewards,
+		"removeitems":   result.RemoveItems,
+		"materialitems": result.MaterialItems,
+	})
+}
+
+func (s *APIV1Service) handleItemCombine(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Index         int32                 `json:"index"`
+		MaterialItems []*dnfv1.MaterialItem `json:"material_items"`
+		Count         int32                 `json:"count"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.ItemCombine(c.Request().Context(), roleID, req.Index, req.MaterialItems, req.Count)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":       0,
+		"equip":       result.Equip,
+		"avatar":      result.Avatar,
+		"rewards":     result.Rewards,
+		"removeitems": result.RemoveItems,
+	})
+}
+
+func (s *APIV1Service) handleItemDisjoint(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		Guids []uint64 `json:"guids"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.ItemDisjoint(c.Request().Context(), roleID, req.Guids)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":   0,
+		"rewards": result.Rewards,
+	})
+}
+
+func (s *APIV1Service) handleCardCompose(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req struct {
+		UserCardList []*dnfv1.CardCompose `json:"user_card_list"`
+	}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.CardCompose(c.Request().Context(), roleID, req.UserCardList)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":    0,
+		"card":     result.Card,
+		"currency": result.Currency,
+	})
+}
+
+func (s *APIV1Service) handleWardrobeSetSlot(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	roleID := claims.RoleID
+	err := s.Store.WardrobeSetSlot(c.Request().Context(), roleID)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
 }

@@ -489,7 +489,7 @@ func (s *APIV1Service) AchievementBonusReward(ctx context.Context, req *dnfv1.Ac
 	}
 
 	return &dnfv1.AchievementBonusRewardResponse{
-		Rewards: rewards.InvenItems.Consumeitems,
+		Rewards: rewards.InvenItems.ConsumeItems,
 		Error:   ErrCodeSuccess,
 	}, nil
 }

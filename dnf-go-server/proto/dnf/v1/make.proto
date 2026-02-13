@@ -1,0 +1,131 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+import "google/api/annotations.proto";
+import "dnf/v1/item.proto";
+
+option go_package = "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1;dnfv1";
+
+// 徽章升级请求
+message EmblemUpgradeRequest {
+  int32 index = 1;
+  int32 trycount = 2;
+  int32 talisman = 3;
+}
+
+// 徽章升级响应
+message EmblemUpgradeResponse {
+  int32 successcount = 1;
+  PT_CONTENTS_REWARD_INFO rewards = 2;
+  PT_REMOVEITEMS removeitems = 3;
+  int32 error = 4;
+  string message = 5;
+}
+
+// 徽章快速升级请求
+message EmblemUpgradeQuickRequest {
+  repeated IndexCount source = 1;
+  int32 target = 2;
+}
+
+// 徽章快速升级响应
+message EmblemUpgradeQuickResponse {
+  PT_CONTENTS_REWARD_INFO rewards = 1;
+  PT_REMOVEITEMS removeitems = 2;
+  int32 error = 3;
+  string message = 4;
+}
+
+// 时装合成请求
+message AvatarComposeRequest {
+  repeated uint64 guids = 1;
+}
+
+// 时装合成响应
+message AvatarComposeResponse {
+  PT_CONTENTS_REWARD_INFO rewards = 1;
+  PT_REMOVEITEMS removeitems = 2;
+  int32 error = 3;
+  string message = 4;
+}
+
+// 物品制作信息请求
+message ProductionInfoRequest {
+  int32 slot_type = 1;
+}
+
+// 物品制作信息响应
+message ProductionInfoResponse {
+  repeated PT_ITEM_PRODUCTION_SLOT infos = 1;
+  int32 error = 2;
+  string message = 3;
+}
+
+// 物品制作注册请求
+message ProductionRegisterRequest {
+  int32 slot_index = 1;
+  int32 recipe_index = 2;
+  int32 count = 3;
+}
+
+// 物品制作注册响应
+message ProductionRegisterResponse {
+  PT_CONTENTS_REWARD_INFO rewards = 1;
+  PT_REMOVEITEMS removeitems = 2;
+  repeated ConsumeItems materialitems = 3;
+  int32 error = 4;
+  string message = 5;
+}
+
+// 物品合成请求
+message ItemCombineRequest {
+  int32 index = 1;
+  repeated MaterialItem material_items = 2;
+  int32 count = 3;
+}
+
+// 物品合成响应
+message ItemCombineResponse {
+  PT_EQUIP equip = 1;
+  AvatarItem avatar = 2;
+  PT_CONTENTS_REWARD_INFO rewards = 3;
+  PT_REMOVEITEMS removeitems = 4;
+  int32 error = 5;
+  string message = 6;
+}
+
+// 物品分解请求
+message ItemDisjointRequest {
+  repeated uint64 guids = 1;
+}
+
+// 物品分解响应
+message ItemDisjointResponse {
+  PT_CONTENTS_REWARD_INFO rewards = 1;
+  int32 error = 2;
+  string message = 3;
+}
+
+// 卡片合成请求
+message CardComposeRequest {
+  repeated CardCompose user_card_list = 1;
+}
+
+// 卡片合成响应
+message CardComposeResponse {
+  repeated CardCompose card = 1;
+  repeated MoneyItem currency = 2;
+  int32 error = 3;
+  string message = 4;
+}
+
+// 衣柜槽位设置请求
+message WardrobeSetSlotRequest {
+}
+
+// 衣柜槽位设置响应
+message WardrobeSetSlotResponse {
+  int32 error = 1;
+  string message = 2;
+}

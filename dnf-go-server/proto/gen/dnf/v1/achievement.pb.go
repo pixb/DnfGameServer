@@ -367,120 +367,6 @@ func (x *AchievementRewardResponse) GetMessage() string {
 	return ""
 }
 
-// 可堆叠物品
-type StackableItem struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	Index           uint32                 `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
-	Count           uint32                 `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
-	Bind            bool                   `protobuf:"varint,3,opt,name=bind,proto3" json:"bind,omitempty"`
-	Acquisitiontime uint64                 `protobuf:"varint,4,opt,name=acquisitiontime,proto3" json:"acquisitiontime,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *StackableItem) Reset() {
-	*x = StackableItem{}
-	mi := &file_dnf_v1_achievement_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *StackableItem) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*StackableItem) ProtoMessage() {}
-
-func (x *StackableItem) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_achievement_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use StackableItem.ProtoReflect.Descriptor instead.
-func (*StackableItem) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_achievement_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *StackableItem) GetIndex() uint32 {
-	if x != nil {
-		return x.Index
-	}
-	return 0
-}
-
-func (x *StackableItem) GetCount() uint32 {
-	if x != nil {
-		return x.Count
-	}
-	return 0
-}
-
-func (x *StackableItem) GetBind() bool {
-	if x != nil {
-		return x.Bind
-	}
-	return false
-}
-
-func (x *StackableItem) GetAcquisitiontime() uint64 {
-	if x != nil {
-		return x.Acquisitiontime
-	}
-	return 0
-}
-
-// 物品列表
-type PT_ITEMS struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Consumeitems  []*StackableItem       `protobuf:"bytes,1,rep,name=consumeitems,proto3" json:"consumeitems,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *PT_ITEMS) Reset() {
-	*x = PT_ITEMS{}
-	mi := &file_dnf_v1_achievement_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *PT_ITEMS) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PT_ITEMS) ProtoMessage() {}
-
-func (x *PT_ITEMS) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_achievement_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use PT_ITEMS.ProtoReflect.Descriptor instead.
-func (*PT_ITEMS) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_achievement_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *PT_ITEMS) GetConsumeitems() []*StackableItem {
-	if x != nil {
-		return x.Consumeitems
-	}
-	return nil
-}
-
 // 成就列表请求
 type AchievementListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -491,7 +377,7 @@ type AchievementListRequest struct {
 
 func (x *AchievementListRequest) Reset() {
 	*x = AchievementListRequest{}
-	mi := &file_dnf_v1_achievement_proto_msgTypes[7]
+	mi := &file_dnf_v1_achievement_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -503,7 +389,7 @@ func (x *AchievementListRequest) String() string {
 func (*AchievementListRequest) ProtoMessage() {}
 
 func (x *AchievementListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_achievement_proto_msgTypes[7]
+	mi := &file_dnf_v1_achievement_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -516,7 +402,7 @@ func (x *AchievementListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AchievementListRequest.ProtoReflect.Descriptor instead.
 func (*AchievementListRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_achievement_proto_rawDescGZIP(), []int{7}
+	return file_dnf_v1_achievement_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *AchievementListRequest) GetField_1() int32 {
@@ -539,7 +425,7 @@ type AchievementListResponse struct {
 
 func (x *AchievementListResponse) Reset() {
 	*x = AchievementListResponse{}
-	mi := &file_dnf_v1_achievement_proto_msgTypes[8]
+	mi := &file_dnf_v1_achievement_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -551,7 +437,7 @@ func (x *AchievementListResponse) String() string {
 func (*AchievementListResponse) ProtoMessage() {}
 
 func (x *AchievementListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_achievement_proto_msgTypes[8]
+	mi := &file_dnf_v1_achievement_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -564,7 +450,7 @@ func (x *AchievementListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AchievementListResponse.ProtoReflect.Descriptor instead.
 func (*AchievementListResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_achievement_proto_rawDescGZIP(), []int{8}
+	return file_dnf_v1_achievement_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *AchievementListResponse) GetAchievements() []*AchievementInfo {
@@ -609,7 +495,7 @@ type AchievementBonusRewardRequest struct {
 
 func (x *AchievementBonusRewardRequest) Reset() {
 	*x = AchievementBonusRewardRequest{}
-	mi := &file_dnf_v1_achievement_proto_msgTypes[9]
+	mi := &file_dnf_v1_achievement_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -621,7 +507,7 @@ func (x *AchievementBonusRewardRequest) String() string {
 func (*AchievementBonusRewardRequest) ProtoMessage() {}
 
 func (x *AchievementBonusRewardRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_achievement_proto_msgTypes[9]
+	mi := &file_dnf_v1_achievement_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -634,7 +520,7 @@ func (x *AchievementBonusRewardRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AchievementBonusRewardRequest.ProtoReflect.Descriptor instead.
 func (*AchievementBonusRewardRequest) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_achievement_proto_rawDescGZIP(), []int{9}
+	return file_dnf_v1_achievement_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *AchievementBonusRewardRequest) GetField_1() int32 {
@@ -684,7 +570,7 @@ type AchievementBonusRewardResponse struct {
 
 func (x *AchievementBonusRewardResponse) Reset() {
 	*x = AchievementBonusRewardResponse{}
-	mi := &file_dnf_v1_achievement_proto_msgTypes[10]
+	mi := &file_dnf_v1_achievement_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -696,7 +582,7 @@ func (x *AchievementBonusRewardResponse) String() string {
 func (*AchievementBonusRewardResponse) ProtoMessage() {}
 
 func (x *AchievementBonusRewardResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_dnf_v1_achievement_proto_msgTypes[10]
+	mi := &file_dnf_v1_achievement_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -709,7 +595,7 @@ func (x *AchievementBonusRewardResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AchievementBonusRewardResponse.ProtoReflect.Descriptor instead.
 func (*AchievementBonusRewardResponse) Descriptor() ([]byte, []int) {
-	return file_dnf_v1_achievement_proto_rawDescGZIP(), []int{10}
+	return file_dnf_v1_achievement_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *AchievementBonusRewardResponse) GetRewards() []*StackableItem {
@@ -737,7 +623,7 @@ var File_dnf_v1_achievement_proto protoreflect.FileDescriptor
 
 const file_dnf_v1_achievement_proto_rawDesc = "" +
 	"\n" +
-	"\x18dnf/v1/achievement.proto\x12\x06dnf.v1\x1a\x1cgoogle/api/annotations.proto\"1\n" +
+	"\x18dnf/v1/achievement.proto\x12\x06dnf.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x11dnf/v1/item.proto\"1\n" +
 	"\x16AchievementInfoRequest\x12\x17\n" +
 	"\afield_1\x18\x01 \x01(\x05R\x06field1\"\x86\x01\n" +
 	"\x17AchievementInfoResponse\x12;\n" +
@@ -764,14 +650,7 @@ const file_dnf_v1_achievement_proto_rawDesc = "" +
 	"invenitems\x18\x04 \x01(\v2\x10.dnf.v1.PT_ITEMSR\n" +
 	"invenitems\x12\x14\n" +
 	"\x05error\x18\x05 \x01(\x05R\x05error\x12\x18\n" +
-	"\amessage\x18\x06 \x01(\tR\amessage\"y\n" +
-	"\rStackableItem\x12\x14\n" +
-	"\x05index\x18\x01 \x01(\rR\x05index\x12\x14\n" +
-	"\x05count\x18\x02 \x01(\rR\x05count\x12\x12\n" +
-	"\x04bind\x18\x03 \x01(\bR\x04bind\x12(\n" +
-	"\x0facquisitiontime\x18\x04 \x01(\x04R\x0facquisitiontime\"E\n" +
-	"\bPT_ITEMS\x129\n" +
-	"\fconsumeitems\x18\x01 \x03(\v2\x15.dnf.v1.StackableItemR\fconsumeitems\"1\n" +
+	"\amessage\x18\x06 \x01(\tR\amessage\"1\n" +
 	"\x16AchievementListRequest\x12\x17\n" +
 	"\afield_1\x18\x01 \x01(\x05R\x06field1\"\x9c\x01\n" +
 	"\x17AchievementListResponse\x12;\n" +
@@ -804,32 +683,31 @@ func file_dnf_v1_achievement_proto_rawDescGZIP() []byte {
 	return file_dnf_v1_achievement_proto_rawDescData
 }
 
-var file_dnf_v1_achievement_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_dnf_v1_achievement_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_dnf_v1_achievement_proto_goTypes = []any{
 	(*AchievementInfoRequest)(nil),         // 0: dnf.v1.AchievementInfoRequest
 	(*AchievementInfoResponse)(nil),        // 1: dnf.v1.AchievementInfoResponse
 	(*AchievementInfo)(nil),                // 2: dnf.v1.AchievementInfo
 	(*AchievementRewardRequest)(nil),       // 3: dnf.v1.AchievementRewardRequest
 	(*AchievementRewardResponse)(nil),      // 4: dnf.v1.AchievementRewardResponse
-	(*StackableItem)(nil),                  // 5: dnf.v1.StackableItem
-	(*PT_ITEMS)(nil),                       // 6: dnf.v1.PT_ITEMS
-	(*AchievementListRequest)(nil),         // 7: dnf.v1.AchievementListRequest
-	(*AchievementListResponse)(nil),        // 8: dnf.v1.AchievementListResponse
-	(*AchievementBonusRewardRequest)(nil),  // 9: dnf.v1.AchievementBonusRewardRequest
-	(*AchievementBonusRewardResponse)(nil), // 10: dnf.v1.AchievementBonusRewardResponse
+	(*AchievementListRequest)(nil),         // 5: dnf.v1.AchievementListRequest
+	(*AchievementListResponse)(nil),        // 6: dnf.v1.AchievementListResponse
+	(*AchievementBonusRewardRequest)(nil),  // 7: dnf.v1.AchievementBonusRewardRequest
+	(*AchievementBonusRewardResponse)(nil), // 8: dnf.v1.AchievementBonusRewardResponse
+	(*StackableItem)(nil),                  // 9: dnf.v1.StackableItem
+	(*PT_ITEMS)(nil),                       // 10: dnf.v1.PT_ITEMS
 }
 var file_dnf_v1_achievement_proto_depIdxs = []int32{
-	2, // 0: dnf.v1.AchievementInfoResponse.achievements:type_name -> dnf.v1.AchievementInfo
-	5, // 1: dnf.v1.AchievementRewardResponse.consumeitems:type_name -> dnf.v1.StackableItem
-	6, // 2: dnf.v1.AchievementRewardResponse.invenitems:type_name -> dnf.v1.PT_ITEMS
-	5, // 3: dnf.v1.PT_ITEMS.consumeitems:type_name -> dnf.v1.StackableItem
-	2, // 4: dnf.v1.AchievementListResponse.achievements:type_name -> dnf.v1.AchievementInfo
-	5, // 5: dnf.v1.AchievementBonusRewardResponse.rewards:type_name -> dnf.v1.StackableItem
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	2,  // 0: dnf.v1.AchievementInfoResponse.achievements:type_name -> dnf.v1.AchievementInfo
+	9,  // 1: dnf.v1.AchievementRewardResponse.consumeitems:type_name -> dnf.v1.StackableItem
+	10, // 2: dnf.v1.AchievementRewardResponse.invenitems:type_name -> dnf.v1.PT_ITEMS
+	2,  // 3: dnf.v1.AchievementListResponse.achievements:type_name -> dnf.v1.AchievementInfo
+	9,  // 4: dnf.v1.AchievementBonusRewardResponse.rewards:type_name -> dnf.v1.StackableItem
+	5,  // [5:5] is the sub-list for method output_type
+	5,  // [5:5] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_dnf_v1_achievement_proto_init() }
@@ -837,13 +715,14 @@ func file_dnf_v1_achievement_proto_init() {
 	if File_dnf_v1_achievement_proto != nil {
 		return
 	}
+	file_dnf_v1_item_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dnf_v1_achievement_proto_rawDesc), len(file_dnf_v1_achievement_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

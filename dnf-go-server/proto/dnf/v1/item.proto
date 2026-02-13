@@ -173,3 +173,85 @@ message EquipItemResponse {
   int32 error = 1;
   repeated BagItem updated_items = 2;
 }
+
+// 可堆叠物品
+message StackableItem {
+  uint32 index = 1;
+  uint32 count = 2;
+  bool bind = 3;
+  uint64 acquisition_time = 4;
+}
+
+// 索引数量
+message IndexCount {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+// 材料物品
+message MaterialItem {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+// 卡片合成
+message CardCompose {
+  int32 index = 1;
+  int32 count = 2;
+}
+
+// 货币物品
+message MoneyItem {
+  int64 count = 1;
+}
+
+// 消耗物品
+message ConsumeItems {
+  int32 item_index = 1;
+  int32 count = 2;
+}
+
+// 物品列表
+message PT_ITEMS {
+  repeated StackableItem consume_items = 1;
+  repeated StackableItem material_items = 2;
+  repeated StackableItem emblem_items = 3;
+  repeated EquipmentInfo equip_items = 4;
+  repeated AvatarItem avatar_items = 5;
+}
+
+// 时装物品
+message AvatarItem {
+  int32 index = 1;
+  uint64 guid = 2;
+}
+
+// 装备
+message PT_EQUIP {
+  uint64 guid = 1;
+  int32 index = 2;
+}
+
+// 内容奖励信息
+message PT_CONTENTS_REWARD_INFO {
+  PT_ITEMS items = 1;
+  PT_CURRENCY_REWARD_INFO currency = 2;
+}
+
+// 货币奖励信息
+message PT_CURRENCY_REWARD_INFO {
+  repeated MoneyItem currency = 1;
+}
+
+// 移除物品
+message PT_REMOVEITEMS {
+  repeated ConsumeItems consume_items = 1;
+  repeated StackableItem material_items = 2;
+  repeated StackableItem emblem_items = 3;
+}
+
+// 物品制作槽位
+message PT_ITEM_PRODUCTION_SLOT {
+  int32 slot_index = 1;
+  int32 usable_count = 2;
+}

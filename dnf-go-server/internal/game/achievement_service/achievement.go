@@ -7,15 +7,15 @@ import (
 
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/db"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/db/models"
-	"github.com/pixb/DnfGameServer/dnf-go-server/internal/logger"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 )
 
 type AchievementService struct {
-	db *db.Database
+	db *db.DB
 }
 
-func NewAchievementService(db *db.Database) *AchievementService {
+func NewAchievementService(db *db.DB) *AchievementService {
 	return &AchievementService{
 		db: db,
 	}
@@ -37,10 +37,10 @@ type AchievementListResult struct {
 }
 
 type AchievementRewardResult struct {
-	AdventureUnionLevel int32                    `json:"adventureunionlevel"`
-	AdventureUnionExp   uint64                   `json:"adventureunionexp"`
-	ConsumeItems        []*dnfv1.StackableItem   `json:"consumeitems"`
-	InvenItems          *dnfv1.PT_ITEMS          `json:"invenitems"`
+	AdventureUnionLevel int32                  `json:"adventureunionlevel"`
+	AdventureUnionExp   uint64                 `json:"adventureunionexp"`
+	ConsumeItems        []*dnfv1.StackableItem `json:"consumeitems"`
+	InvenItems          *dnfv1.PT_ITEMS        `json:"invenitems"`
 }
 
 func (s *AchievementService) GetAchievementInfo(ctx context.Context, roleID uint64, queryType int32) ([]AchievementInfo, error) {

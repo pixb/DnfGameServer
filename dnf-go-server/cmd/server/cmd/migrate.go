@@ -32,6 +32,7 @@ Examples:
 
   # Check migration status
   dnf-server migrate status`,
+	RunE: runMigrate,
 }
 
 // migrateFromJavaCmd 从 Java 版本迁移数据
