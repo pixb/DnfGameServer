@@ -1,0 +1,311 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option java_multiple_files = true;
+option java_outer_classname = "PartyProto";
+option java_package = "com.dnfm.mina.protobuf";
+option go_package = "dnf/v1";
+
+import "google/api/annotations.proto";
+import "dnf/v1/pk.proto";
+
+message PartyInfo {
+  uint64 partyguid = 1;
+  uint64 leaderguid = 2;
+  string name = 3;
+  uint32 maxmembers = 4;
+  repeated GroupMember members = 5;
+  uint32 dungeonindex = 6;
+  uint32 roomid = 7;
+  uint32 minlevel = 8;
+  uint32 maxlevel = 9;
+  uint32 area = 10;
+  uint32 subtype = 11;
+  uint32 stageindex = 12;
+  uint32 publictype = 13;
+}
+
+message SearchPartyListRequest {
+  uint32 dungeonindex = 1;
+  uint32 minlevel = 2;
+  uint32 maxlevel = 3;
+}
+
+message SearchPartyListResponse {
+  repeated PartyInfo parties = 1;
+  int32 error = 2;
+}
+
+message RecommendGroupRequest {
+  uint32 dungeonindex = 1;
+}
+
+message RecommendGroupResponse {
+  repeated PartyInfo parties = 1;
+  int32 error = 2;
+}
+
+message ControlGroupRequest {
+  uint32 type = 1;
+  uint64 targetguid = 2;
+  uint64 partyguid = 3;
+  uint64 charguid = 4;
+  uint32 dungeonindex = 5;
+  uint32 minlevel = 6;
+  uint32 maxlevel = 7;
+  uint32 area = 8;
+  uint32 subtype = 9;
+  uint32 stageindex = 10;
+  string partyname = 11;
+  bool isplayer = 12;
+  uint32 publictype = 13;
+  repeated GroupMember users = 14;
+  bool isobserver = 15;
+  bool isobserverchat = 16;
+  repeated BattleOption battleoptionlist = 17;
+}
+
+message ControlGroupResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+  uint32 type = 3;
+  uint32 dungeonindex = 4;
+}
+
+message StartMultiPlayRequest {
+  uint32 input = 1;
+  uint32 type = 2;
+  uint32 index = 3;
+  uint64 partyguid = 4;
+}
+
+message StartMultiPlayResponse {
+  uint64 matchingguid = 1;
+  uint64 dungeonguid = 2;
+  uint32 battleworld = 3;
+  uint32 bchannel = 4;
+  string bip = 5;
+  uint32 bport = 6;
+  uint32 matchtype = 7;
+  uint32 world = 8;
+  uint32 channel = 9;
+  repeated uint64 users = 10;
+  repeated UserMinimumInfo detail = 11;
+  int32 error = 12;
+}
+
+message UserMinimumInfo {
+  uint64 charguid = 1;
+  uint32 job = 2;
+  uint32 growtype = 3;
+  uint32 secondgrowtype = 4;
+  uint32 level = 5;
+  string name = 6;
+  uint32 teamtype = 7;
+  uint32 world = 8;
+}
+
+message MultiPlaySyncDungeonRequest {
+  uint32 stageid = 1;
+  uint32 progress = 2;
+}
+
+message MultiPlaySyncDungeonResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message MultiPlayDungeonEnterCompleteRequest {
+  uint32 stageid = 1;
+}
+
+message MultiPlayDungeonEnterCompleteResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message PartyLoadingStatusRequest {
+}
+
+message PartyLoadingStatusResponse {
+  repeated uint64 loadingusers = 1;
+  repeated uint64 readyusers = 2;
+  int32 error = 3;
+  uint64 transId = 4;
+}
+
+message ReadyToLockstepRequest {
+  bool ready = 1;
+}
+
+message ReadyToLockstepResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message VoteKickOutUserRequest {
+  uint64 targetguid = 1;
+}
+
+message VoteKickOutUserResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message ConnectBattleServerRequest {
+  uint64 matchingguid = 1;
+  uint64 charguid = 2;
+  string authkey = 3;
+}
+
+message ConnectBattleServerResponse {
+  string ip = 1;
+  uint32 port = 2;
+  uint32 bchannel = 3;
+  uint64 servertime = 4;
+  bool encrypt = 5;
+  repeated uint64 seeds = 6;
+  int32 error = 7;
+  uint64 transId = 8;
+}
+
+message CheckProhibitedWordRequest {
+  string word = 1;
+}
+
+message CheckProhibitedWordResponse {
+  bool prohibited = 1;
+  int32 error = 2;
+  uint64 transId = 3;
+}
+
+message HalfOpenPartyAcceptRequest {
+  uint64 partyguid = 1;
+}
+
+message HalfOpenPartyAcceptResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message HalfOpenPartyRefuseRequest {
+  uint64 partyguid = 1;
+}
+
+message HalfOpenPartyRefuseResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message ControlGroupCustomRequest {
+  bytes customdata = 1;
+}
+
+message ControlGroupCustomResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message ControlGroupQueryareaRequest {
+}
+
+message ControlGroupQueryareaResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message HalfOpenPartyJoinRequest {
+  uint64 partyguid = 1;
+}
+
+message HalfOpenPartyJoinResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message PartyDungeonConditionRequest {
+  uint32 dungeonindex = 1;
+}
+
+message PartyDungeonConditionResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message MultiPlayStartDungeonRequest {
+  uint32 stageid = 1;
+}
+
+message MultiPlayStartDungeonResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message RequestToReEnterAcceptDungeonRequest {
+  uint64 charguid = 1;
+}
+
+message RequestToReEnterAcceptDungeonResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message RequestToReEnterDungeonRequest {
+  uint64 charguid = 1;
+}
+
+message RequestToReEnterDungeonResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message SuggestMovePartyRequest {
+  uint32 area = 1;
+}
+
+message SuggestMovePartyResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message TargetUserPartyInfoRequest {
+  uint64 charguid = 1;
+}
+
+message TargetUserPartyInfoResponse {
+  PartyInfo party = 1;
+  int32 error = 2;
+  uint64 transId = 3;
+}
+
+message WaitinigToUsersLoadingRequest {
+}
+
+message WaitinigToUsersLoadingResponse {
+  int32 error = 1;
+  uint64 transId = 2;
+}
+
+message NotifyChangeStatus {
+  uint32 status = 1;
+  uint64 transId = 2;
+}
+
+// API扩展消息
+message CreatePartyRequest {
+}
+
+message CreatePartyResponse {
+  int32 error = 1;
+}
+
+message CheckProhibitedWordRequest {
+  string word = 1;
+}
+
+message CheckProhibitedWordResponse {
+  bool prohibited = 1;
+  int32 error = 2;
+  uint64 transId = 3;
+}

@@ -65,22 +65,58 @@ func RegisterAllHandlers(dispatcher *network.MessageDispatcher) {
 	dispatcher.RegisterHandler(10007, 12, UpgradeGuildSkillHandler) // 升级公会技能
 
 	// ==================== PK 模块 (Module = 10008) ====================
-	dispatcher.RegisterHandler(10008, 0, MultiPlayRequestMatchHandler)      // 多人游戏请求匹配
+	dispatcher.RegisterHandler(10008, 0, MultiPlayRequestMatchHandler)       // 多人游戏请求匹配
 	dispatcher.RegisterHandler(10008, 2, MultiPlayRequestMatchCancelHandler) // 取消多人游戏请求匹配
-	dispatcher.RegisterHandler(10008, 4, HistoricSiteNotiHandler)          // 历史遗迹通知
-	dispatcher.RegisterHandler(10008, 6, LoadGuildDonationInfoHandler)      // 加载公会捐赠信息
-	dispatcher.RegisterHandler(10008, 8, DreamMazeBasicInfoHandler)         // 梦境迷宫基本信息
+	dispatcher.RegisterHandler(10008, 4, HistoricSiteNotiHandler)            // 历史遗迹通知
+	dispatcher.RegisterHandler(10008, 6, LoadGuildDonationInfoHandler)       // 加载公会捐赠信息
+	dispatcher.RegisterHandler(10008, 8, DreamMazeBasicInfoHandler)          // 梦境迷宫基本信息
 	dispatcher.RegisterHandler(10008, 10, RaidEntranceCountHandler)          // 副本入场次数
-	dispatcher.RegisterHandler(10008, 12, LoadingProgressHandler)           // 加载进度
-	dispatcher.RegisterHandler(10008, 14, ReturnToTownAtMultiPlayHandler)   // 返回城镇
-	dispatcher.RegisterHandler(10008, 16, CustomGameRoomSettingHandler)    // 自定义游戏房间设置
-	dispatcher.RegisterHandler(10008, 20, PvpRecordHandler)                 // PK 记录
-	dispatcher.RegisterHandler(10008, 22, PvpRankingHandler)                // PK 排名
-	dispatcher.RegisterHandler(10008, 24, PvpStatsHandler)                  // PK 统计
-	dispatcher.RegisterHandler(10008, 26, PvpMatchHistoryHandler)           // PK 匹配历史
-	dispatcher.RegisterHandler(10008, 28, PvpSeasonInfoHandler)            // PK 赛季信息
-	dispatcher.RegisterHandler(10008, 30, PvpRewardHandler)                 // PK 奖励
-	dispatcher.RegisterHandler(10008, 32, PvpDailyResetHandler)             // PK 每日重置
-	dispatcher.RegisterHandler(10008, 34, PvpMatchTypesHandler)             // PK 匹配类型
-	dispatcher.RegisterHandler(10008, 36, PvpBattleResultHandler)           // PK 战斗结果
+	dispatcher.RegisterHandler(10008, 12, LoadingProgressHandler)            // 加载进度
+	dispatcher.RegisterHandler(10008, 14, ReturnToTownAtMultiPlayHandler)    // 返回城镇
+	dispatcher.RegisterHandler(10008, 16, CustomGameRoomSettingHandler)      // 自定义游戏房间设置
+	dispatcher.RegisterHandler(10008, 20, PvpRecordHandler)                  // PK 记录
+	dispatcher.RegisterHandler(10008, 22, PvpRankingHandler)                 // PK 排名
+	dispatcher.RegisterHandler(10008, 24, PvpStatsHandler)                   // PK 统计
+	dispatcher.RegisterHandler(10008, 26, PvpMatchHistoryHandler)            // PK 匹配历史
+	dispatcher.RegisterHandler(10008, 28, PvpSeasonInfoHandler)              // PK 赛季信息
+	dispatcher.RegisterHandler(10008, 30, PvpRewardHandler)                  // PK 奖励
+	dispatcher.RegisterHandler(10008, 32, PvpDailyResetHandler)              // PK 每日重置
+	dispatcher.RegisterHandler(10008, 34, PvpMatchTypesHandler)              // PK 匹配类型
+	dispatcher.RegisterHandler(10008, 36, PvpBattleResultHandler)            // PK 战斗结果
+
+	// ==================== 冒险联盟模块 (Module = 17201) ====================
+	dispatcher.RegisterHandler(17201, 0, AdventureUnionInfoHandler)               // 冒险联盟信息
+	dispatcher.RegisterHandler(17201, 1, AdventureUnionNameChangeHandler)         // 冒险联盟改名
+	dispatcher.RegisterHandler(17201, 2, AdventureUnionExpeditionStartHandler)    // 冒险联盟远征开始
+	dispatcher.RegisterHandler(17201, 3, AdventureUnionExpeditionCancelHandler)   // 冒险联盟远征取消
+	dispatcher.RegisterHandler(17201, 4, AdventureUnionExpeditionRewardHandler)   // 冒险联盟远征奖励
+	dispatcher.RegisterHandler(17201, 5, AdventureUnionSubdueInfoHandler)         // 冒险联盟讨伐信息
+	dispatcher.RegisterHandler(17201, 6, AdventureUnionSubdueStartHandler)        // 冒险联盟讨伐开始
+	dispatcher.RegisterHandler(17201, 7, AdventureUnionSubdueRewardHandler)       // 冒险联盟讨伐奖励
+	dispatcher.RegisterHandler(17201, 8, AdventureUnionOpenShareboardSlotHandler) // 冒险联盟展示板槽位开启
+	dispatcher.RegisterHandler(17201, 9, AdventureUnionSetShareboardHandler)      // 冒险联盟展示板设置
+	dispatcher.RegisterHandler(17201, 11, AdventureReapInfoHandler)               // 冒险奖励信息
+	dispatcher.RegisterHandler(17201, 12, AdventureReapRewardHandler)             // 冒险奖励领取
+	dispatcher.RegisterHandler(17201, 13, AdventureUnionSearchStartHandler)       // 冒险联盟搜索开始
+	dispatcher.RegisterHandler(17201, 15, AdventureUnionCollectionRewardHandler)  // 冒险联盟收藏奖励
+	dispatcher.RegisterHandler(17201, 16, AdventureUnionLevelRewardHandler)       // 冒险联盟等级奖励
+
+	// ==================== 组队模块 (Module = 10009) ====================
+	dispatcher.RegisterHandler(10009, 0, SearchPartyListHandler)                // 搜索队伍列表
+	dispatcher.RegisterHandler(10009, 2, RecommendGroupHandler)                 // 推荐队伍
+	dispatcher.RegisterHandler(10009, 4, ControlGroupHandler)                   // 控制队伍
+	dispatcher.RegisterHandler(10009, 6, StartMultiPlayHandler)                 // 开始多人游戏
+	dispatcher.RegisterHandler(10009, 8, MultiPlaySyncDungeonHandler)           // 同步多人副本
+	dispatcher.RegisterHandler(10009, 10, MultiPlayDungeonEnterCompleteHandler) // 多人副本进入完成
+	dispatcher.RegisterHandler(10009, 12, PartyLoadingStatusHandler)            // 获取队伍加载状态
+	dispatcher.RegisterHandler(10009, 14, ReadyToLockstepHandler)               // 准备锁定步骤
+	dispatcher.RegisterHandler(10009, 16, VoteKickOutUserHandler)               // 投票踢出用户
+	dispatcher.RegisterHandler(10009, 18, ConnectBattleServerHandler)           // 连接战斗服务器
+	dispatcher.RegisterHandler(10009, 20, CheckProhibitedWordHandler)           // 检查禁用词
+	dispatcher.RegisterHandler(10009, 22, HalfOpenPartyAcceptHandler)           // 半公开队伍接受
+	dispatcher.RegisterHandler(10009, 24, HalfOpenPartyRefuseHandler)           // 半公开队伍拒绝
+	dispatcher.RegisterHandler(10009, 26, HalfOpenPartyJoinHandler)             // 半公开队伍加入
+	dispatcher.RegisterHandler(10009, 28, PartyDungeonConditionHandler)         // 多人游戏副本条件
+	dispatcher.RegisterHandler(10009, 30, MultiPlayStartDungeonHandler)         // 多人游戏开始副本
+	dispatcher.RegisterHandler(10009, 32, TargetUserPartyInfoHandler)           // 目标用户队伍信息
 }

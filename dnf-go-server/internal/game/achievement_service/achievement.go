@@ -247,16 +247,16 @@ func (s *AchievementService) ClaimAchievementReward(ctx context.Context, roleID 
 				Index:           config.RewardIndex,
 				Count:           config.RewardCount,
 				Bind:            false,
-				Acquisitiontime: uint64(now.Unix()),
+				AcquisitionTime: uint64(now.Unix()),
 			},
 		},
 		InvenItems: &dnfv1.PT_ITEMS{
-			Consumeitems: []*dnfv1.StackableItem{
+			ConsumeItems: []*dnfv1.StackableItem{
 				{
 					Index:           config.RewardIndex,
 					Count:           config.RewardCount,
 					Bind:            false,
-					Acquisitiontime: uint64(now.Unix()),
+					AcquisitionTime: uint64(now.Unix()),
 				},
 			},
 		},
@@ -352,7 +352,7 @@ func (s *AchievementService) ClaimAchievementBonusReward(ctx context.Context, ro
 			Index:           rewardIndex,
 			Count:           rewardCount,
 			Bind:            false,
-			Acquisitiontime: uint64(now.Unix()),
+			AcquisitionTime: uint64(now.Unix()),
 		},
 	}
 

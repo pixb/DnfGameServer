@@ -10,6 +10,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/handlers"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/party_service"
 	"github.com/pixb/DnfGameServer/dnf-go-server/server"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store/db"
@@ -84,6 +86,12 @@ func runServe(cmd *cobra.Command, args []string) error {
 			fmt.Println("Test data seeded successfully")
 		}
 	}
+
+	// 3.6 初始化服务
+	fmt.Println("Initializing services...")
+	partySvc := party_service.NewPartyService(s)
+	handlers.InitPartyService(partySvc)
+	fmt.Println("Services initialized successfully")
 
 	// 4. 创建服务器
 	fmt.Println("Creating server...")

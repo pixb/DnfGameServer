@@ -7,6 +7,7 @@ import (
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 var adventureSvc *adventure_service.AdventureService
@@ -15,7 +16,13 @@ func InitAdventureService(svc *adventure_service.AdventureService) {
 	adventureSvc = svc
 }
 
-func AdventureUnionInfoHandler(session *network.Session, msg dnfv1.AdventureUnionInfoRequest) {
+func AdventureUnionInfoHandler(session *network.Session, msg proto.Message) {
+	_, ok := msg.(*dnfv1.AdventureUnionInfoRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure union info")
+		return
+	}
+
 	logger.Info("adventure union info request received",
 		logger.Uint64("role_id", session.RoleID()),
 	)
@@ -60,13 +67,19 @@ func AdventureUnionInfoHandler(session *network.Session, msg dnfv1.AdventureUnio
 	}
 }
 
-func AdventureUnionNameChangeHandler(session *network.Session, msg dnfv1.AdventureUnionNameChangeRequest) {
+func AdventureUnionNameChangeHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AdventureUnionNameChangeRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure union name change")
+		return
+	}
+
 	logger.Info("adventure union name change request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.String("name", msg.Field_1),
+		logger.String("name", req.Field_1),
 	)
 
-	err := adventureSvc.ChangeAdventureUnionName(context.Background(), session.RoleID(), msg.Field_1)
+	err := adventureSvc.ChangeAdventureUnionName(context.Background(), session.RoleID(), req.Field_1)
 	if err != nil {
 		resp := &dnfv1.AdventureUnionNameChangeResponse{
 			Error: 3,
@@ -92,14 +105,20 @@ func AdventureUnionNameChangeHandler(session *network.Session, msg dnfv1.Adventu
 	}
 }
 
-func AdventureUnionExpeditionStartHandler(session *network.Session, msg dnfv1.AdventureUnionExpeditionStartRequest) {
+func AdventureUnionExpeditionStartHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AdventureUnionExpeditionStartRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure union expedition start")
+		return
+	}
+
 	logger.Info("adventure union expedition start request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("expedition_id", msg.Field_1),
-		logger.Int32("expedition_type", msg.Field_2),
+		logger.Int32("expedition_id", req.Field_1),
+		logger.Int32("expedition_type", req.Field_2),
 	)
 
-	err := adventureSvc.StartAdventureUnionExpedition(context.Background(), session.RoleID(), uint32(msg.Field_1), uint32(msg.Field_2))
+	err := adventureSvc.StartAdventureUnionExpedition(context.Background(), session.RoleID(), uint32(req.Field_1), uint32(req.Field_2))
 	if err != nil {
 		resp := &dnfv1.AdventureUnionExpeditionStartResponse{
 			Error: 3,
@@ -125,13 +144,19 @@ func AdventureUnionExpeditionStartHandler(session *network.Session, msg dnfv1.Ad
 	}
 }
 
-func AdventureUnionExpeditionCancelHandler(session *network.Session, msg dnfv1.AdventureUnionExpeditionCancelRequest) {
+func AdventureUnionExpeditionCancelHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AdventureUnionExpeditionCancelRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure union expedition cancel")
+		return
+	}
+
 	logger.Info("adventure union expedition cancel request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("expedition_id", msg.Field_1),
+		logger.Int32("expedition_id", req.Field_1),
 	)
 
-	err := adventureSvc.CancelAdventureUnionExpedition(context.Background(), session.RoleID(), uint32(msg.Field_1))
+	err := adventureSvc.CancelAdventureUnionExpedition(context.Background(), session.RoleID(), uint32(req.Field_1))
 	if err != nil {
 		resp := &dnfv1.AdventureUnionExpeditionCancelResponse{
 			Error: 3,
@@ -157,13 +182,19 @@ func AdventureUnionExpeditionCancelHandler(session *network.Session, msg dnfv1.A
 	}
 }
 
-func AdventureUnionExpeditionRewardHandler(session *network.Session, msg dnfv1.AdventureUnionExpeditionRewardRequest) {
+func AdventureUnionExpeditionRewardHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AdventureUnionExpeditionRewardRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure union expedition reward")
+		return
+	}
+
 	logger.Info("adventure union expedition reward request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("expedition_id", msg.Field_1),
+		logger.Int32("expedition_id", req.Field_1),
 	)
 
-	err := adventureSvc.ClaimAdventureUnionExpeditionReward(context.Background(), session.RoleID(), uint32(msg.Field_1))
+	err := adventureSvc.ClaimAdventureUnionExpeditionReward(context.Background(), session.RoleID(), uint32(req.Field_1))
 	if err != nil {
 		resp := &dnfv1.AdventureUnionExpeditionRewardResponse{
 			Error: 3,
@@ -189,7 +220,13 @@ func AdventureUnionExpeditionRewardHandler(session *network.Session, msg dnfv1.A
 	}
 }
 
-func AdventureUnionSubdueInfoHandler(session *network.Session, msg dnfv1.AdventureUnionSubdueInfoRequest) {
+func AdventureUnionSubdueInfoHandler(session *network.Session, msg proto.Message) {
+	_, ok := msg.(*dnfv1.AdventureUnionSubdueInfoRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure union subdue info")
+		return
+	}
+
 	logger.Info("adventure union subdue info request received",
 		logger.Uint64("role_id", session.RoleID()),
 	)
@@ -206,15 +243,21 @@ func AdventureUnionSubdueInfoHandler(session *network.Session, msg dnfv1.Adventu
 	}
 }
 
-func AdventureUnionSubdueStartHandler(session *network.Session, msg dnfv1.AdventureUnionSubdueStartRequest) {
+func AdventureUnionSubdueStartHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AdventureUnionSubdueStartRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure union subdue start")
+		return
+	}
+
 	logger.Info("adventure union subdue start request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("subdue_id", msg.Field_1),
-		logger.Int32("subdue_type", msg.Field_2),
-		logger.Uint64("character_guid", msg.Field_3),
+		logger.Int32("subdue_id", req.Field_1),
+		logger.Int32("subdue_type", req.Field_2),
+		logger.Uint64("character_guid", req.Field_3),
 	)
 
-	err := adventureSvc.StartAdventureUnionSubdue(context.Background(), session.RoleID(), uint32(msg.Field_1), uint32(msg.Field_2), msg.Field_3)
+	err := adventureSvc.StartAdventureUnionSubdue(context.Background(), session.RoleID(), uint32(req.Field_1), uint32(req.Field_2), req.Field_3)
 	if err != nil {
 		resp := &dnfv1.AdventureUnionSubdueStartResponse{
 			Error: 3,
@@ -240,13 +283,19 @@ func AdventureUnionSubdueStartHandler(session *network.Session, msg dnfv1.Advent
 	}
 }
 
-func AdventureUnionSubdueRewardHandler(session *network.Session, msg dnfv1.AdventureUnionSubdueRewardRequest) {
+func AdventureUnionSubdueRewardHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AdventureUnionSubdueRewardRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure union subdue reward")
+		return
+	}
+
 	logger.Info("adventure union subdue reward request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("subdue_id", msg.Field_1),
+		logger.Int32("subdue_id", req.Field_1),
 	)
 
-	err := adventureSvc.ClaimAdventureUnionSubdueReward(context.Background(), session.RoleID(), uint32(msg.Field_1))
+	err := adventureSvc.ClaimAdventureUnionSubdueReward(context.Background(), session.RoleID(), uint32(req.Field_1))
 	if err != nil {
 		resp := &dnfv1.AdventureUnionSubdueRewardResponse{
 			Error: 3,
@@ -272,13 +321,19 @@ func AdventureUnionSubdueRewardHandler(session *network.Session, msg dnfv1.Adven
 	}
 }
 
-func AdventureUnionOpenShareboardSlotHandler(session *network.Session, msg dnfv1.AdventureUnionOpenShareboardSlotRequest) {
+func AdventureUnionOpenShareboardSlotHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AdventureUnionOpenShareboardSlotRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure union open shareboard slot")
+		return
+	}
+
 	logger.Info("adventure union open shareboard slot request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("slot_id", msg.Field_1),
+		logger.Int32("slot_id", req.Field_1),
 	)
 
-	err := adventureSvc.OpenAdventureUnionShareboardSlot(context.Background(), session.RoleID(), uint32(msg.Field_1))
+	err := adventureSvc.OpenAdventureUnionShareboardSlot(context.Background(), session.RoleID(), uint32(req.Field_1))
 	if err != nil {
 		resp := &dnfv1.AdventureUnionOpenShareboardSlotResponse{
 			Error: 3,
@@ -304,15 +359,21 @@ func AdventureUnionOpenShareboardSlotHandler(session *network.Session, msg dnfv1
 	}
 }
 
-func AdventureUnionSetShareboardHandler(session *network.Session, msg dnfv1.AdventureUnionSetShareboardRequest) {
+func AdventureUnionSetShareboardHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AdventureUnionSetShareboardRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure union set shareboard")
+		return
+	}
+
 	logger.Info("adventure union set shareboard request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("field_1", msg.Field_1),
-		logger.Int32("field_2", msg.Field_2),
-		logger.Bool("field_4", msg.Field_4),
+		logger.Int32("field_1", req.Field_1),
+		logger.Int32("field_2", req.Field_2),
+		logger.Bool("field_4", req.Field_4),
 	)
 
-	err := adventureSvc.SetAdventureUnionShareboard(context.Background(), session.RoleID(), uint32(msg.Field_1), uint32(msg.Field_2), msg.Field_4)
+	err := adventureSvc.SetAdventureUnionShareboard(context.Background(), session.RoleID(), uint32(req.Field_1), uint32(req.Field_2), req.Field_4)
 	if err != nil {
 		resp := &dnfv1.AdventureUnionSetShareboardResponse{
 			Error: 3,
@@ -338,7 +399,13 @@ func AdventureUnionSetShareboardHandler(session *network.Session, msg dnfv1.Adve
 	}
 }
 
-func AdventureReapInfoHandler(session *network.Session, msg dnfv1.AdventureReapInfoRequest) {
+func AdventureReapInfoHandler(session *network.Session, msg proto.Message) {
+	_, ok := msg.(*dnfv1.AdventureReapInfoRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure reap info")
+		return
+	}
+
 	logger.Info("adventure reap info request received",
 		logger.Uint64("role_id", session.RoleID()),
 	)
@@ -355,13 +422,19 @@ func AdventureReapInfoHandler(session *network.Session, msg dnfv1.AdventureReapI
 	}
 }
 
-func AdventureReapRewardHandler(session *network.Session, msg dnfv1.AdventureReapRewardRequest) {
+func AdventureReapRewardHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AdventureReapRewardRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure reap reward")
+		return
+	}
+
 	logger.Info("adventure reap reward request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("reap_id", msg.Field_1),
+		logger.Int32("reap_id", req.Field_1),
 	)
 
-	err := adventureSvc.ClaimAdventureReapReward(context.Background(), session.RoleID(), uint32(msg.Field_1))
+	err := adventureSvc.ClaimAdventureReapReward(context.Background(), session.RoleID(), uint32(req.Field_1))
 	if err != nil {
 		resp := &dnfv1.AdventureReapRewardResponse{
 			Error: 3,
@@ -387,7 +460,13 @@ func AdventureReapRewardHandler(session *network.Session, msg dnfv1.AdventureRea
 	}
 }
 
-func AdventureUnionSearchStartHandler(session *network.Session, msg dnfv1.AdventureUnionSearchStartRequest) {
+func AdventureUnionSearchStartHandler(session *network.Session, msg proto.Message) {
+	_, ok := msg.(*dnfv1.AdventureUnionSearchStartRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure union search start")
+		return
+	}
+
 	logger.Info("adventure union search start request received",
 		logger.Uint64("role_id", session.RoleID()),
 	)
@@ -418,13 +497,19 @@ func AdventureUnionSearchStartHandler(session *network.Session, msg dnfv1.Advent
 	}
 }
 
-func AdventureUnionCollectionRewardHandler(session *network.Session, msg dnfv1.AdventureUnionCollectionRewardRequest) {
+func AdventureUnionCollectionRewardHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AdventureUnionCollectionRewardRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure union collection reward")
+		return
+	}
+
 	logger.Info("adventure union collection reward request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("collection_id", msg.Field_1),
+		logger.Int32("collection_id", req.Field_1),
 	)
 
-	err := adventureSvc.ClaimAdventureUnionCollectionReward(context.Background(), session.RoleID(), uint32(msg.Field_1))
+	err := adventureSvc.ClaimAdventureUnionCollectionReward(context.Background(), session.RoleID(), uint32(req.Field_1))
 	if err != nil {
 		resp := &dnfv1.AdventureUnionCollectionRewardResponse{
 			Error: 3,
@@ -450,13 +535,19 @@ func AdventureUnionCollectionRewardHandler(session *network.Session, msg dnfv1.A
 	}
 }
 
-func AdventureUnionLevelRewardHandler(session *network.Session, msg dnfv1.AdventureUnionLevelRewardRequest) {
+func AdventureUnionLevelRewardHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AdventureUnionLevelRewardRequest)
+	if !ok {
+		logger.Error("invalid message type for adventure union level reward")
+		return
+	}
+
 	logger.Info("adventure union level reward request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("level", msg.Field_1),
+		logger.Int32("level", req.Field_1),
 	)
 
-	err := adventureSvc.ClaimAdventureUnionLevelReward(context.Background(), session.RoleID(), uint32(msg.Field_1))
+	err := adventureSvc.ClaimAdventureUnionLevelReward(context.Background(), session.RoleID(), uint32(req.Field_1))
 	if err != nil {
 		resp := &dnfv1.AdventureUnionLevelRewardResponse{
 			Error: 3,

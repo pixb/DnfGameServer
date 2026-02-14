@@ -217,4 +217,29 @@ type Driver interface {
 	ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*ItemDisjointResult, error)
 	CardCompose(ctx context.Context, roleID uint64, userCardList []*dnfv1.CardCompose) (*CardComposeResult, error)
 	WardrobeSetSlot(ctx context.Context, roleID uint64) error
+
+	// ==================== 组队相关 ====================
+	SearchPartyList(ctx context.Context, dungeonIndex, minLevel, maxLevel uint32) ([]*PartyInfo, error)
+	RecommendGroup(ctx context.Context, dungeonIndex uint32) ([]*PartyInfo, error)
+	ControlGroup(ctx context.Context, roleID uint64, action uint32, targetGuid uint64, partyGuid uint64) error
+	StartMultiPlay(ctx context.Context, roleID uint64, partyGuid uint64) (*StartMultiPlayResult, error)
+	SyncDungeon(ctx context.Context, roleID uint64, stageID, progress uint32) error
+	MultiPlayDungeonEnterComplete(ctx context.Context, roleID uint64, stageID uint32) error
+	GetPartyLoadingStatus(ctx context.Context, roleID uint64) ([]uint64, []uint64, error)
+	ReadyToLockstep(ctx context.Context, roleID uint64, ready bool) error
+	VoteKickOut(ctx context.Context, roleID, targetGuid uint64) error
+	ConnectBattleServer(ctx context.Context, matchingGuid, charguid uint64, authKey string) (string, uint32, error)
+	CheckProhibitedWord(ctx context.Context, word string) (bool, error)
+	HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid uint64) error
+	HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid uint64) error
+	ControlGroupCustom(ctx context.Context, roleID uint64, customData []byte) error
+	ControlGroupQueryarea(ctx context.Context, roleID uint64) error
+	HalfOpenPartyJoin(ctx context.Context, roleID, partyGuid uint64) error
+	PartyDungeonCondition(ctx context.Context, roleID uint64, dungeonIndex uint32) error
+	MultiPlayStartDungeon(ctx context.Context, roleID uint64, stageID uint32) error
+	RequestToReEnterAcceptDungeon(ctx context.Context, roleID, charguid uint64) error
+	RequestToReEnterDungeon(ctx context.Context, roleID, charguid uint64) error
+	SuggestMoveParty(ctx context.Context, roleID uint64, area uint32) error
+	TargetUserPartyInfo(ctx context.Context, roleID, targetGuid uint64) (*PartyInfo, error)
+	WaitinigToUsersLoading(ctx context.Context, roleID uint64) error
 }
