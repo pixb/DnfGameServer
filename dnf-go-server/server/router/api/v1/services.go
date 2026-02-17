@@ -230,7 +230,7 @@ func (s *APIV1Service) SelectCharacter(ctx context.Context, req *dnfv1.SelectCha
 		return nil, status.Errorf(codes.PermissionDenied, "role does not belong to user")
 	}
 
-	gameToken, err := auth.GenerateAccessToken(role.ID, fmt.Sprintf("%d", role.ID), uint64(role.Job), s.Secret)
+	gameToken, err := auth.GenerateAccessToken(role.ID, fmt.Sprintf("%d", role.ID), uint64(role.RoleID), s.Secret)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to generate game token")
 	}

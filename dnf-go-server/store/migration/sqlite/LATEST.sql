@@ -457,3 +457,51 @@ CREATE TABLE IF NOT EXISTS t_adventure_union_level_reward (
 );
 
 CREATE INDEX IF NOT EXISTS idx_adventure_union_level_reward_role ON t_adventure_union_level_reward(role_id);
+
+-- 组队表
+CREATE TABLE IF NOT EXISTS t_party (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    row_status TEXT NOT NULL DEFAULT 'NORMAL',
+    party_id INTEGER NOT NULL UNIQUE,
+    leader_id INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    max_members INTEGER DEFAULT 4,
+    status INTEGER DEFAULT 0,
+    dungeon_index INTEGER DEFAULT 0,
+    room_id INTEGER DEFAULT 0,
+    min_level INTEGER DEFAULT 1,
+    max_level INTEGER DEFAULT 99,
+    area INTEGER DEFAULT 0,
+    subtype INTEGER DEFAULT 0,
+    stage_index INTEGER DEFAULT 0,
+    public_type INTEGER DEFAULT 0,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    update_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (leader_id) REFERENCES role(role_id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_party_leader ON t_party(leader_id);
+CREATE INDEX IF NOT EXISTS idx_party_status ON t_party(status);
+CREATE INDEX IF NOT EXISTS idx_party_dungeon ON t_party(dungeon_index);
+
+-- 组队成员表
+CREATE TABLE IF NOT EXISTS t_party_member (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    row_status TEXT NOT NULL DEFAULT 'NORMAL',
+    party_id INTEGER NOT NULL,
+    role_id INTEGER NOT NULL,
+    player_id INTEGER NOT NULL,
+    team_type INTEGER DEFAULT 0,
+    status INTEGER DEFAULT 0,
+    ping INTEGER DEFAULT 0,
+    join_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (party_id) REFERENCES t_party(party_id) ON DELETE CASCADE,
+    FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_party_member_party ON t_party_member(party_id);
+CREATE INDEX IF NOT EXISTS idx_party_member_role ON t_party_member(role_id);

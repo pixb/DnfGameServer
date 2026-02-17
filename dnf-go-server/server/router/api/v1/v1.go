@@ -195,6 +195,12 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/make/card/compose", s.handleCardCompose)
 	apiGroup.POST("/make/wardrobe/set_slot", s.handleWardrobeSetSlot)
 
+	// 组队路由
+	apiGroup.POST("/party/search", s.handleSearchPartyList)
+	apiGroup.POST("/party/create", s.handleCreateParty)
+	apiGroup.POST("/party/check_prohibited_word", s.handleCheckProhibitedWord)
+	apiGroup.POST("/party/target_user_info", s.handleTargetUserPartyInfo)
+
 	return nil
 }
 

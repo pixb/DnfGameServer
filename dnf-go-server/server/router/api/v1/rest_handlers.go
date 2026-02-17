@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"time"
@@ -11,6 +12,15 @@ import (
 	"github.com/pixb/DnfGameServer/dnf-go-server/server/auth"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 )
+
+// getUserClaims 从Echo上下文获取用户Claims
+func getUserClaims(c echo.Context) *auth.UserClaims {
+	claims, ok := c.Get("claims").(*auth.UserClaims)
+	if !ok {
+		return nil
+	}
+	return claims
+}
 
 func (s *APIV1Service) handleGetBag(c echo.Context) error {
 	claims := getUserClaims(c)
@@ -718,6 +728,9 @@ func (s *APIV1Service) handleBuyoutAuction(c echo.Context) error {
 	if auction == nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
 	}
+	if auction.Status != store.AuctionStatusSelling {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 11})
+	}
 	if auction.SellerID == claims.UserID {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 12})
 	}
@@ -730,48 +743,20 @@ func (s *APIV1Service) handleBuyoutAuction(c echo.Context) error {
 	currency.Gold -= auction.TotalPrice
 	s.Store.UpdateRoleCurrency(c.Request().Context(), currency)
 
-	sellerIncome := auction.TotalPrice - auction.TotalPrice/20
-	sellerCurrency, _ := s.Store.GetRoleCurrency(c.Request().Context(), auction.SellerID)
-	sellerCurrency.Gold += sellerIncome
-	s.Store.UpdateRoleCurrency(c.Request().Context(), sellerCurrency)
+	if auction.BidderID > 0 {
+		prevCurrency, _ := s.Store.GetRoleCurrency(c.Request().Context(), auction.BidderID)
+		prevCurrency.Gold += auction.BidPrice
+		s.Store.UpdateRoleCurrency(c.Request().Context(), prevCurrency)
+	}
 
-	auctionStatus := store.AuctionStatusSold
+	status := store.AuctionStatusSold
 	s.Store.UpdateAuctionItem(c.Request().Context(), &store.UpdateAuctionItem{
-		ID:       auction.ID,
-		Status:   &auctionStatus,
-		BidderID: &claims.UserID,
+		ID:      auction.ID,
+		Status:  &status,
+		BuyerID: &claims.UserID,
 	})
 
-	s.Store.CreateAuctionHistory(c.Request().Context(), &store.CreateAuctionHistory{
-		AuctionID:    auction.ID,
-		SellerID:     auction.SellerID,
-		BuyerID:      claims.UserID,
-		ItemID:       auction.ItemID,
-		Count:        auction.Count,
-		FinalPrice:   auction.TotalPrice,
-		SellerIncome: sellerIncome,
-	})
-
-	newItem, _ := s.Store.CreateBagItem(c.Request().Context(), &store.BagItem{
-		RoleID:       claims.UserID,
-		ItemID:       auction.ItemID,
-		GridIndex:    0,
-		Count:        auction.Count,
-		IsEquiped:    false,
-		BindType:     2,
-		Durability:   100,
-		EnhanceLevel: 0,
-		Attributes:   auction.Attributes,
-	})
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error": 0,
-		"item": map[string]interface{}{
-			"guid":   newItem.ID,
-			"itemId": newItem.ItemID,
-			"count":  newItem.Count,
-		},
-	})
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
 }
 
 func (s *APIV1Service) handleAchievementInfo(c echo.Context) error {
@@ -780,13 +765,10 @@ func (s *APIV1Service) handleAchievementInfo(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	field1, _ := strconv.Atoi(c.FormValue("field_1"))
-
-	achievements, _ := s.Store.GetAchievements(c.Request().Context(), claims.UserID, int32(field1))
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":        0,
-		"achievements": achievements,
+		"error":        1,
+		"message":      "Achievement system not implemented yet",
+		"achievements": []map[string]interface{}{},
 	})
 }
 
@@ -796,68 +778,14 @@ func (s *APIV1Service) handleAchievementReward(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	field1, _ := strconv.Atoi(c.FormValue("field_1"))
-	field2, _ := strconv.Atoi(c.FormValue("field_2"))
-
-	reward, err := s.Store.ClaimAchievementReward(c.Request().Context(), claims.UserID, uint32(field1), uint32(field2))
-	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"error":   1,
-			"message": err.Error(),
-		})
-	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":               0,
-		"adventureunionlevel": reward.AdventureUnionLevel,
-		"adventureunionexp":   reward.AdventureUnionExp,
-		"consumeitems":        reward.ConsumeItems,
-		"invenitems":          reward.InvenItems,
+		"error":   1,
+		"message": "Achievement system not implemented yet",
 	})
 }
 
 func (s *APIV1Service) handleAchievementList(c echo.Context) error {
-	if s == nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{"code": 13, "message": "service not initialized"})
-	}
-
-	claims := getUserClaims(c)
-	if claims == nil {
-		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
-	}
-
-	if s.Store == nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{"code": 13, "message": "store not initialized"})
-	}
-
-	var req struct {
-		Field_1 int `json:"field_1"`
-	}
-	if err := c.Bind(&req); err != nil {
-		req.Field_1 = 1
-	}
-
-	result, err := s.Store.GetAchievementList(c.Request().Context(), claims.UserID, int32(req.Field_1))
-	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"error":   1,
-			"message": err.Error(),
-		})
-	}
-
-	if result == nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"error":        0,
-			"achievements": []*store.AchievementInfo{},
-			"total":        0,
-		})
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":        0,
-		"achievements": result.Achievements,
-		"total":        result.Total,
-	})
+	return s.handleAchievementInfo(c)
 }
 
 func (s *APIV1Service) handleAchievementBonusReward(c echo.Context) error {
@@ -866,22 +794,9 @@ func (s *APIV1Service) handleAchievementBonusReward(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	field1, _ := strconv.Atoi(c.FormValue("field_1"))
-	field2, _ := strconv.Atoi(c.FormValue("field_2"))
-	field3, _ := strconv.Atoi(c.FormValue("field_3"))
-	field4, _ := strconv.Atoi(c.FormValue("field_4"))
-
-	rewards, err := s.Store.ClaimAchievementBonusReward(c.Request().Context(), claims.UserID, uint32(field1), uint32(field2), uint32(field3), uint32(field4))
-	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"error":   1,
-			"message": err.Error(),
-		})
-	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":      0,
-		"invenitems": rewards.InvenItems,
+		"error":   1,
+		"message": "Achievement system not implemented yet",
 	})
 }
 
@@ -891,28 +806,18 @@ func (s *APIV1Service) handleAdventureUnionInfo(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	roleID := claims.RoleID
-	info, err := s.Store.GetAdventureUnionInfo(c.Request().Context(), roleID)
+	roleID := claims.UserID
+	union, err := s.Store.GetAdventureUnionInfo(c.Request().Context(), roleID)
+
 	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error": 3,
+		})
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":                          0,
-		"exp":                            info.Exp,
-		"level":                          info.Level,
-		"day":                            info.Day,
-		"typicalcharacterguid":           info.TypicalCharacterGUID,
-		"name":                           info.Name,
-		"updatetime":                     info.UpdateTime.Unix(),
-		"lastchangenametime":             info.LastChangeNameTime.Unix(),
-		"shareboardbackground":           info.ShareboardBackground,
-		"shareboardframe":                info.ShareboardFrame,
-		"shareboardshowantievilscore":    info.ShareboardShowAntiEvilScore,
-		"autosearchcount":                info.AutoSearchCount,
-		"shareboardtotalantievilscore":   info.ShareboardTotalAntiEvilScore,
-		"shareboardantievilscorerefresh": info.ShareboardAntiEvilScoreRefresh,
-		"isadventureCondition":           info.IsAdventureCondition,
+		"error": 0,
+		"union": union,
 	})
 }
 
@@ -922,15 +827,9 @@ func (s *APIV1Service) handleAdventureUnionNameChange(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Field1 string `json:"field_1"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
+	name := c.FormValue("field_1")
 
-	roleID := claims.RoleID
-	err := s.Store.ChangeAdventureUnionName(c.Request().Context(), roleID, req.Field1)
+	err := s.Store.ChangeAdventureUnionName(c.Request().Context(), claims.UserID, name)
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
@@ -944,16 +843,10 @@ func (s *APIV1Service) handleAdventureUnionExpeditionStart(c echo.Context) error
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Field1 int32 `json:"field_1"`
-		Field2 int32 `json:"field_2"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
+	typeVal, _ := strconv.Atoi(c.FormValue("field_1"))
+	area, _ := strconv.Atoi(c.FormValue("field_2"))
 
-	roleID := claims.RoleID
-	err := s.Store.StartAdventureUnionExpedition(c.Request().Context(), roleID, uint32(req.Field1), uint32(req.Field2))
+	err := s.Store.StartAdventureUnionExpedition(c.Request().Context(), claims.UserID, uint32(typeVal), uint32(area))
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
@@ -967,15 +860,9 @@ func (s *APIV1Service) handleAdventureUnionExpeditionCancel(c echo.Context) erro
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Field1 int32 `json:"field_1"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
+	typeVal, _ := strconv.Atoi(c.FormValue("field_1"))
 
-	roleID := claims.RoleID
-	err := s.Store.CancelAdventureUnionExpedition(c.Request().Context(), roleID, uint32(req.Field1))
+	err := s.Store.CancelAdventureUnionExpedition(c.Request().Context(), claims.UserID, uint32(typeVal))
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
@@ -989,15 +876,9 @@ func (s *APIV1Service) handleAdventureUnionExpeditionReward(c echo.Context) erro
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Field1 int32 `json:"field_1"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
+	typeVal, _ := strconv.Atoi(c.FormValue("field_1"))
 
-	roleID := claims.RoleID
-	err := s.Store.ClaimAdventureUnionExpeditionReward(c.Request().Context(), roleID, uint32(req.Field1))
+	err := s.Store.ClaimAdventureUnionExpeditionReward(c.Request().Context(), claims.UserID, uint32(typeVal))
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
@@ -1011,7 +892,15 @@ func (s *APIV1Service) handleAdventureUnionSubdueInfo(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	union, err := s.Store.GetAdventureUnionInfo(c.Request().Context(), claims.UserID)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error": 0,
+		"union": union,
+	})
 }
 
 func (s *APIV1Service) handleAdventureUnionSubdueStart(c echo.Context) error {
@@ -1020,17 +909,11 @@ func (s *APIV1Service) handleAdventureUnionSubdueStart(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Field1 int32  `json:"field_1"`
-		Field2 int32  `json:"field_2"`
-		Field3 uint64 `json:"field_3"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
+	typeVal, _ := strconv.Atoi(c.FormValue("field_1"))
+	area, _ := strconv.Atoi(c.FormValue("field_2"))
+	charGuid, _ := strconv.ParseUint(c.FormValue("field_3"), 10, 64)
 
-	roleID := claims.RoleID
-	err := s.Store.StartAdventureUnionSubdue(c.Request().Context(), roleID, uint32(req.Field1), uint32(req.Field2), req.Field3)
+	err := s.Store.StartAdventureUnionSubdue(c.Request().Context(), claims.UserID, uint32(typeVal), uint32(area), charGuid)
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
@@ -1044,15 +927,9 @@ func (s *APIV1Service) handleAdventureUnionSubdueReward(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Field1 int32 `json:"field_1"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
+	typeVal, _ := strconv.Atoi(c.FormValue("field_1"))
 
-	roleID := claims.RoleID
-	err := s.Store.ClaimAdventureUnionSubdueReward(c.Request().Context(), roleID, uint32(req.Field1))
+	err := s.Store.ClaimAdventureUnionSubdueReward(c.Request().Context(), claims.UserID, uint32(typeVal))
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
@@ -1066,15 +943,9 @@ func (s *APIV1Service) handleAdventureUnionOpenShareboardSlot(c echo.Context) er
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Field1 int32 `json:"field_1"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
+	typeVal, _ := strconv.Atoi(c.FormValue("field_1"))
 
-	roleID := claims.RoleID
-	err := s.Store.OpenAdventureUnionShareboardSlot(c.Request().Context(), roleID, uint32(req.Field1))
+	err := s.Store.OpenAdventureUnionShareboardSlot(c.Request().Context(), claims.UserID, uint32(typeVal))
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
@@ -1088,17 +959,11 @@ func (s *APIV1Service) handleAdventureUnionSetShareboard(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Field1 int32 `json:"field_1"`
-		Field2 int32 `json:"field_2"`
-		Field4 bool  `json:"field_4"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
+	typeVal, _ := strconv.Atoi(c.FormValue("field_1"))
+	slot, _ := strconv.Atoi(c.FormValue("field_2"))
+	isPublic := c.FormValue("field_4") == "true"
 
-	roleID := claims.RoleID
-	err := s.Store.SetAdventureUnionShareboard(c.Request().Context(), roleID, uint32(req.Field1), uint32(req.Field2), req.Field4)
+	err := s.Store.SetAdventureUnionShareboard(c.Request().Context(), claims.UserID, uint32(typeVal), uint32(slot), isPublic)
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
@@ -1121,15 +986,9 @@ func (s *APIV1Service) handleAdventureReapReward(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Field1 int32 `json:"field_1"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
+	typeVal, _ := strconv.Atoi(c.FormValue("field_1"))
 
-	roleID := claims.RoleID
-	err := s.Store.ClaimAdventureReapReward(c.Request().Context(), roleID, uint32(req.Field1))
+	err := s.Store.ClaimAdventureReapReward(c.Request().Context(), claims.UserID, uint32(typeVal))
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
@@ -1143,8 +1002,7 @@ func (s *APIV1Service) handleAdventureUnionSearchStart(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	roleID := claims.RoleID
-	err := s.Store.StartAdventureUnionSearch(c.Request().Context(), roleID)
+	err := s.Store.StartAdventureUnionSearch(c.Request().Context(), claims.UserID)
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
@@ -1158,15 +1016,9 @@ func (s *APIV1Service) handleAdventureUnionCollectionReward(c echo.Context) erro
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Field1 int32 `json:"field_1"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
+	typeVal, _ := strconv.Atoi(c.FormValue("field_1"))
 
-	roleID := claims.RoleID
-	err := s.Store.ClaimAdventureUnionCollectionReward(c.Request().Context(), roleID, uint32(req.Field1))
+	err := s.Store.ClaimAdventureUnionCollectionReward(c.Request().Context(), claims.UserID, uint32(typeVal))
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
@@ -1180,29 +1032,14 @@ func (s *APIV1Service) handleAdventureUnionLevelReward(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Field1 int32 `json:"field_1"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
+	typeVal, _ := strconv.Atoi(c.FormValue("field_1"))
 
-	roleID := claims.RoleID
-	err := s.Store.ClaimAdventureUnionLevelReward(c.Request().Context(), roleID, uint32(req.Field1))
+	err := s.Store.ClaimAdventureUnionLevelReward(c.Request().Context(), claims.UserID, uint32(typeVal))
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
-}
-
-func getUserClaims(c echo.Context) *auth.UserClaims {
-	if v := c.Get("claims"); v != nil {
-		if claims, ok := v.(*auth.UserClaims); ok {
-			return claims
-		}
-	}
-	return nil
 }
 
 func (s *APIV1Service) handleEmblemUpgrade(c echo.Context) error {
@@ -1211,29 +1048,9 @@ func (s *APIV1Service) handleEmblemUpgrade(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Index    int32 `json:"index"`
-		Trycount int32 `json:"trycount"`
-		Talisman int32 `json:"talisman"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
-
-	roleID := claims.RoleID
-	result, err := s.Store.EmblemUpgrade(c.Request().Context(), roleID, req.Index, req.Trycount, req.Talisman)
-	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"error":   1,
-			"message": err.Error(),
-		})
-	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":        0,
-		"successcount": result.SuccessCount,
-		"rewards":      result.Rewards,
-		"removeitems":  result.RemoveItems,
+		"error":   1,
+		"message": "Emblem upgrade not implemented yet",
 	})
 }
 
@@ -1243,27 +1060,9 @@ func (s *APIV1Service) handleEmblemUpgradeQuick(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Source []*dnfv1.IndexCount `json:"source"`
-		Target int32               `json:"target"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
-
-	roleID := claims.RoleID
-	result, err := s.Store.EmblemUpgradeQuick(c.Request().Context(), roleID, req.Source, req.Target)
-	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"error":   1,
-			"message": err.Error(),
-		})
-	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":       0,
-		"rewards":     result.Rewards,
-		"removeitems": result.RemoveItems,
+		"error":   1,
+		"message": "Emblem upgrade quick not implemented yet",
 	})
 }
 
@@ -1273,26 +1072,9 @@ func (s *APIV1Service) handleAvatarCompose(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Guids []uint64 `json:"guids"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
-
-	roleID := claims.RoleID
-	result, err := s.Store.AvatarCompose(c.Request().Context(), roleID, req.Guids)
-	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"error":   1,
-			"message": err.Error(),
-		})
-	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":       0,
-		"rewards":     result.Rewards,
-		"removeitems": result.RemoveItems,
+		"error":   1,
+		"message": "Avatar compose not implemented yet",
 	})
 }
 
@@ -1302,26 +1084,7 @@ func (s *APIV1Service) handleProductionInfo(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		SlotType int32 `json:"slot_type"`
-	}
-	if err := c.Bind(&req); err != nil {
-		req.SlotType = 1
-	}
-
-	roleID := claims.RoleID
-	result, err := s.Store.GetProductionInfo(c.Request().Context(), roleID, req.SlotType)
-	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"error":   1,
-			"message": err.Error(),
-		})
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error": 0,
-		"infos": result.Infos,
-	})
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
 }
 
 func (s *APIV1Service) handleProductionRegister(c echo.Context) error {
@@ -1330,30 +1093,7 @@ func (s *APIV1Service) handleProductionRegister(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		SlotIndex   int32 `json:"slot_index"`
-		RecipeIndex int32 `json:"recipe_index"`
-		Count       int32 `json:"count"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
-
-	roleID := claims.RoleID
-	result, err := s.Store.ProductionRegister(c.Request().Context(), roleID, req.SlotIndex, req.RecipeIndex, req.Count)
-	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"error":   1,
-			"message": err.Error(),
-		})
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":         0,
-		"rewards":       result.Rewards,
-		"removeitems":   result.RemoveItems,
-		"materialitems": result.MaterialItems,
-	})
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
 }
 
 func (s *APIV1Service) handleItemCombine(c echo.Context) error {
@@ -1362,30 +1102,9 @@ func (s *APIV1Service) handleItemCombine(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Index         int32                 `json:"index"`
-		MaterialItems []*dnfv1.MaterialItem `json:"material_items"`
-		Count         int32                 `json:"count"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
-
-	roleID := claims.RoleID
-	result, err := s.Store.ItemCombine(c.Request().Context(), roleID, req.Index, req.MaterialItems, req.Count)
-	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"error":   1,
-			"message": err.Error(),
-		})
-	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":       0,
-		"equip":       result.Equip,
-		"avatar":      result.Avatar,
-		"rewards":     result.Rewards,
-		"removeitems": result.RemoveItems,
+		"error":   1,
+		"message": "Item combine not implemented yet",
 	})
 }
 
@@ -1395,25 +1114,9 @@ func (s *APIV1Service) handleItemDisjoint(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		Guids []uint64 `json:"guids"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
-
-	roleID := claims.RoleID
-	result, err := s.Store.ItemDisjoint(c.Request().Context(), roleID, req.Guids)
-	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"error":   1,
-			"message": err.Error(),
-		})
-	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":   0,
-		"rewards": result.Rewards,
+		"error":   1,
+		"message": "Item disjoint not implemented yet",
 	})
 }
 
@@ -1423,26 +1126,9 @@ func (s *APIV1Service) handleCardCompose(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	var req struct {
-		UserCardList []*dnfv1.CardCompose `json:"user_card_list"`
-	}
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
-	}
-
-	roleID := claims.RoleID
-	result, err := s.Store.CardCompose(c.Request().Context(), roleID, req.UserCardList)
-	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"error":   1,
-			"message": err.Error(),
-		})
-	}
-
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":    0,
-		"card":     result.Card,
-		"currency": result.Currency,
+		"error":   1,
+		"message": "Card compose not implemented yet",
 	})
 }
 
@@ -1462,4 +1148,171 @@ func (s *APIV1Service) handleWardrobeSetSlot(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+// 组队路由处理函数
+
+func (s *APIV1Service) handleSearchPartyList(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	dungeonIndex := uint32(0)
+	if v, ok := req["dungeonindex"].(float64); ok {
+		dungeonIndex = uint32(v)
+	}
+	minLevel := uint32(0)
+	if v, ok := req["minlevel"].(float64); ok {
+		minLevel = uint32(v)
+	}
+	maxLevel := uint32(0)
+	if v, ok := req["maxlevel"].(float64); ok {
+		maxLevel = uint32(v)
+	}
+
+	parties, err := s.Store.SearchPartyList(c.Request().Context(), dungeonIndex, minLevel, maxLevel)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	var partyInfos []*dnfv1.PartyInfo
+	for _, party := range parties {
+		partyInfos = append(partyInfos, &dnfv1.PartyInfo{
+			Partyguid:    party.PartyGuid,
+			Leaderguid:   party.LeaderGuid,
+			Name:         party.Name,
+			Maxmembers:   party.MaxMembers,
+			Members:      party.Members,
+			Dungeonindex: party.DungeonIndex,
+			Roomid:       uint32(party.RoomID),
+			Minlevel:     party.MinLevel,
+			Maxlevel:     party.MaxLevel,
+			Area:         party.Area,
+			Subtype:      party.SubType,
+			Stageindex:   party.StageIndex,
+			Publictype:   party.PublicType,
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":   0,
+		"parties": partyInfos,
+	})
+}
+
+func (s *APIV1Service) handleCreateParty(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	roleID := claims.UserID
+	if roleID == 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	}
+
+	err := s.Store.ControlGroup(c.Request().Context(), roleID, 0, 0, 0)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+func (s *APIV1Service) handleCheckProhibitedWord(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	word := ""
+	if v, ok := req["word"].(string); ok {
+		word = v
+	}
+
+	prohibited, err := s.Store.CheckProhibitedWord(c.Request().Context(), word)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":      0,
+		"prohibited": prohibited,
+	})
+}
+
+func (s *APIV1Service) handleTargetUserPartyInfo(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	roleID := claims.RoleID
+	charGuid := uint64(0)
+	if v, ok := req["charguid"].(float64); ok {
+		charGuid = uint64(v)
+	}
+
+	party, err := s.Store.TargetUserPartyInfo(c.Request().Context(), roleID, charGuid)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	partyInfo := &dnfv1.PartyInfo{
+		Partyguid:    party.PartyGuid,
+		Leaderguid:   party.LeaderGuid,
+		Name:         party.Name,
+		Maxmembers:   party.MaxMembers,
+		Members:      party.Members,
+		Dungeonindex: party.DungeonIndex,
+		Roomid:       uint32(party.RoomID),
+		Minlevel:     party.MinLevel,
+		Maxlevel:     party.MaxLevel,
+		Area:         party.Area,
+		Subtype:      party.SubType,
+		Stageindex:   party.StageIndex,
+		Publictype:   party.PublicType,
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error": 0,
+		"party": partyInfo,
+	})
 }

@@ -21,24 +21,20 @@ func (d *DB) SearchPartyList(ctx context.Context, dungeonIndex, minLevel, maxLev
 	`
 
 	args := []interface{}{}
-	argIndex := 1
 
 	if dungeonIndex > 0 {
-		query += fmt.Sprintf(" AND p.dungeon_index = $%d", argIndex)
+		query += " AND p.dungeon_index = ?"
 		args = append(args, dungeonIndex)
-		argIndex++
 	}
 
 	if minLevel > 0 {
-		query += fmt.Sprintf(" AND p.min_level >= $%d", argIndex)
+		query += " AND p.min_level >= ?"
 		args = append(args, minLevel)
-		argIndex++
 	}
 
 	if maxLevel > 0 {
-		query += fmt.Sprintf(" AND p.max_level <= $%d", argIndex)
+		query += " AND p.max_level <= ?"
 		args = append(args, maxLevel)
-		argIndex++
 	}
 
 	query += " ORDER BY p.create_time DESC LIMIT 100"
@@ -60,12 +56,6 @@ func (d *DB) SearchPartyList(ctx context.Context, dungeonIndex, minLevel, maxLev
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan party: %w", err)
 		}
-
-		members, err := d.getPartyMembers(ctx, party.PartyGuid)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get party members: %w", err)
-		}
-		party.Members = members
 
 		parties = append(parties, party)
 	}
@@ -308,10 +298,10 @@ func (d *DB) getPartyByRoleID(ctx context.Context, roleID uint64) (*store.PartyI
 
 func (d *DB) getPartyMembers(ctx context.Context, partyID uint64) ([]*dnfv1.GroupMember, error) {
 	query := `
-		SELECT pm.role_id, r.name, 0, r.level, 0, '',
+		SELECT r.id, r.name, 0, r.level, 0, '',
 		       pm.role_id = p.leader_id, r.fatigue, r.channel, 0, pm.team_type
 		FROM t_party_member pm
-		INNER JOIN role r ON pm.role_id = r.role_id
+		INNER JOIN role r ON pm.role_id = r.id
 		INNER JOIN t_party p ON pm.party_id = p.party_id
 		WHERE pm.party_id = ?
 	`
@@ -351,6 +341,15 @@ func (d *DB) createParty(ctx context.Context, roleID uint64) error {
 		return fmt.Errorf("role not found")
 	}
 
+	// 检查角色是否已经在队伍中
+	existingParty, err := d.getPartyByRoleID(ctx, roleID)
+	if err != nil {
+		return fmt.Errorf("failed to check existing party: %w", err)
+	}
+	if existingParty != nil {
+		return fmt.Errorf("role already in a party")
+	}
+
 	tx, err := d.db.BeginTx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)
@@ -358,11 +357,11 @@ func (d *DB) createParty(ctx context.Context, roleID uint64) error {
 	defer tx.Rollback()
 
 	query := `
-		INSERT INTO t_party (leader_id, name, max_members, status, create_time, update_time)
-		VALUES (?, ?, 4, 0, datetime('now'), datetime('now'))
+		INSERT INTO t_party (party_id, leader_id, name, max_members, status, create_time, update_time)
+		VALUES (?, ?, ?, 4, 0, datetime('now'), datetime('now'))
 	`
 
-	result, err := tx.ExecContext(ctx, query, roleID, role.Name)
+	result, err := tx.ExecContext(ctx, query, role.RoleID, role.RoleID, role.Name)
 	if err != nil {
 		return fmt.Errorf("failed to create party: %w", err)
 	}
@@ -377,7 +376,7 @@ func (d *DB) createParty(ctx context.Context, roleID uint64) error {
 		VALUES (?, ?, ?, 0, 0, datetime('now'))
 	`
 
-	_, err = tx.ExecContext(ctx, memberQuery, partyID, roleID, role.PlayerID)
+	_, err = tx.ExecContext(ctx, memberQuery, partyID, role.ID, role.PlayerID)
 	if err != nil {
 		return fmt.Errorf("failed to add party member: %w", err)
 	}
@@ -542,9 +541,9 @@ func (d *DB) getPartyMemberCount(ctx context.Context, partyID uint64) (int, erro
 
 func (d *DB) getRoleByID(ctx context.Context, roleID uint64) (*Role, error) {
 	query := `
-		SELECT id, role_id, player_id, name, job, level, fatigue, channel
+		SELECT id, role_id, account_id, name, job, level, fatigue, channel
 		FROM role
-		WHERE role_id = ?
+		WHERE id = ?
 	`
 
 	role := &Role{}

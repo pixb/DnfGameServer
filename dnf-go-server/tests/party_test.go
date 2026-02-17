@@ -34,14 +34,15 @@ func (s *PartyTestSuite) TestSearchPartyList() {
 
 // TestCreateParty 测试创建队伍
 func (s *PartyTestSuite) TestCreateParty() {
-	_ = s.loginAndSelectCharacter()
+	// 使用不同的用户来避免冲突
+	_ = s.loginAndSelectCharacterWithUserAndSlot("test_user_create_party_3", 4)
 
 	createResp, err := s.Client.Post("/api/v1/party/create", map[string]interface{}{})
 	s.NoError(err)
 	s.NotNil(createResp)
 
 	if createResp != nil {
-		s.Equal(float64(0), createResp["error"])
+		s.Equal(float64(0), createResp["error"], "Failed to create party: %+v", createResp)
 	}
 }
 
@@ -49,7 +50,7 @@ func (s *PartyTestSuite) TestCreateParty() {
 func (s *PartyTestSuite) TestCheckProhibitedWord() {
 	_ = s.loginAndSelectCharacter()
 
-	checkResp, err := s.Client.Post("/api/v1/party/check_prohibited", map[string]interface{}{
+	checkResp, err := s.Client.Post("/api/v1/party/check_prohibited_word", map[string]interface{}{
 		"word": "test",
 	})
 	s.NoError(err)
@@ -62,10 +63,10 @@ func (s *PartyTestSuite) TestCheckProhibitedWord() {
 
 // TestTargetUserPartyInfo 测试获取目标用户队伍信息
 func (s *PartyTestSuite) TestTargetUserPartyInfo() {
-	_ = s.loginAndSelectCharacter()
+	charGuid := s.loginAndSelectCharacter()
 
-	infoResp, err := s.Client.Post("/api/v1/party/target_info", map[string]interface{}{
-		"charguid": 2,
+	infoResp, err := s.Client.Post("/api/v1/party/target_user_info", map[string]interface{}{
+		"charguid": charGuid,
 	})
 	s.NoError(err)
 	s.NotNil(infoResp)
@@ -77,9 +78,19 @@ func (s *PartyTestSuite) TestTargetUserPartyInfo() {
 
 // loginAndSelectCharacter 辅助函数：登录并选择角色
 func (s *PartyTestSuite) loginAndSelectCharacter() uint64 {
+	return s.loginAndSelectCharacterWithUser("test_user_001")
+}
+
+// loginAndSelectCharacterWithUser 辅助函数：使用指定用户登录并选择角色
+func (s *PartyTestSuite) loginAndSelectCharacterWithUser(openid string) uint64 {
+	return s.loginAndSelectCharacterWithUserAndSlot(openid, 1)
+}
+
+// loginAndSelectCharacterWithUserAndSlot 辅助函数：使用指定用户和槽位登录并选择角色
+func (s *PartyTestSuite) loginAndSelectCharacterWithUserAndSlot(openid string, slot int) uint64 {
 	// 1. 登录
 	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
-		"openid": "test_user_001",
+		"openid": openid,
 	})
 	s.NoError(err)
 	s.NotNil(resp)
@@ -100,12 +111,19 @@ func (s *PartyTestSuite) loginAndSelectCharacter() uint64 {
 	characters, ok := listResp["characters"].([]interface{})
 	if !ok || len(characters) == 0 {
 		// 如果没有角色，创建一个
+		charName := fmt.Sprintf("H%d", slot)
 		createResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
-			"name": "TestHero",
+			"name": charName,
 			"job":  1,
+			"slot": slot,
 		})
 		s.NoError(err)
 		s.NotNil(createResp)
+		if createResp != nil {
+			if errorVal, ok := createResp["error"].(float64); ok && errorVal != 0 {
+				s.T().Fatalf("Failed to create character: error=%d, response=%+v", int(errorVal), createResp)
+			}
+		}
 
 		// 重新获取角色列表
 		listResp, err = s.Client.Get("/api/v1/character/list")

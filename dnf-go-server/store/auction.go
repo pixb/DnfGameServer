@@ -50,6 +50,7 @@ type UpdateAuctionItem struct {
 	RowStatus *RowStatus
 
 	Status     *AuctionStatus
+	BuyerID    *uint64
 	BidderID   *uint64
 	BidderName *string
 	BidPrice   *int64
