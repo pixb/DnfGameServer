@@ -1048,9 +1048,41 @@ func (s *APIV1Service) handleEmblemUpgrade(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	index := int32(0)
+	if v, ok := req["index"].(float64); ok {
+		index = int32(v)
+	}
+	tryCount := int32(0)
+	if v, ok := req["trycount"].(float64); ok {
+		tryCount = int32(v)
+	}
+	talisman := int32(0)
+	if v, ok := req["talisman"].(float64); ok {
+		talisman = int32(v)
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.EmblemUpgrade(c.Request().Context(), roleID, index, tryCount, talisman)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":   1,
-		"message": "Emblem upgrade not implemented yet",
+		"error":        0,
+		"successcount": result.SuccessCount,
+		"rewards":      result.Rewards,
+		"removeitems":  result.RemoveItems,
 	})
 }
 
@@ -1060,9 +1092,49 @@ func (s *APIV1Service) handleEmblemUpgradeQuick(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	source := []*dnfv1.IndexCount{}
+	if v, ok := req["source"].([]interface{}); ok {
+		for _, item := range v {
+			if itemMap, ok := item.(map[string]interface{}); ok {
+				index := int32(0)
+				if idx, ok := itemMap["index"].(float64); ok {
+					index = int32(idx)
+				}
+				count := int32(0)
+				if cnt, ok := itemMap["count"].(float64); ok {
+					count = int32(cnt)
+				}
+				source = append(source, &dnfv1.IndexCount{Index: index, Count: count})
+			}
+		}
+	}
+
+	target := int32(0)
+	if v, ok := req["target"].(float64); ok {
+		target = int32(v)
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.EmblemUpgradeQuick(c.Request().Context(), roleID, source, target)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":   1,
-		"message": "Emblem upgrade quick not implemented yet",
+		"error":       0,
+		"rewards":     result.Rewards,
+		"removeitems": result.RemoveItems,
 	})
 }
 
@@ -1072,9 +1144,36 @@ func (s *APIV1Service) handleAvatarCompose(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	guids := []uint64{}
+	if v, ok := req["guids"].([]interface{}); ok {
+		for _, guid := range v {
+			if g, ok := guid.(float64); ok {
+				guids = append(guids, uint64(g))
+			}
+		}
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.AvatarCompose(c.Request().Context(), roleID, guids)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":   1,
-		"message": "Avatar compose not implemented yet",
+		"error":       0,
+		"rewards":     result.Rewards,
+		"removeitems": result.RemoveItems,
 	})
 }
 
@@ -1084,7 +1183,26 @@ func (s *APIV1Service) handleProductionInfo(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+	slotType := int32(0)
+	if v := c.QueryParam("slottype"); v != "" {
+		if st, err := strconv.Atoi(v); err == nil {
+			slotType = int32(st)
+		}
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.GetProductionInfo(c.Request().Context(), roleID, slotType)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error": 0,
+		"infos": result.Infos,
+	})
 }
 
 func (s *APIV1Service) handleProductionRegister(c echo.Context) error {
@@ -1093,7 +1211,42 @@ func (s *APIV1Service) handleProductionRegister(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	slotIndex := int32(0)
+	if v, ok := req["slot_index"].(float64); ok {
+		slotIndex = int32(v)
+	}
+	recipeIndex := int32(0)
+	if v, ok := req["recipe_index"].(float64); ok {
+		recipeIndex = int32(v)
+	}
+	count := int32(0)
+	if v, ok := req["count"].(float64); ok {
+		count = int32(v)
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.ProductionRegister(c.Request().Context(), roleID, slotIndex, recipeIndex, count)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":         0,
+		"rewards":       result.Rewards,
+		"removeitems":   result.RemoveItems,
+		"materialitems": result.MaterialItems,
+	})
 }
 
 func (s *APIV1Service) handleItemCombine(c echo.Context) error {
@@ -1102,9 +1255,54 @@ func (s *APIV1Service) handleItemCombine(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	index := int32(0)
+	if v, ok := req["index"].(float64); ok {
+		index = int32(v)
+	}
+
+	materialItems := []*dnfv1.MaterialItem{}
+	if v, ok := req["material_items"].([]interface{}); ok {
+		for _, item := range v {
+			if itemMap, ok := item.(map[string]interface{}); ok {
+				idx := int32(0)
+				if i, ok := itemMap["index"].(float64); ok {
+					idx = int32(i)
+				}
+				cnt := int32(0)
+				if c, ok := itemMap["count"].(float64); ok {
+					cnt = int32(c)
+				}
+				materialItems = append(materialItems, &dnfv1.MaterialItem{Index: idx, Count: cnt})
+			}
+		}
+	}
+
+	count := int32(0)
+	if v, ok := req["count"].(float64); ok {
+		count = int32(v)
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.ItemCombine(c.Request().Context(), roleID, index, materialItems, count)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":   1,
-		"message": "Item combine not implemented yet",
+		"error":       0,
+		"rewards":     result.Rewards,
+		"removeitems": result.RemoveItems,
 	})
 }
 
@@ -1114,9 +1312,35 @@ func (s *APIV1Service) handleItemDisjoint(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	guids := []uint64{}
+	if v, ok := req["guids"].([]interface{}); ok {
+		for _, guid := range v {
+			if g, ok := guid.(float64); ok {
+				guids = append(guids, uint64(g))
+			}
+		}
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.ItemDisjoint(c.Request().Context(), roleID, guids)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":   1,
-		"message": "Item disjoint not implemented yet",
+		"error":   0,
+		"rewards": result.Rewards,
 	})
 }
 
@@ -1126,9 +1350,44 @@ func (s *APIV1Service) handleCardCompose(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
+	userCardList := []*dnfv1.CardCompose{}
+	if v, ok := req["user_card_list"].([]interface{}); ok {
+		for _, item := range v {
+			if itemMap, ok := item.(map[string]interface{}); ok {
+				index := int32(0)
+				if idx, ok := itemMap["index"].(float64); ok {
+					index = int32(idx)
+				}
+				count := int32(0)
+				if cnt, ok := itemMap["count"].(float64); ok {
+					count = int32(cnt)
+				}
+				userCardList = append(userCardList, &dnfv1.CardCompose{Index: index, Count: count})
+			}
+		}
+	}
+
+	roleID := claims.RoleID
+	result, err := s.Store.CardCompose(c.Request().Context(), roleID, userCardList)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   1,
+			"message": err.Error(),
+		})
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":   1,
-		"message": "Card compose not implemented yet",
+		"error":    0,
+		"card":     result.Card,
+		"currency": result.Currency,
 	})
 }
 

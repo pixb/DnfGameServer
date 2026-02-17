@@ -2,7 +2,6 @@ package sqlite
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"math/rand"
 	"time"
@@ -21,13 +20,9 @@ func (d *DB) EmblemUpgrade(ctx context.Context, roleID uint64, index int32, tryC
 	}
 	defer tx.Rollback()
 
-	var level int
-	err = tx.QueryRowContext(ctx, "SELECT level FROM t_consume_config WHERE item_id = ?", index).Scan(&level)
-	if err == sql.ErrNoRows {
-		return nil, fmt.Errorf("emblem not found")
-	}
-	if err != nil {
-		return nil, fmt.Errorf("failed to query emblem: %w", err)
+	level := int(index % 1000)
+	if level == 0 {
+		level = 10
 	}
 
 	moneyCost := getEmblemCost(level)

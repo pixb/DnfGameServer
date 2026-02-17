@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"time"
 
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
@@ -356,19 +357,16 @@ func (d *DB) createParty(ctx context.Context, roleID uint64) error {
 	}
 	defer tx.Rollback()
 
+	partyID := uint64(time.Now().UnixNano())
+
 	query := `
 		INSERT INTO t_party (party_id, leader_id, name, max_members, status, create_time, update_time)
 		VALUES (?, ?, ?, 4, 0, datetime('now'), datetime('now'))
 	`
 
-	result, err := tx.ExecContext(ctx, query, role.RoleID, role.RoleID, role.Name)
+	_, err = tx.ExecContext(ctx, query, partyID, role.ID, role.Name)
 	if err != nil {
 		return fmt.Errorf("failed to create party: %w", err)
-	}
-
-	partyID, err := result.LastInsertId()
-	if err != nil {
-		return fmt.Errorf("failed to get party id: %w", err)
 	}
 
 	memberQuery := `
