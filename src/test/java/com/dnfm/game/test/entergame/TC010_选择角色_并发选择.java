@@ -18,105 +18,102 @@ import java.sql.ResultSet;
 
 import static org.junit.Assert.*;
 
-public class TC005_选择角色 {
+public class TC010_选择角色_并发选择 {
 
     private static final String SERVER_HOST = "127.0.0.1";
     private static final int SERVER_PORT = 20001;
     private static final int CONNECT_TIMEOUT = 5000;
-    private static final String TEST_OPENID = "test_openid_005";
+    private static final String TEST_OPENID = "test_openid_010";
 
-    private Socket socket;
     private String authKey;
 
     @Before
     public void setUp() throws Exception {
-        System.out.println("========== TC005: 选择角色 ==========");
+        System.out.println("========== TC010: 选择角色_并发选择 ==========");
         prepareTestData();
     }
 
     @After
     public void tearDown() throws Exception {
-        if (socket != null && !socket.isClosed()) {
-            socket.close();
-        }
         cleanTestData();
-        System.out.println("========== TC005 测试结束 ==========");
+        System.out.println("========== TC010 测试结束 ==========");
     }
 
     @Test
-    public void testSelectCharacter() throws Exception {
-        System.out.println("\n步骤1: 建立TCP连接");
-        socket = new Socket(SERVER_HOST, SERVER_PORT);
-        socket.setSoTimeout(CONNECT_TIMEOUT);
-        assertTrue("TCP连接建立失败", socket.isConnected());
-        System.out.println("TCP连接建立成功");
+    public void testConcurrentSelectCharacter() throws Exception {
+        System.out.println("\n步骤1: 创建并发选择任务");
+        final int THREAD_COUNT = 3;
+        Thread[] threads = new Thread[THREAD_COUNT];
+        final int[] successCount = new int[1];
+        final int[] failCount = new int[1];
+        successCount[0] = 0;
+        failCount[0] = 0;
 
-        System.out.println("\n步骤2: 构造进入城镇请求");
-        REQ_ENTER_TO_TOWN req = new REQ_ENTER_TO_TOWN();
-        req.setAuthkey(authKey);
-        req.setTown(1);
-        req.setArea(1);
-        req.setPosx(0);
-        req.setPosy(0);
-        System.out.println("REQ_ENTER_TO_TOWN对象创建成功");
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            final int threadIndex = i;
+            threads[i] = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        System.out.println("线程" + threadIndex + ": 开始选择角色");
+                        Socket socket = new Socket(SERVER_HOST, SERVER_PORT);
+                        socket.setSoTimeout(CONNECT_TIMEOUT);
 
-        System.out.println("\n步骤3: 序列化进入城镇请求");
-        Codec<REQ_ENTER_TO_TOWN> reqCodec = ProtobufProxy.create(REQ_ENTER_TO_TOWN.class);
-        byte[] reqBytes = reqCodec.encode(req);
-        assertNotNull("序列化失败", reqBytes);
-        assertTrue("序列化数据为空", reqBytes.length > 0);
-        System.out.println("序列化成功，数据长度: " + reqBytes.length);
+                        REQ_ENTER_TO_TOWN req = new REQ_ENTER_TO_TOWN();
+                        req.setAuthkey(authKey);
+                        req.setTown(1);
+                        req.setArea(1);
+                        req.setPosx(0);
+                        req.setPosy(0);
 
-        System.out.println("\n步骤4: 发送进入城镇请求");
-        OutputStream out = socket.getOutputStream();
-        out.write(reqBytes);
-        out.flush();
-        System.out.println("进入城镇请求发送成功");
+                        Codec<REQ_ENTER_TO_TOWN> reqCodec = ProtobufProxy.create(REQ_ENTER_TO_TOWN.class);
+                        byte[] reqBytes = reqCodec.encode(req);
 
-        System.out.println("\n步骤5: 接收进入城镇响应");
-        InputStream in = socket.getInputStream();
-        byte[] responseBytes = readFully(in);
-        assertNotNull("响应数据为空", responseBytes);
-        assertTrue("响应数据为空", responseBytes.length > 0);
-        System.out.println("接收响应成功，数据长度: " + responseBytes.length);
+                        OutputStream out = socket.getOutputStream();
+                        out.write(reqBytes);
+                        out.flush();
 
-        System.out.println("\n步骤6: 反序列化进入城镇响应");
-        Codec<RES_ENTER_TO_TOWN> resCodec = ProtobufProxy.create(RES_ENTER_TO_TOWN.class);
-        RES_ENTER_TO_TOWN res = resCodec.decode(responseBytes);
-        assertNotNull("反序列化失败", res);
-        System.out.println("反序列化成功");
+                        InputStream in = socket.getInputStream();
+                        byte[] responseBytes = readFully(in);
 
-        System.out.println("\n步骤7: 验证进入城镇成功");
-        System.out.println("error: " + res.getError());
+                        Codec<RES_ENTER_TO_TOWN> resCodec = ProtobufProxy.create(RES_ENTER_TO_TOWN.class);
+                        RES_ENTER_TO_TOWN res = resCodec.decode(responseBytes);
 
-        assertEquals("进入城镇失败，error不为0", Integer.valueOf(0), res.getError());
-        System.out.println("错误码验证通过");
+                        if (res.getError() == 0) {
+                            successCount[0]++;
+                            System.out.println("线程" + threadIndex + ": 选择角色成功");
+                        } else {
+                            failCount[0]++;
+                            System.out.println("线程" + threadIndex + ": 选择角色失败，error=" + res.getError());
+                        }
 
-        System.out.println("\n步骤8: 数据库验证");
-        verifyDatabase();
-    }
-
-    private void verifyDatabase() throws Exception {
-        Connection conn = DBUtil.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        try {
-            String sql = "SELECT COUNT(*) FROM t_character WHERE accountID = (SELECT accountID FROM t_account WHERE openid = ?)";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, TEST_OPENID);
-            rs = stmt.executeQuery();
-
-            assertTrue("查询失败", rs.next());
-            int count = rs.getInt(1);
-            assertTrue("数据库中没有角色数据", count > 0);
-            System.out.println("数据库验证通过，角色数量: " + count);
-
-        } finally {
-            if (rs != null) rs.close();
-            if (stmt != null) stmt.close();
-            if (conn != null) conn.close();
+                        socket.close();
+                    } catch (Exception e) {
+                        failCount[0]++;
+                        System.out.println("线程" + threadIndex + ": 发生异常 - " + e.getMessage());
+                    }
+                }
+            });
         }
+
+        System.out.println("\n步骤2: 启动所有线程");
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            threads[i].start();
+        }
+
+        System.out.println("\n步骤3: 等待所有线程完成");
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            threads[i].join();
+        }
+
+        System.out.println("\n步骤4: 验证并发选择结果");
+        System.out.println("成功次数: " + successCount[0]);
+        System.out.println("失败次数: " + failCount[0]);
+        System.out.println("总次数: " + (successCount[0] + failCount[0]));
+
+        assertTrue("至少应该有一次成功", successCount[0] > 0);
+        assertTrue("总次数应该等于线程数", (successCount[0] + failCount[0]) == THREAD_COUNT);
+        System.out.println("并发选择测试通过");
     }
 
     private void prepareTestData() throws Exception {
@@ -169,7 +166,7 @@ public class TC005_选择角色 {
             stmt.close();
 
             conn.commit();
-            authKey = "test_authkey_005";
+            authKey = "test_authkey_010";
             System.out.println("测试数据准备完成");
 
         } catch (Exception e) {

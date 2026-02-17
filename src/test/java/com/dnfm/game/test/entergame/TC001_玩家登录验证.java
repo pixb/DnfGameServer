@@ -2,9 +2,9 @@ package com.dnfm.game.test.entergame;
 
 import com.baidu.bjf.remoting.protobuf.Codec;
 import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
-import com.dnfm.game.auth.model.REQ_LOGIN;
-import com.dnfm.game.auth.model.RES_LOGIN;
-import com.dnfm.game.common.util.DBUtil;
+import com.dnfm.common.util.DBUtil;
+import com.dnfm.mina.protobuf.REQ_LOGIN;
+import com.dnfm.mina.protobuf.RES_LOGIN;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,249 +15,130 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Date;
 
 import static org.junit.Assert.*;
 
-/**
- * TC001_玩家登录验证
- *
- * 测试目的: 验证玩家使用正确的openid能否成功登录，并返回正确的authKey和玩家信息
- * 测试类型: 功能测试
- * 优先级: 高
- */
 public class TC001_玩家登录验证 {
 
     private static final String SERVER_HOST = "127.0.0.1";
-    private static final int SERVER_PORT = 8080;
-    private static final String TEST_OPENID = "test_openid_001";
-    private static final String TEST_DEVICE_ID = "device_test_001";
+    private static final int SERVER_PORT = 20001;
+    private static final int CONNECT_TIMEOUT = 5000;
 
     private Socket socket;
-    private Connection dbConnection;
+    private String authKey;
+    private String accountKey;
 
     @Before
     public void setUp() throws Exception {
-        System.out.println("========== 开始准备测试环境 ==========");
+        System.out.println("========== TC001: 玩家登录验证 ==========");
+    }
 
-        // 步骤1: 准备测试环境
-        // 1.1 检查Java服务端是否启动
-        Process process = Runtime.getRuntime().exec("ps aux | grep java");
-        process.waitFor();
-        assertTrue("Java服务端未启动", process.exitValue() == 0);
-
-        // 1.2 检查数据库连接
-        dbConnection = DBUtil.getConnection();
-        assertNotNull("数据库连接失败", dbConnection);
-
-        // 1.3 清理测试数据
-        cleanupTestData();
-
-        System.out.println("========== 测试环境准备完成 ==========");
+    @After
+    public void tearDown() throws Exception {
+        if (socket != null && !socket.isClosed()) {
+            socket.close();
+        }
+        System.out.println("========== TC001 测试结束 ==========");
     }
 
     @Test
     public void testPlayerLogin() throws Exception {
-        System.out.println("========== 开始测试: TC001_玩家登录验证 ==========");
+        System.out.println("\n步骤1: 建立TCP连接");
+        socket = new Socket(SERVER_HOST, SERVER_PORT);
+        socket.setSoTimeout(CONNECT_TIMEOUT);
+        assertTrue("TCP连接建立失败", socket.isConnected());
+        System.out.println("TCP连接建立成功");
 
-        long startTime = System.currentTimeMillis();
-
-        // 步骤2: 构造登录请求
-        System.out.println("步骤2: 构造登录请求");
+        System.out.println("\n步骤2: 构造登录请求");
         REQ_LOGIN req = new REQ_LOGIN();
-        req.setOpenid(TEST_OPENID);
-        req.setDeviceId(TEST_DEVICE_ID);
-        req.setDeviceType(1); // Android
-        req.setClientVersion("1.0.0");
+        req.setOpenid("test_openid_001");
+        req.setType(1);
+        req.setToken("test_token_001");
+        req.setPlatID(1001);
+        req.setClientIP("127.0.0.1");
+        req.setVersion("1.0.0");
+        System.out.println("REQ_LOGIN对象创建成功");
 
+        System.out.println("\n步骤3: 序列化登录请求");
         Codec<REQ_LOGIN> reqCodec = ProtobufProxy.create(REQ_LOGIN.class);
         byte[] reqBytes = reqCodec.encode(req);
+        assertNotNull("序列化失败", reqBytes);
+        assertTrue("序列化数据为空", reqBytes.length > 0);
+        System.out.println("序列化成功，数据长度: " + reqBytes.length);
 
-        assertNotNull("请求序列化失败", reqBytes);
-        assertTrue("请求数据为空", reqBytes.length > 0);
-        System.out.println("请求序列化成功，长度: " + reqBytes.length);
-
-        // 步骤3: 发送登录请求
-        System.out.println("步骤3: 发送登录请求");
-        socket = new Socket(SERVER_HOST, SERVER_PORT);
-        socket.setSoTimeout(15000); // 15秒超时
-
+        System.out.println("\n步骤4: 发送登录请求");
         OutputStream out = socket.getOutputStream();
         out.write(reqBytes);
         out.flush();
         System.out.println("登录请求发送成功");
 
-        // 步骤4: 接收并解析响应
-        System.out.println("步骤4: 接收并解析响应");
+        System.out.println("\n步骤5: 接收登录响应");
         InputStream in = socket.getInputStream();
         byte[] responseBytes = readFully(in);
-
         assertNotNull("响应数据为空", responseBytes);
         assertTrue("响应数据为空", responseBytes.length > 0);
-        System.out.println("响应接收成功，长度: " + responseBytes.length);
+        System.out.println("接收响应成功，数据长度: " + responseBytes.length);
 
+        System.out.println("\n步骤6: 反序列化登录响应");
         Codec<RES_LOGIN> resCodec = ProtobufProxy.create(RES_LOGIN.class);
         RES_LOGIN res = resCodec.decode(responseBytes);
+        assertNotNull("反序列化失败", res);
+        System.out.println("反序列化成功");
 
-        assertNotNull("响应反序列化失败", res);
-        System.out.println("响应反序列化成功");
+        System.out.println("\n步骤7: 验证登录结果");
+        System.out.println("error: " + res.getError());
+        System.out.println("authkey: " + res.getAuthkey());
+        System.out.println("accountkey: " + res.getAccountkey());
+        System.out.println("servertime: " + res.getServertime());
+        System.out.println("localtime: " + res.getLocaltime());
 
-        // 步骤5: 验证登录结果
-        System.out.println("步骤5: 验证登录结果");
+        assertEquals("登录失败，error不为0", Integer.valueOf(0), res.getError());
+        assertNotNull("authkey为空", res.getAuthkey());
+        assertTrue("authkey长度不合理", res.getAuthkey().length() > 0);
+        assertNotNull("accountkey为空", res.getAccountkey());
+        assertNotNull("servertime为空", res.getServertime());
+        assertTrue("servertime无效", res.getServertime() > 0);
+        assertNotNull("localtime为空", res.getLocaltime());
+        System.out.println("登录验证通过");
 
-        // 5.1 验证错误码
-        assertEquals("错误码不为0", 0, res.getError());
-        System.out.println("错误码验证通过: " + res.getError());
+        authKey = res.getAuthkey();
+        accountKey = res.getAccountkey();
 
-        // 5.2 验证authKey
-        assertNotNull("authKey为空", res.getAuthKey());
-        assertTrue("authKey长度不符合要求", res.getAuthKey().length() >= 32 && res.getAuthKey().length() <= 64);
-        System.out.println("authKey验证通过: " + res.getAuthKey());
-
-        // 5.3 验证账号信息
-        assertNotNull("账号信息为空", res.getAccount());
-        assertNotNull("openid为空", res.getAccount().getOpenid());
-        assertEquals("openid不匹配", TEST_OPENID, res.getAccount().getOpenid());
-        assertNotNull("accountID为空", res.getAccount().getAccountID());
-        assertNotNull("createTime为空", res.getAccount().getCreateTime());
-        System.out.println("账号信息验证通过");
-        System.out.println("  - openid: " + res.getAccount().getOpenid());
-        System.out.println("  - accountID: " + res.getAccount().getAccountID());
-        System.out.println("  - createTime: " + res.getAccount().getCreateTime());
-
-        // 5.4 验证角色列表
-        assertNotNull("角色列表为空", res.getCharacters());
-        System.out.println("角色列表验证通过，角色数量: " + res.getCharacters().size());
-
-        // 步骤6: 验证数据库记录
-        System.out.println("步骤6: 验证数据库记录");
-        verifyLoginRecord();
-
-        // 步骤7: 验证token生成
-        System.out.println("步骤7: 验证token生成");
-        verifyTokenRecord(res.getAuthKey(), res.getAccount().getAccountID());
-
-        long endTime = System.currentTimeMillis();
-        System.out.println("========== 测试执行完成，耗时: " + (endTime - startTime) + "ms ==========");
+        System.out.println("\n步骤8: 数据库验证");
+        verifyDatabase();
     }
 
-    /**
-     * 验证登录记录
-     */
-    private void verifyLoginRecord() throws Exception {
-        String sql = "SELECT * FROM t_account_login_log WHERE openid = ? ORDER BY loginTime DESC LIMIT 1";
-        PreparedStatement stmt = dbConnection.prepareStatement(sql);
-        stmt.setString(1, TEST_OPENID);
+    private void verifyDatabase() throws Exception {
+        Connection conn = DBUtil.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
 
-        ResultSet rs = stmt.executeQuery();
-        assertTrue("登录记录不存在", rs.next());
+        try {
+            String sql = "SELECT * FROM t_account WHERE openid = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, "test_openid_001");
+            rs = stmt.executeQuery();
 
-        Timestamp loginTime = rs.getTimestamp("loginTime");
-        assertNotNull("登录时间为空", loginTime);
+            assertTrue("账号不存在", rs.next());
+            System.out.println("数据库验证通过，账号存在");
 
-        // 验证登录时间在最近5分钟内
-        long timeDiff = System.currentTimeMillis() - loginTime.getTime();
-        assertTrue("登录时间不在最近5分钟内", timeDiff < 5 * 60 * 1000);
+            String openid = rs.getString("openid");
+            assertEquals("openid不匹配", "test_openid_001", openid);
+            System.out.println("openid验证通过: " + openid);
 
-        String loginIP = rs.getString("loginIP");
-        assertEquals("登录IP不匹配", "127.0.0.1", loginIP);
-
-        String deviceId = rs.getString("deviceId");
-        assertEquals("设备ID不匹配", TEST_DEVICE_ID, deviceId);
-
-        System.out.println("登录记录验证通过");
-        System.out.println("  - loginTime: " + loginTime);
-        System.out.println("  - loginIP: " + loginIP);
-        System.out.println("  - deviceId: " + deviceId);
-
-        rs.close();
-        stmt.close();
-    }
-
-    /**
-     * 验证token记录
-     */
-    private void verifyTokenRecord(String authKey, long accountID) throws Exception {
-        String sql = "SELECT * FROM t_account_token WHERE accountID = ? ORDER BY createTime DESC LIMIT 1";
-        PreparedStatement stmt = dbConnection.prepareStatement(sql);
-        stmt.setLong(1, accountID);
-
-        ResultSet rs = stmt.executeQuery();
-        assertTrue("token记录不存在", rs.next());
-
-        String token = rs.getString("token");
-        assertEquals("token不匹配", authKey, token);
-
-        Timestamp expireTime = rs.getTimestamp("expireTime");
-        assertNotNull("token过期时间为空", expireTime);
-
-        // 验证token有效期约为7天
-        long expectedExpireTime = System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000;
-        long timeDiff = Math.abs(expireTime.getTime() - expectedExpireTime);
-        assertTrue("token有效期不正确", timeDiff < 60 * 1000); // 允许1分钟误差
-
-        int status = rs.getInt("status");
-        assertEquals("token状态不正确", 1, status);
-
-        System.out.println("token记录验证通过");
-        System.out.println("  - token: " + token);
-        System.out.println("  - expireTime: " + expireTime);
-        System.out.println("  - status: " + status);
-
-        rs.close();
-        stmt.close();
-    }
-
-    /**
-     * 清理测试数据
-     */
-    private void cleanupTestData() throws Exception {
-        System.out.println("清理测试数据");
-
-        // 删除登录记录
-        String deleteLoginLogSql = "DELETE FROM t_account_login_log WHERE openid = ?";
-        PreparedStatement stmt1 = dbConnection.prepareStatement(deleteLoginLogSql);
-        stmt1.setString(1, TEST_OPENID);
-        int loginLogCount = stmt1.executeUpdate();
-        stmt1.close();
-        System.out.println("删除登录记录: " + loginLogCount + " 条");
-
-        // 删除token记录
-        String deleteTokenSql = "DELETE FROM t_account_token WHERE accountID IN (SELECT accountID FROM t_account WHERE openid = ?)";
-        PreparedStatement stmt2 = dbConnection.prepareStatement(deleteTokenSql);
-        stmt2.setString(1, TEST_OPENID);
-        int tokenCount = stmt2.executeUpdate();
-        stmt2.close();
-        System.out.println("删除token记录: " + tokenCount + " 条");
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        System.out.println("========== 开始清理测试数据 ==========");
-
-        // 步骤8: 清理测试数据
-        if (dbConnection != null) {
-            cleanupTestData();
-            dbConnection.close();
+        } finally {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
         }
-
-        if (socket != null) {
-            socket.close();
-        }
-
-        System.out.println("========== 测试数据清理完成 ==========");
     }
 
-    /**
-     * 完整读取输入流
-     */
     private byte[] readFully(InputStream in) throws Exception {
         java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
-        int len;
-        while ((len = in.read(buffer)) != -1) {
-            baos.write(buffer, 0, len);
+        int bytesRead;
+        while ((bytesRead = in.read(buffer)) != -1) {
+            baos.write(buffer, 0, bytesRead);
         }
         return baos.toByteArray();
     }

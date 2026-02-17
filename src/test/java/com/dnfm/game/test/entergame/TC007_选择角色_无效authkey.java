@@ -3,8 +3,8 @@ package com.dnfm.game.test.entergame;
 import com.baidu.bjf.remoting.protobuf.Codec;
 import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
 import com.dnfm.common.util.DBUtil;
-import com.dnfm.mina.protobuf.REQ_LOGIN;
-import com.dnfm.mina.protobuf.RES_LOGIN;
+import com.dnfm.mina.protobuf.REQ_ENTER_TO_TOWN;
+import com.dnfm.mina.protobuf.RES_ENTER_TO_TOWN;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,19 +18,20 @@ import java.sql.ResultSet;
 
 import static org.junit.Assert.*;
 
-public class TC002_玩家登录失败_无效openid {
+public class TC007_选择角色_无效authkey {
 
     private static final String SERVER_HOST = "127.0.0.1";
     private static final int SERVER_PORT = 20001;
     private static final int CONNECT_TIMEOUT = 5000;
-    private static final String INVALID_OPENID = "invalid_openid_002";
+    private static final String TEST_OPENID = "test_openid_007";
 
     private Socket socket;
+    private String authKey;
 
     @Before
     public void setUp() throws Exception {
-        System.out.println("========== TC002: 玩家登录失败_无效openid ==========");
-        cleanTestData();
+        System.out.println("========== TC007: 选择角色_无效authkey ==========");
+        prepareTestData();
     }
 
     @After
@@ -39,88 +40,101 @@ public class TC002_玩家登录失败_无效openid {
             socket.close();
         }
         cleanTestData();
-        System.out.println("========== TC002 测试结束 ==========");
+        System.out.println("========== TC007 测试结束 ==========");
     }
 
     @Test
-    public void testInvalidOpenidLogin() throws Exception {
+    public void testSelectInvalidAuthkey() throws Exception {
         System.out.println("\n步骤1: 建立TCP连接");
         socket = new Socket(SERVER_HOST, SERVER_PORT);
         socket.setSoTimeout(CONNECT_TIMEOUT);
         assertTrue("TCP连接建立失败", socket.isConnected());
         System.out.println("TCP连接建立成功");
 
-        System.out.println("\n步骤2: 构造登录请求（无效openid）");
-        REQ_LOGIN req = new REQ_LOGIN();
-        req.setOpenid(INVALID_OPENID);
-        req.setType(1);
-        req.setToken("test_token_002");
-        req.setPlatID(1001);
-        req.setClientIP("127.0.0.1");
-        req.setVersion("1.0.0");
-        System.out.println("REQ_LOGIN对象创建成功");
+        System.out.println("\n步骤2: 构造进入城镇请求（无效authkey）");
+        REQ_ENTER_TO_TOWN req = new REQ_ENTER_TO_TOWN();
+        req.setAuthkey("invalid_authkey_007");
+        req.setTown(1);
+        req.setArea(1);
+        req.setPosx(0);
+        req.setPosy(0);
+        System.out.println("REQ_ENTER_TO_TOWN对象创建成功");
 
-        System.out.println("\n步骤3: 序列化登录请求");
-        Codec<REQ_LOGIN> reqCodec = ProtobufProxy.create(REQ_LOGIN.class);
+        System.out.println("\n步骤3: 序列化进入城镇请求");
+        Codec<REQ_ENTER_TO_TOWN> reqCodec = ProtobufProxy.create(REQ_ENTER_TO_TOWN.class);
         byte[] reqBytes = reqCodec.encode(req);
         assertNotNull("序列化失败", reqBytes);
         assertTrue("序列化数据为空", reqBytes.length > 0);
         System.out.println("序列化成功，数据长度: " + reqBytes.length);
 
-        System.out.println("\n步骤4: 发送登录请求");
+        System.out.println("\n步骤4: 发送进入城镇请求");
         OutputStream out = socket.getOutputStream();
         out.write(reqBytes);
         out.flush();
-        System.out.println("登录请求发送成功");
+        System.out.println("进入城镇请求发送成功");
 
-        System.out.println("\n步骤5: 接收登录响应");
+        System.out.println("\n步骤5: 接收进入城镇响应");
         InputStream in = socket.getInputStream();
         byte[] responseBytes = readFully(in);
         assertNotNull("响应数据为空", responseBytes);
         assertTrue("响应数据为空", responseBytes.length > 0);
         System.out.println("接收响应成功，数据长度: " + responseBytes.length);
 
-        System.out.println("\n步骤6: 反序列化登录响应");
-        Codec<RES_LOGIN> resCodec = ProtobufProxy.create(RES_LOGIN.class);
-        RES_LOGIN res = resCodec.decode(responseBytes);
+        System.out.println("\n步骤6: 反序列化进入城镇响应");
+        Codec<RES_ENTER_TO_TOWN> resCodec = ProtobufProxy.create(RES_ENTER_TO_TOWN.class);
+        RES_ENTER_TO_TOWN res = resCodec.decode(responseBytes);
         assertNotNull("反序列化失败", res);
         System.out.println("反序列化成功");
 
-        System.out.println("\n步骤7: 验证登录失败");
+        System.out.println("\n步骤7: 验证选择角色失败");
         System.out.println("error: " + res.getError());
-        System.out.println("authkey: " + res.getAuthkey());
-        System.out.println("accountkey: " + res.getAccountkey());
 
-        assertNotEquals("登录应该失败，但error为0", Integer.valueOf(0), res.getError());
-        System.out.println("错误码验证通过，登录失败");
-
-        assertNull("authkey应该为null", res.getAuthkey());
-        System.out.println("authkey验证通过，为null");
-
-        assertNull("accountkey应该为null", res.getAccountkey());
-        System.out.println("accountkey验证通过，为null");
-
-        System.out.println("\n步骤8: 数据库验证");
-        verifyDatabase();
+        assertNotEquals("选择角色应该失败，但error为0", Integer.valueOf(0), res.getError());
+        System.out.println("错误码验证通过，选择角色失败");
     }
 
-    private void verifyDatabase() throws Exception {
+    private void prepareTestData() throws Exception {
         Connection conn = DBUtil.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            String sql = "SELECT COUNT(*) FROM t_account WHERE openid = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, INVALID_OPENID);
+            conn.setAutoCommit(false);
+
+            String accountSql = "SELECT accountID FROM t_account WHERE openid = ?";
+            stmt = conn.prepareStatement(accountSql);
+            stmt.setString(1, TEST_OPENID);
             rs = stmt.executeQuery();
 
-            assertTrue("查询失败", rs.next());
-            int count = rs.getInt(1);
-            assertEquals("不应该创建新账号，但数据库中存在该openid", 0, count);
-            System.out.println("数据库验证通过，没有创建新账号");
+            Long accountID = null;
+            if (rs.next()) {
+                accountID = rs.getLong("accountID");
+            }
+            rs.close();
+            stmt.close();
 
+            if (accountID == null) {
+                String insertAccountSql = "INSERT INTO t_account (openid, createTime, status) VALUES (?, NOW(), 1)";
+                stmt = conn.prepareStatement(insertAccountSql, java.sql.Statement.RETURN_GENERATED_KEYS);
+                stmt.setString(1, TEST_OPENID);
+                stmt.executeUpdate();
+                rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    accountID = rs.getLong(1);
+                }
+                rs.close();
+                stmt.close();
+            }
+
+            conn.commit();
+            authKey = "test_authkey_007";
+            System.out.println("测试数据准备完成");
+
+        } catch (Exception e) {
+            conn.rollback();
+            throw e;
         } finally {
+            conn.setAutoCommit(true);
             if (rs != null) rs.close();
             if (stmt != null) stmt.close();
             if (conn != null) conn.close();
@@ -134,7 +148,7 @@ public class TC002_玩家登录失败_无效openid {
         try {
             String sql = "DELETE FROM t_account WHERE openid = ?";
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, INVALID_OPENID);
+            stmt.setString(1, TEST_OPENID);
             stmt.executeUpdate();
             System.out.println("测试数据清理完成");
 

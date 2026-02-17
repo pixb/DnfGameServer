@@ -18,19 +18,19 @@ import java.sql.ResultSet;
 
 import static org.junit.Assert.*;
 
-public class TC005_选择角色 {
+public class TC008_选择角色_角色被封禁 {
 
     private static final String SERVER_HOST = "127.0.0.1";
     private static final int SERVER_PORT = 20001;
     private static final int CONNECT_TIMEOUT = 5000;
-    private static final String TEST_OPENID = "test_openid_005";
+    private static final String TEST_OPENID = "test_openid_008";
 
     private Socket socket;
     private String authKey;
 
     @Before
     public void setUp() throws Exception {
-        System.out.println("========== TC005: 选择角色 ==========");
+        System.out.println("========== TC008: 选择角色_角色被封禁 ==========");
         prepareTestData();
     }
 
@@ -40,18 +40,18 @@ public class TC005_选择角色 {
             socket.close();
         }
         cleanTestData();
-        System.out.println("========== TC005 测试结束 ==========");
+        System.out.println("========== TC008 测试结束 ==========");
     }
 
     @Test
-    public void testSelectCharacter() throws Exception {
+    public void testSelectBannedCharacter() throws Exception {
         System.out.println("\n步骤1: 建立TCP连接");
         socket = new Socket(SERVER_HOST, SERVER_PORT);
         socket.setSoTimeout(CONNECT_TIMEOUT);
         assertTrue("TCP连接建立失败", socket.isConnected());
         System.out.println("TCP连接建立成功");
 
-        System.out.println("\n步骤2: 构造进入城镇请求");
+        System.out.println("\n步骤2: 构造进入城镇请求（被封禁角色）");
         REQ_ENTER_TO_TOWN req = new REQ_ENTER_TO_TOWN();
         req.setAuthkey(authKey);
         req.setTown(1);
@@ -86,37 +86,11 @@ public class TC005_选择角色 {
         assertNotNull("反序列化失败", res);
         System.out.println("反序列化成功");
 
-        System.out.println("\n步骤7: 验证进入城镇成功");
+        System.out.println("\n步骤7: 验证选择角色失败");
         System.out.println("error: " + res.getError());
 
-        assertEquals("进入城镇失败，error不为0", Integer.valueOf(0), res.getError());
-        System.out.println("错误码验证通过");
-
-        System.out.println("\n步骤8: 数据库验证");
-        verifyDatabase();
-    }
-
-    private void verifyDatabase() throws Exception {
-        Connection conn = DBUtil.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        try {
-            String sql = "SELECT COUNT(*) FROM t_character WHERE accountID = (SELECT accountID FROM t_account WHERE openid = ?)";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, TEST_OPENID);
-            rs = stmt.executeQuery();
-
-            assertTrue("查询失败", rs.next());
-            int count = rs.getInt(1);
-            assertTrue("数据库中没有角色数据", count > 0);
-            System.out.println("数据库验证通过，角色数量: " + count);
-
-        } finally {
-            if (rs != null) rs.close();
-            if (stmt != null) stmt.close();
-            if (conn != null) conn.close();
-        }
+        assertNotEquals("选择角色应该失败，但error为0", Integer.valueOf(0), res.getError());
+        System.out.println("错误码验证通过，选择角色失败");
     }
 
     private void prepareTestData() throws Exception {
@@ -158,7 +132,7 @@ public class TC005_选择角色 {
             stmt.executeUpdate();
             stmt.close();
 
-            String insertCharSql = "INSERT INTO t_character (charguid, accountID, name, job, level, createTime, status) VALUES (?, ?, ?, ?, ?, NOW(), 1)";
+            String insertCharSql = "INSERT INTO t_character (charguid, accountID, name, job, level, createTime, status) VALUES (?, ?, ?, ?, ?, NOW(), 0)";
             stmt = conn.prepareStatement(insertCharSql);
             stmt.setLong(1, 1001);
             stmt.setLong(2, accountID);
@@ -169,7 +143,7 @@ public class TC005_选择角色 {
             stmt.close();
 
             conn.commit();
-            authKey = "test_authkey_005";
+            authKey = "test_authkey_008";
             System.out.println("测试数据准备完成");
 
         } catch (Exception e) {
