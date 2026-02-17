@@ -53,11 +53,11 @@ public class TC005_选择角色 {
 
         System.out.println("\n步骤2: 构造进入城镇请求");
         REQ_ENTER_TO_TOWN req = new REQ_ENTER_TO_TOWN();
-        req.setAuthkey(authKey);
-        req.setTown(1);
-        req.setArea(1);
-        req.setPosx(0);
-        req.setPosy(0);
+        req.authkey = authKey;
+        req.town = 1;
+        req.area = 1;
+        req.posx = 0;
+        req.posy = 0;
         System.out.println("REQ_ENTER_TO_TOWN对象创建成功");
 
         System.out.println("\n步骤3: 序列化进入城镇请求");
@@ -87,9 +87,9 @@ public class TC005_选择角色 {
         System.out.println("反序列化成功");
 
         System.out.println("\n步骤7: 验证进入城镇成功");
-        System.out.println("error: " + res.getError());
+        System.out.println("error: " + res.error);
 
-        assertEquals("进入城镇失败，error不为0", Integer.valueOf(0), res.getError());
+        assertEquals("进入城镇失败，error不为0", Integer.valueOf(0), res.error);
         System.out.println("错误码验证通过");
 
         System.out.println("\n步骤8: 数据库验证");

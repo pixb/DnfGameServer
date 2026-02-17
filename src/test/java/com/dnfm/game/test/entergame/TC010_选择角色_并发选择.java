@@ -60,11 +60,11 @@ public class TC010_选择角色_并发选择 {
                         socket.setSoTimeout(CONNECT_TIMEOUT);
 
                         REQ_ENTER_TO_TOWN req = new REQ_ENTER_TO_TOWN();
-                        req.setAuthkey(authKey);
-                        req.setTown(1);
-                        req.setArea(1);
-                        req.setPosx(0);
-                        req.setPosy(0);
+                        req.authkey = authKey;
+                        req.town = 1;
+                        req.area = 1;
+                        req.posx = 0;
+                        req.posy = 0;
 
                         Codec<REQ_ENTER_TO_TOWN> reqCodec = ProtobufProxy.create(REQ_ENTER_TO_TOWN.class);
                         byte[] reqBytes = reqCodec.encode(req);
@@ -79,12 +79,12 @@ public class TC010_选择角色_并发选择 {
                         Codec<RES_ENTER_TO_TOWN> resCodec = ProtobufProxy.create(RES_ENTER_TO_TOWN.class);
                         RES_ENTER_TO_TOWN res = resCodec.decode(responseBytes);
 
-                        if (res.getError() == 0) {
+                        if (res.error == 0) {
                             successCount[0]++;
                             System.out.println("线程" + threadIndex + ": 选择角色成功");
                         } else {
                             failCount[0]++;
-                            System.out.println("线程" + threadIndex + ": 选择角色失败，error=" + res.getError());
+                            System.out.println("线程" + threadIndex + ": 选择角色失败，error=" + res.error);
                         }
 
                         socket.close();

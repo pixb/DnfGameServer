@@ -52,12 +52,12 @@ public class TC002_玩家登录失败_无效openid {
 
         System.out.println("\n步骤2: 构造登录请求（无效openid）");
         REQ_LOGIN req = new REQ_LOGIN();
-        req.setOpenid(INVALID_OPENID);
-        req.setType(1);
-        req.setToken("test_token_002");
-        req.setPlatID(1001);
-        req.setClientIP("127.0.0.1");
-        req.setVersion("1.0.0");
+        req.openid = INVALID_OPENID;
+        req.type = 1;
+        req.token = "test_token_002";
+        req.platID = 1001;
+        req.clientIP = "127.0.0.1";
+        req.version = "1.0.0";
         System.out.println("REQ_LOGIN对象创建成功");
 
         System.out.println("\n步骤3: 序列化登录请求");
@@ -87,17 +87,17 @@ public class TC002_玩家登录失败_无效openid {
         System.out.println("反序列化成功");
 
         System.out.println("\n步骤7: 验证登录失败");
-        System.out.println("error: " + res.getError());
-        System.out.println("authkey: " + res.getAuthkey());
-        System.out.println("accountkey: " + res.getAccountkey());
+        System.out.println("error: " + res.error);
+        System.out.println("authkey: " + res.authkey);
+        System.out.println("accountkey: " + res.accountkey);
 
-        assertNotEquals("登录应该失败，但error为0", Integer.valueOf(0), res.getError());
+        assertNotEquals("登录应该失败，但error为0", Integer.valueOf(0), res.error);
         System.out.println("错误码验证通过，登录失败");
 
-        assertNull("authkey应该为null", res.getAuthkey());
+        assertNull("authkey应该为null", res.authkey);
         System.out.println("authkey验证通过，为null");
 
-        assertNull("accountkey应该为null", res.getAccountkey());
+        assertNull("accountkey应该为null", res.accountkey);
         System.out.println("accountkey验证通过，为null");
 
         System.out.println("\n步骤8: 数据库验证");

@@ -52,11 +52,11 @@ public class TC009_选择角色_重复选择 {
         System.out.println("TCP连接建立成功");
 
         REQ_ENTER_TO_TOWN req1 = new REQ_ENTER_TO_TOWN();
-        req1.setAuthkey(authKey);
-        req1.setTown(1);
-        req1.setArea(1);
-        req1.setPosx(0);
-        req1.setPosy(0);
+        req1.authkey = authKey;
+        req1.town = 1;
+        req1.area = 1;
+        req1.posx = 0;
+        req1.posy = 0;
 
         Codec<REQ_ENTER_TO_TOWN> reqCodec = ProtobufProxy.create(REQ_ENTER_TO_TOWN.class);
         byte[] reqBytes1 = reqCodec.encode(req1);
@@ -71,7 +71,7 @@ public class TC009_选择角色_重复选择 {
         Codec<RES_ENTER_TO_TOWN> resCodec = ProtobufProxy.create(RES_ENTER_TO_TOWN.class);
         RES_ENTER_TO_TOWN res1 = resCodec.decode(responseBytes1);
 
-        assertEquals("第一次选择角色失败", Integer.valueOf(0), res1.getError());
+        assertEquals("第一次选择角色失败", Integer.valueOf(0), res1.error);
         System.out.println("第一次选择角色成功");
 
         socket.close();
@@ -81,11 +81,11 @@ public class TC009_选择角色_重复选择 {
         socket.setSoTimeout(CONNECT_TIMEOUT);
 
         REQ_ENTER_TO_TOWN req2 = new REQ_ENTER_TO_TOWN();
-        req2.setAuthkey(authKey);
-        req2.setTown(1);
-        req2.setArea(1);
-        req2.setPosx(0);
-        req2.setPosy(0);
+        req2.authkey = authKey;
+        req2.town = 1;
+        req2.area = 1;
+        req2.posx = 0;
+        req2.posy = 0;
 
         byte[] reqBytes2 = reqCodec.encode(req2);
 
@@ -98,10 +98,10 @@ public class TC009_选择角色_重复选择 {
 
         RES_ENTER_TO_TOWN res2 = resCodec.decode(responseBytes2);
 
-        System.out.println("error: " + res2.getError());
+        System.out.println("error: " + res2.error);
 
         System.out.println("\n步骤3: 验证重复选择结果");
-        System.out.println("第二次选择角色结果: " + (res2.getError() == 0 ? "成功" : "失败"));
+        System.out.println("第二次选择角色结果: " + (res2.error == 0 ? "成功" : "失败"));
     }
 
     private void prepareTestData() throws Exception {

@@ -53,11 +53,11 @@ public class TC006_选择角色_无效角色GUID {
 
         System.out.println("\n步骤2: 构造进入城镇请求（无效角色）");
         REQ_ENTER_TO_TOWN req = new REQ_ENTER_TO_TOWN();
-        req.setAuthkey(authKey);
-        req.setTown(1);
-        req.setArea(1);
-        req.setPosx(0);
-        req.setPosy(0);
+        req.authkey = authKey;
+        req.town = 1;
+        req.area = 1;
+        req.posx = 0;
+        req.posy = 0;
         System.out.println("REQ_ENTER_TO_TOWN对象创建成功");
 
         System.out.println("\n步骤3: 序列化进入城镇请求");
@@ -87,9 +87,9 @@ public class TC006_选择角色_无效角色GUID {
         System.out.println("反序列化成功");
 
         System.out.println("\n步骤7: 验证选择角色失败");
-        System.out.println("error: " + res.getError());
+        System.out.println("error: " + res.error);
 
-        assertNotEquals("选择角色应该失败，但error为0", Integer.valueOf(0), res.getError());
+        assertNotEquals("选择角色应该失败，但error为0", Integer.valueOf(0), res.error);
         System.out.println("错误码验证通过，选择角色失败");
     }
 
