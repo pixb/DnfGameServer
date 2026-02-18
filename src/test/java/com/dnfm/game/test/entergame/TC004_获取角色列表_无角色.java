@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 public class TC004_获取角色列表_无角色 {
 
     private static final String SERVER_HOST = "127.0.0.1";
-    private static final int SERVER_PORT = 20001;
+    private static final int SERVER_PORT = 10001;
     private static final int CONNECT_TIMEOUT = 5000;
     private static final String TEST_OPENID = "test_openid_004";
 
@@ -109,7 +109,7 @@ public class TC004_获取角色列表_无角色 {
         ResultSet rs = null;
 
         try {
-            String sql = "SELECT COUNT(*) FROM t_character WHERE accountID = (SELECT accountID FROM t_account WHERE openid = ?)";
+            String sql = "SELECT COUNT(*) FROM t_role WHERE openid = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, TEST_OPENID);
             rs = stmt.executeQuery();
@@ -134,34 +134,25 @@ public class TC004_获取角色列表_无角色 {
         try {
             conn.setAutoCommit(false);
 
-            String accountSql = "SELECT accountID FROM t_account WHERE openid = ?";
+            String accountSql = "SELECT id FROM t_account WHERE id = ?";
             stmt = conn.prepareStatement(accountSql);
             stmt.setString(1, TEST_OPENID);
             rs = stmt.executeQuery();
 
-            Long accountID = null;
-            if (rs.next()) {
-                accountID = rs.getLong("accountID");
-            }
-            rs.close();
-            stmt.close();
+            if (!rs.next()) {
+                rs.close();
+                stmt.close();
 
-            if (accountID == null) {
-                String insertAccountSql = "INSERT INTO t_account (openid, createTime, status) VALUES (?, NOW(), 1)";
-                stmt = conn.prepareStatement(insertAccountSql, java.sql.Statement.RETURN_GENERATED_KEYS);
+                String insertAccountSql = "INSERT INTO t_account (id, createTime, isStop) VALUES (?, NOW(), 0)";
+                stmt = conn.prepareStatement(insertAccountSql);
                 stmt.setString(1, TEST_OPENID);
                 stmt.executeUpdate();
-                rs = stmt.getGeneratedKeys();
-                if (rs.next()) {
-                    accountID = rs.getLong(1);
-                }
-                rs.close();
                 stmt.close();
             }
 
-            String deleteCharSql = "DELETE FROM t_character WHERE accountID = ?";
+            String deleteCharSql = "DELETE FROM t_role WHERE openid = ?";
             stmt = conn.prepareStatement(deleteCharSql);
-            stmt.setLong(1, accountID);
+            stmt.setString(1, TEST_OPENID);
             stmt.executeUpdate();
             stmt.close();
 
@@ -185,13 +176,13 @@ public class TC004_获取角色列表_无角色 {
         PreparedStatement stmt = null;
 
         try {
-            String sql = "DELETE FROM t_character WHERE accountID = (SELECT accountID FROM t_account WHERE openid = ?)";
+            String sql = "DELETE FROM t_role WHERE openid = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, TEST_OPENID);
             stmt.executeUpdate();
             stmt.close();
 
-            sql = "DELETE FROM t_account WHERE openid = ?";
+            sql = "DELETE FROM t_account WHERE id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, TEST_OPENID);
             stmt.executeUpdate();
