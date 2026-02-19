@@ -158,7 +158,7 @@ public class MessageCodec {
             case 10002:
                 return com.dnfm.mina.protobuf.RES_CHARAC_LIST.class;
             case 10006:
-                return com.dnfm.mina.protobuf.RES_CHARACTER_INFO.class;
+                return com.dnfm.mina.protobuf.RES_PING.class;
             case 10103:
                 return com.dnfm.mina.protobuf.RES_CHARACTER_INFO.class;
             default:

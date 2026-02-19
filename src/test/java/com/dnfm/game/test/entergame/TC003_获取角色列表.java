@@ -114,18 +114,30 @@ public class TC003_获取角色列表 {
         System.out.println("角色列表请求发送成功");
 
         System.out.println("\n步骤11: 接收角色列表响应");
-        byte[] responseBytes = readMessage(in);
-        assertNotNull("响应数据为空", responseBytes);
-        assertTrue("响应数据为空", responseBytes.length > 0);
-        System.out.println("接收响应成功，数据长度: " + responseBytes.length);
-        System.out.println("响应消息头: " + bytesToHex(responseBytes, 0, Math.min(8, responseBytes.length)));
+        RES_CHARAC_LIST res = null;
+        
+        // 循环接收响应，直到收到RES_CHARAC_LIST响应
+        while (res == null) {
+            byte[] responseBytes = readMessage(in);
+            assertNotNull("响应数据为空", responseBytes);
+            assertTrue("响应数据为空", responseBytes.length > 0);
+            System.out.println("接收响应成功，数据长度: " + responseBytes.length);
+            System.out.println("响应消息头: " + bytesToHex(responseBytes, 0, Math.min(8, responseBytes.length)));
 
-        System.out.println("\n步骤12: 解码角色列表响应");
-        Message response = MessageCodec.decodeMessage(responseBytes);
-        assertNotNull("解码失败", response);
-        assertTrue("响应类型错误", response instanceof RES_CHARAC_LIST);
-        RES_CHARAC_LIST res = (RES_CHARAC_LIST) response;
-        System.out.println("解码成功");
+            System.out.println("\n步骤12: 解码角色列表响应");
+            Message response = MessageCodec.decodeMessage(responseBytes);
+            assertNotNull("解码失败", response);
+            
+            if (response instanceof com.dnfm.mina.protobuf.RES_PING) {
+                System.out.println("收到RES_PING响应，继续等待");
+            } else if (response instanceof RES_CHARAC_LIST) {
+                System.out.println("收到RES_CHARAC_LIST响应，退出循环");
+                res = (RES_CHARAC_LIST) response;
+                System.out.println("解码成功");
+            } else {
+                System.out.println("收到未知响应类型，继续等待: " + response.getClass().getName());
+            }
+        }
 
         System.out.println("\n步骤13: 验证角色列表");
         System.out.println("error: " + res.error);

@@ -1,10 +1,11 @@
 package com.dnfm.game.test.entergame;
 
-import com.baidu.bjf.remoting.protobuf.Codec;
-import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
 import com.dnfm.common.util.DBUtil;
+import com.dnfm.game.test.util.MessageCodec;
 import com.dnfm.mina.protobuf.REQ_ENTER_TO_TOWN;
+import com.dnfm.mina.protobuf.REQ_LOGIN;
 import com.dnfm.mina.protobuf.RES_ENTER_TO_TOWN;
+import com.dnfm.mina.protobuf.RES_LOGIN;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

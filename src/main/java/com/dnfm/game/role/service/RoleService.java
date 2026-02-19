@@ -826,15 +826,52 @@ public class RoleService {
    }
 
    public RES_CHARAC_LIST getCharList(Account account, String accountKey) {
+      this.logger.error("getCharList: start");
       RES_CHARAC_LIST res_charac_list = new RES_CHARAC_LIST();
-      List<PlayerProfile> roleList = this.playerService.getPlayersBy(account.getId());
-      this.logger.error("roleList: id == {} -------- {}", account.getId(), JSON.toJSONString(roleList));
+      res_charac_list.characlist = new ArrayList();
+      
+      // 确保account不为null
+      if (account == null) {
+         this.logger.error("getCharList: account is null");
+         res_charac_list.dailycreatecharmaxcount = 4;
+         res_charac_list.maxcount = 10;
+         res_charac_list.adventureunionlevel = 1;
+         res_charac_list.adventureunionexp = 0L;
+         res_charac_list.adventureunionname = "모험단##null";
+         this.logger.error("getCharList: end, characlist size == 0");
+         return res_charac_list;
+      }
+      
+      String userID = account.getUserID();
+      this.logger.error("getCharList: userID == {}", userID);
+      
+      // 确保userID不为null
+      if (userID == null) {
+         this.logger.error("getCharList: userID is null, use account.getId() instead");
+         userID = account.getId();
+         this.logger.error("getCharList: use account.getId() == {}", userID);
+      }
+      
+      // 确保userID不为null
+      if (userID == null) {
+         this.logger.error("getCharList: both userID and account.getId() are null");
+         res_charac_list.dailycreatecharmaxcount = 4;
+         res_charac_list.maxcount = 10;
+         res_charac_list.adventureunionlevel = 1;
+         res_charac_list.adventureunionexp = 0L;
+         res_charac_list.adventureunionname = "모험단##null";
+         this.logger.error("getCharList: end, characlist size == 0");
+         return res_charac_list;
+      }
+      
+      List<PlayerProfile> roleList = this.playerService.getPlayersBy(userID);
+      this.logger.error("getCharList: roleList size == {}", roleList != null ? roleList.size() : 0);
+      this.logger.error("roleList: id == {} -------- {}", userID, JSON.toJSONString(roleList));
       long advExp = -1L;
       int advLevel = -1;
-      if (roleList.size() > 0) {
+      if (roleList != null && roleList.size() > 0) {
          res_charac_list.count = 0;
          res_charac_list.dailycreatecharcount = 1;
-         res_charac_list.characlist = new ArrayList();
 
          for(PlayerProfile profile : roleList) {
             long uid = profile.getUid();
@@ -843,11 +880,21 @@ public class RoleService {
                res_charac_list.count = res_charac_list.count + 1;
                EquippedBox equipBox = role.getEquippedBox();
                if (advExp == -1L) {
-                  advExp = account.getAdventureUnionInfo().exp;
+                  AdventureUnionInfo adventureUnionInfo = account.getAdventureUnionInfo();
+                  if (adventureUnionInfo != null && adventureUnionInfo.exp != null) {
+                     advExp = adventureUnionInfo.exp;
+                  } else {
+                     advExp = 0L;
+                  }
                }
 
                if (advLevel == -1) {
-                  advLevel = account.getAdventureUnionInfo().level;
+                  AdventureUnionInfo adventureUnionInfo = account.getAdventureUnionInfo();
+                  if (adventureUnionInfo != null && adventureUnionInfo.level != null) {
+                     advLevel = adventureUnionInfo.level;
+                  } else {
+                     advLevel = 1;
+                  }
                }
 
                PT_CHARACTER pt_character = new PT_CHARACTER();
@@ -863,7 +910,7 @@ public class RoleService {
                pt_character.equips = new PT_CHARACTER_EQUIP_ONLY_INDEX();
                pt_character.equips.avatarlist = new ArrayList();
                Map<Integer, Integer> avatarMap = new HashMap();
-               if (role.getEquippedBox().getAvatarskinlist() != null && role.getEquippedBox().getAvatarskinlist().size() > 0) {
+               if (role.getEquippedBox() != null && role.getEquippedBox().getAvatarskinlist() != null && role.getEquippedBox().getAvatarskinlist().size() > 0) {
                   for(PT_AVATAR_ITEM pe : role.getEquippedBox().getAvatarskinlist()) {
                      PT_AVATAR_INDEX_SLOT pt_equip_index_slot = new PT_AVATAR_INDEX_SLOT();
                      pt_equip_index_slot.index = pe.index;
@@ -873,7 +920,7 @@ public class RoleService {
                   }
                }
 
-               if (role.getEquippedBox().getAvatarlist() != null && role.getEquippedBox().getAvatarlist().size() > 0) {
+               if (role.getEquippedBox() != null && role.getEquippedBox().getAvatarlist() != null && role.getEquippedBox().getAvatarlist().size() > 0) {
                   for(PT_AVATAR_ITEM pe : role.getEquippedBox().getAvatarlist()) {
                      if (avatarMap.get(pe.slot + 2000) == null) {
                         PT_AVATAR_INDEX_SLOT pt_equip_index_slot = new PT_AVATAR_INDEX_SLOT();
@@ -886,13 +933,15 @@ public class RoleService {
 
                pt_character.equips.equiplist = new ArrayList();
 
-               for(PT_EQUIPPED pe : equipBox.getEquiplist()) {
-                  PT_EQUIP_INDEX_SLOT pt_equip_index_slot = new PT_EQUIP_INDEX_SLOT();
-                  pt_equip_index_slot.index = pe.index;
-                  pt_equip_index_slot.slot = pe.slot;
-                  pt_equip_index_slot.upgrade = pe.upgrade;
-                  if (pe.slot == 11) {
-                     pt_character.equips.equiplist.add(pt_equip_index_slot);
+               if (equipBox != null && equipBox.getEquiplist() != null) {
+                  for(PT_EQUIPPED pe : equipBox.getEquiplist()) {
+                     PT_EQUIP_INDEX_SLOT pt_equip_index_slot = new PT_EQUIP_INDEX_SLOT();
+                     pt_equip_index_slot.index = pe.index;
+                     pt_equip_index_slot.slot = pe.slot;
+                     pt_equip_index_slot.upgrade = pe.upgrade;
+                     if (pe.slot == 11) {
+                        pt_character.equips.equiplist.add(pt_equip_index_slot);
+                     }
                   }
                }
 
@@ -918,6 +967,7 @@ public class RoleService {
       res_charac_list.adventureunionname = "모험단##" + accountKey;
       res_charac_list.dailycreatecharmaxcount = 4;
       res_charac_list.maxcount = 10;
+      this.logger.error("getCharList: end, characlist size == {}", res_charac_list.characlist != null ? res_charac_list.characlist.size() : 0);
       return res_charac_list;
    }
 

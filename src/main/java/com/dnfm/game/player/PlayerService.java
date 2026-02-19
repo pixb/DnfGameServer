@@ -107,8 +107,64 @@ public class PlayerService {
    }
 
    public List<PlayerProfile> getPlayersBy(String openid) {
+      this.logger.error("getPlayersBy: openid == {}", openid);
+      
+      // 先从内存缓存中获取
       AccountProfile account = (AccountProfile)this.accountProfiles.get(openid);
-      return (List<PlayerProfile>)(account == null ? new ArrayList() : account.getPlayers());
+      
+      // 如果内存缓存中没有数据，直接从数据库中查询
+      if (account == null) {
+         this.logger.error("getPlayersBy: account is null, query from database");
+         // 从数据库中查询角色列表
+         List<PlayerProfile> result = new ArrayList<>();
+         
+         // 查询数据库中的t_role表，获取角色列表
+         String sql = "SELECT roleId, uid, name, job, level FROM t_role WHERE openid = ? AND deletionstatus = 0";
+         List<Map<String, Object>> rows = this.jdbcTemplate.queryForList(sql, openid);
+         
+         this.logger.error("getPlayersBy: query result size == {}", rows.size());
+         
+         // 构建PlayerProfile对象
+         for (Map<String, Object> row : rows) {
+             int roleId = (Integer) row.get("roleId");
+             long uid = (Long) row.get("uid");
+             String name = (String) row.get("name");
+             int job = (Integer) row.get("job");
+             int level = (Integer) row.get("level");
+             
+             this.logger.error("getPlayersBy: roleId == {}, uid == {}, name == {}, job == {}, level == {}", roleId, uid, name, job, level);
+             
+             // 创建PlayerProfile对象
+             PlayerProfile profile = new PlayerProfile(
+                 openid,           // openid
+                 roleId,           // roleId
+                 uid,              // charguid
+                 name,             // name
+                 name,             // distName
+                 0,                // exp
+                 level,            // level
+                 job,              // job
+                 100               // fatigue
+             );
+             
+             result.add(profile);
+         }
+         
+         // 将PlayerProfile对象添加到内存缓存中
+         if (!result.isEmpty()) {
+             account = new AccountProfile();
+             account.setSid(openid);  // 使用sid字段存储openid
+             account.setPlayers(result);
+             this.accountProfiles.put(openid, account);
+             this.logger.error("getPlayersBy: add to cache, result size == {}", result.size());
+         }
+         
+         this.logger.error("getPlayersBy: return result size == {}", result.size());
+         return result;
+      } else {
+         this.logger.error("getPlayersBy: account is not null, return from cache, size == {}", account.getPlayers() != null ? account.getPlayers().size() : 0);
+         return (List<PlayerProfile>)(account == null ? new ArrayList() : (account.getPlayers() != null ? account.getPlayers() : new ArrayList()));
+      }
    }
 
    @Cacheable(

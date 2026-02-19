@@ -1,10 +1,12 @@
 package com.dnfm.game.test.entergame;
 
-import com.baidu.bjf.remoting.protobuf.Codec;
-import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
 import com.dnfm.common.util.DBUtil;
+import com.dnfm.game.test.util.MessageCodec;
+import com.dnfm.mina.protobuf.Message;
 import com.dnfm.mina.protobuf.REQ_CHARACTER_INFO;
+import com.dnfm.mina.protobuf.REQ_LOGIN;
 import com.dnfm.mina.protobuf.RES_CHARACTER_INFO;
+import com.dnfm.mina.protobuf.RES_LOGIN;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +14,8 @@ import org.junit.Test;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,6 +31,7 @@ public class TC004_获取角色列表_无角色 {
 
     private Socket socket;
     private String authKey;
+    private byte seq = 1;
 
     @Before
     public void setUp() throws Exception {
@@ -51,40 +56,82 @@ public class TC004_获取角色列表_无角色 {
         assertTrue("TCP连接建立失败", socket.isConnected());
         System.out.println("TCP连接建立成功");
 
-        System.out.println("\n步骤2: 构造角色信息请求");
+        System.out.println("\n步骤2: 构造登录请求");
+        REQ_LOGIN loginReq = new REQ_LOGIN();
+        loginReq.openid = TEST_OPENID;
+        loginReq.token = "test_token_004";
+        loginReq.platID = 1001;
+        loginReq.clientIP = "127.0.0.1";
+        loginReq.version = "1.0.0";
+        System.out.println("REQ_LOGIN对象创建成功");
+
+        System.out.println("\n步骤3: 编码登录请求");
+        byte[] loginMessage = MessageCodec.encodeMessage(loginReq, seq);
+        assertNotNull("编码失败", loginMessage);
+        assertTrue("编码数据为空", loginMessage.length > 0);
+        System.out.println("编码成功，数据长度: " + loginMessage.length);
+
+        System.out.println("\n步骤4: 发送登录请求");
+        OutputStream out = socket.getOutputStream();
+        out.write(loginMessage);
+        out.flush();
+        System.out.println("登录请求发送成功");
+
+        System.out.println("\n步骤5: 接收登录响应");
+        InputStream in = socket.getInputStream();
+        byte[] loginResponseBytes = readMessage(in);
+        assertNotNull("响应数据为空", loginResponseBytes);
+        assertTrue("响应数据为空", loginResponseBytes.length > 0);
+        System.out.println("接收响应成功，数据长度: " + loginResponseBytes.length);
+
+        System.out.println("\n步骤6: 解码登录响应");
+        Message loginResponse = MessageCodec.decodeMessage(loginResponseBytes);
+        assertNotNull("解码失败", loginResponse);
+        assertTrue("响应类型错误", loginResponse instanceof RES_LOGIN);
+        RES_LOGIN loginRes = (RES_LOGIN) loginResponse;
+        System.out.println("解码成功");
+
+        System.out.println("\n步骤7: 验证登录成功");
+        assertTrue("登录失败，error不为null且不为0", loginRes.error == null || loginRes.error == 0);
+        assertNotNull("authkey为空", loginRes.authkey);
+        System.out.println("登录验证通过");
+
+        authKey = loginRes.authkey;
+        seq++;
+
+        System.out.println("\n步骤8: 构造角色信息请求");
         REQ_CHARACTER_INFO req = new REQ_CHARACTER_INFO();
         req.authkey = authKey;
         req.option = 1;
         req.charlist = null;
         System.out.println("REQ_CHARACTER_INFO对象创建成功");
 
-        System.out.println("\n步骤3: 序列化角色信息请求");
-        Codec<REQ_CHARACTER_INFO> reqCodec = ProtobufProxy.create(REQ_CHARACTER_INFO.class);
-        byte[] reqBytes = reqCodec.encode(req);
-        assertNotNull("序列化失败", reqBytes);
-        assertTrue("序列化数据为空", reqBytes.length > 0);
-        System.out.println("序列化成功，数据长度: " + reqBytes.length);
+        System.out.println("\n步骤9: 编码角色信息请求");
+        byte[] encodedMessage = MessageCodec.encodeMessage(req, seq);
+        assertNotNull("编码失败", encodedMessage);
+        assertTrue("编码数据为空", encodedMessage.length > 0);
+        System.out.println("编码成功，数据长度: " + encodedMessage.length);
 
-        System.out.println("\n步骤4: 发送角色信息请求");
-        OutputStream out = socket.getOutputStream();
-        out.write(reqBytes);
+        System.out.println("\n步骤10: 发送角色信息请求");
+        out.write(encodedMessage);
         out.flush();
         System.out.println("角色信息请求发送成功");
 
-        System.out.println("\n步骤5: 接收角色信息响应");
-        InputStream in = socket.getInputStream();
-        byte[] responseBytes = readFully(in);
-        assertNotNull("响应数据为空", responseBytes);
-        assertTrue("响应数据为空", responseBytes.length > 0);
-        System.out.println("接收响应成功，数据长度: " + responseBytes.length);
+        System.out.println("\n步骤11: 接收角色信息响应");
+        RES_CHARACTER_INFO res = null;
+        while (res == null) {
+            byte[] responseBytes = readMessage(in);
+            // 解码响应
+            Message response = MessageCodec.decodeMessage(responseBytes);
+            if (response instanceof RES_CHARACTER_INFO) {
+                System.out.println("收到RES_CHARACTER_INFO响应，退出循环");
+                res = (RES_CHARACTER_INFO) response;
+            } else {
+                System.out.println("收到未知响应类型，继续等待: " + response.getClass().getName());
+            }
+        }
 
-        System.out.println("\n步骤6: 反序列化角色信息响应");
-        Codec<RES_CHARACTER_INFO> resCodec = ProtobufProxy.create(RES_CHARACTER_INFO.class);
-        RES_CHARACTER_INFO res = resCodec.decode(responseBytes);
-        assertNotNull("反序列化失败", res);
-        System.out.println("反序列化成功");
-
-        System.out.println("\n步骤7: 验证角色列表为空");
+        System.out.println("\n步骤12: 验证角色列表为空");
         System.out.println("error: " + res.error);
         System.out.println("角色数量: " + (res.charlist != null ? res.charlist.size() : 0));
 
@@ -99,7 +146,7 @@ public class TC004_获取角色列表_无角色 {
             fail("角色列表应该为空，但包含" + res.charlist.size() + "个角色");
         }
 
-        System.out.println("\n步骤8: 数据库验证");
+        System.out.println("\n步骤13: 数据库验证");
         verifyDatabase();
     }
 
@@ -201,6 +248,41 @@ public class TC004_获取角色列表_无角色 {
         while ((bytesRead = in.read(buffer)) != -1) {
             baos.write(buffer, 0, bytesRead);
         }
+        return baos.toByteArray();
+    }
+
+    private byte[] readMessage(InputStream in) throws Exception {
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+        
+        byte[] header = new byte[8];
+        int bytesRead = 0;
+        while (bytesRead < 8) {
+            int n = in.read(header, bytesRead, 8 - bytesRead);
+            if (n == -1) {
+                throw new Exception("连接关闭");
+            }
+            bytesRead += n;
+        }
+        baos.write(header);
+        
+        ByteBuffer buffer = ByteBuffer.wrap(header);
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
+        short totalLen = buffer.getShort();
+        
+        int bodyLen = totalLen - 8;
+        if (bodyLen > 0) {
+            byte[] body = new byte[bodyLen];
+            bytesRead = 0;
+            while (bytesRead < bodyLen) {
+                int n = in.read(body, bytesRead, bodyLen - bytesRead);
+                if (n == -1) {
+                    throw new Exception("连接关闭");
+                }
+                bytesRead += n;
+            }
+            baos.write(body);
+        }
+        
         return baos.toByteArray();
     }
 }

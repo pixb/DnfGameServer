@@ -914,16 +914,19 @@ public class EnterGameController {
    public void ReqCharacterInfo(IoSession session, REQ_CHARACTER_INFO req_character_info) {
       RES_CHARACTER_INFO res_character_info = new RES_CHARACTER_INFO();
       res_character_info.charlist = new ArrayList();
-
-      for(PT_CHARACTER_GUID pt : req_character_info.charlist) {
-         long charguid = pt.charguid;
-         PT_CHARACTER_INFO pt_character_info = this.roleService.getPtCharacterInfo(charguid);
-         if (pt_character_info != null) {
-            res_character_info.charlist.add(pt_character_info);
+      res_character_info.error = 0;
+      if (req_character_info != null) {
+         if (req_character_info.charlist != null) {
+            for(PT_CHARACTER_GUID pt : req_character_info.charlist) {
+               long charguid = pt.charguid;
+               PT_CHARACTER_INFO pt_character_info = this.roleService.getPtCharacterInfo(charguid);
+               if (pt_character_info != null) {
+                  res_character_info.charlist.add(pt_character_info);
+               }
+            }
          }
+         res_character_info.transId = req_character_info.transId;
       }
-
-      res_character_info.transId = req_character_info.transId;
       MessagePusher.pushMessage((IoSession)session, res_character_info);
    }
 
@@ -948,7 +951,7 @@ public class EnterGameController {
       Integer platID = reqLogin.platID;
       String token = reqLogin.token;
       Integer toyplatid = reqLogin.toyplatid;
-      int type = reqLogin.type;
+      int type = reqLogin.type != null ? reqLogin.type : 0;
       String version = reqLogin.version;
       Account account = this.accountService.getAccount(openid);
       if (account == null) {
