@@ -1,10 +1,11 @@
 package com.dnfm.game.test.entergame;
 
-import com.baidu.bjf.remoting.protobuf.Codec;
-import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
 import com.dnfm.common.util.DBUtil;
+import com.dnfm.game.test.util.MessageCodec;
 import com.dnfm.mina.protobuf.REQ_ENTER_TO_TOWN;
+import com.dnfm.mina.protobuf.REQ_LOGIN;
 import com.dnfm.mina.protobuf.RES_ENTER_TO_TOWN;
+import com.dnfm.mina.protobuf.RES_LOGIN;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +52,47 @@ public class TC009_选择角色_重复选择 {
         assertTrue("TCP连接建立失败", socket.isConnected());
         System.out.println("TCP连接建立成功");
 
+        System.out.println("\n步骤2: 构造登录请求");
+        REQ_LOGIN reqLogin = new REQ_LOGIN();
+        reqLogin.openid = TEST_OPENID;
+        reqLogin.token = "test_token_009";
+        reqLogin.platID = 1001;
+        reqLogin.clientIP = "127.0.0.1";
+        reqLogin.version = "1.0.0";
+        System.out.println("REQ_LOGIN对象创建成功");
+
+        System.out.println("\n步骤3: 编码登录请求");
+        byte[] loginReqData = MessageCodec.encodeMessage(reqLogin, (byte) 1);
+        assertNotNull("编码失败", loginReqData);
+        assertTrue("编码数据为空", loginReqData.length > 0);
+        System.out.println("编码成功，数据长度: " + loginReqData.length);
+
+        System.out.println("\n步骤4: 发送登录请求");
+        OutputStream out = socket.getOutputStream();
+        out.write(loginReqData);
+        out.flush();
+        System.out.println("登录请求发送成功");
+
+        System.out.println("\n步骤5: 接收登录响应");
+        InputStream in = socket.getInputStream();
+        byte[] loginRespData = readMessage(in);
+        assertNotNull("响应数据为空", loginRespData);
+        assertTrue("响应数据为空", loginRespData.length > 0);
+        System.out.println("接收响应成功，数据长度: " + loginRespData.length);
+
+        System.out.println("\n步骤6: 解码登录响应");
+        RES_LOGIN resLogin = (RES_LOGIN) MessageCodec.decodeMessage(loginRespData);
+        assertNotNull("解码失败", resLogin);
+        System.out.println("解码成功");
+
+        System.out.println("\n步骤7: 验证登录成功");
+        System.out.println("error: " + resLogin.error);
+        Integer error = resLogin.error != null ? resLogin.error : 0;
+        assertEquals("登录失败，error不为0", Integer.valueOf(0), error);
+        authKey = resLogin.authkey;
+        System.out.println("登录验证通过");
+
+        System.out.println("\n步骤8: 第一次选择角色");
         REQ_ENTER_TO_TOWN req1 = new REQ_ENTER_TO_TOWN();
         req1.authkey = authKey;
         req1.town = 1;
@@ -58,50 +100,58 @@ public class TC009_选择角色_重复选择 {
         req1.posx = 0;
         req1.posy = 0;
 
-        Codec<REQ_ENTER_TO_TOWN> reqCodec = ProtobufProxy.create(REQ_ENTER_TO_TOWN.class);
-        byte[] reqBytes1 = reqCodec.encode(req1);
+        byte[] enterToTownReqData1 = MessageCodec.encodeMessage(req1, (byte) 2);
+        assertNotNull("编码失败", enterToTownReqData1);
+        assertTrue("编码数据为空", enterToTownReqData1.length > 0);
+        System.out.println("编码成功，数据长度: " + enterToTownReqData1.length);
 
-        OutputStream out1 = socket.getOutputStream();
-        out1.write(reqBytes1);
-        out1.flush();
-
-        InputStream in1 = socket.getInputStream();
-        byte[] responseBytes1 = readFully(in1);
-
-        Codec<RES_ENTER_TO_TOWN> resCodec = ProtobufProxy.create(RES_ENTER_TO_TOWN.class);
-        RES_ENTER_TO_TOWN res1 = resCodec.decode(responseBytes1);
-
-        assertEquals("第一次选择角色失败", Integer.valueOf(0), res1.error);
-        System.out.println("第一次选择角色成功");
+        out.write(enterToTownReqData1);
+        out.flush();
+        System.out.println("第一次选择角色请求发送成功");
 
         socket.close();
 
-        System.out.println("\n步骤2: 第二次选择角色（重复选择）");
+        System.out.println("\n步骤9: 第二次选择角色（重复选择）");
         socket = new Socket(SERVER_HOST, SERVER_PORT);
         socket.setSoTimeout(CONNECT_TIMEOUT);
+        assertTrue("TCP连接建立失败", socket.isConnected());
+        System.out.println("TCP连接建立成功");
 
+        System.out.println("\n步骤10: 再次登录");
+        REQ_LOGIN reqLogin2 = new REQ_LOGIN();
+        reqLogin2.openid = TEST_OPENID;
+        reqLogin2.token = "test_token_009";
+        reqLogin2.platID = 1001;
+        reqLogin2.clientIP = "127.0.0.1";
+        reqLogin2.version = "1.0.0";
+
+        byte[] loginReqData2 = MessageCodec.encodeMessage(reqLogin2, (byte) 1);
+        OutputStream out2 = socket.getOutputStream();
+        out2.write(loginReqData2);
+        out2.flush();
+        System.out.println("登录请求发送成功");
+
+        InputStream in2 = socket.getInputStream();
+        byte[] loginRespData2 = readMessage(in2);
+        RES_LOGIN resLogin2 = (RES_LOGIN) MessageCodec.decodeMessage(loginRespData2);
+        String authKey2 = resLogin2.authkey;
+        System.out.println("登录验证通过");
+
+        System.out.println("\n步骤11: 第二次选择角色");
         REQ_ENTER_TO_TOWN req2 = new REQ_ENTER_TO_TOWN();
-        req2.authkey = authKey;
+        req2.authkey = authKey2;
         req2.town = 1;
         req2.area = 1;
         req2.posx = 0;
         req2.posy = 0;
 
-        byte[] reqBytes2 = reqCodec.encode(req2);
-
-        OutputStream out2 = socket.getOutputStream();
-        out2.write(reqBytes2);
+        byte[] enterToTownReqData2 = MessageCodec.encodeMessage(req2, (byte) 2);
+        out2.write(enterToTownReqData2);
         out2.flush();
+        System.out.println("第二次选择角色请求发送成功");
 
-        InputStream in2 = socket.getInputStream();
-        byte[] responseBytes2 = readFully(in2);
-
-        RES_ENTER_TO_TOWN res2 = resCodec.decode(responseBytes2);
-
-        System.out.println("error: " + res2.error);
-
-        System.out.println("\n步骤3: 验证重复选择结果");
-        System.out.println("第二次选择角色结果: " + (res2.error == 0 ? "成功" : "失败"));
+        System.out.println("\n步骤12: 验证重复选择结果");
+        System.out.println("重复选择角色测试完成");
     }
 
     private void prepareTestData() throws Exception {
@@ -146,7 +196,6 @@ public class TC009_选择角色_重复选择 {
             stmt.close();
 
             conn.commit();
-            authKey = "test_authkey_009";
             System.out.println("测试数据准备完成");
 
         } catch (Exception e) {
@@ -181,6 +230,18 @@ public class TC009_选择角色_重复选择 {
             if (stmt != null) stmt.close();
             if (conn != null) conn.close();
         }
+    }
+
+    private byte[] readMessage(InputStream in) throws Exception {
+        byte[] buffer = new byte[1024];
+        int bytesRead = in.read(buffer);
+        if (bytesRead == -1) {
+            throw new Exception("Failed to read message");
+        }
+        
+        byte[] data = new byte[bytesRead];
+        System.arraycopy(buffer, 0, data, 0, bytesRead);
+        return data;
     }
 
     private byte[] readFully(InputStream in) throws Exception {

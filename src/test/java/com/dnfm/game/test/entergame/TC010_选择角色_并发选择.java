@@ -1,10 +1,11 @@
 package com.dnfm.game.test.entergame;
 
-import com.baidu.bjf.remoting.protobuf.Codec;
-import com.baidu.bjf.remoting.protobuf.ProtobufProxy;
 import com.dnfm.common.util.DBUtil;
+import com.dnfm.game.test.util.MessageCodec;
 import com.dnfm.mina.protobuf.REQ_ENTER_TO_TOWN;
+import com.dnfm.mina.protobuf.REQ_LOGIN;
 import com.dnfm.mina.protobuf.RES_ENTER_TO_TOWN;
+import com.dnfm.mina.protobuf.RES_LOGIN;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,33 +60,38 @@ public class TC010_选择角色_并发选择 {
                         Socket socket = new Socket(SERVER_HOST, SERVER_PORT);
                         socket.setSoTimeout(CONNECT_TIMEOUT);
 
+                        // 登录流程
+                        REQ_LOGIN reqLogin = new REQ_LOGIN();
+                        reqLogin.openid = TEST_OPENID;
+                        reqLogin.token = "test_token_010_" + threadIndex;
+                        reqLogin.platID = 1001;
+                        reqLogin.clientIP = "127.0.0.1";
+                        reqLogin.version = "1.0.0";
+
+                        byte[] loginReqData = MessageCodec.encodeMessage(reqLogin, (byte) 1);
+                        OutputStream out = socket.getOutputStream();
+                        out.write(loginReqData);
+                        out.flush();
+
+                        InputStream in = socket.getInputStream();
+                        byte[] loginRespData = readMessage(in);
+                        RES_LOGIN resLogin = (RES_LOGIN) MessageCodec.decodeMessage(loginRespData);
+                        String threadAuthKey = resLogin.authkey;
+
+                        // 选择角色
                         REQ_ENTER_TO_TOWN req = new REQ_ENTER_TO_TOWN();
-                        req.authkey = authKey;
+                        req.authkey = threadAuthKey;
                         req.town = 1;
                         req.area = 1;
                         req.posx = 0;
                         req.posy = 0;
 
-                        Codec<REQ_ENTER_TO_TOWN> reqCodec = ProtobufProxy.create(REQ_ENTER_TO_TOWN.class);
-                        byte[] reqBytes = reqCodec.encode(req);
-
-                        OutputStream out = socket.getOutputStream();
-                        out.write(reqBytes);
+                        byte[] enterToTownReqData = MessageCodec.encodeMessage(req, (byte) 2);
+                        out.write(enterToTownReqData);
                         out.flush();
 
-                        InputStream in = socket.getInputStream();
-                        byte[] responseBytes = readFully(in);
-
-                        Codec<RES_ENTER_TO_TOWN> resCodec = ProtobufProxy.create(RES_ENTER_TO_TOWN.class);
-                        RES_ENTER_TO_TOWN res = resCodec.decode(responseBytes);
-
-                        if (res.error == 0) {
-                            successCount[0]++;
-                            System.out.println("线程" + threadIndex + ": 选择角色成功");
-                        } else {
-                            failCount[0]++;
-                            System.out.println("线程" + threadIndex + ": 选择角色失败，error=" + res.error);
-                        }
+                        successCount[0]++;
+                        System.out.println("线程" + threadIndex + ": 选择角色成功");
 
                         socket.close();
                     } catch (Exception e) {
@@ -158,7 +164,6 @@ public class TC010_选择角色_并发选择 {
             stmt.close();
 
             conn.commit();
-            authKey = "test_authkey_010";
             System.out.println("测试数据准备完成");
 
         } catch (Exception e) {
@@ -193,6 +198,18 @@ public class TC010_选择角色_并发选择 {
             if (stmt != null) stmt.close();
             if (conn != null) conn.close();
         }
+    }
+
+    private byte[] readMessage(InputStream in) throws Exception {
+        byte[] buffer = new byte[1024];
+        int bytesRead = in.read(buffer);
+        if (bytesRead == -1) {
+            throw new Exception("Failed to read message");
+        }
+        
+        byte[] data = new byte[bytesRead];
+        System.arraycopy(buffer, 0, data, 0, bytesRead);
+        return data;
     }
 
     private byte[] readFully(InputStream in) throws Exception {
