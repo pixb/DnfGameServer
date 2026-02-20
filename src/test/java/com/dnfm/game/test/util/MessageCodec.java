@@ -49,6 +49,35 @@ public class MessageCodec {
         return buffer.array();
     }
 
+    public static byte[] encodeMessage(Object message, byte seq) throws Exception {
+        byte[] body;
+        try {
+            Codec<Object> codec = (Codec<Object>) ProtobufProxy.create(message.getClass());
+            body = codec.encode(message);
+        } catch (IllegalArgumentException e) {
+            body = new byte[0];
+        }
+        
+        byte[] encBody = encrypt(seq, body);
+        
+        int totalLen = (encBody != null && encBody.length > 0 ? encBody.length : 0) + HEADER_SIZE;
+        
+        ByteBuffer buffer = ByteBuffer.allocate(totalLen);
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
+        
+        buffer.putShort((short) totalLen);
+        buffer.putShort((short) 0); // 模块ID，暂时设为0
+        buffer.put(seq);
+        buffer.put((byte) 0); // transId
+        buffer.putShort((short) body.length);
+        
+        if (encBody != null && encBody.length > 0) {
+            buffer.put(encBody);
+        }
+        
+        return buffer.array();
+    }
+
     public static byte[] encrypt(byte seq, byte[] in) {
         if (in == null || in.length == 0) {
             return new byte[0];
