@@ -244,6 +244,8 @@ public class MessageCodec {
                 return com.dnfm.mina.protobuf.RES_PING.class;
             case 10103:
                 return com.dnfm.mina.protobuf.RES_CHARACTER_INFO.class;
+            case 10700:
+                return com.dnfm.mina.protobuf.RES_ACHIEVEMENT_INFO.class;
             case 13025:
                 return com.dnfm.mina.protobuf.RES_CONTROL_GROUP.class;
             case 13027:
