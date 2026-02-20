@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class TC002_完成成就 {
 
     private static final String SERVER_HOST = "127.0.0.1";
-    private static final int SERVER_PORT = 9999;
+    private static final int SERVER_PORT = 10001;
     private static final int CONNECT_TIMEOUT = 10000;
     private static final String TEST_OPENID = "test_openid_achievement_002";
 
@@ -52,6 +52,9 @@ public class TC002_完成成就 {
         System.out.println("\n步骤2: 构造登录请求");
         REQ_LOGIN reqLogin = new REQ_LOGIN();
         reqLogin.openid = TEST_OPENID;
+        reqLogin.type = 1;
+        reqLogin.token = "test_token_achievement_002";
+        reqLogin.platID = 1;
         reqLogin.version = "1.0.0";
         reqLogin.clientIP = "127.0.0.1";
         System.out.println("REQ_LOGIN对象创建成功");
@@ -136,28 +139,84 @@ public class TC002_完成成就 {
             throw new Exception("读取消息头失败: " + read);
         }
 
-        int bodyLength = ((header[6] & 0xFF) << 8) | (header[7] & 0xFF);
-        byte[] body = new byte[bodyLength];
-        read = in.read(body);
-        if (read != bodyLength) {
-            throw new Exception("读取消息体失败: " + read + "/" + bodyLength);
-        }
-
-        byte[] message = new byte[8 + bodyLength];
+        // 解析消息总长度（little-endian）
+        int totalLen = ((header[1] & 0xFF) << 8) | (header[0] & 0xFF);
+        byte[] message = new byte[totalLen];
         System.arraycopy(header, 0, message, 0, 8);
-        System.arraycopy(body, 0, message, 8, bodyLength);
+
+        // 读取消息体
+        read = in.read(message, 8, totalLen - 8);
+        if (read != totalLen - 8) {
+            throw new Exception("读取消息体失败: " + read + "/" + (totalLen - 8));
+        }
 
         return message;
     }
 
     private void prepareTestData() throws Exception {
-        System.out.println("测试数据准备完成");
-        // 暂时跳过数据库操作，避免依赖数据库表
-        System.out.println("测试账号创建成功");
+        java.sql.Connection conn = null;
+        java.sql.PreparedStatement stmt = null;
+        java.sql.ResultSet rs = null;
+
+        try {
+            conn = java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3306/login?useUnicode=true&characterEncoding=utf8&useSSL=false", "root", "123456");
+            conn.setAutoCommit(false);
+
+            String sql = "SELECT id FROM t_account WHERE id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, TEST_OPENID);
+            rs = stmt.executeQuery();
+
+            if (!rs.next()) {
+                rs.close();
+                stmt.close();
+
+                String insertSql = "INSERT INTO t_account (id, userID, passwd, score, create_time, isStop) VALUES (?, ?, ?, ?, NOW(), 0)";
+                stmt = conn.prepareStatement(insertSql);
+                stmt.setString(1, TEST_OPENID);
+                stmt.setString(2, TEST_OPENID + "_user");
+                stmt.setString(3, "test_pass");
+                stmt.setInt(4, 0);
+                stmt.executeUpdate();
+                System.out.println("测试账号创建成功");
+            }
+
+            conn.commit();
+            System.out.println("测试数据准备完成");
+
+        } catch (Exception e) {
+            if (conn != null) {
+                try { conn.rollback(); } catch (Exception ex) {}
+            }
+            System.out.println("测试数据准备失败: " + e.getMessage());
+            // 继续执行测试，不抛出异常
+        } finally {
+            if (rs != null) try { rs.close(); } catch (Exception e) {}
+            if (stmt != null) try { stmt.close(); } catch (Exception e) {}
+            if (conn != null) try { conn.close(); } catch (Exception e) {}
+        }
     }
 
     private void cleanTestData() throws Exception {
-        System.out.println("测试数据清理完成");
-        // 暂时跳过数据库操作，避免依赖数据库表
+        java.sql.Connection conn = null;
+        java.sql.PreparedStatement stmt = null;
+
+        try {
+            conn = java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3306/login?useUnicode=true&characterEncoding=utf8&useSSL=false", "root", "123456");
+            conn.setAutoCommit(true);
+
+            String sql = "DELETE FROM t_account WHERE id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, TEST_OPENID);
+            stmt.executeUpdate();
+            System.out.println("测试数据清理完成");
+
+        } catch (Exception e) {
+            System.out.println("测试数据清理失败: " + e.getMessage());
+            // 继续执行，不抛出异常
+        } finally {
+            if (stmt != null) try { stmt.close(); } catch (Exception e) {}
+            if (conn != null) try { conn.close(); } catch (Exception e) {}
+        }
     }
 }

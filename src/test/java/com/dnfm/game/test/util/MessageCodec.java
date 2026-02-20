@@ -66,7 +66,14 @@ public class MessageCodec {
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         
         buffer.putShort((short) totalLen);
-        buffer.putShort((short) 0); // 模块ID，暂时设为0
+        
+        // 尝试获取模块ID
+        int module = 0;
+        if (message instanceof Message) {
+            module = ((Message) message).getModule();
+        }
+        buffer.putShort((short) module);
+        
         buffer.put(seq);
         buffer.put((byte) 0); // transId
         buffer.putShort((short) body.length);
@@ -104,6 +111,21 @@ public class MessageCodec {
         
         byte[] decrypted = xor(in, seq);
         byte[] decompressed = lz4Decompress(decrypted, originalLen);
+        
+        return decompressed;
+    }
+
+    public static byte[] decrypt2(byte seq, byte[] in) {
+        if (seq == 0) {
+            seq = 10;
+        }
+        
+        if (in == null || in.length == 0) {
+            return new byte[0];
+        }
+        
+        byte[] decrypted = xor(in, seq);
+        byte[] decompressed = lz4Decompress2(decrypted, in.length);
         
         return decompressed;
     }
@@ -146,6 +168,38 @@ public class MessageCodec {
             return decompressed;
         } catch (Exception e) {
             throw new RuntimeException("LZ4解压失败", e);
+        }
+    }
+
+    private static byte[] lz4Decompress2(byte[] in, int compressedLen) {
+        try {
+            net.jpountz.lz4.LZ4Factory factory = net.jpountz.lz4.LZ4Factory.fastestInstance();
+            net.jpountz.lz4.LZ4SafeDecompressor decompressor = factory.safeDecompressor();
+            
+            int scale = 20;
+            byte[] decompressed = new byte[compressedLen * scale];
+            int decompressedLength = decompressor.decompress(in, 0, compressedLen, decompressed, 0);
+            
+            byte[] res = new byte[decompressedLength];
+            System.arraycopy(decompressed, 0, res, 0, decompressedLength);
+            
+            return res;
+        } catch (Exception e) {
+            try {
+                net.jpountz.lz4.LZ4Factory factory = net.jpountz.lz4.LZ4Factory.fastestInstance();
+                net.jpountz.lz4.LZ4SafeDecompressor decompressor = factory.safeDecompressor();
+                
+                int scale = 100;
+                byte[] decompressed = new byte[compressedLen * scale];
+                int decompressedLength = decompressor.decompress(in, 0, compressedLen, decompressed, 0);
+                
+                byte[] res = new byte[decompressedLength];
+                System.arraycopy(decompressed, 0, res, 0, decompressedLength);
+                
+                return res;
+            } catch (Exception ex) {
+                throw new RuntimeException("LZ4解压失败", ex);
+            }
         }
     }
 

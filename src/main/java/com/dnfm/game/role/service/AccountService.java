@@ -98,7 +98,7 @@ public class AccountService {
 
    @Cacheable(
       value = {"account"},
-      key = "#id"
+      key = "#root.args[0]"
    )
    public Account getAccount(String id) {
       Account account = (Account)this.dao.fetch(Account.class, Cnd.where("id", "=", id));

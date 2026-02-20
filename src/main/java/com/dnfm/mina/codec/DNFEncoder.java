@@ -86,7 +86,7 @@ public class DNFEncoder implements ProtocolEncoder {
       out.write(buffer);
    }
 
-   private IoBuffer writeMessage(Message message, byte seq) {
+   public IoBuffer writeMessage(Message message, byte seq) {
       int module = message.getModule();
       if (!ProtocalSet.ignoreSet.contains(module)) {
          logger.error("SENDMSG=={}=={}=={}", new Object[]{module, message.getClass().getSimpleName(), JSON.toJSONString(message)});
