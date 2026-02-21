@@ -167,12 +167,13 @@ public class TC008_物品分解 {
 
             if (!rs.next()) {
                 // 创建测试账号
-                sql = "INSERT INTO t_account (id, openid, password, status) VALUES (?, ?, ?, ?)";
+                sql = "INSERT INTO t_account (id, userID, passwd, isStop, score) VALUES (?, ?, ?, ?, ?)";
                 stmt = conn.prepareStatement(sql);
                 stmt.setString(1, TEST_OPENID);
                 stmt.setString(2, TEST_OPENID);
                 stmt.setString(3, "123456");
-                stmt.setInt(4, 1);
+                stmt.setInt(4, 0);
+                stmt.setInt(5, 0);
                 stmt.executeUpdate();
                 System.out.println("测试账号创建成功");
             }
