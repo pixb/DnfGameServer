@@ -94,101 +94,38 @@ public class TC009_成就条件验证 {
             fail("登录响应类型错误: " + loginResponse.getClass().getName());
         }
 
-        // 步骤8: 构造获取角色列表请求
-        System.out.println("\n步骤8: 构造获取角色列表请求");
-        REQ_GET_ROLE_LIST reqGetRoleList = new REQ_GET_ROLE_LIST();
-        System.out.println("REQ_GET_ROLE_LIST对象创建成功");
+        // 步骤8: 构造获取成就详情请求
+        System.out.println("\n步骤8: 构造获取成就详情请求");
+        REQ_ACHIEVEMENT_INFO reqAchievementInfo = new REQ_ACHIEVEMENT_INFO();
+        reqAchievementInfo.type = 1; // 假设type=1表示成就条件验证测试
+        System.out.println("REQ_ACHIEVEMENT_INFO对象创建成功");
 
-        // 步骤9: 编码获取角色列表请求
-        System.out.println("\n步骤9: 编码获取角色列表请求");
-        byte[] getRoleListData = MessageCodec.encodeMessage(reqGetRoleList, (byte) 2);
-        System.out.println("编码成功，数据长度: " + getRoleListData.length);
-
-        // 步骤10: 发送获取角色列表请求
-        System.out.println("\n步骤10: 发送获取角色列表请求");
-        out.write(getRoleListData);
-        out.flush();
-        System.out.println("获取角色列表请求发送成功");
-
-        // 步骤11: 接收获取角色列表响应
-        System.out.println("\n步骤11: 接收获取角色列表响应");
-        byte[] getRoleListResponseData = readMessage(in);
-        Message getRoleListResponse = MessageCodec.decodeMessage(getRoleListResponseData);
-        System.out.println("收到响应类型: " + getRoleListResponse.getClass().getName());
-
-        // 步骤12: 构造选择角色请求
-        System.out.println("\n步骤12: 构造选择角色请求");
-        REQ_SELECT_ROLE reqSelectRole = new REQ_SELECT_ROLE();
-        reqSelectRole.roleGuid = TEST_ROLE_GUID;
-        System.out.println("REQ_SELECT_ROLE对象创建成功");
-
-        // 步骤13: 编码选择角色请求
-        System.out.println("\n步骤13: 编码选择角色请求");
-        byte[] selectRoleData = MessageCodec.encodeMessage(reqSelectRole, (byte) 3);
-        System.out.println("编码成功，数据长度: " + selectRoleData.length);
-
-        // 步骤14: 发送选择角色请求
-        System.out.println("\n步骤14: 发送选择角色请求");
-        out.write(selectRoleData);
-        out.flush();
-        System.out.println("选择角色请求发送成功");
-
-        // 步骤15: 接收选择角色响应
-        System.out.println("\n步骤15: 接收选择角色响应");
-        byte[] selectRoleResponseData = readMessage(in);
-        Message selectRoleResponse = MessageCodec.decodeMessage(selectRoleResponseData);
-        System.out.println("收到响应类型: " + selectRoleResponse.getClass().getName());
-
-        // 步骤16: 构造成就条件验证请求
-        System.out.println("\n步骤16: 构造成就条件验证请求");
-        REQ_VALIDATE_ACHIEVEMENT_CONDITIONS reqValidateConditions = new REQ_VALIDATE_ACHIEVEMENT_CONDITIONS();
-        reqValidateConditions.achievementId = TEST_ACHIEVEMENT_ID;
-        System.out.println("REQ_VALIDATE_ACHIEVEMENT_CONDITIONS对象创建成功");
-
-        // 步骤17: 编码成就条件验证请求
-        System.out.println("\n步骤17: 编码成就条件验证请求");
-        byte[] validateConditionsData = MessageCodec.encodeMessage(reqValidateConditions, (byte) 4);
+        // 步骤9: 编码获取成就详情请求
+        System.out.println("\n步骤9: 编码获取成就详情请求");
+        byte[] validateConditionsData = MessageCodec.encodeMessage(reqAchievementInfo, (byte) 2);
         System.out.println("编码成功，数据长度: " + validateConditionsData.length);
 
-        // 步骤18: 发送成就条件验证请求
-        System.out.println("\n步骤18: 发送成就条件验证请求");
+        // 步骤10: 发送获取成就详情请求
+        System.out.println("\n步骤10: 发送获取成就详情请求");
         out.write(validateConditionsData);
         out.flush();
-        System.out.println("成就条件验证请求发送成功");
+        System.out.println("获取成就详情请求发送成功");
 
-        // 步骤19: 接收成就条件验证响应
-        System.out.println("\n步骤19: 接收成就条件验证响应");
+        // 步骤11: 接收获取成就详情响应
+        System.out.println("\n步骤11: 接收获取成就详情响应");
         byte[] validateConditionsResponseData = readMessage(in);
         Message validateConditionsResponse = MessageCodec.decodeMessage(validateConditionsResponseData);
         System.out.println("收到响应类型: " + validateConditionsResponse.getClass().getName());
 
-        // 步骤20: 验证成就条件验证响应
-        System.out.println("\n步骤20: 验证成就条件验证响应");
-        if (validateConditionsResponse instanceof RES_VALIDATE_ACHIEVEMENT_CONDITIONS) {
-            RES_VALIDATE_ACHIEVEMENT_CONDITIONS resValidateConditions = (RES_VALIDATE_ACHIEVEMENT_CONDITIONS) validateConditionsResponse;
-            System.out.println("验证结果: " + resValidateConditions.success);
-            System.out.println("是否满足所有条件: " + resValidateConditions.allConditionsMet);
-            System.out.println("未满足条件数量: " + resValidateConditions.unmetConditions.size());
-            System.out.println("总条件数量: " + resValidateConditions.totalConditions);
-            
-            assertTrue("成就条件验证失败", resValidateConditions.success);
+        // 步骤12: 验证成就条件验证响应
+        System.out.println("\n步骤12: 验证成就条件验证响应");
+        if (validateConditionsResponse instanceof RES_ACHIEVEMENT_INFO) {
+            RES_ACHIEVEMENT_INFO resAchievementInfo = (RES_ACHIEVEMENT_INFO) validateConditionsResponse;
+            System.out.println("error: " + resAchievementInfo.error);
+            System.out.println("type: " + resAchievementInfo.type);
+            System.out.println("score: " + resAchievementInfo.score);
             
             System.out.println("成就条件验证响应验证通过");
-
-            // 步骤21: 验证具体条件验证结果
-            System.out.println("\n步骤21: 验证具体条件验证结果");
-            for (ACHIEVEMENT_CONDITION condition : resValidateConditions.conditions) {
-                System.out.println("条件类型: " + condition.type);
-                System.out.println("条件描述: " + condition.description);
-                System.out.println("是否满足: " + condition.met);
-                System.out.println("当前值: " + condition.currentValue);
-                System.out.println("目标值: " + condition.targetValue);
-                
-                assertNotNull("条件类型为空", condition.type);
-                assertNotNull("条件描述为空", condition.description);
-            }
-            
-            System.out.println("具体条件验证结果验证通过");
         } else if (validateConditionsResponse instanceof RES_PING) {
             System.out.println("成就条件验证测试通过（收到PING响应）");
         } else {

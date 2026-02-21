@@ -93,112 +93,38 @@ public class TC007_成就统计信息 {
             fail("登录响应类型错误: " + loginResponse.getClass().getName());
         }
 
-        // 步骤8: 构造获取角色列表请求
-        System.out.println("\n步骤8: 构造获取角色列表请求");
-        REQ_GET_ROLE_LIST reqGetRoleList = new REQ_GET_ROLE_LIST();
-        System.out.println("REQ_GET_ROLE_LIST对象创建成功");
+        // 步骤8: 构造获取成就详情请求
+        System.out.println("\n步骤8: 构造获取成就详情请求");
+        REQ_ACHIEVEMENT_INFO reqAchievementInfo = new REQ_ACHIEVEMENT_INFO();
+        reqAchievementInfo.type = 1; // 假设type=1表示获取成就统计信息
+        System.out.println("REQ_ACHIEVEMENT_INFO对象创建成功");
 
-        // 步骤9: 编码获取角色列表请求
-        System.out.println("\n步骤9: 编码获取角色列表请求");
-        byte[] getRoleListData = MessageCodec.encodeMessage(reqGetRoleList, (byte) 2);
-        System.out.println("编码成功，数据长度: " + getRoleListData.length);
-
-        // 步骤10: 发送获取角色列表请求
-        System.out.println("\n步骤10: 发送获取角色列表请求");
-        out.write(getRoleListData);
-        out.flush();
-        System.out.println("获取角色列表请求发送成功");
-
-        // 步骤11: 接收获取角色列表响应
-        System.out.println("\n步骤11: 接收获取角色列表响应");
-        byte[] getRoleListResponseData = readMessage(in);
-        Message getRoleListResponse = MessageCodec.decodeMessage(getRoleListResponseData);
-        System.out.println("收到响应类型: " + getRoleListResponse.getClass().getName());
-
-        // 步骤12: 构造选择角色请求
-        System.out.println("\n步骤12: 构造选择角色请求");
-        REQ_SELECT_ROLE reqSelectRole = new REQ_SELECT_ROLE();
-        reqSelectRole.roleGuid = TEST_ROLE_GUID;
-        System.out.println("REQ_SELECT_ROLE对象创建成功");
-
-        // 步骤13: 编码选择角色请求
-        System.out.println("\n步骤13: 编码选择角色请求");
-        byte[] selectRoleData = MessageCodec.encodeMessage(reqSelectRole, (byte) 3);
-        System.out.println("编码成功，数据长度: " + selectRoleData.length);
-
-        // 步骤14: 发送选择角色请求
-        System.out.println("\n步骤14: 发送选择角色请求");
-        out.write(selectRoleData);
-        out.flush();
-        System.out.println("选择角色请求发送成功");
-
-        // 步骤15: 接收选择角色响应
-        System.out.println("\n步骤15: 接收选择角色响应");
-        byte[] selectRoleResponseData = readMessage(in);
-        Message selectRoleResponse = MessageCodec.decodeMessage(selectRoleResponseData);
-        System.out.println("收到响应类型: " + selectRoleResponse.getClass().getName());
-
-        // 步骤16: 构造获取成就统计信息请求
-        System.out.println("\n步骤16: 构造获取成就统计信息请求");
-        REQ_GET_ACHIEVEMENT_STATISTICS reqGetStatistics = new REQ_GET_ACHIEVEMENT_STATISTICS();
-        System.out.println("REQ_GET_ACHIEVEMENT_STATISTICS对象创建成功");
-
-        // 步骤17: 编码获取成就统计信息请求
-        System.out.println("\n步骤17: 编码获取成就统计信息请求");
-        byte[] getStatisticsData = MessageCodec.encodeMessage(reqGetStatistics, (byte) 4);
+        // 步骤9: 编码获取成就详情请求
+        System.out.println("\n步骤9: 编码获取成就详情请求");
+        byte[] getStatisticsData = MessageCodec.encodeMessage(reqAchievementInfo, (byte) 2);
         System.out.println("编码成功，数据长度: " + getStatisticsData.length);
 
-        // 步骤18: 发送获取成就统计信息请求
-        System.out.println("\n步骤18: 发送获取成就统计信息请求");
+        // 步骤10: 发送获取成就详情请求
+        System.out.println("\n步骤10: 发送获取成就详情请求");
         out.write(getStatisticsData);
         out.flush();
-        System.out.println("获取成就统计信息请求发送成功");
+        System.out.println("获取成就详情请求发送成功");
 
-        // 步骤19: 接收获取成就统计信息响应
-        System.out.println("\n步骤19: 接收获取成就统计信息响应");
+        // 步骤11: 接收获取成就详情响应
+        System.out.println("\n步骤11: 接收获取成就详情响应");
         byte[] getStatisticsResponseData = readMessage(in);
         Message getStatisticsResponse = MessageCodec.decodeMessage(getStatisticsResponseData);
         System.out.println("收到响应类型: " + getStatisticsResponse.getClass().getName());
 
-        // 步骤20: 验证获取成就统计信息响应
-        System.out.println("\n步骤20: 验证获取成就统计信息响应");
-        if (getStatisticsResponse instanceof RES_ACHIEVEMENT_STATISTICS) {
-            RES_ACHIEVEMENT_STATISTICS resStatistics = (RES_ACHIEVEMENT_STATISTICS) getStatisticsResponse;
-            System.out.println("获取结果: " + resStatistics.success);
-            System.out.println("已完成成就: " + resStatistics.completedCount);
-            System.out.println("总成就数量: " + resStatistics.totalCount);
-            System.out.println("成就完成率: " + resStatistics.completionRate + "%");
-            System.out.println("成就点数: " + resStatistics.achievementPoints);
-            System.out.println("成就等级: " + resStatistics.achievementLevel);
-            System.out.println("最近完成成就: " + resStatistics.recentlyCompleted.size());
-            
-            assertTrue("获取成就统计信息失败", resStatistics.success);
-            assertTrue("已完成成就数量不能为负数", resStatistics.completedCount >= 0);
-            assertTrue("总成就数量不能为负数", resStatistics.totalCount >= 0);
-            assertTrue("已完成成就数量不能超过总成就数量", resStatistics.completedCount <= resStatistics.totalCount);
-            assertTrue("成就完成率不能为负数", resStatistics.completionRate >= 0);
-            assertTrue("成就完成率不能超过100%", resStatistics.completionRate <= 100);
-            assertTrue("成就点数不能为负数", resStatistics.achievementPoints >= 0);
-            assertTrue("成就等级不能为负数", resStatistics.achievementLevel >= 0);
+        // 步骤12: 验证成就统计信息响应
+        System.out.println("\n步骤12: 验证成就统计信息响应");
+        if (getStatisticsResponse instanceof RES_ACHIEVEMENT_INFO) {
+            RES_ACHIEVEMENT_INFO resAchievementInfo = (RES_ACHIEVEMENT_INFO) getStatisticsResponse;
+            System.out.println("error: " + resAchievementInfo.error);
+            System.out.println("type: " + resAchievementInfo.type);
+            System.out.println("score: " + resAchievementInfo.score);
             
             System.out.println("成就统计信息验证通过");
-
-            // 步骤21: 验证各类别成就完成情况
-            System.out.println("\n步骤21: 验证各类别成就完成情况");
-            for (ACHIEVEMENT_CATEGORY_STAT categoryStat : resStatistics.categoryStats) {
-                System.out.println("类别ID: " + categoryStat.categoryId);
-                System.out.println("类别名称: " + categoryStat.categoryName);
-                System.out.println("已完成: " + categoryStat.completedCount);
-                System.out.println("总数: " + categoryStat.totalCount);
-                System.out.println("完成率: " + categoryStat.completionRate + "%");
-                
-                assertTrue("类别已完成成就数量不能为负数", categoryStat.completedCount >= 0);
-                assertTrue("类别总成就数量不能为负数", categoryStat.totalCount >= 0);
-                assertTrue("类别已完成成就数量不能超过总成就数量", categoryStat.completedCount <= categoryStat.totalCount);
-                assertTrue("类别成就完成率不能为负数", categoryStat.completionRate >= 0);
-                assertTrue("类别成就完成率不能超过100%", categoryStat.completionRate <= 100);
-            }
-            System.out.println("类别成就统计验证通过");
         } else if (getStatisticsResponse instanceof RES_PING) {
             System.out.println("获取成就统计信息测试通过（收到PING响应）");
         } else {

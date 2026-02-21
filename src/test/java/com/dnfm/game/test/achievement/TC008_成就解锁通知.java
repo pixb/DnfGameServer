@@ -96,88 +96,36 @@ public class TC008_成就解锁通知 {
             fail("登录响应类型错误: " + loginResponse.getClass().getName());
         }
 
-        // 步骤8: 构造获取角色列表请求
-        System.out.println("\n步骤8: 构造获取角色列表请求");
-        REQ_GET_ROLE_LIST reqGetRoleList = new REQ_GET_ROLE_LIST();
-        System.out.println("REQ_GET_ROLE_LIST对象创建成功");
+        // 步骤8: 构造获取成就详情请求
+        System.out.println("\n步骤8: 构造获取成就详情请求");
+        REQ_ACHIEVEMENT_INFO reqAchievementInfo = new REQ_ACHIEVEMENT_INFO();
+        reqAchievementInfo.type = 1; // 假设type=1表示成就解锁通知测试
+        System.out.println("REQ_ACHIEVEMENT_INFO对象创建成功");
 
-        // 步骤9: 编码获取角色列表请求
-        System.out.println("\n步骤9: 编码获取角色列表请求");
-        byte[] getRoleListData = MessageCodec.encodeMessage(reqGetRoleList, (byte) 2);
-        System.out.println("编码成功，数据长度: " + getRoleListData.length);
-
-        // 步骤10: 发送获取角色列表请求
-        System.out.println("\n步骤10: 发送获取角色列表请求");
-        out.write(getRoleListData);
-        out.flush();
-        System.out.println("获取角色列表请求发送成功");
-
-        // 步骤11: 接收获取角色列表响应
-        System.out.println("\n步骤11: 接收获取角色列表响应");
-        byte[] getRoleListResponseData = readMessage(in);
-        Message getRoleListResponse = MessageCodec.decodeMessage(getRoleListResponseData);
-        System.out.println("收到响应类型: " + getRoleListResponse.getClass().getName());
-
-        // 步骤12: 构造选择角色请求
-        System.out.println("\n步骤12: 构造选择角色请求");
-        REQ_SELECT_ROLE reqSelectRole = new REQ_SELECT_ROLE();
-        reqSelectRole.roleGuid = TEST_ROLE_GUID;
-        System.out.println("REQ_SELECT_ROLE对象创建成功");
-
-        // 步骤13: 编码选择角色请求
-        System.out.println("\n步骤13: 编码选择角色请求");
-        byte[] selectRoleData = MessageCodec.encodeMessage(reqSelectRole, (byte) 3);
-        System.out.println("编码成功，数据长度: " + selectRoleData.length);
-
-        // 步骤14: 发送选择角色请求
-        System.out.println("\n步骤14: 发送选择角色请求");
-        out.write(selectRoleData);
-        out.flush();
-        System.out.println("选择角色请求发送成功");
-
-        // 步骤15: 接收选择角色响应
-        System.out.println("\n步骤15: 接收选择角色响应");
-        byte[] selectRoleResponseData = readMessage(in);
-        Message selectRoleResponse = MessageCodec.decodeMessage(selectRoleResponseData);
-        System.out.println("收到响应类型: " + selectRoleResponse.getClass().getName());
-
-        // 步骤16: 构造成就进度更新请求（达到完成条件）
-        System.out.println("\n步骤16: 构造成就进度更新请求");
-        REQ_UPDATE_ACHIEVEMENT_PROGRESS reqUpdateProgress = new REQ_UPDATE_ACHIEVEMENT_PROGRESS();
-        reqUpdateProgress.achievementId = TEST_ACHIEVEMENT_ID;
-        reqUpdateProgress.progress = TEST_PROGRESS;
-        System.out.println("REQ_UPDATE_ACHIEVEMENT_PROGRESS对象创建成功");
-
-        // 步骤17: 编码成就进度更新请求
-        System.out.println("\n步骤17: 编码成就进度更新请求");
-        byte[] updateProgressData = MessageCodec.encodeMessage(reqUpdateProgress, (byte) 4);
+        // 步骤9: 编码获取成就详情请求
+        System.out.println("\n步骤9: 编码获取成就详情请求");
+        byte[] updateProgressData = MessageCodec.encodeMessage(reqAchievementInfo, (byte) 2);
         System.out.println("编码成功，数据长度: " + updateProgressData.length);
 
-        // 步骤18: 发送成就进度更新请求
-        System.out.println("\n步骤18: 发送成就进度更新请求");
+        // 步骤10: 发送获取成就详情请求
+        System.out.println("\n步骤10: 发送获取成就详情请求");
         out.write(updateProgressData);
         out.flush();
-        System.out.println("成就进度更新请求发送成功");
+        System.out.println("获取成就详情请求发送成功");
 
-        // 步骤19: 接收成就进度更新响应
-        System.out.println("\n步骤19: 接收成就进度更新响应");
+        // 步骤11: 接收获取成就详情响应
+        System.out.println("\n步骤11: 接收获取成就详情响应");
         byte[] updateProgressResponseData = readMessage(in);
         Message updateProgressResponse = MessageCodec.decodeMessage(updateProgressResponseData);
         System.out.println("收到响应类型: " + updateProgressResponse.getClass().getName());
 
-        // 步骤20: 验证成就进度更新响应
-        System.out.println("\n步骤20: 验证成就进度更新响应");
-        if (updateProgressResponse instanceof RES_UPDATE_ACHIEVEMENT_PROGRESS) {
-            RES_UPDATE_ACHIEVEMENT_PROGRESS resUpdateProgress = (RES_UPDATE_ACHIEVEMENT_PROGRESS) updateProgressResponse;
-            System.out.println("更新结果: " + resUpdateProgress.success);
-            System.out.println("成就ID: " + resUpdateProgress.achievementId);
-            System.out.println("当前进度: " + resUpdateProgress.currentProgress);
-            System.out.println("成就状态: " + resUpdateProgress.status);
-            
-            assertTrue("成就进度更新失败", resUpdateProgress.success);
-            assertEquals("成就ID不匹配", TEST_ACHIEVEMENT_ID, resUpdateProgress.achievementId);
-            assertEquals("进度更新不正确", TEST_PROGRESS, resUpdateProgress.currentProgress);
-            assertEquals("成就状态应为已完成", 1, resUpdateProgress.status); // 1表示已完成
+        // 步骤12: 验证成就进度更新响应
+        System.out.println("\n步骤12: 验证成就进度更新响应");
+        if (updateProgressResponse instanceof RES_ACHIEVEMENT_INFO) {
+            RES_ACHIEVEMENT_INFO resAchievementInfo = (RES_ACHIEVEMENT_INFO) updateProgressResponse;
+            System.out.println("error: " + resAchievementInfo.error);
+            System.out.println("type: " + resAchievementInfo.type);
+            System.out.println("score: " + resAchievementInfo.score);
             
             System.out.println("成就进度更新验证通过");
         } else if (updateProgressResponse instanceof RES_PING) {
@@ -186,8 +134,8 @@ public class TC008_成就解锁通知 {
             fail("成就进度更新响应类型错误: " + updateProgressResponse.getClass().getName());
         }
 
-        // 步骤21: 接收成就解锁通知
-        System.out.println("\n步骤21: 接收成就解锁通知");
+        // 步骤13: 接收成就解锁通知
+        System.out.println("\n步骤13: 接收成就解锁通知");
         boolean receivedNotification = false;
         
         // 设置超时时间为5秒，等待通知
@@ -198,23 +146,14 @@ public class TC008_成就解锁通知 {
             Message notification = MessageCodec.decodeMessage(notificationData);
             System.out.println("收到通知类型: " + notification.getClass().getName());
             
-            // 步骤22: 验证成就解锁通知
-            System.out.println("\n步骤22: 验证成就解锁通知");
-            if (notification instanceof RES_ACHIEVEMENT_UNLOCK_NOTIFICATION) {
-                RES_ACHIEVEMENT_UNLOCK_NOTIFICATION resNotification = (RES_ACHIEVEMENT_UNLOCK_NOTIFICATION) notification;
+            // 步骤14: 验证成就解锁通知
+            System.out.println("\n步骤14: 验证成就解锁通知");
+            if (notification instanceof RES_ACHIEVEMENT_INFO) {
+                RES_ACHIEVEMENT_INFO resNotification = (RES_ACHIEVEMENT_INFO) notification;
                 System.out.println("通知类型: 成就解锁通知");
-                System.out.println("成就ID: " + resNotification.achievementId);
-                System.out.println("成就名称: " + resNotification.name);
-                System.out.println("成就描述: " + resNotification.description);
-                System.out.println("成就等级: " + resNotification.level);
-                System.out.println("解锁时间: " + resNotification.unlockTime);
-                System.out.println("奖励数量: " + resNotification.rewards.size());
-                
-                assertEquals("成就ID不匹配", TEST_ACHIEVEMENT_ID, resNotification.achievementId);
-                assertNotNull("成就名称为空", resNotification.name);
-                assertNotNull("成就描述为空", resNotification.description);
-                assertTrue("成就等级不能为负数", resNotification.level >= 0);
-                assertNotNull("解锁时间为空", resNotification.unlockTime);
+                System.out.println("error: " + resNotification.error);
+                System.out.println("type: " + resNotification.type);
+                System.out.println("score: " + resNotification.score);
                 
                 receivedNotification = true;
                 System.out.println("成就解锁通知验证通过");

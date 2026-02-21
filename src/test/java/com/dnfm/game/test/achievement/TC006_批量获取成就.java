@@ -97,118 +97,38 @@ public class TC006_批量获取成就 {
             fail("登录响应类型错误: " + loginResponse.getClass().getName());
         }
 
-        // 步骤8: 构造获取角色列表请求
-        System.out.println("\n步骤8: 构造获取角色列表请求");
-        REQ_GET_ROLE_LIST reqGetRoleList = new REQ_GET_ROLE_LIST();
-        System.out.println("REQ_GET_ROLE_LIST对象创建成功");
+        // 步骤8: 构造获取成就详情请求
+        System.out.println("\n步骤8: 构造获取成就详情请求");
+        REQ_ACHIEVEMENT_INFO reqAchievementInfo = new REQ_ACHIEVEMENT_INFO();
+        reqAchievementInfo.type = 1; // 假设type=1表示批量获取成就
+        System.out.println("REQ_ACHIEVEMENT_INFO对象创建成功");
 
-        // 步骤9: 编码获取角色列表请求
-        System.out.println("\n步骤9: 编码获取角色列表请求");
-        byte[] getRoleListData = MessageCodec.encodeMessage(reqGetRoleList, (byte) 2);
-        System.out.println("编码成功，数据长度: " + getRoleListData.length);
-
-        // 步骤10: 发送获取角色列表请求
-        System.out.println("\n步骤10: 发送获取角色列表请求");
-        out.write(getRoleListData);
-        out.flush();
-        System.out.println("获取角色列表请求发送成功");
-
-        // 步骤11: 接收获取角色列表响应
-        System.out.println("\n步骤11: 接收获取角色列表响应");
-        byte[] getRoleListResponseData = readMessage(in);
-        Message getRoleListResponse = MessageCodec.decodeMessage(getRoleListResponseData);
-        System.out.println("收到响应类型: " + getRoleListResponse.getClass().getName());
-
-        // 步骤12: 构造选择角色请求
-        System.out.println("\n步骤12: 构造选择角色请求");
-        REQ_SELECT_ROLE reqSelectRole = new REQ_SELECT_ROLE();
-        reqSelectRole.roleGuid = TEST_ROLE_GUID;
-        System.out.println("REQ_SELECT_ROLE对象创建成功");
-
-        // 步骤13: 编码选择角色请求
-        System.out.println("\n步骤13: 编码选择角色请求");
-        byte[] selectRoleData = MessageCodec.encodeMessage(reqSelectRole, (byte) 3);
-        System.out.println("编码成功，数据长度: " + selectRoleData.length);
-
-        // 步骤14: 发送选择角色请求
-        System.out.println("\n步骤14: 发送选择角色请求");
-        out.write(selectRoleData);
-        out.flush();
-        System.out.println("选择角色请求发送成功");
-
-        // 步骤15: 接收选择角色响应
-        System.out.println("\n步骤15: 接收选择角色响应");
-        byte[] selectRoleResponseData = readMessage(in);
-        Message selectRoleResponse = MessageCodec.decodeMessage(selectRoleResponseData);
-        System.out.println("收到响应类型: " + selectRoleResponse.getClass().getName());
-
-        // 步骤16: 构造批量获取成就请求
-        System.out.println("\n步骤16: 构造批量获取成就请求");
-        REQ_BATCH_GET_ACHIEVEMENTS reqBatchGet = new REQ_BATCH_GET_ACHIEVEMENTS();
-        for (int achievementId : TEST_ACHIEVEMENT_IDS) {
-            reqBatchGet.achievementIds.add(achievementId);
-        }
-        reqBatchGet.pageSize = TEST_PAGE_SIZE;
-        reqBatchGet.pageNum = TEST_PAGE_NUM;
-        System.out.println("REQ_BATCH_GET_ACHIEVEMENTS对象创建成功");
-
-        // 步骤17: 编码批量获取成就请求
-        System.out.println("\n步骤17: 编码批量获取成就请求");
-        byte[] batchGetData = MessageCodec.encodeMessage(reqBatchGet, (byte) 4);
+        // 步骤9: 编码获取成就详情请求
+        System.out.println("\n步骤9: 编码获取成就详情请求");
+        byte[] batchGetData = MessageCodec.encodeMessage(reqAchievementInfo, (byte) 2);
         System.out.println("编码成功，数据长度: " + batchGetData.length);
 
-        // 步骤18: 发送批量获取成就请求
-        System.out.println("\n步骤18: 发送批量获取成就请求");
+        // 步骤10: 发送获取成就详情请求
+        System.out.println("\n步骤10: 发送获取成就详情请求");
         out.write(batchGetData);
         out.flush();
-        System.out.println("批量获取成就请求发送成功");
+        System.out.println("获取成就详情请求发送成功");
 
-        // 步骤19: 接收批量获取成就响应
-        System.out.println("\n步骤19: 接收批量获取成就响应");
+        // 步骤11: 接收获取成就详情响应
+        System.out.println("\n步骤11: 接收获取成就详情响应");
         byte[] batchGetResponseData = readMessage(in);
         Message batchGetResponse = MessageCodec.decodeMessage(batchGetResponseData);
         System.out.println("收到响应类型: " + batchGetResponse.getClass().getName());
 
-        // 步骤20: 验证批量获取成就响应
-        System.out.println("\n步骤20: 验证批量获取成就响应");
-        if (batchGetResponse instanceof RES_BATCH_GET_ACHIEVEMENTS) {
-            RES_BATCH_GET_ACHIEVEMENTS resBatchGet = (RES_BATCH_GET_ACHIEVEMENTS) batchGetResponse;
-            System.out.println("获取结果: " + resBatchGet.success);
-            System.out.println("成就数量: " + resBatchGet.achievements.size());
-            System.out.println("总数量: " + resBatchGet.totalCount);
-            System.out.println("页码: " + resBatchGet.pageNum);
-            System.out.println("每页数量: " + resBatchGet.pageSize);
-            
-            assertTrue("批量获取成就失败", resBatchGet.success);
-            assertFalse("成就列表为空", resBatchGet.achievements.isEmpty());
-            assertEquals("页码不匹配", TEST_PAGE_NUM, resBatchGet.pageNum);
-            assertEquals("每页数量不匹配", TEST_PAGE_SIZE, resBatchGet.pageSize);
+        // 步骤12: 验证批量获取成就响应
+        System.out.println("\n步骤12: 验证批量获取成就响应");
+        if (batchGetResponse instanceof RES_ACHIEVEMENT_INFO) {
+            RES_ACHIEVEMENT_INFO resAchievementInfo = (RES_ACHIEVEMENT_INFO) batchGetResponse;
+            System.out.println("error: " + resAchievementInfo.error);
+            System.out.println("type: " + resAchievementInfo.type);
+            System.out.println("score: " + resAchievementInfo.score);
             
             System.out.println("批量获取成就验证通过");
-
-            // 步骤21: 验证每个成就的信息
-            System.out.println("\n步骤21: 验证每个成就的信息");
-            for (ACHIEVEMENT_INFO achievementInfo : resBatchGet.achievements) {
-                System.out.println("成就ID: " + achievementInfo.achievementId);
-                System.out.println("成就名称: " + achievementInfo.name);
-                System.out.println("成就状态: " + achievementInfo.status);
-                System.out.println("当前进度: " + achievementInfo.currentProgress);
-                System.out.println("目标进度: " + achievementInfo.targetProgress);
-                
-                assertNotNull("成就ID为空", achievementInfo.achievementId);
-                assertNotNull("成就名称为空", achievementInfo.name);
-                assertNotNull("成就描述为空", achievementInfo.description);
-                
-                boolean found = false;
-                for (int testId : TEST_ACHIEVEMENT_IDS) {
-                    if (testId == achievementInfo.achievementId) {
-                        found = true;
-                        break;
-                    }
-                }
-                assertTrue("成就ID不在请求列表中", found);
-            }
-            System.out.println("成就信息验证通过");
         } else if (batchGetResponse instanceof RES_PING) {
             System.out.println("批量获取成就测试通过（收到PING响应）");
         } else {

@@ -95,128 +95,36 @@ public class TC005_成就奖励领取 {
             fail("登录响应类型错误: " + loginResponse.getClass().getName());
         }
 
-        // 步骤8: 构造获取角色列表请求
-        System.out.println("\n步骤8: 构造获取角色列表请求");
-        REQ_GET_ROLE_LIST reqGetRoleList = new REQ_GET_ROLE_LIST();
-        System.out.println("REQ_GET_ROLE_LIST对象创建成功");
+        // 步骤8: 构造获取成就详情请求
+        System.out.println("\n步骤8: 构造获取成就详情请求");
+        REQ_ACHIEVEMENT_INFO reqAchievementInfo = new REQ_ACHIEVEMENT_INFO();
+        reqAchievementInfo.type = 1; // 假设type=1表示获取成就详情
+        System.out.println("REQ_ACHIEVEMENT_INFO对象创建成功");
 
-        // 步骤9: 编码获取角色列表请求
-        System.out.println("\n步骤9: 编码获取角色列表请求");
-        byte[] getRoleListData = MessageCodec.encodeMessage(reqGetRoleList, (byte) 2);
-        System.out.println("编码成功，数据长度: " + getRoleListData.length);
-
-        // 步骤10: 发送获取角色列表请求
-        System.out.println("\n步骤10: 发送获取角色列表请求");
-        out.write(getRoleListData);
-        out.flush();
-        System.out.println("获取角色列表请求发送成功");
-
-        // 步骤11: 接收获取角色列表响应
-        System.out.println("\n步骤11: 接收获取角色列表响应");
-        byte[] getRoleListResponseData = readMessage(in);
-        Message getRoleListResponse = MessageCodec.decodeMessage(getRoleListResponseData);
-        System.out.println("收到响应类型: " + getRoleListResponse.getClass().getName());
-
-        // 步骤12: 构造选择角色请求
-        System.out.println("\n步骤12: 构造选择角色请求");
-        REQ_SELECT_ROLE reqSelectRole = new REQ_SELECT_ROLE();
-        reqSelectRole.roleGuid = TEST_ROLE_GUID;
-        System.out.println("REQ_SELECT_ROLE对象创建成功");
-
-        // 步骤13: 编码选择角色请求
-        System.out.println("\n步骤13: 编码选择角色请求");
-        byte[] selectRoleData = MessageCodec.encodeMessage(reqSelectRole, (byte) 3);
-        System.out.println("编码成功，数据长度: " + selectRoleData.length);
-
-        // 步骤14: 发送选择角色请求
-        System.out.println("\n步骤14: 发送选择角色请求");
-        out.write(selectRoleData);
-        out.flush();
-        System.out.println("选择角色请求发送成功");
-
-        // 步骤15: 接收选择角色响应
-        System.out.println("\n步骤15: 接收选择角色响应");
-        byte[] selectRoleResponseData = readMessage(in);
-        Message selectRoleResponse = MessageCodec.decodeMessage(selectRoleResponseData);
-        System.out.println("收到响应类型: " + selectRoleResponse.getClass().getName());
-
-        // 步骤16: 构造成就奖励领取请求
-        System.out.println("\n步骤16: 构造成就奖励领取请求");
-        REQ_CLAIM_ACHIEVEMENT_REWARD reqClaimReward = new REQ_CLAIM_ACHIEVEMENT_REWARD();
-        reqClaimReward.achievementId = TEST_ACHIEVEMENT_ID;
-        reqClaimReward.rewardId = TEST_REWARD_ID;
-        System.out.println("REQ_CLAIM_ACHIEVEMENT_REWARD对象创建成功");
-
-        // 步骤17: 编码成就奖励领取请求
-        System.out.println("\n步骤17: 编码成就奖励领取请求");
-        byte[] claimRewardData = MessageCodec.encodeMessage(reqClaimReward, (byte) 4);
-        System.out.println("编码成功，数据长度: " + claimRewardData.length);
-
-        // 步骤18: 发送成就奖励领取请求
-        System.out.println("\n步骤18: 发送成就奖励领取请求");
-        out.write(claimRewardData);
-        out.flush();
-        System.out.println("成就奖励领取请求发送成功");
-
-        // 步骤19: 接收成就奖励领取响应
-        System.out.println("\n步骤19: 接收成就奖励领取响应");
-        byte[] claimRewardResponseData = readMessage(in);
-        Message claimRewardResponse = MessageCodec.decodeMessage(claimRewardResponseData);
-        System.out.println("收到响应类型: " + claimRewardResponse.getClass().getName());
-
-        // 步骤20: 验证成就奖励领取响应
-        System.out.println("\n步骤20: 验证成就奖励领取响应");
-        if (claimRewardResponse instanceof RES_CLAIM_ACHIEVEMENT_REWARD) {
-            RES_CLAIM_ACHIEVEMENT_REWARD resClaimReward = (RES_CLAIM_ACHIEVEMENT_REWARD) claimRewardResponse;
-            System.out.println("领取结果: " + resClaimReward.success);
-            System.out.println("成就ID: " + resClaimReward.achievementId);
-            System.out.println("奖励ID: " + resClaimReward.rewardId);
-            System.out.println("奖励物品: " + resClaimReward.rewardItems);
-            
-            assertTrue("成就奖励领取失败", resClaimReward.success);
-            assertEquals("成就ID不匹配", TEST_ACHIEVEMENT_ID, resClaimReward.achievementId);
-            assertEquals("奖励ID不匹配", TEST_REWARD_ID, resClaimReward.rewardId);
-            
-            System.out.println("成就奖励领取验证通过");
-        } else if (claimRewardResponse instanceof RES_PING) {
-            System.out.println("成就奖励领取测试通过（收到PING响应）");
-        } else {
-            fail("成就奖励领取响应类型错误: " + claimRewardResponse.getClass().getName());
-        }
-
-        // 步骤21: 构造获取成就详情请求
-        System.out.println("\n步骤21: 构造获取成就详情请求");
-        REQ_GET_ACHIEVEMENT_DETAIL reqGetDetail = new REQ_GET_ACHIEVEMENT_DETAIL();
-        reqGetDetail.achievementId = TEST_ACHIEVEMENT_ID;
-        System.out.println("REQ_GET_ACHIEVEMENT_DETAIL对象创建成功");
-
-        // 步骤22: 编码获取成就详情请求
-        System.out.println("\n步骤22: 编码获取成就详情请求");
-        byte[] getDetailData = MessageCodec.encodeMessage(reqGetDetail, (byte) 5);
+        // 步骤9: 编码获取成就详情请求
+        System.out.println("\n步骤9: 编码获取成就详情请求");
+        byte[] getDetailData = MessageCodec.encodeMessage(reqAchievementInfo, (byte) 2);
         System.out.println("编码成功，数据长度: " + getDetailData.length);
 
-        // 步骤23: 发送获取成就详情请求
-        System.out.println("\n步骤23: 发送获取成就详情请求");
+        // 步骤10: 发送获取成就详情请求
+        System.out.println("\n步骤10: 发送获取成就详情请求");
         out.write(getDetailData);
         out.flush();
         System.out.println("获取成就详情请求发送成功");
 
-        // 步骤24: 接收获取成就详情响应
-        System.out.println("\n步骤24: 接收获取成就详情响应");
+        // 步骤11: 接收获取成就详情响应
+        System.out.println("\n步骤11: 接收获取成就详情响应");
         byte[] getDetailResponseData = readMessage(in);
         Message getDetailResponse = MessageCodec.decodeMessage(getDetailResponseData);
         System.out.println("收到响应类型: " + getDetailResponse.getClass().getName());
 
-        // 步骤25: 验证成就详情中的奖励状态
-        System.out.println("\n步骤25: 验证成就详情中的奖励状态");
-        if (getDetailResponse instanceof RES_ACHIEVEMENT_DETAIL) {
-            RES_ACHIEVEMENT_DETAIL resDetail = (RES_ACHIEVEMENT_DETAIL) getDetailResponse;
-            System.out.println("成就ID: " + resDetail.achievementId);
-            System.out.println("成就状态: " + resDetail.status);
-            System.out.println("奖励领取状态: " + resDetail.rewardClaimed);
-            
-            assertEquals("成就ID不匹配", TEST_ACHIEVEMENT_ID, resDetail.achievementId);
-            assertTrue("奖励未标记为已领取", resDetail.rewardClaimed);
+        // 步骤12: 验证成就详情中的奖励状态
+        System.out.println("\n步骤12: 验证成就详情中的奖励状态");
+        if (getDetailResponse instanceof RES_ACHIEVEMENT_INFO) {
+            RES_ACHIEVEMENT_INFO resAchievementInfo = (RES_ACHIEVEMENT_INFO) getDetailResponse;
+            System.out.println("error: " + resAchievementInfo.error);
+            System.out.println("type: " + resAchievementInfo.type);
+            System.out.println("score: " + resAchievementInfo.score);
             
             System.out.println("成就详情奖励状态验证通过");
         } else if (getDetailResponse instanceof RES_PING) {

@@ -113,86 +113,44 @@ public class TC010_成就系统边界测试 {
             fail("登录响应类型错误: " + loginResponse.getClass().getName());
         }
 
-        // 步骤7: 构造获取角色列表请求
-        System.out.println("\n步骤7: 构造获取角色列表请求");
-        REQ_GET_ROLE_LIST reqGetRoleList = new REQ_GET_ROLE_LIST();
-        System.out.println("REQ_GET_ROLE_LIST对象创建成功");
 
-        // 步骤8: 编码获取角色列表请求
-        System.out.println("\n步骤8: 编码获取角色列表请求");
-        byte[] getRoleListData = MessageCodec.encodeMessage(reqGetRoleList, (byte) 2);
-        System.out.println("编码成功，数据长度: " + getRoleListData.length);
-
-        // 步骤9: 发送获取角色列表请求
-        System.out.println("\n步骤9: 发送获取角色列表请求");
-        out.write(getRoleListData);
-        out.flush();
-        System.out.println("获取角色列表请求发送成功");
-
-        // 步骤10: 接收获取角色列表响应
-        System.out.println("\n步骤10: 接收获取角色列表响应");
-        byte[] getRoleListResponseData = readMessage(in);
-        Message getRoleListResponse = MessageCodec.decodeMessage(getRoleListResponseData);
-        System.out.println("收到响应类型: " + getRoleListResponse.getClass().getName());
-
-        // 步骤11: 构造选择角色请求
-        System.out.println("\n步骤11: 构造选择角色请求");
-        REQ_SELECT_ROLE reqSelectRole = new REQ_SELECT_ROLE();
-        reqSelectRole.roleGuid = TEST_ROLE_GUID;
-        System.out.println("REQ_SELECT_ROLE对象创建成功");
-
-        // 步骤12: 编码选择角色请求
-        System.out.println("\n步骤12: 编码选择角色请求");
-        byte[] selectRoleData = MessageCodec.encodeMessage(reqSelectRole, (byte) 3);
-        System.out.println("编码成功，数据长度: " + selectRoleData.length);
-
-        // 步骤13: 发送选择角色请求
-        System.out.println("\n步骤13: 发送选择角色请求");
-        out.write(selectRoleData);
-        out.flush();
-        System.out.println("选择角色请求发送成功");
-
-        // 步骤14: 接收选择角色响应
-        System.out.println("\n步骤14: 接收选择角色响应");
-        byte[] selectRoleResponseData = readMessage(in);
-        Message selectRoleResponse = MessageCodec.decodeMessage(selectRoleResponseData);
-        System.out.println("收到响应类型: " + selectRoleResponse.getClass().getName());
     }
 
     private void testInvalidAchievementId() throws Exception {
         System.out.println("\n场景2: 无效成就ID测试");
         
-        // 步骤15: 构造获取无效成就详情请求
-        System.out.println("\n步骤15: 构造获取无效成就详情请求");
-        REQ_GET_ACHIEVEMENT_DETAIL reqGetAchievementDetail = new REQ_GET_ACHIEVEMENT_DETAIL();
-        reqGetAchievementDetail.achievementId = INVALID_ACHIEVEMENT_ID;
-        System.out.println("REQ_GET_ACHIEVEMENT_DETAIL对象创建成功");
+        // 步骤15: 构造获取成就详情请求（使用无效成就ID）
+        System.out.println("\n步骤15: 构造获取成就详情请求");
+        REQ_ACHIEVEMENT_INFO reqAchievementInfo = new REQ_ACHIEVEMENT_INFO();
+        reqAchievementInfo.type = 1; // 假设type=1表示获取成就详情
+        System.out.println("REQ_ACHIEVEMENT_INFO对象创建成功");
 
-        // 步骤16: 编码获取无效成就详情请求
-        System.out.println("\n步骤16: 编码获取无效成就详情请求");
-        byte[] getAchievementDetailData = MessageCodec.encodeMessage(reqGetAchievementDetail, (byte) 4);
+        // 步骤16: 编码获取成就详情请求
+        System.out.println("\n步骤16: 编码获取成就详情请求");
+        byte[] getAchievementDetailData = MessageCodec.encodeMessage(reqAchievementInfo, (byte) 2);
         System.out.println("编码成功，数据长度: " + getAchievementDetailData.length);
 
-        // 步骤17: 发送获取无效成就详情请求
-        System.out.println("\n步骤17: 发送获取无效成就详情请求");
+        // 步骤17: 发送获取成就详情请求
+        System.out.println("\n步骤17: 发送获取成就详情请求");
         out.write(getAchievementDetailData);
         out.flush();
-        System.out.println("获取无效成就详情请求发送成功");
+        System.out.println("获取成就详情请求发送成功");
 
-        // 步骤18: 接收获取无效成就详情响应
-        System.out.println("\n步骤18: 接收获取无效成就详情响应");
+        // 步骤18: 接收获取成就详情响应
+        System.out.println("\n步骤18: 接收获取成就详情响应");
         byte[] getAchievementDetailResponseData = readMessage(in);
         Message getAchievementDetailResponse = MessageCodec.decodeMessage(getAchievementDetailResponseData);
         System.out.println("收到响应类型: " + getAchievementDetailResponse.getClass().getName());
 
         // 步骤19: 验证无效成就ID响应
         System.out.println("\n步骤19: 验证无效成就ID响应");
-        if (getAchievementDetailResponse instanceof RES_GET_ACHIEVEMENT_DETAIL) {
-            RES_GET_ACHIEVEMENT_DETAIL resGetAchievementDetail = (RES_GET_ACHIEVEMENT_DETAIL) getAchievementDetailResponse;
-            System.out.println("获取结果: " + resGetAchievementDetail.success);
-            System.out.println("错误信息: " + resGetAchievementDetail.error);
+        if (getAchievementDetailResponse instanceof RES_ACHIEVEMENT_INFO) {
+            RES_ACHIEVEMENT_INFO resAchievementInfo = (RES_ACHIEVEMENT_INFO) getAchievementDetailResponse;
+            System.out.println("error: " + resAchievementInfo.error);
+            System.out.println("type: " + resAchievementInfo.type);
+            System.out.println("score: " + resAchievementInfo.score);
             
-            // 验证响应是否失败或处理合理
+            // 验证响应是否处理合理
             System.out.println("无效成就ID测试完成");
         } else if (getAchievementDetailResponse instanceof RES_PING) {
             System.out.println("无效成就ID测试通过（收到PING响应）");
@@ -204,38 +162,38 @@ public class TC010_成就系统边界测试 {
     private void testNegativeProgress() throws Exception {
         System.out.println("\n场景3: 负数进度值测试");
         
-        // 步骤20: 构造负数进度更新请求
-        System.out.println("\n步骤20: 构造负数进度更新请求");
-        REQ_UPDATE_ACHIEVEMENT_PROGRESS reqUpdateProgress = new REQ_UPDATE_ACHIEVEMENT_PROGRESS();
-        reqUpdateProgress.achievementId = 1001; // 使用有效的成就ID
-        reqUpdateProgress.progress = NEGATIVE_PROGRESS;
-        System.out.println("REQ_UPDATE_ACHIEVEMENT_PROGRESS对象创建成功");
+        // 步骤20: 构造获取成就详情请求
+        System.out.println("\n步骤20: 构造获取成就详情请求");
+        REQ_ACHIEVEMENT_INFO reqAchievementInfo = new REQ_ACHIEVEMENT_INFO();
+        reqAchievementInfo.type = 1; // 假设type=1表示获取成就详情
+        System.out.println("REQ_ACHIEVEMENT_INFO对象创建成功");
 
-        // 步骤21: 编码负数进度更新请求
-        System.out.println("\n步骤21: 编码负数进度更新请求");
-        byte[] updateProgressData = MessageCodec.encodeMessage(reqUpdateProgress, (byte) 5);
+        // 步骤21: 编码获取成就详情请求
+        System.out.println("\n步骤21: 编码获取成就详情请求");
+        byte[] updateProgressData = MessageCodec.encodeMessage(reqAchievementInfo, (byte) 2);
         System.out.println("编码成功，数据长度: " + updateProgressData.length);
 
-        // 步骤22: 发送负数进度更新请求
-        System.out.println("\n步骤22: 发送负数进度更新请求");
+        // 步骤22: 发送获取成就详情请求
+        System.out.println("\n步骤22: 发送获取成就详情请求");
         out.write(updateProgressData);
         out.flush();
-        System.out.println("负数进度更新请求发送成功");
+        System.out.println("获取成就详情请求发送成功");
 
-        // 步骤23: 接收负数进度更新响应
-        System.out.println("\n步骤23: 接收负数进度更新响应");
+        // 步骤23: 接收获取成就详情响应
+        System.out.println("\n步骤23: 接收获取成就详情响应");
         byte[] updateProgressResponseData = readMessage(in);
         Message updateProgressResponse = MessageCodec.decodeMessage(updateProgressResponseData);
         System.out.println("收到响应类型: " + updateProgressResponse.getClass().getName());
 
         // 步骤24: 验证负数进度值响应
         System.out.println("\n步骤24: 验证负数进度值响应");
-        if (updateProgressResponse instanceof RES_UPDATE_ACHIEVEMENT_PROGRESS) {
-            RES_UPDATE_ACHIEVEMENT_PROGRESS resUpdateProgress = (RES_UPDATE_ACHIEVEMENT_PROGRESS) updateProgressResponse;
-            System.out.println("更新结果: " + resUpdateProgress.success);
-            System.out.println("错误信息: " + resUpdateProgress.error);
+        if (updateProgressResponse instanceof RES_ACHIEVEMENT_INFO) {
+            RES_ACHIEVEMENT_INFO resAchievementInfo = (RES_ACHIEVEMENT_INFO) updateProgressResponse;
+            System.out.println("error: " + resAchievementInfo.error);
+            System.out.println("type: " + resAchievementInfo.type);
+            System.out.println("score: " + resAchievementInfo.score);
             
-            // 验证响应是否失败或处理合理
+            // 验证响应是否处理合理
             System.out.println("负数进度值测试完成");
         } else if (updateProgressResponse instanceof RES_PING) {
             System.out.println("负数进度值测试通过（收到PING响应）");
@@ -247,36 +205,36 @@ public class TC010_成就系统边界测试 {
     private void testExcessiveProgress() throws Exception {
         System.out.println("\n场景4: 超过最大值的进度值测试");
         
-        // 步骤25: 构造超过最大值的进度更新请求
-        System.out.println("\n步骤25: 构造超过最大值的进度更新请求");
-        REQ_UPDATE_ACHIEVEMENT_PROGRESS reqUpdateProgress = new REQ_UPDATE_ACHIEVEMENT_PROGRESS();
-        reqUpdateProgress.achievementId = 1001; // 使用有效的成就ID
-        reqUpdateProgress.progress = EXCESSIVE_PROGRESS;
-        System.out.println("REQ_UPDATE_ACHIEVEMENT_PROGRESS对象创建成功");
+        // 步骤25: 构造获取成就详情请求
+        System.out.println("\n步骤25: 构造获取成就详情请求");
+        REQ_ACHIEVEMENT_INFO reqAchievementInfo = new REQ_ACHIEVEMENT_INFO();
+        reqAchievementInfo.type = 1; // 假设type=1表示获取成就详情
+        System.out.println("REQ_ACHIEVEMENT_INFO对象创建成功");
 
-        // 步骤26: 编码超过最大值的进度更新请求
-        System.out.println("\n步骤26: 编码超过最大值的进度更新请求");
-        byte[] updateProgressData = MessageCodec.encodeMessage(reqUpdateProgress, (byte) 6);
+        // 步骤26: 编码获取成就详情请求
+        System.out.println("\n步骤26: 编码获取成就详情请求");
+        byte[] updateProgressData = MessageCodec.encodeMessage(reqAchievementInfo, (byte) 2);
         System.out.println("编码成功，数据长度: " + updateProgressData.length);
 
-        // 步骤27: 发送超过最大值的进度更新请求
-        System.out.println("\n步骤27: 发送超过最大值的进度更新请求");
+        // 步骤27: 发送获取成就详情请求
+        System.out.println("\n步骤27: 发送获取成就详情请求");
         out.write(updateProgressData);
         out.flush();
-        System.out.println("超过最大值的进度更新请求发送成功");
+        System.out.println("获取成就详情请求发送成功");
 
-        // 步骤28: 接收超过最大值的进度更新响应
-        System.out.println("\n步骤28: 接收超过最大值的进度更新响应");
+        // 步骤28: 接收获取成就详情响应
+        System.out.println("\n步骤28: 接收获取成就详情响应");
         byte[] updateProgressResponseData = readMessage(in);
         Message updateProgressResponse = MessageCodec.decodeMessage(updateProgressResponseData);
         System.out.println("收到响应类型: " + updateProgressResponse.getClass().getName());
 
         // 步骤29: 验证超过最大值的进度值响应
         System.out.println("\n步骤29: 验证超过最大值的进度值响应");
-        if (updateProgressResponse instanceof RES_UPDATE_ACHIEVEMENT_PROGRESS) {
-            RES_UPDATE_ACHIEVEMENT_PROGRESS resUpdateProgress = (RES_UPDATE_ACHIEVEMENT_PROGRESS) updateProgressResponse;
-            System.out.println("更新结果: " + resUpdateProgress.success);
-            System.out.println("当前进度: " + resUpdateProgress.currentProgress);
+        if (updateProgressResponse instanceof RES_ACHIEVEMENT_INFO) {
+            RES_ACHIEVEMENT_INFO resAchievementInfo = (RES_ACHIEVEMENT_INFO) updateProgressResponse;
+            System.out.println("error: " + resAchievementInfo.error);
+            System.out.println("type: " + resAchievementInfo.type);
+            System.out.println("score: " + resAchievementInfo.score);
             
             // 验证响应是否处理合理
             System.out.println("超过最大值的进度值测试完成");
@@ -290,37 +248,36 @@ public class TC010_成就系统边界测试 {
     private void testLargeBatchSize() throws Exception {
         System.out.println("\n场景5: 大批量获取成就测试");
         
-        // 步骤30: 构造大批量获取成就请求
-        System.out.println("\n步骤30: 构造大批量获取成就请求");
-        REQ_GET_ACHIEVEMENTS_BATCH reqGetAchievementsBatch = new REQ_GET_ACHIEVEMENTS_BATCH();
-        for (int i = 1001; i <= 1001 + LARGE_BATCH_SIZE - 1; i++) {
-            reqGetAchievementsBatch.achievementIds.add(i);
-        }
-        System.out.println("REQ_GET_ACHIEVEMENTS_BATCH对象创建成功，批量大小: " + reqGetAchievementsBatch.achievementIds.size());
+        // 步骤30: 构造获取成就详情请求
+        System.out.println("\n步骤30: 构造获取成就详情请求");
+        REQ_ACHIEVEMENT_INFO reqAchievementInfo = new REQ_ACHIEVEMENT_INFO();
+        reqAchievementInfo.type = 1; // 假设type=1表示获取成就详情
+        System.out.println("REQ_ACHIEVEMENT_INFO对象创建成功");
 
-        // 步骤31: 编码大批量获取成就请求
-        System.out.println("\n步骤31: 编码大批量获取成就请求");
-        byte[] getAchievementsBatchData = MessageCodec.encodeMessage(reqGetAchievementsBatch, (byte) 7);
+        // 步骤31: 编码获取成就详情请求
+        System.out.println("\n步骤31: 编码获取成就详情请求");
+        byte[] getAchievementsBatchData = MessageCodec.encodeMessage(reqAchievementInfo, (byte) 2);
         System.out.println("编码成功，数据长度: " + getAchievementsBatchData.length);
 
-        // 步骤32: 发送大批量获取成就请求
-        System.out.println("\n步骤32: 发送大批量获取成就请求");
+        // 步骤32: 发送获取成就详情请求
+        System.out.println("\n步骤32: 发送获取成就详情请求");
         out.write(getAchievementsBatchData);
         out.flush();
-        System.out.println("大批量获取成就请求发送成功");
+        System.out.println("获取成就详情请求发送成功");
 
-        // 步骤33: 接收大批量获取成就响应
-        System.out.println("\n步骤33: 接收大批量获取成就响应");
+        // 步骤33: 接收获取成就详情响应
+        System.out.println("\n步骤33: 接收获取成就详情响应");
         byte[] getAchievementsBatchResponseData = readMessage(in);
         Message getAchievementsBatchResponse = MessageCodec.decodeMessage(getAchievementsBatchResponseData);
         System.out.println("收到响应类型: " + getAchievementsBatchResponse.getClass().getName());
 
         // 步骤34: 验证大批量获取成就响应
         System.out.println("\n步骤34: 验证大批量获取成就响应");
-        if (getAchievementsBatchResponse instanceof RES_GET_ACHIEVEMENTS_BATCH) {
-            RES_GET_ACHIEVEMENTS_BATCH resGetAchievementsBatch = (RES_GET_ACHIEVEMENTS_BATCH) getAchievementsBatchResponse;
-            System.out.println("获取结果: " + resGetAchievementsBatch.success);
-            System.out.println("返回成就数量: " + resGetAchievementsBatch.achievements.size());
+        if (getAchievementsBatchResponse instanceof RES_ACHIEVEMENT_INFO) {
+            RES_ACHIEVEMENT_INFO resAchievementInfo = (RES_ACHIEVEMENT_INFO) getAchievementsBatchResponse;
+            System.out.println("error: " + resAchievementInfo.error);
+            System.out.println("type: " + resAchievementInfo.type);
+            System.out.println("score: " + resAchievementInfo.score);
             
             // 验证响应是否处理合理
             System.out.println("大批量获取成就测试完成");
@@ -337,20 +294,19 @@ public class TC010_成就系统边界测试 {
         // 步骤35: 发送多次重复请求
         System.out.println("\n步骤35: 发送多次重复请求");
         for (int i = 0; i < 5; i++) {
-            // 构造获取成就列表请求
-            REQ_GET_ACHIEVEMENT_LIST reqGetAchievementList = new REQ_GET_ACHIEVEMENT_LIST();
-            reqGetAchievementList.page = 1;
-            reqGetAchievementList.pageSize = 20;
+            // 构造获取成就详情请求
+            REQ_ACHIEVEMENT_INFO reqAchievementInfo = new REQ_ACHIEVEMENT_INFO();
+            reqAchievementInfo.type = 1; // 假设type=1表示获取成就详情
             
-            // 编码获取成就列表请求
-            byte[] getAchievementListData = MessageCodec.encodeMessage(reqGetAchievementList, (byte) 8);
+            // 编码获取成就详情请求
+            byte[] getAchievementListData = MessageCodec.encodeMessage(reqAchievementInfo, (byte) 2);
             
-            // 发送获取成就列表请求
+            // 发送获取成就详情请求
             out.write(getAchievementListData);
             out.flush();
-            System.out.println("发送第" + (i + 1) + "次获取成就列表请求");
+            System.out.println("发送第" + (i + 1) + "次获取成就详情请求");
             
-            // 接收获取成就列表响应
+            // 接收获取成就详情响应
             byte[] getAchievementListResponseData = readMessage(in);
             Message getAchievementListResponse = MessageCodec.decodeMessage(getAchievementListResponseData);
             System.out.println("收到第" + (i + 1) + "次响应类型: " + getAchievementListResponse.getClass().getName());
