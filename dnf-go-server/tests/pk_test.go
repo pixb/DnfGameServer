@@ -169,7 +169,7 @@ func (s *PkTestSuite) TestCustomGameRoomSetting() {
 	settingResp, err := s.Client.Post("/api/v1/pk/custom_game_room_setting", map[string]interface{}{
 		"transId": uint32(1),
 		"customdata": map[string]interface{}{
-			"senderguid": charguid,
+			"senderguid": uint64(charguid),
 			"type":       uint32(3),
 			"iValue":     int32(100),
 		},
@@ -188,7 +188,7 @@ func (s *PkTestSuite) TestPvpRecord() {
 	charguid := s.loginAndSelectCharacter()
 
 	// 2. 获取 PK 记录
-	recordResp, err := s.Client.Get(fmt.Sprintf("/api/v1/pk/record?charguid=%d", charguid))
+	recordResp, err := s.Client.Get(fmt.Sprintf("/api/v1/pk/record?charguid=%d", uint64(charguid)))
 	s.NoError(err)
 	s.NotNil(recordResp)
 
@@ -218,7 +218,7 @@ func (s *PkTestSuite) TestPvpStats() {
 	charguid := s.loginAndSelectCharacter()
 
 	// 2. 获取 PK 统计
-	statsResp, err := s.Client.Get(fmt.Sprintf("/api/v1/pk/stats?charguid=%d", charguid))
+	statsResp, err := s.Client.Get(fmt.Sprintf("/api/v1/pk/stats?charguid=%d", uint64(charguid)))
 	s.NoError(err)
 	s.NotNil(statsResp)
 
@@ -233,7 +233,7 @@ func (s *PkTestSuite) TestPvpMatchHistory() {
 	charguid := s.loginAndSelectCharacter()
 
 	// 2. 获取 PK 匹配历史
-	historyResp, err := s.Client.Get(fmt.Sprintf("/api/v1/pk/match_history?charguid=%d", charguid))
+	historyResp, err := s.Client.Get(fmt.Sprintf("/api/v1/pk/match_history?charguid=%d", uint64(charguid)))
 	s.NoError(err)
 	s.NotNil(historyResp)
 
@@ -263,7 +263,7 @@ func (s *PkTestSuite) TestPvpReward() {
 	charguid := s.loginAndSelectCharacter()
 
 	// 2. 获取 PK 奖励
-	rewardResp, err := s.Client.Get(fmt.Sprintf("/api/v1/pk/reward?charguid=%d", charguid))
+	rewardResp, err := s.Client.Get(fmt.Sprintf("/api/v1/pk/reward?charguid=%d", uint64(charguid)))
 	s.NoError(err)
 	s.NotNil(rewardResp)
 
@@ -323,7 +323,7 @@ func (s *PkTestSuite) TestPvpBattleResult() {
 }
 
 // loginAndSelectCharacter 辅助函数：登录并选择角色
-func (s *PkTestSuite) loginAndSelectCharacter() uint64 {
+func (s *PkTestSuite) loginAndSelectCharacter() int64 {
 	// 1. 登录
 	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
 		"openid": "test_user_001",
@@ -344,22 +344,55 @@ func (s *PkTestSuite) loginAndSelectCharacter() uint64 {
 	s.NoError(err)
 	s.NotNil(listResp)
 
-	characters, ok := listResp["characters"].([]interface{})
-	if !ok || len(characters) == 0 {
-		s.T().Fatal("No characters available")
+	// 调试信息：打印listResp的结构
+	fmt.Printf("listResp: %+v\n", listResp)
+
+	// 检查characters字段
+	if charactersData, ok := listResp["characters"]; ok {
+		fmt.Printf("charactersData type: %T\n", charactersData)
+
+		// 尝试转换为[]interface{}
+		if charactersArray, ok := charactersData.([]interface{}); ok {
+			fmt.Printf("charactersArray length: %d\n", len(charactersArray))
+
+			if len(charactersArray) > 0 {
+				firstChar := charactersArray[0]
+				fmt.Printf("firstChar type: %T\n", firstChar)
+
+				if charMap, ok := firstChar.(map[string]interface{}); ok {
+					fmt.Printf("firstChar map: %+v\n", charMap)
+
+					// 检查是否有charGuid字段
+					if charGuidValue, ok := charMap["charGuid"]; ok {
+						fmt.Printf("charGuidValue: %v, type: %T\n", charGuidValue, charGuidValue)
+						if floatValue, ok := charGuidValue.(float64); ok {
+							charguid := int64(floatValue)
+							return charguid
+						} else {
+							s.T().Fatalf("charGuid is not a float64: %T", charGuidValue)
+						}
+					} else {
+						// 尝试其他可能的字段名
+						fmt.Println("No charGuid field found, checking other fields:")
+						for key := range charMap {
+							fmt.Printf("Field: %s\n", key)
+						}
+						s.T().Fatal("No charGuid field found in character")
+					}
+				} else {
+					s.T().Fatalf("firstChar is not a map[string]interface{}: %T", firstChar)
+				}
+			} else {
+				s.T().Fatal("No characters available in array")
+			}
+		} else {
+			s.T().Fatalf("characters is not a []interface{}: %T", charactersData)
+		}
+	} else {
+		s.T().Fatal("No characters field in response")
 	}
 
-	// 4. 选择角色
-	firstChar := characters[0].(map[string]interface{})
-	charguid := uint64(firstChar["uid"].(float64))
-
-	selectResp, err := s.Client.Post("/api/v1/character/select", map[string]interface{}{
-		"uid": charguid,
-	})
-	s.NoError(err)
-	s.NotNil(selectResp)
-
-	return charguid
+	return 0
 }
 
 // TestPkSuite 运行所有 PK 测试

@@ -92,7 +92,7 @@ type BaseTestSuite struct {
 }
 
 func (s *BaseTestSuite) SetupSuite() {
-	s.Client = NewTestClient("http://localhost:8081")
+	s.Client = NewTestClient("http://localhost:8082")
 }
 
 func (s *BaseTestSuite) LoginAs(openid string) string {

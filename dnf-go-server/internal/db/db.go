@@ -86,22 +86,11 @@ func (d *DB) AutoMigrate() error {
 
 	err := d.DB.AutoMigrate(
 		&models.Account{},
+		&models.AccountMoney{},
 		&models.Role{},
-		&models.RoleAttributes{},
-		&models.RolePosition{},
-		&models.RoleSkill{},
 		&models.BagItem{},
 		&models.RoleCurrency{},
 		&models.ItemBase{},
-		&models.Quest{},
-		&models.RoleQuest{},
-		&models.Friend{},
-		&models.FriendRequest{},
-		&models.Guild{},
-		&models.GuildMember{},
-		&models.GuildSkill{},
-		&models.GuildJoinRequest{},
-		&models.Mail{},
 	)
 
 	if err != nil {

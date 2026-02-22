@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/db/models"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/auth_service"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/config"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 
@@ -20,6 +22,7 @@ type Server struct {
 
 	// 服务依赖
 	playerService interface{}
+	authService   *auth_service.Service
 	// TODO: 添加其他服务
 }
 
@@ -51,6 +54,11 @@ func (s *Server) SetPlayerService(svc interface{}) {
 	s.playerService = svc
 }
 
+// SetAuthService 设置认证服务
+func (s *Server) SetAuthService(svc *auth_service.Service) {
+	s.authService = svc
+}
+
 // registerRoutes 注册路由
 func (s *Server) registerRoutes() {
 	// 健康检查
@@ -58,6 +66,19 @@ func (s *Server) registerRoutes() {
 
 	// 游戏服务器相关接口
 	s.echo.GET("/scl/my/id", s.getServerID)
+
+	// 认证接口
+	auth := s.echo.Group("/api/v1/auth")
+	{
+		auth.POST("/login", s.login)
+	}
+
+	// 角色接口
+	character := s.echo.Group("/api/v1/character")
+	{
+		character.GET("/list", s.getCharacterList)
+		character.POST("/create", s.createCharacter)
+	}
 
 	// GM接口
 	gm := s.echo.Group("/gm")
@@ -176,4 +197,172 @@ func (s *Server) payCallback(c echo.Context) error {
 	// TODO: 实现支付回调处理
 	logger.Info("pay callback received")
 	return c.JSON(http.StatusOK, Success(nil))
+}
+
+// login 处理登录请求
+func (s *Server) login(c echo.Context) error {
+	var req auth_service.LoginRequest
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, Error(400, "请求参数错误"))
+	}
+
+	if s.authService == nil {
+		return c.JSON(http.StatusInternalServerError, Error(500, "认证服务未初始化"))
+	}
+
+	resp, err := s.authService.Login(&req)
+	if err != nil {
+		logger.Error("登录失败", logger.Error(err), logger.String("openid", req.OpenID))
+		return c.JSON(http.StatusOK, resp)
+	}
+
+	logger.Info("登录成功", logger.String("openid", req.OpenID))
+	return c.JSON(http.StatusOK, resp)
+}
+
+// getCharacterList 获取角色列表
+func (s *Server) getCharacterList(c echo.Context) error {
+	// 获取authKey
+	authKey := c.QueryParam("authKey")
+	if authKey == "" {
+		// 尝试从Authorization header获取
+		authHeader := c.Request().Header.Get("Authorization")
+		if len(authHeader) > 7 && authHeader[:7] == "Bearer " {
+			authKey = authHeader[7:]
+		}
+	}
+
+	if authKey == "" {
+		return c.JSON(http.StatusBadRequest, Error(400, "authKey不能为空"))
+	}
+
+	if s.authService == nil {
+		return c.JSON(http.StatusInternalServerError, Error(500, "认证服务未初始化"))
+	}
+
+	// 验证认证密钥
+	account, err := s.authService.ValidateAuth(authKey)
+	if err != nil {
+		return c.JSON(http.StatusUnauthorized, Error(401, "认证失败: "+err.Error()))
+	}
+
+	// 从数据库获取角色列表
+	var roles []models.Role
+	if err := s.authService.DB.Where("account_id = ? AND status = ?", account.ID, 1).Find(&roles).Error; err != nil {
+		logger.Error("获取角色列表失败", logger.Error(err), logger.Int64("account_id", account.ID))
+		return c.JSON(http.StatusInternalServerError, Error(500, "获取角色列表失败"))
+	}
+
+	// 构建角色响应
+	characters := make([]models.RoleResponse, 0, len(roles))
+	for _, role := range roles {
+		characters = append(characters, models.RoleResponse{
+			CharGUID:    role.CharGUID,
+			Name:        role.Name,
+			Level:       role.Level,
+			Job:         role.Job,
+			GrowType:    role.GrowType,
+			SecGrowType: role.SecGrowType,
+			Status:      role.Status,
+		})
+	}
+
+	response := map[string]interface{}{
+		"error":      0,
+		"characters": characters,
+	}
+
+	return c.JSON(http.StatusOK, response)
+}
+
+// CreateCharacterRequest 创建角色请求
+type CreateCharacterRequest struct {
+	Name     string `json:"name" validate:"required"`
+	Job      int    `json:"job" validate:"required"`
+	GrowType int    `json:"growType"`
+}
+
+// createCharacter 创建角色
+func (s *Server) createCharacter(c echo.Context) error {
+	// 获取authKey
+	authKey := c.QueryParam("authKey")
+	if authKey == "" {
+		// 尝试从Authorization header获取
+		authHeader := c.Request().Header.Get("Authorization")
+		if len(authHeader) > 7 && authHeader[:7] == "Bearer " {
+			authKey = authHeader[7:]
+		}
+	}
+
+	if authKey == "" {
+		return c.JSON(http.StatusBadRequest, Error(400, "authKey不能为空"))
+	}
+
+	if s.authService == nil {
+		return c.JSON(http.StatusInternalServerError, Error(500, "认证服务未初始化"))
+	}
+
+	// 验证认证密钥
+	account, err := s.authService.ValidateAuth(authKey)
+	if err != nil {
+		return c.JSON(http.StatusUnauthorized, Error(401, "认证失败: "+err.Error()))
+	}
+
+	// 绑定请求参数
+	var req CreateCharacterRequest
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, Error(400, "请求参数错误"))
+	}
+
+	if req.Name == "" {
+		return c.JSON(http.StatusBadRequest, Error(400, "角色名称不能为空"))
+	}
+
+	// 检查角色名称是否已存在
+	var existingRole models.Role
+	if err := s.authService.DB.Where("account_id = ? AND name = ?", account.ID, req.Name).First(&existingRole).Error; err == nil {
+		return c.JSON(http.StatusBadRequest, Error(400, "角色名称已存在"))
+	}
+
+	// 创建新角色
+	role := models.Role{
+		AccountID:    account.ID,
+		CharGUID:     time.Now().UnixNano(),
+		Name:         req.Name,
+		Level:        1,
+		Job:          req.Job,
+		GrowType:     req.GrowType,
+		SecGrowType:  0,
+		Exp:          0,
+		Gold:         1000,
+		Hp:           100,
+		Mp:           100,
+		Strength:     10,
+		Intelligence: 10,
+		Vitality:     10,
+		Spirit:       10,
+		Status:       1,
+		CreatedAt:    time.Now(),
+		LastPlayAt:   time.Now(),
+	}
+
+	if err := s.authService.DB.Create(&role).Error; err != nil {
+		logger.Error("创建角色失败", logger.Error(err), logger.Int64("account_id", account.ID), logger.String("name", req.Name))
+		return c.JSON(http.StatusInternalServerError, Error(500, "创建角色失败"))
+	}
+
+	response := map[string]interface{}{
+		"error": 0,
+		"data": models.RoleResponse{
+			CharGUID:    role.CharGUID,
+			Name:        role.Name,
+			Level:       role.Level,
+			Job:         role.Job,
+			GrowType:    role.GrowType,
+			SecGrowType: role.SecGrowType,
+			Status:      role.Status,
+		},
+	}
+
+	return c.JSON(http.StatusOK, response)
 }
