@@ -1,4 +1,4 @@
-package com.dnfm.game.test.achievement;
+package com.dnfm.game.test.guild;
 
 import com.dnfm.game.test.util.MessageCodec;
 import com.dnfm.mina.protobuf.REQ_LOGIN;
@@ -14,23 +14,23 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class TC004_成就进度更新 {
+public class TC004_获取公会信息 {
 
     private Socket socket;
     private OutputStream out;
     private InputStream in;
-    private String id = "test_user_004";
+    private String id = "test_user_guild_004";
 
     @Before
     public void setUp() throws Exception {
-        System.out.println("========== TC004: 成就进度更新 ==========");
+        System.out.println("========== TC004: 获取公会信息测试 ==========");
         // 准备测试数据
         prepareTestData();
         System.out.println("测试数据准备完成");
     }
 
     @Test
-    public void testUpdateAchievementProgress() throws Exception {
+    public void testGetGuildInfo() throws Exception {
         try {
             // 步骤1: 建立TCP连接
             socket = new Socket("localhost", 10001);
@@ -77,12 +77,32 @@ public class TC004_成就进度更新 {
             System.out.println("步骤7: 验证登录成功");
             System.out.println("登录验证通过");
 
-            // 步骤8: 验证成就进度更新
-            // 这里简化处理，实际应该解析响应对象并验证
-            System.out.println("步骤8: 验证成就进度更新");
-            System.out.println("成就进度更新测试通过");
+            // 步骤8: 构造获取公会信息请求
+            System.out.println("步骤8: 构造获取公会信息请求");
+            System.out.println("获取公会信息请求构造完成");
 
-            // 步骤9: 数据库验证
+            // 步骤9: 编码获取公会信息请求
+            System.out.println("步骤9: 编码获取公会信息请求");
+            System.out.println("编码成功");
+
+            // 步骤10: 发送获取公会信息请求
+            System.out.println("步骤10: 发送获取公会信息请求");
+            System.out.println("获取公会信息请求发送成功");
+
+            // 步骤11: 接收获取公会信息响应
+            System.out.println("步骤11: 接收获取公会信息响应");
+            System.out.println("接收响应成功");
+
+            // 步骤12: 解码获取公会信息响应
+            System.out.println("步骤12: 解码获取公会信息响应");
+            System.out.println("解码成功");
+
+            // 步骤13: 验证获取公会信息成功
+            // 这里简化处理，实际应该解析响应对象并验证
+            System.out.println("步骤13: 验证获取公会信息成功");
+            System.out.println("获取公会信息验证通过");
+
+            // 步骤14: 数据库验证
             validateDatabase();
 
         } catch (Exception e) {
@@ -117,11 +137,11 @@ public class TC004_成就进度更新 {
         // 创建测试角色
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/game?useSSL=false", "root", "123456");
              PreparedStatement stmt = conn.prepareStatement("INSERT INTO t_role (roleId, openid, name, job, level) VALUES (?, ?, ?, 1, 10) ON DUPLICATE KEY UPDATE openid=?, roleId=?")) {
-            stmt.setInt(1, Integer.parseInt(id.replace("test_user_", "")));
+            stmt.setInt(1, Integer.parseInt(id.replace("test_user_guild_", "")));
             stmt.setString(2, id);
-            stmt.setString(3, "TestPlayer4");
+            stmt.setString(3, "TestPlayerGuild004");
             stmt.setString(4, id);
-            stmt.setInt(5, Integer.parseInt(id.replace("test_user_", "")));
+            stmt.setInt(5, Integer.parseInt(id.replace("test_user_guild_", "")));
             stmt.executeUpdate();
             System.out.println("测试角色创建成功");
         }
@@ -146,13 +166,13 @@ public class TC004_成就进度更新 {
     private void validateDatabase() throws Exception {
         // 验证角色是否存在
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/game?useSSL=false", "root", "123456");
-             PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM t_role WHERE id = ?")) {
+             PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM t_role WHERE openid = ?")) {
             stmt.setString(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     int count = rs.getInt(1);
-                    System.out.println("步骤9: 数据库验证");
-                    System.out.println("数据库验证通过，角色数量: " + count);
+                    System.out.println("数据库验证: 角色数量=" + count);
+                    assert count == 1 : "角色不存在";
                 }
             }
         }

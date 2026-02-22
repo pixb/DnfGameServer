@@ -3,11 +3,11 @@
 # DnfGameServer 启动脚本
 
 # 设置 Java 8 环境
-export JAVA_HOME=/Users/pix/Library/Java/JavaVirtualMachines/corretto-1.8.0_462/Contents/Home
+export JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
 
 # 项目目录
-PROJECT_DIR="/Users/pix/dev/code/java/DnfGameServer"
+PROJECT_DIR="/home/pix/dev/code/java/DnfGameServer"
 cd "$PROJECT_DIR"
 
 # JAR 文件路径

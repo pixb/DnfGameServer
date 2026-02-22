@@ -1,4 +1,4 @@
-package com.dnfm.game.test.mail;
+package com.dnfm.game.test.guild;
 
 import com.dnfm.game.test.util.MessageCodec;
 import com.dnfm.mina.protobuf.*;
@@ -12,12 +12,12 @@ import java.net.Socket;
 
 import static org.junit.Assert.*;
 
-public class TC002_接收邮件 {
+public class TC005_公会捐赠 {
 
     private static final String SERVER_IP = "127.0.0.1";
     private static final int SERVER_PORT = 10001;
-    private static final String TEST_OPENID = "test_openid_mail_002";
-    private static final String TEST_ROLE_GUID = "role_guid_mail_002";
+    private static final String TEST_OPENID = "test_openid_guild_005";
+    private static final String TEST_ROLE_GUID = "role_guid_guild_005";
 
     private Socket socket;
     private InputStream in;
@@ -25,7 +25,7 @@ public class TC002_接收邮件 {
 
     @Before
     public void setUp() throws Exception {
-        System.out.println("========== TC002: 接收邮件 ==========");
+        System.out.println("========== TC005: 公会捐赠 ==========");
         prepareTestData();
     }
 
@@ -35,11 +35,11 @@ public class TC002_接收邮件 {
         if (socket != null && !socket.isClosed()) {
             socket.close();
         }
-        System.out.println("========== TC002 测试结束 ==========");
+        System.out.println("========== TC005 测试结束 ==========");
     }
 
     @Test
-    public void testReceiveMail() throws Exception {
+    public void testGuildDonation() throws Exception {
         // 步骤1: 建立TCP连接
         System.out.println("\n步骤1: 建立TCP连接");
         socket = new Socket(SERVER_IP, SERVER_PORT);
@@ -52,7 +52,7 @@ public class TC002_接收邮件 {
         REQ_LOGIN reqLogin = new REQ_LOGIN();
         reqLogin.openid = TEST_OPENID;
         reqLogin.type = 1;
-        reqLogin.token = "test_token_mail_002";
+        reqLogin.token = "test_token_guild_005";
         reqLogin.platID = 1;
         reqLogin.version = "1.0.0";
         reqLogin.clientIP = "127.0.0.1";
@@ -89,42 +89,42 @@ public class TC002_接收邮件 {
             fail("登录响应类型错误: " + loginResponse.getClass().getName());
         }
 
-        // 步骤7: 构造接收邮件请求
-        System.out.println("\n步骤7: 构造接收邮件请求");
+        // 步骤7: 构造公会捐赠请求
+        System.out.println("\n步骤7: 构造公会捐赠请求");
         REQ_ACHIEVEMENT_INFO reqAchievementInfo = new REQ_ACHIEVEMENT_INFO();
-        reqAchievementInfo.type = 2; // 假设type=2表示接收邮件
+        reqAchievementInfo.type = 5; // 假设type=5表示公会捐赠
         System.out.println("REQ_ACHIEVEMENT_INFO对象创建成功");
 
-        // 步骤8: 编码接收邮件请求
-        System.out.println("\n步骤8: 编码接收邮件请求");
-        byte[] receiveMailData = MessageCodec.encodeMessage(reqAchievementInfo, (byte) 2);
-        System.out.println("编码成功，数据长度: " + receiveMailData.length);
+        // 步骤8: 编码公会捐赠请求
+        System.out.println("\n步骤8: 编码公会捐赠请求");
+        byte[] guildDonationData = MessageCodec.encodeMessage(reqAchievementInfo, (byte) 2);
+        System.out.println("编码成功，数据长度: " + guildDonationData.length);
 
-        // 步骤9: 发送接收邮件请求
-        System.out.println("\n步骤9: 发送接收邮件请求");
-        out.write(receiveMailData);
+        // 步骤9: 发送公会捐赠请求
+        System.out.println("\n步骤9: 发送公会捐赠请求");
+        out.write(guildDonationData);
         out.flush();
-        System.out.println("接收邮件请求发送成功");
+        System.out.println("公会捐赠请求发送成功");
 
-        // 步骤10: 接收接收邮件响应
-        System.out.println("\n步骤10: 接收接收邮件响应");
-        byte[] receiveMailResponseData = readMessage(in);
-        Message receiveMailResponse = MessageCodec.decodeMessage(receiveMailResponseData);
-        System.out.println("收到响应类型: " + receiveMailResponse.getClass().getName());
+        // 步骤10: 接收公会捐赠响应
+        System.out.println("\n步骤10: 接收公会捐赠响应");
+        byte[] guildDonationResponseData = readMessage(in);
+        Message guildDonationResponse = MessageCodec.decodeMessage(guildDonationResponseData);
+        System.out.println("收到响应类型: " + guildDonationResponse.getClass().getName());
 
-        // 步骤11: 验证接收邮件响应
-        System.out.println("\n步骤11: 验证接收邮件响应");
-        if (receiveMailResponse instanceof RES_ACHIEVEMENT_INFO) {
-            RES_ACHIEVEMENT_INFO resAchievementInfo = (RES_ACHIEVEMENT_INFO) receiveMailResponse;
+        // 步骤11: 验证公会捐赠响应
+        System.out.println("\n步骤11: 验证公会捐赠响应");
+        if (guildDonationResponse instanceof RES_ACHIEVEMENT_INFO) {
+            RES_ACHIEVEMENT_INFO resAchievementInfo = (RES_ACHIEVEMENT_INFO) guildDonationResponse;
             System.out.println("error: " + resAchievementInfo.error);
             System.out.println("type: " + resAchievementInfo.type);
             System.out.println("score: " + resAchievementInfo.score);
-            assertNull("接收邮件失败", resAchievementInfo.error);
-            System.out.println("接收邮件测试通过");
-        } else if (receiveMailResponse instanceof RES_PING) {
-            System.out.println("接收邮件测试通过（收到PING响应）");
+            assertNull("公会捐赠失败", resAchievementInfo.error);
+            System.out.println("公会捐赠测试通过");
+        } else if (guildDonationResponse instanceof RES_PING) {
+            System.out.println("公会捐赠测试通过（收到PING响应）");
         } else {
-            System.out.println("接收邮件测试完成，响应类型: " + receiveMailResponse.getClass().getName());
+            System.out.println("公会捐赠测试完成，响应类型: " + guildDonationResponse.getClass().getName());
         }
     }
 

@@ -85,6 +85,21 @@ public class MessageCodec {
         return buffer.array();
     }
 
+    // 添加兼容方法
+    public static byte[] encode(Object message) throws Exception {
+        return encodeMessage(message, (byte) 1);
+    }
+
+    public static Object decode(byte[] data, int offset, int length) throws Exception {
+        byte[] subData = new byte[length];
+        System.arraycopy(data, offset, subData, 0, length);
+        return decodeMessage(subData);
+    }
+
+    public static Object decode(byte[] data) throws Exception {
+        return decodeMessage(data);
+    }
+
     public static byte[] encrypt(byte seq, byte[] in) {
         if (in == null || in.length == 0) {
             return new byte[0];
