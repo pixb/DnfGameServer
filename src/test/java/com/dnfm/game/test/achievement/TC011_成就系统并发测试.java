@@ -164,11 +164,11 @@ public class TC011_成就系统并发测试 {
             // 创建测试角色
             try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/game?useSSL=false", "root", "123456");
                  PreparedStatement stmt = conn.prepareStatement("INSERT INTO t_role (roleId, openid, name, job, level) VALUES (?, ?, ?, 1, 10) ON DUPLICATE KEY UPDATE openid=?, roleId=?")) {
-                stmt.setInt(1, Integer.parseInt(id.replace("test_user_achievement_", "")));
+                stmt.setInt(1, Integer.parseInt(id.replace("test_user_", "").replaceAll("\\D", "")));
                 stmt.setString(2, id);
                 stmt.setString(3, roleName);
                 stmt.setString(4, id);
-                stmt.setInt(5, Integer.parseInt(id.replace("test_user_achievement_", "")));
+                stmt.setInt(5, Integer.parseInt(id.replace("test_user_", "").replaceAll("\\D", "")));
                 stmt.executeUpdate();
                 System.out.println("创建测试角色成功: " + roleName);
             }

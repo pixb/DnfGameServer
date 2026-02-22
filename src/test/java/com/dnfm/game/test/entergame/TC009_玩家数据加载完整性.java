@@ -129,7 +129,7 @@ public class TC009_玩家数据加载完整性 {
 
         // 获取角色GUID
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/game?useSSL=false", "root", "123456");
-             PreparedStatement stmt = conn.prepareStatement("SELECT guid FROM t_role WHERE id = ?")) {
+             PreparedStatement stmt = conn.prepareStatement("SELECT roleId FROM t_role WHERE openid = ?")) {
             stmt.setString(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {

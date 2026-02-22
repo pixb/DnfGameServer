@@ -132,11 +132,11 @@ public class TC010_成就系统边界测试 {
         // 创建测试角色
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/game?useSSL=false", "root", "123456");
              PreparedStatement stmt = conn.prepareStatement("INSERT INTO t_role (roleId, openid, name, job, level) VALUES (?, ?, ?, 1, 10) ON DUPLICATE KEY UPDATE openid=?, roleId=?")) {
-            stmt.setInt(1, Integer.parseInt(id.replace("test_user_achievement_", "")));
+            stmt.setInt(1, Integer.parseInt(id.replace("test_user_", "")));
             stmt.setString(2, id);
             stmt.setString(3, "TestPlayer10");
             stmt.setString(4, id);
-            stmt.setInt(5, Integer.parseInt(id.replace("test_user_achievement_", "")));
+            stmt.setInt(5, Integer.parseInt(id.replace("test_user_", "")));
             stmt.executeUpdate();
             System.out.println("测试角色创建成功");
         }
@@ -161,7 +161,7 @@ public class TC010_成就系统边界测试 {
     private void validateDatabase() throws Exception {
         // 验证角色是否存在
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/game?useSSL=false", "root", "123456");
-             PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM t_role WHERE id = ?")) {
+             PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM t_role WHERE openid = ?")) {
             stmt.setString(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {

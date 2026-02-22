@@ -146,7 +146,7 @@ public class TC007_成就统计信息 {
     private void validateDatabase() throws Exception {
         // 验证角色是否存在
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/game?useSSL=false", "root", "123456");
-             PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM t_role WHERE id = ?")) {
+             PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM t_role WHERE openid = ?")) {
             stmt.setString(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
