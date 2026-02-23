@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"encoding/binary"
 	"fmt"
 	"net"
 	"net/http"
@@ -105,6 +106,33 @@ func (h *BasicTCPHandler) OnSessionOpened(session *network.Session) {
 // OnMessageReceived 收到消息时调用
 func (h *BasicTCPHandler) OnMessageReceived(session *network.Session, message interface{}) {
 	// 收到消息时的处理逻辑
+	fmt.Println("OnMessageReceived called")
+	if data, ok := message.([]byte); ok {
+		// 打印收到的消息
+		fmt.Printf("收到消息长度: %d\n", len(data))
+		fmt.Printf("收到消息内容: %s\n", string(data))
+
+		// 简单的响应逻辑
+		response := []byte("OK")
+		length := len(response)
+		lengthBytes := make([]byte, 2)
+		binary.BigEndian.PutUint16(lengthBytes, uint16(length))
+
+		// 构建响应消息
+		buffer := append(lengthBytes, response...)
+		fmt.Printf("发送响应长度: %d\n", len(buffer))
+		fmt.Printf("发送响应内容: %s\n", string(buffer))
+
+		// 发送响应
+		err := session.Write(buffer)
+		if err != nil {
+			fmt.Printf("发送响应失败: %v\n", err)
+		} else {
+			fmt.Println("发送响应成功")
+		}
+	} else {
+		fmt.Printf("收到的消息类型错误: %T\n", message)
+	}
 }
 
 // OnSessionClosed 会话关闭时调用
@@ -176,6 +204,8 @@ func (s *Server) Start(ctx context.Context) error {
 		s.echoServer.Logger.Info("TCP server starting on port 9000")
 		if err := s.tcpServer.Start(); err != nil {
 			s.echoServer.Logger.Error("TCP server error: ", err)
+		} else {
+			s.echoServer.Logger.Info("TCP server started successfully on port 9000")
 		}
 	}()
 
