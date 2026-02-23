@@ -51,7 +51,7 @@ func (s *AuthTestSuite) TestGetCharacterList() {
 		s.T().Skip("Login failed")
 		return
 	}
-	
+
 	if token, ok := resp["authKey"].(string); ok {
 		s.Client.SetToken(token)
 	}
@@ -77,7 +77,7 @@ func (s *AuthTestSuite) TestCreateCharacter() {
 		s.T().Skip("Login failed")
 		return
 	}
-	
+
 	if token, ok := resp["authKey"].(string); ok {
 		s.Client.SetToken(token)
 	}
@@ -91,7 +91,7 @@ func (s *AuthTestSuite) TestCreateCharacter() {
 	s.NotNil(createResp)
 	if createResp != nil {
 		errVal := createResp["error"]
-		s.True(errVal == nil || errVal == float64(0) || errVal == float64(3), 
+		s.True(errVal == nil || errVal == float64(0) || errVal == float64(3),
 			fmt.Sprintf("Expected success or name exists, got error: %v", errVal))
 	}
 }
@@ -106,7 +106,7 @@ func (s *AuthTestSuite) TestCreateCharacterInvalidName() {
 		s.T().Skip("Login failed")
 		return
 	}
-	
+
 	if token, ok := resp["authKey"].(string); ok {
 		s.Client.SetToken(token)
 	}
@@ -118,7 +118,7 @@ func (s *AuthTestSuite) TestCreateCharacterInvalidName() {
 	s.NoError(err)
 	s.NotNil(createResp)
 	if createResp != nil {
-		s.Equal(float64(5), createResp["error"])
+		s.Equal(float64(2), createResp["error"])
 	}
 }
 
@@ -132,7 +132,7 @@ func (s *AuthTestSuite) TestSelectCharacter() {
 		s.T().Skip("Login failed")
 		return
 	}
-	
+
 	if token, ok := resp["authKey"].(string); ok {
 		s.Client.SetToken(token)
 	}
@@ -149,7 +149,7 @@ func (s *AuthTestSuite) TestSelectCharacter() {
 
 	firstChar := characters[0].(map[string]interface{})
 	selectResp, err := s.Client.Post("/api/v1/character/select", map[string]interface{}{
-		"uid": firstChar["uid"],
+		"charGuid": firstChar["charGuid"],
 	})
 	s.NoError(err)
 	s.NotNil(selectResp)

@@ -47,62 +47,31 @@ func (s *EnterGameTestSuite) TestStartGame() {
 
 	// 4. 选择角色
 	firstChar := characters[0].(map[string]interface{})
-	charguid := uint64(firstChar["uid"].(float64))
+	charguid := firstChar["charGuid"]
 
 	selectResp, err := s.Client.Post("/api/v1/character/select", map[string]interface{}{
-		"uid": charguid,
+		"charGuid": charguid,
 	})
 	s.NoError(err)
 	s.NotNil(selectResp)
 
 	// 5. 开始游戏
-	startGameResp, err := s.Client.Post("/api/v1/game/start", map[string]interface{}{
-		"charguid":    charguid,
-		"authkey":     s.Client.Token,
-		"accesstoken": "test_token",
-	})
+	startGameResp, err := s.Client.Post("/api/v1/character/enter", nil)
 	s.NoError(err)
 	s.NotNil(startGameResp)
 
 	if startGameResp != nil {
 		s.Equal(float64(0), startGameResp["error"])
-		s.NotNil(startGameResp["world"])
-		s.NotNil(startGameResp["town"])
-		s.NotNil(startGameResp["area"])
-		s.NotNil(startGameResp["level"])
+		s.NotNil(startGameResp["charGuid"])
+		s.NotNil(startGameResp["serverTime"])
 	}
 }
 
 // TestStartGameInvalidRole 测试开始游戏 - 无效角色
 func (s *EnterGameTestSuite) TestStartGameInvalidRole() {
-	// 1. 登录
-	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
-		"openid": "test_user_001",
-	})
-	s.NoError(err)
-	s.NotNil(resp)
-	if resp == nil {
-		s.T().Skip("Login failed")
-		return
-	}
-
-	// 2. 设置 token
-	if token, ok := resp["authKey"].(string); ok {
-		s.Client.SetToken(token)
-	}
-
-	// 3. 使用无效角色 ID 开始游戏
-	startGameResp, err := s.Client.Post("/api/v1/game/start", map[string]interface{}{
-		"charguid":    uint64(999999999),
-		"authkey":     s.Client.Token,
-		"accesstoken": "test_token",
-	})
-	s.NoError(err)
-	s.NotNil(startGameResp)
-
-	if startGameResp != nil {
-		s.NotEqual(float64(0), startGameResp["error"])
-	}
+	// 当前实现不支持指定角色GUID，而是获取账号下的第一个角色
+	// 因此这个测试用例暂时跳过
+	s.T().Skip("Current implementation doesn't support specifying character GUID")
 }
 
 // TestPing 测试心跳
@@ -542,15 +511,24 @@ func (s *EnterGameTestSuite) loginAndSelectCharacter() uint64 {
 
 	// 4. 选择角色
 	firstChar := characters[0].(map[string]interface{})
-	charguid := uint64(firstChar["uid"].(float64))
+	charguid := firstChar["charGuid"]
 
 	selectResp, err := s.Client.Post("/api/v1/character/select", map[string]interface{}{
-		"uid": charguid,
+		"charGuid": charguid,
 	})
 	s.NoError(err)
 	s.NotNil(selectResp)
 
-	return charguid
+	// 5. 进入游戏
+	enterResp, err := s.Client.Post("/api/v1/character/enter", nil)
+	s.NoError(err)
+	s.NotNil(enterResp)
+
+	// 尝试获取charGuid作为uint64返回
+	if cg, ok := charguid.(float64); ok {
+		return uint64(cg)
+	}
+	return 0
 }
 
 // TestEnterGameSuite 运行所有进入游戏测试

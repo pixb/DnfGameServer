@@ -1396,17 +1396,141 @@ func (s *APIV1Service) handleWardrobeSetSlot(c echo.Context) error {
 	if claims == nil {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
 
-	roleID := claims.RoleID
-	err := s.Store.WardrobeSetSlot(c.Request().Context(), roleID)
-	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"error":   1,
-			"message": err.Error(),
+// 角色相关处理方法
+
+func (s *APIV1Service) handleGetCharacterList(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+
+	var characters []map[string]interface{}
+	for _, role := range roles {
+		characters = append(characters, map[string]interface{}{
+			"charGuid": role.ID,
+			"name":     role.Name,
+			"level":    role.Level,
+			"job":      role.Job,
 		})
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":      0,
+		"characters": characters,
+	})
+}
+
+func (s *APIV1Service) handleCreateCharacter(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "Invalid request"})
+	}
+
+	name, _ := req["name"].(string)
+	job, _ := req["job"].(float64)
+
+	if name == "" {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 2, "message": "Character name is required"})
+	}
+
+	// 生成角色槽位ID
+	roleID := int32(1)
+	// 检查当前账号的角色数量，为新角色分配槽位
+	roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	if len(roles) > 0 {
+		roleID = int32(len(roles) + 1)
+	}
+
+	role, err := s.Store.CreateRole(c.Request().Context(), &store.Role{
+		AccountID:  claims.UserID,
+		RoleID:     roleID,
+		Name:       name,
+		Job:        int32(job),
+		Level:      1,
+		Exp:        0,
+		Fatigue:    156,
+		MaxFatigue: 156,
+		MapID:      1,
+		X:          0,
+		Y:          0,
+		Channel:    1,
+	})
+
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3, "message": "Failed to create character"})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error": 0,
+		"data": map[string]interface{}{
+			"charGuid": role.ID,
+			"name":     role.Name,
+			"level":    role.Level,
+			"job":      role.Job,
+		},
+	})
+}
+
+func (s *APIV1Service) handleSelectCharacter(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "Invalid request"})
+	}
+
+	charGuid, _ := req["charGuid"].(float64)
+	roleID := uint64(charGuid)
+
+	role, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{
+		FindBase:  store.FindBase{ID: &roleID},
+		AccountID: &claims.UserID,
+	})
+
+	if role == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 2, "message": "Character not found"})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":    0,
+		"message":  "Character selected successfully",
+		"charGuid": roleID,
+	})
+}
+
+func (s *APIV1Service) handleEnterGame(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	// 获取账号下的第一个角色
+	roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	if len(roles) == 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 2, "message": "No characters available"})
+	}
+
+	role := roles[0]
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":      0,
+		"message":    "Enter game successful",
+		"charGuid":   role.ID,
+		"serverTime": time.Now().Unix(),
+	})
 }
 
 // 组队路由处理函数

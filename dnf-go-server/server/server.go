@@ -13,8 +13,9 @@ import (
 	"github.com/soheilhy/cmux"
 	"google.golang.org/grpc"
 
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/profile"
-	"github.com/pixb/DnfGameServer/dnf-go-server/server/router/api/v1"
+	v1 "github.com/pixb/DnfGameServer/dnf-go-server/server/router/api/v1"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 )
 
@@ -27,6 +28,7 @@ type Server struct {
 	// 服务器组件
 	echoServer   *echo.Echo
 	grpcServer   *grpc.Server
+	tcpServer    *network.TCPServer
 	apiV1Service *v1.APIV1Service
 
 	// 生命周期管理
@@ -71,7 +73,48 @@ func NewServer(ctx context.Context, prof *profile.Profile, s *store.Store) (*Ser
 	// 注册所有gRPC服务
 	server.apiV1Service.RegisterGRPCServices(server.grpcServer)
 
+	// 6. 创建TCP服务器
+	tcpConfig := network.DefaultServerConfig()
+	// 使用与HTTP/gRPC不同的端口，避免冲突
+	tcpConfig.Port = 9000
+
+	// 创建一个基本的连接处理器
+	tcpHandler := &BasicTCPHandler{}
+
+	server.tcpServer = network.NewTCPServer(tcpConfig, tcpHandler)
+
+	// 设置默认的二进制编解码器
+	server.tcpServer.SetCodec(&network.BinaryCodec{LengthFieldSize: 2})
+
 	return server, nil
+}
+
+// BasicTCPHandler 基本的TCP连接处理器
+type BasicTCPHandler struct{}
+
+// OnSessionCreated 会话创建时调用
+func (h *BasicTCPHandler) OnSessionCreated(session *network.Session) {
+	// 会话创建时的处理逻辑
+}
+
+// OnSessionOpened 会话打开时调用
+func (h *BasicTCPHandler) OnSessionOpened(session *network.Session) {
+	// 会话打开时的处理逻辑
+}
+
+// OnMessageReceived 收到消息时调用
+func (h *BasicTCPHandler) OnMessageReceived(session *network.Session, message interface{}) {
+	// 收到消息时的处理逻辑
+}
+
+// OnSessionClosed 会话关闭时调用
+func (h *BasicTCPHandler) OnSessionClosed(session *network.Session) {
+	// 会话关闭时的处理逻辑
+}
+
+// OnExceptionCaught 捕获到异常时调用
+func (h *BasicTCPHandler) OnExceptionCaught(session *network.Session, err error) {
+	// 捕获到异常时的处理逻辑
 }
 
 // Start 启动服务器
@@ -126,6 +169,16 @@ func (s *Server) Start(ctx context.Context) error {
 		}
 	}()
 
+	// 7. 启动TCP服务器
+	s.wg.Add(1)
+	go func() {
+		defer s.wg.Done()
+		s.echoServer.Logger.Info("TCP server starting on port 9000")
+		if err := s.tcpServer.Start(); err != nil {
+			s.echoServer.Logger.Error("TCP server error: ", err)
+		}
+	}()
+
 	s.echoServer.Logger.Info("Server started successfully")
 	return nil
 }
@@ -146,12 +199,19 @@ func (s *Server) Shutdown(ctx context.Context) error {
 		return err
 	}
 
-	// 3. 关闭Store
+	// 3. 关闭TCP服务器
+	if s.tcpServer != nil {
+		if err := s.tcpServer.Stop(); err != nil {
+			s.echoServer.Logger.Error("Error stopping TCP server: ", err)
+		}
+	}
+
+	// 4. 关闭Store
 	if err := s.Store.Close(); err != nil {
 		return err
 	}
 
-	// 4. 等待所有goroutine
+	// 5. 等待所有goroutine
 	s.wg.Wait()
 	return nil
 }

@@ -78,6 +78,8 @@ func (s *Server) registerRoutes() {
 	{
 		character.GET("/list", s.getCharacterList)
 		character.POST("/create", s.createCharacter)
+		character.POST("/select", s.selectCharacter)
+		character.POST("/enter", s.enterGame)
 	}
 
 	// GM接口
@@ -362,6 +364,109 @@ func (s *Server) createCharacter(c echo.Context) error {
 			SecGrowType: role.SecGrowType,
 			Status:      role.Status,
 		},
+	}
+
+	return c.JSON(http.StatusOK, response)
+}
+
+// SelectCharacterRequest 选择角色请求
+type SelectCharacterRequest struct {
+	CharGUID int64 `json:"charGuid" validate:"required"`
+}
+
+// selectCharacter 选择角色
+func (s *Server) selectCharacter(c echo.Context) error {
+	// 获取authKey
+	authKey := c.QueryParam("authKey")
+	if authKey == "" {
+		// 尝试从Authorization header获取
+		authHeader := c.Request().Header.Get("Authorization")
+		if len(authHeader) > 7 && authHeader[:7] == "Bearer " {
+			authKey = authHeader[7:]
+		}
+	}
+
+	if authKey == "" {
+		return c.JSON(http.StatusBadRequest, Error(400, "authKey不能为空"))
+	}
+
+	if s.authService == nil {
+		return c.JSON(http.StatusInternalServerError, Error(500, "认证服务未初始化"))
+	}
+
+	// 验证认证密钥
+	account, err := s.authService.ValidateAuth(authKey)
+	if err != nil {
+		return c.JSON(http.StatusUnauthorized, Error(401, "认证失败: "+err.Error()))
+	}
+
+	// 绑定请求参数
+	var req SelectCharacterRequest
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, Error(400, "请求参数错误"))
+	}
+
+	// 检查角色是否存在且属于该账号
+	var role models.Role
+	if err := s.authService.DB.Where("account_id = ? AND char_guid = ?", account.ID, req.CharGUID).First(&role).Error; err != nil {
+		return c.JSON(http.StatusBadRequest, Error(400, "角色不存在或不属于该账号"))
+	}
+
+	// 这里可以将选择的角色信息存储到session或缓存中
+	// 后续进入游戏时使用
+
+	response := map[string]interface{}{
+		"error":    0,
+		"message":  "角色选择成功",
+		"charGuid": req.CharGUID,
+	}
+
+	return c.JSON(http.StatusOK, response)
+}
+
+// enterGame 进入游戏
+func (s *Server) enterGame(c echo.Context) error {
+	// 获取authKey
+	authKey := c.QueryParam("authKey")
+	if authKey == "" {
+		// 尝试从Authorization header获取
+		authHeader := c.Request().Header.Get("Authorization")
+		if len(authHeader) > 7 && authHeader[:7] == "Bearer " {
+			authKey = authHeader[7:]
+		}
+	}
+
+	if authKey == "" {
+		return c.JSON(http.StatusBadRequest, Error(400, "authKey不能为空"))
+	}
+
+	if s.authService == nil {
+		return c.JSON(http.StatusInternalServerError, Error(500, "认证服务未初始化"))
+	}
+
+	// 验证认证密钥
+	account, err := s.authService.ValidateAuth(authKey)
+	if err != nil {
+		return c.JSON(http.StatusUnauthorized, Error(401, "认证失败: "+err.Error()))
+	}
+
+	// TODO: 检查是否已选择角色
+	// 这里简化处理，实际应该从session或缓存中获取已选择的角色
+
+	// 获取账号下的第一个角色
+	var role models.Role
+	if err := s.authService.DB.Where("account_id = ?", account.ID).First(&role).Error; err != nil {
+		return c.JSON(http.StatusBadRequest, Error(400, "未选择角色或角色不存在"))
+	}
+
+	// 模拟进入游戏逻辑
+	// 实际应该加载角色数据、初始化游戏状态等
+
+	response := map[string]interface{}{
+		"error":      0,
+		"message":    "进入游戏成功",
+		"charGuid":   role.CharGUID,
+		"serverTime": time.Now().Unix(),
 	}
 
 	return c.JSON(http.StatusOK, response)
