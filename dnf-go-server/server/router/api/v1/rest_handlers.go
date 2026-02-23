@@ -348,7 +348,14 @@ func (s *APIV1Service) handleGetQuestList(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	quests, _ := s.Store.ListRoleQuests(c.Request().Context(), claims.UserID)
+	// 获取用户的第一个角色
+	roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	if len(roles) == 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": "No roles found"})
+	}
+	role := roles[0]
+
+	quests, _ := s.Store.ListRoleQuests(c.Request().Context(), role.ID)
 
 	var questList []map[string]interface{}
 	for _, q := range quests {
@@ -372,10 +379,17 @@ func (s *APIV1Service) handleAcceptQuest(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	questID, _ := strconv.Atoi(c.FormValue("quest_id"))
+	questID, _ := strconv.Atoi(c.FormValue("taskId"))
+
+	// 获取用户的第一个角色
+	roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	if len(roles) == 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": "No roles found"})
+	}
+	role := roles[0]
 
 	roleQuest, _ := s.Store.CreateRoleQuest(c.Request().Context(), &store.RoleQuest{
-		RoleID:     claims.UserID,
+		RoleID:     role.ID,
 		QuestID:    int32(questID),
 		Status:     0,
 		Progress:   0,
@@ -394,9 +408,24 @@ func (s *APIV1Service) handleCompleteQuest(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	questID, _ := strconv.Atoi(c.FormValue("quest_id"))
+	taskIdStr := c.FormValue("taskId")
+	questID, err := strconv.Atoi(taskIdStr)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": "Invalid taskId"})
+	}
 
-	quests, _ := s.Store.ListRoleQuests(c.Request().Context(), claims.UserID)
+	// 获取用户的第一个角色
+	roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	if len(roles) == 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": "No roles found"})
+	}
+	role := roles[0]
+
+	quests, err := s.Store.ListRoleQuests(c.Request().Context(), role.ID)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": err.Error()})
+	}
+
 	for _, q := range quests {
 		if q.QuestID == int32(questID) {
 			status := int32(2)
@@ -405,20 +434,27 @@ func (s *APIV1Service) handleCompleteQuest(c echo.Context) error {
 				Status: &status,
 			})
 
-			role, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{
-				FindBase: store.FindBase{ID: &claims.UserID},
-			})
+			// 获取用户的第一个角色
+			roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+			if len(roles) == 0 {
+				return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": "No roles found"})
+			}
+			role := roles[0]
+
+			if role == nil {
+				return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": "Role not found"})
+			}
 
 			expGain := int64(role.Level * 100)
 			goldGain := int32(role.Level * 50)
 
 			newExp := role.Exp + expGain
 			s.Store.UpdateRole(c.Request().Context(), &store.UpdateRole{
-				ID:  claims.UserID,
+				ID:  role.ID,
 				Exp: &newExp,
 			})
 
-			currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), claims.UserID)
+			currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), role.ID)
 			currency.Gold += int64(goldGain)
 			s.Store.UpdateRoleCurrency(c.Request().Context(), currency)
 
@@ -426,6 +462,113 @@ func (s *APIV1Service) handleCompleteQuest(c echo.Context) error {
 				"error":    0,
 				"expGain":  expGain,
 				"goldGain": goldGain,
+			})
+		}
+	}
+
+	// 调试信息
+	questIDs := make([]int32, 0, len(quests))
+	for _, q := range quests {
+		questIDs = append(questIDs, q.QuestID)
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":    6,
+		"message":  "Quest not found",
+		"taskId":   taskIdStr,
+		"questID":  questID,
+		"questIDs": questIDs,
+		"userId":   claims.UserID,
+	})
+}
+
+func (s *APIV1Service) handleGetQuestReward(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	questID, _ := strconv.Atoi(c.FormValue("taskId"))
+
+	// 获取用户的第一个角色
+	roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	if len(roles) == 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": "No roles found"})
+	}
+	role := roles[0]
+
+	quests, _ := s.Store.ListRoleQuests(c.Request().Context(), role.ID)
+	for _, q := range quests {
+		if q.QuestID == int32(questID) {
+			// 发放奖励（直接使用上面获取的角色信息）
+			if role == nil {
+				return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
+			}
+
+			expGain := int64(role.Level * 100)
+			goldGain := int32(role.Level * 50)
+
+			newExp := role.Exp + expGain
+			s.Store.UpdateRole(c.Request().Context(), &store.UpdateRole{
+				ID:  role.ID,
+				Exp: &newExp,
+			})
+
+			currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), role.ID)
+			currency.Gold += int64(goldGain)
+			s.Store.UpdateRoleCurrency(c.Request().Context(), currency)
+
+			// 更新任务状态为已领取奖励
+			status := int32(3)
+			s.Store.UpdateRoleQuest(c.Request().Context(), &store.UpdateRoleQuest{
+				ID:     q.ID,
+				Status: &status,
+			})
+
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"error": 0,
+				"data": map[string]interface{}{
+					"rewardStatus": "success",
+					"taskId":       questID,
+					"rewards": []map[string]interface{}{
+						{"type": "exp", "count": expGain},
+						{"type": "gold", "count": goldGain},
+					},
+				},
+			})
+		}
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
+}
+
+func (s *APIV1Service) handleAbandonQuest(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	questID, _ := strconv.Atoi(c.FormValue("taskId"))
+
+	// 获取用户的第一个角色
+	roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	if len(roles) == 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": "No roles found"})
+	}
+	role := roles[0]
+
+	quests, _ := s.Store.ListRoleQuests(c.Request().Context(), role.ID)
+	for _, q := range quests {
+		if q.QuestID == int32(questID) {
+			// 删除任务
+			s.Store.DeleteRoleQuest(c.Request().Context(), &store.DeleteRoleQuest{ID: q.ID})
+
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"error": 0,
+				"data": map[string]interface{}{
+					"abandonStatus": "success",
+					"taskId":        questID,
+				},
 			})
 		}
 	}

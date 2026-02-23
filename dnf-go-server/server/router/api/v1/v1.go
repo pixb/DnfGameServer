@@ -146,9 +146,11 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/guild/leave", s.handleLeaveGuild)
 
 	// 任务路由
-	apiGroup.GET("/quest/list", s.handleGetQuestList)
-	apiGroup.POST("/quest/accept", s.handleAcceptQuest)
-	apiGroup.POST("/quest/complete", s.handleCompleteQuest)
+	apiGroup.GET("/task/list", s.handleGetQuestList)
+	apiGroup.POST("/task/accept", s.handleAcceptQuest)
+	apiGroup.POST("/task/complete", s.handleCompleteQuest)
+	apiGroup.POST("/task/reward", s.handleGetQuestReward)
+	apiGroup.POST("/task/abandon", s.handleAbandonQuest)
 
 	// 邮件路由
 	apiGroup.GET("/mail/list", s.handleGetMailList)
