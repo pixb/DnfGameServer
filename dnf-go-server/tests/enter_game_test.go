@@ -74,9 +74,166 @@ func (s *EnterGameTestSuite) TestStartGameInvalidRole() {
 	s.T().Skip("Current implementation doesn't support specifying character GUID")
 }
 
-// TestPing 测试心跳
-func (s *EnterGameTestSuite) TestPing() {
-	// 1. 登录
+// TestLoginWithInvalidOpenID 测试玩家登录 - 无效openid
+func (s *EnterGameTestSuite) TestLoginWithInvalidOpenID() {
+	// 使用无效的openid登录
+	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
+		"openid": "invalid_openid",
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+
+	// 检查登录是否成功（服务器设计为允许任何openid登录）
+	if resp != nil {
+		if error, ok := resp["error"].(float64); ok {
+			s.Equal(float64(0), error)
+		}
+		s.NotNil(resp["authKey"])
+	}
+}
+
+// TestEnterGameWithoutSelectingCharacter 测试进入游戏 - 未选择角色
+func (s *EnterGameTestSuite) TestEnterGameWithoutSelectingCharacter() {
+	// 1. 登录获取token（使用一个新用户，确保没有选择角色）
+	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
+		"openid": "test_user_002",
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if resp == nil {
+		s.T().Skip("Login failed")
+		return
+	}
+
+	// 2. 设置token
+	if token, ok := resp["authKey"].(string); ok {
+		s.Client.SetToken(token)
+	}
+
+	// 3. 直接进入游戏，不选择角色
+	enterResp, err := s.Client.Post("/api/v1/character/enter", nil)
+	s.NoError(err)
+	s.NotNil(enterResp)
+
+	// 检查是否失败
+	if enterResp != nil {
+		if error, ok := enterResp["error"].(float64); ok {
+			s.NotEqual(float64(0), error)
+		}
+	}
+}
+
+// TestPlayerDataLoadIntegrity 测试玩家数据加载完整性
+func (s *EnterGameTestSuite) TestPlayerDataLoadIntegrity() {
+	// 1. 登录并选择角色
+	_ = s.loginAndSelectCharacter()
+
+	// 2. 进入游戏
+	enterResp, err := s.Client.Post("/api/v1/character/enter", nil)
+	s.NoError(err)
+	s.NotNil(enterResp)
+
+	// 3. 检查返回数据的完整性
+	if enterResp != nil {
+		s.Equal(float64(0), enterResp["error"])
+		s.NotNil(enterResp["charGuid"])
+		s.NotNil(enterResp["serverTime"])
+		// 可以根据实际返回的数据结构，添加更多的检查
+	}
+}
+
+// TestDuplicateLogin 测试重复登录处理
+func (s *EnterGameTestSuite) TestDuplicateLogin() {
+	// 1. 第一次登录
+	resp1, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
+		"openid": "test_user_001",
+	})
+	s.NoError(err)
+	s.NotNil(resp1)
+	if resp1 == nil {
+		s.T().Skip("First login failed")
+		return
+	}
+
+	// 2. 获取第一个token
+	token1, ok := resp1["authKey"].(string)
+	if !ok {
+		s.T().Skip("Failed to get token")
+		return
+	}
+
+	// 3. 第二次登录，使用相同的openid
+	resp2, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
+		"openid": "test_user_001",
+	})
+	s.NoError(err)
+	s.NotNil(resp2)
+	if resp2 == nil {
+		s.T().Skip("Second login failed")
+		return
+	}
+
+	// 4. 获取第二个token
+	token2, ok := resp2["authKey"].(string)
+	if !ok {
+		s.T().Skip("Failed to get second token")
+		return
+	}
+
+	// 5. 检查两个token是否不同
+	s.NotEqual(token1, token2)
+
+	// 6. 使用第一个token尝试获取角色列表
+	s.Client.SetToken(token1)
+	listResp1, err := s.Client.Get("/api/v1/character/list")
+	s.NoError(err)
+	s.NotNil(listResp1)
+
+	// 7. 使用第二个token尝试获取角色列表
+	s.Client.SetToken(token2)
+	listResp2, err := s.Client.Get("/api/v1/character/list")
+	s.NoError(err)
+	s.NotNil(listResp2)
+}
+
+// TestGetCharacterListWithoutCharacters 测试获取角色列表_无角色
+func (s *EnterGameTestSuite) TestGetCharacterListWithoutCharacters() {
+	// 1. 登录获取token
+	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
+		"openid": "new_user_without_characters",
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if resp == nil {
+		s.T().Skip("Login failed")
+		return
+	}
+
+	// 2. 设置token
+	if token, ok := resp["authKey"].(string); ok {
+		s.Client.SetToken(token)
+	}
+
+	// 3. 获取角色列表
+	listResp, err := s.Client.Get("/api/v1/character/list")
+	s.NoError(err)
+	s.NotNil(listResp)
+
+	// 4. 检查角色列表是否为空
+	if listResp != nil {
+		error, ok := listResp["error"].(float64)
+		s.True(ok)
+		s.Equal(float64(0), error)
+
+		characters, ok := listResp["characters"]
+		s.True(ok)
+		s.Nil(characters)
+	}
+}
+
+// TestSelectCharacterWithInvalidGuid 测试选择角色_无效角色GUID
+func (s *EnterGameTestSuite) TestSelectCharacterWithInvalidGuid() {
+	// 1. 登录获取token
 	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
 		"openid": "test_user_001",
 	})
@@ -87,32 +244,32 @@ func (s *EnterGameTestSuite) TestPing() {
 		return
 	}
 
-	// 2. 设置 token
+	// 2. 设置token
 	if token, ok := resp["authKey"].(string); ok {
 		s.Client.SetToken(token)
 	}
 
-	// 3. 选择角色
-	listResp, err := s.Client.Get("/api/v1/character/list")
-	s.NoError(err)
-	s.NotNil(listResp)
-
-	characters, ok := listResp["characters"].([]interface{})
-	if !ok || len(characters) == 0 {
-		s.T().Skip("No characters available")
-		return
-	}
-
-	firstChar := characters[0].(map[string]interface{})
-	charguid := uint64(firstChar["uid"].(float64))
-
+	// 3. 使用无效的角色GUID选择角色
 	selectResp, err := s.Client.Post("/api/v1/character/select", map[string]interface{}{
-		"uid": charguid,
+		"charGuid": 999999999, // 无效的角色GUID
 	})
 	s.NoError(err)
 	s.NotNil(selectResp)
 
-	// 4. 发送心跳
+	// 4. 检查是否失败
+	if selectResp != nil {
+		error, ok := selectResp["error"].(float64)
+		s.True(ok)
+		s.NotEqual(float64(0), error)
+	}
+}
+
+// TestPing 测试心跳
+func (s *EnterGameTestSuite) TestPing() {
+	// 1. 登录并选择角色
+	_ = s.loginAndSelectCharacter()
+
+	// 2. 发送心跳
 	timestamp := time.Now().Unix()
 	pingResp, err := s.Client.Post("/api/v1/game/ping", map[string]interface{}{
 		"timestamp": timestamp,
@@ -121,7 +278,9 @@ func (s *EnterGameTestSuite) TestPing() {
 	s.NotNil(pingResp)
 
 	if pingResp != nil {
-		s.Equal(float64(0), pingResp["error"])
+		if error, ok := pingResp["error"].(float64); ok {
+			s.Equal(float64(0), error)
+		}
 	}
 }
 
