@@ -98,8 +98,13 @@ public class RoleController {
          RoleService roleService = (RoleService)SpringUtils.getBean(RoleService.class);
          Server server = serverService.getServer();
          PlayerService playerService = (PlayerService)SpringUtils.getBean(PlayerService.class);
-         String distName = server.getName();
-         this.logger.error("ReqCreateCharacter==distName=={}", distName);
+         String distName = null;
+         if (server != null) {
+            distName = server.getName();
+            this.logger.error("ReqCreateCharacter==distName=={}", distName);
+         } else {
+            this.logger.error("ReqCreateCharacter==ERR==server is null");
+         }
          if (req_create_character.job != null) {
             res_create_character.job = req_create_character.job;
          }
