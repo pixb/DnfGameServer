@@ -101,9 +101,16 @@ func (s *BaseTestSuite) LoginAs(openid string) string {
 	})
 	s.NoError(err)
 	if err != nil || resp == nil {
+		s.T().Logf("Login failed: %v, resp: %v", err, resp)
 		return ""
 	}
+	s.T().Logf("Login response: %v", resp)
 	if token, ok := resp["authKey"].(string); ok {
+		s.Client.SetToken(token)
+		return token
+	}
+	// Try auth_key as fallback
+	if token, ok := resp["auth_key"].(string); ok {
 		s.Client.SetToken(token)
 		return token
 	}

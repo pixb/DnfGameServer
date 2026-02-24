@@ -14,6 +14,7 @@ import "dnf/v1/quest.proto";
 import "dnf/v1/guild.proto";
 import "dnf/v1/pk.proto";
 import "dnf/v1/achievement.proto";
+import "dnf/v1/auction.proto";
 
 option go_package = "gen/dnf/v1";
 

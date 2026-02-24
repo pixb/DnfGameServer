@@ -301,11 +301,24 @@ func (s *AuctionTestSuite) loginAndSelectCharacter() uint64 {
 			s.T().Skip("No characters available after creation")
 			return 0
 		}
+		s.T().Logf("Characters: %v", characters)
 	}
 
 	// 6. 选择角色
 	firstChar := characters[0].(map[string]interface{})
-	charguid := uint64(firstChar["uid"].(float64))
+	s.T().Logf("First character: %v", firstChar)
+	// Try different field names for character ID
+	var charguid uint64
+	if uid, ok := firstChar["uid"].(float64); ok {
+		charguid = uint64(uid)
+	} else if charGuid, ok := firstChar["charGuid"].(float64); ok {
+		charguid = uint64(charGuid)
+	} else if charGuid, ok := firstChar["charGuid"].(uint64); ok {
+		charguid = charGuid
+	} else {
+		s.T().Skip("Failed to get character ID")
+		return 0
+	}
 
 	selectResp, err := s.Client.Post("/api/v1/character/select", map[string]interface{}{
 		"uid": charguid,

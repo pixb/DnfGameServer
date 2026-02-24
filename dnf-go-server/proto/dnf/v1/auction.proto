@@ -1,0 +1,240 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+
+import "google/api/annotations.proto";
+import "dnf/v1/common.proto";
+
+// 拍卖状态
+enum AuctionStatus {
+  AUCTION_STATUS_UNSPECIFIED = 0;
+  AUCTION_STATUS_SELLING = 1;     // 出售中
+  AUCTION_STATUS_SOLD = 2;        // 已售出
+  AUCTION_STATUS_EXPIRED = 3;     // 已过期
+  AUCTION_STATUS_CANCELLED = 4;   // 已取消
+}
+
+// 拍卖物品请求
+message CreateAuctionRequest {
+  int32 item_id = 1;              // 物品模板ID
+  int32 count = 2;                // 数量
+  int64 price = 3;                // 单价
+  int32 duration = 4;             // 持续时间(小时)
+  string attributes = 5;          // 物品属性(JSON)
+}
+
+// 拍卖物品响应
+message CreateAuctionResponse {
+  AuctionSystemItem item = 1;           // 创建的拍卖物品
+}
+
+// 拍卖物品信息
+message AuctionSystemItem {
+  uint64 id = 1;                  // 拍卖ID
+  uint64 seller_id = 2;           // 卖家角色ID
+  string seller_name = 3;         // 卖家名称
+  int32 item_id = 4;              // 物品模板ID
+  int32 count = 5;                // 数量
+  int64 price = 6;                // 单价
+  int64 total_price = 7;          // 总价
+  int32 duration = 8;             // 持续时间(小时)
+  AuctionStatus status = 9;       // 状态
+  uint64 bidder_id = 10;          // 当前出价者ID
+  string bidder_name = 11;        // 当前出价者名称
+  int64 bid_price = 12;           // 当前出价
+  int32 bid_count = 13;           // 出价次数
+  string attributes = 14;         // 物品属性(JSON)
+  int64 end_time = 15;            // 结束时间
+  int64 created_at = 16;          // 创建时间
+  int32 time_left = 17;           // 剩余时间(秒)
+  int32 quality = 18;             // 物品品质
+}
+
+// 出价请求
+message PlaceBidRequest {
+  uint64 auction_id = 1;          // 拍卖ID
+  int64 bid_price = 2;            // 出价金额
+}
+
+// 出价响应
+message PlaceBidResponse {
+  AuctionSystemItem item = 1;           // 更新后的拍卖物品
+}
+
+// 一口价购买请求
+message BuyoutRequest {
+  uint64 auction_id = 1;          // 拍卖ID
+}
+
+// 一口价购买响应
+message BuyoutResponse {
+  AuctionSystemItem item = 1;           // 更新后的拍卖物品
+}
+
+// 取消拍卖请求
+message CancelAuctionRequest {
+  uint64 auction_id = 1;          // 拍卖ID
+}
+
+// 取消拍卖响应
+message CancelAuctionResponse {
+  bool success = 1;               // 是否成功
+}
+
+// 获取拍卖物品请求
+message GetAuctionRequest {
+  uint64 auction_id = 1;          // 拍卖ID
+}
+
+// 获取拍卖物品响应
+message GetAuctionResponse {
+  AuctionSystemItem item = 1;           // 拍卖物品
+}
+
+// 列出拍卖物品请求
+message ListAuctionsRequest {
+  int32 page = 1;                 // 页码
+  int32 page_size = 2;            // 每页数量
+  int32 item_id = 3;              // 物品模板ID(可选)
+  int64 min_price = 4;            // 最低价格(可选)
+  int64 max_price = 5;            // 最高价格(可选)
+  AuctionStatus status = 6;       // 状态(可选)
+}
+
+// 列出拍卖物品响应
+message ListAuctionsResponse {
+  repeated AuctionSystemItem items = 1; // 拍卖物品列表
+  int32 total = 2;                // 总数量
+  int32 page = 3;                 // 当前页码
+  int32 page_size = 4;            // 每页数量
+}
+
+// 列出我的拍卖请求
+message ListMyAuctionsRequest {
+  int32 page = 1;                 // 页码
+  int32 page_size = 2;            // 每页数量
+  AuctionStatus status = 3;       // 状态(可选)
+}
+
+// 列出我的拍卖响应
+message ListMyAuctionsResponse {
+  repeated AuctionSystemItem items = 1; // 拍卖物品列表
+  int32 total = 2;                // 总数量
+  int32 page = 3;                 // 当前页码
+  int32 page_size = 4;            // 每页数量
+}
+
+// 列出我参与的拍卖请求
+message ListMyBidsRequest {
+  int32 page = 1;                 // 页码
+  int32 page_size = 2;            // 每页数量
+  AuctionStatus status = 3;       // 状态(可选)
+}
+
+// 列出我参与的拍卖响应
+message ListMyBidsResponse {
+  repeated AuctionSystemItem items = 1; // 拍卖物品列表
+  int32 total = 2;                // 总数量
+  int32 page = 3;                 // 当前页码
+  int32 page_size = 4;            // 每页数量
+}
+
+// 拍卖历史记录
+message AuctionHistory {
+  uint64 id = 1;                  // 历史ID
+  uint64 auction_id = 2;          // 拍卖ID
+  uint64 seller_id = 3;           // 卖家ID
+  uint64 buyer_id = 4;            // 买家ID
+  int32 item_id = 5;              // 物品ID
+  int32 count = 6;                // 数量
+  int64 final_price = 7;          // 最终价格
+  int64 seller_income = 8;        // 卖家收入
+  int64 created_at = 9;           // 创建时间
+}
+
+// 列出拍卖历史请求
+message ListAuctionHistoryRequest {
+  int32 page = 1;                 // 页码
+  int32 page_size = 2;            // 每页数量
+  int32 item_id = 3;              // 物品ID(可选)
+}
+
+// 列出拍卖历史响应
+message ListAuctionHistoryResponse {
+  repeated AuctionHistory items = 1; // 历史记录列表
+  int32 total = 2;                // 总数量
+  int32 page = 3;                 // 当前页码
+  int32 page_size = 4;            // 每页数量
+}
+
+// 拍卖服务
+service AuctionService {
+  // 创建拍卖
+  rpc CreateAuction(CreateAuctionRequest) returns (CreateAuctionResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auctions"
+      body: "*"
+    };
+  }
+
+  // 出价
+  rpc PlaceBid(PlaceBidRequest) returns (PlaceBidResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auctions/{auction_id}/bid"
+      body: "*"
+    };
+  }
+
+  // 一口价购买
+  rpc Buyout(BuyoutRequest) returns (BuyoutResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auctions/{auction_id}/buyout"
+      body: "*"
+    };
+  }
+
+  // 取消拍卖
+  rpc CancelAuction(CancelAuctionRequest) returns (CancelAuctionResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auctions/{auction_id}/cancel"
+      body: "*"
+    };
+  }
+
+  // 获取拍卖物品
+  rpc GetAuction(GetAuctionRequest) returns (GetAuctionResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/auctions/{auction_id}"
+    };
+  }
+
+  // 列出拍卖物品
+  rpc ListAuctions(ListAuctionsRequest) returns (ListAuctionsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/auctions"
+    };
+  }
+
+  // 列出我的拍卖
+  rpc ListMyAuctions(ListMyAuctionsRequest) returns (ListMyAuctionsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/auctions/my"
+    };
+  }
+
+  // 列出我参与的拍卖
+  rpc ListMyBids(ListMyBidsRequest) returns (ListMyBidsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/auctions/my-bids"
+    };
+  }
+
+  // 列出拍卖历史
+  rpc ListAuctionHistory(ListAuctionHistoryRequest) returns (ListAuctionHistoryResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/auctions/history"
+    };
+  }
+}

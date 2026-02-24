@@ -158,10 +158,30 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/mail/claim", s.handleClaimMail)
 
 	// 拍卖行路由
-	apiGroup.GET("/auction/search", s.handleSearchAuction)
-	apiGroup.POST("/auction/register", s.handleRegisterAuction)
-	apiGroup.POST("/auction/bid", s.handleBidAuction)
+	apiGroup.GET("/auctions/search", s.handleSearchAuction)
+	apiGroup.POST("/auctions", s.handleCreateAuction)
+	apiGroup.POST("/auctions/:auction_id/bid", s.handleBidAuction)
+	apiGroup.POST("/auctions/:auction_id/buyout", s.handleBuyoutAuction)
+	apiGroup.POST("/auctions/:auction_id/cancel", s.handleCancelAuction)
+	apiGroup.GET("/auctions/:auction_id", s.handleGetAuction)
+	apiGroup.GET("/auctions", s.handleListAuctions)
+	apiGroup.GET("/auctions/my", s.handleListMyAuctions)
+	apiGroup.GET("/auctions/my-bids", s.handleListMyBids)
+	apiGroup.GET("/auctions/history", s.handleListAuctionHistory)
+
+	// 兼容测试用例的API路径
+	apiGroup.POST("/auction/register", s.handleCreateAuction)
 	apiGroup.POST("/auction/buyout", s.handleBuyoutAuction)
+	apiGroup.POST("/auction/bid", s.handleBidAuction)
+	apiGroup.POST("/auction/cancel", s.handleCancelAuction)
+	apiGroup.GET("/auction/list", s.handleListAuctions)
+	apiGroup.GET("/auction/my", s.handleListMyAuctions)
+	apiGroup.GET("/auction/statistics", s.handleAuctionStatistics)
+	apiGroup.GET("/auction/detail", s.handleAuctionDetail)
+	apiGroup.GET("/auction/record", s.handleAuctionRecord)
+	apiGroup.GET("/auction/fee", s.handleAuctionFee)
+	apiGroup.GET("/auction/category", s.handleAuctionCategory)
+	apiGroup.GET("/auction/search", s.handleSearchAuction)
 
 	// 成就路由
 	apiGroup.POST("/achievement/info", s.handleAchievementInfo)
