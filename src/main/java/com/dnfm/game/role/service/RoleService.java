@@ -1096,7 +1096,12 @@ public class RoleService {
       role.setEquipscore(229);
       role.setServerSimpleDataBox(BoxGenerator.getServerSimpleData());
       role.setSkillBox(BoxGenerator.getSkillBox(job));
-      role.setDistName(server.getName());
+      if (server != null) {
+         role.setDistName(server.getName());
+      } else {
+         role.setDistName("unknown");
+         this.logger.error("createRole==ERR==server is null");
+      }
       role.setMoneyBox(BoxGenerator.getMoneyBox());
       role.setEquippedBox(BoxGenerator.getEquippedBox(job));
       role.setTutoBox(BoxGenerator.getTutoBox());
