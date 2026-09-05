@@ -213,6 +213,28 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/adventure/union/collection_reward", s.handleAdventureUnionCollectionReward)
 	apiGroup.POST("/adventure/union/level_reward", s.handleAdventureUnionLevelReward)
 
+	// 进入游戏/城镇路由
+	apiGroup.POST("/game/ping", s.handleGamePing)
+	apiGroup.POST("/game/enter_town", s.handleGameEnterTown)
+	apiGroup.POST("/game/leave_town", s.handleGameLeaveTown)
+	apiGroup.POST("/game/daily_reset", s.handleGameDailyReset)
+	apiGroup.GET("/game/character_info", s.handleGameCharacterInfo)
+	apiGroup.POST("/game/interaction_menu", s.handleGameInteractionMenu)
+	apiGroup.POST("/game/not_transaction_state", s.handleGameNotTransactionState)
+	apiGroup.POST("/game/pvp_record", s.handleGamePvpRecord)
+	apiGroup.POST("/game/adventure_union_subdue", s.handleGameAdventureUnionSubdue)
+	apiGroup.POST("/game/sending_invite_friend_list", s.handleGameSendingInviteFriendList)
+	apiGroup.POST("/game/load_server_simple_data", s.handleGameLoadServerSimpleData)
+	apiGroup.POST("/game/save_server_simple_data", s.handleGameSaveServerSimpleData)
+	apiGroup.POST("/game/enter_channel", s.handleGameEnterChannel)
+	apiGroup.POST("/game/standby", s.handleGameStandby)
+	apiGroup.POST("/game/idip_notices", s.handleGameIdipNotices)
+	apiGroup.POST("/game/black_diamon_info", s.handleGameBlackDiamonInfo)
+	apiGroup.POST("/game/private_store_goods_list", s.handleGamePrivateStoreGoodsList)
+	apiGroup.POST("/game/recommend_guild_list", s.handleGameRecommendGuildList)
+	apiGroup.POST("/game/adventure_union_info_other", s.handleGameAdventureUnionInfoOther)
+	apiGroup.POST("/game/start", s.handleGameStart)
+
 	// 制作路由
 	apiGroup.POST("/make/emblem/upgrade", s.handleEmblemUpgrade)
 	apiGroup.POST("/make/emblem/upgrade_quick", s.handleEmblemUpgradeQuick)
