@@ -107,6 +107,9 @@ func runServe(cmd *cobra.Command, args []string) error {
 
 	// 背包物品 store 注入(丢弃/合成/强化/整理/分解走真实存储)
 	handlers.InitItemStore(s)
+
+	// 商店/拍卖行 store 注入(订单查询/取消/拍卖结算/手续费)
+	handlers.InitShopStore(s)
 	fmt.Println("Services initialized successfully")
 
 	// 4. 创建服务器
