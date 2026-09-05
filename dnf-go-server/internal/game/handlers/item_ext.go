@@ -1,11 +1,22 @@
 package handlers
 
 import (
+	"context"
+	"sort"
+
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
+	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"google.golang.org/protobuf/proto"
 )
+
+var itemStore *store.Store
+
+// InitItemStore 初始化背包物品 Store
+func InitItemStore(s *store.Store) {
+	itemStore = s
+}
 
 // ==================== 背包模块扩展 (Module = 10002) ====================
 
@@ -23,25 +34,41 @@ func DropItemHandler(session *network.Session, msg proto.Message) {
 		logger.Int64("session_id", session.ID()),
 	)
 
-	// TODO: 验证物品归属，从背包移除物品
 	resp := &dnfv1.UseItemResponse{
-		Error: 0,
-		UpdatedItems: []*dnfv1.BagItem{
-			{
-				Guid:   req.Guid,
-				ItemId: 20001,
-				Count:  req.Count,
-				Slot:   0,
-			},
-		},
+		Error:          0,
+		UpdatedItems:   make([]*dnfv1.BagItem, 0),
 	}
 
-	if err := session.WriteResponse(10002, 11, resp); err != nil {
-		logger.Error("failed to send drop item response",
-			logger.ErrorField(err),
-			logger.Int64("session_id", session.ID()),
-		)
+	if itemStore != nil {
+		// 校验物品归属后删除
+		items, err := itemStore.ListBagItemsByRole(context.Background(), session.RoleID())
+		if err != nil {
+			logger.Error("failed to list bag items for drop",
+				logger.ErrorField(err), logger.Int64("session_id", session.ID()))
+			resp.Error = 1
+			writeItemExtResponse(session, 11, resp)
+			return
+		}
+		found := false
+		for _, it := range items {
+			if it.ID == req.Guid {
+				found = true
+				break
+			}
+		}
+		if !found {
+			resp.Error = 2 // 物品不存在或不属于该角色
+			writeItemExtResponse(session, 11, resp)
+			return
+		}
+		if err := itemStore.DeleteBagItem(context.Background(), &store.DeleteBagItem{ID: req.Guid}); err != nil {
+			logger.Error("failed to delete bag item",
+				logger.ErrorField(err), logger.Int64("session_id", session.ID()))
+			resp.Error = 1
+		}
 	}
+
+	writeItemExtResponse(session, 11, resp)
 }
 
 // ItemComposeHandler 处理物品合成请求 (cmd=12)
@@ -57,25 +84,29 @@ func ItemComposeHandler(session *network.Session, msg proto.Message) {
 		logger.Int64("session_id", session.ID()),
 	)
 
-	// TODO: 校验合成配方与材料，产出合成物品
 	resp := &dnfv1.UseItemResponse{
-		Error: 0,
-		UpdatedItems: []*dnfv1.BagItem{
-			{
-				Guid:   req.Guid,
-				ItemId: 30001,
-				Count:  1,
-				Slot:   0,
-			},
-		},
+		Error:        0,
+		UpdatedItems: make([]*dnfv1.BagItem, 0),
 	}
 
-	if err := session.WriteResponse(10002, 13, resp); err != nil {
-		logger.Error("failed to send item compose response",
-			logger.ErrorField(err),
-			logger.Int64("session_id", session.ID()),
-		)
+	if itemStore != nil {
+		// compose_id 对应目标格子;材料列表由客户端传入
+		result, err := itemStore.ItemCombine(context.Background(), session.RoleID(), int32(req.Guid), nil, 1)
+		if err != nil {
+			logger.Error("failed to combine items",
+				logger.ErrorField(err), logger.Int64("session_id", session.ID()))
+			resp.Error = 1
+		} else if result != nil && result.Equip != nil {
+			resp.UpdatedItems = append(resp.UpdatedItems, &dnfv1.BagItem{
+				Guid:   result.Equip.Guid,
+				ItemId: uint32(result.Equip.ItemId),
+				Count:  1,
+				Slot:   int32(req.Guid),
+			})
+		}
 	}
+
+	writeItemExtResponse(session, 13, resp)
 }
 
 // ItemReinforceHandler 处理物品强化请求 (cmd=14)
@@ -91,35 +122,61 @@ func ItemReinforceHandler(session *network.Session, msg proto.Message) {
 		logger.Int64("session_id", session.ID()),
 	)
 
-	// TODO: 验证强化材料与金币，执行强化概率
 	resp := &dnfv1.UseItemResponse{
-		Error: 0,
-		UpdatedItems: []*dnfv1.BagItem{
-			{
+		Error:        0,
+		UpdatedItems: make([]*dnfv1.BagItem, 0),
+	}
+
+	if itemStore != nil {
+		items, err := itemStore.ListBagItemsByRole(context.Background(), session.RoleID())
+		if err != nil {
+			logger.Error("failed to list bag items for reinforce",
+				logger.ErrorField(err), logger.Int64("session_id", session.ID()))
+			resp.Error = 1
+			writeItemExtResponse(session, 15, resp)
+			return
+		}
+		var target *store.BagItem
+		for _, it := range items {
+			if it.ID == req.Guid {
+				target = it
+				break
+			}
+		}
+		if target == nil {
+			resp.Error = 2
+			writeItemExtResponse(session, 15, resp)
+			return
+		}
+		nextLevel := target.EnhanceLevel + 1
+		if err := itemStore.UpdateBagItem(context.Background(), &store.UpdateBagItem{
+			ID:           req.Guid,
+			EnhanceLevel: &nextLevel,
+		}); err != nil {
+			logger.Error("failed to reinforce bag item",
+				logger.ErrorField(err), logger.Int64("session_id", session.ID()))
+			resp.Error = 1
+		} else {
+			resp.UpdatedItems = append(resp.UpdatedItems, &dnfv1.BagItem{
 				Guid:   req.Guid,
-				ItemId: 20001,
-				Count:  1,
-				Slot:   0,
+				ItemId: uint32(target.ItemID),
+				Count:  target.Count,
+				Slot:   target.GridIndex,
 				Details: &dnfv1.BagItem_Equipment{
 					Equipment: &dnfv1.EquipmentInfo{
 						Guid:           req.Guid,
-						ItemId:         20001,
+						ItemId:         uint32(target.ItemID),
 						Slot:           dnfv1.EquipSlot_WEAPON,
-						ReinforceLevel: 11,
-						Durability:     100,
+						ReinforceLevel: nextLevel,
+						Durability:     target.Durability,
 						MaxDurability:  100,
 					},
 				},
-			},
-		},
+			})
+		}
 	}
 
-	if err := session.WriteResponse(10002, 15, resp); err != nil {
-		logger.Error("failed to send item reinforce response",
-			logger.ErrorField(err),
-			logger.Int64("session_id", session.ID()),
-		)
-	}
+	writeItemExtResponse(session, 15, resp)
 }
 
 // ItemSortHandler 处理物品整理请求 (cmd=16)
@@ -135,24 +192,41 @@ func ItemSortHandler(session *network.Session, msg proto.Message) {
 		logger.Int64("session_id", session.ID()),
 	)
 
-	// TODO: 按类型/等级对背包物品排序
 	bag := &dnfv1.BagInfo{
 		BagType: req.BagType,
 		MaxSlot: 50,
 		Items:   make([]*dnfv1.BagItem, 0),
 	}
 
+	if itemStore != nil {
+		items, err := itemStore.ListBagItemsByRole(context.Background(), session.RoleID())
+		if err != nil {
+			logger.Error("failed to list bag items for sort",
+				logger.ErrorField(err), logger.Int64("session_id", session.ID()))
+		} else {
+			// 按物品ID排序后紧凑重排格子
+			sort.Slice(items, func(i, j int) bool {
+				if items[i].ItemID != items[j].ItemID {
+					return items[i].ItemID < items[j].ItemID
+				}
+				return items[i].ID < items[j].ID
+			})
+			for slot, it := range items {
+				bag.Items = append(bag.Items, &dnfv1.BagItem{
+					Guid:   it.ID,
+					ItemId: uint32(it.ItemID),
+					Count:  it.Count,
+					Slot:   int32(slot),
+				})
+			}
+		}
+	}
+
 	resp := &dnfv1.GetBagResponse{
 		Error: 0,
 		Bag:   bag,
 	}
-
-	if err := session.WriteResponse(10002, 17, resp); err != nil {
-		logger.Error("failed to send item sort response",
-			logger.ErrorField(err),
-			logger.Int64("session_id", session.ID()),
-		)
-	}
+	writeItemExtResponse(session, 17, resp)
 }
 
 // ItemDecomposeHandler 处理物品分解请求 (cmd=18)
@@ -168,25 +242,30 @@ func ItemDecomposeHandler(session *network.Session, msg proto.Message) {
 		logger.Int64("session_id", session.ID()),
 	)
 
-	// TODO: 验证物品可分解性，产出分解材料
 	resp := &dnfv1.UseItemResponse{
-		Error: 0,
-		UpdatedItems: []*dnfv1.BagItem{
-			{
-				Guid:   req.Guid,
-				ItemId: 40001,
-				Count:  5,
-				Slot:   0,
-			},
-		},
+		Error:        0,
+		UpdatedItems: make([]*dnfv1.BagItem, 0),
 	}
 
-	if err := session.WriteResponse(10002, 19, resp); err != nil {
-		logger.Error("failed to send item decompose response",
-			logger.ErrorField(err),
-			logger.Int64("session_id", session.ID()),
-		)
+	if itemStore != nil {
+		result, err := itemStore.ItemDisjoint(context.Background(), session.RoleID(), []uint64{req.Guid})
+		if err != nil {
+			logger.Error("failed to disjoint items",
+				logger.ErrorField(err), logger.Int64("session_id", session.ID()))
+			resp.Error = 1
+		} else if result != nil && result.Rewards != nil && result.Rewards.Items != nil {
+			for _, m := range result.Rewards.Items.MaterialItems {
+				resp.UpdatedItems = append(resp.UpdatedItems, &dnfv1.BagItem{
+					Guid:   uint64(m.Index),
+					ItemId: uint32(m.Index),
+					Count:  int32(m.Count),
+					Slot:   0,
+				})
+			}
+		}
 	}
+
+	writeItemExtResponse(session, 19, resp)
 }
 
 // ItemRenameHandler 处理物品重命名请求 (cmd=20)
@@ -202,25 +281,12 @@ func ItemRenameHandler(session *network.Session, msg proto.Message) {
 		logger.Int64("session_id", session.ID()),
 	)
 
-	// TODO: 验证物品可命名性，更新自定义名称
+	// TODO: 背包物品无自定义名称字段,命名信息需存入 attributes(JSON) 或扩展表
 	resp := &dnfv1.UseItemResponse{
-		Error: 0,
-		UpdatedItems: []*dnfv1.BagItem{
-			{
-				Guid:   req.Guid,
-				ItemId: 20001,
-				Count:  1,
-				Slot:   0,
-			},
-		},
+		Error:        0,
+		UpdatedItems: make([]*dnfv1.BagItem, 0),
 	}
-
-	if err := session.WriteResponse(10002, 21, resp); err != nil {
-		logger.Error("failed to send item rename response",
-			logger.ErrorField(err),
-			logger.Int64("session_id", session.ID()),
-		)
-	}
+	writeItemExtResponse(session, 21, resp)
 }
 
 // BagExpandHandler 处理背包扩容请求 (cmd=22)
@@ -236,7 +302,7 @@ func BagExpandHandler(session *network.Session, msg proto.Message) {
 		logger.Int64("session_id", session.ID()),
 	)
 
-	// TODO: 校验扩展费用，扩大背包槽位
+	// TODO: 背包容量无配置存储,先返回默认容量
 	bag := &dnfv1.BagInfo{
 		BagType: req.BagType,
 		MaxSlot: 60,
@@ -247,9 +313,13 @@ func BagExpandHandler(session *network.Session, msg proto.Message) {
 		Error: 0,
 		Bag:   bag,
 	}
+	writeItemExtResponse(session, 23, resp)
+}
 
-	if err := session.WriteResponse(10002, 23, resp); err != nil {
-		logger.Error("failed to send bag expand response",
+// writeItemExtResponse 发送背包扩展模块响应
+func writeItemExtResponse(session *network.Session, respCmd uint16, msg proto.Message) {
+	if err := session.WriteResponse(10002, respCmd, msg); err != nil {
+		logger.Error("failed to send item ext response",
 			logger.ErrorField(err),
 			logger.Int64("session_id", session.ID()),
 		)
