@@ -1,0 +1,166 @@
+-- ============================================
+-- 2.0.1 增量迁移：补齐 mysql driver 引用的缺失表
+-- 2026-09-05：mysql driver 使用无 t_ 前缀表名(adventure_*/auction_*/skills)，
+-- 与 sqlite 驱动(t_ 前缀)及 LATEST.sql 不一致，此前这些表从未建过，
+-- 导致拍卖/冒险收获/冒险图鉴/技能等 store 方法全部报错。
+-- ============================================
+
+-- 冒险数据表（GetAdventureData 使用；与成就联动表 t_adventure_data 是两张不同结构的表）
+CREATE TABLE IF NOT EXISTS adventure_data (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    role_id BIGINT UNSIGNED NOT NULL COMMENT '角色ID',
+    adventure_level INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '冒险等级',
+    adventure_exp BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '冒险经验',
+    energy INT UNSIGNED NOT NULL DEFAULT 100 COMMENT '精力',
+    max_energy INT UNSIGNED NOT NULL DEFAULT 100 COMMENT '精力上限',
+    last_energy_recovery BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '上次精力恢复时间',
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    UNIQUE KEY uk_role_id (role_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险数据表';
+
+-- 冒险收获表
+CREATE TABLE IF NOT EXISTS adventure_reap (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    role_id BIGINT UNSIGNED NOT NULL COMMENT '角色ID',
+    reap_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '收获ID',
+    progress INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '进度',
+    total INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '总量',
+    is_completed TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否完成',
+    start_time BIGINT NOT NULL DEFAULT 0 COMMENT '开始时间',
+    end_time BIGINT NOT NULL DEFAULT 0 COMMENT '结束时间',
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    INDEX idx_role_id (role_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险收获表';
+
+-- 冒险存储物品表
+CREATE TABLE IF NOT EXISTS adventure_storage_item (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    role_id BIGINT UNSIGNED NOT NULL COMMENT '角色ID',
+    item_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '物品ID',
+    count INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '数量',
+    is_bound TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否绑定',
+    storage_time BIGINT NOT NULL DEFAULT 0 COMMENT '存储时间',
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    INDEX idx_role_id (role_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险存储物品表';
+
+-- 冒险图鉴表
+CREATE TABLE IF NOT EXISTS adventure_book (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    role_id BIGINT UNSIGNED NOT NULL COMMENT '角色ID',
+    book_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '图鉴ID',
+    name VARCHAR(64) NOT NULL DEFAULT '' COMMENT '图鉴名称',
+    level INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '等级',
+    experience BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '经验',
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    UNIQUE KEY uk_role_book (role_id, book_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险图鉴表';
+
+-- 冒险图鉴条件表
+CREATE TABLE IF NOT EXISTS adventure_book_condition (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    book_id BIGINT UNSIGNED NOT NULL COMMENT '图鉴ID',
+    condition_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '条件ID',
+    current INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '当前值',
+    target INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '目标值',
+    is_completed TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否完成',
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    INDEX idx_book_id (book_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险图鉴条件表';
+
+-- 冒险图鉴奖励表
+CREATE TABLE IF NOT EXISTS adventure_book_reward (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    book_id BIGINT UNSIGNED NOT NULL COMMENT '图鉴ID',
+    reward_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '奖励ID',
+    reward_type INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '奖励类型',
+    amount INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '奖励数量',
+    is_claimed TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否已领取',
+    claimed_at BIGINT NOT NULL DEFAULT 0 COMMENT '领取时间',
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    INDEX idx_book_id (book_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='冒险图鉴奖励表';
+
+-- 拍卖行物品表
+CREATE TABLE IF NOT EXISTS auction_item (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    auction_id BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '拍卖ID',
+    seller_id BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '卖家角色ID',
+    seller_name VARCHAR(64) NOT NULL DEFAULT '' COMMENT '卖家名称',
+    item_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '物品ID',
+    count INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '数量',
+    price BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '单价',
+    total_price BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '总价',
+    duration INT UNSIGNED NOT NULL DEFAULT 24 COMMENT '时长(小时)',
+    status INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '状态: 0=在售 1=已售 2=已下架',
+    bidder_id BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '最高出价者',
+    bidder_name VARCHAR(64) NOT NULL DEFAULT '' COMMENT '最高出价者名称',
+    bid_price BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '当前出价',
+    bid_count INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '出价次数',
+    attributes TEXT COMMENT '物品属性JSON',
+    end_time BIGINT NOT NULL DEFAULT 0 COMMENT '结束时间',
+    INDEX idx_status (status),
+    INDEX idx_seller (seller_id),
+    INDEX idx_auction (auction_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='拍卖行物品表';
+
+-- 拍卖行成交历史表
+CREATE TABLE IF NOT EXISTS auction_history (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    created_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    updated_at BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    row_status VARCHAR(20) NOT NULL DEFAULT 'NORMAL',
+    auction_id BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '拍卖ID',
+    seller_id BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '卖家角色ID',
+    buyer_id BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '买家角色ID',
+    item_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '物品ID',
+    count INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '数量',
+    final_price BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '成交价',
+    seller_income BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '卖家收入',
+    INDEX idx_auction (auction_id),
+    INDEX idx_seller (seller_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='拍卖行成交历史表';
+
+-- 技能配置表
+CREATE TABLE IF NOT EXISTS skills (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    skill_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '技能ID',
+    name VARCHAR(64) NOT NULL DEFAULT '' COMMENT '技能名称',
+    description TEXT COMMENT '技能描述',
+    level INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '等级',
+    max_level INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '最大等级',
+    sp INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'SP消耗',
+    tp INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'TP消耗',
+    type INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '类型',
+    job_required INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '所需职业',
+    level_required INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '所需等级',
+    pre_skill_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '前置技能',
+    pre_skill_level INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '前置技能等级',
+    UNIQUE KEY uk_skill_id (skill_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='技能配置表';
+
+-- 角色技能表
+CREATE TABLE IF NOT EXISTS role_skills (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    role_id BIGINT UNSIGNED NOT NULL COMMENT '角色ID',
+    skill_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '技能ID',
+    level INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '技能等级',
+    is_learned TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否已学习',
+    UNIQUE KEY uk_role_skill (role_id, skill_id),
+    INDEX idx_role_id (role_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色技能表';

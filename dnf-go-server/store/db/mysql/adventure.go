@@ -593,7 +593,7 @@ func (d *DB) ListAdventureBookRewards(ctx context.Context, bookID int32) ([]*sto
 
 func (d *DB) GetAdventureUnionInfo(ctx context.Context, roleID uint64) (*store.AdventureUnionInfo, error) {
 	query := `
-		SELECT role_id, name, exp, level, day, typical_character_guid,
+		SELECT name, exp, level, day, typical_character_guid,
 		       last_change_name_time, shareboard_background, shareboard_frame,
 		       shareboard_show_antievil_score, auto_search_count,
 		       shareboard_total_antievil_score, shareboard_antievil_score_refresh,
@@ -603,7 +603,8 @@ func (d *DB) GetAdventureUnionInfo(ctx context.Context, roleID uint64) (*store.A
 	`
 
 	var info store.AdventureUnionInfo
-	var createTime, updateTime, lastChangeNameTime int64
+	// 表列为 BIGINT UNSIGNED，必须用 uint64 接收后再转换，否则 Scan 报类型错误
+	var createTime, updateTime, lastChangeNameTime uint64
 
 	err := d.db.QueryRowContext(ctx, query, roleID).Scan(
 		&info.Name, &info.Exp, &info.Level, &info.Day, &info.TypicalCharacterGUID,
@@ -615,13 +616,28 @@ func (d *DB) GetAdventureUnionInfo(ctx context.Context, roleID uint64) (*store.A
 
 	if err != nil {
 		if err.Error() == "sql: no rows in result set" {
-			return nil, store.ErrNotFound
+			// 冒险联盟不存在时创建默认记录（与sqlite驱动行为一致）
+			now := time.Now().Unix()
+			_, createErr := d.db.ExecContext(ctx, `
+				INSERT INTO t_adventure_union
+					(role_id, name, exp, level, day, created_at, updated_at, row_status)
+				VALUES (?, ?, 0, 1, 1, ?, ?, 'NORMAL')
+			`, roleID, fmt.Sprintf("冒险联盟%d", roleID), now, now)
+			if createErr != nil {
+				return nil, fmt.Errorf("failed to create adventure union: %w", createErr)
+			}
+			return &store.AdventureUnionInfo{
+				Exp:   0,
+				Level: 1,
+				Day:   1,
+				Name:  fmt.Sprintf("冒险联盟%d", roleID),
+			}, nil
 		}
 		return nil, fmt.Errorf("failed to get adventure union info: %w", err)
 	}
 
-	info.UpdateTime = time.Unix(updateTime, 0)
-	info.LastChangeNameTime = time.Unix(lastChangeNameTime, 0)
+	info.UpdateTime = time.Unix(int64(updateTime), 0)
+	info.LastChangeNameTime = time.Unix(int64(lastChangeNameTime), 0)
 
 	return &info, nil
 }

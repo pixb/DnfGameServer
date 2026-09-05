@@ -186,9 +186,9 @@ type Migration struct {
 // getAvailableMigrations 获取所有可用迁移
 func (m *Migrator) getAvailableMigrations() ([]Migration, error) {
 	driver := m.profile.GetDriver()
-	basePath := "migration/" + driver + "/"
+	basePath := "migration/" + driver
 
-	// 读取目录
+	// 读取目录（注意：embed.FS 的 ReadDir 不接受尾部斜杠，否则报 file does not exist）
 	entries, err := migrationFS.ReadDir(basePath)
 	if err != nil {
 		// 目录不存在时返回空列表
@@ -214,7 +214,7 @@ func (m *Migrator) getAvailableMigrations() ([]Migration, error) {
 		version := m.parseVersion(name)
 		migrations = append(migrations, Migration{
 			Version:     version,
-			FilePath:    basePath + name,
+			FilePath:    basePath + "/" + name,
 			Description: m.parseDescription(name),
 		})
 	}
@@ -297,7 +297,7 @@ func (m *Migrator) GetLatestSchema() (string, error) {
 
 // GetMigrationFiles 获取所有迁移文件
 func (m *Migrator) GetMigrationFiles() ([]string, error) {
-	pattern := m.getMigrationBasePath() + "*/*.sql"
+	pattern := m.getMigrationBasePath() + "*.sql"
 	files, err := fs.Glob(migrationFS, pattern)
 	if err != nil {
 		return nil, err

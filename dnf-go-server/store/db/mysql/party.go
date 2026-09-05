@@ -309,7 +309,7 @@ func (d *DB) getPartyMembers(ctx context.Context, partyID uint64) ([]*dnfv1.Grou
 		SELECT pm.role_id, r.name, 0, r.level, 0, '',
 		       pm.role_id = p.leader_id, r.fatigue, r.channel, 0, pm.team_type
 		FROM t_party_member pm
-		INNER JOIN role r ON pm.role_id = r.role_id
+		INNER JOIN role r ON pm.role_id = r.id
 		INNER JOIN t_party p ON pm.party_id = p.party_id
 		WHERE pm.party_id = ?
 	`
@@ -540,9 +540,9 @@ func (d *DB) getPartyMemberCount(ctx context.Context, partyID uint64) (int, erro
 
 func (d *DB) getRoleByID(ctx context.Context, roleID uint64) (*Role, error) {
 	query := `
-		SELECT id, role_id, player_id, name, job, level, fatigue, channel
+		SELECT id, role_id, account_id, name, job, level, fatigue, channel
 		FROM role
-		WHERE role_id = ?
+		WHERE id = ?
 	`
 
 	role := &Role{}
