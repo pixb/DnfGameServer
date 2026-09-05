@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"io"
 	"reflect"
+	"strings"
 	"sync"
 
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -76,6 +78,8 @@ type ProtocolPacket struct {
 
 // Decode 解码消息
 // 协议格式: [2字节长度][2字节module][2字节cmd][protobuf消息体]
+// 兼容文本格式: [2字节长度]"COMMAND:JSON"（测试辅助）。
+// 判别方式: 二进制消息的 module/cmd 一定在注册表中;文本消息则按冒号分割命令名。
 func (c *ProtoCodec) Decode(reader io.Reader) (interface{}, error) {
 	// 创建带缓冲的reader
 	bufReader, ok := reader.(*bufio.Reader)
@@ -99,45 +103,83 @@ func (c *ProtoCodec) Decode(reader io.Reader) (interface{}, error) {
 		return nil, fmt.Errorf("unsupported length field size: %d", c.LengthFieldSize)
 	}
 
-	// 检查消息长度
-	if length < 4 { // 至少需要4字节来存储module和cmd
-		return nil, fmt.Errorf("message too short: %d", length)
+	if length <= 0 {
+		return nil, fmt.Errorf("invalid message length: %d", length)
 	}
 
-	// 读取消息头 (module + cmd)
-	headerBuf := make([]byte, 4)
-	if _, err := io.ReadFull(bufReader, headerBuf); err != nil {
-		return nil, err
-	}
-
-	module := binary.BigEndian.Uint16(headerBuf[0:2])
-	cmd := binary.BigEndian.Uint16(headerBuf[2:4])
-
-	// 读取protobuf消息体
-	bodyLength := length - 4
-	body := make([]byte, bodyLength)
+	// 读取消息体
+	body := make([]byte, length)
 	if _, err := io.ReadFull(bufReader, body); err != nil {
 		return nil, err
 	}
 
-	// 查找消息类型并反序列化
-	key := MessageMeta{Module: module, Cmd: cmd}.MessageKey()
+	// 判别协议类型: 二进制消息头(module+cmd)一定已注册
+	if length >= 4 {
+		module := binary.BigEndian.Uint16(body[0:2])
+		cmd := binary.BigEndian.Uint16(body[2:4])
+		key := MessageMeta{Module: module, Cmd: cmd}.MessageKey()
+
+		c.mu.RLock()
+		factory, ok := c.msgRegistry[key]
+		c.mu.RUnlock()
+
+		if ok {
+			msg := factory()
+			if err := proto.Unmarshal(body[4:], msg); err != nil {
+				return nil, fmt.Errorf("failed to unmarshal protobuf: %w", err)
+			}
+			return &ProtocolPacket{
+				Meta:    MessageMeta{Module: module, Cmd: cmd},
+				Message: msg,
+			}, nil
+		}
+	}
+
+	// 文本命令模式: "COMMAND:JSON"
+	return c.decodeTextBody(body)
+}
+
+// decodeTextBody 解析文本命令消息体 (测试辅助)
+// 格式: "COMMAND:JSON"
+func (c *ProtoCodec) decodeTextBody(body []byte) (interface{}, error) {
+	// 分割命令与JSON: "COMMAND:JSON"
+	text := string(body)
+	idx := strings.Index(text, ":")
+	if idx <= 0 {
+		return nil, fmt.Errorf("invalid text command format: %q", text)
+	}
+	command := text[:idx]
+	payload := text[idx+1:]
+
+	// 查找命令映射
+	meta, ok := textCommandMeta[command]
+	if !ok {
+		return nil, fmt.Errorf("unknown text command: %s", command)
+	}
+
+	// 查找消息类型
+	key := meta.MessageKey()
 
 	c.mu.RLock()
 	factory, ok := c.msgRegistry[key]
 	c.mu.RUnlock()
 
 	if !ok {
-		return nil, fmt.Errorf("unknown message type: module=%d, cmd=%d", module, cmd)
+		return nil, fmt.Errorf("unknown message type for command %s: module=%d, cmd=%d", command, meta.Module, meta.Cmd)
 	}
 
 	msg := factory()
-	if err := proto.Unmarshal(body, msg); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal protobuf: %w", err)
+	if len(payload) > 0 {
+		// 文本命令为测试辅助模式,采用宽松解析:丢弃未知字段,
+		// 使 mock JSON 中测试自定义的字段不会导致解析失败
+		opts := protojson.UnmarshalOptions{DiscardUnknown: true}
+		if err := opts.Unmarshal([]byte(payload), msg); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal text command %s: %w", command, err)
+		}
 	}
 
 	return &ProtocolPacket{
-		Meta:    MessageMeta{Module: module, Cmd: cmd},
+		Meta:    meta,
 		Message: msg,
 	}, nil
 }

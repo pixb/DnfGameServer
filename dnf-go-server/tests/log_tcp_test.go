@@ -25,7 +25,7 @@ type LogTCPTestSuite struct {
 func (s *LogTCPTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	s.serverHost = "127.0.0.1"
-	s.serverPort = 9000
+	s.serverPort = tcpTestPort()
 	s.seq = 0
 }
 
