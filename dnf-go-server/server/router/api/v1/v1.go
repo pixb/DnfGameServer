@@ -152,6 +152,13 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/task/reward", s.handleGetQuestReward)
 	apiGroup.POST("/task/abandon", s.handleAbandonQuest)
 
+	// 任务路由别名(兼容 /quest/* 客户端协议)
+	apiGroup.GET("/quest/list", s.handleGetQuestList)
+	apiGroup.POST("/quest/accept", s.handleAcceptQuest)
+	apiGroup.POST("/quest/complete", s.handleCompleteQuest)
+	apiGroup.POST("/quest/reward", s.handleGetQuestReward)
+	apiGroup.POST("/quest/abandon", s.handleAbandonQuest)
+
 	// 邮件路由
 	apiGroup.GET("/mail/list", s.handleGetMailList)
 	apiGroup.POST("/mail/send", s.handleSendMail)

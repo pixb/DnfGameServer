@@ -748,7 +748,7 @@ func (s *APIV1Service) handleSearchAuction(c echo.Context) error {
 
 	items, _ := s.Store.ListAuctionItems(c.Request().Context(), find)
 
-	var itemList []map[string]interface{}
+	var itemList = make([]map[string]interface{}, 0)
 	now := time.Now().Unix()
 	for _, item := range items {
 		itemList = append(itemList, map[string]interface{}{
@@ -1092,7 +1092,7 @@ func (s *APIV1Service) handleListAuctions(c echo.Context) error {
 
 	items, _ := s.Store.ListAuctionItems(c.Request().Context(), find)
 
-	var itemList []map[string]interface{}
+	var itemList = make([]map[string]interface{}, 0)
 	now := time.Now().Unix()
 	for _, item := range items {
 		itemList = append(itemList, map[string]interface{}{
@@ -1138,7 +1138,7 @@ func (s *APIV1Service) handleListMyAuctions(c echo.Context) error {
 
 	items, _ := s.Store.ListAuctionItems(c.Request().Context(), find)
 
-	var itemList []map[string]interface{}
+	var itemList = make([]map[string]interface{}, 0)
 	now := time.Now().Unix()
 	for _, item := range items {
 		itemList = append(itemList, map[string]interface{}{
@@ -1182,7 +1182,7 @@ func (s *APIV1Service) handleListMyBids(c echo.Context) error {
 
 	items, _ := s.Store.ListAuctionItems(c.Request().Context(), find)
 
-	var itemList []map[string]interface{}
+	var itemList = make([]map[string]interface{}, 0)
 	now := time.Now().Unix()
 	for _, item := range items {
 		itemList = append(itemList, map[string]interface{}{
@@ -1371,10 +1371,28 @@ func (s *APIV1Service) handleAchievementInfo(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		req = map[string]interface{}{}
+	}
+
+	queryType := int32(1)
+	if v, ok := req["field_1"].(float64); ok {
+		queryType = int32(v)
+	}
+
+	achievements, err := s.Store.GetAchievements(c.Request().Context(), claims.UserID, queryType)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	if achievements == nil {
+		achievements = []*store.AchievementInfo{}
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":        1,
-		"message":      "Achievement system not implemented yet",
-		"achievements": []map[string]interface{}{},
+		"error":        0,
+		"achievements": achievements,
 	})
 }
 
@@ -1384,14 +1402,60 @@ func (s *APIV1Service) handleAchievementReward(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":   1,
-		"message": "Achievement system not implemented yet",
-	})
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		req = map[string]interface{}{}
+	}
+
+	var achievementID, rewardType uint32
+	if v, ok := req["field_1"].(float64); ok {
+		achievementID = uint32(v)
+	}
+	if v, ok := req["field_2"].(float64); ok {
+		rewardType = uint32(v)
+	}
+
+	result, err := s.Store.ClaimAchievementReward(c.Request().Context(), claims.UserID, achievementID, rewardType)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0, "result": result})
 }
 
 func (s *APIV1Service) handleAchievementList(c echo.Context) error {
-	return s.handleAchievementInfo(c)
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		req = map[string]interface{}{}
+	}
+
+	queryType := int32(1)
+	if v, ok := req["field_1"].(float64); ok {
+		queryType = int32(v)
+	}
+
+	result, err := s.Store.GetAchievementList(c.Request().Context(), claims.UserID, queryType)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	if result == nil {
+		result = &store.AchievementListResult{Achievements: []*store.AchievementInfo{}}
+	}
+	if result.Achievements == nil {
+		result.Achievements = []*store.AchievementInfo{}
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":        0,
+		"achievements": result.Achievements,
+		"total":        result.Total,
+	})
 }
 
 func (s *APIV1Service) handleAchievementBonusReward(c echo.Context) error {
@@ -1400,10 +1464,34 @@ func (s *APIV1Service) handleAchievementBonusReward(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":   1,
-		"message": "Achievement system not implemented yet",
-	})
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		req = map[string]interface{}{}
+	}
+
+	var achievementID, rewardType, rewardIndex, rewardCount uint32
+	if v, ok := req["field_1"].(float64); ok {
+		achievementID = uint32(v)
+	}
+	if v, ok := req["field_2"].(float64); ok {
+		rewardType = uint32(v)
+	}
+	if v, ok := req["field_4"].(float64); ok {
+		rewardIndex = uint32(v)
+	}
+	if v, ok := req["field_5"].(float64); ok {
+		rewardCount = uint32(v)
+	}
+	if rewardCount == 0 {
+		rewardCount = 1
+	}
+
+	result, err := s.Store.ClaimAchievementBonusReward(c.Request().Context(), claims.UserID, achievementID, rewardType, rewardIndex, rewardCount)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0, "result": result})
 }
 
 func (s *APIV1Service) handleAdventureUnionInfo(c echo.Context) error {

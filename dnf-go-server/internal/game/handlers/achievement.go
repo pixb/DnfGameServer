@@ -7,6 +7,7 @@ import (
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 var achievementSvc *achievement_service.AchievementService
@@ -15,13 +16,19 @@ func InitAchievementService(svc *achievement_service.AchievementService) {
 	achievementSvc = svc
 }
 
-func AchievementInfoHandler(session *network.Session, msg dnfv1.AchievementInfoRequest) {
+func AchievementInfoHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AchievementInfoRequest)
+	if !ok {
+		logger.Error("invalid message type for achievement info")
+		return
+	}
+
 	logger.Info("achievement info request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("field_1", msg.Field_1),
+		logger.Int32("field_1", req.Field_1),
 	)
 
-	achievements, err := achievementSvc.GetAchievementInfo(context.Background(), session.RoleID(), msg.Field_1)
+	achievements, err := achievementSvc.GetAchievementInfo(context.Background(), session.RoleID(), req.Field_1)
 	if err != nil {
 		resp := &dnfv1.AchievementInfoResponse{
 			Error:   1,
@@ -62,15 +69,21 @@ func AchievementInfoHandler(session *network.Session, msg dnfv1.AchievementInfoR
 	}
 }
 
-func AchievementRewardHandler(session *network.Session, msg dnfv1.AchievementRewardRequest) {
+func AchievementRewardHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AchievementRewardRequest)
+	if !ok {
+		logger.Error("invalid message type for achievement reward")
+		return
+	}
+
 	logger.Info("achievement reward request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("field_1", msg.Field_1),
-		logger.Int32("field_2", msg.Field_2),
-		logger.Uint64("field_3", msg.Field_3),
+		logger.Int32("field_1", req.Field_1),
+		logger.Int32("field_2", req.Field_2),
+		logger.Uint64("field_3", req.Field_3),
 	)
 
-	result, err := achievementSvc.ClaimAchievementReward(context.Background(), session.RoleID(), uint32(msg.Field_1), uint32(msg.Field_2))
+	result, err := achievementSvc.ClaimAchievementReward(context.Background(), session.RoleID(), uint32(req.Field_1), uint32(req.Field_2))
 	if err != nil {
 		resp := &dnfv1.AchievementRewardResponse{
 			Error:   1,
@@ -101,13 +114,19 @@ func AchievementRewardHandler(session *network.Session, msg dnfv1.AchievementRew
 	}
 }
 
-func AchievementListHandler(session *network.Session, msg dnfv1.AchievementListRequest) {
+func AchievementListHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AchievementListRequest)
+	if !ok {
+		logger.Error("invalid message type for achievement list")
+		return
+	}
+
 	logger.Info("achievement list request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("field_1", msg.Field_1),
+		logger.Int32("field_1", req.Field_1),
 	)
 
-	result, err := achievementSvc.GetAchievementList(context.Background(), session.RoleID(), msg.Field_1)
+	result, err := achievementSvc.GetAchievementList(context.Background(), session.RoleID(), req.Field_1)
 	if err != nil {
 		resp := &dnfv1.AchievementListResponse{
 			Error:   1,
@@ -149,17 +168,23 @@ func AchievementListHandler(session *network.Session, msg dnfv1.AchievementListR
 	}
 }
 
-func AchievementBonusRewardHandler(session *network.Session, msg dnfv1.AchievementBonusRewardRequest) {
+func AchievementBonusRewardHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.AchievementBonusRewardRequest)
+	if !ok {
+		logger.Error("invalid message type for achievement bonus reward")
+		return
+	}
+
 	logger.Info("achievement bonus reward request received",
 		logger.Uint64("role_id", session.RoleID()),
-		logger.Int32("field_1", msg.Field_1),
-		logger.Int32("field_2", msg.Field_2),
-		logger.Int32("field_3", msg.Field_3),
-		logger.Int32("field_4", msg.Field_4),
-		logger.Int32("field_5", msg.Field_5),
+		logger.Int32("field_1", req.Field_1),
+		logger.Int32("field_2", req.Field_2),
+		logger.Int32("field_3", req.Field_3),
+		logger.Int32("field_4", req.Field_4),
+		logger.Int32("field_5", req.Field_5),
 	)
 
-	rewards, err := achievementSvc.ClaimAchievementBonusReward(context.Background(), session.RoleID(), uint32(msg.Field_1), uint32(msg.Field_2), uint32(msg.Field_3), uint32(msg.Field_4))
+	rewards, err := achievementSvc.ClaimAchievementBonusReward(context.Background(), session.RoleID(), uint32(req.Field_1), uint32(req.Field_2), uint32(req.Field_3), uint32(req.Field_4))
 	if err != nil {
 		resp := &dnfv1.AchievementBonusRewardResponse{
 			Error:   1,

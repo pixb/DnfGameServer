@@ -6,6 +6,8 @@ type Profile struct {
 	DSN    string `json:"dsn" yaml:"dsn"`
 	Mode   string `json:"mode" yaml:"mode"`
 	Port   int    `json:"port" yaml:"port"`
+	// TCPPort TCP游戏服务器端口（默认9000）
+	TCPPort int `json:"tcp_port" yaml:"tcp_port"`
 }
 
 // GetDriver 获取数据库驱动
