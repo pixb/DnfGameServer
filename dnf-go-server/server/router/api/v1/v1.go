@@ -284,6 +284,34 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/make/card/compose", s.handleMakeCardCompose)
 	apiGroup.POST("/make/wardrobe/set_slot", s.handleMakeWardrobeSetSlot)
 
+	// 在线商城路由
+	apiGroup.POST("/onlinemall/list", s.handleOnlineMallList)
+	apiGroup.POST("/onlinemall/detail", s.handleOnlineMallDetail)
+	apiGroup.POST("/onlinemall/buy", s.handleOnlineMallBuy)
+	apiGroup.GET("/onlinemall/categories", s.handleOnlineMallCategories)
+	apiGroup.POST("/onlinemall/category_items", s.handleOnlineMallCategoryItems)
+	apiGroup.GET("/onlinemall/recommend", s.handleOnlineMallRecommend)
+	apiGroup.GET("/onlinemall/hot", s.handleOnlineMallHot)
+	apiGroup.POST("/onlinemall/buy_limit", s.handleOnlineMallBuyLimit)
+
+	// 市场路由
+	apiGroup.POST("/market/search", s.handleMarketSearch)
+	apiGroup.POST("/market/publish", s.handleMarketPublish)
+	apiGroup.POST("/market/cancel", s.handleMarketCancel)
+	apiGroup.POST("/market/buy", s.handleMarketBuy)
+	apiGroup.POST("/market/detail", s.handleMarketDetail)
+	apiGroup.POST("/market/my_items", s.handleMarketMyItems)
+
+	// 日志路由
+	apiGroup.POST("/log/record", s.handleLogRecord)
+	apiGroup.POST("/log/query", s.handleLogQuery)
+	apiGroup.POST("/log/statistic", s.handleLogStatistic)
+	apiGroup.POST("/log/delete", s.handleLogDelete)
+	apiGroup.POST("/log/export", s.handleLogExport)
+	apiGroup.POST("/log/clean", s.handleLogClean)
+	apiGroup.POST("/log/monitor", s.handleLogMonitor)
+	apiGroup.POST("/log/analyze", s.handleLogAnalyze)
+
 	// 组队路由
 	apiGroup.POST("/party/search", s.handleSearchPartyList)
 	apiGroup.POST("/party/create", s.handleCreateParty)
