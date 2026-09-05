@@ -249,5 +249,14 @@ type Driver interface {
 	GetActivePvpSeason(ctx context.Context) (*PvpSeason, error)
 	ListPvpRewards(ctx context.Context, roleID uint64) ([]*PvpReward, error)
 	ListPvpMatchTypes(ctx context.Context) ([]*PvpMatchType, error)
+	CreatePvpMatchType(ctx context.Context, t *PvpMatchType) error
 	SubmitPvpBattleResult(ctx context.Context, record *PvpRecord, stats *PvpStats) error
+	CreatePvpMatching(ctx context.Context, m *PvpMatching) (*PvpMatching, error)
+	UpdatePvpMatchingStatus(ctx context.Context, matchingID uint64, status uint32) error
+	ListPvpMatchingsByRole(ctx context.Context, roleID uint64, status uint32) ([]*PvpMatching, error)
+	ListRaidEntrances(ctx context.Context, roleID uint64) ([]*RaidEntrance, error)
+	UpsertRaidEntrance(ctx context.Context, e *RaidEntrance) error
+	ResetDailyRaidEntrances(ctx context.Context, roleID uint64) error
+	ListPvpRanking(ctx context.Context, limit int) ([]*PvpRankingEntry, error)
+	ListPvpMatchHistory(ctx context.Context, roleID uint64, limit int) ([]*PvpMatchHistoryEntry, error)
 }

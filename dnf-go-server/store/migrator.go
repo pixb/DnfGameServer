@@ -387,5 +387,33 @@ func (s *Store) Seed(ctx context.Context) error {
 		}
 	}
 
+	// 插入默认 PK 匹配类型(仅当表为空时)
+	if err := s.seedPvpMatchTypes(ctx); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// seedPvpMatchTypes 插入默认 PK 匹配类型
+func (s *Store) seedPvpMatchTypes(ctx context.Context) error {
+	types, err := s.ListPvpMatchTypes(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to list pvp match types: %w", err)
+	}
+	if len(types) > 0 {
+		return nil
+	}
+
+	defaults := []*PvpMatchType{
+		{MatchType: 1, TypeName: "1v1 竞技", MinLevel: 1, MaxLevel: 100, MinPlayers: 1, MaxPlayers: 1, Status: 1},
+		{MatchType: 2, TypeName: "2v2 团队", MinLevel: 1, MaxLevel: 100, MinPlayers: 2, MaxPlayers: 2, Status: 1},
+		{MatchType: 3, TypeName: "4v4 混战", MinLevel: 1, MaxLevel: 100, MinPlayers: 4, MaxPlayers: 4, Status: 1},
+	}
+	for _, t := range defaults {
+		if err := s.CreatePvpMatchType(ctx, t); err != nil {
+			return fmt.Errorf("failed to seed pvp match type %d: %w", t.MatchType, err)
+		}
+	}
 	return nil
 }
