@@ -274,15 +274,15 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/event/participate", s.handleEventParticipate)
 
 	// 制作路由
-	apiGroup.POST("/make/emblem/upgrade", s.handleEmblemUpgrade)
-	apiGroup.POST("/make/emblem/upgrade_quick", s.handleEmblemUpgradeQuick)
-	apiGroup.POST("/make/avatar/compose", s.handleAvatarCompose)
-	apiGroup.POST("/make/production/info", s.handleProductionInfo)
-	apiGroup.POST("/make/production/register", s.handleProductionRegister)
-	apiGroup.POST("/make/item/combine", s.handleItemCombine)
-	apiGroup.POST("/make/item/disjoint", s.handleItemDisjoint)
-	apiGroup.POST("/make/card/compose", s.handleCardCompose)
-	apiGroup.POST("/make/wardrobe/set_slot", s.handleWardrobeSetSlot)
+	apiGroup.POST("/make/emblem/upgrade", s.handleMakeEmblemUpgrade)
+	apiGroup.POST("/make/emblem/upgrade_quick", s.handleMakeEmblemUpgradeQuick)
+	apiGroup.POST("/make/avatar/compose", s.handleMakeAvatarCompose)
+	apiGroup.GET("/make/production/info", s.handleMakeProductionInfo)
+	apiGroup.POST("/make/production/register", s.handleMakeProductionRegister)
+	apiGroup.POST("/make/item/combine", s.handleMakeItemCombine)
+	apiGroup.POST("/make/item/disjoint", s.handleMakeItemDisjoint)
+	apiGroup.POST("/make/card/compose", s.handleMakeCardCompose)
+	apiGroup.POST("/make/wardrobe/set_slot", s.handleMakeWardrobeSetSlot)
 
 	// 组队路由
 	apiGroup.POST("/party/search", s.handleSearchPartyList)
