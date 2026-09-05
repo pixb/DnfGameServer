@@ -299,13 +299,3 @@ message CreatePartyRequest {
 message CreatePartyResponse {
   int32 error = 1;
 }
-
-message CheckProhibitedWordRequest {
-  string word = 1;
-}
-
-message CheckProhibitedWordResponse {
-  bool prohibited = 1;
-  int32 error = 2;
-  uint64 transId = 3;
-}

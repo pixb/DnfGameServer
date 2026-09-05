@@ -9,6 +9,8 @@ var textCommandMeta = map[string]MessageMeta{
 	"CREATE_CHARACTER":   {Module: 10000, Cmd: 2},
 	"GET_CHARACTER_LIST": {Module: 10000, Cmd: 4},
 	"SELECT_CHARACTER":   {Module: 10000, Cmd: 6},
+	"ENTER_GAME":         {Module: 10000, Cmd: 8},
+	"LOAD_PLAYER_DATA":   {Module: 10000, Cmd: 10},
 
 	// ==================== 角色模块 (10001) ====================
 	"GET_ROLE_INFO":    {Module: 10001, Cmd: 0},
@@ -23,6 +25,13 @@ var textCommandMeta = map[string]MessageMeta{
 	"ITEM_TRANSFER": {Module: 10002, Cmd: 4},
 	"SELL_ITEM":     {Module: 10002, Cmd: 6},
 	"EQUIP_ITEM":    {Module: 10002, Cmd: 8},
+	"DROP_ITEM":     {Module: 10002, Cmd: 10},
+	"ITEM_COMPOSE":  {Module: 10002, Cmd: 12},
+	"ITEM_REINFORCE": {Module: 10002, Cmd: 14},
+	"ITEM_SORT":     {Module: 10002, Cmd: 16},
+	"ITEM_DECOMPOSE": {Module: 10002, Cmd: 18},
+	"ITEM_RENAME":   {Module: 10002, Cmd: 20},
+	"BAG_EXPAND":    {Module: 10002, Cmd: 22},
 
 	// ==================== 副本模块 (10003) ====================
 	"ENTER_DUNGEON": {Module: 10003, Cmd: 0},
@@ -52,6 +61,10 @@ var textCommandMeta = map[string]MessageMeta{
 	"BID_AUCTION":           {Module: 10005, Cmd: 104},
 	"BUYOUT_AUCTION":        {Module: 10005, Cmd: 106},
 	"CANCEL_AUCTION":        {Module: 10005, Cmd: 102},
+	"QUERY_SHOP_ORDER":      {Module: 10005, Cmd: 108},
+	"CANCEL_SHOP_ORDER":     {Module: 10005, Cmd: 110},
+	"AUCTION_END":           {Module: 10005, Cmd: 112},
+	"AUCTION_FEE":           {Module: 10005, Cmd: 114},
 
 	// ==================== 任务模块 (10006) ====================
 	"GET_QUEST_LIST":   {Module: 10006, Cmd: 0},
@@ -117,4 +130,34 @@ var textCommandMeta = map[string]MessageMeta{
 	"HALF_OPEN_PARTY":         {Module: 10009, Cmd: 22},
 	"CONNECT_BATTLE_SERVER":   {Module: 10009, Cmd: 18},
 	"CONCURRENT_OPERATION":    {Module: 10009, Cmd: 4},
+
+	// ==================== 事件模块 (10500) ====================
+	"QUERY_EVENT_LIST":            {Module: 10500, Cmd: 0},
+	"QUERY_EVENT_DETAIL":          {Module: 10500, Cmd: 2},
+	"QUERY_EVENT_STATUS":          {Module: 10500, Cmd: 4},
+	"QUERY_EVENT_PROGRESS":        {Module: 10500, Cmd: 6},
+	"TRIGGER_EVENT":               {Module: 10500, Cmd: 8},
+	"HANDLE_EVENT":                {Module: 10500, Cmd: 10},
+	"VALIDATE_EVENT_COMPLETION":   {Module: 10500, Cmd: 12},
+	"CREATE_EVENT":                {Module: 10500, Cmd: 14},
+	"DELETE_EVENT":                {Module: 10500, Cmd: 16},
+	"RECEIVE_EVENT_REWARD":        {Module: 10500, Cmd: 18},
+	"DISTRIBUTE_EVENT_REWARD":     {Module: 10500, Cmd: 20},
+	"RESET_EVENT":                 {Module: 10500, Cmd: 22},
+
+	// ==================== 排名模块 (10501) ====================
+	"QUERY_MY_RANK":      {Module: 10501, Cmd: 0},
+	"QUERY_PERSONAL_RANK": {Module: 10501, Cmd: 2},
+	"QUERY_FRIEND_RANK":  {Module: 10501, Cmd: 4},
+	"QUERY_MY_TEAM_RANK": {Module: 10501, Cmd: 6},
+
+	// ==================== 日志模块 (10502) ====================
+	"QUERY_LOG":    {Module: 10502, Cmd: 0},
+	"RECORD_LOG":   {Module: 10502, Cmd: 2},
+	"STATISTIC_LOG": {Module: 10502, Cmd: 4},
+	"DELETE_LOG":   {Module: 10502, Cmd: 6},
+	"EXPORT_LOG":   {Module: 10502, Cmd: 8},
+	"CLEAN_LOG":    {Module: 10502, Cmd: 10},
+	"MONITOR_LOG":  {Module: 10502, Cmd: 12},
+	"ANALYZE_LOG":  {Module: 10502, Cmd: 14},
 }

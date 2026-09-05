@@ -25,6 +25,14 @@ func (c *ProtoCodec) RegisterAllMessages() {
 	c.RegisterMessage(10000, 6, func() proto.Message { return &dnfv1.SelectCharacterRequest{} })
 	c.RegisterMessage(10000, 7, func() proto.Message { return &dnfv1.SelectCharacterResponse{} })
 
+	// 进入游戏 (cmd=4)
+	c.RegisterMessage(10000, 8, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10000, 9, func() proto.Message { return &dnfv1.SelectCharacterResponse{} })
+
+	// 玩家数据加载 (cmd=5)
+	c.RegisterMessage(10000, 10, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10000, 11, func() proto.Message { return &dnfv1.CharacterListResponse{} })
+
 	// ==================== 角色模块 (Module = 10001) ====================
 	// 获取角色信息 (cmd=0)
 	c.RegisterMessage(10001, 0, func() proto.Message { return &dnfv1.GetRoleInfoRequest{} })
@@ -69,6 +77,34 @@ func (c *ProtoCodec) RegisterAllMessages() {
 	// 装备物品 (cmd=4)
 	c.RegisterMessage(10002, 8, func() proto.Message { return &dnfv1.EquipItemRequest{} })
 	c.RegisterMessage(10002, 9, func() proto.Message { return &dnfv1.EquipItemResponse{} })
+
+	// 丢弃物品 (cmd=5)
+	c.RegisterMessage(10002, 10, func() proto.Message { return &dnfv1.UseItemRequest{} })
+	c.RegisterMessage(10002, 11, func() proto.Message { return &dnfv1.UseItemResponse{} })
+
+	// 物品合成 (cmd=6)
+	c.RegisterMessage(10002, 12, func() proto.Message { return &dnfv1.UseItemRequest{} })
+	c.RegisterMessage(10002, 13, func() proto.Message { return &dnfv1.UseItemResponse{} })
+
+	// 物品强化 (cmd=7)
+	c.RegisterMessage(10002, 14, func() proto.Message { return &dnfv1.UseItemRequest{} })
+	c.RegisterMessage(10002, 15, func() proto.Message { return &dnfv1.UseItemResponse{} })
+
+	// 物品整理 (cmd=8)
+	c.RegisterMessage(10002, 16, func() proto.Message { return &dnfv1.GetBagRequest{} })
+	c.RegisterMessage(10002, 17, func() proto.Message { return &dnfv1.GetBagResponse{} })
+
+	// 物品分解 (cmd=9)
+	c.RegisterMessage(10002, 18, func() proto.Message { return &dnfv1.UseItemRequest{} })
+	c.RegisterMessage(10002, 19, func() proto.Message { return &dnfv1.UseItemResponse{} })
+
+	// 物品重命名 (cmd=10)
+	c.RegisterMessage(10002, 20, func() proto.Message { return &dnfv1.UseItemRequest{} })
+	c.RegisterMessage(10002, 21, func() proto.Message { return &dnfv1.UseItemResponse{} })
+
+	// 背包扩容 (cmd=11)
+	c.RegisterMessage(10002, 22, func() proto.Message { return &dnfv1.GetBagRequest{} })
+	c.RegisterMessage(10002, 23, func() proto.Message { return &dnfv1.GetBagResponse{} })
 
 	// ==================== 副本模块 (Module = 10003) ====================
 	// 进入副本 (cmd=0)
@@ -163,6 +199,22 @@ func (c *ProtoCodec) RegisterAllMessages() {
 	// 一口价购买 (cmd=106)
 	c.RegisterMessage(10005, 106, func() proto.Message { return &dnfv1.BuyoutAuctionRequest{} })
 	c.RegisterMessage(10005, 107, func() proto.Message { return &dnfv1.BuyoutAuctionResponse{} })
+
+	// 查询商城订单 (cmd=54)
+	c.RegisterMessage(10005, 108, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10005, 109, func() proto.Message { return &dnfv1.BuyItemResponse{} })
+
+	// 取消商城订单 (cmd=55)
+	c.RegisterMessage(10005, 110, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10005, 111, func() proto.Message { return &dnfv1.BuyItemResponse{} })
+
+	// 拍卖结算 (cmd=56)
+	c.RegisterMessage(10005, 112, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10005, 113, func() proto.Message { return &dnfv1.RegisterAuctionResponse{} })
+
+	// 拍卖手续费 (cmd=57)
+	c.RegisterMessage(10005, 114, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10005, 115, func() proto.Message { return &dnfv1.RegisterAuctionResponse{} })
 
 	// 开设个人商店 (cmd=200)
 	c.RegisterMessage(10005, 200, func() proto.Message { return &dnfv1.OpenPrivateStoreRequest{} })
@@ -304,4 +356,58 @@ func (c *ProtoCodec) RegisterAllMessages() {
 	c.RegisterMessage(17201, 13, func() proto.Message { return &dnfv1.AdventureUnionSearchStartRequest{} })
 	c.RegisterMessage(17201, 15, func() proto.Message { return &dnfv1.AdventureUnionCollectionRewardRequest{} })
 	c.RegisterMessage(17201, 16, func() proto.Message { return &dnfv1.AdventureUnionLevelRewardRequest{} })
+
+	// ==================== 事件模块 (Module = 10500) ====================
+	c.RegisterMessage(10500, 0, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 1, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 2, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 3, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 4, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 5, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 6, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 7, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 8, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 9, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 10, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 11, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 12, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 13, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 14, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 15, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 16, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 17, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 18, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 19, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 20, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 21, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 22, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10500, 23, func() proto.Message { return &dnfv1.Empty{} })
+
+	// ==================== 排名模块 (Module = 10501) ====================
+	c.RegisterMessage(10501, 0, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10501, 1, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10501, 2, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10501, 3, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10501, 4, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10501, 5, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10501, 6, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10501, 7, func() proto.Message { return &dnfv1.Empty{} })
+
+	// ==================== 日志模块 (Module = 10502) ====================
+	c.RegisterMessage(10502, 0, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 1, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 2, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 3, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 4, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 5, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 6, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 7, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 8, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 9, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 10, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 11, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 12, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 13, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 14, func() proto.Message { return &dnfv1.Empty{} })
+	c.RegisterMessage(10502, 15, func() proto.Message { return &dnfv1.Empty{} })
 }

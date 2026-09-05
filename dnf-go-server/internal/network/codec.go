@@ -9,6 +9,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 )
@@ -140,16 +141,16 @@ func (c *ProtoCodec) Decode(reader io.Reader) (interface{}, error) {
 }
 
 // decodeTextBody 解析文本命令消息体 (测试辅助)
-// 格式: "COMMAND:JSON"
+// 格式: "COMMAND:JSON" 或 "COMMAND" (无 payload)
 func (c *ProtoCodec) decodeTextBody(body []byte) (interface{}, error) {
 	// 分割命令与JSON: "COMMAND:JSON"
 	text := string(body)
-	idx := strings.Index(text, ":")
-	if idx <= 0 {
-		return nil, fmt.Errorf("invalid text command format: %q", text)
+	command := text
+	payload := ""
+	if idx := strings.Index(text, ":"); idx >= 0 {
+		command = text[:idx]
+		payload = text[idx+1:]
 	}
-	command := text[:idx]
-	payload := text[idx+1:]
 
 	// 查找命令映射
 	meta, ok := textCommandMeta[command]
@@ -174,7 +175,12 @@ func (c *ProtoCodec) decodeTextBody(body []byte) (interface{}, error) {
 		// 使 mock JSON 中测试自定义的字段不会导致解析失败
 		opts := protojson.UnmarshalOptions{DiscardUnknown: true}
 		if err := opts.Unmarshal([]byte(payload), msg); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal text command %s: %w", command, err)
+			// payload 非 JSON(如 ENTER_GAME:NO_CHARACTER / LOAD_PLAYER_DATA:1),
+			// 视为无参数命令,忽略 payload 继续分发
+			logger.Warn("text command payload is not valid JSON, ignored",
+				logger.String("command", command),
+				logger.ErrorField(err),
+			)
 		}
 	}
 
