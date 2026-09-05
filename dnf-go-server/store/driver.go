@@ -242,4 +242,12 @@ type Driver interface {
 	SuggestMoveParty(ctx context.Context, roleID uint64, area uint32) error
 	TargetUserPartyInfo(ctx context.Context, roleID, targetGuid uint64) (*PartyInfo, error)
 	WaitinigToUsersLoading(ctx context.Context, roleID uint64) error
+
+	// ==================== PK 相关 ====================
+	ListPvpRecords(ctx context.Context, roleID uint64, limit int) ([]*PvpRecord, error)
+	GetPvpStats(ctx context.Context, roleID uint64) (*PvpStats, error)
+	GetActivePvpSeason(ctx context.Context) (*PvpSeason, error)
+	ListPvpRewards(ctx context.Context, roleID uint64) ([]*PvpReward, error)
+	ListPvpMatchTypes(ctx context.Context) ([]*PvpMatchType, error)
+	SubmitPvpBattleResult(ctx context.Context, record *PvpRecord, stats *PvpStats) error
 }

@@ -2,24 +2,24 @@ package pk_service
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
-	"github.com/pixb/DnfGameServer/dnf-go-server/internal/db"
-	"github.com/pixb/DnfGameServer/dnf-go-server/internal/db/models"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
+	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 )
 
 // PkService PK 服务
 type PkService struct {
-	db *db.DB
+	store *store.Store
 }
 
 // NewPkService 创建 PK 服务
-func NewPkService(database *db.DB) *PkService {
+func NewPkService(st *store.Store) *PkService {
 	return &PkService{
-		db: database,
+		store: st,
 	}
 }
 
@@ -171,8 +171,8 @@ func (s *PkService) GetPvpRecord(ctx context.Context, roleID uint64) ([]*dnfv1.P
 		logger.Uint64("role_id", roleID),
 	)
 
-	var records []models.PvpRecord
-	if err := s.db.DB.Where("role_id = ?", roleID).Order("battle_time DESC").Limit(100).Find(&records).Error; err != nil {
+	records, err := s.store.ListPvpRecords(ctx, roleID, 100)
+	if err != nil {
 		logger.Error("failed to get pvp record",
 			logger.ErrorField(err),
 			logger.Uint64("role_id", roleID),
@@ -189,7 +189,7 @@ func (s *PkService) GetPvpRecord(ctx context.Context, roleID uint64) ([]*dnfv1.P
 			Win:        record.Win,
 			Score:      record.Score,
 			OpponentId: record.OpponentID,
-			BattleTime: record.BattleTime.Unix(),
+			BattleTime: record.BattleTime,
 		})
 	}
 
@@ -217,9 +217,9 @@ func (s *PkService) GetPvpStats(ctx context.Context, roleID uint64) (*dnfv1.PvpS
 		logger.Uint64("role_id", roleID),
 	)
 
-	var stats models.PvpStats
-	if err := s.db.DB.Where("role_id = ?", roleID).First(&stats).Error; err != nil {
-		if err.Error() == "record not found" {
+	stats, err := s.store.GetPvpStats(ctx, roleID)
+	if err != nil {
+		if errors.Is(err, store.ErrNotFound) {
 			return &dnfv1.PvpStatsInfo{
 				RoleId:       roleID,
 				TotalMatches: 0,
@@ -279,9 +279,9 @@ func (s *PkService) GetPvpMatchHistory(ctx context.Context, roleID uint64, page,
 func (s *PkService) GetPvpSeasonInfo(ctx context.Context) (*dnfv1.PvpSeasonInfo, error) {
 	logger.Info("get pvp season info")
 
-	var season models.PvpSeason
-	if err := s.db.DB.Where("status = ?", 1).Order("season_id DESC").First(&season).Error; err != nil {
-		if err.Error() == "record not found" {
+	season, err := s.store.GetActivePvpSeason(ctx)
+	if err != nil {
+		if errors.Is(err, store.ErrNotFound) {
 			return &dnfv1.PvpSeasonInfo{
 				SeasonId:  1,
 				SeasonName: "Season 1",
@@ -299,8 +299,8 @@ func (s *PkService) GetPvpSeasonInfo(ctx context.Context) (*dnfv1.PvpSeasonInfo,
 	return &dnfv1.PvpSeasonInfo{
 		SeasonId:  season.SeasonID,
 		SeasonName: season.SeasonName,
-		StartTime:  season.StartTime.Unix(),
-		EndTime:    season.EndTime.Unix(),
+		StartTime:  season.StartTime,
+		EndTime:    season.EndTime,
 		Status:     season.Status,
 	}, nil
 }
@@ -311,8 +311,8 @@ func (s *PkService) GetPvpReward(ctx context.Context, roleID uint64) ([]*dnfv1.P
 		logger.Uint64("role_id", roleID),
 	)
 
-	var rewards []models.PvpReward
-	if err := s.db.DB.Where("role_id = ?", roleID).Find(&rewards).Error; err != nil {
+	rewards, err := s.store.ListPvpRewards(ctx, roleID)
+	if err != nil {
 		logger.Error("failed to get pvp reward",
 			logger.ErrorField(err),
 			logger.Uint64("role_id", roleID),
@@ -350,8 +350,8 @@ func (s *PkService) PvpDailyReset(ctx context.Context, roleID uint64) error {
 func (s *PkService) GetPvpMatchTypes(ctx context.Context) ([]*dnfv1.PvpMatchTypeInfo, error) {
 	logger.Info("get pvp match types")
 
-	var matchTypes []models.PvpMatchType
-	if err := s.db.DB.Where("status = ?", 1).Find(&matchTypes).Error; err != nil {
+	matchTypes, err := s.store.ListPvpMatchTypes(ctx)
+	if err != nil {
 		logger.Error("failed to get pvp match types",
 			logger.ErrorField(err),
 		)
@@ -383,44 +383,21 @@ func (s *PkService) SubmitPvpBattleResult(ctx context.Context, roleID, matchingG
 		logger.Int32("score", score),
 	)
 
-	tx := s.db.DB.Begin()
-
-	record := &models.PvpRecord{
+	record := &store.PvpRecord{
 		RoleID:     roleID,
 		MatchType:  1,
 		Win:        win,
 		Score:      score,
 		OpponentID: opponentID,
-		BattleTime: time.Now(),
-	}
-	if err := tx.Create(record).Error; err != nil {
-		tx.Rollback()
-		return err
+		BattleTime: time.Now().Unix(),
 	}
 
-	var stats models.PvpStats
-	if err := tx.Where("role_id = ?", roleID).First(&stats).Error; err != nil {
-		if err.Error() == "record not found" {
-			stats = models.PvpStats{
-				RoleID:       roleID,
-				TotalMatches: 1,
-				WinCount:     0,
-				LoseCount:    0,
-				TotalScore:   score,
-				MaxWinStreak: 0,
-				CurrentStreak: 0,
-			}
-			if win {
-				stats.WinCount = 1
-				stats.CurrentStreak = 1
-			} else {
-				stats.LoseCount = 1
-			}
-		} else {
-			tx.Rollback()
-			return err
-		}
-	} else {
+	// 计算最新统计(存在则累加,不存在则新建)
+	stats := &store.PvpStats{RoleID: roleID}
+	existing, err := s.store.GetPvpStats(ctx, roleID)
+	switch {
+	case err == nil:
+		stats = existing
 		stats.TotalMatches++
 		stats.TotalScore += score
 		if win {
@@ -433,12 +410,19 @@ func (s *PkService) SubmitPvpBattleResult(ctx context.Context, roleID, matchingG
 			stats.LoseCount++
 			stats.CurrentStreak = 0
 		}
-	}
-
-	if err := tx.Save(&stats).Error; err != nil {
-		tx.Rollback()
+	case errors.Is(err, store.ErrNotFound):
+		stats.TotalMatches = 1
+		stats.TotalScore = score
+		if win {
+			stats.WinCount = 1
+			stats.CurrentStreak = 1
+			stats.MaxWinStreak = 1
+		} else {
+			stats.LoseCount = 1
+		}
+	default:
 		return err
 	}
 
-	return tx.Commit().Error
+	return s.store.SubmitPvpBattleResult(ctx, record, stats)
 }
