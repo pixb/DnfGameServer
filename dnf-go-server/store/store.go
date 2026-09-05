@@ -570,3 +570,50 @@ func (s *Store) ListAdventureBookRewards(ctx context.Context, bookID int32) ([]*
 }
 
 // ==================== 制作Store方法 ====================
+
+// ==================== 活动Store方法 ====================
+
+// ListEventConfigs 获取活动配置列表
+func (s *Store) ListEventConfigs(ctx context.Context, find *FindEventConfig) ([]*EventConfig, error) {
+	return s.driver.ListEventConfigs(ctx, find)
+}
+
+// GetEventConfig 获取活动配置
+func (s *Store) GetEventConfig(ctx context.Context, find *FindEventConfig) (*EventConfig, error) {
+	return s.driver.GetEventConfig(ctx, find)
+}
+
+// CreateEventConfig 创建活动配置
+func (s *Store) CreateEventConfig(ctx context.Context, create *EventConfig) (*EventConfig, error) {
+	return s.driver.CreateEventConfig(ctx, create)
+}
+
+// UpdateEventConfig 更新活动配置
+func (s *Store) UpdateEventConfig(ctx context.Context, update *UpdateEventConfig) error {
+	return s.driver.UpdateEventConfig(ctx, update)
+}
+
+// DeleteEventConfig 删除活动配置
+func (s *Store) DeleteEventConfig(ctx context.Context, id uint64) error {
+	return s.driver.DeleteEventConfig(ctx, id)
+}
+
+// GetEventProgress 获取活动进度
+func (s *Store) GetEventProgress(ctx context.Context, find *FindEventProgress) (*EventProgress, error) {
+	return s.driver.GetEventProgress(ctx, find)
+}
+
+// ListEventProgress 获取角色活动进度列表
+func (s *Store) ListEventProgress(ctx context.Context, roleID uint64) ([]*EventProgress, error) {
+	return s.driver.ListEventProgress(ctx, roleID)
+}
+
+// UpsertEventProgress 新增/更新活动进度
+func (s *Store) UpsertEventProgress(ctx context.Context, p *EventProgress) (*EventProgress, error) {
+	return s.driver.UpsertEventProgress(ctx, p)
+}
+
+// UpdateEventProgress 更新活动进度
+func (s *Store) UpdateEventProgress(ctx context.Context, update *UpdateEventProgress) error {
+	return s.driver.UpdateEventProgress(ctx, update)
+}

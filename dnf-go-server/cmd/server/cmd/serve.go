@@ -110,6 +110,9 @@ func runServe(cmd *cobra.Command, args []string) error {
 
 	// 商店/拍卖行 store 注入(订单查询/取消/拍卖结算/手续费)
 	handlers.InitShopStore(s)
+
+	// 活动 store 注入(活动配置/进度)
+	handlers.InitEventStore(s)
 	fmt.Println("Services initialized successfully")
 
 	// 4. 创建服务器

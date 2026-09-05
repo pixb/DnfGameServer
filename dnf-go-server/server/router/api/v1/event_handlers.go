@@ -5,9 +5,12 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+
+	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 )
 
 // handleEventList 获取活动列表
+// 2026-09-06 由空数据源接入 store(t_event_config)
 func (s *APIV1Service) handleEventList(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -24,16 +27,44 @@ func (s *APIV1Service) handleEventList(c echo.Context) error {
 		status = uint32(v)
 	}
 
-	// 活动配置暂存于运营后台,当前无数据源,返回空列表
+	find := &store.FindEventConfig{}
+	if eventType > 0 {
+		t := int32(eventType)
+		find.EventType = &t
+	}
+	if status > 0 {
+		st := store.EventStatus(status)
+		find.Status = &st
+	}
+
+	configs, err := s.Store.ListEventConfigs(c.Request().Context(), find)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
+	events := make([]interface{}, 0, len(configs))
+	for _, e := range configs {
+		events = append(events, map[string]interface{}{
+			"eventId":   e.EventID,
+			"title":     e.Title,
+			"desc":      e.Description,
+			"type":      e.EventType,
+			"status":    e.Status,
+			"startTime": e.StartTime,
+			"endTime":   e.EndTime,
+		})
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":  0,
 		"type":   eventType,
 		"status": status,
-		"events": []interface{}{},
+		"events": events,
 	})
 }
 
 // handleEventDetail 获取活动详情
+// 2026-09-06 由空数据源接入 store(t_event_config)
 func (s *APIV1Service) handleEventDetail(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -46,10 +77,27 @@ func (s *APIV1Service) handleEventDetail(c echo.Context) error {
 		eventID = uint32(v)
 	}
 
+	eid := int32(eventID)
+	config, err := s.Store.GetEventConfig(c.Request().Context(), &store.FindEventConfig{EventID: &eid})
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "event not found"})
+	}
+
+	event := map[string]interface{}{
+		"eventId":   config.EventID,
+		"title":     config.Title,
+		"desc":      config.Description,
+		"type":      config.EventType,
+		"status":    config.Status,
+		"startTime": config.StartTime,
+		"endTime":   config.EndTime,
+		"rewards":   config.RewardConfig,
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":   0,
 		"eventId": eventID,
-		"event":   map[string]interface{}{},
+		"event":   event,
 	})
 }
 
@@ -69,6 +117,7 @@ func (s *APIV1Service) handleEventAccessTime(c echo.Context) error {
 }
 
 // handleEventGetReward 获取活动奖励
+// 2026-09-06 由 mock 接入 store(校验活动存在 + 进度标记已领奖)
 func (s *APIV1Service) handleEventGetReward(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -85,6 +134,24 @@ func (s *APIV1Service) handleEventGetReward(c echo.Context) error {
 		rewardID = uint32(v)
 	}
 
+	eid := int32(eventID)
+	if _, err := s.Store.GetEventConfig(c.Request().Context(), &store.FindEventConfig{EventID: &eid}); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "event not found"})
+	}
+
+	roleID := s.activeRoleID(c, claims)
+	status := int32(1)
+	_, err := s.Store.UpsertEventProgress(c.Request().Context(), &store.EventProgress{
+		RoleID:       roleID,
+		EventID:      eid,
+		ProgressType: int32(100 + rewardID),
+		ProgressValue: 1,
+		Status:       status,
+	})
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":        0,
 		"eventId":      eventID,
@@ -94,6 +161,7 @@ func (s *APIV1Service) handleEventGetReward(c echo.Context) error {
 }
 
 // handleEventUpdateProgress 更新活动进度
+// 2026-09-06 由 mock 接入 store(写 t_event_progress)
 func (s *APIV1Service) handleEventUpdateProgress(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -114,6 +182,18 @@ func (s *APIV1Service) handleEventUpdateProgress(c echo.Context) error {
 		progressValue = int64(v)
 	}
 
+	roleID := s.activeRoleID(c, claims)
+	_, err := s.Store.UpsertEventProgress(c.Request().Context(), &store.EventProgress{
+		RoleID:        roleID,
+		EventID:       int32(eventID),
+		ProgressType:  int32(progressType),
+		ProgressValue: progressValue,
+		Status:        0,
+	})
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":          0,
 		"eventId":        eventID,
@@ -124,6 +204,7 @@ func (s *APIV1Service) handleEventUpdateProgress(c echo.Context) error {
 }
 
 // handleEventParticipate 参与活动
+// 2026-09-06 由 mock 接入 store(写入参与进度)
 func (s *APIV1Service) handleEventParticipate(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -138,6 +219,18 @@ func (s *APIV1Service) handleEventParticipate(c echo.Context) error {
 	participateType := uint32(0)
 	if v, ok := req["participate_type"].(float64); ok {
 		participateType = uint32(v)
+	}
+
+	roleID := s.activeRoleID(c, claims)
+	_, err := s.Store.UpsertEventProgress(c.Request().Context(), &store.EventProgress{
+		RoleID:        roleID,
+		EventID:       int32(eventID),
+		ProgressType:  int32(participateType),
+		ProgressValue: 1,
+		Status:        0,
+	})
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{

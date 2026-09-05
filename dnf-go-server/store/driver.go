@@ -259,4 +259,15 @@ type Driver interface {
 	ResetDailyRaidEntrances(ctx context.Context, roleID uint64) error
 	ListPvpRanking(ctx context.Context, limit int) ([]*PvpRankingEntry, error)
 	ListPvpMatchHistory(ctx context.Context, roleID uint64, limit int) ([]*PvpMatchHistoryEntry, error)
+
+	// ==================== 活动相关 ====================
+	ListEventConfigs(ctx context.Context, find *FindEventConfig) ([]*EventConfig, error)
+	GetEventConfig(ctx context.Context, find *FindEventConfig) (*EventConfig, error)
+	CreateEventConfig(ctx context.Context, create *EventConfig) (*EventConfig, error)
+	UpdateEventConfig(ctx context.Context, update *UpdateEventConfig) error
+	DeleteEventConfig(ctx context.Context, id uint64) error
+	GetEventProgress(ctx context.Context, find *FindEventProgress) (*EventProgress, error)
+	ListEventProgress(ctx context.Context, roleID uint64) ([]*EventProgress, error)
+	UpsertEventProgress(ctx context.Context, p *EventProgress) (*EventProgress, error)
+	UpdateEventProgress(ctx context.Context, update *UpdateEventProgress) error
 }
