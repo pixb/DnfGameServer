@@ -258,6 +258,13 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.GET("/pk/match_types", s.handlePkMatchTypes)
 	apiGroup.POST("/pk/battle_result", s.handlePkBattleResult)
 
+	// 排名路由
+	apiGroup.POST("/rank/personal", s.handleRankPersonal)
+	apiGroup.POST("/rank/my", s.handleRankMy)
+	apiGroup.POST("/rank/friend", s.handleRankFriend)
+	apiGroup.POST("/rank/party", s.handleRankParty)
+	apiGroup.POST("/rank/list", s.handleRankList)
+
 	// 制作路由
 	apiGroup.POST("/make/emblem/upgrade", s.handleEmblemUpgrade)
 	apiGroup.POST("/make/emblem/upgrade_quick", s.handleEmblemUpgradeQuick)

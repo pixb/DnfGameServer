@@ -188,6 +188,11 @@ func (s *Store) ListRolesByAccount(ctx context.Context, accountID uint64) ([]*Ro
 	return s.driver.ListRolesByAccount(ctx, accountID)
 }
 
+// ListRoles 查询角色列表(全量,供排行榜等场景排序)
+func (s *Store) ListRoles(ctx context.Context, find *FindRole) ([]*Role, error) {
+	return s.driver.ListRoles(ctx, find)
+}
+
 // GetRoleByName 根据角色名获取角色
 func (s *Store) GetRoleByName(ctx context.Context, name string) (*Role, error) {
 	return s.driver.GetRoleByName(ctx, name)
