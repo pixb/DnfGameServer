@@ -2,11 +2,15 @@ package v1
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
+
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 )
 
 // handleMakeEmblemUpgrade 纹章升级(index=9999 表示纹章不存在/材料不足)
+// 2026-09-06 由 mock 接入 store(EmblemUpgrade,扣 gold 写 t_emblem_upgrade)
 func (s *APIV1Service) handleMakeEmblemUpgrade(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -31,9 +35,13 @@ func (s *APIV1Service) handleMakeEmblemUpgrade(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "emblem not found or material not enough"})
 	}
 
-	successCount := uint32(0)
-	if talisman > 0 {
-		successCount = tryCount
+	roleID := s.activeRoleID(c, claims)
+	result, err := s.Store.EmblemUpgrade(c.Request().Context(), roleID, int32(index), int32(tryCount), int32(talisman))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+	if result == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "emblem upgrade failed"})
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -41,11 +49,12 @@ func (s *APIV1Service) handleMakeEmblemUpgrade(c echo.Context) error {
 		"index":        index,
 		"trycount":     tryCount,
 		"talisman":     talisman,
-		"successcount": successCount,
+		"successcount": result.SuccessCount,
 	})
 }
 
 // handleMakeEmblemUpgradeQuick 纹章快速升级(材料合成)
+// 2026-09-06 由 mock 接入 store(EmblemUpgradeQuick,扣 1000 gold)
 func (s *APIV1Service) handleMakeEmblemUpgradeQuick(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -58,6 +67,29 @@ func (s *APIV1Service) handleMakeEmblemUpgradeQuick(c echo.Context) error {
 		target = uint32(v)
 	}
 
+	source := make([]*dnfv1.IndexCount, 0)
+	if src, ok := req["source"].([]interface{}); ok {
+		for _, item := range src {
+			if m, ok := item.(map[string]interface{}); ok {
+				idx := uint32(0)
+				if v, ok := m["index"].(float64); ok {
+					idx = uint32(v)
+				}
+				cnt := uint32(0)
+				if v, ok := m["count"].(float64); ok {
+					cnt = uint32(v)
+				}
+				source = append(source, &dnfv1.IndexCount{Index: int32(idx), Count: int32(cnt)})
+			}
+		}
+	}
+
+	roleID := s.activeRoleID(c, claims)
+	_, err := s.Store.EmblemUpgradeQuick(c.Request().Context(), roleID, source, int32(target))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":  0,
 		"target": target,
@@ -66,6 +98,7 @@ func (s *APIV1Service) handleMakeEmblemUpgradeQuick(c echo.Context) error {
 }
 
 // handleMakeAvatarCompose 时装合成
+// 2026-09-06 由 mock 接入 store(AvatarCompose,扣 4000 gold 写 t_avatar_compose)
 func (s *APIV1Service) handleMakeAvatarCompose(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -73,9 +106,22 @@ func (s *APIV1Service) handleMakeAvatarCompose(c echo.Context) error {
 	}
 
 	req := decodeJSONBody(c)
-	guids := []interface{}{}
+	guids := make([]uint64, 0)
 	if g, ok := req["guids"].([]interface{}); ok {
-		guids = g
+		for _, item := range g {
+			if v, ok := item.(float64); ok {
+				guids = append(guids, uint64(v))
+			}
+		}
+	}
+	if len(guids) == 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "empty guids"})
+	}
+
+	roleID := s.activeRoleID(c, claims)
+	_, err := s.Store.AvatarCompose(c.Request().Context(), roleID, guids)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -86,22 +132,43 @@ func (s *APIV1Service) handleMakeAvatarCompose(c echo.Context) error {
 }
 
 // handleMakeProductionInfo 获取生产信息
+// 2026-09-06 由 mock 接入 store(GetProductionInfo)
 func (s *APIV1Service) handleMakeProductionInfo(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	slotType := c.QueryParam("slottype")
+	slotType := int32(0)
+	if v := c.QueryParam("slottype"); v != "" {
+		if n, err := strconv.ParseInt(v, 10, 32); err == nil {
+			slotType = int32(n)
+		}
+	}
+
+	roleID := s.activeRoleID(c, claims)
+	result, err := s.Store.GetProductionInfo(c.Request().Context(), roleID, slotType)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
+	slots := make([]interface{}, 0)
+	for _, info := range result.Infos {
+		slots = append(slots, map[string]interface{}{
+			"slotIndex":   info.SlotIndex,
+			"usableCount": info.UsableCount,
+		})
+	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":    0,
 		"slotType": slotType,
-		"slots":    []interface{}{},
+		"slots":    slots,
 	})
 }
 
 // handleMakeProductionRegister 生产登记(recipe_index=9999 表示配方不存在/金币不足)
+// 2026-09-06 由 mock 接入 store(ProductionRegister,扣 gold 写 t_item_production)
 func (s *APIV1Service) handleMakeProductionRegister(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -126,6 +193,12 @@ func (s *APIV1Service) handleMakeProductionRegister(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "recipe not found or money not enough"})
 	}
 
+	roleID := s.activeRoleID(c, claims)
+	_, err := s.Store.ProductionRegister(c.Request().Context(), roleID, int32(slotIndex), int32(recipeIndex), int32(count))
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":       0,
 		"slotIndex":   slotIndex,
@@ -136,6 +209,7 @@ func (s *APIV1Service) handleMakeProductionRegister(c echo.Context) error {
 }
 
 // handleMakeItemCombine 物品合成
+// 2026-09-06 由 mock 接入 store(ItemCombine,写 t_item_combine)
 func (s *APIV1Service) handleMakeItemCombine(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -148,14 +222,44 @@ func (s *APIV1Service) handleMakeItemCombine(c echo.Context) error {
 		index = uint32(v)
 	}
 
+	materials := make([]*dnfv1.MaterialItem, 0)
+	if mats, ok := req["material_items"].([]interface{}); ok {
+		for _, item := range mats {
+			if m, ok := item.(map[string]interface{}); ok {
+				idx := uint32(0)
+				if v, ok := m["index"].(float64); ok {
+					idx = uint32(v)
+				}
+				cnt := uint32(0)
+				if v, ok := m["count"].(float64); ok {
+					cnt = uint32(v)
+				}
+				materials = append(materials, &dnfv1.MaterialItem{Index: int32(idx), Count: int32(cnt)})
+			}
+		}
+	}
+
+	roleID := s.activeRoleID(c, claims)
+	result, err := s.Store.ItemCombine(c.Request().Context(), roleID, int32(index), materials, 1)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
+	guid := uint64(0)
+	if result != nil && result.Equip != nil {
+		guid = result.Equip.Guid
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":  0,
 		"index":  index,
+		"guid":   guid,
 		"result": "success",
 	})
 }
 
 // handleMakeItemDisjoint 物品分解
+// 2026-09-06 由 mock 接入 store(ItemDisjoint,写 t_item_disjoint)
 func (s *APIV1Service) handleMakeItemDisjoint(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -163,9 +267,22 @@ func (s *APIV1Service) handleMakeItemDisjoint(c echo.Context) error {
 	}
 
 	req := decodeJSONBody(c)
-	guids := []interface{}{}
+	guids := make([]uint64, 0)
 	if g, ok := req["guids"].([]interface{}); ok {
-		guids = g
+		for _, item := range g {
+			if v, ok := item.(float64); ok {
+				guids = append(guids, uint64(v))
+			}
+		}
+	}
+	if len(guids) == 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "empty guids"})
+	}
+
+	roleID := s.activeRoleID(c, claims)
+	_, err := s.Store.ItemDisjoint(c.Request().Context(), roleID, guids)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -176,6 +293,7 @@ func (s *APIV1Service) handleMakeItemDisjoint(c echo.Context) error {
 }
 
 // handleMakeCardCompose 卡片合成(index=9999 表示卡片不足)
+// 2026-09-06 由 mock 接入 store(CardCompose,扣 gold 写 t_card_compose)
 func (s *APIV1Service) handleMakeCardCompose(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -183,17 +301,33 @@ func (s *APIV1Service) handleMakeCardCompose(c echo.Context) error {
 	}
 
 	req := decodeJSONBody(c)
-	cardList, _ := req["user_card_list"].([]interface{})
-	for _, item := range cardList {
-		if card, ok := item.(map[string]interface{}); ok {
-			idx := uint32(0)
-			if v, ok := card["index"].(float64); ok {
-				idx = uint32(v)
-			}
-			if idx == 0 || idx == 9999 {
-				return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "card not enough"})
+	cardList := make([]*dnfv1.CardCompose, 0)
+	if raw, ok := req["user_card_list"].([]interface{}); ok {
+		for _, item := range raw {
+			if card, ok := item.(map[string]interface{}); ok {
+				idx := uint32(0)
+				if v, ok := card["index"].(float64); ok {
+					idx = uint32(v)
+				}
+				if idx == 0 || idx == 9999 {
+					return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "card not enough"})
+				}
+				cnt := uint32(1)
+				if v, ok := card["count"].(float64); ok {
+					cnt = uint32(v)
+				}
+				cardList = append(cardList, &dnfv1.CardCompose{Index: int32(idx), Count: int32(cnt)})
 			}
 		}
+	}
+	if len(cardList) == 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "card not enough"})
+	}
+
+	roleID := s.activeRoleID(c, claims)
+	_, err := s.Store.CardCompose(c.Request().Context(), roleID, cardList)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -210,6 +344,11 @@ func (s *APIV1Service) handleMakeWardrobeSetSlot(c echo.Context) error {
 	}
 
 	decodeJSONBody(c)
+
+	roleID := s.activeRoleID(c, claims)
+	if err := s.Store.WardrobeSetSlot(c.Request().Context(), roleID); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0, "result": "success"})
 }
