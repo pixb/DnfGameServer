@@ -23,6 +23,15 @@ func getUserClaims(c echo.Context) *auth.UserClaims {
 	return claims
 }
 
+// activeRoleID 获取账号当前活动角色ID(取账号下第一个角色;无角色时回退账号ID)
+func (s *APIV1Service) activeRoleID(c echo.Context, claims *auth.UserClaims) uint64 {
+	roles, err := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	if err == nil && len(roles) > 0 {
+		return roles[0].ID
+	}
+	return claims.UserID
+}
+
 func (s *APIV1Service) handleGetBag(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -854,11 +863,16 @@ func (s *APIV1Service) handleBidAuction(c echo.Context) error {
 	if auction.Status != store.AuctionStatusSelling {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 11})
 	}
-	if auction.SellerID == claims.UserID {
+	roleID := s.activeRoleID(c, claims)
+	if auction.SellerID == roleID {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 12})
 	}
+	// 出价必须高于当前最高价(或起拍价),否则拒绝
+	if bidPrice <= auction.BidPrice {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 13, "message": "bid price too low"})
+	}
 
-	currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), claims.UserID)
+	currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), roleID)
 	if currency.Gold < bidPrice {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
@@ -875,12 +889,15 @@ func (s *APIV1Service) handleBidAuction(c echo.Context) error {
 	bidCount := auction.BidCount + 1
 	s.Store.UpdateAuctionItem(c.Request().Context(), &store.UpdateAuctionItem{
 		ID:       auction.ID,
-		BidderID: &claims.UserID,
+		BidderID: &roleID,
 		BidPrice: &bidPrice,
 		BidCount: &bidCount,
 	})
 
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":     0,
+		"bidStatus": "success",
+	})
 }
 
 func (s *APIV1Service) handleBuyoutAuction(c echo.Context) error {
@@ -908,7 +925,7 @@ func (s *APIV1Service) handleBuyoutAuction(c echo.Context) error {
 		}
 	}
 
-	action, err := s.handleBuyoutAuctionInternal(c, auctionID, claims.UserID)
+	action, err := s.handleBuyoutAuctionInternal(c, auctionID, s.activeRoleID(c, claims))
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": err.Error()})
 	}
@@ -1017,10 +1034,16 @@ func (s *APIV1Service) handleCreateAuction(c echo.Context) error {
 	role, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{
 		FindBase: store.FindBase{ID: &claims.UserID},
 	})
+	sellerName := ""
+	if role != nil {
+		sellerName = role.Name
+	}
+
+	roleID := s.activeRoleID(c, claims)
 
 	action, _ := s.Store.CreateAuctionItem(c.Request().Context(), &store.AuctionItem{
-		SellerID:   claims.UserID,
-		SellerName: role.Name,
+		SellerID:   roleID,
+		SellerName: sellerName,
 		ItemID:     int32(itemID),
 		Count:      int32(count),
 		Price:      price,
@@ -1278,7 +1301,8 @@ func (s *APIV1Service) handleCancelAuction(c echo.Context) error {
 	if action == nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
 	}
-	if action.SellerID != claims.UserID {
+	roleID := s.activeRoleID(c, claims)
+	if action.SellerID != roleID {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 12})
 	}
 	if action.Status != store.AuctionStatusSelling {
