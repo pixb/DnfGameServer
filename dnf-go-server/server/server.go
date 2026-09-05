@@ -14,6 +14,7 @@ import (
 	"github.com/soheilhy/cmux"
 	"google.golang.org/grpc"
 
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/handlers"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/profile"
 	v1 "github.com/pixb/DnfGameServer/dnf-go-server/server/router/api/v1"
@@ -78,14 +79,26 @@ func NewServer(ctx context.Context, prof *profile.Profile, s *store.Store) (*Ser
 	tcpConfig := network.DefaultServerConfig()
 	// 使用与HTTP/gRPC不同的端口，避免冲突
 	tcpConfig.Port = 9000
+	if prof.TCPPort > 0 {
+		tcpConfig.Port = prof.TCPPort
+	}
+
+	// 创建消息分发器并注册所有游戏消息处理器
+	dispatcher := network.NewMessageDispatcher()
+	handlers.RegisterAllHandlers(dispatcher)
 
 	// 创建一个基本的连接处理器
 	tcpHandler := &BasicTCPHandler{}
 
 	server.tcpServer = network.NewTCPServer(tcpConfig, tcpHandler)
 
-	// 设置默认的二进制编解码器
-	server.tcpServer.SetCodec(&network.BinaryCodec{LengthFieldSize: 2})
+	// 设置Proto编解码器（解码为ProtocolPacket，含module/cmd与protobuf消息）
+	codec := network.NewProtoCodec()
+	codec.RegisterAllMessages()
+	// 设置全局编码器，供Session.WriteResponse使用
+	network.SetEncoderInstance(codec)
+	server.tcpServer.SetCodec(codec)
+	server.tcpServer.SetDispatcher(dispatcher)
 
 	return server, nil
 }

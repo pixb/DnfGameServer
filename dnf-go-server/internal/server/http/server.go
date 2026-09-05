@@ -214,7 +214,7 @@ func (s *Server) login(c echo.Context) error {
 
 	resp, err := s.authService.Login(&req)
 	if err != nil {
-		logger.Error("登录失败", logger.Error(err), logger.String("openid", req.OpenID))
+		logger.Error("登录失败", logger.ErrorField(err), logger.String("openid", req.OpenID))
 		return c.JSON(http.StatusOK, resp)
 	}
 
@@ -251,7 +251,7 @@ func (s *Server) getCharacterList(c echo.Context) error {
 	// 从数据库获取角色列表
 	var roles []models.Role
 	if err := s.authService.DB.Where("account_id = ? AND status = ?", account.ID, 1).Find(&roles).Error; err != nil {
-		logger.Error("获取角色列表失败", logger.Error(err), logger.Int64("account_id", account.ID))
+		logger.Error("获取角色列表失败", logger.ErrorField(err), logger.Int64("account_id", account.ID))
 		return c.JSON(http.StatusInternalServerError, Error(500, "获取角色列表失败"))
 	}
 
@@ -326,17 +326,32 @@ func (s *Server) createCharacter(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, Error(400, "角色名称已存在"))
 	}
 
+	// 计算角色槽位(1-4)
+	var roleCount int64
+	if err := s.authService.DB.Model(&models.Role{}).Where("account_id = ?", account.ID).Count(&roleCount).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, Error(500, "查询角色数量失败"))
+	}
+	if roleCount >= 4 {
+		return c.JSON(http.StatusBadRequest, Error(400, "角色数量已达上限(4个)"))
+	}
+
 	// 创建新角色
+	uid := time.Now().UnixNano()
 	role := models.Role{
 		AccountID:    account.ID,
-		CharGUID:     time.Now().UnixNano(),
+		UID:          uid,
+		RoleID:       int(roleCount) + 1,
+		CharGUID:     uid,
 		Name:         req.Name,
+		DistName:     req.Name,
 		Level:        1,
 		Job:          req.Job,
 		GrowType:     req.GrowType,
 		SecGrowType:  0,
 		Exp:          0,
 		Gold:         1000,
+		Fatigue:      100,
+		MaxFatigue:   156,
 		Hp:           100,
 		Mp:           100,
 		Strength:     10,
@@ -349,7 +364,7 @@ func (s *Server) createCharacter(c echo.Context) error {
 	}
 
 	if err := s.authService.DB.Create(&role).Error; err != nil {
-		logger.Error("创建角色失败", logger.Error(err), logger.Int64("account_id", account.ID), logger.String("name", req.Name))
+		logger.Error("创建角色失败", logger.ErrorField(err), logger.Int64("account_id", account.ID), logger.String("name", req.Name))
 		return c.JSON(http.StatusInternalServerError, Error(500, "创建角色失败"))
 	}
 

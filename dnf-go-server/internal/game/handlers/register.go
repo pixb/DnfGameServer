@@ -119,4 +119,10 @@ func RegisterAllHandlers(dispatcher *network.MessageDispatcher) {
 	dispatcher.RegisterHandler(10009, 28, PartyDungeonConditionHandler)         // 多人游戏副本条件
 	dispatcher.RegisterHandler(10009, 30, MultiPlayStartDungeonHandler)         // 多人游戏开始副本
 	dispatcher.RegisterHandler(10009, 32, TargetUserPartyInfoHandler)           // 目标用户队伍信息
+
+	// ==================== 成就模块 (Module = 10700) ====================
+	dispatcher.RegisterHandler(10700, 0, AchievementInfoHandler)         // 成就信息
+	dispatcher.RegisterHandler(10701, 0, AchievementRewardHandler)       // 领取成就奖励
+	dispatcher.RegisterHandler(10704, 0, AchievementListHandler)         // 成就列表
+	dispatcher.RegisterHandler(10706, 0, AchievementBonusRewardHandler)  // 成就额外奖励
 }

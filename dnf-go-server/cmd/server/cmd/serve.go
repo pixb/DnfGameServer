@@ -10,8 +10,13 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	internaldb "github.com/pixb/DnfGameServer/dnf-go-server/internal/db"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/achievement_service"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/adventure_service"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/handlers"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/party_service"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/pk_service"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/config"
 	"github.com/pixb/DnfGameServer/dnf-go-server/server"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store/db"
@@ -91,6 +96,25 @@ func runServe(cmd *cobra.Command, args []string) error {
 	fmt.Println("Initializing services...")
 	partySvc := party_service.NewPartyService(s)
 	handlers.InitPartyService(partySvc)
+
+	achievementSvc := achievement_service.NewAchievementService(s)
+	handlers.InitAchievementService(achievementSvc)
+
+	adventureSvc := adventure_service.NewAdventureService(s)
+	handlers.InitAdventureService(adventureSvc)
+
+	// PK服务当前基于遗留MySQL直连（internal/db），仅在MySQL驱动下可用
+	if prof.Driver == "mysql" {
+		legacyCfg := &config.DatabaseConfig{Driver: prof.Driver, DSN: prof.DSN}
+		legacyDB, err := internaldb.NewDB(legacyCfg)
+		if err != nil {
+			return fmt.Errorf("failed to create legacy db for pk service: %w", err)
+		}
+		pkSvc := pk_service.NewPkService(legacyDB)
+		handlers.InitPkService(pkSvc)
+	} else {
+		fmt.Printf("Warning: pk service requires MySQL driver, skipped (driver=%s)\n", prof.Driver)
+	}
 	fmt.Println("Services initialized successfully")
 
 	// 4. 创建服务器

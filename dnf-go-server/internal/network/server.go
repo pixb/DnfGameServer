@@ -271,6 +271,14 @@ func (s *TCPServer) GetSessionManager() *SessionManager {
 	return s.sessionManager
 }
 
+// Addr 返回服务器监听地址（端口为0时用于获取实际分配端口）
+func (s *TCPServer) Addr() net.Addr {
+	if s.listener == nil {
+		return nil
+	}
+	return s.listener.Addr()
+}
+
 // BinaryCodec 二进制消息编解码器示例
 type BinaryCodec struct {
 	// 消息长度字段大小 (2/4字节)
