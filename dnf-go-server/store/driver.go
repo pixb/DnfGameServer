@@ -270,4 +270,8 @@ type Driver interface {
 	ListEventProgress(ctx context.Context, roleID uint64) ([]*EventProgress, error)
 	UpsertEventProgress(ctx context.Context, p *EventProgress) (*EventProgress, error)
 	UpdateEventProgress(ctx context.Context, update *UpdateEventProgress) error
+
+	// ==================== 背包扩容相关 ====================
+	GetBagExpand(ctx context.Context, find *FindBagExpand) (*BagExpand, error)
+	UpsertBagExpand(ctx context.Context, b *BagExpand) (*BagExpand, error)
 }

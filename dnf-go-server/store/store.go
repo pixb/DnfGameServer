@@ -617,3 +617,15 @@ func (s *Store) UpsertEventProgress(ctx context.Context, p *EventProgress) (*Eve
 func (s *Store) UpdateEventProgress(ctx context.Context, update *UpdateEventProgress) error {
 	return s.driver.UpdateEventProgress(ctx, update)
 }
+
+// ==================== 背包扩容Store方法 ====================
+
+// GetBagExpand 获取背包扩容记录
+func (s *Store) GetBagExpand(ctx context.Context, find *FindBagExpand) (*BagExpand, error) {
+	return s.driver.GetBagExpand(ctx, find)
+}
+
+// UpsertBagExpand 新增/更新背包扩容记录
+func (s *Store) UpsertBagExpand(ctx context.Context, b *BagExpand) (*BagExpand, error) {
+	return s.driver.UpsertBagExpand(ctx, b)
+}

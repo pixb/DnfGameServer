@@ -3,6 +3,7 @@ package network
 import (
 	"bufio"
 	"encoding/binary"
+	"encoding/json"
 	"fmt"
 	"io"
 	"reflect"
@@ -75,6 +76,9 @@ func (c *ProtoCodec) GetMessageMeta(msg proto.Message) (MessageMeta, bool) {
 type ProtocolPacket struct {
 	Meta    MessageMeta
 	Message proto.Message
+	// TextExtras 文本命令附加字段(测试辅助):proto 未定义但客户端 JSON 携带的
+	// 字段(如 ITEM_RENAME:name、BAG_EXPAND:slots),由 decodeTextBody 提取。
+	TextExtras map[string]interface{}
 }
 
 // Decode 解码消息
@@ -170,7 +174,13 @@ func (c *ProtoCodec) decodeTextBody(body []byte) (interface{}, error) {
 	}
 
 	msg := factory()
+	var textExtras map[string]interface{}
 	if len(payload) > 0 {
+		// 提取 proto 未定义的附加字段(测试辅助: name/slots 等)
+		var raw map[string]interface{}
+		if json.Unmarshal([]byte(payload), &raw) == nil {
+			textExtras = raw
+		}
 		// 文本命令为测试辅助模式,采用宽松解析:丢弃未知字段,
 		// 使 mock JSON 中测试自定义的字段不会导致解析失败
 		opts := protojson.UnmarshalOptions{DiscardUnknown: true}
@@ -185,8 +195,9 @@ func (c *ProtoCodec) decodeTextBody(body []byte) (interface{}, error) {
 	}
 
 	return &ProtocolPacket{
-		Meta:    meta,
-		Message: msg,
+		Meta:       meta,
+		Message:    msg,
+		TextExtras: textExtras,
 	}, nil
 }
 

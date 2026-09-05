@@ -269,6 +269,7 @@ func ItemDecomposeHandler(session *network.Session, msg proto.Message) {
 }
 
 // ItemRenameHandler 处理物品重命名请求 (cmd=20)
+// 2026-09-06 由 mock 接入 store: 名称(文本命令附加字段 name)写入 bag_item.attributes(JSON)
 func ItemRenameHandler(session *network.Session, msg proto.Message) {
 	req, ok := msg.(*dnfv1.UseItemRequest)
 	if !ok {
@@ -281,15 +282,68 @@ func ItemRenameHandler(session *network.Session, msg proto.Message) {
 		logger.Int64("session_id", session.ID()),
 	)
 
-	// TODO: 背包物品无自定义名称字段,命名信息需存入 attributes(JSON) 或扩展表
+	// 读取文本命令附加字段 name(proto 未定义,由 codec TextExtras 透传)
+	name := ""
+	if extras, exists := session.GetAttr("textExtras"); exists {
+		if m, ok := extras.(map[string]interface{}); ok {
+			if v, ok := m["name"].(string); ok {
+				name = v
+			}
+		}
+	}
+
 	resp := &dnfv1.UseItemResponse{
 		Error:        0,
 		UpdatedItems: make([]*dnfv1.BagItem, 0),
 	}
+
+	if itemStore != nil {
+		items, err := itemStore.ListBagItemsByRole(context.Background(), session.RoleID())
+		if err != nil {
+			logger.Error("failed to list bag items for rename",
+				logger.ErrorField(err), logger.Int64("session_id", session.ID()))
+			resp.Error = 1
+			writeItemExtResponse(session, 21, resp)
+			return
+		}
+		var target *store.BagItem
+		for _, it := range items {
+			if it.ID == req.Guid {
+				target = it
+				break
+			}
+		}
+		if target == nil {
+			resp.Error = 2
+			writeItemExtResponse(session, 21, resp)
+			return
+		}
+		if name == "" {
+			name = "已命名"
+		}
+		attrs := `{"name":"` + name + `"}`
+		if err := itemStore.UpdateBagItem(context.Background(), &store.UpdateBagItem{
+			ID:         req.Guid,
+			Attributes: &attrs,
+		}); err != nil {
+			logger.Error("failed to rename bag item",
+				logger.ErrorField(err), logger.Int64("session_id", session.ID()))
+			resp.Error = 1
+		} else {
+			resp.UpdatedItems = append(resp.UpdatedItems, &dnfv1.BagItem{
+				Guid:   req.Guid,
+				ItemId: uint32(target.ItemID),
+				Count:  target.Count,
+				Slot:   target.GridIndex,
+			})
+		}
+	}
+
 	writeItemExtResponse(session, 21, resp)
 }
 
 // BagExpandHandler 处理背包扩容请求 (cmd=22)
+// 2026-09-06 由 mock 接入 store: 扩容槽位(文本命令附加字段 slots)持久化到 t_bag_expand
 func BagExpandHandler(session *network.Session, msg proto.Message) {
 	req, ok := msg.(*dnfv1.GetBagRequest)
 	if !ok {
@@ -302,10 +356,44 @@ func BagExpandHandler(session *network.Session, msg proto.Message) {
 		logger.Int64("session_id", session.ID()),
 	)
 
-	// TODO: 背包容量无配置存储,先返回默认容量
+	// 读取文本命令附加字段 slots(proto 未定义,由 codec TextExtras 透传)
+	slots := int32(0)
+	if extras, exists := session.GetAttr("textExtras"); exists {
+		if m, ok := extras.(map[string]interface{}); ok {
+			if v, ok := m["slots"].(float64); ok {
+				slots = int32(v)
+			}
+		}
+	}
+
+	maxSlot := int32(50)
+	if itemStore != nil {
+		roleID := session.RoleID()
+		expand, err := itemStore.GetBagExpand(context.Background(), &store.FindBagExpand{
+			RoleID:  roleID,
+			BagType: &req.BagType,
+		})
+		if err == nil && expand != nil {
+			maxSlot = 50 + expand.Capacity
+		}
+		if slots > 0 {
+			_, err := itemStore.UpsertBagExpand(context.Background(), &store.BagExpand{
+				RoleID:   roleID,
+				BagType:  req.BagType,
+				Capacity: slots,
+			})
+			if err != nil {
+				logger.Error("failed to upsert bag expand",
+					logger.ErrorField(err), logger.Int64("session_id", session.ID()))
+			} else {
+				maxSlot = 50 + slots
+			}
+		}
+	}
+
 	bag := &dnfv1.BagInfo{
 		BagType: req.BagType,
-		MaxSlot: 60,
+		MaxSlot: maxSlot,
 		Items:   make([]*dnfv1.BagItem, 0),
 	}
 
