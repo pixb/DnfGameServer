@@ -3,6 +3,7 @@ package auth
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"encoding/hex"
 	"fmt"
 	"time"
 
@@ -25,8 +26,16 @@ type JWTClaims struct {
 // GenerateAccessToken 生成访问令牌
 func GenerateAccessToken(userID uint64, username string, roleID uint64, secret string) (string, error) {
 	now := time.Now()
+
+	// 生成随机 jti,确保同一秒内重复登录也产生不同 token(重复登录需使旧 token 失效)
+	jtiBytes := make([]byte, 16)
+	if _, err := rand.Read(jtiBytes); err != nil {
+		return "", err
+	}
+
 	claims := JWTClaims{
 		RegisteredClaims: jwt.RegisteredClaims{
+			ID:        hex.EncodeToString(jtiBytes),
 			ExpiresAt: jwt.NewNumericDate(now.Add(AccessTokenDuration)),
 			IssuedAt:  jwt.NewNumericDate(now),
 			NotBefore: jwt.NewNumericDate(now),
