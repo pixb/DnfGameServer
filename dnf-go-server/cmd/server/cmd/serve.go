@@ -104,13 +104,14 @@ func runServe(cmd *cobra.Command, args []string) error {
 	handlers.InitAdventureService(adventureSvc)
 
 	// PK服务当前基于遗留MySQL直连（internal/db），仅在MySQL驱动下可用
+	var pkSvc *pk_service.PkService
 	if prof.Driver == "mysql" {
 		legacyCfg := &config.DatabaseConfig{Driver: prof.Driver, DSN: prof.DSN}
 		legacyDB, err := internaldb.NewDB(legacyCfg)
 		if err != nil {
 			return fmt.Errorf("failed to create legacy db for pk service: %w", err)
 		}
-		pkSvc := pk_service.NewPkService(legacyDB)
+		pkSvc = pk_service.NewPkService(legacyDB)
 		handlers.InitPkService(pkSvc)
 	} else {
 		fmt.Printf("Warning: pk service requires MySQL driver, skipped (driver=%s)\n", prof.Driver)
@@ -119,7 +120,7 @@ func runServe(cmd *cobra.Command, args []string) error {
 
 	// 4. 创建服务器
 	fmt.Println("Creating server...")
-	srv, err := server.NewServer(ctx, prof, s)
+	srv, err := server.NewServer(ctx, prof, s, pkSvc)
 	if err != nil {
 		return fmt.Errorf("failed to create server: %w", err)
 	}

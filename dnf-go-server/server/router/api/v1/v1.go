@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"google.golang.org/grpc"
 
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/pk_service"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/profile"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"github.com/pixb/DnfGameServer/dnf-go-server/server/auth"
@@ -24,14 +25,16 @@ type APIV1Service struct {
 	Secret  string
 	Profile *profile.Profile
 	Store   *store.Store
+	PK      *pk_service.PkService // 仅 MySQL 驱动下非 nil
 }
 
 // NewAPIV1Service 创建服务实例
-func NewAPIV1Service(secret string, profile *profile.Profile, s *store.Store) *APIV1Service {
+func NewAPIV1Service(secret string, profile *profile.Profile, s *store.Store, pkSvc *pk_service.PkService) *APIV1Service {
 	return &APIV1Service{
 		Secret:  secret,
 		Profile: profile,
 		Store:   s,
+		PK:      pkSvc,
 	}
 }
 
@@ -234,6 +237,26 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/game/recommend_guild_list", s.handleGameRecommendGuildList)
 	apiGroup.POST("/game/adventure_union_info_other", s.handleGameAdventureUnionInfoOther)
 	apiGroup.POST("/game/start", s.handleGameStart)
+
+	// PK 路由
+	apiGroup.POST("/pk/multi_play_request_match", s.handlePkMultiPlayRequestMatch)
+	apiGroup.POST("/pk/multi_play_request_match_cancel", s.handlePkMultiPlayRequestMatchCancel)
+	apiGroup.POST("/pk/historic_site_noti", s.handlePkHistoricSiteNoti)
+	apiGroup.POST("/pk/load_guild_donation_info", s.handlePkLoadGuildDonationInfo)
+	apiGroup.POST("/pk/dream_maze_basic_info", s.handlePkDreamMazeBasicInfo)
+	apiGroup.POST("/pk/raid_entrance_count", s.handlePkRaidEntranceCount)
+	apiGroup.POST("/pk/loading_progress", s.handlePkLoadingProgress)
+	apiGroup.POST("/pk/return_to_town", s.handlePkReturnToTown)
+	apiGroup.POST("/pk/custom_game_room_setting", s.handlePkCustomGameRoomSetting)
+	apiGroup.GET("/pk/record", s.handlePkRecord)
+	apiGroup.GET("/pk/ranking", s.handlePkRanking)
+	apiGroup.GET("/pk/stats", s.handlePkStats)
+	apiGroup.GET("/pk/match_history", s.handlePkMatchHistory)
+	apiGroup.GET("/pk/season_info", s.handlePkSeasonInfo)
+	apiGroup.GET("/pk/reward", s.handlePkReward)
+	apiGroup.POST("/pk/daily_reset", s.handlePkDailyReset)
+	apiGroup.GET("/pk/match_types", s.handlePkMatchTypes)
+	apiGroup.POST("/pk/battle_result", s.handlePkBattleResult)
 
 	// 制作路由
 	apiGroup.POST("/make/emblem/upgrade", s.handleEmblemUpgrade)

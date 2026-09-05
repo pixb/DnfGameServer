@@ -15,6 +15,7 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/handlers"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/pk_service"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/profile"
 	v1 "github.com/pixb/DnfGameServer/dnf-go-server/server/router/api/v1"
@@ -39,7 +40,7 @@ type Server struct {
 }
 
 // NewServer 创建服务器实例
-func NewServer(ctx context.Context, prof *profile.Profile, s *store.Store) (*Server, error) {
+func NewServer(ctx context.Context, prof *profile.Profile, s *store.Store, pkSvc *pk_service.PkService) (*Server, error) {
 	server := &Server{
 		Profile: prof,
 		Store:   s,
@@ -67,7 +68,7 @@ func NewServer(ctx context.Context, prof *profile.Profile, s *store.Store) (*Ser
 	server.Secret = secret
 
 	// 4. 创建API v1服务
-	server.apiV1Service = v1.NewAPIV1Service(server.Secret, prof, s)
+	server.apiV1Service = v1.NewAPIV1Service(server.Secret, prof, s, pkSvc)
 
 	// 5. 创建gRPC服务器
 	server.grpcServer = grpc.NewServer()
