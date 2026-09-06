@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -109,6 +110,15 @@ func (s *APIV1Service) handleGameCharacterInfo(c echo.Context) error {
 		})
 	}
 
+	// 2026-09-07 第四十六轮: 角色信息带已学技能列表与技能点
+	skills, err := s.listRoleSkills(c.Request().Context(), role.ID)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"error":   6,
+			"message": err.Error(),
+		})
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error": 0,
 		"character": map[string]interface{}{
@@ -120,8 +130,33 @@ func (s *APIV1Service) handleGameCharacterInfo(c echo.Context) error {
 			"fatigue":    role.Fatigue,
 			"maxFatigue": role.MaxFatigue,
 			"channel":    role.Channel,
+			"sp":         role.SP,
+			"skills":     skills,
 		},
 	})
+}
+
+// listRoleSkills 角色已学技能列表(2026-09-07 第四十六轮)
+func (s *APIV1Service) listRoleSkills(ctx context.Context, roleID uint64) ([]map[string]interface{}, error) {
+	rsList, err := s.Store.ListRoleSkills(ctx, roleID)
+	if err != nil {
+		return nil, err
+	}
+	out := make([]map[string]interface{}, 0, len(rsList))
+	for _, rs := range rsList {
+		skill, err := s.Store.GetSkill(ctx, &store.FindSkill{SkillID: &rs.SkillID})
+		if err != nil || skill == nil {
+			continue
+		}
+		out = append(out, map[string]interface{}{
+			"skillId":  rs.SkillID,
+			"name":     skill.Name,
+			"level":    rs.Level,
+			"maxLevel": skill.MaxLevel,
+			"spCost":   skill.SP,
+		})
+	}
+	return out, nil
 }
 
 func (s *APIV1Service) handleGameInteractionMenu(c echo.Context) error {

@@ -368,3 +368,85 @@ func (s *RankTCPTestSuite) TestTCPLearnUpgradeSkill() {
 	s.Equal(65, sp, "final SP should be 65")
 	fmt.Printf("skill learn/upgrade verified (sp=%d)\n", sp)
 }
+
+// TestRoleInfoSkills 角色信息带技能列表(2026-09-07 第四十六轮实化):
+// 建角 → 绑定 → 学 1001/1002 → GET_ROLE_INFO(TCP) 与 /game/character_info(HTTP) 均返回真实 base_info + skills
+func (s *RankTCPTestSuite) TestRoleInfoSkills() {
+	uid := time.Now().UnixNano()
+	guid := s.createCharacter(fmt.Sprintf("test_skinfo_%d", uid))
+
+	// TCP: 绑定 + 学两个技能 + GET_ROLE_INFO
+	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", s.serverHost, s.serverPort), 10*time.Second)
+	s.NoError(err)
+	s.NotNil(conn)
+	if conn == nil {
+		s.T().Skip("TCP connection failed")
+		return
+	}
+	defer conn.Close()
+	s.socket = conn
+
+	selectJSON, _ := json.Marshal(map[string]interface{}{"uid": guid})
+	s.NoError(s.sendTCP(append([]byte("SELECT_CHARACTER:"), selectJSON...)), "send SELECT_CHARACTER")
+	selResp, err := s.recvTCP()
+	s.NoError(err)
+	s.NotNil(selResp)
+
+	for _, skID := range []int{1001, 1002} {
+		payloadJSON, _ := json.Marshal(map[string]interface{}{"skill_id": skID})
+		s.NoError(s.sendTCP(append([]byte("LEARN_SKILL:"), payloadJSON...)), "learn skill")
+		body, err := s.recvTCP()
+		s.NoError(err)
+		s.NotNil(body)
+		module, rcmd, payloadBytes := parseTCPResponse(body)
+		s.Equal(uint16(10001), module)
+		s.Equal(uint16(5), rcmd)
+		learn := &dnfv1.LearnSkillResponse{}
+		s.NoError(proto.Unmarshal(payloadBytes, learn))
+		s.Equal(int32(0), learn.Error, "learn skill %d", skID)
+	}
+
+	// GET_ROLE_INFO(文本命令, 无 payload)
+	s.NoError(s.sendTCP([]byte("GET_ROLE_INFO:{}")), "send GET_ROLE_INFO")
+	body, err := s.recvTCP()
+	s.NoError(err)
+	s.NotNil(body)
+	module, rcmd, payloadBytes := parseTCPResponse(body)
+	s.Equal(uint16(10001), module)
+	s.Equal(uint16(1), rcmd, "role info response cmd should be 1")
+	info := &dnfv1.GetRoleInfoResponse{}
+	s.NoError(proto.Unmarshal(payloadBytes, info), "unmarshal GetRoleInfoResponse")
+	s.Equal(int32(0), info.Error)
+	s.NotNil(info.BaseInfo)
+	s.NotEqual("勇者", info.BaseInfo.Name, "should return real character name")
+	s.Equal(int32(1), info.BaseInfo.Level, "new char level should be 1")
+	s.Equal(int32(1), info.BaseInfo.Job)
+	s.Len(info.Skills, 2, "should have 2 learned skills")
+	skillMap := map[int32]int32{}
+	for _, sk := range info.Skills {
+		skillMap[sk.SkillId] = sk.Level
+	}
+	s.Equal(int32(1), skillMap[1001], "skill 1001 learned at level 1")
+	s.Equal(int32(1), skillMap[1002], "skill 1002 learned at level 1")
+
+	// HTTP: character_info 带 skills/sp
+	resp, err := s.Client.Get(fmt.Sprintf("/api/v1/game/character_info?charguid=%d", uint64(guid)))
+	s.NoError(err)
+	s.AssertSuccess(resp)
+	char := resp["character"].(map[string]interface{})
+	s.Equal(float64(90), char["sp"], "SP should be 90 after learning two 5-cost skills")
+	skillsArr, ok := char["skills"].([]interface{})
+	s.True(ok, "skills should be an array")
+	s.Len(skillsArr, 2, "HTTP should also return 2 skills")
+	found := false
+	for _, item := range skillsArr {
+		sk := item.(map[string]interface{})
+		if sk["skillId"].(float64) == 1001 {
+			found = true
+			s.Equal("冲刺", sk["name"], "skill name should come from skills table")
+			s.Equal(float64(5), sk["maxLevel"], "1001 max level is 5")
+		}
+	}
+	s.True(found, "skill 1001 should be in HTTP response")
+	fmt.Printf("role info skills verified (tcp=%d, http=%d)\n", len(info.Skills), len(skillsArr))
+}

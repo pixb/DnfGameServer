@@ -119,33 +119,70 @@ func consumeSkillSP(ctx context.Context, role *store.Role, cost int32) (int32, i
 	return newSP, skillErrorOK
 }
 
-// GetRoleInfoHandler 处理获取角色信息请求
+// GetRoleInfoHandler 处理获取角色信息请求(2026-09-07 第四十六轮实化):
+// 绑定角色(session.RoleID, 回退 req.Uid) → DB 真实 base_info + 已学技能列表(skills)
+// 兼容 protobuf 请求与文本命令 GET_ROLE_INFO(JSON payload 可选 uid)
 func GetRoleInfoHandler(session *network.Session, msg proto.Message) {
-	req, ok := msg.(*dnfv1.GetRoleInfoRequest)
-	if !ok {
-		logger.Error("invalid message type for get role info")
+	var uid int64
+	if req, ok := msg.(*dnfv1.GetRoleInfoRequest); ok {
+		uid = req.Uid
+	} else if extras, exists := session.GetAttr("textExtras"); exists {
+		if m, ok := extras.(map[string]interface{}); ok {
+			if v, ok := m["uid"].(float64); ok {
+				uid = int64(v)
+			}
+		}
+	}
+
+	roleID := session.RoleID()
+	if roleID == 0 && uid > 0 {
+		roleID = uint64(uid)
+	}
+	if roleID == 0 || skillStore == nil {
+		resp := &dnfv1.GetRoleInfoResponse{Error: 1}
+		session.WriteResponse(10001, 1, resp)
 		return
 	}
 
-	logger.Info("get role info request received",
-		logger.Int64("uid", req.Uid),
-		logger.Int64("session_id", session.ID()),
-	)
+	ctx := context.Background()
+	role, err := skillStore.GetRole(ctx, &store.FindRole{FindBase: store.FindBase{ID: &roleID}, NoCache: true})
+	if err != nil || role == nil {
+		resp := &dnfv1.GetRoleInfoResponse{Error: 1}
+		session.WriteResponse(10001, 1, resp)
+		return
+	}
 
-	// TODO: 从数据库加载角色信息
-	// 这里模拟返回数据
+	// 已学技能列表(skill_id/level/max_level/sp_cost)
+	var skills []*dnfv1.SkillInfo
+	rsList, err := skillStore.ListRoleSkills(ctx, role.ID)
+	if err == nil {
+		for _, rs := range rsList {
+			skill, err := skillStore.GetSkill(ctx, &store.FindSkill{SkillID: &rs.SkillID})
+			if err != nil || skill == nil {
+				continue
+			}
+			skills = append(skills, &dnfv1.SkillInfo{
+				SkillId:  rs.SkillID,
+				Level:    rs.Level,
+				MaxLevel: skill.MaxLevel,
+				SpCost:   skill.SP,
+			})
+		}
+	}
+
 	resp := &dnfv1.GetRoleInfoResponse{
 		Error: 0,
 		BaseInfo: &dnfv1.RoleBaseInfo{
-			Uid:        req.Uid,
-			RoleId:     1,
-			Name:       "勇者",
-			Job:        1,
-			Level:      50,
-			Exp:        1000000,
-			Fatigue:    100,
-			MaxFatigue: 156,
+			Uid:        int64(role.ID),
+			RoleId:     role.RoleID,
+			Name:       role.Name,
+			Job:        role.Job,
+			Level:      role.Level,
+			Exp:        role.Exp,
+			Fatigue:    role.Fatigue,
+			MaxFatigue: role.MaxFatigue,
 		},
+		// 战斗属性/位置暂以模拟值填充(2026-09-07 第四十六轮: 待接 role_attributes 真实映射)
 		BattleInfo: &dnfv1.RoleBattleInfo{
 			Str:       100,
 			Dex:       100,
@@ -170,22 +207,7 @@ func GetRoleInfoHandler(session *network.Session, msg proto.Message) {
 			Y:         100.0,
 			Z:         0.0,
 		},
-		Skills: []*dnfv1.SkillInfo{
-			{
-				SkillId:  1,
-				Level:    5,
-				MaxLevel: 10,
-				SpCost:   20,
-				Cooldown: 0,
-			},
-			{
-				SkillId:  2,
-				Level:    3,
-				MaxLevel: 10,
-				SpCost:   30,
-				Cooldown: 5,
-			},
-		},
+		Skills: skills,
 	}
 
 	if err := session.WriteResponse(10001, 1, resp); err != nil {
