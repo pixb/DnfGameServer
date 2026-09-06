@@ -230,7 +230,7 @@ func CreateEventHandler(session *network.Session, msg proto.Message) {
 }
 
 // DeleteEventHandler 处理删除事件请求 (cmd=16)
-// 删除首个活动配置(软删除)
+// 删除活动配置(软删除):优先按附加字段 event_id 精确删除,否则删最新创建的一条
 func DeleteEventHandler(session *network.Session, msg proto.Message) {
 	req, ok := msg.(*dnfv1.Empty)
 	if !ok {
@@ -239,10 +239,42 @@ func DeleteEventHandler(session *network.Session, msg proto.Message) {
 	}
 	logger.Info("delete event request received", logger.Int64("session_id", session.ID()))
 
+	// 读取文本命令附加字段 event_id(proto 未定义,由 codec TextExtras 透传)
+	var wantID uint64
+	if extras, exists := session.GetAttr("textExtras"); exists {
+		if m, ok := extras.(map[string]interface{}); ok {
+			if v, ok := m["event_id"].(float64); ok {
+				wantID = uint64(v)
+			}
+		}
+	}
+
 	if eventStore != nil {
 		configs, err := eventStore.ListEventConfigs(context.Background(), &store.FindEventConfig{})
 		if err == nil && len(configs) > 0 {
-			if err := eventStore.DeleteEventConfig(context.Background(), configs[0].ID); err != nil {
+			var target *store.EventConfig
+			if wantID > 0 {
+				for _, c := range configs {
+					if uint64(c.EventID) == wantID {
+						target = c
+						break
+					}
+				}
+			} else {
+				// 无指定时删除最新创建的一条
+				target = configs[0]
+				for _, c := range configs[1:] {
+					if c.ID > target.ID {
+						target = c
+					}
+				}
+			}
+			if target == nil {
+				logger.Warn("delete event: target not found", logger.Uint64("event_id", wantID))
+				writeEventOK(session, 11, "delete event")
+				return
+			}
+			if err := eventStore.DeleteEventConfig(context.Background(), target.ID); err != nil {
 				logger.Error("failed to delete event config",
 					logger.ErrorField(err), logger.Int64("session_id", session.ID()))
 			}

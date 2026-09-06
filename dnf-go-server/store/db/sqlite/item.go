@@ -2,6 +2,7 @@ package sqlite
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"strings"
 	"time"
@@ -19,10 +20,15 @@ func (d *DB) CreateBagItem(ctx context.Context, create *store.BagItem) (*store.B
    `
 
 	now := time.Now().Unix()
+	// attributes 为空时写 NULL(与 mysql 侧对齐)
+	var attrs interface{}
+	if create.Attributes != "" {
+		attrs = create.Attributes
+	}
 	result, err := d.db.ExecContext(ctx, query,
 		now, now, store.RowStatusNormal,
 		create.RoleID, create.ItemID, create.GridIndex, create.Count,
-		create.IsEquiped, create.BindType, create.Durability, create.EnhanceLevel, create.Attributes,
+		create.IsEquiped, create.BindType, create.Durability, create.EnhanceLevel, attrs,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create bag item: %w", err)
@@ -135,12 +141,15 @@ func (d *DB) ListBagItems(ctx context.Context, find *store.FindBagItem) ([]*stor
 	var items []*store.BagItem
 	for rows.Next() {
 		var item store.BagItem
+		// attributes 可为 NULL(空属性存 NULL),用 NullString 兼容
+		var attrs sql.NullString
 		err := rows.Scan(&item.ID, &item.CreatedAt, &item.UpdatedAt, &item.RowStatus,
 			&item.RoleID, &item.ItemID, &item.GridIndex, &item.Count,
-			&item.IsEquiped, &item.BindType, &item.Durability, &item.EnhanceLevel, &item.Attributes)
+			&item.IsEquiped, &item.BindType, &item.Durability, &item.EnhanceLevel, &attrs)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan bag item: %w", err)
 		}
+		item.Attributes = attrs.String
 		items = append(items, &item)
 	}
 

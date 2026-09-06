@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"database/sql"
 	"fmt"
 	"testing"
 
@@ -13,6 +14,33 @@ type EventTestSuite struct {
 
 func (s *EventTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
+	// 确保活动 event_id=1 存在且 NORMAL:
+	// TCP 套件(event_tcp_test.go,文件名序先跑)的 DELETE_EVENT 会删掉活动 1,
+	// 本套件依赖活动 1,因此在套件启动时恢复(测试数据自洽)。
+	ensureEventConfig1()
+}
+
+// ensureEventConfig1 直接落库确保 event_id=1 的活动配置存在(绕过 HTTP,测试数据准备)
+func ensureEventConfig1() {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		fmt.Println("ensureEventConfig1 open db:", err)
+		return
+	}
+	defer db.Close()
+	now := int64(0)
+	_ = db.QueryRow(`SELECT UNIX_TIMESTAMP()`).Scan(&now)
+	_, err = db.Exec(`INSERT INTO t_event_config
+      (created_at, updated_at, row_status, event_id, title, description, event_type, status, start_time, end_time, reward_config)
+      VALUES (?, ?, 'NORMAL', 1, '新手活动', '由测试 SetupSuite 恢复', 1, 1, ?, ?, '{}')
+      ON DUPLICATE KEY UPDATE row_status = 'NORMAL'`, now, now, now, now+86400)
+	if err != nil {
+		fmt.Println("ensureEventConfig1 upsert:", err)
+	}
+	// 重置活动 1 的领奖进度(progress_type >= 100 为领奖标记),避免历史 already 状态
+	if _, err := db.Exec(`DELETE FROM t_event_progress WHERE event_id = 1 AND progress_type >= 100`); err != nil {
+		fmt.Println("ensureEventConfig1 clear claims:", err)
+	}
 }
 
 // TestEventList 测试获取活动列表
