@@ -57,14 +57,20 @@ type ItemDisjoint struct {
 
 // MakeRecipe 合成配方配置 (对应 t_make_recipe 表)
 // 2026-09-06 第十二轮: ItemCombine 深化为配方驱动(材料列表/产物模板/产物数量/合成费用)
+// 2026-09-06 第十五轮: 增加成功率/随机产出池/失败保底(成功且池非空则按权重随机产出,
+// 失败则产出 fail 保底物品或空)
 type MakeRecipe struct {
-	ID           uint64 `db:"id"`
-	RecipeIndex  int    `db:"recipe_index"`
-	ResultIndex  int    `db:"result_index"`
-	ResultCount  int    `db:"result_count"`
-	MaterialList string `db:"material_list"`
-	CostMoney    int    `db:"cost_money"`
-	Enabled      int    `db:"enabled"`
+	ID              uint64 `db:"id"`
+	RecipeIndex     int    `db:"recipe_index"`
+	ResultIndex     int    `db:"result_index"`
+	ResultCount     int    `db:"result_count"`
+	MaterialList    string `db:"material_list"`
+	CostMoney       int    `db:"cost_money"`
+	SuccessRate     int    `db:"success_rate"`
+	ResultPool      string `db:"result_pool"`
+	FailResultIndex int    `db:"fail_result_index"`
+	FailResultCount int    `db:"fail_result_count"`
+	Enabled         int    `db:"enabled"`
 }
 
 // MakeDisjoint 分解产出配置 (对应 t_make_disjoint 表)

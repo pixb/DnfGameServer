@@ -245,16 +245,27 @@ func (s *APIV1Service) handleMakeItemCombine(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
 	}
 
+	// 2026-09-06 第十五轮: 响应真实合成结果(成功率/随机产出);
+	// result 为掷点结果(success/fail), guid/itemId 为实际入包产物(失败保底物品也算产物)
 	guid := uint64(0)
-	if result != nil && result.Equip != nil {
-		guid = result.Equip.Guid
+	itemID := uint32(0)
+	outcome := "fail"
+	if result != nil {
+		if result.Success {
+			outcome = "success"
+		}
+		if result.Equip != nil {
+			guid = result.Equip.Guid
+			itemID = result.Equip.ItemId
+		}
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":  0,
 		"index":  index,
 		"guid":   guid,
-		"result": "success",
+		"itemId": itemID,
+		"result": outcome,
 	})
 }
 

@@ -883,6 +883,7 @@ CREATE TABLE IF NOT EXISTS t_item_combine (
     count INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '合成次数',
     result_guid BIGINT UNSIGNED NOT NULL COMMENT '产出物品GUID',
     cost_money INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '消耗金币',
+    success TINYINT NOT NULL DEFAULT 1 COMMENT '合成是否成功(0=失败)',
     create_time BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()) COMMENT '创建时间',
     INDEX idx_item_combine_role (role_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='物品合成记录表';
@@ -910,6 +911,10 @@ CREATE TABLE IF NOT EXISTS t_make_recipe (
     result_count INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '单次合成产物数量',
     material_list TEXT NOT NULL COMMENT '材料列表(JSON:[{"index":2001,"count":1}])',
     cost_money INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '单次合成费用(金币)',
+    success_rate INT UNSIGNED NOT NULL DEFAULT 100 COMMENT '成功率百分比(0-100)',
+    result_pool TEXT NULL COMMENT '随机产出池(JSON:[{result_index,result_count,weight}],空=固定产物)',
+    fail_result_index INT UNSIGNED NULL COMMENT '失败保底产物模板(NULL=失败无产出)',
+    fail_result_count INT UNSIGNED NULL COMMENT '失败保底产物数量',
     enabled TINYINT NOT NULL DEFAULT 1 COMMENT '是否启用(0=停用)',
     create_time BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()) COMMENT '创建时间',
     UNIQUE KEY uk_make_recipe_index (recipe_index)

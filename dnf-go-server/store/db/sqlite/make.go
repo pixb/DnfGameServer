@@ -431,39 +431,70 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 		}
 	}
 
-	// 5. 产物入包: 按配方 result_index/result_count, 新格子 = MAX(grid_index)+1
-	var maxGrid int32
-	_ = tx.QueryRowContext(ctx, `
-		SELECT COALESCE(MAX(grid_index), 0) FROM bag_item WHERE role_id = ?`, roleID).Scan(&maxGrid)
-	newGrid := maxGrid + 1
-	resultCount := recipe.resultCount * count
-	result, err := tx.ExecContext(ctx, `
-		INSERT INTO bag_item (created_at, updated_at, row_status, role_id, item_id, grid_index, count, is_equipped, bind_type, durability, enhance_level, attributes)
-		VALUES (?, ?, 'NORMAL', ?, ?, ?, ?, 0, 0, 0, 0, NULL)`,
-		now, now, roleID, recipe.resultIndex, newGrid, resultCount)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create product: %w", err)
+	// 5. 判定合成结果: 成功率(缺省 100 恒成功) -> 成功且池非空按权重随机产出,
+	//    否则固定 result_index/result_count; 失败时 fail_result_index 非空产出保底, 否则无产出。
+	success := true
+	if recipe.successRate < 100 {
+		success = rand.Intn(100) < int(recipe.successRate)
 	}
-	productID, _ := result.LastInsertId()
+	outIndex := recipe.resultIndex
+	outCount := recipe.resultCount * count
+	if success && len(recipe.pool) > 0 {
+		pick := pickRecipeOutput(recipe.pool)
+		outIndex = pick.ResultIndex
+		outCount = pick.ResultCount * count
+	}
+	if !success && recipe.failResultIndex > 0 {
+		outIndex = recipe.failResultIndex
+		outCount = recipe.failResultCount * count
+	}
+	if !success && recipe.failResultIndex <= 0 {
+		outIndex, outCount = 0, 0
+	}
 
-	// 6. 合成记录
+	// 6. 产物入包(仅当有产出): 新格子 = MAX(grid_index)+1
+	var productID int64
+	if outIndex > 0 && outCount > 0 {
+		var maxGrid int32
+		_ = tx.QueryRowContext(ctx, `
+			SELECT COALESCE(MAX(grid_index), 0) FROM bag_item WHERE role_id = ?`, roleID).Scan(&maxGrid)
+		newGrid := maxGrid + 1
+		result, err := tx.ExecContext(ctx, `
+			INSERT INTO bag_item (created_at, updated_at, row_status, role_id, item_id, grid_index, count, is_equipped, bind_type, durability, enhance_level, attributes)
+			VALUES (?, ?, 'NORMAL', ?, ?, ?, ?, 0, 0, 0, 0, NULL)`,
+			now, now, roleID, outIndex, newGrid, outCount)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create product: %w", err)
+		}
+		productID, _ = result.LastInsertId()
+	}
+
+	// 7. 合成记录(含成功标记)
+	successFlag := 0
+	if success {
+		successFlag = 1
+	}
 	_, err = tx.ExecContext(ctx, `
-		INSERT INTO t_item_combine (role_id, target_index, material_list, count, result_guid, cost_money, create_time)
-		VALUES (?, ?, ?, ?, ?, ?, ?)
-	`, roleID, recipe.resultIndex, recipe.materialJSON, count, productID, fee, now)
+		INSERT INTO t_item_combine (role_id, target_index, material_list, count, result_guid, cost_money, success, create_time)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+	`, roleID, recipe.resultIndex, recipe.materialJSON, count, productID, fee, successFlag, now)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert item combine record: %w", err)
 	}
 
-	equip := &dnfv1.EquipmentInfo{
-		Guid:   uint64(productID),
-		ItemId: uint32(recipe.resultIndex),
-	}
-	rewards := &dnfv1.PT_CONTENTS_REWARD_INFO{
-		Items: &dnfv1.PT_ITEMS{
-			EquipItems: []*dnfv1.EquipmentInfo{equip},
-		},
-		Currency: &dnfv1.PT_CURRENCY_REWARD_INFO{},
+	var equip *dnfv1.EquipmentInfo
+	var rewards *dnfv1.PT_CONTENTS_REWARD_INFO
+	if outIndex > 0 && outCount > 0 {
+		equip = &dnfv1.EquipmentInfo{
+			Guid:   uint64(productID),
+			ItemId: uint32(outIndex),
+		}
+		rewards = &dnfv1.PT_CONTENTS_REWARD_INFO{
+			Items: &dnfv1.PT_ITEMS{
+				EquipItems: []*dnfv1.EquipmentInfo{equip},
+			},
+			Currency: &dnfv1.PT_CURRENCY_REWARD_INFO{},
+		}
 	}
 
 	err = tx.Commit()
@@ -475,6 +506,7 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 		Equip:       equip,
 		Rewards:     rewards,
 		RemoveItems: removeItems,
+		Success:     success,
 	}, nil
 }
 
@@ -683,27 +715,62 @@ type recipeMaterial struct {
 }
 
 // makeRecipe 合成配方(取自 t_make_recipe)
+// 2026-09-06 第十五轮: 增加成功率/随机产出池/失败保底字段(与 mysql 驱动对称)
 type makeRecipe struct {
-	resultIndex  int32
-	resultCount  int32
-	costMoney    int32
-	materials    []recipeMaterial
-	materialJSON string
+	resultIndex     int32
+	resultCount     int32
+	costMoney       int32
+	materials       []recipeMaterial
+	materialJSON    string
+	successRate     int32
+	pool            []recipeOutput
+	failResultIndex int32
+	failResultCount int32
+}
+
+// recipeOutput 随机产出池条目(result_pool JSON)
+type recipeOutput struct {
+	ResultIndex int32 `json:"result_index"`
+	ResultCount int32 `json:"result_count"`
+	Weight      int32 `json:"weight"`
+}
+
+// pickRecipeOutput 按权重随机选一个产出
+func pickRecipeOutput(pool []recipeOutput) recipeOutput {
+	total := 0
+	for _, p := range pool {
+		total += int(p.Weight)
+	}
+	if total <= 0 {
+		return pool[0]
+	}
+	r := rand.Intn(total)
+	for _, p := range pool {
+		r -= int(p.Weight)
+		if r < 0 {
+			return p
+		}
+	}
+	return pool[len(pool)-1]
 }
 
 // loadMakeRecipe 在事务内按 recipe_index 加载配方
 func loadMakeRecipe(ctx context.Context, tx *sql.Tx, recipeIndex int32) (*makeRecipe, error) {
 	var (
-		resultIndex  int32
-		resultCount  int32
-		costMoney    int32
-		materialList string
-		enabled      int
+		resultIndex     int32
+		resultCount     int32
+		costMoney       int32
+		materialList    string
+		enabled         int
+		successRate     int32
+		resultPool      sql.NullString
+		failResultIndex sql.NullInt64
+		failResultCount sql.NullInt64
 	)
 	err := tx.QueryRowContext(ctx, `
-		SELECT result_index, result_count, material_list, cost_money, enabled
+		SELECT result_index, result_count, material_list, cost_money, enabled, success_rate, result_pool, fail_result_index, fail_result_count
 		FROM t_make_recipe WHERE recipe_index = ?`, recipeIndex).
-		Scan(&resultIndex, &resultCount, &materialList, &costMoney, &enabled)
+		Scan(&resultIndex, &resultCount, &materialList, &costMoney, &enabled, &successRate, &resultPool, &failResultIndex, &failResultCount)
 	if err == sql.ErrNoRows {
 		return nil, fmt.Errorf("配方不存在: %d", recipeIndex)
 	}
@@ -717,13 +784,22 @@ func loadMakeRecipe(ctx context.Context, tx *sql.Tx, recipeIndex int32) (*makeRe
 	if err := json.Unmarshal([]byte(materialList), &mats); err != nil {
 		return nil, fmt.Errorf("failed to parse recipe materials: %w", err)
 	}
-	return &makeRecipe{
-		resultIndex:  resultIndex,
-		resultCount:  resultCount,
-		costMoney:    costMoney,
-		materials:    mats,
-		materialJSON: materialList,
-	}, nil
+	rc := &makeRecipe{
+		resultIndex:     resultIndex,
+		resultCount:     resultCount,
+		costMoney:       costMoney,
+		materials:       mats,
+		materialJSON:    materialList,
+		successRate:     successRate,
+		failResultIndex: int32(failResultIndex.Int64),
+		failResultCount: int32(failResultCount.Int64),
+	}
+	if resultPool.Valid && resultPool.String != "" && resultPool.String != "null" {
+		if err := json.Unmarshal([]byte(resultPool.String), &rc.pool); err != nil {
+			return nil, fmt.Errorf("failed to parse recipe result pool: %w", err)
+		}
+	}
+	return rc, nil
 }
 
 func getEmblemCost(level int) int {

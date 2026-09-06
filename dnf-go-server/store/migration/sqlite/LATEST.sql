@@ -759,6 +759,7 @@ CREATE TABLE IF NOT EXISTS t_item_combine (
     count INTEGER NOT NULL DEFAULT 1,
     result_guid INTEGER NOT NULL,
     cost_money INTEGER NOT NULL DEFAULT 0,
+    success INTEGER NOT NULL DEFAULT 1,
     create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
 );
 CREATE INDEX IF NOT EXISTS idx_item_combine_role ON t_item_combine(role_id);
@@ -786,6 +787,10 @@ CREATE TABLE IF NOT EXISTS t_make_recipe (
     result_count INTEGER NOT NULL DEFAULT 1,
     material_list TEXT NOT NULL,
     cost_money INTEGER NOT NULL DEFAULT 0,
+    success_rate INTEGER NOT NULL DEFAULT 100,
+    result_pool TEXT,
+    fail_result_index INTEGER,
+    fail_result_count INTEGER,
     enabled INTEGER NOT NULL DEFAULT 1,
     create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
 );
@@ -836,6 +841,7 @@ CREATE TABLE IF NOT EXISTS t_avatar_compose (
     result_index INTEGER NOT NULL,
     result_guid INTEGER NOT NULL,
     cost_money INTEGER NOT NULL DEFAULT 0,
+    success INTEGER NOT NULL DEFAULT 1,
     create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
 );
 CREATE INDEX IF NOT EXISTS idx_avatar_compose_role ON t_avatar_compose(role_id);

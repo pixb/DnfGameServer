@@ -38,11 +38,14 @@ type ProductionRegisterResult struct {
 }
 
 // ItemCombineResult 物品合成结果
+// ItemCombineResult 物品合成结果
+// 2026-09-06 第十五轮: 增加 Success(合成掷点结果), Equip 在失败且配置保底时仍携带保底产物
 type ItemCombineResult struct {
 	Equip       *dnfv1.EquipmentInfo           `json:"equip"`
 	Avatar      *dnfv1.AvatarItem              `json:"avatar"`
 	Rewards     *dnfv1.PT_CONTENTS_REWARD_INFO `json:"rewards"`
 	RemoveItems *dnfv1.PT_REMOVEITEMS          `json:"removeItems"`
+	Success     bool                           `json:"success"`
 }
 
 // ItemDisjointResult 物品分解结果

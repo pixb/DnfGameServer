@@ -109,6 +109,22 @@ func countCombineRecords(roleID uint64) int {
 	return n
 }
 
+// countCombineBySuccess 统计角色指定成败结果的合成记录数(success: 1=成功 0=失败)
+func countCombineBySuccess(roleID uint64, success int) int {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		return -1
+	}
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	var n int
+	if err := db.QueryRow("SELECT COUNT(*) FROM t_item_combine WHERE role_id = ? AND success = ?", roleID, success).Scan(&n); err != nil {
+		return -1
+	}
+	return n
+}
+
 // countDisjointRecords 统计角色分解记录数(分解配置生效断言用)
 func countDisjointRecords(roleID uint64) int {
 	db, err := sql.Open("mysql", testDBDSN)
@@ -154,7 +170,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -315,6 +331,99 @@ func (s *MakeTestSuite) TestAvatarCompose() {
 	if errVal, ok := resp["error"]; ok {
 		s.Equal(float64(0), errVal)
 	}
+}
+
+// TestItemCombineRandomPool 随机产出池(recipe 1004: 2001x1 -> 60%:1001x1 / 40%:1002x1)
+// 60 次合成: 材料 2001 全部消耗, 产物两种模板均出现, 记录全部成功
+func (s *MakeTestSuite) TestItemCombineRandomPool() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_comb_04", 18)
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2001: 60}))
+
+	for i := 0; i < 60; i++ {
+		resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+			"index": 1004,
+			"material_items": []map[string]interface{}{
+				{"index": 2001, "count": 1},
+			},
+			"count": 1,
+		})
+		s.NoError(err)
+		s.NotNil(resp)
+		if resp != nil {
+			if errVal, ok := resp["error"]; ok {
+				s.Equal(float64(0), errVal)
+			}
+			// 池配方无失败路径, 响应应恒为 success 且产物为 1001/1002 之一
+			s.Equal("success", resp["result"])
+			itemID, _ := resp["itemId"].(float64)
+			s.True(itemID == 1001 || itemID == 1002, fmt.Sprintf("unexpected item: %v", resp["itemId"]))
+		}
+	}
+
+	// 材料 2001 全部消耗
+	s.Equal(0, bagItemCount(roleID, 2001))
+	// 产物 1001/1002 合计 60, 且两种模板均出现过(权重 60/40, 60 次几乎必然)
+	got1001 := bagItemCount(roleID, 1001)
+	got1002 := bagItemCount(roleID, 1002)
+	s.Equal(60, got1001+got1002)
+	s.True(got1001 > 0, "1001 从未产出")
+	s.True(got1002 > 0, "1002 从未产出")
+	// 记录 60 条且全部成功
+	s.Equal(60, countCombineRecords(roleID))
+	s.Equal(60, countCombineBySuccess(roleID, 1))
+	s.Equal(0, countCombineBySuccess(roleID, 0))
+}
+
+// TestItemCombineSuccessRate 成功率 + 失败保底(recipe 1005: 2001x1 -> 50%:1001x1 / 失败:2013000000x1)
+// 30 次合成: 成功/失败均出现, 产物总数 = 30, 响应 result 与记录 success 标记一致
+func (s *MakeTestSuite) TestItemCombineSuccessRate() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_comb_05", 19)
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2001: 30}))
+
+	respSuccess := 0
+	respFail := 0
+	for i := 0; i < 30; i++ {
+		resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+			"index": 1005,
+			"material_items": []map[string]interface{}{
+				{"index": 2001, "count": 1},
+			},
+			"count": 1,
+		})
+		s.NoError(err)
+		s.NotNil(resp)
+		if resp != nil {
+			if errVal, ok := resp["error"]; ok {
+				s.Equal(float64(0), errVal)
+			}
+			if resp["result"] == "success" {
+				respSuccess++
+				itemID, _ := resp["itemId"].(float64)
+				s.Equal(float64(1001), itemID, "成功应产出 1001")
+			} else {
+				respFail++
+				itemID, _ := resp["itemId"].(float64)
+				s.Equal(float64(2013000000), itemID, "失败应产出保底 2013000000")
+			}
+		}
+	}
+
+	// 材料 2001 全部消耗
+	s.Equal(0, bagItemCount(roleID, 2001))
+	// 30 次合成: 成功与失败均出现(50% 概率, 30 次几乎必然双态)
+	s.Equal(30, respSuccess+respFail)
+	s.True(respSuccess > 0, "无成功合成")
+	s.True(respFail > 0, "无失败合成")
+	// 响应与记录一致: 记录 success 标记数与响应一致
+	s.Equal(30, countCombineRecords(roleID))
+	s.Equal(respSuccess, countCombineBySuccess(roleID, 1))
+	s.Equal(respFail, countCombineBySuccess(roleID, 0))
+	// 产物: 成功给 1001, 失败给保底 2013000000, 合计 30
+	prod1001 := bagItemCount(roleID, 1001)
+	prodFail := bagItemCount(roleID, 2013000000)
+	s.Equal(respSuccess, prod1001)
+	s.Equal(respFail, prodFail)
+	s.Equal(30, prod1001+prodFail)
 }
 
 func (s *MakeTestSuite) TestProductionInfo() {
