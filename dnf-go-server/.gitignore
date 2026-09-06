@@ -44,3 +44,4 @@ data/
 
 # Dev server run logs
 server_run.log*
+server_run.err

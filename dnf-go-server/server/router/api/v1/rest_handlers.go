@@ -359,16 +359,28 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 	}
 
 	// 附件领取: 物品入背包 / 金币入角色货币(ReceiverID 为角色ID)
+	// 2026-09-06 第十四轮: 支持多物品附件(JSON 数组 [{"item_id":x,"count":y,"bind_type":z}]),
+	// 兼容旧单对象格式({"item_id":x,"count":y}); bind_type 透传入背包(0=无绑定/1=装备绑定/2=拾取绑定)
 	var grantedItems []map[string]interface{}
-	if mail.Attachments != "" && mail.Attachments != "{}" {
-		var att struct {
-			ItemID int32 `json:"item_id"`
-			Count  int32 `json:"count"`
+	if mail.Attachments != "" && mail.Attachments != "{}" && mail.Attachments != "[]" {
+		type mailAttachment struct {
+			ItemID   int32 `json:"item_id"`
+			Count    int32 `json:"count"`
+			BindType int32 `json:"bind_type"`
 		}
-		if err := json.Unmarshal([]byte(mail.Attachments), &att); err != nil {
-			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "invalid attachment"})
+		var atts []mailAttachment
+		if err := json.Unmarshal([]byte(mail.Attachments), &atts); err != nil {
+			// 兼容旧格式: 单对象 {"item_id":x,"count":y}
+			var single mailAttachment
+			if err2 := json.Unmarshal([]byte(mail.Attachments), &single); err2 != nil || single.ItemID <= 0 {
+				return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "invalid attachment"})
+			}
+			atts = []mailAttachment{single}
 		}
-		if att.ItemID > 0 && att.Count > 0 {
+		for _, att := range atts {
+			if att.ItemID <= 0 || att.Count <= 0 {
+				continue
+			}
 			grid, err := s.nextBagGrid(c.Request().Context(), mail.ReceiverID)
 			if err != nil {
 				return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
@@ -378,13 +390,15 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 				ItemID:    att.ItemID,
 				GridIndex: grid,
 				Count:     att.Count,
+				BindType:  att.BindType,
 			}); err != nil {
 				return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
 			}
 			grantedItems = append(grantedItems, map[string]interface{}{
-				"itemId": att.ItemID,
-				"count":  att.Count,
-				"grid":   grid,
+				"itemId":   att.ItemID,
+				"count":    att.Count,
+				"grid":     grid,
+				"bindType": att.BindType,
 			})
 		}
 	}
