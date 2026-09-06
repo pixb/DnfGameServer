@@ -359,6 +359,28 @@ func (s *Store) DeleteFriend(ctx context.Context, delete *DeleteFriend) error {
 	return s.driver.DeleteFriend(ctx, delete)
 }
 
+// ==================== 好友申请相关Store方法(2026-09-06 第三十九轮) ====================
+
+// CreateFriendRequest 创建好友申请
+func (s *Store) CreateFriendRequest(ctx context.Context, create *FriendRequest) (*FriendRequest, error) {
+	return s.driver.CreateFriendRequest(ctx, create)
+}
+
+// GetFriendRequest 获取好友申请
+func (s *Store) GetFriendRequest(ctx context.Context, find *FindFriendRequest) (*FriendRequest, error) {
+	return s.driver.GetFriendRequest(ctx, find)
+}
+
+// ListFriendRequests 查询好友申请列表
+func (s *Store) ListFriendRequests(ctx context.Context, find *FindFriendRequest) ([]*FriendRequest, error) {
+	return s.driver.ListFriendRequests(ctx, find)
+}
+
+// UpdateFriendRequest 更新好友申请
+func (s *Store) UpdateFriendRequest(ctx context.Context, update *UpdateFriendRequest) error {
+	return s.driver.UpdateFriendRequest(ctx, update)
+}
+
 // ==================== 邮件相关Store方法 ====================
 
 // CreateMail 创建邮件

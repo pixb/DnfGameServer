@@ -142,6 +142,12 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/friend/add", s.handleAddFriend)
 	apiGroup.POST("/friend/remove", s.handleRemoveFriend)
 
+	// 好友申请路由(2026-09-06 第三十九轮: 申请制)
+	apiGroup.POST("/friend/request", s.handleFriendRequest)
+	apiGroup.GET("/friend/requests", s.handleFriendRequestList)
+	apiGroup.POST("/friend/approve", s.handleFriendRequestApprove)
+	apiGroup.POST("/friend/reject", s.handleFriendRequestReject)
+
 	// 账号管理路由(2026-09-06 第三十七轮: 禁用/启用账号, 影响 TCP 登录 error=5)
 	apiGroup.POST("/admin/account/disable", s.handleAdminDisableAccount)
 	apiGroup.POST("/admin/account/enable", s.handleAdminEnableAccount)

@@ -128,6 +128,12 @@ type Driver interface {
 	ListFriends(ctx context.Context, roleID uint64) ([]*Friend, error)
 	DeleteFriend(ctx context.Context, delete *DeleteFriend) error
 
+	// ==================== 好友申请相关(2026-09-06 第三十九轮) ====================
+	CreateFriendRequest(ctx context.Context, create *FriendRequest) (*FriendRequest, error)
+	GetFriendRequest(ctx context.Context, find *FindFriendRequest) (*FriendRequest, error)
+	ListFriendRequests(ctx context.Context, find *FindFriendRequest) ([]*FriendRequest, error)
+	UpdateFriendRequest(ctx context.Context, update *UpdateFriendRequest) error
+
 	// ==================== 邮件相关 ====================
 	CreateMail(ctx context.Context, create *Mail) (*Mail, error)
 	UpdateMail(ctx context.Context, update *UpdateMail) error

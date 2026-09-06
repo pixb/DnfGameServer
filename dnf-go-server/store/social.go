@@ -32,6 +32,34 @@ type UpdateFriend struct {
 // DeleteFriend 删除好友
 type DeleteFriend DeleteBase
 
+// FriendRequest 好友申请(2026-09-06 第三十九轮)
+type FriendRequest struct {
+	BaseModel
+
+	FromRoleID   uint64 // 申请人角色ID
+	FromRoleName string // 申请人角色名(冗余)
+	ToRoleID     uint64 // 接收人角色ID
+	Status       int32  // 0=待处理 1=已同意 2=已拒绝
+}
+
+// FindFriendRequest 查询好友申请
+type FindFriendRequest struct {
+	FindBase
+
+	FromRoleID *uint64
+	ToRoleID   *uint64
+	Status     *int32
+}
+
+// UpdateFriendRequest 更新好友申请
+type UpdateFriendRequest struct {
+	ID        uint64
+	UpdatedAt *int64
+	RowStatus *RowStatus
+
+	Status *int32
+}
+
 // Mail 邮件
 type Mail struct {
 	BaseModel
