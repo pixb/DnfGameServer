@@ -80,7 +80,7 @@ func TestMailClaimTestSuite(t *testing.T) {
 func (s *MailClaimTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积
-	if err := clearRolesForOpenids("ml_claim_01", "ml_claim_02", "ml_claim_03", "ml_claim_04", "ml_claim_05", "ml_claim_06"); err != nil {
+	if err := clearRolesForOpenids("ml_claim_01", "ml_claim_02", "ml_claim_03", "ml_claim_04", "ml_claim_05", "ml_claim_06", "ml_claim_07", "ml_claim_08"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -215,6 +215,46 @@ func (s *MailClaimTestSuite) TestClaimExpiredMail() {
 	s.Equal(0, bagItemCount(roleID, 2001))
 	s.Equal(int64(0), getGold(roleID))
 	s.False(mailClaimed(mailID))
+}
+
+// TestClaimInvalidBindType 附件绑定类型非法(0/1/2 之外)整封拒绝:
+// 报错、附件不入包、邮件未被标记领取(校验先于标记, 避免数据丢失)
+func (s *MailClaimTestSuite) TestClaimInvalidBindType() {
+	roleID := s.loginAndSelect("ml_claim_07", 7)
+	// 多物品附件: 一件合法(2002 bind1) + 一件非法(2001 bind9)
+	mailID := insertMail(roleID, `[{"item_id":2002,"count":1,"bind_type":1},{"item_id":2001,"count":1,"bind_type":9}]`, 0)
+	s.Require().NotZero(mailID)
+
+	resp, err := s.Client.Post(fmt.Sprintf("/api/v1/mail/claim?mail_id=%d", mailID), map[string]interface{}{})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(1), errVal)
+	}
+	if msg, ok := resp["message"].(string); ok {
+		s.Contains(msg, "绑定")
+	}
+	// 整封拒绝: 合法附件也不入包, 邮件未被标记领取(可重试修复后领取)
+	s.Equal(0, bagItemCount(roleID, 2002))
+	s.Equal(0, bagItemCount(roleID, 2001))
+	s.False(mailClaimed(mailID))
+}
+
+// TestClaimBindType2 拾取绑定(2)附件正常领取
+func (s *MailClaimTestSuite) TestClaimBindType2() {
+	roleID := s.loginAndSelect("ml_claim_08", 8)
+	mailID := insertMail(roleID, `{"item_id":2001,"count":1,"bind_type":2}`, 0)
+	s.Require().NotZero(mailID)
+
+	resp, err := s.Client.Post(fmt.Sprintf("/api/v1/mail/claim?mail_id=%d", mailID), map[string]interface{}{})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	s.Equal(1, bagItemCount(roleID, 2001))
+	s.Equal(2, bagItemBindType(roleID, 2001))
+	s.True(mailClaimed(mailID))
 }
 
 // TestMailCleanup 清理接口: 只删过期邮件(expire_at>0 且已到期), 未来/永不过期保留

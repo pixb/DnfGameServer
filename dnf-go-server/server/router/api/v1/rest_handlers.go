@@ -360,25 +360,18 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "邮件已过期"})
 	}
 
-	isClaimed := true
-	if err := s.Store.UpdateMail(c.Request().Context(), &store.UpdateMail{
-		ID:        mail.ID,
-		IsClaimed: &isClaimed,
-	}); err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
-	}
-
 	// 附件领取: 物品入背包 / 金币入角色货币(ReceiverID 为角色ID)
 	// 2026-09-06 第十四轮: 支持多物品附件(JSON 数组 [{"item_id":x,"count":y,"bind_type":z}]),
 	// 兼容旧单对象格式({"item_id":x,"count":y}); bind_type 透传入背包(0=无绑定/1=装备绑定/2=拾取绑定)
-	var grantedItems []map[string]interface{}
+	// 2026-09-06 第二十轮: 先解析校验附件(含 bind_type 合法域 0/1/2)再标记领取,
+	// 避免校验失败时邮件已标记但附件未发放的数据丢失; 非法绑定类型整封拒绝。
+	type mailAttachment struct {
+		ItemID   int32 `json:"item_id"`
+		Count    int32 `json:"count"`
+		BindType int32 `json:"bind_type"`
+	}
+	var atts []mailAttachment
 	if mail.Attachments != "" && mail.Attachments != "{}" && mail.Attachments != "[]" {
-		type mailAttachment struct {
-			ItemID   int32 `json:"item_id"`
-			Count    int32 `json:"count"`
-			BindType int32 `json:"bind_type"`
-		}
-		var atts []mailAttachment
 		if err := json.Unmarshal([]byte(mail.Attachments), &atts); err != nil {
 			// 兼容旧格式: 单对象 {"item_id":x,"count":y}
 			var single mailAttachment
@@ -391,26 +384,44 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 			if att.ItemID <= 0 || att.Count <= 0 {
 				continue
 			}
-			grid, err := s.nextBagGrid(c.Request().Context(), mail.ReceiverID)
-			if err != nil {
-				return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+			if att.BindType < 0 || att.BindType > 2 {
+				return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "附件绑定类型非法"})
 			}
-			if _, err := s.Store.CreateBagItem(c.Request().Context(), &store.BagItem{
-				RoleID:    mail.ReceiverID,
-				ItemID:    att.ItemID,
-				GridIndex: grid,
-				Count:     att.Count,
-				BindType:  att.BindType,
-			}); err != nil {
-				return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
-			}
-			grantedItems = append(grantedItems, map[string]interface{}{
-				"itemId":   att.ItemID,
-				"count":    att.Count,
-				"grid":     grid,
-				"bindType": att.BindType,
-			})
 		}
+	}
+
+	isClaimed := true
+	if err := s.Store.UpdateMail(c.Request().Context(), &store.UpdateMail{
+		ID:        mail.ID,
+		IsClaimed: &isClaimed,
+	}); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
+	var grantedItems []map[string]interface{}
+	for _, att := range atts {
+		if att.ItemID <= 0 || att.Count <= 0 {
+			continue
+		}
+		grid, err := s.nextBagGrid(c.Request().Context(), mail.ReceiverID)
+		if err != nil {
+			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+		}
+		if _, err := s.Store.CreateBagItem(c.Request().Context(), &store.BagItem{
+			RoleID:    mail.ReceiverID,
+			ItemID:    att.ItemID,
+			GridIndex: grid,
+			Count:     att.Count,
+			BindType:  att.BindType,
+		}); err != nil {
+			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+		}
+		grantedItems = append(grantedItems, map[string]interface{}{
+			"itemId":   att.ItemID,
+			"count":    att.Count,
+			"grid":     grid,
+			"bindType": att.BindType,
+		})
 	}
 
 	grantedGold := int64(0)
