@@ -2313,6 +2313,12 @@ func (s *APIV1Service) handleCreateCharacter(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 2, "message": "Character name is required"})
 	}
 
+	// 2026-09-06 第二十五轮: 角色名全局唯一(handler 层查重软约束, 同名任何角色存在即拒绝;
+	// DB 无名字唯一约束, 历史重名数据不受影响, 仅阻止新重名产生)
+	if existing, _ := s.Store.GetRoleByName(c.Request().Context(), name); existing != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "角色名已存在"})
+	}
+
 	// 生成角色槽位ID
 	roleID := int32(1)
 	// 检查当前账号的角色数量，为新角色分配槽位

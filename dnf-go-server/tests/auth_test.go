@@ -91,7 +91,8 @@ func (s *AuthTestSuite) TestCreateCharacter() {
 	s.NotNil(createResp)
 	if createResp != nil {
 		errVal := createResp["error"]
-		s.True(errVal == nil || errVal == float64(0) || errVal == float64(3),
+		// 2026-09-06 第二十五轮: 角色名全局查重后, 同名(历史残留 Hero 名)返回 error 1, 幂等容忍
+		s.True(errVal == nil || errVal == float64(0) || errVal == float64(3) || errVal == float64(1),
 			fmt.Sprintf("Expected success or name exists, got error: %v", errVal))
 	}
 }

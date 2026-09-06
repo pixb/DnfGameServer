@@ -199,7 +199,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_comb_batch", "mk_comb_batch2", "mk_comb_bind_01", "mk_comb_bind_02", "mk_disj_06", "mk_disj_07"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_batch_a", "mk_batch_b", "mk_bind_a", "mk_bind_b", "mk_disj_06", "mk_disj_07"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -840,7 +840,7 @@ func (s *MakeTestSuite) TestCardComposeNotEnoughCards() {
 // TestItemCombineBatchPerRoll 批量合成逐次掷点(配方1005: 50%成功1001x1/失败保底2013000000x1):
 // count=5 时逐次判定——响应 items 逐条列出, 成功次数与记录/背包一一对应
 func (s *MakeTestSuite) TestItemCombineBatchPerRoll() {
-	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_comb_batch", 22)
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_batch_a", 22)
 	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2001: 5}))
 
 	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
@@ -894,7 +894,7 @@ func (s *MakeTestSuite) TestItemCombineBatchPerRoll() {
 
 // TestItemCombineBatchCap 批量上限: count 超过 99 截断为 99, 材料按 99 份扣减
 func (s *MakeTestSuite) TestItemCombineBatchCap() {
-	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_comb_batch2", 23)
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_batch_b", 23)
 	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2001: 200}))
 
 	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
@@ -924,7 +924,7 @@ func (s *MakeTestSuite) TestItemCombineBatchCap() {
 // TestItemCombineBindInherit 产物绑定继承材料最大值(recipe 1001: 2001x1+2002x1 -> 1001x1):
 // 材料 2001 bind1 + 2002 bind0 -> 产物 1001 bind1; 响应 bindType 同步返回
 func (s *MakeTestSuite) TestItemCombineBindInherit() {
-	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_comb_bind_01", 24)
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_bind_a", 24)
 	s.Require().NoError(seedBagItemsWithBinds(roleID,
 		map[int32]int32{2001: 1, 2002: 1},
 		map[int32]int32{2001: 1}))
@@ -961,7 +961,7 @@ func (s *MakeTestSuite) TestItemCombineBindInherit() {
 // TestItemCombineBindInheritHighest 拾取绑定(2)材料优先级最高(recipe 1002: 2001x3+2002x3 -> 1002x1, 500金):
 // 材料 2001 bind2 + 2002 bind1 -> 产物 1002 bind2
 func (s *MakeTestSuite) TestItemCombineBindInheritHighest() {
-	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_comb_bind_02", 25)
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_bind_b", 25)
 	s.Require().NoError(setGold(roleID, 1000))
 	s.Require().NoError(seedBagItemsWithBinds(roleID,
 		map[int32]int32{2001: 3, 2002: 3},

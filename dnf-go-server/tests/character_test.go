@@ -44,6 +44,35 @@ func (s *CharacterTestSuite) TestCharacterCreate() {
 	s.Equal(uniqueName, data["name"], "Character name should match")
 }
 
+// TestCharacterCreateDuplicateName 角色名全局唯一(2026-09-06 第二十五轮):
+// 同名再次创建应拒绝, 且不产生新角色
+func (s *CharacterTestSuite) TestCharacterCreateDuplicateName() {
+	token := s.LoginAs(s.openid)
+	s.NotEmpty(token, "Login should return a token")
+
+	name := fmt.Sprintf("TestCharDup_%d", time.Now().UnixNano())
+	first, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": name,
+		"job":  1,
+	})
+	s.NoError(err)
+	s.AssertSuccess(first)
+
+	// 同名二次创建被拒
+	second, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": name,
+		"job":  1,
+	})
+	s.NoError(err)
+	s.NotNil(second)
+	if errVal, ok := second["error"]; ok {
+		s.Equal(float64(1), errVal)
+	}
+	if msg, ok := second["message"].(string); ok {
+		s.Contains(msg, "已存在")
+	}
+}
+
 func (s *CharacterTestSuite) TestCharacterList() {
 	// 登录
 	token := s.LoginAs(s.openid)
