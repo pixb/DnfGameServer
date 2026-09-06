@@ -119,6 +119,28 @@ func (s *APIV1Service) handleGameCharacterInfo(c echo.Context) error {
 		})
 	}
 
+	// 2026-09-07 第四十七轮: 战斗属性接 role_attributes 真实映射
+	battle := map[string]interface{}{}
+	if attrs, err := s.Store.GetRoleAttributes(c.Request().Context(), role.ID); err == nil && attrs != nil {
+		battle = map[string]interface{}{
+			"str":       attrs.Strength,
+			"dex":       attrs.Intelligence,
+			"vit":       attrs.Vitality,
+			"spr":       attrs.Spirit,
+			"hp":        attrs.HP,
+			"maxHp":     attrs.MaxHP,
+			"mp":        attrs.MP,
+			"maxMp":     attrs.MaxMP,
+			"atk":       attrs.PhysicalAttack,
+			"def":       attrs.PhysicalDefense,
+			"magicAtk":  attrs.MagicAttack,
+			"magicDef":  attrs.MagicDefense,
+			"moveSpeed": attrs.MoveSpeed,
+			"atkSpeed":  attrs.AttackSpeed,
+			"castSpeed": attrs.CastSpeed,
+		}
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error": 0,
 		"character": map[string]interface{}{
@@ -132,6 +154,7 @@ func (s *APIV1Service) handleGameCharacterInfo(c echo.Context) error {
 			"channel":    role.Channel,
 			"sp":         role.SP,
 			"skills":     skills,
+			"battle":     battle,
 		},
 	})
 }

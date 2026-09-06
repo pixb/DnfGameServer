@@ -448,5 +448,25 @@ func (s *RankTCPTestSuite) TestRoleInfoSkills() {
 		}
 	}
 	s.True(found, "skill 1001 should be in HTTP response")
+	// 2026-09-07 第四十七轮: battle_info 接 role_attributes 真实映射(建角默认属性)
+	s.NotNil(info.BattleInfo, "battle info should be present")
+	s.Equal(int32(10), info.BattleInfo.Str, "str from role_attributes")
+	s.Equal(int32(10), info.BattleInfo.Dex, "dex maps intelligence")
+	s.Equal(int32(10), info.BattleInfo.Vit, "vit from role_attributes")
+	s.Equal(int32(10), info.BattleInfo.Spr, "spr from role_attributes")
+	s.Equal(int32(100), info.BattleInfo.Hp, "hp from role_attributes")
+	s.Equal(int32(100), info.BattleInfo.MaxHp, "max_hp from role_attributes")
+	s.Equal(int32(100), info.BattleInfo.Mp, "mp from role_attributes")
+	s.Equal(int32(100), info.BattleInfo.MaxMp, "max_mp from role_attributes")
+	s.Equal(int32(10), info.BattleInfo.Atk, "atk from role_attributes")
+	s.Equal(int32(10), info.BattleInfo.Def, "def from role_attributes")
+	s.Equal(int32(100), info.BattleInfo.MoveSpeed, "move_speed from role_attributes")
+
+	// HTTP: battle map 同样来自 role_attributes
+	battle, ok := char["battle"].(map[string]interface{})
+	s.True(ok, "battle should be a map")
+	s.Equal(float64(10), battle["str"], "http battle str")
+	s.Equal(float64(100), battle["hp"], "http battle hp")
+	s.Equal(float64(100), battle["moveSpeed"], "http battle moveSpeed")
 	fmt.Printf("role info skills verified (tcp=%d, http=%d)\n", len(info.Skills), len(skillsArr))
 }

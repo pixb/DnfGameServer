@@ -40,7 +40,7 @@ func (d *DB) CreateRole(ctx context.Context, create *store.Role) (*store.Role, e
 	create.RowStatus = store.RowStatusNormal
 	create.SP = store.InitialSkillPoints
 
-	// 创建默认属性
+	// 创建默认属性(2026-09-07 第四十七轮: 补全攻击/速度字段, 防零值入库)
 	d.CreateRoleAttributes(ctx, &store.RoleAttributes{
 		RoleID:       create.ID,
 		HP:           100,
@@ -51,6 +51,14 @@ func (d *DB) CreateRole(ctx context.Context, create *store.Role) (*store.Role, e
 		Intelligence: 10,
 		Vitality:     10,
 		Spirit:       10,
+		// 攻击/防御/速度默认(此前零值入库导致 battle_info 全 0)
+		PhysicalAttack:  10,
+		PhysicalDefense: 10,
+		MagicAttack:     10,
+		MagicDefense:    10,
+		MoveSpeed:       100,
+		AttackSpeed:     100,
+		CastSpeed:       100,
 	})
 
 	// 创建默认货币

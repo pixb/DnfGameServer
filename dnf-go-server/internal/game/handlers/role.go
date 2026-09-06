@@ -170,6 +170,29 @@ func GetRoleInfoHandler(session *network.Session, msg proto.Message) {
 		}
 	}
 
+	// 战斗属性: role_attributes 真实映射(2026-09-07 第四十七轮实化)
+	// dex 无独立列, 以 intelligence 折中(表结构仅 strength/intelligence/vitality/spirit 四主属)
+	var battle *dnfv1.RoleBattleInfo
+	if attrs, err := skillStore.GetRoleAttributes(ctx, role.ID); err == nil && attrs != nil {
+		battle = &dnfv1.RoleBattleInfo{
+			Str:       attrs.Strength,
+			Dex:       attrs.Intelligence,
+			Vit:       attrs.Vitality,
+			Spr:       attrs.Spirit,
+			Hp:        attrs.HP,
+			MaxHp:     attrs.MaxHP,
+			Mp:        attrs.MP,
+			MaxMp:     attrs.MaxMP,
+			Atk:       attrs.PhysicalAttack,
+			Def:       attrs.PhysicalDefense,
+			MagicAtk:  attrs.MagicAttack,
+			MagicDef:  attrs.MagicDefense,
+			MoveSpeed: attrs.MoveSpeed,
+			AtkSpeed:  attrs.AttackSpeed,
+			CastSpeed: attrs.CastSpeed,
+		}
+	}
+
 	resp := &dnfv1.GetRoleInfoResponse{
 		Error: 0,
 		BaseInfo: &dnfv1.RoleBaseInfo{
@@ -182,24 +205,8 @@ func GetRoleInfoHandler(session *network.Session, msg proto.Message) {
 			Fatigue:    role.Fatigue,
 			MaxFatigue: role.MaxFatigue,
 		},
-		// 战斗属性/位置暂以模拟值填充(2026-09-07 第四十六轮: 待接 role_attributes 真实映射)
-		BattleInfo: &dnfv1.RoleBattleInfo{
-			Str:       100,
-			Dex:       100,
-			Vit:       100,
-			Spr:       100,
-			Hp:        10000,
-			MaxHp:     10000,
-			Mp:        5000,
-			MaxMp:     5000,
-			Atk:       500,
-			Def:       300,
-			MagicAtk:  400,
-			MagicDef:  250,
-			MoveSpeed: 100,
-			AtkSpeed:  100,
-			CastSpeed: 100,
-		},
+		// 位置暂以模拟值填充(无移动/地图状态存储)
+		BattleInfo: battle,
 		Position: &dnfv1.RolePosition{
 			MapId:     1,
 			DungeonId: 0,
