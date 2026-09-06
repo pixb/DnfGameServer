@@ -65,6 +65,7 @@ var textCommandMeta = map[string]MessageMeta{
 	"CANCEL_SHOP_ORDER":     {Module: 10005, Cmd: 110},
 	"AUCTION_END":           {Module: 10005, Cmd: 112},
 	"AUCTION_FEE":           {Module: 10005, Cmd: 114},
+	"AUCTION_HISTORY":       {Module: 10005, Cmd: 116}, // 2026-09-07 第六十轮: 拍卖历史查询
 
 	// ==================== 任务模块 (10006) ====================
 	"GET_QUEST_LIST":   {Module: 10006, Cmd: 0},

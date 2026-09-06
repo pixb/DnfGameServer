@@ -208,6 +208,10 @@ func (c *ProtoCodec) RegisterAllMessages() {
 	c.RegisterMessage(10005, 110, func() proto.Message { return &dnfv1.Empty{} })
 	c.RegisterMessage(10005, 111, func() proto.Message { return &dnfv1.BuyItemResponse{} })
 
+	// 拍卖历史查询 (cmd=116, 2026-09-07 第六十轮)
+	c.RegisterMessage(10005, 116, func() proto.Message { return &dnfv1.GetAuctionHistoryRequest{} })
+	c.RegisterMessage(10005, 117, func() proto.Message { return &dnfv1.GetAuctionHistoryResponse{} })
+
 	// 拍卖结算 (cmd=56)
 	c.RegisterMessage(10005, 112, func() proto.Message { return &dnfv1.Empty{} })
 	c.RegisterMessage(10005, 113, func() proto.Message { return &dnfv1.RegisterAuctionResponse{} })

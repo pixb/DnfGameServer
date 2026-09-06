@@ -1065,5 +1065,36 @@ func (s *RankTCPTestSuite) TestTCPAuctionFlow() {
 	s.NoError(db.QueryRow("SELECT COUNT(*) FROM bag_item WHERE role_id = ? AND item_id = 10005 AND count = 1", uint64(guidB)).Scan(&bagB5))
 	s.Equal(1, bagB5, "B bag should have item 10005")
 
-	fmt.Printf("auction TCP flow verified (register/bag-deduct/search/bid/low-bid-fail/buyout/history/duplicate-fail/settle-expired-refund-return/buyout-price)\n")
+	// ==================== 2026-09-07 第六十轮: 拍卖历史查询 ====================
+	// B 视角(买家): total=2(#1 500 + #5 800), 最新为 #5 final_price=800
+	s.bindRole(guidB)
+	msgH, _ := json.Marshal(map[string]interface{}{"page": 1, "page_size": 20})
+	s.NoError(s.sendTCP(append([]byte("AUCTION_HISTORY:"), msgH...)), "send AUCTION_HISTORY as B")
+	bodyH, _ := s.recvTCP()
+	modH, cmdH, pbH := parseTCPResponse(bodyH)
+	s.Equal(uint16(10005), modH, "auction history module")
+	s.Equal(uint16(117), cmdH, "auction history response cmd")
+	histR := &dnfv1.GetAuctionHistoryResponse{}
+	s.NoError(proto.Unmarshal(pbH, histR))
+	s.Equal(int32(0), histR.Error, "history should succeed")
+	s.Equal(int32(2), histR.Total, "B should have 2 history records")
+	s.Greater(len(histR.Items), 0, "B history items non-empty")
+	s.Equal(regR5.AuctionId, histR.Items[0].AuctionId, "B latest history should be #5")
+	s.Equal(int32(800), histR.Items[0].FinalPrice, "B #5 final price 800")
+	s.Equal(false, histR.Items[0].IsSeller, "B should be buyer view")
+
+	// A 视角(卖家): total=2(#1 + #5), is_seller=true, 最新 #5 seller_income=760
+	s.bindRole(guidA)
+	s.NoError(s.sendTCP(append([]byte("AUCTION_HISTORY:"), msgH...)), "send AUCTION_HISTORY as A")
+	bodyH2, _ := s.recvTCP()
+	_, _, pbH2 := parseTCPResponse(bodyH2)
+	histR2 := &dnfv1.GetAuctionHistoryResponse{}
+	s.NoError(proto.Unmarshal(pbH2, histR2))
+	s.Equal(int32(0), histR2.Error, "history should succeed")
+	s.Equal(int32(2), histR2.Total, "A should have 2 history records")
+	s.Equal(regR5.AuctionId, histR2.Items[0].AuctionId, "A latest history should be #5")
+	s.Equal(int32(760), histR2.Items[0].SellerIncome, "A #5 seller income 760")
+	s.Equal(true, histR2.Items[0].IsSeller, "A should be seller view")
+
+	fmt.Printf("auction TCP flow verified (register/bag-deduct/search/bid/low-bid-fail/buyout/history/duplicate-fail/settle-expired-refund-return/buyout-price/auction-history)\n")
 }

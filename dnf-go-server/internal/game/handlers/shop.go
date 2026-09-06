@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"sort"
 	"time"
 
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
@@ -573,6 +574,111 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 
 	if err := session.WriteResponse(10005, 107, resp); err != nil {
 		logger.Error("failed to send buyout auction response",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+	}
+}
+
+// GetAuctionHistoryHandler 查询拍卖历史(2026-09-07 第六十轮): 本人卖家视角 + 买家视角合并, 按成交时间倒序分页
+func GetAuctionHistoryHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.GetAuctionHistoryRequest)
+	if !ok {
+		logger.Error("invalid message type for auction history")
+		return
+	}
+
+	roleID := session.RoleID()
+	ctx := context.Background()
+
+	page := int(req.Page)
+	if page <= 0 {
+		page = 1
+	}
+	pageSize := int(req.PageSize)
+	if pageSize <= 0 {
+		pageSize = 20
+	}
+	if pageSize > 100 {
+		pageSize = 100
+	}
+
+	sellerHist, err := shopStore.ListAuctionHistory(ctx, &store.FindAuctionHistory{
+		SellerID: &roleID,
+	})
+	if err != nil {
+		logger.Error("failed to list seller auction history",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+		resp := &dnfv1.GetAuctionHistoryResponse{Error: 1}
+		_ = session.WriteResponse(10005, 117, resp)
+		return
+	}
+	buyerHist, err := shopStore.ListAuctionHistory(ctx, &store.FindAuctionHistory{
+		BuyerID: &roleID,
+	})
+	if err != nil {
+		logger.Error("failed to list buyer auction history",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+		resp := &dnfv1.GetAuctionHistoryResponse{Error: 1}
+		_ = session.WriteResponse(10005, 117, resp)
+		return
+	}
+
+	type entry struct {
+		at   int64
+		item *dnfv1.AuctionHistoryItem
+	}
+	merged := make([]entry, 0, len(sellerHist)+len(buyerHist))
+	for _, h := range sellerHist {
+		merged = append(merged, entry{at: h.CreatedAt, item: &dnfv1.AuctionHistoryItem{
+			AuctionId:    int64(h.AuctionID),
+			ItemId:       uint32(h.ItemID),
+			Count:        h.Count,
+			FinalPrice:   int32(h.FinalPrice),
+			SellerIncome: int32(h.SellerIncome),
+			CreatedAt:    h.CreatedAt,
+			IsSeller:     true,
+		}})
+	}
+	for _, h := range buyerHist {
+		merged = append(merged, entry{at: h.CreatedAt, item: &dnfv1.AuctionHistoryItem{
+			AuctionId:    int64(h.AuctionID),
+			ItemId:       uint32(h.ItemID),
+			Count:        h.Count,
+			FinalPrice:   int32(h.FinalPrice),
+			SellerIncome: int32(h.SellerIncome),
+			CreatedAt:    h.CreatedAt,
+			IsSeller:     false,
+		}})
+	}
+	sort.SliceStable(merged, func(i, j int) bool { return merged[i].at > merged[j].at })
+
+	total := len(merged)
+	start := (page - 1) * pageSize
+	if start > total {
+		start = total
+	}
+	end := start + pageSize
+	if end > total {
+		end = total
+	}
+
+	items := make([]*dnfv1.AuctionHistoryItem, 0, end-start)
+	for _, e := range merged[start:end] {
+		items = append(items, e.item)
+	}
+
+	resp := &dnfv1.GetAuctionHistoryResponse{
+		Error: 0,
+		Items: items,
+		Total: int32(total),
+	}
+	if err := session.WriteResponse(10005, 117, resp); err != nil {
+		logger.Error("failed to send auction history response",
 			logger.ErrorField(err),
 			logger.Int64("session_id", session.ID()),
 		)
