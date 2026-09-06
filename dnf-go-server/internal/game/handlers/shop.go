@@ -1,9 +1,13 @@
 package handlers
 
 import (
+	"context"
+	"time"
+
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
+	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -126,7 +130,7 @@ func SellToShopHandler(session *network.Session, msg proto.Message) {
 	}
 }
 
-// SearchAuctionHandler 处理搜索拍卖行请求
+// SearchAuctionHandler 处理搜索拍卖行请求(2026-09-07 第五十四轮实化: 接 store 真实查询)
 func SearchAuctionHandler(session *network.Session, msg proto.Message) {
 	req, ok := msg.(*dnfv1.SearchAuctionRequest)
 	if !ok {
@@ -134,38 +138,53 @@ func SearchAuctionHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
-	logger.Info("search auction request received",
-		logger.Uint32("item_id", req.ItemId),
-		logger.String("keyword", req.Keyword),
-		logger.String("min_quality", req.MinQuality.String()),
-		logger.Int32("max_price", req.MaxPrice),
-		logger.Int64("session_id", session.ID()),
-	)
+	selling := store.AuctionStatusSelling
+	find := &store.FindAuctionItem{
+		Status: &selling,
+	}
+	if req.ItemId != 0 {
+		itemID := int32(req.ItemId)
+		find.ItemID = &itemID
+	}
+	if req.MaxPrice != 0 {
+		maxPrice := int64(req.MaxPrice)
+		find.MaxPrice = &maxPrice
+	}
 
-	// TODO: 查询拍卖行数据库
+	ctx := context.Background()
+	items, err := shopStore.ListAuctionItems(ctx, find)
+	if err != nil {
+		logger.Error("failed to list auction items",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+		resp := &dnfv1.SearchAuctionResponse{Error: 1}
+		_ = session.WriteResponse(10005, 101, resp)
+		return
+	}
+
+	now := time.Now().Unix()
+	itemList := make([]*dnfv1.AuctionItem, 0, len(items))
+	for _, item := range items {
+		timeLeft := item.EndTime - now
+		if timeLeft < 0 {
+			timeLeft = 0
+		}
+		itemList = append(itemList, &dnfv1.AuctionItem{
+			AuctionId:  int64(item.ID),
+			ItemId:     uint32(item.ItemID),
+			SellerName: item.SellerName,
+			Price:      int32(item.Price),
+			BidPrice:   int32(item.BidPrice),
+			TimeLeft:   int32(timeLeft),
+			Quality:    dnfv1.ItemQuality_COMMON,
+		})
+	}
+
 	resp := &dnfv1.SearchAuctionResponse{
 		Error: 0,
-		Total: 2,
-		Items: []*dnfv1.AuctionItem{
-			{
-				AuctionId:  1001,
-				ItemId:     10001,
-				SellerName: "卖家1",
-				Price:      5000,
-				BidPrice:   0,
-				TimeLeft:   3600,
-				Quality:    dnfv1.ItemQuality_RARE,
-			},
-			{
-				AuctionId:  1002,
-				ItemId:     10002,
-				SellerName: "卖家2",
-				Price:      10000,
-				BidPrice:   8000,
-				TimeLeft:   7200,
-				Quality:    dnfv1.ItemQuality_EPIC,
-			},
-		},
+		Total: int32(len(itemList)),
+		Items: itemList,
 	}
 
 	if err := session.WriteResponse(10005, 101, resp); err != nil {
@@ -176,7 +195,7 @@ func SearchAuctionHandler(session *network.Session, msg proto.Message) {
 	}
 }
 
-// RegisterAuctionHandler 处理上架拍卖请求
+// RegisterAuctionHandler 处理上架拍卖请求(2026-09-07 第五十四轮实化: 背包校验+上架+扣物品)
 func RegisterAuctionHandler(session *network.Session, msg proto.Message) {
 	req, ok := msg.(*dnfv1.RegisterAuctionRequest)
 	if !ok {
@@ -184,17 +203,70 @@ func RegisterAuctionHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
-	logger.Info("register auction request received",
-		logger.Uint64("guid", req.Guid),
-		logger.Int32("start_price", req.StartPrice),
-		logger.Int32("buyout_price", req.BuyoutPrice),
-		logger.Int64("session_id", session.ID()),
-	)
+	roleID := session.RoleID()
+	ctx := context.Background()
 
-	// TODO: 验证物品，上架到拍卖行
+	// 校验背包物品
+	item, err := shopStore.GetBagItem(ctx, &store.FindBagItem{
+		FindBase: store.FindBase{ID: &req.Guid},
+		RoleID:   &roleID,
+	})
+	if err != nil || item == nil {
+		resp := &dnfv1.RegisterAuctionResponse{Error: 6}
+		_ = session.WriteResponse(10005, 103, resp)
+		return
+	}
+
+	role, _ := shopStore.GetRole(ctx, &store.FindRole{
+		FindBase: store.FindBase{ID: &roleID},
+	})
+	sellerName := ""
+	if role != nil {
+		sellerName = role.Name
+	}
+
+	startPrice := int64(req.StartPrice)
+	duration := int32(req.Duration)
+	if duration <= 0 {
+		duration = 24
+	}
+	if startPrice <= 0 {
+		startPrice = 1
+	}
+
+	auction, err := shopStore.CreateAuctionItem(ctx, &store.AuctionItem{
+		SellerID:   roleID,
+		SellerName: sellerName,
+		ItemID:     item.ItemID,
+		Count:      item.Count,
+		Price:      startPrice,
+		TotalPrice: startPrice,
+		Duration:   duration,
+		Status:     store.AuctionStatusSelling,
+		BidPrice:   startPrice,
+		BidCount:   0,
+	})
+	if err != nil {
+		logger.Error("failed to create auction item",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+		resp := &dnfv1.RegisterAuctionResponse{Error: 1}
+		_ = session.WriteResponse(10005, 103, resp)
+		return
+	}
+
+	// 扣减背包物品
+	if err := shopStore.DeleteBagItem(ctx, &store.DeleteBagItem{ID: item.ID}); err != nil {
+		logger.Error("failed to delete bag item after register",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+	}
+
 	resp := &dnfv1.RegisterAuctionResponse{
 		Error:     0,
-		AuctionId: 1003,
+		AuctionId: int64(auction.ID),
 	}
 
 	if err := session.WriteResponse(10005, 103, resp); err != nil {
@@ -205,7 +277,7 @@ func RegisterAuctionHandler(session *network.Session, msg proto.Message) {
 	}
 }
 
-// BidAuctionHandler 处理竞拍请求
+// BidAuctionHandler 处理竞拍请求(2026-09-07 第五十四轮实化: 校验状态/价格, 记录出价)
 func BidAuctionHandler(session *network.Session, msg proto.Message) {
 	req, ok := msg.(*dnfv1.BidAuctionRequest)
 	if !ok {
@@ -213,17 +285,47 @@ func BidAuctionHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
-	logger.Info("bid auction request received",
-		logger.Int64("auction_id", req.AuctionId),
-		logger.Int32("bid_price", req.BidPrice),
-		logger.Int64("session_id", session.ID()),
-	)
+	roleID := session.RoleID()
+	ctx := context.Background()
+	auctionID := uint64(req.AuctionId)
 
-	// TODO: 验证竞拍，扣除金币，更新竞拍记录
-	resp := &dnfv1.BidAuctionResponse{
-		Error: 0,
+	auc, err := shopStore.GetAuctionItem(ctx, &store.FindAuctionItem{
+		FindBase: store.FindBase{ID: &auctionID},
+	})
+	if err != nil || auc == nil {
+		resp := &dnfv1.BidAuctionResponse{Error: 2}
+		_ = session.WriteResponse(10005, 105, resp)
+		return
+	}
+	if auc.Status != store.AuctionStatusSelling {
+		resp := &dnfv1.BidAuctionResponse{Error: 3}
+		_ = session.WriteResponse(10005, 105, resp)
+		return
+	}
+	if req.BidPrice <= int32(auc.BidPrice) {
+		resp := &dnfv1.BidAuctionResponse{Error: 4}
+		_ = session.WriteResponse(10005, 105, resp)
+		return
 	}
 
+	bidPrice := int64(req.BidPrice)
+	bidCount := auc.BidCount + 1
+	if err := shopStore.UpdateAuctionItem(ctx, &store.UpdateAuctionItem{
+		ID:       auc.ID,
+		BidderID: &roleID,
+		BidPrice: &bidPrice,
+		BidCount: &bidCount,
+	}); err != nil {
+		logger.Error("failed to update auction bid",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+		resp := &dnfv1.BidAuctionResponse{Error: 1}
+		_ = session.WriteResponse(10005, 105, resp)
+		return
+	}
+
+	resp := &dnfv1.BidAuctionResponse{Error: 0}
 	if err := session.WriteResponse(10005, 105, resp); err != nil {
 		logger.Error("failed to send bid auction response",
 			logger.ErrorField(err),
@@ -232,7 +334,7 @@ func BidAuctionHandler(session *network.Session, msg proto.Message) {
 	}
 }
 
-// BuyoutAuctionHandler 处理一口价购买请求
+// BuyoutAuctionHandler 处理一口价购买请求(2026-09-07 第五十四轮实化: 状态流转+拍卖历史)
 func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 	req, ok := msg.(*dnfv1.BuyoutAuctionRequest)
 	if !ok {
@@ -240,19 +342,70 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
-	logger.Info("buyout auction request received",
-		logger.Int64("auction_id", req.AuctionId),
-		logger.Int64("session_id", session.ID()),
-	)
+	roleID := session.RoleID()
+	ctx := context.Background()
+	auctionID := uint64(req.AuctionId)
 
-	// TODO: 验证一口价，扣除金币，转移物品
+	auc, err := shopStore.GetAuctionItem(ctx, &store.FindAuctionItem{
+		FindBase: store.FindBase{ID: &auctionID},
+	})
+	if err != nil || auc == nil {
+		resp := &dnfv1.BuyoutAuctionResponse{Error: 2}
+		_ = session.WriteResponse(10005, 107, resp)
+		return
+	}
+	if auc.Status != store.AuctionStatusSelling {
+		resp := &dnfv1.BuyoutAuctionResponse{Error: 3}
+		_ = session.WriteResponse(10005, 107, resp)
+		return
+	}
+	if auc.SellerID == roleID {
+		resp := &dnfv1.BuyoutAuctionResponse{Error: 5}
+		_ = session.WriteResponse(10005, 107, resp)
+		return
+	}
+
+	sold := store.AuctionStatusSold
+	bidPrice := auc.Price
+	bidCount := auc.BidCount + 1
+	if err := shopStore.UpdateAuctionItem(ctx, &store.UpdateAuctionItem{
+		ID:       auc.ID,
+		Status:   &sold,
+		BuyerID:  &roleID,
+		BidPrice: &bidPrice,
+		BidCount: &bidCount,
+	}); err != nil {
+		logger.Error("failed to update auction buyout",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+		resp := &dnfv1.BuyoutAuctionResponse{Error: 1}
+		_ = session.WriteResponse(10005, 107, resp)
+		return
+	}
+
+	// 拍卖历史(5% 手续费)
+	sellerIncome := auc.Price * 95 / 100
+	if _, err := shopStore.CreateAuctionHistory(ctx, &store.CreateAuctionHistory{
+		AuctionID:    auc.ID,
+		SellerID:     auc.SellerID,
+		BuyerID:      roleID,
+		ItemID:       auc.ItemID,
+		Count:        auc.Count,
+		FinalPrice:   auc.Price,
+		SellerIncome: sellerIncome,
+	}); err != nil {
+		logger.Error("failed to create auction history",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+	}
+
 	resp := &dnfv1.BuyoutAuctionResponse{
 		Error: 0,
 		Item: &dnfv1.BagItem{
-			Guid:   6001,
-			ItemId: 10001,
-			Count:  1,
-			Slot:   20,
+			ItemId: uint32(auc.ItemID),
+			Count:  int32(auc.Count),
 		},
 	}
 

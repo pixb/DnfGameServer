@@ -710,3 +710,145 @@ func (s *RankTCPTestSuite) bindRole(charGuid float64) {
 	s.Equal(uint16(10000), selModule, "select response module")
 	s.Equal(uint16(7), selCmd, "select response cmd")
 }
+
+// TestTCPAuctionFlow 拍卖行 TCP 全链路(2026-09-07 第五十四轮):
+// 上架(背包校验+扣物品) → 搜索(真实查询) → 竞拍(状态/价格校验) → 一口价买断(状态流转+拍卖历史)
+func (s *RankTCPTestSuite) TestTCPAuctionFlow() {
+	uid := time.Now().UnixNano()
+	openidA := fmt.Sprintf("test_auction_a_%d", uid)
+	openidB := fmt.Sprintf("test_auction_b_%d", uid)
+	guidA := s.createCharacter(openidA)
+	guidB := s.createCharacter(openidB)
+
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer func() {
+		db.Exec("DELETE FROM auction_history WHERE seller_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", openidA, openidB)
+		db.Exec("DELETE FROM auction_item WHERE seller_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", openidA, openidB)
+		db.Exec("DELETE FROM bag_item WHERE role_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", openidA, openidB)
+		db.Exec("DELETE FROM role WHERE id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", openidA, openidB)
+		db.Exec("DELETE FROM account WHERE openid IN (?, ?)", openidA, openidB)
+		db.Close()
+	}()
+
+	// 前置清理: 拍卖表历史残留(dev 库, 防止旧数据污染搜索断言)
+	db.Exec("DELETE FROM auction_history")
+	db.Exec("DELETE FROM auction_item")
+
+	// 直插背包物品(上架素材)
+	res, err := db.Exec("INSERT INTO bag_item (role_id, item_id, grid_index, count) VALUES (?, 10001, 0, 5)", uint64(guidA))
+	s.NoError(err)
+	bagID, _ := res.LastInsertId()
+
+	// A 绑定 → 空条件搜索 → 0 条
+	s.bindRole(guidA)
+	msgS, _ := json.Marshal(map[string]interface{}{})
+	s.NoError(s.sendTCP(append([]byte("AUCTION_SEARCH:"), msgS...)), "send AUCTION_SEARCH empty")
+	bodyS, err := s.recvTCP()
+	s.NoError(err)
+	modS, cmdS, pbS := parseTCPResponse(bodyS)
+	s.Equal(uint16(10005), modS, "auction search module")
+	s.Equal(uint16(101), cmdS, "auction search response cmd")
+	searchS := &dnfv1.SearchAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbS, searchS))
+	s.Equal(int32(0), searchS.Error, "empty search should succeed")
+	s.Equal(int32(0), searchS.Total, "empty search should return 0 items")
+
+	// 上架: REGISTER_AUCTION_ITEM:{"guid":bagID,"start_price":500,"duration":24}
+	msgR, _ := json.Marshal(map[string]interface{}{"guid": bagID, "start_price": 500, "duration": 24})
+	s.NoError(s.sendTCP(append([]byte("REGISTER_AUCTION_ITEM:"), msgR...)), "send REGISTER_AUCTION_ITEM")
+	bodyR, _ := s.recvTCP()
+	modR, cmdR, pbR := parseTCPResponse(bodyR)
+	s.Equal(uint16(10005), modR, "auction register module")
+	s.Equal(uint16(103), cmdR, "auction register response cmd")
+	regR := &dnfv1.RegisterAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbR, regR))
+	s.Equal(int32(0), regR.Error, "register auction should succeed")
+	s.Greater(regR.AuctionId, int64(0), "auction id should be positive")
+
+	// DB 校验: auction_item 上架 + 背包物品已扣
+	var aucStatus, aucPrice, aucBidPrice int
+	var aucBidCount int32
+	var aucSellerID uint64
+	var bagRemain int
+	s.NoError(db.QueryRow("SELECT status, price, bid_price, bid_count, seller_id FROM auction_item WHERE id = ?", uint64(regR.AuctionId)).Scan(&aucStatus, &aucPrice, &aucBidPrice, &aucBidCount, &aucSellerID))
+	s.Equal(0, aucStatus, "auction status should be selling(0)")
+	s.Equal(500, aucPrice, "auction price should be 500")
+	s.Equal(500, aucBidPrice, "initial bid price should equal start price")
+	s.Equal(uint64(guidA), aucSellerID, "seller should be A")
+	s.NoError(db.QueryRow("SELECT COUNT(*) FROM bag_item WHERE id = ?", uint64(bagID)).Scan(&bagRemain))
+	s.Equal(0, bagRemain, "bag item should be removed after register")
+
+	// 搜索: item_id=10001 → 1 条
+	msgS2, _ := json.Marshal(map[string]interface{}{"item_id": 10001})
+	s.NoError(s.sendTCP(append([]byte("AUCTION_SEARCH:"), msgS2...)), "send AUCTION_SEARCH by item_id")
+	bodyS2, _ := s.recvTCP()
+	_, _, pbS2 := parseTCPResponse(bodyS2)
+	searchS2 := &dnfv1.SearchAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbS2, searchS2))
+	s.Equal(int32(0), searchS2.Error, "search by item_id should succeed")
+	s.Equal(int32(1), searchS2.Total, "search should return 1 item")
+	s.Len(searchS2.Items, 1, "search items length")
+	s.Equal(int64(regR.AuctionId), searchS2.Items[0].AuctionId, "auction id matches")
+
+	// B 绑定 → 竞拍 BID_AUCTION:{"auction_id":X,"bid_price":800}
+	s.bindRole(guidB)
+	msgB, _ := json.Marshal(map[string]interface{}{"auction_id": regR.AuctionId, "bid_price": 800})
+	s.NoError(s.sendTCP(append([]byte("BID_AUCTION:"), msgB...)), "send BID_AUCTION")
+	bodyB, _ := s.recvTCP()
+	modB, cmdB, pbB := parseTCPResponse(bodyB)
+	s.Equal(uint16(10005), modB, "auction bid module")
+	s.Equal(uint16(105), cmdB, "auction bid response cmd")
+	bidR := &dnfv1.BidAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbB, bidR))
+	s.Equal(int32(0), bidR.Error, "bid should succeed")
+
+	// 低价竞拍 → error 4(须高于当前价)
+	msgB2, _ := json.Marshal(map[string]interface{}{"auction_id": regR.AuctionId, "bid_price": 600})
+	s.NoError(s.sendTCP(append([]byte("BID_AUCTION:"), msgB2...)), "send low BID_AUCTION")
+	bodyB2, _ := s.recvTCP()
+	_, _, pbB2 := parseTCPResponse(bodyB2)
+	bidR2 := &dnfv1.BidAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbB2, bidR2))
+	s.Equal(int32(4), bidR2.Error, "low bid should fail")
+
+	// DB 校验: bidder=B, bid_price=800
+	var bidderID uint64
+	var bidPrice int
+	s.NoError(db.QueryRow("SELECT bidder_id, bid_price FROM auction_item WHERE id = ?", uint64(regR.AuctionId)).Scan(&bidderID, &bidPrice))
+	s.Equal(uint64(guidB), bidderID, "bidder should be B")
+	s.Equal(800, bidPrice, "bid price should be 800")
+
+	// 一口价买断 BUYOUT_AUCTION:{"auction_id":X}
+	msgO, _ := json.Marshal(map[string]interface{}{"auction_id": regR.AuctionId})
+	s.NoError(s.sendTCP(append([]byte("BUYOUT_AUCTION:"), msgO...)), "send BUYOUT_AUCTION")
+	bodyO, _ := s.recvTCP()
+	modO, cmdO, pbO := parseTCPResponse(bodyO)
+	s.Equal(uint16(10005), modO, "auction buyout module")
+	s.Equal(uint16(107), cmdO, "auction buyout response cmd")
+	buyR := &dnfv1.BuyoutAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbO, buyR))
+	s.Equal(int32(0), buyR.Error, "buyout should succeed")
+	s.Equal(uint32(10001), buyR.Item.ItemId, "buyout item id")
+
+	// DB 校验: 状态 Sold(1) + 历史记录(卖家收入 500*95%=475)
+	var aucStatus2 int
+	var histCnt int
+	var income int64
+	s.NoError(db.QueryRow("SELECT status FROM auction_item WHERE id = ?", uint64(regR.AuctionId)).Scan(&aucStatus2))
+	s.Equal(1, aucStatus2, "auction status should be sold(1)")
+	s.NoError(db.QueryRow("SELECT COUNT(*), COALESCE(CAST(SUM(seller_income) AS SIGNED), 0) FROM auction_history WHERE auction_id = ?", uint64(regR.AuctionId)).Scan(&histCnt, &income))
+	s.Equal(1, histCnt, "history should have 1 record")
+	s.Equal(int64(475), income, "seller income should be 95% of price")
+
+	// 再买断 → error 3(已售出)
+	msgO2, _ := json.Marshal(map[string]interface{}{"auction_id": regR.AuctionId})
+	s.NoError(s.sendTCP(append([]byte("BUYOUT_AUCTION:"), msgO2...)), "send duplicate BUYOUT_AUCTION")
+	bodyO2, _ := s.recvTCP()
+	_, _, pbO2 := parseTCPResponse(bodyO2)
+	buyR2 := &dnfv1.BuyoutAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbO2, buyR2))
+	s.Equal(int32(3), buyR2.Error, "buyout sold auction should fail")
+
+	fmt.Printf("auction TCP flow verified (register/bag-deduct/search/bid/low-bid-fail/buyout/history/duplicate-fail)\n")
+}

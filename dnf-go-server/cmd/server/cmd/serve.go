@@ -147,6 +147,7 @@ func runServe(cmd *cobra.Command, args []string) error {
 
 	// 3.6 初始化服务
 	fmt.Println("Initializing services...")
+	handlers.InitShopStore(s) // 2026-09-07 第五十四轮: 商店/拍卖行 store 注入
 	partySvc := party_service.NewPartyService(s)
 	handlers.InitPartyService(partySvc)
 
