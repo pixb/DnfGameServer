@@ -717,17 +717,20 @@ func (s *RankTCPTestSuite) TestTCPAuctionFlow() {
 	uid := time.Now().UnixNano()
 	openidA := fmt.Sprintf("test_auction_a_%d", uid)
 	openidB := fmt.Sprintf("test_auction_b_%d", uid)
+	openidC := fmt.Sprintf("test_auction_c_%d", uid)
 	guidA := s.createCharacter(openidA)
 	guidB := s.createCharacter(openidB)
 
 	db, err := sql.Open("mysql", testDBDSN)
 	s.NoError(err)
 	defer func() {
-		db.Exec("DELETE FROM auction_history WHERE seller_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", openidA, openidB)
-		db.Exec("DELETE FROM auction_item WHERE seller_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", openidA, openidB)
-		db.Exec("DELETE FROM bag_item WHERE role_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", openidA, openidB)
-		db.Exec("DELETE FROM role WHERE id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", openidA, openidB)
-		db.Exec("DELETE FROM account WHERE openid IN (?, ?)", openidA, openidB)
+		all := []string{openidA, openidB, openidC}
+		db.Exec("DELETE FROM auction_history WHERE seller_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?, ?))", all[0], all[1], all[2])
+		db.Exec("DELETE FROM auction_item WHERE seller_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?, ?))", all[0], all[1], all[2])
+		db.Exec("DELETE FROM bag_item WHERE role_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?, ?))", all[0], all[1], all[2])
+		db.Exec("DELETE FROM role_currency WHERE role_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?, ?))", all[0], all[1], all[2])
+		db.Exec("DELETE FROM role WHERE id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?, ?))", all[0], all[1], all[2])
+		db.Exec("DELETE FROM account WHERE openid IN (?, ?, ?)", all[0], all[1], all[2])
 		db.Close()
 	}()
 
@@ -819,6 +822,10 @@ func (s *RankTCPTestSuite) TestTCPAuctionFlow() {
 	s.Equal(uint64(guidB), bidderID, "bidder should be B")
 	s.Equal(800, bidPrice, "bid price should be 800")
 
+	// 2026-09-07 第五十五轮: 准备金币(买家 B 100000, 卖家 A 0)
+	s.NoError(setGold(uint64(guidB), 100000))
+	s.NoError(setGold(uint64(guidA), 0))
+
 	// 一口价买断 BUYOUT_AUCTION:{"auction_id":X}
 	msgO, _ := json.Marshal(map[string]interface{}{"auction_id": regR.AuctionId})
 	s.NoError(s.sendTCP(append([]byte("BUYOUT_AUCTION:"), msgO...)), "send BUYOUT_AUCTION")
@@ -831,7 +838,7 @@ func (s *RankTCPTestSuite) TestTCPAuctionFlow() {
 	s.Equal(int32(0), buyR.Error, "buyout should succeed")
 	s.Equal(uint32(10001), buyR.Item.ItemId, "buyout item id")
 
-	// DB 校验: 状态 Sold(1) + 历史记录(卖家收入 500*95%=475)
+	// DB 校验: 状态 Sold(1) + 历史记录(卖家收入 500*95%=475) + 金币流转 + 物品入包
 	var aucStatus2 int
 	var histCnt int
 	var income int64
@@ -840,6 +847,44 @@ func (s *RankTCPTestSuite) TestTCPAuctionFlow() {
 	s.NoError(db.QueryRow("SELECT COUNT(*), COALESCE(CAST(SUM(seller_income) AS SIGNED), 0) FROM auction_history WHERE auction_id = ?", uint64(regR.AuctionId)).Scan(&histCnt, &income))
 	s.Equal(1, histCnt, "history should have 1 record")
 	s.Equal(int64(475), income, "seller income should be 95% of price")
+
+	var goldB, goldA int64
+	s.NoError(db.QueryRow("SELECT gold FROM role_currency WHERE role_id = ?", uint64(guidB)).Scan(&goldB))
+	s.Equal(int64(99500), goldB, "buyer gold should be 100000-500")
+	s.NoError(db.QueryRow("SELECT gold FROM role_currency WHERE role_id = ?", uint64(guidA)).Scan(&goldA))
+	s.Equal(int64(475), goldA, "seller gold should be 0+475")
+	var bagB int
+	s.NoError(db.QueryRow("SELECT COUNT(*) FROM bag_item WHERE role_id = ? AND item_id = 10001 AND count = 5", uint64(guidB)).Scan(&bagB))
+	s.Equal(1, bagB, "buyer bag should have item 10001 x5")
+
+	// 2026-09-07 第五十五轮: 钱不足买断 → error 7(新角色 C gold=0)
+	guidC := s.createCharacter(fmt.Sprintf("test_auction_c_%d", uid))
+	// A 再上架一件(供 C 尝试买断)
+	res2, err := db.Exec("INSERT INTO bag_item (role_id, item_id, grid_index, count) VALUES (?, 10002, 0, 1)", uint64(guidA))
+	s.NoError(err)
+	bagID2, _ := res2.LastInsertId()
+	s.bindRole(guidA)
+	msgR2, _ := json.Marshal(map[string]interface{}{"guid": bagID2, "start_price": 300, "duration": 24})
+	s.NoError(s.sendTCP(append([]byte("REGISTER_AUCTION_ITEM:"), msgR2...)), "send REGISTER_AUCTION_ITEM #2")
+	bodyR2, _ := s.recvTCP()
+	_, _, pbR2 := parseTCPResponse(bodyR2)
+	regR2 := &dnfv1.RegisterAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbR2, regR2))
+	s.Equal(int32(0), regR2.Error, "register #2 should succeed")
+	s.Greater(regR2.AuctionId, int64(0), "auction #2 id positive")
+
+	s.bindRole(guidC)
+	msgO3, _ := json.Marshal(map[string]interface{}{"auction_id": regR2.AuctionId})
+	s.NoError(s.sendTCP(append([]byte("BUYOUT_AUCTION:"), msgO3...)), "send BUYOUT_AUCTION poor buyer")
+	bodyO3, _ := s.recvTCP()
+	_, _, pbO3 := parseTCPResponse(bodyO3)
+	buyR3 := &dnfv1.BuyoutAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbO3, buyR3))
+	s.Equal(int32(7), buyR3.Error, "poor buyer buyout should fail with insufficient gold")
+	// DB 校验: 第二件仍 Selling
+	var aucStatus3 int
+	s.NoError(db.QueryRow("SELECT status FROM auction_item WHERE id = ?", uint64(regR2.AuctionId)).Scan(&aucStatus3))
+	s.Equal(0, aucStatus3, "auction #2 should remain selling")
 
 	// 再买断 → error 3(已售出)
 	msgO2, _ := json.Marshal(map[string]interface{}{"auction_id": regR.AuctionId})

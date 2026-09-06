@@ -334,7 +334,29 @@ func BidAuctionHandler(session *network.Session, msg proto.Message) {
 	}
 }
 
-// BuyoutAuctionHandler 处理一口价购买请求(2026-09-07 第五十四轮实化: 状态流转+拍卖历史)
+// addBagItemAutoSlot 物品入包: 查该角色最大格子索引+1 分配新槽(2026-09-07 第五十五轮)
+func addBagItemAutoSlot(ctx context.Context, roleID uint64, itemID int32, count int32) error {
+	items, err := shopStore.ListBagItemsByRole(ctx, roleID)
+	if err != nil {
+		return err
+	}
+	nextSlot := int32(0)
+	for _, it := range items {
+		if it.GridIndex >= nextSlot {
+			nextSlot = it.GridIndex + 1
+		}
+	}
+	_, err = shopStore.CreateBagItem(ctx, &store.BagItem{
+		RoleID:    roleID,
+		ItemID:    itemID,
+		GridIndex: nextSlot,
+		Count:     count,
+	})
+	return err
+}
+
+// BuyoutAuctionHandler 处理一口价购买请求
+// 2026-09-07 第五十四轮: 状态流转+拍卖历史; 第五十五轮: 金币扣减/入账 + 物品入包
 func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 	req, ok := msg.(*dnfv1.BuyoutAuctionRequest)
 	if !ok {
@@ -365,6 +387,41 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
+	// 2026-09-07 第五十五轮: 金币校验/扣减/卖家入账(先钱后货, 钱不足终止)
+	buyerCur, err := shopStore.GetRoleCurrency(ctx, roleID)
+	if err != nil {
+		logger.Error("failed to get buyer currency",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+		resp := &dnfv1.BuyoutAuctionResponse{Error: 1}
+		_ = session.WriteResponse(10005, 107, resp)
+		return
+	}
+	if buyerCur.Gold < auc.Price {
+		resp := &dnfv1.BuyoutAuctionResponse{Error: 7}
+		_ = session.WriteResponse(10005, 107, resp)
+		return
+	}
+
+	sellerIncome := auc.Price * 95 / 100
+	buyerCur.Gold -= auc.Price
+	if err := shopStore.UpdateRoleCurrency(ctx, buyerCur); err != nil {
+		logger.Error("failed to deduct buyer gold",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+		resp := &dnfv1.BuyoutAuctionResponse{Error: 1}
+		_ = session.WriteResponse(10005, 107, resp)
+		return
+	}
+
+	sellerCur, err := shopStore.GetRoleCurrency(ctx, auc.SellerID)
+	if err == nil {
+		sellerCur.Gold += sellerIncome
+		_ = shopStore.UpdateRoleCurrency(ctx, sellerCur)
+	}
+
 	sold := store.AuctionStatusSold
 	bidPrice := auc.Price
 	bidCount := auc.BidCount + 1
@@ -385,7 +442,6 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 	}
 
 	// 拍卖历史(5% 手续费)
-	sellerIncome := auc.Price * 95 / 100
 	if _, err := shopStore.CreateAuctionHistory(ctx, &store.CreateAuctionHistory{
 		AuctionID:    auc.ID,
 		SellerID:     auc.SellerID,
@@ -396,6 +452,14 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 		SellerIncome: sellerIncome,
 	}); err != nil {
 		logger.Error("failed to create auction history",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+	}
+
+	// 物品入买家背包(自动分配空槽)
+	if err := addBagItemAutoSlot(ctx, roleID, auc.ItemID, auc.Count); err != nil {
+		logger.Error("failed to add buyout item to bag",
 			logger.ErrorField(err),
 			logger.Int64("session_id", session.ID()),
 		)
