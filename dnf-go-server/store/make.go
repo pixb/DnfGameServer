@@ -46,6 +46,16 @@ type ItemCombineResult struct {
 	Rewards     *dnfv1.PT_CONTENTS_REWARD_INFO `json:"rewards"`
 	RemoveItems *dnfv1.PT_REMOVEITEMS          `json:"removeItems"`
 	Success     bool                           `json:"success"`
+	// Items 逐次掷点产物(2026-09-06 第十八轮: 批量 count>1 逐次掷点), 每掷点一条
+	Items []*ItemCombineEntry `json:"items"`
+}
+
+// ItemCombineEntry 单次合成掷点的产物(批量时逐次列出)
+type ItemCombineEntry struct {
+	ItemID  int32  `json:"itemId"`
+	Count   int32  `json:"count"`
+	Success bool   `json:"success"`
+	GUID    uint64 `json:"guid"`
 }
 
 // ItemDisjointResult 物品分解结果

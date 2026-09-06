@@ -240,32 +240,54 @@ func (s *APIV1Service) handleMakeItemCombine(c echo.Context) error {
 	}
 
 	roleID := s.activeRoleID(c, claims)
-	result, err := s.Store.ItemCombine(c.Request().Context(), roleID, int32(index), materials, 1)
+
+	// 2026-09-06 第十八轮: 支持批量合成(count>1 逐次掷点), 缺省 1, 上限 99
+	count := int32(1)
+	if v, ok := req["count"].(float64); ok && v >= 1 {
+		if v > 99 {
+			v = 99
+		}
+		count = int32(v)
+	}
+
+	result, err := s.Store.ItemCombine(c.Request().Context(), roleID, int32(index), materials, count)
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
 	}
 
 	// 2026-09-06 第十五轮: 响应真实合成结果(成功率/随机产出);
 	// result 为掷点结果(success/fail), guid/itemId 为实际入包产物(失败保底物品也算产物)
+	// 2026-09-06 第十八轮: 批量时 items 逐次列出(每掷点一条), guid/itemId 指向首个产物
 	guid := uint64(0)
 	itemID := uint32(0)
 	outcome := "fail"
+	var items []map[string]interface{}
 	if result != nil {
 		if result.Success {
 			outcome = "success"
 		}
-		if result.Equip != nil {
-			guid = result.Equip.Guid
-			itemID = result.Equip.ItemId
+		for _, e := range result.Items {
+			items = append(items, map[string]interface{}{
+				"itemId":  e.ItemID,
+				"count":   e.Count,
+				"success": e.Success,
+				"guid":    e.GUID,
+			})
+			if guid == 0 && e.GUID > 0 {
+				guid = e.GUID
+				itemID = uint32(e.ItemID)
+			}
 		}
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":  0,
 		"index":  index,
+		"count":  count,
 		"guid":   guid,
 		"itemId": itemID,
 		"result": outcome,
+		"items":  items,
 	})
 }
 

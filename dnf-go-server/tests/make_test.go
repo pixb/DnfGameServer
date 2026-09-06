@@ -170,7 +170,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_comb_batch", "mk_comb_batch2"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -755,4 +755,88 @@ func (s *MakeTestSuite) TestCardComposeNotEnoughCards() {
 	if errVal, ok := resp["error"]; ok {
 		s.Equal(float64(1), errVal)
 	}
+}
+
+// TestItemCombineBatchPerRoll 批量合成逐次掷点(配方1005: 50%成功1001x1/失败保底2013000000x1):
+// count=5 时逐次判定——响应 items 逐条列出, 成功次数与记录/背包一一对应
+func (s *MakeTestSuite) TestItemCombineBatchPerRoll() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_comb_batch", 22)
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2001: 5}))
+
+	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1005,
+		"material_items": []map[string]interface{}{
+			{"index": 2001, "count": 5},
+		},
+		"count": 5,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	// 响应 count/items 长度
+	if v, ok := resp["count"].(float64); ok {
+		s.Equal(float64(5), v)
+	}
+	items, ok := resp["items"].([]interface{})
+	s.True(ok, "items should be a list")
+	s.Len(items, 5)
+
+	// 逐条校验: 成功→1001x1, 失败→保底2013000000x1; guid 非零
+	successCount := 0
+	for _, it := range items {
+		m, ok := it.(map[string]interface{})
+		s.True(ok)
+		if !ok {
+			continue
+		}
+		if succ, ok := m["success"].(bool); ok && succ {
+			successCount++
+			s.Equal(float64(1001), m["itemId"])
+		} else {
+			s.Equal(float64(2013000000), m["itemId"])
+		}
+		s.Equal(float64(1), m["count"])
+		if g, ok := m["guid"].(float64); ok {
+			s.True(g > 0)
+		}
+	}
+
+	// 背包与记录一致: 材料清空, 产物=成功数, 保底=5-成功数
+	s.Equal(0, bagItemCount(roleID, 2001))
+	s.Equal(successCount, bagItemCount(roleID, 1001))
+	s.Equal(5-successCount, bagItemCount(roleID, 2013000000))
+	s.Equal(5, countCombineRecords(roleID))
+	s.Equal(successCount, countCombineBySuccess(roleID, 1))
+	s.Equal(5-successCount, countCombineBySuccess(roleID, 0))
+}
+
+// TestItemCombineBatchCap 批量上限: count 超过 99 截断为 99, 材料按 99 份扣减
+func (s *MakeTestSuite) TestItemCombineBatchCap() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_comb_batch2", 23)
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2001: 200}))
+
+	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1004, // 100% 成功随机池 60%:1001/40%:1002
+		"material_items": []map[string]interface{}{
+			{"index": 2001, "count": 99}, // 按截断后的 99 份给材料
+		},
+		"count": 200,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	if v, ok := resp["count"].(float64); ok {
+		s.Equal(float64(99), v)
+	}
+	items, ok := resp["items"].([]interface{})
+	s.True(ok, "items should be a list")
+	s.Len(items, 99)
+	// 全部成功(池产出 1001/1002 之一), 材料按 99 扣
+	s.Equal(101, bagItemCount(roleID, 2001))
+	s.Equal(99, bagItemCount(roleID, 1001)+bagItemCount(roleID, 1002))
+	s.Equal(99, countCombineBySuccess(roleID, 1))
 }

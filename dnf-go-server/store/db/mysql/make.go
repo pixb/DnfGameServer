@@ -437,64 +437,107 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 		}
 	}
 
-	// 5. 判定合成结果: 成功率(缺省 100 恒成功) -> 成功且池非空按权重随机产出,
+	// 5. 逐次判定合成结果(2026-09-06 第十八轮: 批量 count>1 逐次掷点, 而非一次掷点×数量):
+	//    每次独立掷点——成功率(缺省 100 恒成功) -> 成功且池非空按权重随机产出,
 	//    否则固定 result_index/result_count; 失败时 fail_result_index 非空产出保底, 否则无产出。
-	//    随机产出按"一次合成调用"为单位(批量 count 时按选中条目的 result_count * count)。
-	success := true
-	if recipe.successRate < 100 {
-		success = rand.Intn(100) < int(recipe.successRate)
+	//    产出按 (itemID) 聚合入包(配方无绑定配置, bind 恒 0); 记录逐次写入。
+	type rollOut struct {
+		index   int32
+		count   int32
+		success bool
 	}
-	outIndex := recipe.resultIndex
-	outCount := recipe.resultCount * count
-	if success && len(recipe.pool) > 0 {
-		pick := pickRecipeOutput(recipe.pool)
-		outIndex = pick.ResultIndex
-		outCount = pick.ResultCount * count
-	}
-	if !success && recipe.failResultIndex > 0 {
-		outIndex = recipe.failResultIndex
-		outCount = recipe.failResultCount * count
-	}
-	if !success && recipe.failResultIndex <= 0 {
-		outIndex, outCount = 0, 0
-	}
-
-	// 6. 产物入包(仅当有产出): 新格子 = MAX(grid_index)+1
-	var productID int64
-	if outIndex > 0 && outCount > 0 {
-		var maxGrid int32
-		_ = tx.QueryRowContext(ctx, `
-			SELECT COALESCE(MAX(grid_index), 0) FROM bag_item WHERE role_id = ?`, roleID).Scan(&maxGrid)
-		newGrid := maxGrid + 1
-		result, err := tx.ExecContext(ctx, `
-			INSERT INTO bag_item (created_at, updated_at, row_status, role_id, item_id, grid_index, count, is_equipped, bind_type, durability, enhance_level, attributes)
-			VALUES (?, ?, 'NORMAL', ?, ?, ?, ?, 0, 0, 0, 0, NULL)`,
-			now, now, roleID, outIndex, newGrid, outCount)
-		if err != nil {
-			return nil, fmt.Errorf("failed to create product: %w", err)
+	rolls := make([]rollOut, 0, count)
+	agg := map[int32]int32{} // itemID -> 聚合数量
+	anySuccess := false
+	for i := int32(0); i < count; i++ {
+		ok := true
+		if recipe.successRate < 100 {
+			ok = rand.Intn(100) < int(recipe.successRate)
 		}
-		productID, _ = result.LastInsertId()
+		outIndex := recipe.resultIndex
+		outCount := recipe.resultCount
+		if ok && len(recipe.pool) > 0 {
+			pick := pickRecipeOutput(recipe.pool)
+			outIndex = pick.ResultIndex
+			outCount = pick.ResultCount
+		}
+		if !ok && recipe.failResultIndex > 0 {
+			outIndex = recipe.failResultIndex
+			outCount = recipe.failResultCount
+		}
+		if !ok && recipe.failResultIndex <= 0 {
+			outIndex, outCount = 0, 0
+		}
+		rolls = append(rolls, rollOut{index: outIndex, count: outCount, success: ok})
+		if outIndex > 0 && outCount > 0 {
+			agg[outIndex] += outCount
+		}
+		if ok {
+			anySuccess = true
+		}
 	}
 
-	// 7. 合成记录(含成功标记)
-	successFlag := 0
-	if success {
-		successFlag = 1
-	}
-	_, err = tx.ExecContext(ctx, `
-		INSERT INTO t_item_combine (role_id, target_index, material_list, count, result_guid, cost_money, success, create_time)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-	`, roleID, recipe.resultIndex, recipe.materialJSON, count, productID, fee, successFlag, now)
-	if err != nil {
-		return nil, fmt.Errorf("failed to insert item combine record: %w", err)
+	// 6. 产物入包(按 itemID 聚合, 每物品一格): 新格子 = MAX(grid_index)+1
+	var maxGrid int32
+	_ = tx.QueryRowContext(ctx, `
+		SELECT COALESCE(MAX(grid_index), 0) FROM bag_item WHERE role_id = ?`, roleID).Scan(&maxGrid)
+	gridOf := map[int32]int32{}  // itemID -> 已分配的 grid
+	guidOf := map[int32]uint64{} // itemID -> bag_item 行ID
+	productIDs := make([]uint64, len(rolls))
+	for i, r := range rolls {
+		if r.index <= 0 || r.count <= 0 {
+			productIDs[i] = 0
+			continue
+		}
+		grid, ok := gridOf[r.index]
+		if !ok {
+			maxGrid++
+			grid = maxGrid
+			gridOf[r.index] = grid
+			result, err := tx.ExecContext(ctx, `
+				INSERT INTO bag_item (created_at, updated_at, row_status, role_id, item_id, grid_index, count, is_equipped, bind_type, durability, enhance_level, attributes)
+				VALUES (?, ?, 'NORMAL', ?, ?, ?, ?, 0, 0, 0, 0, NULL)`,
+				now, now, roleID, r.index, grid, agg[r.index])
+			if err != nil {
+				return nil, fmt.Errorf("failed to create product: %w", err)
+			}
+			id, _ := result.LastInsertId()
+			guidOf[r.index] = uint64(id)
+		}
+		productIDs[i] = guidOf[r.index]
 	}
 
+	// 7. 合成记录(逐次写入, 每掷点一行: result_guid 指向聚合产物行, 费用按单次)
+	for i, r := range rolls {
+		successFlag := 0
+		if r.success {
+			successFlag = 1
+		}
+		_, err = tx.ExecContext(ctx, `
+			INSERT INTO t_item_combine (role_id, target_index, material_list, count, result_guid, cost_money, success, create_time)
+			VALUES (?, ?, ?, 1, ?, ?, ?, ?)
+		`, roleID, recipe.resultIndex, recipe.materialJSON, productIDs[i], recipe.costMoney, successFlag, now)
+		if err != nil {
+			return nil, fmt.Errorf("failed to insert item combine record: %w", err)
+		}
+	}
+
+	// 响应: count=1 时 Equip 指向唯一产物(兼容既有语义); Items 逐次列出
 	var equip *dnfv1.EquipmentInfo
 	var rewards *dnfv1.PT_CONTENTS_REWARD_INFO
-	if outIndex > 0 && outCount > 0 {
+	entries := make([]*store.ItemCombineEntry, 0, len(rolls))
+	for i, r := range rolls {
+		entries = append(entries, &store.ItemCombineEntry{
+			ItemID:  r.index,
+			Count:   r.count,
+			Success: r.success,
+			GUID:    productIDs[i],
+		})
+	}
+	if len(rolls) == 1 && rolls[0].index > 0 && rolls[0].count > 0 {
 		equip = &dnfv1.EquipmentInfo{
-			Guid:   uint64(productID),
-			ItemId: uint32(outIndex),
+			Guid:   uint64(productIDs[0]),
+			ItemId: uint32(rolls[0].index),
 		}
 		rewards = &dnfv1.PT_CONTENTS_REWARD_INFO{
 			Items: &dnfv1.PT_ITEMS{
@@ -513,7 +556,8 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 		Equip:       equip,
 		Rewards:     rewards,
 		RemoveItems: removeItems,
-		Success:     success,
+		Success:     anySuccess,
+		Items:       entries,
 	}, nil
 }
 
