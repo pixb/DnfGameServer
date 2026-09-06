@@ -178,9 +178,11 @@ func (s *APIV1Service) handleGetFriendList(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	friends, _ := s.Store.ListFriends(c.Request().Context(), claims.UserID)
+	// 2026-09-06 第三十五轮: friend.role_id 语义为角色ID, 改用 activeRoleID(原 claims.UserID 为账号ID, 外键约束下查不到)
+	friends, _ := s.Store.ListFriends(c.Request().Context(), s.activeRoleID(c, claims))
 
-	var friendInfos []*dnfv1.FriendInfo
+	// 2026-09-06 第三十五轮: 无好友时返回空数组而非 null(JSON 序列化 nil slice 为 null)
+	var friendInfos = []*dnfv1.FriendInfo{}
 	for _, friend := range friends {
 		friendRole, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{
 			FindBase: store.FindBase{ID: &friend.FriendID},
@@ -210,14 +212,45 @@ func (s *APIV1Service) handleAddFriend(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
+	// 2026-09-06 第三十五轮: 支持 JSON body(客户端通用)与 form 双入参
+	req := decodeJSONBody(c)
 	targetName := c.FormValue("target_name")
+	if targetName == "" {
+		if v, ok := req["target_name"].(string); ok {
+			targetName = v
+		}
+	}
+	if targetName == "" {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "target_name required"})
+	}
+
 	targetRole, err := s.Store.GetRoleByName(c.Request().Context(), targetName)
 	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": "target role not found"})
+	}
+
+	// 2026-09-06 第三十五轮: friend.role_id 语义为角色ID(原 claims.UserID 为账号ID 违反外键)
+	myRoleID := s.activeRoleID(c, claims)
+
+	// 不能添加自己为好友(账号下任意角色)
+	myRoles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	for _, r := range myRoles {
+		if r.ID == targetRole.ID {
+			return c.JSON(http.StatusOK, map[string]interface{}{"error": 8, "message": "cannot add self"})
+		}
+	}
+
+	// 已存在则幂等返回成功(不重复插入)
+	existing, _ := s.Store.GetFriend(c.Request().Context(), &store.FindFriend{
+		RoleID:   &myRoleID,
+		FriendID: &targetRole.ID,
+	})
+	if existing != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
 	}
 
 	s.Store.CreateFriend(c.Request().Context(), &store.Friend{
-		RoleID:     claims.UserID,
+		RoleID:     myRoleID,
 		FriendID:   targetRole.ID,
 		FriendName: targetRole.Name,
 		Intimacy:   0,
@@ -232,9 +265,24 @@ func (s *APIV1Service) handleRemoveFriend(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	friendUID, _ := strconv.ParseUint(c.FormValue("friend_uid"), 10, 64)
+	// 2026-09-06 第三十五轮: 支持 JSON body 与 form 双入参(friend_uid / friendGuid)
+	req := decodeJSONBody(c)
+	friendUIDStr := c.FormValue("friend_uid")
+	if friendUIDStr == "" {
+		if v, ok := req["friend_uid"].(float64); ok {
+			friendUIDStr = strconv.FormatInt(int64(v), 10)
+		} else if v, ok := req["friendGuid"].(float64); ok {
+			friendUIDStr = strconv.FormatInt(int64(v), 10)
+		}
+	}
+	if friendUIDStr == "" {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "friend_uid required"})
+	}
+
+	friendUID, _ := strconv.ParseUint(friendUIDStr, 10, 64)
+	myRoleID := s.activeRoleID(c, claims)
 	friend, _ := s.Store.GetFriend(c.Request().Context(), &store.FindFriend{
-		RoleID:   &claims.UserID,
+		RoleID:   &myRoleID,
 		FriendID: &friendUID,
 	})
 
