@@ -67,6 +67,16 @@ type MakeRecipe struct {
 	Enabled      int    `db:"enabled"`
 }
 
+// MakeDisjoint 分解产出配置 (对应 t_make_disjoint 表)
+// 2026-09-06 第十三轮: ItemDisjoint 深化为配置驱动(物品模板 -> 分解材料/数量)
+type MakeDisjoint struct {
+	ID            uint64 `db:"id"`
+	ItemIndex     int    `db:"item_index"`
+	MaterialIndex int    `db:"material_index"`
+	MaterialCount int    `db:"material_count"`
+	Enabled       int    `db:"enabled"`
+}
+
 type CardCompose struct {
 	ID          uint64    `db:"id"`
 	RoleID      uint64    `db:"role_id"`

@@ -480,6 +480,8 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 
 // ItemDisjoint 物品分解
 // 2026-09-06 实化: guids 为背包物品ID, 移除对应物品并将分解材料(2013000000 x N*10)入背包
+// 2026-09-06 第十三轮 配置驱动: 与 mysql 驱动对称, 分解产出按 t_make_disjoint 查表,
+// 无配置/停用报错; 多件物品产出按材料模板聚合入包; material_list 写聚合 JSON。
 func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*store.ItemDisjointResult, error) {
 	tx, err := d.db.BeginTx(ctx, nil)
 	if err != nil {
@@ -489,56 +491,80 @@ func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*
 
 	now := time.Now().Unix()
 
-	// 1. 校验并移除背包物品
-	removed := 0
+	// 1. 逐件校验归属 -> 查分解配置 -> 移除, 产出按材料模板聚合
+	materials := map[int32]int32{} // 材料模板ID -> 数量
+	removedGuids := make([]uint64, 0, len(guids))
 	for _, g := range guids {
-		var exist int
+		var itemID int32
 		err := tx.QueryRowContext(ctx, `
-			SELECT COUNT(*) FROM bag_item WHERE id = ? AND role_id = ? AND row_status = 'NORMAL'`, g, roleID).Scan(&exist)
+			SELECT item_id FROM bag_item WHERE id = ? AND role_id = ? AND row_status = 'NORMAL'`, g, roleID).Scan(&itemID)
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("背包物品不存在: %d", g)
+		}
 		if err != nil {
 			return nil, fmt.Errorf("failed to check bag item: %w", err)
 		}
-		if exist == 0 {
-			return nil, fmt.Errorf("背包物品不存在: %d", g)
+		var matIndex, matCount int32
+		var enabled int
+		err = tx.QueryRowContext(ctx, `
+			SELECT material_index, material_count, enabled FROM t_make_disjoint WHERE item_index = ?`, itemID).
+			Scan(&matIndex, &matCount, &enabled)
+		if err == sql.ErrNoRows {
+			return nil, fmt.Errorf("物品无分解配置: %d", itemID)
 		}
+		if err != nil {
+			return nil, fmt.Errorf("failed to load disjoint config: %w", err)
+		}
+		if enabled == 0 {
+			return nil, fmt.Errorf("分解配置已停用: %d", itemID)
+		}
+		materials[matIndex] += matCount
 		if _, err := tx.ExecContext(ctx, `
 			DELETE FROM bag_item WHERE id = ? AND role_id = ?`, g, roleID); err != nil {
 			return nil, fmt.Errorf("failed to remove item: %w", err)
 		}
-		removed++
+		removedGuids = append(removedGuids, g)
 	}
 
-	// 2. 分解材料入包
-	materialCount := int32(removed) * 10
+	// 2. 分解材料入包(按模板聚合, 每个模板一个格子)
+	templates := make([]int32, 0, len(materials))
+	for t := range materials {
+		templates = append(templates, t)
+	}
+	sort.Slice(templates, func(i, j int) bool { return templates[i] < templates[j] })
+
 	var maxGrid int32
 	_ = tx.QueryRowContext(ctx, `
 		SELECT COALESCE(MAX(grid_index), 0) FROM bag_item WHERE role_id = ?`, roleID).Scan(&maxGrid)
-	if materialCount > 0 {
-		_, err = tx.ExecContext(ctx, `
+	materialItems := make([]*dnfv1.StackableItem, 0, len(templates))
+	for _, t := range templates {
+		cnt := materials[t]
+		maxGrid++
+		if _, err := tx.ExecContext(ctx, `
 			INSERT INTO bag_item (created_at, updated_at, row_status, role_id, item_id, grid_index, count, is_equipped, bind_type, durability, enhance_level, attributes)
-			VALUES (?, ?, 'NORMAL', ?, 2013000000, ?, ?, 0, 0, 0, 0, NULL)`,
-			now, now, roleID, maxGrid+1, materialCount)
-		if err != nil {
+			VALUES (?, ?, 'NORMAL', ?, ?, ?, ?, 0, 0, 0, 0, NULL)`,
+			now, now, roleID, t, maxGrid, cnt); err != nil {
 			return nil, fmt.Errorf("failed to create disjoint material: %w", err)
 		}
+		materialItems = append(materialItems, &dnfv1.StackableItem{
+			Index: uint32(t),
+			Count: uint32(cnt),
+		})
 	}
 
-	// 3. 分解记录
-	material := &dnfv1.StackableItem{
-		Index: 2013000000,
-		Count: uint32(materialCount),
-	}
+	// 3. 分解记录(material_list 写聚合 JSON)
+	materialJSON, _ := json.Marshal(materialItems)
 	_, err = tx.ExecContext(ctx, `
 		INSERT INTO t_item_disjoint (role_id, equip_guids, material_list, create_time)
 		VALUES (?, ?, ?, ?)
-	`, roleID, fmt.Sprintf("%v", guids), fmt.Sprintf("%v", material), now)
+	`, roleID, fmt.Sprintf("%v", removedGuids), string(materialJSON), now)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert item disjoint record: %w", err)
 	}
 
 	rewards := &dnfv1.PT_CONTENTS_REWARD_INFO{
 		Items: &dnfv1.PT_ITEMS{
-			MaterialItems: []*dnfv1.StackableItem{material},
+			MaterialItems: materialItems,
 		},
 	}
 

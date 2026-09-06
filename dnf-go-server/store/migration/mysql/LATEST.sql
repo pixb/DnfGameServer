@@ -916,6 +916,21 @@ CREATE TABLE IF NOT EXISTS t_make_recipe (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='合成配方配置表';
 
 -- ============================================
+-- 2.0.9 增量迁移：分解产出配置表 t_make_disjoint
+-- 2026-09-06 第十三轮：ItemDisjoint 深化为配置驱动(模板->分解材料/数量)。
+-- ============================================
+
+-- 分解产出配置表
+CREATE TABLE IF NOT EXISTS t_make_disjoint (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    item_index INT UNSIGNED NOT NULL COMMENT '物品模板ID(对应 bag_item.item_id)',
+    material_index INT UNSIGNED NOT NULL COMMENT '分解材料模板ID',
+    material_count INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '单件分解产出数量',
+    enabled TINYINT NOT NULL DEFAULT 1 COMMENT '是否启用(0=停用)',
+    create_time BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()) COMMENT '创建时间',
+    UNIQUE KEY uk_make_disjoint_item (item_index)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='分解产出配置表';
+-- ============================================
 -- 2.0.5 增量迁移：补齐制作模块其余记录表
 -- ============================================
 -- 2.0.5 增量迁移：补齐制作模块其余记录表

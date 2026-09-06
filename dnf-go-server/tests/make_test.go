@@ -109,6 +109,40 @@ func countCombineRecords(roleID uint64) int {
 	return n
 }
 
+// countDisjointRecords 统计角色分解记录数(分解配置生效断言用)
+func countDisjointRecords(roleID uint64) int {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		return -1
+	}
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	var n int
+	if err := db.QueryRow("SELECT COUNT(*) FROM t_item_disjoint WHERE role_id = ?", roleID).Scan(&n); err != nil {
+		return -1
+	}
+	return n
+}
+
+// bagItemCount 查询角色背包指定模板物品的总数量(分解产出断言用)
+func bagItemCount(roleID uint64, itemID int32) int {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		return -1
+	}
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	var n int
+	if err := db.QueryRow(
+		"SELECT COALESCE(SUM(count), 0) FROM bag_item WHERE role_id = ? AND item_id = ? AND row_status = 'NORMAL'",
+		roleID, itemID).Scan(&n); err != nil {
+		return -1
+	}
+	return n
+}
+
 type MakeTestSuite struct {
 	BaseTestSuite
 }
@@ -120,7 +154,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -438,6 +472,54 @@ func (s *MakeTestSuite) TestItemDisjoint() {
 	if errVal, ok := resp["error"]; ok {
 		s.Equal(float64(0), errVal)
 	}
+	// 配置驱动: 物品 1/2/3 各产出 2013000000x10, 聚合 30 个
+	s.Equal(30, bagItemCount(roleID, 2013000000))
+	s.Equal(1, countDisjointRecords(roleID))
+}
+
+// TestItemDisjointByConfig 配置驱动: 混合模板(物品 1001 -> 15, 1002 -> 20)聚合产出 35
+func (s *MakeTestSuite) TestItemDisjointByConfig() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_disj_02", 16)
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{1001: 1, 1002: 1}))
+	ids := bagItemIDs(roleID, 2)
+	s.Require().Len(ids, 2)
+
+	resp, err := s.Client.Post("/api/v1/make/item/disjoint", map[string]interface{}{
+		"guids": ids,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	// 1001x15 + 1002x20 = 35 个材料, 原物品已移除
+	s.Equal(35, bagItemCount(roleID, 2013000000))
+	s.Equal(0, bagItemCount(roleID, 1001))
+	s.Equal(0, bagItemCount(roleID, 1002))
+	s.Equal(1, countDisjointRecords(roleID))
+}
+
+// TestItemDisjointNoConfig 配置驱动: 无分解配置的模板(9999)应报错且不留任何副作用
+func (s *MakeTestSuite) TestItemDisjointNoConfig() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_disj_03", 17)
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{9999: 1}))
+	ids := bagItemIDs(roleID, 1)
+	s.Require().Len(ids, 1)
+
+	resp, err := s.Client.Post("/api/v1/make/item/disjoint", map[string]interface{}{
+		"guids": ids,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(1), errVal)
+	}
+	// 事务回滚: 原物品仍在、无记录、无材料产出
+	s.Equal(1, bagItemCount(roleID, 9999))
+	s.Equal(0, countDisjointRecords(roleID))
+	s.Equal(0, bagItemCount(roleID, 2013000000))
 }
 
 func (s *MakeTestSuite) TestCardCompose() {
