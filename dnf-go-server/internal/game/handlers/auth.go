@@ -60,7 +60,7 @@ func LoginHandler(session *network.Session, msg proto.Message) {
 			LastLoginAt: now,
 			LastLoginIP: req.ClientIp,
 			Authority:   0,
-			Status:      0, // 0=正常
+			Status:      1, // 1=正常(2026-09-06 第三十三轮: 与 HTTP auth_service 语义统一)
 		})
 		if cerr != nil {
 			logger.Error("create account failed", logger.String("openid", req.Openid), logger.ErrorField(cerr))
@@ -73,8 +73,12 @@ func LoginHandler(session *network.Session, msg proto.Message) {
 		session.WriteResponse(10000, 1, &dnfv1.LoginResponse{Error: 3})
 		return
 	} else {
-		// 注: 封禁语义跨协议不一致(HTTP auth_service 用 1=正常/0=禁用, store 注释 0=正常/1=封禁),
-		// 暂不在此做封禁拒绝, 待统一后启用(2026-09-06 第三十二轮遗留)
+		// 封禁检查(Status 语义统一后: 0=禁用, 1=正常, 2026-09-06 第三十三轮)
+		if account.Status == 0 {
+			logger.Info("disabled account login rejected", logger.String("openid", req.Openid))
+			session.WriteResponse(10000, 1, &dnfv1.LoginResponse{Error: 5})
+			return
+		}
 		// 更新最后登录时间
 		authStore.UpdateAccount(ctx, &store.UpdateAccount{ID: account.ID, LastLoginAt: &now})
 	}

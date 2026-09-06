@@ -10,7 +10,7 @@ type Account struct {
 	LastLoginAt int64
 	LastLoginIP string
 	Authority   int32
-	Status      int32 // 0=正常, 1=封禁
+	Status      int32 // 1=正常, 0=禁用(2026-09-06 第三十三轮: 与 HTTP auth_service 语义统一)
 }
 
 // FindAccount 查询账户

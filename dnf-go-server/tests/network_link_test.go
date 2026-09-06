@@ -3,6 +3,7 @@ package tests
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"net"
 	"testing"
 	"time"
@@ -69,9 +70,9 @@ func TestTCPMessageLink(t *testing.T) {
 	}
 	defer conn.Close()
 
-	// 5. 发送登录请求（module=10000, cmd=0）
+	// 5. 发送登录请求（module=10000, cmd=0）(2026-09-06 第三十三轮: 随机 openid 避免历史 status 污染)
 	req := &dnfv1.LoginRequest{
-		Openid:  "test_openid_001",
+		Openid:  fmt.Sprintf("link_%d", time.Now().UnixNano()),
 		Version: "1.0",
 	}
 	packet, err := codec.EncodeWithMeta(10000, 0, req)
