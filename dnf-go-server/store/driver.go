@@ -155,6 +155,8 @@ type Driver interface {
 
 	CreateAuctionHistory(ctx context.Context, create *CreateAuctionHistory) (*AuctionHistory, error)
 	ListAuctionHistory(ctx context.Context, find *FindAuctionHistory) ([]*AuctionHistory, error)
+	// SettleExpiredAuctions 到期结算(2026-09-07 第五十七轮): 过期未售拍卖 → Expired + 退最高出价者冻结金 + 物品退回卖家背包
+	SettleExpiredAuctions(ctx context.Context) (int, error)
 
 	// ==================== 系统设置 ====================
 	GetInstanceBasicSetting(ctx context.Context) (*InstanceBasicSetting, error)

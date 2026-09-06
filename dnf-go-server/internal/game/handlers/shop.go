@@ -138,6 +138,15 @@ func SearchAuctionHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
+	ctx := context.Background()
+	// 2026-09-07 第五十七轮: 惰性到期结算(先处理过期拍卖, 再查当前数据)
+	if _, err := shopStore.SettleExpiredAuctions(ctx); err != nil {
+		logger.Error("failed to settle expired auctions",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+	}
+
 	selling := store.AuctionStatusSelling
 	find := &store.FindAuctionItem{
 		Status: &selling,
@@ -151,7 +160,6 @@ func SearchAuctionHandler(session *network.Session, msg proto.Message) {
 		find.MaxPrice = &maxPrice
 	}
 
-	ctx := context.Background()
 	items, err := shopStore.ListAuctionItems(ctx, find)
 	if err != nil {
 		logger.Error("failed to list auction items",
@@ -289,6 +297,13 @@ func BidAuctionHandler(session *network.Session, msg proto.Message) {
 	roleID := session.RoleID()
 	ctx := context.Background()
 	auctionID := uint64(req.AuctionId)
+	// 2026-09-07 第五十七轮: 惰性到期结算(防止对过期拍卖出价)
+	if _, err := shopStore.SettleExpiredAuctions(ctx); err != nil {
+		logger.Error("failed to settle expired auctions",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+	}
 
 	auc, err := shopStore.GetAuctionItem(ctx, &store.FindAuctionItem{
 		FindBase: store.FindBase{ID: &auctionID},
@@ -409,6 +424,13 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 	roleID := session.RoleID()
 	ctx := context.Background()
 	auctionID := uint64(req.AuctionId)
+	// 2026-09-07 第五十七轮: 惰性到期结算(防止买断/查询过期拍卖)
+	if _, err := shopStore.SettleExpiredAuctions(ctx); err != nil {
+		logger.Error("failed to settle expired auctions",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+	}
 
 	auc, err := shopStore.GetAuctionItem(ctx, &store.FindAuctionItem{
 		FindBase: store.FindBase{ID: &auctionID},

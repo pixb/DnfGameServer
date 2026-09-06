@@ -453,6 +453,11 @@ func (s *Store) CreateAuctionHistory(ctx context.Context, create *CreateAuctionH
 	return s.driver.CreateAuctionHistory(ctx, create)
 }
 
+// SettleExpiredAuctions 到期结算(2026-09-07 第五十七轮)
+func (s *Store) SettleExpiredAuctions(ctx context.Context) (int, error) {
+	return s.driver.SettleExpiredAuctions(ctx)
+}
+
 // ListAuctionHistory 查询拍卖历史
 func (s *Store) ListAuctionHistory(ctx context.Context, find *FindAuctionHistory) ([]*AuctionHistory, error) {
 	return s.driver.ListAuctionHistory(ctx, find)

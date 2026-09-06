@@ -944,5 +944,76 @@ func (s *RankTCPTestSuite) TestTCPAuctionFlow() {
 	s.NoError(proto.Unmarshal(pbO2, buyR2))
 	s.Equal(int32(3), buyR2.Error, "buyout sold auction should fail")
 
-	fmt.Printf("auction TCP flow verified (register/bag-deduct/search/bid/low-bid-fail/buyout/history/duplicate-fail)\n")
+	// ==================== 2026-09-07 第五十七轮: 到期结算 ====================
+	// A 上架第 3 件(item 10003), D 出价 500 冻结, 然后改过期 → 搜索触发结算
+	res3, err := db.Exec("INSERT INTO bag_item (role_id, item_id, grid_index, count) VALUES (?, 10003, 0, 1)", uint64(guidA))
+	s.NoError(err)
+	bagID3, _ := res3.LastInsertId()
+	s.bindRole(guidA)
+	msgR3, _ := json.Marshal(map[string]interface{}{"guid": bagID3, "start_price": 500, "duration": 24})
+	s.NoError(s.sendTCP(append([]byte("REGISTER_AUCTION_ITEM:"), msgR3...)), "send REGISTER_AUCTION_ITEM #3")
+	bodyR3, _ := s.recvTCP()
+	_, _, pbR3 := parseTCPResponse(bodyR3)
+	regR3 := &dnfv1.RegisterAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbR3, regR3))
+	s.Equal(int32(0), regR3.Error, "register #3 should succeed")
+
+	// D 出价 600(冻结, 须高于起拍价 500)
+	s.bindRole(guidD)
+	msgD3, _ := json.Marshal(map[string]interface{}{"auction_id": regR3.AuctionId, "bid_price": 600})
+	s.NoError(s.sendTCP(append([]byte("BID_AUCTION:"), msgD3...)), "send D BID on #3")
+	bodyD3, _ := s.recvTCP()
+	_, _, pbD3 := parseTCPResponse(bodyD3)
+	bidD3 := &dnfv1.BidAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbD3, bidD3))
+	s.Equal(int32(0), bidD3.Error, "D bid on #3 should succeed")
+	var goldD3 int64
+	s.NoError(db.QueryRow("SELECT gold FROM role_currency WHERE role_id = ?", uint64(guidD)).Scan(&goldD3))
+	s.Equal(int64(99400), goldD3, "D gold frozen by 600")
+
+	// DB 改过期 → 搜索触发惰性结算
+	_, err = db.Exec("UPDATE auction_item SET end_time = UNIX_TIMESTAMP() - 100 WHERE id = ?", uint64(regR3.AuctionId))
+	s.NoError(err)
+	s.bindRole(guidA)
+	msgS3, _ := json.Marshal(map[string]interface{}{})
+	s.NoError(s.sendTCP(append([]byte("AUCTION_SEARCH:"), msgS3...)), "send AUCTION_SEARCH trigger settle")
+	_, err = s.recvTCP()
+	s.NoError(err)
+
+	// DB 校验: 状态 Expired(2) + D 冻结金退还(100000) + 物品退回 A 背包
+	var aucStatus4 int
+	s.NoError(db.QueryRow("SELECT status FROM auction_item WHERE id = ?", uint64(regR3.AuctionId)).Scan(&aucStatus4))
+	s.Equal(2, aucStatus4, "auction #3 should be expired(2)")
+	s.NoError(db.QueryRow("SELECT gold FROM role_currency WHERE role_id = ?", uint64(guidD)).Scan(&goldD3))
+	s.Equal(int64(100000), goldD3, "D gold should be refunded after expire")
+	var bagA10003 int
+	s.NoError(db.QueryRow("SELECT COUNT(*) FROM bag_item WHERE role_id = ? AND item_id = 10003", uint64(guidA)).Scan(&bagA10003))
+	s.Equal(1, bagA10003, "item 10003 should return to A bag")
+
+	// 无出价过期: 上架第 4 件(item 10004), 直接改过期 → 搜索 → 状态 Expired + 物品退回
+	res4, err := db.Exec("INSERT INTO bag_item (role_id, item_id, grid_index, count) VALUES (?, 10004, 1, 2)", uint64(guidA))
+	s.NoError(err)
+	bagID4, _ := res4.LastInsertId()
+	s.bindRole(guidA)
+	msgR4, _ := json.Marshal(map[string]interface{}{"guid": bagID4, "start_price": 200, "duration": 24})
+	s.NoError(s.sendTCP(append([]byte("REGISTER_AUCTION_ITEM:"), msgR4...)), "send REGISTER_AUCTION_ITEM #4")
+	bodyR4, _ := s.recvTCP()
+	_, _, pbR4 := parseTCPResponse(bodyR4)
+	regR4 := &dnfv1.RegisterAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbR4, regR4))
+	s.Equal(int32(0), regR4.Error, "register #4 should succeed")
+	_, err = db.Exec("UPDATE auction_item SET end_time = UNIX_TIMESTAMP() - 100 WHERE id = ?", uint64(regR4.AuctionId))
+	s.NoError(err)
+	msgS4, _ := json.Marshal(map[string]interface{}{})
+	s.NoError(s.sendTCP(append([]byte("AUCTION_SEARCH:"), msgS4...)), "send AUCTION_SEARCH trigger settle #4")
+	_, err = s.recvTCP()
+	s.NoError(err)
+	var aucStatus5 int
+	var bagA10004 int
+	s.NoError(db.QueryRow("SELECT status FROM auction_item WHERE id = ?", uint64(regR4.AuctionId)).Scan(&aucStatus5))
+	s.Equal(2, aucStatus5, "auction #4 should be expired(2)")
+	s.NoError(db.QueryRow("SELECT COUNT(*) FROM bag_item WHERE role_id = ? AND item_id = 10004 AND count = 2", uint64(guidA)).Scan(&bagA10004))
+	s.Equal(1, bagA10004, "item 10004 x2 should return to A bag")
+
+	fmt.Printf("auction TCP flow verified (register/bag-deduct/search/bid/low-bid-fail/buyout/history/duplicate-fail/settle-expired-refund-return)\n")
 }

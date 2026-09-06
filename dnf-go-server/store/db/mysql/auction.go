@@ -295,3 +295,69 @@ func (d *DB) ListAuctionHistory(ctx context.Context, find *store.FindAuctionHist
 
 	return history, nil
 }
+
+// SettleExpiredAuctions 到期结算(2026-09-07 第五十七轮):
+// 过期(status=Selling 且 end_time<=now) → 状态 Expired; 有最高出价者 → 退还冻结金; 物品退回卖家背包
+func (d *DB) SettleExpiredAuctions(ctx context.Context) (int, error) {
+	now := time.Now().Unix()
+	rows, err := d.db.QueryContext(ctx,
+		"SELECT id, seller_id, item_id, count, bidder_id, bid_price FROM auction_item WHERE status = ? AND end_time <= ?",
+		store.AuctionStatusSelling, now)
+	if err != nil {
+		return 0, fmt.Errorf("failed to query expired auctions: %w", err)
+	}
+	defer rows.Close()
+
+	type expiredItem struct {
+		id       uint64
+		sellerID uint64
+		itemID   int32
+		count    int32
+		bidderID uint64
+		bidPrice int64
+	}
+	var expired []expiredItem
+	for rows.Next() {
+		var e expiredItem
+		if err := rows.Scan(&e.id, &e.sellerID, &e.itemID, &e.count, &e.bidderID, &e.bidPrice); err != nil {
+			return 0, fmt.Errorf("failed to scan expired auction: %w", err)
+		}
+		expired = append(expired, e)
+	}
+	if len(expired) == 0 {
+		return 0, nil
+	}
+
+	tx, err := d.db.BeginTx(ctx, nil)
+	if err != nil {
+		return 0, fmt.Errorf("failed to begin settle transaction: %w", err)
+	}
+	defer tx.Rollback()
+
+	for _, e := range expired {
+		if _, err := tx.ExecContext(ctx,
+			"UPDATE auction_item SET status = ?, updated_at = ? WHERE id = ?",
+			store.AuctionStatusExpired, now, e.id); err != nil {
+			return 0, fmt.Errorf("failed to expire auction %d: %w", e.id, err)
+		}
+		// 退还最高出价者冻结金
+		if e.bidderID != 0 && e.bidPrice > 0 {
+			if _, err := tx.ExecContext(ctx,
+				"UPDATE role_currency SET gold = gold + ? WHERE role_id = ?", e.bidPrice, e.bidderID); err != nil {
+				return 0, fmt.Errorf("failed to refund bidder %d: %w", e.bidderID, err)
+			}
+		}
+		// 物品退回卖家背包(自动分配空槽)
+		if _, err := tx.ExecContext(ctx,
+			`INSERT INTO bag_item (role_id, item_id, grid_index, count)
+			 SELECT ?, ?, COALESCE(MAX(grid_index), -1) + 1, ? FROM bag_item WHERE role_id = ?`,
+			e.sellerID, e.itemID, e.count, e.sellerID); err != nil {
+			return 0, fmt.Errorf("failed to return item to seller %d: %w", e.sellerID, err)
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		return 0, fmt.Errorf("failed to commit settle transaction: %w", err)
+	}
+	return len(expired), nil
+}
