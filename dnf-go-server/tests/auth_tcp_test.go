@@ -154,6 +154,56 @@ func (s *AuthTCPTestSuite) TestTCPLoginEmptyOpenid() {
 	fmt.Printf("TCP login empty openid rejected: error=%d\n", lr.Error)
 }
 
+// TestAdminDisableEnableAccount 封禁管理 API 闭环(2026-09-06 第三十七轮):
+// HTTP disable → TCP LOGIN error=5 → HTTP enable → TCP LOGIN error=0
+func (s *AuthTCPTestSuite) TestAdminDisableEnableAccount() {
+	openid := fmt.Sprintf("tcp_auth_admin_%d", time.Now().UnixNano()%100000000)
+
+	// 首次 TCP 登录建号成功
+	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", s.serverHost, s.serverPort), 10*time.Second)
+	s.NoError(err)
+	s.NotNil(conn)
+	if conn == nil {
+		s.T().Skip("TCP connection failed")
+		return
+	}
+	defer conn.Close()
+	s.socket = conn
+	_, _, p0 := parseTCPResponse(s.doLogin(openid))
+	lr0 := &dnfv1.LoginResponse{}
+	s.NoError(proto.Unmarshal(p0, lr0))
+	s.Equal(int32(0), lr0.Error, "first login should succeed")
+
+	// HTTP 禁用(需登录态拿 token)
+	token := s.LoginAs(openid)
+	s.NotEmpty(token, "Login should return a token")
+	disableResp, err := s.Client.Post("/api/v1/admin/account/disable", map[string]interface{}{
+		"openid": openid,
+	})
+	s.NoError(err)
+	s.Equal(float64(0), disableResp["error"], "disable should succeed")
+
+	// TCP 登录被拒(error=5)
+	_, _, p1 := parseTCPResponse(s.doLogin(openid))
+	lr1 := &dnfv1.LoginResponse{}
+	s.NoError(proto.Unmarshal(p1, lr1))
+	s.Equal(int32(5), lr1.Error, "disabled account should be rejected with error 5")
+
+	// HTTP 启用
+	enableResp, err := s.Client.Post("/api/v1/admin/account/enable", map[string]interface{}{
+		"openid": openid,
+	})
+	s.NoError(err)
+	s.Equal(float64(0), enableResp["error"], "enable should succeed")
+
+	// TCP 登录恢复(error=0)
+	_, _, p2 := parseTCPResponse(s.doLogin(openid))
+	lr2 := &dnfv1.LoginResponse{}
+	s.NoError(proto.Unmarshal(p2, lr2))
+	s.Equal(int32(0), lr2.Error, "enabled account should login again")
+	fmt.Printf("admin disable/enable cycle verified for %s\n", openid)
+}
+
 // doLogin 发送 LOGIN 文本命令并读取响应帧
 func (s *AuthTCPTestSuite) doLogin(openid string) []byte {
 	loginReq := map[string]interface{}{"openid": openid}
