@@ -8,6 +8,7 @@ import (
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/party_service"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
+	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 )
 
 var partySvc *party_service.PartyService
@@ -124,11 +125,37 @@ func ControlGroupHandler(session *network.Session, msg proto.Message) {
 
 	action := uint32(0)
 	var targetGuid, partyGuid uint64
+	var setting *store.PartySetting
 	req, ok := msg.(*dnfv1.ControlGroupRequest)
 	if ok {
 		action = req.Type
 		targetGuid = req.Targetguid
 		partyGuid = req.Partyguid
+		// 2026-09-07 第五十轮: MODIFY_PARTY_SETTING(type=6) 设置字段
+		// 注意: 文本命令 payload 与 proto 字段重合时 protojson 已填充 req,
+		// 故 protobuf 分支同样需要构建 setting
+		if action == 6 {
+			setting = &store.PartySetting{}
+			if req.Partyname != "" {
+				setting.Name = &req.Partyname
+			}
+			if req.Dungeonindex != 0 {
+				u := req.Dungeonindex
+				setting.DungeonIndex = &u
+			}
+			if req.Minlevel != 0 {
+				u := req.Minlevel
+				setting.MinLevel = &u
+			}
+			if req.Maxlevel != 0 {
+				u := req.Maxlevel
+				setting.MaxLevel = &u
+			}
+			if req.Area != 0 {
+				u := req.Area
+				setting.Area = &u
+			}
+		}
 	} else if extras, exists := session.GetAttr("textExtras"); exists {
 		if m, ok := extras.(map[string]interface{}); ok {
 			if v, ok := m["type"].(float64); ok {
@@ -140,6 +167,29 @@ func ControlGroupHandler(session *network.Session, msg proto.Message) {
 			if v, ok := m["partyguid"].(float64); ok {
 				partyGuid = uint64(v)
 			}
+			// 2026-09-07 第五十轮: MODIFY_PARTY_SETTING(type=6) 设置字段
+			if action == 6 {
+				setting = &store.PartySetting{}
+				if v, ok := m["partyname"].(string); ok {
+					setting.Name = &v
+				}
+				if v, ok := m["dungeonindex"].(float64); ok {
+					u := uint32(v)
+					setting.DungeonIndex = &u
+				}
+				if v, ok := m["minlevel"].(float64); ok {
+					u := uint32(v)
+					setting.MinLevel = &u
+				}
+				if v, ok := m["maxlevel"].(float64); ok {
+					u := uint32(v)
+					setting.MaxLevel = &u
+				}
+				if v, ok := m["area"].(float64); ok {
+					u := uint32(v)
+					setting.Area = &u
+				}
+			}
 		}
 	} else {
 		// 发送错误响应
@@ -147,6 +197,19 @@ func ControlGroupHandler(session *network.Session, msg proto.Message) {
 			Error: 1,
 		}
 		session.WriteResponse(10009, 5, errorResp)
+		return
+	}
+
+	// 2026-09-07 第五十轮: MODIFY_PARTY_SETTING 走 UpdatePartySetting(设置字段非 ControlGroup 签名可表达)
+	if action == 6 {
+		err := partySvc.UpdatePartySetting(ctx, session.RoleID(), setting)
+		if err != nil {
+			errorResp := &dnfv1.ControlGroupResponse{Error: 1}
+			session.WriteResponse(10009, 5, errorResp)
+			return
+		}
+		resp := &dnfv1.ControlGroupResponse{Error: 0, Type: action}
+		session.WriteResponse(10009, 5, resp)
 		return
 	}
 

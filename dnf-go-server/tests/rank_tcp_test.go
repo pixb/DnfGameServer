@@ -513,8 +513,39 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	s.Greater(partyGuid, uint64(0), "party guid should be positive")
 	db.Close()
 
-	// B 建立连接并绑定, 踢人但不在队 → error 1
+	// 2026-09-07 第五十轮: MODIFY_PARTY_SETTING:{"type":6,...} → 队长改设置成功
+	msgM, _ := json.Marshal(map[string]interface{}{
+		"type": 6, "partyname": "新队伍", "minlevel": 5, "maxlevel": 80,
+		"dungeonindex": 3, "area": 2,
+	})
+	s.NoError(s.sendTCP(append([]byte("MODIFY_PARTY_SETTING:"), msgM...)), "send MODIFY_PARTY_SETTING")
+	bodyM, _ := s.recvTCP()
+	_, _, pbM := parseTCPResponse(bodyM)
+	cgM := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbM, cgM))
+	s.Equal(int32(0), cgM.Error, "modify party setting should succeed")
+
+	// DB 校验: 设置已更新
+	dbM, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	var pName string
+	var pMin, pMax, pDun, pArea int
+	s.NoError(dbM.QueryRow("SELECT name, min_level, max_level, dungeon_index, area FROM t_party WHERE party_id = ?", partyGuid).Scan(&pName, &pMin, &pMax, &pDun, &pArea))
+	s.Equal("新队伍", pName, "party name updated")
+	s.Equal(5, pMin, "min_level updated")
+	s.Equal(80, pMax, "max_level updated")
+	s.Equal(3, pDun, "dungeon_index updated")
+	s.Equal(2, pArea, "area updated")
+	dbM.Close()
+
+	// B 建立连接并绑定, 非队长改设置 → error 1
 	s.bindRole(guidB)
+	s.NoError(s.sendTCP(append([]byte("MODIFY_PARTY_SETTING:"), msgM...)), "send B MODIFY_PARTY_SETTING")
+	bodyBM, _ := s.recvTCP()
+	_, _, pbBM := parseTCPResponse(bodyBM)
+	cgBM := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbBM, cgBM))
+	s.Equal(int32(1), cgBM.Error, "non-leader modify should fail")
 	msgB, _ := json.Marshal(map[string]interface{}{"type": 3, "targetguid": guidA})
 	s.NoError(s.sendTCP(append([]byte("KICK_OUT_MEMBER:"), msgB...)), "send KICK_OUT_MEMBER")
 	bodyB, _ := s.recvTCP()
@@ -591,7 +622,7 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	s.Equal(0, cnt2, "party should be deleted after disband")
 	db2.Close()
 
-	fmt.Printf("party text commands verified (create/dup/kick/join/dup-join/member-leave/disband)\n")
+	fmt.Printf("party text commands verified (create/dup/modify/nonleader-modify/kick/join/dup-join/member-leave/disband)\n")
 }
 
 // bindRole 建立 TCP 连接并 SELECT_CHARACTER 绑定角色

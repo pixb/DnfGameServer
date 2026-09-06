@@ -231,6 +231,7 @@ type Driver interface {
 	SearchPartyList(ctx context.Context, dungeonIndex, minLevel, maxLevel uint32) ([]*PartyInfo, error)
 	RecommendGroup(ctx context.Context, dungeonIndex uint32) ([]*PartyInfo, error)
 	ControlGroup(ctx context.Context, roleID uint64, action uint32, targetGuid uint64, partyGuid uint64) error
+	UpdatePartySetting(ctx context.Context, roleID uint64, setting *PartySetting) error // 2026-09-07 第五十轮
 	StartMultiPlay(ctx context.Context, roleID uint64, partyGuid uint64) (*StartMultiPlayResult, error)
 	SyncDungeon(ctx context.Context, roleID uint64, stageID, progress uint32) error
 	MultiPlayDungeonEnterComplete(ctx context.Context, roleID uint64, stageID uint32) error

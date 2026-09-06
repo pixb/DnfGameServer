@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"sort"
+	"strings"
 
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
@@ -130,6 +131,54 @@ func (d *DB) ControlGroup(ctx context.Context, roleID uint64, action uint32, tar
 	default:
 		return fmt.Errorf("unknown action: %d", action)
 	}
+}
+
+// UpdatePartySetting 修改队伍设置(2026-09-07 第五十轮): 仅队长可改
+func (d *DB) UpdatePartySetting(ctx context.Context, roleID uint64, setting *store.PartySetting) error {
+	party, err := d.getPartyByRoleID(ctx, roleID)
+	if err != nil {
+		return fmt.Errorf("failed to get party: %w", err)
+	}
+	if party == nil {
+		return fmt.Errorf("party not found")
+	}
+	if party.LeaderGuid != roleID {
+		return fmt.Errorf("not party leader")
+	}
+
+	sets := make([]string, 0, 5)
+	args := make([]interface{}, 0, 5)
+	if setting.Name != nil {
+		sets = append(sets, "name = ?")
+		args = append(args, *setting.Name)
+	}
+	if setting.DungeonIndex != nil {
+		sets = append(sets, "dungeon_index = ?")
+		args = append(args, *setting.DungeonIndex)
+	}
+	if setting.MinLevel != nil {
+		sets = append(sets, "min_level = ?")
+		args = append(args, *setting.MinLevel)
+	}
+	if setting.MaxLevel != nil {
+		sets = append(sets, "max_level = ?")
+		args = append(args, *setting.MaxLevel)
+	}
+	if setting.Area != nil {
+		sets = append(sets, "area = ?")
+		args = append(args, *setting.Area)
+	}
+	if len(sets) == 0 {
+		return nil
+	}
+
+	args = append(args, party.PartyGuid)
+	query := fmt.Sprintf("UPDATE t_party SET %s, update_time = NOW() WHERE party_id = ?", strings.Join(sets, ", "))
+	_, err = d.db.ExecContext(ctx, query, args...)
+	if err != nil {
+		return fmt.Errorf("failed to update party setting: %w", err)
+	}
+	return nil
 }
 
 func (d *DB) StartMultiPlay(ctx context.Context, roleID uint64, partyGuid uint64) (*store.StartMultiPlayResult, error) {

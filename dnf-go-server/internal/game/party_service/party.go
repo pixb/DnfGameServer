@@ -31,6 +31,11 @@ func (s *PartyService) ControlGroup(ctx context.Context, roleID uint64, action u
 	return s.store.ControlGroup(ctx, roleID, action, targetGuid, partyGuid)
 }
 
+// UpdatePartySetting 修改队伍设置(2026-09-07 第五十轮)
+func (s *PartyService) UpdatePartySetting(ctx context.Context, roleID uint64, setting *store.PartySetting) error {
+	return s.store.UpdatePartySetting(ctx, roleID, setting)
+}
+
 // StartMultiPlay 开始多人游戏
 func (s *PartyService) StartMultiPlay(ctx context.Context, roleID uint64, partyGuid uint64) (*store.StartMultiPlayResult, error) {
 	return s.store.StartMultiPlay(ctx, roleID, partyGuid)

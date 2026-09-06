@@ -31,6 +31,16 @@ type StartMultiPlayResult struct {
 	Detail       []*dnfv1.UserMinimumInfo
 }
 
+// PartySetting 队伍设置修改项(2026-09-07 第五十轮: MODIFY_PARTY_SETTING)
+// 指针字段为 nil 表示不修改
+type PartySetting struct {
+	Name         *string
+	DungeonIndex *uint32
+	MinLevel     *uint32
+	MaxLevel     *uint32
+	Area         *uint32
+}
+
 // SearchPartyList 搜索队伍列表
 func (s *Store) SearchPartyList(ctx context.Context, dungeonIndex, minLevel, maxLevel uint32) ([]*PartyInfo, error) {
 	return s.driver.SearchPartyList(ctx, dungeonIndex, minLevel, maxLevel)
@@ -44,6 +54,11 @@ func (s *Store) RecommendGroup(ctx context.Context, dungeonIndex uint32) ([]*Par
 // ControlGroup 控制队伍
 func (s *Store) ControlGroup(ctx context.Context, roleID uint64, action uint32, targetGuid uint64, partyGuid uint64) error {
 	return s.driver.ControlGroup(ctx, roleID, action, targetGuid, partyGuid)
+}
+
+// UpdatePartySetting 修改队伍设置(2026-09-07 第五十轮)
+func (s *Store) UpdatePartySetting(ctx context.Context, roleID uint64, setting *PartySetting) error {
+	return s.driver.UpdatePartySetting(ctx, roleID, setting)
 }
 
 // StartMultiPlay 开始多人游戏
