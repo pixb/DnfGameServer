@@ -317,22 +317,23 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 
 	// 1. 加载背包(grid_index -> 物品)
 	rows, err := tx.QueryContext(ctx, `
-		SELECT id, grid_index, item_id, count FROM bag_item
+		SELECT id, grid_index, item_id, count, bind_type FROM bag_item
 		WHERE role_id = ? AND row_status = 'NORMAL'`, roleID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load bag: %w", err)
 	}
 	type bagRow struct {
-		id     uint64
-		grid   int32
-		itemID int32
-		count  int32
+		id       uint64
+		grid     int32
+		itemID   int32
+		count    int32
+		bindType int32
 	}
 	bag := map[int32]*bagRow{}
 	byItem := map[int32][]*bagRow{}
 	for rows.Next() {
 		var b bagRow
-		if err := rows.Scan(&b.id, &b.grid, &b.itemID, &b.count); err != nil {
+		if err := rows.Scan(&b.id, &b.grid, &b.itemID, &b.count, &b.bindType); err != nil {
 			rows.Close()
 			return nil, fmt.Errorf("failed to scan bag item: %w", err)
 		}
@@ -431,10 +432,19 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 		}
 	}
 
+	// 2026-09-06 第二十三轮: 产物绑定类型继承材料——取被扣减材料中的最大 bind_type
+	// (0=无绑定 < 1=装备绑定 < 2=拾取绑定; 含绑定材料的合成产物保持绑定, 防"洗绑定")
+	productBindType := int32(0)
+	for grid := range deduct {
+		if bag[grid].bindType > productBindType {
+			productBindType = bag[grid].bindType
+		}
+	}
+
 	// 5. 逐次判定合成结果(2026-09-06 第十八轮: 批量 count>1 逐次掷点, 与 mysql 驱动对齐):
 	//    每次独立掷点——成功率(缺省 100 恒成功) -> 成功且池非空按权重随机产出,
 	//    否则固定 result_index/result_count; 失败时 fail_result_index 非空产出保底, 否则无产出。
-	//    产出按 (itemID) 聚合入包; 记录逐次写入。
+	//    产出按 (itemID) 聚合入包(绑定继承材料最大值, 见第二十三轮); 记录逐次写入。
 	type rollOut struct {
 		index   int32
 		count   int32
@@ -490,8 +500,8 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 			gridOf[r.index] = grid
 			result, err := tx.ExecContext(ctx, `
 				INSERT INTO bag_item (created_at, updated_at, row_status, role_id, item_id, grid_index, count, is_equipped, bind_type, durability, enhance_level, attributes)
-				VALUES (?, ?, 'NORMAL', ?, ?, ?, ?, 0, 0, 0, 0, NULL)`,
-				now, now, roleID, r.index, grid, agg[r.index])
+				VALUES (?, ?, 'NORMAL', ?, ?, ?, ?, 0, ?, 0, 0, NULL)`,
+				now, now, roleID, r.index, grid, agg[r.index], productBindType)
 			if err != nil {
 				return nil, fmt.Errorf("failed to create product: %w", err)
 			}
@@ -522,10 +532,11 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 	entries := make([]*store.ItemCombineEntry, 0, len(rolls))
 	for i, r := range rolls {
 		entries = append(entries, &store.ItemCombineEntry{
-			ItemID:  r.index,
-			Count:   r.count,
-			Success: r.success,
-			GUID:    productIDs[i],
+			ItemID:   r.index,
+			Count:    r.count,
+			Success:  r.success,
+			GUID:     productIDs[i],
+			BindType: productBindType,
 		})
 	}
 	if len(rolls) == 1 && rolls[0].index > 0 && rolls[0].count > 0 {

@@ -268,10 +268,11 @@ func (s *APIV1Service) handleMakeItemCombine(c echo.Context) error {
 		}
 		for _, e := range result.Items {
 			items = append(items, map[string]interface{}{
-				"itemId":  e.ItemID,
-				"count":   e.Count,
-				"success": e.Success,
-				"guid":    e.GUID,
+				"itemId":   e.ItemID,
+				"count":    e.Count,
+				"success":  e.Success,
+				"guid":     e.GUID,
+				"bindType": e.BindType,
 			})
 			if guid == 0 && e.GUID > 0 {
 				guid = e.GUID

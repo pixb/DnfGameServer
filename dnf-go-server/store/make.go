@@ -56,6 +56,8 @@ type ItemCombineEntry struct {
 	Count   int32  `json:"count"`
 	Success bool   `json:"success"`
 	GUID    uint64 `json:"guid"`
+	// BindType 产物绑定类型(2026-09-06 第二十三轮: 继承被扣减材料中的最大绑定值)
+	BindType int32 `json:"bindType"`
 }
 
 // ItemDisjointResult 物品分解结果

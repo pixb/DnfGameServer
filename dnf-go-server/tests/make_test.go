@@ -33,6 +33,35 @@ func seedBagItems(roleID uint64, items map[int32]int32) error {
 	return nil
 }
 
+// seedBagItemsWithBinds 清空角色背包并预置材料, 支持按物品模板指定 bind_type(缺省 0)
+// (2026-09-06 第二十三轮: 合成绑定继承测试用; binds 缺省的物品按 0 处理)
+func seedBagItemsWithBinds(roleID uint64, items map[int32]int32, binds map[int32]int32) error {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		return fmt.Errorf("open db: %w", err)
+	}
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	if _, err := db.Exec("DELETE FROM bag_item WHERE role_id = ?", roleID); err != nil {
+		return fmt.Errorf("clear bag: %w", err)
+	}
+	now := time.Now().Unix()
+	for grid, count := range items {
+		bind := int32(0)
+		if b, ok := binds[grid]; ok {
+			bind = b
+		}
+		if _, err := db.Exec(`
+			INSERT INTO bag_item (created_at, updated_at, row_status, role_id, item_id, grid_index, count, is_equipped, bind_type, durability, enhance_level, attributes)
+			VALUES (?, ?, 'NORMAL', ?, ?, ?, ?, 0, ?, 0, 0, NULL)`,
+			now, now, roleID, grid, grid, count, bind); err != nil {
+			return fmt.Errorf("seed bag item: %w", err)
+		}
+	}
+	return nil
+}
+
 // bagItemIDs 取角色背包前 limit 个物品ID(合成/分解接口入参用)
 func bagItemIDs(roleID uint64, limit int) []uint64 {
 	db, err := sql.Open("mysql", testDBDSN)
@@ -170,7 +199,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_comb_batch", "mk_comb_batch2"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_comb_batch", "mk_comb_batch2", "mk_comb_bind_01", "mk_comb_bind_02"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -839,4 +868,71 @@ func (s *MakeTestSuite) TestItemCombineBatchCap() {
 	s.Equal(101, bagItemCount(roleID, 2001))
 	s.Equal(99, bagItemCount(roleID, 1001)+bagItemCount(roleID, 1002))
 	s.Equal(99, countCombineBySuccess(roleID, 1))
+}
+
+// TestItemCombineBindInherit 产物绑定继承材料最大值(recipe 1001: 2001x1+2002x1 -> 1001x1):
+// 材料 2001 bind1 + 2002 bind0 -> 产物 1001 bind1; 响应 bindType 同步返回
+func (s *MakeTestSuite) TestItemCombineBindInherit() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_comb_bind_01", 24)
+	s.Require().NoError(seedBagItemsWithBinds(roleID,
+		map[int32]int32{2001: 1, 2002: 1},
+		map[int32]int32{2001: 1}))
+
+	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1001,
+		"material_items": []map[string]interface{}{
+			{"index": 2001, "count": 1},
+			{"index": 2002, "count": 1},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	// 响应 items 逐条带 bindType
+	items, ok := resp["items"].([]interface{})
+	s.True(ok)
+	s.Len(items, 1)
+	if entry, ok := items[0].(map[string]interface{}); ok {
+		if bt, ok := entry["bindType"].(float64); ok {
+			s.Equal(float64(1), bt)
+		}
+	}
+	// 背包产物 bind_type=1(继承材料最大值), 材料消耗干净
+	s.Equal(1, bagItemCount(roleID, 1001))
+	s.Equal(1, bagItemBindType(roleID, 1001))
+	s.Equal(0, bagItemCount(roleID, 2001))
+	s.Equal(0, bagItemCount(roleID, 2002))
+}
+
+// TestItemCombineBindInheritHighest 拾取绑定(2)材料优先级最高(recipe 1002: 2001x3+2002x3 -> 1002x1, 500金):
+// 材料 2001 bind2 + 2002 bind1 -> 产物 1002 bind2
+func (s *MakeTestSuite) TestItemCombineBindInheritHighest() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_comb_bind_02", 25)
+	s.Require().NoError(setGold(roleID, 1000))
+	s.Require().NoError(seedBagItemsWithBinds(roleID,
+		map[int32]int32{2001: 3, 2002: 3},
+		map[int32]int32{2001: 2, 2002: 1}))
+
+	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1002,
+		"material_items": []map[string]interface{}{
+			{"index": 2001, "count": 3},
+			{"index": 2002, "count": 3},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	s.Equal(1, bagItemCount(roleID, 1002))
+	s.Equal(2, bagItemBindType(roleID, 1002))
+	// 费用按次扣减 500, 余额 500
+	s.Equal(int64(500), getGold(roleID))
+	s.Equal(0, bagItemCount(roleID, 2001))
+	s.Equal(0, bagItemCount(roleID, 2002))
 }
