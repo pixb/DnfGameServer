@@ -154,8 +154,8 @@ func (s *AuthTCPTestSuite) TestTCPLoginEmptyOpenid() {
 	fmt.Printf("TCP login empty openid rejected: error=%d\n", lr.Error)
 }
 
-// TestAdminDisableEnableAccount 封禁管理 API 闭环(2026-09-06 第三十七轮):
-// HTTP disable → TCP LOGIN error=5 → HTTP enable → TCP LOGIN error=0
+// TestAdminDisableEnableAccount 封禁管理 API 闭环(2026-09-06 第三十七轮, 第三十八轮改管理员操作):
+// 管理员 disable → TCP LOGIN error=5 → 管理员 enable → TCP LOGIN error=0
 func (s *AuthTCPTestSuite) TestAdminDisableEnableAccount() {
 	openid := fmt.Sprintf("tcp_auth_admin_%d", time.Now().UnixNano()%100000000)
 
@@ -174,14 +174,26 @@ func (s *AuthTCPTestSuite) TestAdminDisableEnableAccount() {
 	s.NoError(proto.Unmarshal(p0, lr0))
 	s.Equal(int32(0), lr0.Error, "first login should succeed")
 
-	// HTTP 禁用(需登录态拿 token)
-	token := s.LoginAs(openid)
-	s.NotEmpty(token, "Login should return a token")
+	// DB 直插管理员账号(authority=1, status=1)
+	adminOpenid := fmt.Sprintf("tcp_admin_%d", time.Now().UnixNano()%100000000)
+	now := time.Now().Unix()
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+	_, err = db.Exec("INSERT INTO account (created_at, updated_at, row_status, openid, account_key, auth_key, last_login_at, last_login_ip, authority, status) VALUES (?, ?, 0, ?, ?, '', ?, '', 1, 1)",
+		now, now, adminOpenid, fmt.Sprintf("adm_%d", now), now)
+	s.NoError(err, "insert admin account")
+	defer db.Exec("DELETE FROM account WHERE openid = ?", adminOpenid)
+
+	// 管理员登录并禁用目标账号
+	adminToken := s.LoginAs(adminOpenid)
+	s.NotEmpty(adminToken, "admin account should login")
 	disableResp, err := s.Client.Post("/api/v1/admin/account/disable", map[string]interface{}{
 		"openid": openid,
 	})
 	s.NoError(err)
-	s.Equal(float64(0), disableResp["error"], "disable should succeed")
+	s.Equal(float64(0), disableResp["error"], "admin disable should succeed")
 
 	// TCP 登录被拒(error=5)
 	_, _, p1 := parseTCPResponse(s.doLogin(openid))
@@ -189,12 +201,12 @@ func (s *AuthTCPTestSuite) TestAdminDisableEnableAccount() {
 	s.NoError(proto.Unmarshal(p1, lr1))
 	s.Equal(int32(5), lr1.Error, "disabled account should be rejected with error 5")
 
-	// HTTP 启用
+	// 管理员启用
 	enableResp, err := s.Client.Post("/api/v1/admin/account/enable", map[string]interface{}{
 		"openid": openid,
 	})
 	s.NoError(err)
-	s.Equal(float64(0), enableResp["error"], "enable should succeed")
+	s.Equal(float64(0), enableResp["error"], "admin enable should succeed")
 
 	// TCP 登录恢复(error=0)
 	_, _, p2 := parseTCPResponse(s.doLogin(openid))
@@ -202,6 +214,49 @@ func (s *AuthTCPTestSuite) TestAdminDisableEnableAccount() {
 	s.NoError(proto.Unmarshal(p2, lr2))
 	s.Equal(int32(0), lr2.Error, "enabled account should login again")
 	fmt.Printf("admin disable/enable cycle verified for %s\n", openid)
+}
+
+// TestAdminPermissionRequired 管理接口权限校验(2026-09-06 第三十八轮):
+// 普通账号(authority=0)调 disable → 403 code=9; 管理员账号(authority=1)调 → 成功
+func (s *AuthTCPTestSuite) TestAdminPermissionRequired() {
+	target := fmt.Sprintf("tcp_auth_perm_%d", time.Now().UnixNano()%100000000)
+
+	// 普通账号登录(authority=0)
+	token := s.LoginAs(target)
+	s.NotEmpty(token, "normal account should login")
+	// 普通账号调管理接口 → 403 code=9
+	resp, err := s.Client.Post("/api/v1/admin/account/disable", map[string]interface{}{
+		"openid": target,
+	})
+	s.NoError(err)
+	s.Equal(float64(9), resp["code"], "non-admin should be rejected with code 9")
+
+	// DB 直插管理员账号(authority=1, status=1)
+	adminOpenid := fmt.Sprintf("tcp_admin_%d", time.Now().UnixNano()%100000000)
+	now := time.Now().Unix()
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+	_, err = db.Exec("INSERT INTO account (created_at, updated_at, row_status, openid, account_key, auth_key, last_login_at, last_login_ip, authority, status) VALUES (?, ?, 0, ?, ?, '', ?, '', 1, 1)",
+		now, now, adminOpenid, fmt.Sprintf("adm_%d", now), now)
+	s.NoError(err, "insert admin account")
+	defer db.Exec("DELETE FROM account WHERE openid = ?", adminOpenid)
+
+	// 管理员登录并 disable/enable 目标账号
+	adminToken := s.LoginAs(adminOpenid)
+	s.NotEmpty(adminToken, "admin account should login")
+	disableResp, err := s.Client.Post("/api/v1/admin/account/disable", map[string]interface{}{
+		"openid": target,
+	})
+	s.NoError(err)
+	s.Equal(float64(0), disableResp["error"], "admin disable should succeed")
+	enableResp, err := s.Client.Post("/api/v1/admin/account/enable", map[string]interface{}{
+		"openid": target,
+	})
+	s.NoError(err)
+	s.Equal(float64(0), enableResp["error"], "admin enable should succeed")
+	fmt.Printf("admin permission check passed (non-admin code=9, admin ok)\n")
 }
 
 // doLogin 发送 LOGIN 文本命令并读取响应帧

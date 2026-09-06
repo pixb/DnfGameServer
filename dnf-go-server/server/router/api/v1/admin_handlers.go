@@ -19,10 +19,17 @@ func (s *APIV1Service) handleAdminEnableAccount(c echo.Context) error {
 }
 
 // handleAdminSetAccountStatus 设置账号状态(1=正常, 0=禁用)
+// 2026-09-06 第三十八轮: 管理员权限校验(账号 Authority>=1)
 func (s *APIV1Service) handleAdminSetAccountStatus(c echo.Context, status int32) error {
 	claims := getUserClaims(c)
 	if claims == nil {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	// 管理员校验: 账号 Authority >= 1
+	operator, err := s.Store.GetAccount(c.Request().Context(), &store.FindAccount{FindBase: store.FindBase{ID: &claims.UserID}})
+	if err != nil || operator == nil || operator.Authority < 1 {
+		return c.JSON(http.StatusForbidden, map[string]interface{}{"code": 9, "message": "admin permission required"})
 	}
 
 	req := decodeJSONBody(c)
@@ -36,12 +43,12 @@ func (s *APIV1Service) handleAdminSetAccountStatus(c echo.Context, status int32)
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "openid required"})
 	}
 
-	account, err := s.Store.GetAccount(c.Request().Context(), &store.FindAccount{OpenID: &openid})
+	target, err := s.Store.GetAccount(c.Request().Context(), &store.FindAccount{OpenID: &openid})
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": "account not found"})
 	}
 
-	if _, err := s.Store.UpdateAccount(c.Request().Context(), &store.UpdateAccount{ID: account.ID, Status: &status}); err != nil {
+	if _, err := s.Store.UpdateAccount(c.Request().Context(), &store.UpdateAccount{ID: target.ID, Status: &status}); err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3, "message": err.Error()})
 	}
 
