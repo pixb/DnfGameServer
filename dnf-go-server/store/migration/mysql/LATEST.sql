@@ -931,6 +931,7 @@ CREATE TABLE IF NOT EXISTS t_make_disjoint (
     item_index INT UNSIGNED NOT NULL COMMENT '物品模板ID(对应 bag_item.item_id)',
     material_index INT UNSIGNED NOT NULL COMMENT '分解材料模板ID',
     material_count INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '单件分解产出数量',
+    material_list TEXT NULL COMMENT '多材料产出(JSON:[{material_index,material_count,bind_type}],空=用旧列)',
     enabled TINYINT NOT NULL DEFAULT 1 COMMENT '是否启用(0=停用)',
     create_time BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()) COMMENT '创建时间',
     UNIQUE KEY uk_make_disjoint_item (item_index)

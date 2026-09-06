@@ -532,8 +532,8 @@ func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*
 
 	now := time.Now().Unix()
 
-	// 1. 逐件校验归属 -> 查分解配置 -> 移除, 产出按材料模板聚合
-	materials := map[int32]int32{} // 材料模板ID -> 数量
+	// 1. 逐件校验归属 -> 查分解配置 -> 移除, 产出按 (材料模板, 绑定类型) 聚合
+	materials := map[[2]int32]int32{} // [材料模板ID, 绑定类型] -> 数量
 	removedGuids := make([]uint64, 0, len(guids))
 	for _, g := range guids {
 		var itemID int32
@@ -546,10 +546,11 @@ func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*
 			return nil, fmt.Errorf("failed to check bag item: %w", err)
 		}
 		var matIndex, matCount int32
+		var materialList sql.NullString
 		var enabled int
 		err = tx.QueryRowContext(ctx, `
-			SELECT material_index, material_count, enabled FROM t_make_disjoint WHERE item_index = ?`, itemID).
-			Scan(&matIndex, &matCount, &enabled)
+			SELECT material_index, material_count, material_list, enabled FROM t_make_disjoint WHERE item_index = ?`, itemID).
+			Scan(&matIndex, &matCount, &materialList, &enabled)
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("物品无分解配置: %d", itemID)
 		}
@@ -559,7 +560,24 @@ func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*
 		if enabled == 0 {
 			return nil, fmt.Errorf("分解配置已停用: %d", itemID)
 		}
-		materials[matIndex] += matCount
+		// 2026-09-06 第十六轮: material_list(JSON 多材料+bind_type)非空优先, 空/NULL 回退旧列
+		var outs []disjointOutput
+		if materialList.Valid && materialList.String != "" && materialList.String != "null" {
+			if err := json.Unmarshal([]byte(materialList.String), &outs); err != nil {
+				return nil, fmt.Errorf("failed to parse disjoint outputs: %w", err)
+			}
+		} else {
+			outs = []disjointOutput{{MaterialIndex: matIndex, MaterialCount: matCount}}
+		}
+		if len(outs) == 0 {
+			return nil, fmt.Errorf("分解配置产出为空: %d", itemID)
+		}
+		for _, o := range outs {
+			if o.MaterialIndex <= 0 || o.MaterialCount <= 0 {
+				continue
+			}
+			materials[[2]int32{o.MaterialIndex, o.BindType}] += o.MaterialCount
+		}
 		if _, err := tx.ExecContext(ctx, `
 			DELETE FROM bag_item WHERE id = ? AND role_id = ?`, g, roleID); err != nil {
 			return nil, fmt.Errorf("failed to remove item: %w", err)
@@ -567,40 +585,73 @@ func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*
 		removedGuids = append(removedGuids, g)
 	}
 
-	// 2. 分解材料入包(按模板聚合, 每个模板一个格子)
-	templates := make([]int32, 0, len(materials))
-	for t := range materials {
-		templates = append(templates, t)
+	// 2. 分解材料入包: 按 (材料模板, 绑定类型) 组合各占一格
+	type aggOutput struct {
+		index    int32
+		count    int32
+		bindType int32
 	}
-	sort.Slice(templates, func(i, j int) bool { return templates[i] < templates[j] })
+	var aggs []aggOutput
+	for key, cnt := range materials {
+		aggs = append(aggs, aggOutput{index: key[0], count: cnt, bindType: key[1]})
+	}
+	sort.Slice(aggs, func(i, j int) bool {
+		if aggs[i].index != aggs[j].index {
+			return aggs[i].index < aggs[j].index
+		}
+		return aggs[i].bindType < aggs[j].bindType
+	})
 
 	var maxGrid int32
 	_ = tx.QueryRowContext(ctx, `
 		SELECT COALESCE(MAX(grid_index), 0) FROM bag_item WHERE role_id = ?`, roleID).Scan(&maxGrid)
-	materialItems := make([]*dnfv1.StackableItem, 0, len(templates))
-	for _, t := range templates {
-		cnt := materials[t]
+	rewardsCount := map[int32]int32{} // 模板ID -> 数量(响应聚合, proto 无 bind_type)
+	for _, a := range aggs {
 		maxGrid++
 		if _, err := tx.ExecContext(ctx, `
 			INSERT INTO bag_item (created_at, updated_at, row_status, role_id, item_id, grid_index, count, is_equipped, bind_type, durability, enhance_level, attributes)
-			VALUES (?, ?, 'NORMAL', ?, ?, ?, ?, 0, 0, 0, 0, NULL)`,
-			now, now, roleID, t, maxGrid, cnt); err != nil {
+			VALUES (?, ?, 'NORMAL', ?, ?, ?, ?, 0, ?, 0, 0, NULL)`,
+			now, now, roleID, a.index, maxGrid, a.count, a.bindType); err != nil {
 			return nil, fmt.Errorf("failed to create disjoint material: %w", err)
 		}
-		materialItems = append(materialItems, &dnfv1.StackableItem{
-			Index: uint32(t),
-			Count: uint32(cnt),
-		})
+		rewardsCount[a.index] += a.count
 	}
 
-	// 3. 分解记录(material_list 写聚合 JSON)
-	materialJSON, _ := json.Marshal(materialItems)
+	// 3. 分解记录(material_list 写聚合 JSON, 含 bind_type)
+	type disjointRecordItem struct {
+		MaterialIndex int32 `json:"material_index"`
+		MaterialCount int32 `json:"material_count"`
+		BindType      int32 `json:"bind_type"`
+	}
+	recItems := make([]disjointRecordItem, 0, len(aggs))
+	for _, a := range aggs {
+		recItems = append(recItems, disjointRecordItem{
+			MaterialIndex: a.index,
+			MaterialCount: a.count,
+			BindType:      a.bindType,
+		})
+	}
+	materialJSON, _ := json.Marshal(recItems)
 	_, err = tx.ExecContext(ctx, `
 		INSERT INTO t_item_disjoint (role_id, equip_guids, material_list, create_time)
 		VALUES (?, ?, ?, ?)
 	`, roleID, fmt.Sprintf("%v", removedGuids), string(materialJSON), now)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert item disjoint record: %w", err)
+	}
+
+	// 4. 响应奖励(按模板聚合数量)
+	var templates []int32
+	for t := range rewardsCount {
+		templates = append(templates, t)
+	}
+	sort.Slice(templates, func(i, j int) bool { return templates[i] < templates[j] })
+	materialItems := make([]*dnfv1.StackableItem, 0, len(templates))
+	for _, t := range templates {
+		materialItems = append(materialItems, &dnfv1.StackableItem{
+			Index: uint32(t),
+			Count: uint32(rewardsCount[t]),
+		})
 	}
 
 	rewards := &dnfv1.PT_CONTENTS_REWARD_INFO{
@@ -747,6 +798,14 @@ type recipeOutput struct {
 	ResultIndex int32 `json:"result_index"`
 	ResultCount int32 `json:"result_count"`
 	Weight      int32 `json:"weight"`
+}
+
+// disjointOutput 分解产出条目(t_make_disjoint.material_list JSON)
+// 2026-09-06 第十六轮: 多材料产出 + 绑定类型(bind_type 缺省 0)
+type disjointOutput struct {
+	MaterialIndex int32 `json:"material_index"`
+	MaterialCount int32 `json:"material_count"`
+	BindType      int32 `json:"bind_type"`
 }
 
 // pickRecipeOutput 按权重随机选一个产出

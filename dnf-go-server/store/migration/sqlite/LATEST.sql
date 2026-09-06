@@ -807,6 +807,7 @@ CREATE TABLE IF NOT EXISTS t_make_disjoint (
     item_index INTEGER NOT NULL,
     material_index INTEGER NOT NULL,
     material_count INTEGER NOT NULL DEFAULT 0,
+    material_list TEXT,
     enabled INTEGER NOT NULL DEFAULT 1,
     create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
 );

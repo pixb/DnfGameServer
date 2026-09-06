@@ -170,7 +170,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -606,6 +606,56 @@ func (s *MakeTestSuite) TestItemDisjointByConfig() {
 	s.Equal(35, bagItemCount(roleID, 2013000000))
 	s.Equal(0, bagItemCount(roleID, 1001))
 	s.Equal(0, bagItemCount(roleID, 1002))
+	s.Equal(1, countDisjointRecords(roleID))
+}
+
+// TestItemDisjointMultiMaterial 多材料产出(3001: 2013000000x3无绑定 + 2013000001x2装备绑定)
+// 分解 1 行: 两种材料各按配置入包, bind_type 正确, 原物品清除
+func (s *MakeTestSuite) TestItemDisjointMultiMaterial() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_disj_04", 20)
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{3001: 1}))
+	ids := bagItemIDs(roleID, 1)
+	s.Require().Len(ids, 1)
+
+	resp, err := s.Client.Post("/api/v1/make/item/disjoint", map[string]interface{}{
+		"guids": ids,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	// 2013000000x3(无绑定) + 2013000001x2(装备绑定)
+	s.Equal(3, bagItemCount(roleID, 2013000000))
+	s.Equal(0, bagItemBindType(roleID, 2013000000))
+	s.Equal(2, bagItemCount(roleID, 2013000001))
+	s.Equal(1, bagItemBindType(roleID, 2013000001))
+	// 原物品已移除, 记录 1 条
+	s.Equal(0, bagItemCount(roleID, 3001))
+	s.Equal(1, countDisjointRecords(roleID))
+}
+
+// TestItemDisjointLegacyColumn 兼容回退: 3002 配置 material_list 为 NULL, 走旧列单材料产出
+func (s *MakeTestSuite) TestItemDisjointLegacyColumn() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_disj_05", 21)
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{3002: 1}))
+	ids := bagItemIDs(roleID, 1)
+	s.Require().Len(ids, 1)
+
+	resp, err := s.Client.Post("/api/v1/make/item/disjoint", map[string]interface{}{
+		"guids": ids,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	// 旧列 2013000000x5 生效, bind_type 默认 0
+	s.Equal(5, bagItemCount(roleID, 2013000000))
+	s.Equal(0, bagItemBindType(roleID, 2013000000))
+	s.Equal(0, bagItemCount(roleID, 3002))
 	s.Equal(1, countDisjointRecords(roleID))
 }
 

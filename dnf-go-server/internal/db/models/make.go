@@ -75,11 +75,13 @@ type MakeRecipe struct {
 
 // MakeDisjoint 分解产出配置 (对应 t_make_disjoint 表)
 // 2026-09-06 第十三轮: ItemDisjoint 深化为配置驱动(物品模板 -> 分解材料/数量)
+// 2026-09-06 第十六轮: 增加 material_list(JSON 多材料产出+bind_type), 非空优先, 空回退旧列
 type MakeDisjoint struct {
 	ID            uint64 `db:"id"`
 	ItemIndex     int    `db:"item_index"`
 	MaterialIndex int    `db:"material_index"`
 	MaterialCount int    `db:"material_count"`
+	MaterialList  string `db:"material_list"`
 	Enabled       int    `db:"enabled"`
 }
 
