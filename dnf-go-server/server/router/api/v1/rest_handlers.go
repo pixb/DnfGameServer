@@ -10,6 +10,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
+	rolelevel "github.com/pixb/DnfGameServer/dnf-go-server/internal/game/role"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"github.com/pixb/DnfGameServer/dnf-go-server/server/auth"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
@@ -684,11 +685,11 @@ func (s *APIV1Service) handleCompleteQuest(c echo.Context) error {
 			expGain := int64(role.Level * 100)
 			goldGain := int32(role.Level * 50)
 
-			newExp := role.Exp + expGain
-			s.Store.UpdateRole(c.Request().Context(), &store.UpdateRole{
-				ID:  role.ID,
-				Exp: &newExp,
-			})
+			// 2026-09-07 第四十五轮: 升级机制(经验→等级+SP派发)
+			lvResult, lvErr := rolelevel.AddRoleExp(c.Request().Context(), s.Store, role.ID, expGain)
+			if lvErr != nil {
+				return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": lvErr.Error()})
+			}
 
 			currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), role.ID)
 			currency.Gold += int64(goldGain)
@@ -698,6 +699,10 @@ func (s *APIV1Service) handleCompleteQuest(c echo.Context) error {
 				"error":    0,
 				"expGain":  expGain,
 				"goldGain": goldGain,
+				"levelUp":  lvResult.LevelUps,
+				"level":    lvResult.NewLevel,
+				"exp":      lvResult.NewExp,
+				"sp":       lvResult.NewSP,
 			})
 		}
 	}
@@ -744,11 +749,11 @@ func (s *APIV1Service) handleGetQuestReward(c echo.Context) error {
 			expGain := int64(role.Level * 100)
 			goldGain := int32(role.Level * 50)
 
-			newExp := role.Exp + expGain
-			s.Store.UpdateRole(c.Request().Context(), &store.UpdateRole{
-				ID:  role.ID,
-				Exp: &newExp,
-			})
+			// 2026-09-07 第四十五轮: 升级机制(经验→等级+SP派发)
+			lvResult, lvErr := rolelevel.AddRoleExp(c.Request().Context(), s.Store, role.ID, expGain)
+			if lvErr != nil {
+				return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": lvErr.Error()})
+			}
 
 			currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), role.ID)
 			currency.Gold += int64(goldGain)
@@ -770,6 +775,10 @@ func (s *APIV1Service) handleGetQuestReward(c echo.Context) error {
 						{"type": "exp", "count": expGain},
 						{"type": "gold", "count": goldGain},
 					},
+					"levelUp": lvResult.LevelUps,
+					"level":   lvResult.NewLevel,
+					"exp":     lvResult.NewExp,
+					"sp":      lvResult.NewSP,
 				},
 			})
 		}
