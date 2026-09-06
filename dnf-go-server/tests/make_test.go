@@ -199,7 +199,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_comb_batch", "mk_comb_batch2", "mk_comb_bind_01", "mk_comb_bind_02"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_comb_batch", "mk_comb_batch2", "mk_comb_bind_01", "mk_comb_bind_02", "mk_disj_06", "mk_disj_07"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -708,6 +708,57 @@ func (s *MakeTestSuite) TestItemDisjointNoConfig() {
 	s.Equal(1, bagItemCount(roleID, 9999))
 	s.Equal(0, countDisjointRecords(roleID))
 	s.Equal(0, bagItemCount(roleID, 2013000000))
+}
+
+// TestItemDisjointBindInherit 分解产物绑定继承材料(配置 1: 物品1 -> 2013000000x10 bind0):
+// 材料 物品1 bind2 -> 产物 2013000000 bind2(材料绑定最高, 防"分解洗绑定")
+func (s *MakeTestSuite) TestItemDisjointBindInherit() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_disj_06", 26)
+	s.Require().NoError(seedBagItemsWithBinds(roleID,
+		map[int32]int32{1: 1},
+		map[int32]int32{1: 2}))
+	ids := bagItemIDs(roleID, 1)
+	s.Require().Len(ids, 1)
+
+	resp, err := s.Client.Post("/api/v1/make/item/disjoint", map[string]interface{}{
+		"guids": ids,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	s.Equal(10, bagItemCount(roleID, 2013000000))
+	s.Equal(2, bagItemBindType(roleID, 2013000000))
+	s.Equal(0, bagItemCount(roleID, 1))
+	s.Equal(1, countDisjointRecords(roleID))
+}
+
+// TestItemDisjointBindInheritMixed 分解多材料配置+绑定继承(3001: 2013000000x3 bind0 + 2013000001x2 bind1):
+// 材料 3001 bind1 -> 两产物绑定均抬升为 1(配置为下限)
+func (s *MakeTestSuite) TestItemDisjointBindInheritMixed() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_disj_07", 27)
+	s.Require().NoError(seedBagItemsWithBinds(roleID,
+		map[int32]int32{3001: 1},
+		map[int32]int32{3001: 1}))
+	ids := bagItemIDs(roleID, 1)
+	s.Require().Len(ids, 1)
+
+	resp, err := s.Client.Post("/api/v1/make/item/disjoint", map[string]interface{}{
+		"guids": ids,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	// 2013000000: max(材料1, 配置0)=1; 2013000001: max(材料1, 配置1)=1
+	s.Equal(3, bagItemCount(roleID, 2013000000))
+	s.Equal(1, bagItemBindType(roleID, 2013000000))
+	s.Equal(2, bagItemCount(roleID, 2013000001))
+	s.Equal(1, bagItemBindType(roleID, 2013000001))
+	s.Equal(0, bagItemCount(roleID, 3001))
+	s.Equal(1, countDisjointRecords(roleID))
 }
 
 func (s *MakeTestSuite) TestCardCompose() {

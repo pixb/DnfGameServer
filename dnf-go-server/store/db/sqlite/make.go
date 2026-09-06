@@ -583,9 +583,9 @@ func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*
 	materials := map[[2]int32]int32{} // [材料模板ID, 绑定类型] -> 数量
 	removedGuids := make([]uint64, 0, len(guids))
 	for _, g := range guids {
-		var itemID int32
+		var itemID, itemBind int32
 		err := tx.QueryRowContext(ctx, `
-			SELECT item_id FROM bag_item WHERE id = ? AND role_id = ? AND row_status = 'NORMAL'`, g, roleID).Scan(&itemID)
+			SELECT item_id, bind_type FROM bag_item WHERE id = ? AND role_id = ? AND row_status = 'NORMAL'`, g, roleID).Scan(&itemID, &itemBind)
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("背包物品不存在: %d", g)
 		}
@@ -623,7 +623,13 @@ func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*
 			if o.MaterialIndex <= 0 || o.MaterialCount <= 0 {
 				continue
 			}
-			materials[[2]int32{o.MaterialIndex, o.BindType}] += o.MaterialCount
+			// 2026-09-06 第二十四轮: 产物绑定继承材料——max(材料绑定, 配置绑定)
+			// (配置指定绑定为下限; 材料绑定更高时保持, 防"分解洗绑定")
+			bind := o.BindType
+			if itemBind > bind {
+				bind = itemBind
+			}
+			materials[[2]int32{o.MaterialIndex, bind}] += o.MaterialCount
 		}
 		if _, err := tx.ExecContext(ctx, `
 			DELETE FROM bag_item WHERE id = ? AND role_id = ?`, g, roleID); err != nil {
