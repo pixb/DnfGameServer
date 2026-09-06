@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"database/sql"
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
@@ -98,6 +99,94 @@ func (s *RankTCPTestSuite) TestTCPQueryMyRank() {
 	s.GreaterOrEqual(rr.Total, int32(1), "total should be >= 1 (roster has roles)")
 	s.GreaterOrEqual(rr.Rank, int32(1), "bound role should have real rank >= 1")
 	fmt.Printf("Rank response rank_type=%d rank=%d total=%d\n", rr.RankType, rr.Rank, rr.Total)
+}
+
+// TestTCPQueryFriendRank 查询好友排名(2026-09-06 第三十四轮):
+// 建 A/B 两角色, 直插好友关系(A→B), B 等级更高 → A 在好友圈排第 2, total=2
+func (s *RankTCPTestSuite) TestTCPQueryFriendRank() {
+	// 建好友关系双方角色(独立 openid)
+	ownerOpenid := fmt.Sprintf("frank_owner_%d", time.Now().UnixNano()%100000000)
+	friendOpenid := fmt.Sprintf("frank_friend_%d", time.Now().UnixNano()%100000000)
+	ownerGuid := s.createCharacter(ownerOpenid)
+	friendGuid := s.createCharacter(friendOpenid)
+	s.Greater(ownerGuid, float64(0), "owner charGuid should be positive")
+	s.Greater(friendGuid, float64(0), "friend charGuid should be positive")
+
+	// 好友等级提升到 10(DB 直改, 模拟高等级好友)
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+	_, err = db.Exec("UPDATE role SET level = 10 WHERE id = ?", uint64(friendGuid))
+	s.NoError(err, "update friend level")
+
+	// 直插好友关系 A→B
+	now := time.Now().Unix()
+	_, err = db.Exec("INSERT INTO friend (created_at, updated_at, row_status, role_id, friend_id, friend_name, intimacy, friend_group) VALUES (?, ?, 0, ?, ?, ?, 0, '')",
+		now, now, uint64(ownerGuid), uint64(friendGuid), fmt.Sprintf("FR_%012d", time.Now().UnixNano()%1000000000000))
+	s.NoError(err, "insert friend relation")
+	defer db.Exec("DELETE FROM friend WHERE role_id = ?", uint64(ownerGuid))
+
+	// TCP 绑定 owner 并查好友榜
+	s.bindAndQueryRank(ownerGuid, "QUERY_FRIEND_RANK", 5, func(rr *dnfv1.RankResponse) {
+		s.Equal(int32(2), rr.Total, "friend circle total should be 2 (owner + friend)")
+		s.Equal(int32(2), rr.Rank, "owner (level 1) should rank 2 behind friend (level 10)")
+	})
+}
+
+// createCharacter 通过 HTTP 建角并返回 charGuid
+func (s *RankTCPTestSuite) createCharacter(openid string) float64 {
+	token := s.LoginAs(openid)
+	s.NotEmpty(token, "Login should return a token")
+	createResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": fmt.Sprintf("FR_%012d", time.Now().UnixNano()%1000000000000),
+		"job":  1,
+	})
+	s.NoError(err)
+	s.AssertSuccess(createResp)
+	guid, ok := createResp["data"].(map[string]interface{})["charGuid"].(float64)
+	s.True(ok, "created character should have charGuid")
+	return guid
+}
+
+// bindAndQueryRank TCP 绑定角色并查询指定榜, 断言响应字段
+func (s *RankTCPTestSuite) bindAndQueryRank(charGuid float64, cmd string, respCmd uint16, assert func(*dnfv1.RankResponse)) {
+	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", s.serverHost, s.serverPort), 10*time.Second)
+	s.NoError(err)
+	s.NotNil(conn)
+	if conn == nil {
+		s.T().Skip("TCP connection failed")
+		return
+	}
+	defer conn.Close()
+	s.socket = conn
+
+	// SELECT_CHARACTER 绑定角色
+	selectJSON, _ := json.Marshal(map[string]interface{}{"uid": charGuid})
+	selMsg := append([]byte("SELECT_CHARACTER:"), selectJSON...)
+	s.NoError(s.sendTCP(selMsg), "send SELECT_CHARACTER")
+	selResp, err := s.recvTCP()
+	s.NoError(err)
+	s.NotNil(selResp)
+	selModule, selCmd, _ := parseTCPResponse(selResp)
+	s.Equal(uint16(10000), selModule, "select response module should be 10000")
+	s.Equal(uint16(7), selCmd, "select response cmd should be 7")
+
+	// 发送榜单查询
+	payloadJSON, _ := json.Marshal(map[string]interface{}{"rank_type": 1})
+	msg := append([]byte(cmd+":"), payloadJSON...)
+	s.NoError(s.sendTCP(msg), "send "+cmd)
+	body, err := s.recvTCP()
+	s.NoError(err)
+	s.NotNil(body)
+	module, rcmd, payloadBytes := parseTCPResponse(body)
+	s.Equal(uint16(10501), module, "response module should be 10501")
+	s.Equal(respCmd, rcmd, "response cmd should be %d", respCmd)
+	rr := &dnfv1.RankResponse{}
+	s.NoError(proto.Unmarshal(payloadBytes, rr), "unmarshal RankResponse")
+	s.Equal(int32(1), rr.RankType, "rank_type should be echoed as 1")
+	assert(rr)
+	fmt.Printf("%s response rank=%d total=%d\n", cmd, rr.Rank, rr.Total)
 }
 
 // sendTCP 发送文本命令(2字节大端长度 + 消息体)

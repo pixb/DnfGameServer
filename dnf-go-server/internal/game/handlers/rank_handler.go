@@ -64,6 +64,50 @@ func rankPosition(roleID uint64) (rank, total int) {
 	return 0, len(roles)
 }
 
+// friendRankPosition 查询角色在好友榜的位置(2026-09-06 第三十四轮):
+// 好友(store.Friend) + 自己 按等级降序+经验降序, 返回自己在好友圈中的排名与总数
+func friendRankPosition(roleID uint64) (rank, total int) {
+	if rankStore == nil {
+		return 0, 0
+	}
+	ctx := context.Background()
+	friends, err := rankStore.ListFriends(ctx, roleID)
+	if err != nil {
+		logger.Error("rank load friends failed", logger.ErrorField(err))
+		return 0, 0
+	}
+	ids := map[uint64]bool{roleID: true}
+	for _, f := range friends {
+		if f.FriendID > 0 {
+			ids[f.FriendID] = true
+		}
+	}
+	roles, err := rankStore.ListRoles(ctx, &store.FindRole{})
+	if err != nil {
+		logger.Error("rank load roles failed", logger.ErrorField(err))
+		return 0, 0
+	}
+	var circle []*store.Role
+	for _, r := range roles {
+		if ids[r.ID] {
+			circle = append(circle, r)
+		}
+	}
+	sort.SliceStable(circle, func(i, j int) bool {
+		if circle[i].Level != circle[j].Level {
+			return circle[i].Level > circle[j].Level
+		}
+		return circle[i].Exp > circle[j].Exp
+	})
+	for i, r := range circle {
+		if r.ID == roleID {
+			return i + 1, len(circle)
+		}
+	}
+	// 自己不在角色表(异常): 排在末位
+	return len(circle) + 1, len(circle) + 1
+}
+
 // writeRankResp 发送带数据的排名响应(2026-09-06 第三十轮: RankResponse 携带 rank/total/rank_type)
 func writeRankResp(session *network.Session, respCmd uint16, name string, rankType, rank, total int32) {
 	if err := session.WriteResponse(10501, respCmd, &dnfv1.RankResponse{
@@ -133,8 +177,8 @@ func QueryFriendRankHandler(session *network.Session, msg proto.Message) {
 		logger.Int64("session_id", session.ID()),
 		logger.Uint32("rank_type", rankTypeFromPayload(session)),
 	)
-	// 好友榜单暂无好友关系数据源, 回退到个人等级榜位置
-	rank, total := rankPosition(session.RoleID())
+	// 好友榜单: 好友(Friend 表)+自己按等级降序, 返回自己位置(2026-09-06 第三十四轮实化)
+	rank, total := friendRankPosition(session.RoleID())
 	logger.Info("query friend rank result",
 		logger.Int64("session_id", session.ID()),
 		logger.Int("rank", rank),
