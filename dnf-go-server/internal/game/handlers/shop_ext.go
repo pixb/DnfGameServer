@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
@@ -118,6 +119,7 @@ func CancelShopOrderHandler(session *network.Session, msg proto.Message) {
 
 // AuctionEndHandler 处理拍卖结算请求 (cmd=112)
 // 2026-09-06 由 mock 接入 store: 到期物品结算(有出价者→售出, 无→过期)
+// 2026-09-06 实化结算副作用: 售出→买家收物品邮件+卖家净收益入账(扣5%手续费); 流拍→卖家收回物品邮件
 func AuctionEndHandler(session *network.Session, msg proto.Message) {
 	req, ok := msg.(*dnfv1.Empty)
 	if !ok {
@@ -134,7 +136,15 @@ func AuctionEndHandler(session *network.Session, msg proto.Message) {
 	}
 
 	if shopStore != nil {
+		// 支持文本命令附加字段 seller_id 指定结算对象(测试/运营辅助), 否则用当前会话角色
 		roleID := session.RoleID()
+		if extras, exists := session.GetAttr("textExtras"); exists {
+			if m, ok := extras.(map[string]interface{}); ok {
+				if v, ok := m["seller_id"].(float64); ok {
+					roleID = uint64(v)
+				}
+			}
+		}
 		items, err := shopStore.ListAuctionItems(context.Background(), &store.FindAuctionItem{
 			SellerID: &roleID,
 		})
@@ -163,6 +173,16 @@ func AuctionEndHandler(session *network.Session, msg proto.Message) {
 				resp.Error = 1
 				break
 			}
+
+			// 结算副作用
+			if err := settleAuctionTransfer(it, status); err != nil {
+				logger.Error("failed to transfer auction proceeds",
+					logger.ErrorField(err), logger.Int64("session_id", session.ID()),
+					logger.Uint64("auction_id", it.ID))
+				resp.Error = 1
+				break
+			}
+
 			if resp.AuctionId == 0 {
 				resp.AuctionId = int64(it.ID)
 			}
@@ -171,6 +191,54 @@ func AuctionEndHandler(session *network.Session, msg proto.Message) {
 
 	_ = req
 	writeShopExtResponse(session, 113, resp)
+}
+
+// settleAuctionTransfer 结算转账: 售出→买家收物品邮件+卖家净收益入账(扣5%手续费); 流拍→物品退回卖家邮件
+func settleAuctionTransfer(it *store.AuctionItem, status store.AuctionStatus) error {
+	attachments := fmt.Sprintf(`{"item_id":%d,"count":%d}`, it.ItemID, it.Count)
+	if status == store.AuctionStatusSold && it.BidderID > 0 {
+		// 1. 买家收物品邮件
+		if _, err := shopStore.CreateMail(context.Background(), &store.Mail{
+			SenderID:    it.SellerID,
+			SenderName:  it.SellerName,
+			ReceiverID:  it.BidderID,
+			Title:       "拍卖成交",
+			Content:     "您在拍卖行拍得的物品已到账,请查收附件。",
+			Attachments: attachments,
+			ExpireAt:    time.Now().Add(30 * 24 * time.Hour).Unix(),
+		}); err != nil {
+			return fmt.Errorf("create buyer mail: %w", err)
+		}
+		// 2. 卖家净收益入账(成交价扣 5% 手续费)
+		fee := it.BidPrice * 5 / 100
+		cur, err := shopStore.GetRoleCurrency(context.Background(), it.SellerID)
+		if err != nil {
+			cur = &store.RoleCurrency{RoleID: it.SellerID}
+		}
+		if err := shopStore.UpdateRoleCurrency(context.Background(), &store.RoleCurrency{
+			RoleID:     it.SellerID,
+			Gold:       cur.Gold + it.BidPrice - fee,
+			Coin:       cur.Coin,
+			Fatigue:    cur.Fatigue,
+			MaxFatigue: cur.MaxFatigue,
+		}); err != nil {
+			return fmt.Errorf("update seller currency: %w", err)
+		}
+		return nil
+	}
+	// 流拍: 物品退回卖家邮件
+	if _, err := shopStore.CreateMail(context.Background(), &store.Mail{
+		SenderID:    it.SellerID,
+		SenderName:  "拍卖行",
+		ReceiverID:  it.SellerID,
+		Title:       "拍卖流拍退回",
+		Content:     "您的拍卖物品因无人出价已退回,请查收附件。",
+		Attachments: attachments,
+		ExpireAt:    time.Now().Add(30 * 24 * time.Hour).Unix(),
+	}); err != nil {
+		return fmt.Errorf("create seller return mail: %w", err)
+	}
+	return nil
 }
 
 // AuctionFeeHandler 处理拍卖手续费请求 (cmd=114)
