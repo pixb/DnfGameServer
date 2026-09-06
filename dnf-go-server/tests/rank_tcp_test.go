@@ -38,7 +38,8 @@ func (s *RankTCPTestSuite) TearDownSuite() {
 	}
 }
 
-// TestTCPQueryMyRank 查询我的排名: 响应应携带 rank_type/rank/total
+// TestTCPQueryMyRank 查询我的排名(2026-09-06 第三十一轮增强):
+// 建角 → TCP SELECT_CHARACTER 绑定角色 → QUERY_MY_RANK 应返回真实排名 rank≥1
 func (s *RankTCPTestSuite) TestTCPQueryMyRank() {
 	// 建一个角色保证榜单有数据(独立 openid)
 	openid := "rank_tcp_openid"
@@ -50,6 +51,9 @@ func (s *RankTCPTestSuite) TestTCPQueryMyRank() {
 	})
 	s.NoError(err)
 	s.AssertSuccess(createResp)
+	charGuid, ok := createResp["data"].(map[string]interface{})["charGuid"].(float64)
+	s.True(ok, "created character should have charGuid")
+	s.Greater(charGuid, float64(0), "charGuid should be positive")
 
 	// 建立 TCP 连接
 	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", s.serverHost, s.serverPort), 10*time.Second)
@@ -62,26 +66,29 @@ func (s *RankTCPTestSuite) TestTCPQueryMyRank() {
 	defer conn.Close()
 	s.socket = conn
 
+	// 发送 SELECT_CHARACTER 绑定角色(uid=charGuid)
+	selectPayload := map[string]interface{}{"uid": charGuid}
+	selectJSON, _ := json.Marshal(selectPayload)
+	selectMsg := append([]byte("SELECT_CHARACTER:"), selectJSON...)
+	s.NoError(s.sendTCP(selectMsg), "send SELECT_CHARACTER")
+	// 读选角响应(module=10000 cmd=7)
+	selResp, err := s.recvTCP()
+	s.NoError(err)
+	s.NotNil(selResp)
+	selModule, selCmd, _ := parseTCPResponse(selResp)
+	s.Equal(uint16(10000), selModule, "select response module should be 10000")
+	s.Equal(uint16(7), selCmd, "select response cmd should be 7")
+
 	// 发送 QUERY_MY_RANK(等级榜 rank_type=1)
 	payload := map[string]interface{}{"rank_type": 1}
 	payloadJSON, _ := json.Marshal(payload)
 	msg := append([]byte("QUERY_MY_RANK:"), payloadJSON...)
-	length := len(msg)
-	lengthBytes := make([]byte, 2)
-	binary.BigEndian.PutUint16(lengthBytes, uint16(length))
-	_, err = conn.Write(append(lengthBytes, msg...))
-	s.NoError(err, "send QUERY_MY_RANK")
+	s.NoError(s.sendTCP(msg), "send QUERY_MY_RANK")
 
 	// 接收响应并解析 RankResponse
-	lenBuf := make([]byte, 2)
-	_, err = conn.Read(lenBuf)
+	body, err := s.recvTCP()
 	s.NoError(err)
-	bodyLen := binary.BigEndian.Uint16(lenBuf)
-	s.NotZero(bodyLen, "response body should not be empty")
-	body := make([]byte, bodyLen)
-	_, err = conn.Read(body)
-	s.NoError(err)
-
+	s.NotNil(body)
 	module, cmd, payloadBytes := parseTCPResponse(body)
 	s.Equal(uint16(10501), module, "response module should be 10501")
 	s.Equal(uint16(1), cmd, "query my rank response cmd should be 1")
@@ -89,6 +96,29 @@ func (s *RankTCPTestSuite) TestTCPQueryMyRank() {
 	s.NoError(proto.Unmarshal(payloadBytes, rr), "unmarshal RankResponse")
 	s.Equal(int32(1), rr.RankType, "rank_type should be echoed as 1")
 	s.GreaterOrEqual(rr.Total, int32(1), "total should be >= 1 (roster has roles)")
-	s.GreaterOrEqual(rr.Rank, int32(0), "rank should be present")
+	s.GreaterOrEqual(rr.Rank, int32(1), "bound role should have real rank >= 1")
 	fmt.Printf("Rank response rank_type=%d rank=%d total=%d\n", rr.RankType, rr.Rank, rr.Total)
+}
+
+// sendTCP 发送文本命令(2字节大端长度 + 消息体)
+func (s *RankTCPTestSuite) sendTCP(message []byte) error {
+	lengthBytes := make([]byte, 2)
+	binary.BigEndian.PutUint16(lengthBytes, uint16(len(message)))
+	_, err := s.socket.Write(append(lengthBytes, message...))
+	return err
+}
+
+// recvTCP 接收一条响应帧(不含长度字段, 含 4 字节 module/cmd 头)
+func (s *RankTCPTestSuite) recvTCP() ([]byte, error) {
+	lenBuf := make([]byte, 2)
+	if _, err := s.socket.Read(lenBuf); err != nil {
+		return nil, err
+	}
+	bodyLen := binary.BigEndian.Uint16(lenBuf)
+	if bodyLen == 0 {
+		return nil, nil
+	}
+	body := make([]byte, bodyLen)
+	_, err := s.socket.Read(body)
+	return body, err
 }

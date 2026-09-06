@@ -175,4 +175,6 @@ func SelectCharacterHandler(session *network.Session, msg proto.Message) {
 
 	// 设置当前角色
 	session.SetAttr("current_uid", req.Uid)
+	// 2026-09-06 第三十一轮: 选角即绑定角色ID到会话, 后续 QUERY_MY_RANK 等按真实角色计算
+	session.SetRoleID(uint64(req.Uid))
 }
