@@ -118,6 +118,8 @@ func (d *DB) ControlGroup(ctx context.Context, roleID uint64, action uint32, tar
 		return d.kickFromParty(ctx, roleID, targetGuid)
 	case 4:
 		return d.changePartyLeader(ctx, roleID, targetGuid)
+	case 5: // 2026-09-07 第四十九轮: 主动加入队伍(JOIN_PARTY, partyGuid 为目标队伍)
+		return d.HalfOpenPartyJoin(ctx, roleID, partyGuid)
 	default:
 		return fmt.Errorf("unknown action: %d", action)
 	}
@@ -224,7 +226,49 @@ func (d *DB) ControlGroupQueryarea(ctx context.Context, roleID uint64) error {
 }
 
 func (d *DB) HalfOpenPartyJoin(ctx context.Context, roleID, partyGuid uint64) error {
-	return d.inviteToParty(ctx, roleID, roleID, partyGuid)
+	// 2026-09-07 第四十九轮实化: 原实现把 roleID 当 targetGuid 传 inviteToParty,
+	// 而 inviteToParty 按 roleID 查队伍(加入者通常无队)导致必然失败
+	party, err := d.getPartyByGuid(ctx, partyGuid)
+	if err != nil {
+		return fmt.Errorf("failed to get party: %w", err)
+	}
+	if party == nil {
+		return fmt.Errorf("party not found")
+	}
+
+	// 已在队
+	cur, err := d.getPartyByRoleID(ctx, roleID)
+	if err != nil {
+		return fmt.Errorf("failed to get current party: %w", err)
+	}
+	if cur != nil {
+		return fmt.Errorf("already in party")
+	}
+
+	// 未满
+	memberCount, err := d.getPartyMemberCount(ctx, party.PartyGuid)
+	if err != nil {
+		return fmt.Errorf("failed to get party member count: %w", err)
+	}
+	if memberCount >= int(party.MaxMembers) {
+		return fmt.Errorf("party is full")
+	}
+
+	role, err := d.getRoleByID(ctx, roleID)
+	if err != nil {
+		return fmt.Errorf("failed to get role: %w", err)
+	}
+	if role == nil {
+		return fmt.Errorf("role not found")
+	}
+
+	_, err = d.db.ExecContext(ctx,
+		`INSERT INTO t_party_member (party_id, role_id, player_id, team_type, status, join_time) VALUES (?, ?, ?, 0, 0, datetime('now'))`,
+		party.PartyGuid, roleID, role.PlayerID)
+	if err != nil {
+		return fmt.Errorf("failed to join party: %w", err)
+	}
+	return nil
 }
 
 func (d *DB) PartyDungeonCondition(ctx context.Context, roleID uint64, dungeonIndex uint32) error {
@@ -268,6 +312,33 @@ func (d *DB) TargetUserPartyInfo(ctx context.Context, roleID, targetGuid uint64)
 
 func (d *DB) WaitinigToUsersLoading(ctx context.Context, roleID uint64) error {
 	return nil
+}
+
+// getPartyByGuid 按队伍ID查队伍(2026-09-07 第四十九轮)
+func (d *DB) getPartyByGuid(ctx context.Context, partyGuid uint64) (*store.PartyInfo, error) {
+	query := `
+		SELECT party_id, leader_id, name, max_members,
+		       dungeon_index, room_id, min_level, max_level,
+		       area, subtype, stage_index, public_type
+		FROM t_party
+		WHERE party_id = ? AND status = 0
+	`
+
+	party := &store.PartyInfo{}
+	err := d.db.QueryRowContext(ctx, query, partyGuid).Scan(
+		&party.PartyGuid, &party.LeaderGuid, &party.Name, &party.MaxMembers,
+		&party.DungeonIndex, &party.RoomID, &party.MinLevel, &party.MaxLevel,
+		&party.Area, &party.SubType, &party.StageIndex, &party.PublicType,
+	)
+
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, fmt.Errorf("failed to get party by guid: %w", err)
+	}
+
+	return party, nil
 }
 
 func (d *DB) getPartyByRoleID(ctx context.Context, roleID uint64) (*store.PartyInfo, error) {
@@ -384,7 +455,14 @@ func (d *DB) createParty(ctx context.Context, roleID uint64) error {
 }
 
 func (d *DB) inviteToParty(ctx context.Context, roleID, targetGuid, partyGuid uint64) error {
-	party, err := d.getPartyByRoleID(ctx, roleID)
+	// 2026-09-07 第四十九轮: partyGuid 参数启用(>0 按目标队伍邀请, 否则回退 roleID 所在队伍)
+	var party *store.PartyInfo
+	var err error
+	if partyGuid > 0 {
+		party, err = d.getPartyByGuid(ctx, partyGuid)
+	} else {
+		party, err = d.getPartyByRoleID(ctx, roleID)
+	}
 	if err != nil {
 		return fmt.Errorf("failed to get party: %w", err)
 	}

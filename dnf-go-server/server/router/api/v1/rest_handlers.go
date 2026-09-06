@@ -2577,12 +2577,15 @@ func (s *APIV1Service) handleCreateParty(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	roleID := claims.UserID
-	if roleID == 0 {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	// 2026-09-07 第四十九轮: claims.UserID 是 account id, 需解析真实角色;
+	// 此前直接用 account id 当 roleID 建队(leader_id 存错对象)
+	roles, err := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	if err != nil || len(roles) == 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "no role found"})
 	}
+	roleID := roles[0].ID
 
-	err := s.Store.ControlGroup(c.Request().Context(), roleID, 0, 0, 0)
+	err = s.Store.ControlGroup(c.Request().Context(), roleID, 0, 0, 0)
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"error":   1,

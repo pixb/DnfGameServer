@@ -502,12 +502,15 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	s.NoError(proto.Unmarshal(pbA2, cgA2))
 	s.Equal(int32(1), cgA2.Error, "duplicate create should fail")
 
-	// DB 校验: A 为队长的队伍存在
+	// DB 校验: A 为队长的队伍存在, 取 party_guid
 	db, err := sql.Open("mysql", testDBDSN)
 	s.NoError(err)
 	var cnt int
+	var partyGuid uint64
 	s.NoError(db.QueryRow("SELECT COUNT(*) FROM t_party WHERE leader_id = ?", uint64(guidA)).Scan(&cnt))
 	s.Equal(1, cnt, "party with leader A should exist")
+	s.NoError(db.QueryRow("SELECT party_id FROM t_party WHERE leader_id = ?", uint64(guidA)).Scan(&partyGuid))
+	s.Greater(partyGuid, uint64(0), "party guid should be positive")
 	db.Close()
 
 	// B 建立连接并绑定, 踢人但不在队 → error 1
@@ -519,6 +522,48 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	cgB := &dnfv1.ControlGroupResponse{}
 	s.NoError(proto.Unmarshal(pbB, cgB))
 	s.Equal(int32(1), cgB.Error, "kick while not in party should fail")
+
+	// 2026-09-07 第四十九轮: JOIN_PARTY:{"type":5,"partyguid":X} → 主动加入成功
+	msgJ, _ := json.Marshal(map[string]interface{}{"type": 5, "partyguid": float64(partyGuid)})
+	s.NoError(s.sendTCP(append([]byte("JOIN_PARTY:"), msgJ...)), "send JOIN_PARTY")
+	bodyJ, _ := s.recvTCP()
+	_, _, pbJ := parseTCPResponse(bodyJ)
+	cgJ := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbJ, cgJ))
+	s.Equal(int32(0), cgJ.Error, "join party should succeed")
+
+	// B 已在队, 再加入 → error 1
+	s.NoError(s.sendTCP(append([]byte("JOIN_PARTY:"), msgJ...)), "send duplicate JOIN_PARTY")
+	bodyJ2, _ := s.recvTCP()
+	_, _, pbJ2 := parseTCPResponse(bodyJ2)
+	cgJ2 := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbJ2, cgJ2))
+	s.Equal(int32(1), cgJ2.Error, "duplicate join should fail")
+
+	// DB 校验: 队伍 2 名成员(A+B)
+	dbJ, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	var memberCnt int
+	s.NoError(dbJ.QueryRow("SELECT COUNT(*) FROM t_party_member WHERE party_id = ?", partyGuid).Scan(&memberCnt))
+	s.Equal(2, memberCnt, "party should have 2 members after join")
+	dbJ.Close()
+
+	// B 离队(成员) → 队伍保留
+	msgL2, _ := json.Marshal(map[string]interface{}{"type": 2})
+	s.NoError(s.sendTCP(append([]byte("LEAVE_PARTY:"), msgL2...)), "send B LEAVE_PARTY")
+	bodyB2, _ := s.recvTCP()
+	_, _, pbB2 := parseTCPResponse(bodyB2)
+	cgB2 := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbB2, cgB2))
+	s.Equal(int32(0), cgB2.Error, "member leave should succeed")
+
+	// DB 校验: 队伍仅剩 A
+	dbJ2, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	var memberCnt2 int
+	s.NoError(dbJ2.QueryRow("SELECT COUNT(*) FROM t_party_member WHERE party_id = ?", partyGuid).Scan(&memberCnt2))
+	s.Equal(1, memberCnt2, "party should have 1 member after B leaves")
+	dbJ2.Close()
 
 	// A 重连 → LEAVE_PARTY:{"type":2} → 队长解散成功
 	s.bindRole(guidA)
@@ -546,7 +591,7 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	s.Equal(0, cnt2, "party should be deleted after disband")
 	db2.Close()
 
-	fmt.Printf("party text commands verified (create/dup/kick/leave/disband)\n")
+	fmt.Printf("party text commands verified (create/dup/kick/join/dup-join/member-leave/disband)\n")
 }
 
 // bindRole 建立 TCP 连接并 SELECT_CHARACTER 绑定角色

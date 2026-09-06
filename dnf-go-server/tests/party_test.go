@@ -35,7 +35,7 @@ func (s *PartyTestSuite) TestSearchPartyList() {
 
 // TestCreateParty 测试创建队伍
 func (s *PartyTestSuite) TestCreateParty() {
-	charGuid := s.loginAndSelectCharacterWithUserAndSlot("pt_create_01", 2)
+	_ = s.loginAndSelectCharacterWithUserAndSlot("pt_create_01", 2)
 
 	createResp, err := s.Client.Post("/api/v1/party/create", map[string]interface{}{})
 	s.NoError(err)
@@ -46,13 +46,14 @@ func (s *PartyTestSuite) TestCreateParty() {
 	}
 
 	// 2026-09-07 第四十八轮: 建队后 DB 清理, 防重复运行残留
-	// (HTTP 无 leave/disband 接口; createParty 已加"已在队"校验, 残留会致下次失败)
+	// (HTTP 无 leave/disband 接口; createParty 已加"已在队"校验, 残留会致下次失败;
+	//  第四十九轮: 按 openid 名下角色清理, 覆盖 leader 存错 account id 的历史残留)
 	db, dbErr := sql.Open("mysql", testDBDSN)
 	s.NoError(dbErr)
 	defer db.Close()
 	if dbErr == nil {
-		db.Exec("DELETE FROM t_party_member WHERE role_id = ?", charGuid)
-		db.Exec("DELETE FROM t_party WHERE leader_id = ?", charGuid)
+		db.Exec("DELETE FROM t_party_member WHERE role_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id = a.id WHERE a.openid = 'pt_create_01')")
+		db.Exec("DELETE FROM t_party WHERE leader_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id = a.id WHERE a.openid = 'pt_create_01')")
 	}
 }
 
