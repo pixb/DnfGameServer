@@ -80,7 +80,7 @@ func TestMailClaimTestSuite(t *testing.T) {
 func (s *MailClaimTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积
-	if err := clearRolesForOpenids("ml_claim_01", "ml_claim_02", "ml_claim_03", "ml_claim_04", "ml_claim_05", "ml_claim_06", "ml_claim_07", "ml_claim_08"); err != nil {
+	if err := clearRolesForOpenids("ml_claim_01", "ml_claim_02", "ml_claim_03", "ml_claim_04", "ml_claim_05", "ml_claim_06", "ml_claim_07", "ml_claim_08", "ml_send_r1", "ml_send_s1", "ml_send_r2", "ml_send_s2"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -321,6 +321,78 @@ func (s *MailClaimTestSuite) TestMailListExcludesExpired() {
 	}
 	s.True(foundValid, "有效邮件应出现在列表")
 	s.False(foundExpired, "过期邮件不应出现在列表")
+}
+
+// TestSendMailWithExpire 发信自定义过期时间: expire_at 写入邮件, 过期前可领取
+// 注意: openid 截断 12 字符建角色名, 避免与其它用例撞名(如 xxx2 截断后可能与 xxx 相同)
+func (s *MailClaimTestSuite) TestSendMailWithExpire() {
+	// 收件人角色(name=openid)
+	recvID := s.loginAndSelect("ml_send_r1", 30)
+	s.Require().NotZero(recvID)
+	// 发件人
+	senderID := s.loginAndSelect("ml_send_s1", 31)
+	s.Require().NotZero(senderID)
+
+	expireAt := time.Now().Unix() + 86400
+	resp, err := s.Client.Post(fmt.Sprintf(
+		"/api/v1/mail/send?target_name=%s&title=%s&content=%s&gold=50&expire_at=%d",
+		"ml_send_r1", "带过期附件", "七天后过期", expireAt), map[string]interface{}{})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	mailID, _ := resp["mailId"].(float64)
+	s.True(mailID > 0)
+	// DB 校验 expire_at 落库
+	s.Equal(expireAt, mailExpireAt(uint64(mailID)))
+
+	// 切回收件人身份领取(未过期, 正常领取金币)
+	recvID2 := s.loginAndSelect("ml_send_r1", 30)
+	s.Require().Equal(recvID, recvID2)
+	claimResp, err := s.Client.Post(fmt.Sprintf("/api/v1/mail/claim?mail_id=%d", uint64(mailID)), map[string]interface{}{})
+	s.NoError(err)
+	s.NotNil(claimResp)
+	if errVal, ok := claimResp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	if gold, ok := claimResp["gold"].(float64); ok {
+		s.Equal(float64(50), gold)
+	}
+}
+
+// TestSendMailRejectPastExpire 发信过期时间在过去应拒绝
+func (s *MailClaimTestSuite) TestSendMailRejectPastExpire() {
+	s.loginAndSelect("ml_send_r2", 32)
+	s.loginAndSelect("ml_send_s2", 33)
+
+	resp, err := s.Client.Post(fmt.Sprintf(
+		"/api/v1/mail/send?target_name=%s&title=%s&expire_at=%d",
+		"ml_send_r2", "过期时间在过去", time.Now().Unix()-100), map[string]interface{}{})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(1), errVal)
+	}
+	if msg, ok := resp["message"].(string); ok {
+		s.Contains(msg, "过期时间")
+	}
+}
+
+// mailExpireAt 查询邮件过期时间
+func mailExpireAt(mailID uint64) int64 {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		return 0
+	}
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	var expireAt int64
+	if err := db.QueryRow(`SELECT expire_at FROM mail WHERE id = ?`, mailID).Scan(&expireAt); err != nil {
+		return 0
+	}
+	return expireAt
 }
 
 // mailExists 查询邮件是否存在

@@ -296,18 +296,32 @@ func (s *APIV1Service) handleSendMail(c echo.Context) error {
 	title := c.FormValue("title")
 	content := c.FormValue("content")
 	gold, _ := strconv.ParseInt(c.FormValue("gold"), 10, 64)
+	// 2026-09-06 第二十一轮: 发信支持自定义过期时间(秒级时间戳, 可选);
+	// 必须晚于当前时间, 缺省 0 = 永不过期(与拍卖结算发信的 30 天语义互补)
+	expireAt, _ := strconv.ParseInt(c.FormValue("expire_at"), 10, 64)
+	if expireAt < 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "过期时间非法"})
+	}
+	if expireAt > 0 && expireAt <= time.Now().Unix() {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "过期时间必须晚于当前时间"})
+	}
 
 	targetRole, err := s.Store.GetRoleByName(c.Request().Context(), targetName)
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
 	}
 
+	// 2026-09-06 第二十一轮: 修复发信空指针——claims.UserID 是账户ID, 发件人须取当前选中角色
+	senderRoleID := s.activeRoleID(c, claims)
 	role, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{
-		FindBase: store.FindBase{ID: &claims.UserID},
+		FindBase: store.FindBase{ID: &senderRoleID},
 	})
+	if role == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "请先选择角色"})
+	}
 
-	mail, _ := s.Store.CreateMail(c.Request().Context(), &store.Mail{
-		SenderID:   claims.UserID,
+	mail, err := s.Store.CreateMail(c.Request().Context(), &store.Mail{
+		SenderID:   senderRoleID,
 		SenderName: role.Name,
 		ReceiverID: targetRole.ID,
 		Title:      title,
@@ -315,8 +329,11 @@ func (s *APIV1Service) handleSendMail(c echo.Context) error {
 		Gold:       gold,
 		IsRead:     false,
 		IsClaimed:  false,
-		ExpireAt:   0,
+		ExpireAt:   expireAt,
 	})
+	if err != nil || mail == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": fmt.Sprintf("发送邮件失败: %v", err)})
+	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":  0,

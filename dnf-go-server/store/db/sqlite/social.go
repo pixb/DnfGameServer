@@ -126,6 +126,10 @@ func (d *DB) CreateMail(ctx context.Context, create *store.Mail) (*store.Mail, e
    `
 
 	now := time.Now().Unix()
+	// 2026-09-06 第二十一轮: 与 MySQL 驱动对称, 空附件归一化为 "{}"(领取时按无附件处理)
+	if create.Attachments == "" {
+		create.Attachments = "{}"
+	}
 	result, err := d.db.ExecContext(ctx, query,
 		now, now, store.RowStatusNormal,
 		create.SenderID, create.SenderName, create.ReceiverID, create.Title, create.Content,

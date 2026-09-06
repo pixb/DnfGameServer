@@ -154,6 +154,11 @@ func (d *DB) CreateMail(ctx context.Context, create *store.Mail) (*store.Mail, e
    `
 
 	now := time.Now().Unix()
+	// 2026-09-06 第二十一轮: MySQL attachments 为 JSON 列, 空串触发 CHECK 约束失败,
+	// 统一归一化为合法空对象 "{}"(领取时按无附件处理)
+	if create.Attachments == "" {
+		create.Attachments = "{}"
+	}
 	result, err := d.db.ExecContext(ctx, query,
 		now, now, store.RowStatusNormal,
 		create.SenderID, create.SenderName, create.ReceiverID, create.Title, create.Content,
