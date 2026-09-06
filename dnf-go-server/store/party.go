@@ -145,3 +145,8 @@ func (s *Store) TargetUserPartyInfo(ctx context.Context, roleID, targetGuid uint
 func (s *Store) WaitinigToUsersLoading(ctx context.Context, roleID uint64) error {
 	return s.driver.WaitinigToUsersLoading(ctx, roleID)
 }
+
+// TeamRankPosition 我的队伍在全服队伍平均等级榜的位置(2026-09-06 第四十三轮)
+func (s *Store) TeamRankPosition(ctx context.Context, roleID uint64) (rank, total int, err error) {
+	return s.driver.TeamRankPosition(ctx, roleID)
+}

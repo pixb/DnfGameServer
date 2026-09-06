@@ -211,3 +211,40 @@ func (s *RankTCPTestSuite) recvTCP() ([]byte, error) {
 	_, err := s.socket.Read(body)
 	return body, err
 }
+
+// TestTCPQueryMyTeamRank 队伍榜(2026-09-06 第四十三轮实化):
+// DB 直插建队(文本命令建队走 protobuf handler, 不走 textExtras) → 绑定 → QUERY_MY_TEAM_RANK
+// 应返回队伍平均等级榜真实位置 rank≥1; 无队伍角色 rank=0
+func (s *RankTCPTestSuite) TestTCPQueryMyTeamRank() {
+	uid := time.Now().UnixNano()
+	guid := s.createCharacter(fmt.Sprintf("test_rank_team_%d", uid))
+	guid2 := s.createCharacter(fmt.Sprintf("test_rank_noteam_%d", uid))
+
+	// DB 直插队伍
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	res, err := db.Exec("INSERT INTO t_party (leader_id, name, max_members, status, create_time, update_time, row_status) VALUES (?, '测试队伍', 4, 0, 1, 1, 'NORMAL')", uint64(guid))
+	s.NoError(err, "insert party")
+	partyID, err := res.LastInsertId()
+	s.NoError(err)
+	s.Greater(partyID, int64(0))
+	_, err = db.Exec("INSERT INTO t_party_member (party_id, role_id, player_id, team_type, status, join_time, row_status) VALUES (?, ?, 0, 0, 0, 1, 'NORMAL')", partyID, uint64(guid))
+	s.NoError(err, "insert party member")
+	defer db.Exec("DELETE FROM t_party_member WHERE party_id = ?", partyID)
+	defer db.Exec("DELETE FROM t_party WHERE party_id = ?", partyID)
+
+	// 有队伍: rank≥1 且 total≥1
+	s.bindAndQueryRank(guid, "QUERY_MY_TEAM_RANK", 7, func(rr *dnfv1.RankResponse) {
+		s.GreaterOrEqual(rr.Rank, int32(1), "member with party should have rank >= 1")
+		s.GreaterOrEqual(rr.Total, int32(1), "total should be >= 1")
+	})
+
+	// 无队伍: rank=0(不在榜)
+	s.bindAndQueryRank(guid2, "QUERY_MY_TEAM_RANK", 7, func(rr *dnfv1.RankResponse) {
+		s.Equal(int32(0), rr.Rank, "role without party should have rank 0")
+	})
+	fmt.Printf("team rank verified (party_id=%d)\n", partyID)
+}

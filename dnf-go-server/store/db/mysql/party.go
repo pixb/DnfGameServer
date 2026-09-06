@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"sort"
 
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
@@ -570,4 +571,61 @@ type Role struct {
 	Level    uint32
 	Fatigue  uint32
 	World    uint32
+}
+
+// TeamRankPosition 我的队伍在全服队伍平均等级榜的位置(2026-09-06 第四十三轮)
+// 排序键: 队伍平均等级(降序), 并列按 party_id 升序; 无队伍返回 (0, 0, nil)
+func (d *DB) TeamRankPosition(ctx context.Context, roleID uint64) (rank, total int, err error) {
+	myParty, err := d.getPartyByRoleID(ctx, roleID)
+	if err != nil {
+		return 0, 0, fmt.Errorf("failed to get my party: %w", err)
+	}
+	if myParty == nil {
+		return 0, 0, nil
+	}
+
+	query := `
+		SELECT p.party_id, AVG(r.level)
+		FROM t_party p
+		INNER JOIN t_party_member pm ON p.party_id = pm.party_id
+		INNER JOIN role r ON pm.role_id = r.id
+		WHERE p.status = 0 AND r.row_status = 'NORMAL'
+		GROUP BY p.party_id
+	`
+	rows, err := d.db.QueryContext(ctx, query)
+	if err != nil {
+		return 0, 0, fmt.Errorf("failed to query team ranks: %w", err)
+	}
+	defer rows.Close()
+
+	type teamRank struct {
+		partyID  uint64
+		avgLevel float64
+	}
+	var teams []teamRank
+	for rows.Next() {
+		var t teamRank
+		if err := rows.Scan(&t.partyID, &t.avgLevel); err != nil {
+			return 0, 0, fmt.Errorf("failed to scan team rank: %w", err)
+		}
+		teams = append(teams, t)
+	}
+	if err := rows.Err(); err != nil {
+		return 0, 0, err
+	}
+
+	sort.SliceStable(teams, func(i, j int) bool {
+		if teams[i].avgLevel != teams[j].avgLevel {
+			return teams[i].avgLevel > teams[j].avgLevel
+		}
+		return teams[i].partyID < teams[j].partyID
+	})
+
+	for i, t := range teams {
+		if t.partyID == myParty.PartyGuid {
+			return i + 1, len(teams), nil
+		}
+	}
+	// 队伍不在榜(成员均异常等): 排在末位
+	return len(teams) + 1, len(teams) + 1, nil
 }

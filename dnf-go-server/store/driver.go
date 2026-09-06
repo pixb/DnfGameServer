@@ -251,6 +251,9 @@ type Driver interface {
 	SuggestMoveParty(ctx context.Context, roleID uint64, area uint32) error
 	TargetUserPartyInfo(ctx context.Context, roleID, targetGuid uint64) (*PartyInfo, error)
 	WaitinigToUsersLoading(ctx context.Context, roleID uint64) error
+	// TeamRankPosition 我的队伍在全服队伍平均等级榜的位置(2026-09-06 第四十三轮)
+	// 无队伍返回 (0, 0, nil)
+	TeamRankPosition(ctx context.Context, roleID uint64) (rank, total int, err error)
 
 	// ==================== PK 相关 ====================
 	ListPvpRecords(ctx context.Context, roleID uint64, limit int) ([]*PvpRecord, error)

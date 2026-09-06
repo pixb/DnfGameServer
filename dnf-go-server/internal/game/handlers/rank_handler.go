@@ -122,6 +122,20 @@ func writeRankResp(session *network.Session, respCmd uint16, name string, rankTy
 	}
 }
 
+// teamRankPosition 查询我的队伍在全服队伍平均等级榜的位置(2026-09-06 第四十三轮实化)
+// 数据源: t_party + t_party_member + role(level); 无队伍返回 (0, 0)
+func teamRankPosition(roleID uint64) (rank, total int) {
+	if rankStore == nil {
+		return 0, 0
+	}
+	r, t, err := rankStore.TeamRankPosition(context.Background(), roleID)
+	if err != nil {
+		logger.Error("rank load team position failed", logger.ErrorField(err))
+		return 0, 0
+	}
+	return r, t
+}
+
 // QueryMyRankHandler 处理查询我的排名请求 (cmd=0)
 func QueryMyRankHandler(session *network.Session, msg proto.Message) {
 	req, ok := msg.(*dnfv1.Empty)
@@ -199,8 +213,8 @@ func QueryMyTeamRankHandler(session *network.Session, msg proto.Message) {
 		logger.Int64("session_id", session.ID()),
 		logger.Uint32("rank_type", rankTypeFromPayload(session)),
 	)
-	// 队伍榜单暂无队伍数据源, 回退到个人等级榜位置
-	rank, total := rankPosition(session.RoleID())
+	// 队伍榜单: 全服队伍按平均等级降序, 返回我的队伍位置(2026-09-06 第四十三轮实化, 数据源 t_party/member/role)
+	rank, total := teamRankPosition(session.RoleID())
 	logger.Info("query my team rank result",
 		logger.Int64("session_id", session.ID()),
 		logger.Int("rank", rank),
