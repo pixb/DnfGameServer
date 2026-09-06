@@ -3,6 +3,7 @@ package tests
 import (
 	"database/sql"
 	"fmt"
+	"net/url"
 	"testing"
 	"time"
 
@@ -80,7 +81,7 @@ func TestMailClaimTestSuite(t *testing.T) {
 func (s *MailClaimTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积
-	if err := clearRolesForOpenids("ml_claim_01", "ml_claim_02", "ml_claim_03", "ml_claim_04", "ml_claim_05", "ml_claim_06", "ml_claim_07", "ml_claim_08", "ml_send_r1", "ml_send_s1", "ml_send_r2", "ml_send_s2"); err != nil {
+	if err := clearRolesForOpenids("ml_claim_01", "ml_claim_02", "ml_claim_03", "ml_claim_04", "ml_claim_05", "ml_claim_06", "ml_claim_07", "ml_claim_08", "ml_send_r1", "ml_send_s1", "ml_send_r2", "ml_send_s2", "ml_send_r3", "ml_send_s3", "ml_send_r4", "ml_send_s4"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -376,6 +377,71 @@ func (s *MailClaimTestSuite) TestSendMailRejectPastExpire() {
 	}
 	if msg, ok := resp["message"].(string); ok {
 		s.Contains(msg, "过期时间")
+	}
+}
+
+// TestSendMailWithAttachment 发信带附件(JSON 数组): 收件人领取后物品入包且 bind_type 正确
+func (s *MailClaimTestSuite) TestSendMailWithAttachment() {
+	recvID := s.loginAndSelect("ml_send_r3", 34)
+	s.Require().NotZero(recvID)
+	s.loginAndSelect("ml_send_s3", 35)
+
+	attachments := `[{"item_id":2001,"count":2,"bind_type":1},{"item_id":2002,"count":3,"bind_type":0}]`
+	resp, err := s.Client.Post(fmt.Sprintf(
+		"/api/v1/mail/send?target_name=%s&title=%s&attachments=%s",
+		"ml_send_r3", "带附件", url.QueryEscape(attachments)), map[string]interface{}{})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	mailID, _ := resp["mailId"].(float64)
+	s.True(mailID > 0)
+
+	// 收件人领取: 两件物品按配置入包
+	s.loginAndSelect("ml_send_r3", 34)
+	claimResp, err := s.Client.Post(fmt.Sprintf("/api/v1/mail/claim?mail_id=%d", uint64(mailID)), map[string]interface{}{})
+	s.NoError(err)
+	s.NotNil(claimResp)
+	if errVal, ok := claimResp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	s.Equal(2, bagItemCount(recvID, 2001))
+	s.Equal(1, bagItemBindType(recvID, 2001))
+	s.Equal(3, bagItemCount(recvID, 2002))
+	s.Equal(0, bagItemBindType(recvID, 2002))
+}
+
+// TestSendMailInvalidAttachment 发信附件非法(绑定类型越界/JSON 格式错误)整封拒绝, 不发信
+func (s *MailClaimTestSuite) TestSendMailInvalidAttachment() {
+	s.loginAndSelect("ml_send_r4", 36)
+	s.loginAndSelect("ml_send_s4", 37)
+
+	// 绑定类型越界(9)
+	badBind := `[{"item_id":2001,"count":1,"bind_type":9}]`
+	resp, err := s.Client.Post(fmt.Sprintf(
+		"/api/v1/mail/send?target_name=%s&title=%s&attachments=%s",
+		"ml_send_r4", "非法绑定", url.QueryEscape(badBind)), map[string]interface{}{})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(1), errVal)
+	}
+	if msg, ok := resp["message"].(string); ok {
+		s.Contains(msg, "绑定")
+	}
+
+	// JSON 格式错误
+	resp2, err := s.Client.Post(fmt.Sprintf(
+		"/api/v1/mail/send?target_name=%s&title=%s&attachments=%s",
+		"ml_send_r4", "坏JSON", url.QueryEscape("not-json")), map[string]interface{}{})
+	s.NoError(err)
+	s.NotNil(resp2)
+	if errVal, ok := resp2["error"]; ok {
+		s.Equal(float64(1), errVal)
+	}
+	if msg, ok := resp2["message"].(string); ok {
+		s.Contains(msg, "附件")
 	}
 }
 

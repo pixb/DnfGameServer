@@ -286,6 +286,45 @@ func (s *APIV1Service) handleGetMailList(c echo.Context) error {
 	})
 }
 
+// mailAttachment 邮件附件条目(多物品 JSON 数组 / 旧单对象格式共用)
+type mailAttachment struct {
+	ItemID   int32 `json:"item_id"`
+	Count    int32 `json:"count"`
+	BindType int32 `json:"bind_type"`
+}
+
+// parseMailAttachments 解析并校验邮件附件:
+// - 空 / "{}" / "[]" → 空附件, 无错误;
+// - JSON 数组优先, 解析失败回退旧单对象格式;
+// - 过滤 item_id<=0 或 count<=0 的条目;
+// - bind_type 合法域 0/1/2, 越界返回错误(整封拒绝)。
+// 2026-09-06 第二十二轮: 从 handleClaimMail 抽出, 领取与发信共用
+func parseMailAttachments(raw string) ([]mailAttachment, error) {
+	if raw == "" || raw == "{}" || raw == "[]" {
+		return nil, nil
+	}
+	var atts []mailAttachment
+	if err := json.Unmarshal([]byte(raw), &atts); err != nil {
+		// 兼容旧格式: 单对象 {"item_id":x,"count":y}
+		var single mailAttachment
+		if err2 := json.Unmarshal([]byte(raw), &single); err2 != nil || single.ItemID <= 0 {
+			return nil, fmt.Errorf("附件格式非法")
+		}
+		atts = []mailAttachment{single}
+	}
+	valid := make([]mailAttachment, 0, len(atts))
+	for _, att := range atts {
+		if att.ItemID <= 0 || att.Count <= 0 {
+			continue
+		}
+		if att.BindType < 0 || att.BindType > 2 {
+			return nil, fmt.Errorf("附件绑定类型非法")
+		}
+		valid = append(valid, att)
+	}
+	return valid, nil
+}
+
 func (s *APIV1Service) handleSendMail(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
@@ -305,6 +344,15 @@ func (s *APIV1Service) handleSendMail(c echo.Context) error {
 	if expireAt > 0 && expireAt <= time.Now().Unix() {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "过期时间必须晚于当前时间"})
 	}
+	// 2026-09-06 第二十二轮: 发信可带附件(JSON 数组/单对象, 与领取共用解析与校验), 非法整封拒绝
+	attachmentsParam := c.FormValue("attachments")
+	attachmentsJSON := ""
+	if attachmentsParam != "" {
+		if _, err := parseMailAttachments(attachmentsParam); err != nil {
+			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+		}
+		attachmentsJSON = attachmentsParam
+	}
 
 	targetRole, err := s.Store.GetRoleByName(c.Request().Context(), targetName)
 	if err != nil {
@@ -321,15 +369,16 @@ func (s *APIV1Service) handleSendMail(c echo.Context) error {
 	}
 
 	mail, err := s.Store.CreateMail(c.Request().Context(), &store.Mail{
-		SenderID:   senderRoleID,
-		SenderName: role.Name,
-		ReceiverID: targetRole.ID,
-		Title:      title,
-		Content:    content,
-		Gold:       gold,
-		IsRead:     false,
-		IsClaimed:  false,
-		ExpireAt:   expireAt,
+		SenderID:    senderRoleID,
+		SenderName:  role.Name,
+		ReceiverID:  targetRole.ID,
+		Title:       title,
+		Content:     content,
+		Attachments: attachmentsJSON,
+		Gold:        gold,
+		IsRead:      false,
+		IsClaimed:   false,
+		ExpireAt:    expireAt,
 	})
 	if err != nil || mail == nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": fmt.Sprintf("发送邮件失败: %v", err)})
@@ -378,33 +427,12 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 	}
 
 	// 附件领取: 物品入背包 / 金币入角色货币(ReceiverID 为角色ID)
-	// 2026-09-06 第十四轮: 支持多物品附件(JSON 数组 [{"item_id":x,"count":y,"bind_type":z}]),
-	// 兼容旧单对象格式({"item_id":x,"count":y}); bind_type 透传入背包(0=无绑定/1=装备绑定/2=拾取绑定)
-	// 2026-09-06 第二十轮: 先解析校验附件(含 bind_type 合法域 0/1/2)再标记领取,
-	// 避免校验失败时邮件已标记但附件未发放的数据丢失; 非法绑定类型整封拒绝。
-	type mailAttachment struct {
-		ItemID   int32 `json:"item_id"`
-		Count    int32 `json:"count"`
-		BindType int32 `json:"bind_type"`
-	}
-	var atts []mailAttachment
-	if mail.Attachments != "" && mail.Attachments != "{}" && mail.Attachments != "[]" {
-		if err := json.Unmarshal([]byte(mail.Attachments), &atts); err != nil {
-			// 兼容旧格式: 单对象 {"item_id":x,"count":y}
-			var single mailAttachment
-			if err2 := json.Unmarshal([]byte(mail.Attachments), &single); err2 != nil || single.ItemID <= 0 {
-				return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "invalid attachment"})
-			}
-			atts = []mailAttachment{single}
-		}
-		for _, att := range atts {
-			if att.ItemID <= 0 || att.Count <= 0 {
-				continue
-			}
-			if att.BindType < 0 || att.BindType > 2 {
-				return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "附件绑定类型非法"})
-			}
-		}
+	// 2026-09-06 第十四轮: 支持多物品附件(JSON 数组 [{"item_id":x,"count":y,"bind_type":z}]), 兼容旧单对象格式
+	// 2026-09-06 第二十轮: 先解析校验附件(含 bind_type 合法域 0/1/2)再标记领取, 非法绑定类型整封拒绝
+	// 2026-09-06 第二十二轮: 解析/校验抽公共函数 parseMailAttachments(与发信附件共用)
+	atts, err := parseMailAttachments(mail.Attachments)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
 	}
 
 	isClaimed := true
@@ -417,9 +445,6 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 
 	var grantedItems []map[string]interface{}
 	for _, att := range atts {
-		if att.ItemID <= 0 || att.Count <= 0 {
-			continue
-		}
 		grid, err := s.nextBagGrid(c.Request().Context(), mail.ReceiverID)
 		if err != nil {
 			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})

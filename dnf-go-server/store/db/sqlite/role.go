@@ -202,7 +202,8 @@ func (d *DB) DeleteRole(ctx context.Context, delete *store.DeleteRole) error {
 
 // GetRoleByName 根据角色名获取角色
 func (d *DB) GetRoleByName(ctx context.Context, name string) (*store.Role, error) {
-	query := `SELECT id, created_at, updated_at, row_status, account_id, role_id, name, job, level, exp, fatigue, max_fatigue, map_id, x, y, channel FROM role WHERE name = ? AND row_status = 'NORMAL' LIMIT 1`
+	// 2026-09-06 第二十二轮: 同名角色按最新取(与 MySQL 驱动对称)
+	query := `SELECT id, created_at, updated_at, row_status, account_id, role_id, name, job, level, exp, fatigue, max_fatigue, map_id, x, y, channel FROM role WHERE name = ? AND row_status = 'NORMAL' ORDER BY id DESC LIMIT 1`
 	row := d.db.QueryRowContext(ctx, query, name)
 
 	var role store.Role
