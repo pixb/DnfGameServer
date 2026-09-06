@@ -10,12 +10,31 @@ import (
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/handlers"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
+	"github.com/pixb/DnfGameServer/dnf-go-server/store"
+	storedb "github.com/pixb/DnfGameServer/dnf-go-server/store/db"
 )
+
+// linkProfile 满足 store/db.ProfileProvider 的测试配置(2026-09-06 第三十二轮:
+// LoginHandler 已实化需注入真实 store)
+type linkProfile struct{ dsn string }
+
+func (p *linkProfile) GetDriver() string { return "mysql" }
+func (p *linkProfile) GetDSN() string    { return p.dsn }
+func (p *linkProfile) GetMode() string   { return "test" }
 
 // TestTCPMessageLink 端到端验证 TCP 消息链路：
 // ProtoCodec 解码 → MessageDispatcher 分发 → Handler 处理 → 响应编码回传
-// 使用 LoginHandler（不依赖外部服务），验证完整链路可用。
+// 使用 LoginHandler(注入真实 store), 验证完整链路可用。
 func TestTCPMessageLink(t *testing.T) {
+	// 0. 注入认证 store(LoginHandler 实化后依赖, 2026-09-06 第三十二轮)
+	driver, err := storedb.NewDBDriver(&linkProfile{dsn: testDBDSN})
+	if err != nil {
+		t.Fatalf("failed to create db driver: %v", err)
+	}
+	linkStore := store.New(driver, &linkProfile{dsn: testDBDSN})
+	defer linkStore.Close()
+	handlers.InitAuthStore(linkStore)
+
 	// 1. 创建编解码器并注册所有消息类型
 	codec := network.NewProtoCodec()
 	codec.RegisterAllMessages()

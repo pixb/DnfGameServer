@@ -124,6 +124,9 @@ func runServe(cmd *cobra.Command, args []string) error {
 	// 排名 store 注入(rank TCP handler 实化, 2026-09-06 第十九轮)
 	handlers.InitRankStore(s)
 
+	// 认证 store 注入(LoginHandler 实化, 2026-09-06 第三十二轮)
+	handlers.InitAuthStore(s)
+
 	fmt.Println("Services initialized successfully")
 
 	// 4. 创建服务器
