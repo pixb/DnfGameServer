@@ -563,17 +563,56 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	s.NoError(proto.Unmarshal(pbB, cgB))
 	s.Equal(int32(1), cgB.Error, "kick while not in party should fail")
 
-	// 2026-09-07 第五十一轮: 半开放队伍 JOIN → error 1(非公开不可自由加入)
+	// 2026-09-07 第五十一轮: 半开放队伍 JOIN → 产生申请(第五十二轮: 不再拒绝, 待队长接受)
 	msgJ, _ := json.Marshal(map[string]interface{}{"type": 5, "partyguid": float64(partyGuid)})
 	s.NoError(s.sendTCP(append([]byte("JOIN_PARTY:"), msgJ...)), "send JOIN_PARTY while half-open")
 	bodyJH, _ := s.recvTCP()
 	_, _, pbJH := parseTCPResponse(bodyJH)
 	cgJH := &dnfv1.ControlGroupResponse{}
 	s.NoError(proto.Unmarshal(pbJH, cgJH))
-	s.Equal(int32(1), cgJH.Error, "join half-open party should fail")
+	s.Equal(int32(0), cgJH.Error, "join half-open party should create request")
 
-	// A 重连 → 改回公开(publictype=0)
+	// 重复申请幂等
+	s.NoError(s.sendTCP(append([]byte("JOIN_PARTY:"), msgJ...)), "send duplicate JOIN_PARTY while half-open")
+	bodyJH2, _ := s.recvTCP()
+	_, _, pbJH2 := parseTCPResponse(bodyJH2)
+	cgJH2 := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbJH2, cgJH2))
+	s.Equal(int32(0), cgJH2.Error, "duplicate half-open join should be idempotent")
+
+	// DB 校验: B 有申请记录, 但尚未入队
+	dbR, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	var reqCnt, memberB int
+	s.NoError(dbR.QueryRow("SELECT COUNT(*) FROM t_party_request WHERE party_id = ? AND role_id = ?", partyGuid, uint64(guidB)).Scan(&reqCnt))
+	s.Equal(1, reqCnt, "B should have a pending request")
+	s.NoError(dbR.QueryRow("SELECT COUNT(*) FROM t_party_member WHERE party_id = ? AND role_id = ?", partyGuid, uint64(guidB)).Scan(&memberB))
+	s.Equal(0, memberB, "B should not be in party yet")
+	dbR.Close()
+
+	// A 重连 → HALF_OPEN_PARTY 接受 B 的申请(文本命令, targetguid 指定)
 	s.bindRole(guidA)
+	msgAcc, _ := json.Marshal(map[string]interface{}{"partyguid": float64(partyGuid), "targetguid": guidB})
+	s.NoError(s.sendTCP(append([]byte("HALF_OPEN_PARTY:"), msgAcc...)), "send HALF_OPEN_PARTY accept")
+	bodyAcc, _ := s.recvTCP()
+	accModule, accCmd, accPayload := parseTCPResponse(bodyAcc)
+	s.Equal(uint16(10009), accModule, "accept response module")
+	s.Equal(uint16(15), accCmd, "accept response cmd")
+	accResp := &dnfv1.HalfOpenPartyAcceptResponse{}
+	s.NoError(proto.Unmarshal(accPayload, accResp))
+	s.Equal(int32(0), accResp.Error, "accept B request should succeed")
+
+	// DB 校验: B 已入队, 申请已删除
+	dbAcc, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	var memberAfter, reqAfter int
+	s.NoError(dbAcc.QueryRow("SELECT COUNT(*) FROM t_party_member WHERE party_id = ?", partyGuid).Scan(&memberAfter))
+	s.Equal(2, memberAfter, "party should have 2 members after accept")
+	s.NoError(dbAcc.QueryRow("SELECT COUNT(*) FROM t_party_request WHERE party_id = ? AND role_id = ?", partyGuid, uint64(guidB)).Scan(&reqAfter))
+	s.Equal(0, reqAfter, "request should be deleted after accept")
+	dbAcc.Close()
+
+	// A 改回公开(publictype=0)
 	msgPT0, _ := json.Marshal(map[string]interface{}{"type": 6, "publictype": 0})
 	s.NoError(s.sendTCP(append([]byte("MODIFY_PARTY_SETTING:"), msgPT0...)), "send MODIFY publictype=0")
 	bodyPT0, _ := s.recvTCP()
@@ -582,14 +621,14 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	s.NoError(proto.Unmarshal(pbPT0, cgPT0))
 	s.Equal(int32(0), cgPT0.Error, "set publictype=0 should succeed")
 
-	// B 重连 → 公开队伍 JOIN 成功
+	// B 重连 → 已在队, JOIN → error 1
 	s.bindRole(guidB)
-	s.NoError(s.sendTCP(append([]byte("JOIN_PARTY:"), msgJ...)), "send JOIN_PARTY")
+	s.NoError(s.sendTCP(append([]byte("JOIN_PARTY:"), msgJ...)), "send JOIN_PARTY while already in party")
 	bodyJ, _ := s.recvTCP()
 	_, _, pbJ := parseTCPResponse(bodyJ)
 	cgJ := &dnfv1.ControlGroupResponse{}
 	s.NoError(proto.Unmarshal(pbJ, cgJ))
-	s.Equal(int32(0), cgJ.Error, "join party should succeed")
+	s.Equal(int32(1), cgJ.Error, "join while already in party should fail")
 
 	// B 已在队, 再加入 → error 1
 	s.NoError(s.sendTCP(append([]byte("JOIN_PARTY:"), msgJ...)), "send duplicate JOIN_PARTY")
@@ -650,7 +689,7 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	s.Equal(0, cnt2, "party should be deleted after disband")
 	db2.Close()
 
-	fmt.Printf("party text commands verified (create/dup/modify/publictype1/join-fail/nonleader-modify/kick/publictype0/join/dup-join/member-leave/disband)\n")
+	fmt.Printf("party text commands verified (create/dup/modify/publictype1/join-request/dup-request/nonleader-modify/kick/accept/DB-join/publictype0/join-inparty-fail/member-leave/disband)\n")
 }
 
 // bindRole 建立 TCP 连接并 SELECT_CHARACTER 绑定角色

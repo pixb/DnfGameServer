@@ -481,7 +481,7 @@ func CheckProhibitedWordHandler(session *network.Session, msg proto.Message) {
 	session.WriteResponse(10009, 14, resp)
 }
 
-// HalfOpenPartyAcceptHandler 半公开队伍接受
+// HalfOpenPartyAcceptHandler 半公开队伍接受(2026-09-07 第五十二轮: 文本命令可带 targetguid 指定申请者)
 func HalfOpenPartyAcceptHandler(session *network.Session, msg proto.Message) {
 	ctx := context.Background()
 	req, ok := msg.(*dnfv1.HalfOpenPartyAcceptRequest)
@@ -494,7 +494,16 @@ func HalfOpenPartyAcceptHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
-	err := partySvc.HalfOpenPartyAccept(ctx, session.RoleID(), req.Partyguid)
+	var targetGuid uint64
+	if extras, exists := session.GetAttr("textExtras"); exists {
+		if m, ok := extras.(map[string]interface{}); ok {
+			if v, ok := m["targetguid"].(float64); ok {
+				targetGuid = uint64(v)
+			}
+		}
+	}
+
+	err := partySvc.HalfOpenPartyAccept(ctx, session.RoleID(), req.Partyguid, targetGuid)
 	if err != nil {
 		// 发送错误响应
 		errorResp := &dnfv1.HalfOpenPartyAcceptResponse{
@@ -511,7 +520,7 @@ func HalfOpenPartyAcceptHandler(session *network.Session, msg proto.Message) {
 	session.WriteResponse(10009, 15, resp)
 }
 
-// HalfOpenPartyRefuseHandler 半公开队伍拒绝
+// HalfOpenPartyRefuseHandler 半公开队伍拒绝(2026-09-07 第五十二轮: 文本命令可带 targetguid 指定申请者)
 func HalfOpenPartyRefuseHandler(session *network.Session, msg proto.Message) {
 	ctx := context.Background()
 	req, ok := msg.(*dnfv1.HalfOpenPartyRefuseRequest)
@@ -524,7 +533,16 @@ func HalfOpenPartyRefuseHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
-	err := partySvc.HalfOpenPartyRefuse(ctx, session.RoleID(), req.Partyguid)
+	var targetGuid uint64
+	if extras, exists := session.GetAttr("textExtras"); exists {
+		if m, ok := extras.(map[string]interface{}); ok {
+			if v, ok := m["targetguid"].(float64); ok {
+				targetGuid = uint64(v)
+			}
+		}
+	}
+
+	err := partySvc.HalfOpenPartyRefuse(ctx, session.RoleID(), req.Partyguid, targetGuid)
 	if err != nil {
 		// 发送错误响应
 		errorResp := &dnfv1.HalfOpenPartyRefuseResponse{

@@ -506,6 +506,17 @@ CREATE TABLE IF NOT EXISTS t_party_member (
 CREATE INDEX IF NOT EXISTS idx_party_member_party ON t_party_member(party_id);
 CREATE INDEX IF NOT EXISTS idx_party_member_role ON t_party_member(role_id);
 
+-- 2.7.0 增量迁移：队伍加入申请记录
+-- 2026-09-07 第五十二轮：半开放队伍(public_type=1)申请/队长接受流程实化
+CREATE TABLE IF NOT EXISTS t_party_request (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    party_id INTEGER NOT NULL,
+    role_id INTEGER NOT NULL,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    UNIQUE (party_id, role_id)
+);
+CREATE INDEX IF NOT EXISTS idx_pr_role ON t_party_request (role_id);
+
 -- 徽章升级记录表
 CREATE TABLE IF NOT EXISTS t_emblem_upgrade (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

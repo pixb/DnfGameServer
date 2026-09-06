@@ -262,11 +262,94 @@ func (d *DB) CheckProhibitedWord(ctx context.Context, word string) (bool, error)
 	return false, nil
 }
 
-func (d *DB) HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid uint64) error {
-	return d.inviteToParty(ctx, roleID, roleID, partyGuid)
+// HalfOpenPartyAccept 接受申请(2026-09-07 第五十二轮实化):
+// 队长(roleID)接受指定申请者(targetGuid>0)或全部(0); 校验申请存在 → 加入 → 删申请
+func (d *DB) HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid, targetGuid uint64) error {
+	party, err := d.getPartyByGuid(ctx, partyGuid)
+	if err != nil {
+		return fmt.Errorf("failed to get party: %w", err)
+	}
+	if party == nil {
+		return fmt.Errorf("party not found")
+	}
+	if party.LeaderGuid != roleID {
+		return fmt.Errorf("not party leader")
+	}
+
+	var applicants []uint64
+	if targetGuid > 0 {
+		var n int
+		if err := d.db.QueryRowContext(ctx, "SELECT COUNT(*) FROM t_party_request WHERE party_id = ? AND role_id = ?", partyGuid, targetGuid).Scan(&n); err != nil {
+			return fmt.Errorf("failed to query request: %w", err)
+		}
+		if n == 0 {
+			return fmt.Errorf("no request from target")
+		}
+		applicants = []uint64{targetGuid}
+	} else {
+		rows, err := d.db.QueryContext(ctx, "SELECT role_id FROM t_party_request WHERE party_id = ?", partyGuid)
+		if err != nil {
+			return fmt.Errorf("failed to list requests: %w", err)
+		}
+		defer rows.Close()
+		for rows.Next() {
+			var rid uint64
+			if err := rows.Scan(&rid); err != nil {
+				return fmt.Errorf("failed to scan request: %w", err)
+			}
+			applicants = append(applicants, rid)
+		}
+	}
+
+	tx, err := d.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
+	}
+	defer tx.Rollback()
+
+	for _, rid := range applicants {
+		role, err := d.getRoleByID(ctx, rid)
+		if err != nil {
+			return fmt.Errorf("failed to get applicant role: %w", err)
+		}
+		if role == nil {
+			continue
+		}
+		if _, err := tx.ExecContext(ctx,
+			`INSERT INTO t_party_member (party_id, role_id, player_id, team_type, status, join_time) VALUES (?, ?, ?, 0, 0, datetime('now'))`,
+			partyGuid, rid, role.PlayerID); err != nil {
+			return fmt.Errorf("failed to add member: %w", err)
+		}
+		if _, err := tx.ExecContext(ctx, "DELETE FROM t_party_request WHERE party_id = ? AND role_id = ?", partyGuid, rid); err != nil {
+			return fmt.Errorf("failed to delete request: %w", err)
+		}
+	}
+
+	return tx.Commit()
 }
 
-func (d *DB) HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid uint64) error {
+// HalfOpenPartyRefuse 拒绝申请(2026-09-07 第五十二轮实化): 队长删除指定/全部申请
+func (d *DB) HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid, targetGuid uint64) error {
+	party, err := d.getPartyByGuid(ctx, partyGuid)
+	if err != nil {
+		return fmt.Errorf("failed to get party: %w", err)
+	}
+	if party == nil {
+		return fmt.Errorf("party not found")
+	}
+	if party.LeaderGuid != roleID {
+		return fmt.Errorf("not party leader")
+	}
+
+	if targetGuid > 0 {
+		if _, err := d.db.ExecContext(ctx, "DELETE FROM t_party_request WHERE party_id = ? AND role_id = ?", partyGuid, targetGuid); err != nil {
+			return fmt.Errorf("failed to delete request: %w", err)
+		}
+		return nil
+	}
+	if _, err := d.db.ExecContext(ctx, "DELETE FROM t_party_request WHERE party_id = ?", partyGuid); err != nil {
+		return fmt.Errorf("failed to delete requests: %w", err)
+	}
 	return nil
 }
 
@@ -289,8 +372,25 @@ func (d *DB) HalfOpenPartyJoin(ctx context.Context, roleID, partyGuid uint64) er
 		return fmt.Errorf("party not found")
 	}
 
-	// 2026-09-07 第五十一轮: 仅公开队伍可自由加入(半开放/私有需队长邀请/接受)
-	if party.PublicType != 0 {
+	// 2026-09-07 第五十一轮: 公开(0)自由加入; 第五十二轮: 半开放(1)产生申请待队长接受; 私有(2)拒绝
+	switch party.PublicType {
+	case 1:
+		role, err := d.getRoleByID(ctx, roleID)
+		if err != nil {
+			return fmt.Errorf("failed to get role: %w", err)
+		}
+		if role == nil {
+			return fmt.Errorf("role not found")
+		}
+		if _, err := d.db.ExecContext(ctx,
+			"INSERT OR IGNORE INTO t_party_request (party_id, role_id, create_time) VALUES (?, ?, strftime('%s', 'now'))",
+			partyGuid, roleID); err != nil {
+			return fmt.Errorf("failed to create party request: %w", err)
+		}
+		return nil
+	case 0:
+		// 公开: 走下方直接加入
+	default:
 		return fmt.Errorf("party is not public")
 	}
 

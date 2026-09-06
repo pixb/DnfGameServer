@@ -102,14 +102,14 @@ func (s *Store) CheckProhibitedWord(ctx context.Context, word string) (bool, err
 	return s.driver.CheckProhibitedWord(ctx, word)
 }
 
-// HalfOpenPartyAccept 半公开队伍接受
-func (s *Store) HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid uint64) error {
-	return s.driver.HalfOpenPartyAccept(ctx, roleID, partyGuid)
+// HalfOpenPartyAccept 半公开队伍接受(2026-09-07 第五十二轮: targetGuid>0 指定申请者, 0=接受全部)
+func (s *Store) HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid, targetGuid uint64) error {
+	return s.driver.HalfOpenPartyAccept(ctx, roleID, partyGuid, targetGuid)
 }
 
-// HalfOpenPartyRefuse 半公开队伍拒绝
-func (s *Store) HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid uint64) error {
-	return s.driver.HalfOpenPartyRefuse(ctx, roleID, partyGuid)
+// HalfOpenPartyRefuse 半公开队伍拒绝(2026-09-07 第五十二轮: targetGuid>0 指定, 0=拒绝全部)
+func (s *Store) HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid, targetGuid uint64) error {
+	return s.driver.HalfOpenPartyRefuse(ctx, roleID, partyGuid, targetGuid)
 }
 
 // ControlGroupCustom 控制队伍自定义

@@ -240,8 +240,8 @@ type Driver interface {
 	VoteKickOut(ctx context.Context, roleID, targetGuid uint64) error
 	ConnectBattleServer(ctx context.Context, matchingGuid, charguid uint64, authKey string) (string, uint32, error)
 	CheckProhibitedWord(ctx context.Context, word string) (bool, error)
-	HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid uint64) error
-	HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid uint64) error
+	HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid, targetGuid uint64) error // 2026-09-07 第五十二轮: targetGuid>0 指定申请者, 0=接受全部
+	HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid, targetGuid uint64) error // 2026-09-07 第五十二轮: targetGuid>0 指定, 0=拒绝全部
 	ControlGroupCustom(ctx context.Context, roleID uint64, customData []byte) error
 	ControlGroupQueryarea(ctx context.Context, roleID uint64) error
 	HalfOpenPartyJoin(ctx context.Context, roleID, partyGuid uint64) error

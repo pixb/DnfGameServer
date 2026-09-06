@@ -746,6 +746,19 @@ CREATE TABLE IF NOT EXISTS t_party_member (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='组队成员表';
 
 -- ============================================
+-- 2.7.0 增量迁移：队伍加入申请记录
+-- 2026-09-07 第五十二轮：半开放队伍(public_type=1)申请/队长接受流程实化
+-- ============================================
+CREATE TABLE IF NOT EXISTS t_party_request (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    party_id BIGINT UNSIGNED NOT NULL COMMENT '队伍ID',
+    role_id BIGINT UNSIGNED NOT NULL COMMENT '申请者角色ID',
+    create_time BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()),
+    UNIQUE KEY uk_party_role (party_id, role_id),
+    KEY idx_role (role_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='队伍加入申请表';
+
+-- ============================================
 
 -- ============================================
 -- 2.0.2 增量迁移：补齐 PK 服务表(t_pvp_*)

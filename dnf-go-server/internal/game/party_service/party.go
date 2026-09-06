@@ -76,14 +76,14 @@ func (s *PartyService) CheckProhibitedWord(ctx context.Context, word string) (bo
 	return s.store.CheckProhibitedWord(ctx, word)
 }
 
-// HalfOpenPartyAccept 半公开队伍接受
-func (s *PartyService) HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid uint64) error {
-	return s.store.HalfOpenPartyAccept(ctx, roleID, partyGuid)
+// HalfOpenPartyAccept 半公开队伍接受(2026-09-07 第五十二轮: targetGuid>0 指定, 0=全部)
+func (s *PartyService) HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid, targetGuid uint64) error {
+	return s.store.HalfOpenPartyAccept(ctx, roleID, partyGuid, targetGuid)
 }
 
-// HalfOpenPartyRefuse 半公开队伍拒绝
-func (s *PartyService) HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid uint64) error {
-	return s.store.HalfOpenPartyRefuse(ctx, roleID, partyGuid)
+// HalfOpenPartyRefuse 半公开队伍拒绝(2026-09-07 第五十二轮: targetGuid>0 指定, 0=全部)
+func (s *PartyService) HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid, targetGuid uint64) error {
+	return s.store.HalfOpenPartyRefuse(ctx, roleID, partyGuid, targetGuid)
 }
 
 // ControlGroupCustom 控制队伍自定义
