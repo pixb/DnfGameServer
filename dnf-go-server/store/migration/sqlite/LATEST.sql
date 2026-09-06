@@ -930,3 +930,15 @@ CREATE TABLE IF NOT EXISTS t_bag_expand (
 );
 CREATE INDEX IF NOT EXISTS idx_bag_expand_role ON t_bag_expand(role_id);
 
+
+CREATE TABLE IF NOT EXISTS t_behavior_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at INTEGER NOT NULL DEFAULT 0,
+    role_id INTEGER NOT NULL DEFAULT 0,
+    module TEXT NOT NULL DEFAULT '',
+    action TEXT NOT NULL DEFAULT '',
+    level TEXT NOT NULL DEFAULT 'info',
+    content TEXT NOT NULL DEFAULT ''
+);
+CREATE INDEX IF NOT EXISTS idx_behavior_role_created ON t_behavior_log(role_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_behavior_level ON t_behavior_log(level);

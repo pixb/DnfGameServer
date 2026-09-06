@@ -1,14 +1,63 @@
 package handlers
 
 import (
+	"context"
+	"sort"
+
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
+	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 	"google.golang.org/protobuf/proto"
 )
 
 // ==================== 排名模块 (Module = 10501) ====================
-// 说明: HTTP 层已有 /rank/* 接口实现,此处先接通 TCP 命令链路。
+// 2026-09-06 第十九轮 实化: 排名查询接入真实角色数据(等级榜: 等级降序+经验降序, 与 HTTP /rank/* 同语义)。
+// 客户端经 TCP 文本命令带 JSON payload(QUERY_MY_RANK:{"rank_type":1}), 由 codec TextExtras 透传;
+// 响应仍为 Empty(协议未扩展), 查询结果经服务端日志可观测。
+
+var rankStore *store.Store
+
+// InitRankStore 初始化排名 Store
+func InitRankStore(s *store.Store) {
+	rankStore = s
+}
+
+// rankTypeFromPayload 读取排名类型(缺省 1=等级榜, 2=战力榜, 3=副本榜)
+func rankTypeFromPayload(session *network.Session) uint32 {
+	if extras, exists := session.GetAttr("textExtras"); exists {
+		if m, ok := extras.(map[string]interface{}); ok {
+			if v, ok := m["rank_type"].(float64); ok {
+				return uint32(v)
+			}
+		}
+	}
+	return 1
+}
+
+// rankPosition 查询角色在等级榜的位置(等级降序+经验降序; 非等级榜暂无数据源返回 0)
+func rankPosition(roleID uint64) (rank, total int) {
+	if rankStore == nil {
+		return 0, 0
+	}
+	roles, err := rankStore.ListRoles(context.Background(), &store.FindRole{})
+	if err != nil {
+		logger.Error("rank load roles failed", logger.ErrorField(err))
+		return 0, 0
+	}
+	sort.SliceStable(roles, func(i, j int) bool {
+		if roles[i].Level != roles[j].Level {
+			return roles[i].Level > roles[j].Level
+		}
+		return roles[i].Exp > roles[j].Exp
+	})
+	for i, r := range roles {
+		if r.ID == roleID {
+			return i + 1, len(roles)
+		}
+	}
+	return 0, len(roles)
+}
 
 func writeRankOK(session *network.Session, respCmd uint16, name string) {
 	if err := session.WriteResponse(10501, respCmd, &dnfv1.Empty{}); err != nil {
@@ -26,8 +75,17 @@ func QueryMyRankHandler(session *network.Session, msg proto.Message) {
 		logger.Error("invalid message type for query my rank")
 		return
 	}
-	logger.Info("query my rank request received", logger.Int64("session_id", session.ID()))
-	// TODO: 查询角色在指定榜单的排名
+	logger.Info("query my rank request received",
+		logger.Int64("session_id", session.ID()),
+		logger.Uint32("rank_type", rankTypeFromPayload(session)),
+	)
+	// 查询角色在指定榜单的排名(等级榜真实计算, 其余榜单暂无数据源)
+	rank, total := rankPosition(session.RoleID())
+	logger.Info("query my rank result",
+		logger.Int64("session_id", session.ID()),
+		logger.Int("rank", rank),
+		logger.Int("total", total),
+	)
 	_ = req
 	writeRankOK(session, 1, "query my rank")
 }
@@ -39,8 +97,17 @@ func QueryPersonalRankHandler(session *network.Session, msg proto.Message) {
 		logger.Error("invalid message type for query personal rank")
 		return
 	}
-	logger.Info("query personal rank request received", logger.Int64("session_id", session.ID()))
-	// TODO: 查询指定角色在榜单的排名
+	logger.Info("query personal rank request received",
+		logger.Int64("session_id", session.ID()),
+		logger.Uint32("rank_type", rankTypeFromPayload(session)),
+	)
+	// 查询指定角色在榜单的排名(按会话角色)
+	rank, total := rankPosition(session.RoleID())
+	logger.Info("query personal rank result",
+		logger.Int64("session_id", session.ID()),
+		logger.Int("rank", rank),
+		logger.Int("total", total),
+	)
 	_ = req
 	writeRankOK(session, 3, "query personal rank")
 }
@@ -52,8 +119,17 @@ func QueryFriendRankHandler(session *network.Session, msg proto.Message) {
 		logger.Error("invalid message type for query friend rank")
 		return
 	}
-	logger.Info("query friend rank request received", logger.Int64("session_id", session.ID()))
-	// TODO: 查询好友榜单排名
+	logger.Info("query friend rank request received",
+		logger.Int64("session_id", session.ID()),
+		logger.Uint32("rank_type", rankTypeFromPayload(session)),
+	)
+	// 好友榜单暂无好友关系数据源, 回退到个人等级榜位置
+	rank, total := rankPosition(session.RoleID())
+	logger.Info("query friend rank result",
+		logger.Int64("session_id", session.ID()),
+		logger.Int("rank", rank),
+		logger.Int("total", total),
+	)
 	_ = req
 	writeRankOK(session, 5, "query friend rank")
 }
@@ -65,8 +141,17 @@ func QueryMyTeamRankHandler(session *network.Session, msg proto.Message) {
 		logger.Error("invalid message type for query my team rank")
 		return
 	}
-	logger.Info("query my team rank request received", logger.Int64("session_id", session.ID()))
-	// TODO: 查询角色所在队伍的榜单排名
+	logger.Info("query my team rank request received",
+		logger.Int64("session_id", session.ID()),
+		logger.Uint32("rank_type", rankTypeFromPayload(session)),
+	)
+	// 队伍榜单暂无队伍数据源, 回退到个人等级榜位置
+	rank, total := rankPosition(session.RoleID())
+	logger.Info("query my team rank result",
+		logger.Int64("session_id", session.ID()),
+		logger.Int("rank", rank),
+		logger.Int("total", total),
+	)
 	_ = req
 	writeRankOK(session, 7, "query my team rank")
 }

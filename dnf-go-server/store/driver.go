@@ -277,4 +277,12 @@ type Driver interface {
 	// ==================== 背包扩容相关 ====================
 	GetBagExpand(ctx context.Context, find *FindBagExpand) (*BagExpand, error)
 	UpsertBagExpand(ctx context.Context, b *BagExpand) (*BagExpand, error)
+
+	// ==================== 行为日志相关 ====================
+	// 2026-09-06 第十九轮: rank/log TCP handler 实化
+	RecordBehaviorLog(ctx context.Context, log *BehaviorLog) error
+	ListBehaviorLogs(ctx context.Context, roleID uint64, limit int) ([]*BehaviorLog, error)
+	StatisticBehaviorLogs(ctx context.Context, roleID uint64) (map[string]int64, error)
+	DeleteBehaviorLogs(ctx context.Context, ids []uint64) (int64, error)
+	CleanBehaviorLogs(ctx context.Context, before int64) (int64, error)
 }

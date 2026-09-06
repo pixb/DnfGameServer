@@ -635,3 +635,31 @@ func (s *Store) GetBagExpand(ctx context.Context, find *FindBagExpand) (*BagExpa
 func (s *Store) UpsertBagExpand(ctx context.Context, b *BagExpand) (*BagExpand, error) {
 	return s.driver.UpsertBagExpand(ctx, b)
 }
+
+// ==================== 行为日志Store方法 ====================
+// 2026-09-06 第十九轮: rank/log TCP handler 实化
+
+// RecordBehaviorLog 记录行为日志
+func (s *Store) RecordBehaviorLog(ctx context.Context, log *BehaviorLog) error {
+	return s.driver.RecordBehaviorLog(ctx, log)
+}
+
+// ListBehaviorLogs 查询行为日志
+func (s *Store) ListBehaviorLogs(ctx context.Context, roleID uint64, limit int) ([]*BehaviorLog, error) {
+	return s.driver.ListBehaviorLogs(ctx, roleID, limit)
+}
+
+// StatisticBehaviorLogs 按动作统计行为日志数
+func (s *Store) StatisticBehaviorLogs(ctx context.Context, roleID uint64) (map[string]int64, error) {
+	return s.driver.StatisticBehaviorLogs(ctx, roleID)
+}
+
+// DeleteBehaviorLogs 按ID删除行为日志
+func (s *Store) DeleteBehaviorLogs(ctx context.Context, ids []uint64) (int64, error) {
+	return s.driver.DeleteBehaviorLogs(ctx, ids)
+}
+
+// CleanBehaviorLogs 清理指定时间之前的行为日志
+func (s *Store) CleanBehaviorLogs(ctx context.Context, before int64) (int64, error) {
+	return s.driver.CleanBehaviorLogs(ctx, before)
+}

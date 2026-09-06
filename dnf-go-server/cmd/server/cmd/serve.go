@@ -113,6 +113,13 @@ func runServe(cmd *cobra.Command, args []string) error {
 
 	// 活动 store 注入(活动配置/进度)
 	handlers.InitEventStore(s)
+
+	// 行为日志 store 注入(rank/log TCP handler 实化, 2026-09-06 第十九轮)
+	handlers.InitLogStore(s)
+
+	// 排名 store 注入(rank TCP handler 实化, 2026-09-06 第十九轮)
+	handlers.InitRankStore(s)
+
 	fmt.Println("Services initialized successfully")
 
 	// 4. 创建服务器
