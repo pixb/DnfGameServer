@@ -1,5 +1,8 @@
 package store
 
+// InitialSkillPoints 建角初始技能点(2026-09-07 第四十四轮: 技能学习/升级消耗 SP)
+const InitialSkillPoints = 100
+
 // Role 角色
 type Role struct {
 	BaseModel
@@ -16,6 +19,7 @@ type Role struct {
 	X          int32
 	Y          int32
 	Channel    int32
+	SP         int32 // 技能点(2026-09-07 第四十四轮: 学习/升级技能消耗)
 }
 
 // RoleAttributes 角色属性
@@ -64,6 +68,10 @@ type FindRole struct {
 	Name      *string
 	Job       *int32
 	Level     *int32
+
+	// NoCache 跳过角色缓存直接读库(2026-09-07 第四十四轮: 技能扣 SP 需实时值,
+	// 避免直插 DB 修改(测试/运营)被缓存遮蔽)
+	NoCache bool
 }
 
 // UpdateRole 更新角色
@@ -79,6 +87,7 @@ type UpdateRole struct {
 	MapID   *int32
 	X       *int32
 	Y       *int32
+	SP      *int32
 }
 
 // DeleteRole 删除角色

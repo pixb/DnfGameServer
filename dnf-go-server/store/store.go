@@ -144,9 +144,9 @@ func (s *Store) CreateRole(ctx context.Context, create *Role) (*Role, error) {
 	return role, nil
 }
 
-// GetRole 获取角色(带缓存)
+// GetRole 获取角色(带缓存; NoCache=true 时跳过缓存直接读库)
 func (s *Store) GetRole(ctx context.Context, find *FindRole) (*Role, error) {
-	if find.ID != nil {
+	if find.ID != nil && !find.NoCache {
 		if cached, ok := s.roleCache.Get(ctx, fmt.Sprintf("%d", *find.ID)); ok {
 			if role, ok := cached.(*Role); ok {
 				return role, nil
@@ -159,7 +159,9 @@ func (s *Store) GetRole(ctx context.Context, find *FindRole) (*Role, error) {
 		return nil, err
 	}
 
-	s.roleCache.Set(ctx, fmt.Sprintf("%d", role.ID), role)
+	if !find.NoCache {
+		s.roleCache.Set(ctx, fmt.Sprintf("%d", role.ID), role)
+	}
 	return role, nil
 }
 

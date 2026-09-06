@@ -1102,3 +1102,46 @@ CREATE TABLE IF NOT EXISTS friend_request (
 ALTER TABLE role MODIFY COLUMN name VARCHAR(64) NOT NULL DEFAULT '' COMMENT '角色名(全局唯一)';
 
 ALTER TABLE role ADD UNIQUE INDEX uk_name (name);
+
+-- ============================================
+-- 21. 技能配置表 + 角色技能表 (2.0.1 补表, 第四十四轮并入快照)
+-- ============================================
+CREATE TABLE IF NOT EXISTS skills (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    skill_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '技能ID',
+    name VARCHAR(64) NOT NULL DEFAULT '' COMMENT '技能名称',
+    description TEXT COMMENT '技能描述',
+    level INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '等级',
+    max_level INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '最大等级',
+    sp INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'SP消耗',
+    tp INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'TP消耗',
+    type INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '类型',
+    job_required INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '所需职业',
+    level_required INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '所需等级',
+    pre_skill_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '前置技能',
+    pre_skill_level INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '前置技能等级',
+    UNIQUE KEY uk_skill_id (skill_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='技能配置表';
+
+CREATE TABLE IF NOT EXISTS role_skills (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    role_id BIGINT UNSIGNED NOT NULL COMMENT '角色ID',
+    skill_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '技能ID',
+    level INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '技能等级',
+    is_learned TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否已学习',
+    UNIQUE KEY uk_role_skill (role_id, skill_id),
+    INDEX idx_role_id (role_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色技能表';
+
+-- 技能配置种子(通用 + 三职业, 与 2.6.0 增量迁移一致)
+INSERT IGNORE INTO skills
+  (skill_id, name, description, level, max_level, sp, tp, type, job_required, level_required, pre_skill_id, pre_skill_level)
+VALUES
+  (1001, '冲刺', '向前快速冲刺一段距离', 1, 5, 5, 0, 0, 0, 1, 0, 0),
+  (1002, '格挡', '进入格挡姿态, 减少所受伤害', 1, 5, 5, 0, 2, 0, 1, 0, 0),
+  (1101, '上挑', '将敌人挑飞到空中', 1, 10, 10, 0, 0, 1, 5, 0, 0),
+  (1102, '崩山击', '跃起后猛击地面, 震伤周围敌人', 1, 10, 15, 0, 0, 1, 10, 1101, 1),
+  (1201, '银光落刃', '从空中落下攻击敌人', 1, 10, 10, 0, 0, 2, 5, 0, 0),
+  (1202, '三段斩', '连续斩击三段, 向前突进', 1, 10, 15, 0, 0, 2, 10, 1201, 1),
+  (1301, '念气波', '凝聚念气向前发出冲击波', 1, 10, 10, 0, 0, 3, 5, 0, 0),
+  (1302, '雷霆背摔', '抓住敌人背摔, 附带雷属性伤害', 1, 10, 15, 0, 0, 3, 10, 1301, 1);

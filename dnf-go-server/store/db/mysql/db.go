@@ -236,8 +236,8 @@ func (d *DB) DeleteAccount(ctx context.Context, delete *store.DeleteAccount) err
 // CreateRole 创建角色
 func (d *DB) CreateRole(ctx context.Context, create *store.Role) (*store.Role, error) {
 	query := `
-      INSERT INTO role (created_at, updated_at, row_status, account_id, role_id, name, job, level, exp, fatigue, max_fatigue, map_id, x, y, channel)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO role (created_at, updated_at, row_status, account_id, role_id, name, job, level, exp, fatigue, max_fatigue, map_id, x, y, channel, sp)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
    `
 
 	now := time.Now().Unix()
@@ -245,6 +245,7 @@ func (d *DB) CreateRole(ctx context.Context, create *store.Role) (*store.Role, e
 		now, now, store.RowStatusNormal,
 		create.AccountID, create.RoleID, create.Name, create.Job, create.Level,
 		create.Exp, create.Fatigue, create.MaxFatigue, create.MapID, create.X, create.Y, create.Channel,
+		store.InitialSkillPoints,
 	)
 	if err != nil {
 		if strings.Contains(err.Error(), "Duplicate entry") {
@@ -258,6 +259,7 @@ func (d *DB) CreateRole(ctx context.Context, create *store.Role) (*store.Role, e
 	create.CreatedAt = now
 	create.UpdatedAt = now
 	create.RowStatus = store.RowStatusNormal
+	create.SP = store.InitialSkillPoints
 
 	// 创建默认属性
 	d.CreateRoleAttributes(ctx, &store.RoleAttributes{
@@ -322,7 +324,7 @@ func (d *DB) ListRoles(ctx context.Context, find *store.FindRole) ([]*store.Role
 		args = append(args, *find.RowStatus)
 	}
 
-	query := `SELECT id, created_at, updated_at, row_status, account_id, role_id, name, job, level, exp, fatigue, max_fatigue, map_id, x, y, channel FROM role`
+	query := `SELECT id, created_at, updated_at, row_status, account_id, role_id, name, job, level, exp, fatigue, max_fatigue, map_id, x, y, channel, sp FROM role`
 	if len(where) > 0 {
 		query += " WHERE " + strings.Join(where, " AND ")
 	}
@@ -341,7 +343,7 @@ func (d *DB) ListRoles(ctx context.Context, find *store.FindRole) ([]*store.Role
 		var r store.Role
 		err := rows.Scan(&r.ID, &r.CreatedAt, &r.UpdatedAt, &r.RowStatus,
 			&r.AccountID, &r.RoleID, &r.Name, &r.Job, &r.Level, &r.Exp,
-			&r.Fatigue, &r.MaxFatigue, &r.MapID, &r.X, &r.Y, &r.Channel)
+			&r.Fatigue, &r.MaxFatigue, &r.MapID, &r.X, &r.Y, &r.Channel, &r.SP)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan role: %w", err)
 		}
@@ -359,7 +361,7 @@ func (d *DB) ListRolesByAccount(ctx context.Context, accountID uint64) ([]*store
 // GetRoleByName 根据角色名获取角色
 func (d *DB) GetRoleByName(ctx context.Context, name string) (*store.Role, error) {
 	// 2026-09-06 第二十二轮: 同名角色按最新取(建角无名字唯一约束, 旧实现取到最早角色导致发信/解析歧义)
-	query := `SELECT id, created_at, updated_at, row_status, account_id, role_id, name, job, level, exp, fatigue, max_fatigue, map_id, x, y, channel FROM role WHERE name = ? AND row_status = 'NORMAL' ORDER BY id DESC LIMIT 1`
+	query := `SELECT id, created_at, updated_at, row_status, account_id, role_id, name, job, level, exp, fatigue, max_fatigue, map_id, x, y, channel, sp FROM role WHERE name = ? AND row_status = 'NORMAL' ORDER BY id DESC LIMIT 1`
 	row := d.db.QueryRowContext(ctx, query, name)
 
 	var role store.Role
@@ -368,6 +370,7 @@ func (d *DB) GetRoleByName(ctx context.Context, name string) (*store.Role, error
 		&role.ID, &role.CreatedAt, &role.UpdatedAt, &rowStatus,
 		&role.AccountID, &role.RoleID, &role.Name, &role.Job, &role.Level,
 		&role.Exp, &role.Fatigue, &role.MaxFatigue, &role.MapID, &role.X, &role.Y, &role.Channel,
+		&role.SP,
 	)
 	if err == sql.ErrNoRows {
 		return nil, store.ErrNotFound
@@ -422,6 +425,10 @@ func (d *DB) UpdateRole(ctx context.Context, update *store.UpdateRole) (*store.R
 	if update.Y != nil {
 		sets = append(sets, "y = ?")
 		args = append(args, *update.Y)
+	}
+	if update.SP != nil {
+		sets = append(sets, "sp = ?")
+		args = append(args, *update.SP)
 	}
 	if update.RowStatus != nil {
 		sets = append(sets, "row_status = ?")

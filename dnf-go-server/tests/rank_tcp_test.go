@@ -248,3 +248,123 @@ func (s *RankTCPTestSuite) TestTCPQueryMyTeamRank() {
 	})
 	fmt.Printf("team rank verified (party_id=%d)\n", partyID)
 }
+
+// TestTCPLearnUpgradeSkill 技能学习/升级(2026-09-07 第四十四轮实化):
+// 建角(SP=100, job=1) → 绑定 → LEARN_SKILL/UPGRADE_SKILL 文本命令 JSON payload
+// 覆盖: 成功/重复学习/职业不符/等级不足/前置不足/SP不足/未学升级/满级
+func (s *RankTCPTestSuite) TestTCPLearnUpgradeSkill() {
+	uid := time.Now().UnixNano()
+	guid := s.createCharacter(fmt.Sprintf("test_skill_%d", uid))
+
+	// 绑定角色
+	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", s.serverHost, s.serverPort), 10*time.Second)
+	s.NoError(err)
+	s.NotNil(conn)
+	if conn == nil {
+		s.T().Skip("TCP connection failed")
+		return
+	}
+	defer conn.Close()
+	s.socket = conn
+
+	selectJSON, _ := json.Marshal(map[string]interface{}{"uid": guid})
+	s.NoError(s.sendTCP(append([]byte("SELECT_CHARACTER:"), selectJSON...)), "send SELECT_CHARACTER")
+	selResp, err := s.recvTCP()
+	s.NoError(err)
+	s.NotNil(selResp)
+	sModule, sCmd, _ := parseTCPResponse(selResp)
+	s.Equal(uint16(10000), sModule)
+	s.Equal(uint16(7), sCmd)
+
+	// 发送技能命令并解析响应
+	sendSkill := func(cmd string, respCmd uint16, skillID int) (*dnfv1.LearnSkillResponse, *dnfv1.UpgradeSkillResponse) {
+		payloadJSON, _ := json.Marshal(map[string]interface{}{"skill_id": skillID})
+		s.NoError(s.sendTCP(append([]byte(cmd+":"), payloadJSON...)), "send "+cmd)
+		body, err := s.recvTCP()
+		s.NoError(err)
+		s.NotNil(body)
+		module, rcmd, payloadBytes := parseTCPResponse(body)
+		s.Equal(uint16(10001), module, "skill response module should be 10001")
+		s.Equal(respCmd, rcmd, "skill response cmd should be %d", respCmd)
+		if respCmd == 5 {
+			rr := &dnfv1.LearnSkillResponse{}
+			s.NoError(proto.Unmarshal(payloadBytes, rr), "unmarshal LearnSkillResponse")
+			return rr, nil
+		}
+		rr := &dnfv1.UpgradeSkillResponse{}
+		s.NoError(proto.Unmarshal(payloadBytes, rr), "unmarshal UpgradeSkillResponse")
+		return nil, rr
+	}
+
+	// 1. 学习通用技能 1001(SP 5) 成功, SP 100→95
+	learn, _ := sendSkill("LEARN_SKILL", 5, 1001)
+	s.Equal(int32(0), learn.Error, "learn 1001 should succeed")
+	s.Equal(int32(1001), learn.Skill.SkillId)
+	s.Equal(int32(1), learn.Skill.Level)
+	s.Equal(int32(5), learn.Skill.MaxLevel)
+	s.Equal(int32(5), learn.Skill.SpCost)
+
+	// 2. 学习通用技能 1002(SP 5) 成功, SP 95→90
+	learn, _ = sendSkill("LEARN_SKILL", 5, 1002)
+	s.Equal(int32(0), learn.Error, "learn 1002 should succeed")
+
+	// 3. 重复学习 1001 → error=5 已学习
+	learn, _ = sendSkill("LEARN_SKILL", 5, 1001)
+	s.Equal(int32(5), learn.Error, "repeat learn should be error 5")
+
+	// 4. 职业不符: 1201 是职业2技能, 角色 job=1 → error=3
+	learn, _ = sendSkill("LEARN_SKILL", 5, 1201)
+	s.Equal(int32(3), learn.Error, "job mismatch should be error 3")
+
+	// 5. 等级不足: 1101 需 5 级, 角色 1 级 → error=3
+	learn, _ = sendSkill("LEARN_SKILL", 5, 1101)
+	s.Equal(int32(3), learn.Error, "level requirement should be error 3")
+
+	// 6. 前置未学: 1102 需前置 1101 → error=3
+	learn, _ = sendSkill("LEARN_SKILL", 5, 1102)
+	s.Equal(int32(3), learn.Error, "pre-skill requirement should be error 3")
+
+	// 7. SP 不足: DB 直插 SP=0 → 升级 1002 error=4
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+	_, err = db.Exec("UPDATE role SET sp = 0 WHERE id = ?", uint64(guid))
+	s.NoError(err, "set sp=0")
+	_, upgrade := sendSkill("UPGRADE_SKILL", 7, 1002)
+	s.Equal(int32(4), upgrade.Error, "no SP should be error 4")
+
+	// 8. 恢复 SP 到升级前值(学完两技能后为 90)再升级 1002 → level=2 成功
+	_, err = db.Exec("UPDATE role SET sp = 90 WHERE id = ?", uint64(guid))
+	s.NoError(err)
+	_, upgrade = sendSkill("UPGRADE_SKILL", 7, 1002)
+	s.Equal(int32(0), upgrade.Error, "upgrade 1002 should succeed")
+	s.Equal(int32(2), upgrade.Skill.Level)
+	s.Equal(int32(5), upgrade.Skill.MaxLevel)
+
+	// 9. 升级未学技能 1301 → error=6
+	_, upgrade = sendSkill("UPGRADE_SKILL", 7, 1301)
+	s.Equal(int32(6), upgrade.Error, "upgrade unlearned should be error 6")
+
+	// 10. 升级 1001 到满级(level 1→5), 再升 error=7
+	for i := 0; i < 4; i++ {
+		_, upgrade = sendSkill("UPGRADE_SKILL", 7, 1001)
+		s.Equal(int32(0), upgrade.Error, "upgrade 1001 round %d", i)
+	}
+	_, upgrade = sendSkill("UPGRADE_SKILL", 7, 1001)
+	s.Equal(int32(7), upgrade.Error, "max level should be error 7")
+
+	// 11. DB 校验: role_skills 两行(1001 满级5, 1002 2级), 1001 SP 总耗 5+4*5=25
+	var rsCount, lv1, lv2 int
+	s.NoError(db.QueryRow("SELECT COUNT(*) FROM role_skills WHERE role_id = ?", uint64(guid)).Scan(&rsCount))
+	s.Equal(2, rsCount, "two role skills expected")
+	s.NoError(db.QueryRow("SELECT level FROM role_skills WHERE role_id = ? AND skill_id = 1001", uint64(guid)).Scan(&lv1))
+	s.Equal(5, lv1, "1001 should be max level 5")
+	s.NoError(db.QueryRow("SELECT level FROM role_skills WHERE role_id = ? AND skill_id = 1002", uint64(guid)).Scan(&lv2))
+	s.Equal(2, lv2, "1002 should be level 2")
+	var sp int
+	s.NoError(db.QueryRow("SELECT sp FROM role WHERE id = ?", uint64(guid)).Scan(&sp))
+	// 100: -5(学1001) -5(学1002) -5(升1002) -5*4(升1001满) = 65
+	s.Equal(65, sp, "final SP should be 65")
+	fmt.Printf("skill learn/upgrade verified (sp=%d)\n", sp)
+}

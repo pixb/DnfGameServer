@@ -178,6 +178,9 @@ func runServe(cmd *cobra.Command, args []string) error {
 	// 认证 store 注入(LoginHandler 实化, 2026-09-06 第三十二轮)
 	handlers.InitAuthStore(s)
 
+	// 技能 store 注入(学习/升级实化, 2026-09-07 第四十四轮)
+	handlers.InitSkillStore(s)
+
 	fmt.Println("Services initialized successfully")
 
 	// 4. 创建服务器
