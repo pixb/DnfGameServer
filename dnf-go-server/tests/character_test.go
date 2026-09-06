@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"database/sql"
 	"fmt"
 	"testing"
 	"time"
@@ -71,6 +72,55 @@ func (s *CharacterTestSuite) TestCharacterCreateDuplicateName() {
 	if msg, ok := second["message"].(string); ok {
 		s.Contains(msg, "已存在")
 	}
+}
+
+// TestCharacterDBUniqueConstraint DB 层唯一索引硬约束(2026-09-06 第四十轮):
+// 绕过 handler 直插同名角色应被 uk_name 唯一索引拒绝(Error 1062)
+func (s *CharacterTestSuite) TestCharacterDBUniqueConstraint() {
+	token := s.LoginAs(s.openid)
+	s.NotEmpty(token, "Login should return a token")
+
+	// 先建一个角色(记录其名字与 account_id)
+	name := fmt.Sprintf("TU_%012d", time.Now().UnixNano()%1000000000000)
+	createResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": name,
+		"job":  1,
+	})
+	s.NoError(err)
+	s.AssertSuccess(createResp)
+	data, _ := createResp["data"].(map[string]interface{})
+	charGuid, ok := data["charGuid"].(float64)
+	s.True(ok, "should have charGuid")
+
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	var accountID int64
+	err = db.QueryRow("SELECT account_id FROM role WHERE id = ?", uint64(charGuid)).Scan(&accountID)
+	s.NoError(err)
+
+	// 取该账号下不冲突的 role_id(uk_account_role 唯一)
+	var nextRoleID int
+	err = db.QueryRow("SELECT COALESCE(MAX(role_id), 0) + 1 FROM role WHERE account_id = ?", accountID).Scan(&nextRoleID)
+	s.NoError(err)
+
+	// 绕过 handler 直插同名角色(不同 role_id) → 唯一索引拒绝
+	_, err = db.Exec("INSERT INTO role (created_at, updated_at, row_status, account_id, role_id, name, job, level) VALUES (1, 1, 'NORMAL', ?, ?, ?, 1, 1)",
+		accountID, nextRoleID, name)
+	s.Error(err, "DB unique index should reject duplicate name")
+	if err != nil {
+		s.Contains(err.Error(), "Duplicate entry", "should be duplicate entry error")
+		s.Contains(err.Error(), "uk_name", "should mention uk_name index")
+	}
+
+	// 确认未产生脏数据
+	var cnt int
+	err = db.QueryRow("SELECT COUNT(*) FROM role WHERE name = ?", name).Scan(&cnt)
+	s.NoError(err)
+	s.Equal(1, cnt, "only the handler-created character should exist")
+	fmt.Printf("DB unique index uk_name verified for %s\n", name)
 }
 
 // TestCharacterCreateInvalidName 角色名长度/字符集校验(2026-09-06 第二十六轮):
