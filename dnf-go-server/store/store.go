@@ -349,6 +349,11 @@ func (s *Store) ListFriends(ctx context.Context, roleID uint64) ([]*Friend, erro
 	return s.driver.ListFriends(ctx, roleID)
 }
 
+// UpdateFriend 更新好友关系(分组/亲密度等)(2026-09-06 第四十二轮)
+func (s *Store) UpdateFriend(ctx context.Context, update *UpdateFriend) error {
+	return s.driver.UpdateFriend(ctx, update)
+}
+
 // GetFriend 获取好友关系
 func (s *Store) GetFriend(ctx context.Context, find *FindFriend) (*Friend, error) {
 	return s.driver.GetFriend(ctx, find)

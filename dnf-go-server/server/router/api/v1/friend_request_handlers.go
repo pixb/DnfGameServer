@@ -165,8 +165,9 @@ func (s *APIV1Service) handleFriendRequestApprove(c echo.Context) error {
 	if myRole != nil {
 		myName = myRole.Name
 	}
-	s.addFriendRelation(c, myRoleID, fr.FromRoleID, fromName)
-	s.addFriendRelation(c, fr.FromRoleID, myRoleID, myName)
+	// 双向建立好友关系(幂等; 2026-09-06 第四十二轮: 申请同意初始化亲密度 10)
+	s.addFriendRelation(c, myRoleID, fr.FromRoleID, fromName, 10)
+	s.addFriendRelation(c, fr.FromRoleID, myRoleID, myName, 10)
 
 	// 申请置为已同意
 	status1 := int32(1)
@@ -224,4 +225,116 @@ func (s *APIV1Service) handleFriendRequestReject(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+// handleFriendGroup 修改好友分组(2026-09-06 第四十二轮): {friend_uid, group}
+func (s *APIV1Service) handleFriendGroup(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	req := decodeJSONBody(c)
+	friendUIDStr := c.FormValue("friend_uid")
+	if friendUIDStr == "" {
+		if v, ok := req["friend_uid"].(string); ok {
+			friendUIDStr = v
+		}
+	}
+	if friendUIDStr == "" {
+		if v, ok := req["friend_uid"].(float64); ok {
+			friendUIDStr = fmt.Sprintf("%.0f", v)
+		}
+	}
+	group := c.FormValue("group")
+	if group == "" {
+		if v, ok := req["group"].(string); ok {
+			group = v
+		}
+	}
+	if friendUIDStr == "" || group == "" {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "friend_uid and group required"})
+	}
+	if len([]rune(group)) > 16 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "group too long (max 16)"})
+	}
+
+	var friendUID uint64
+	if _, err := fmt.Sscanf(friendUIDStr, "%d", &friendUID); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "invalid friend_uid"})
+	}
+
+	myRoleID := s.activeRoleID(c, claims)
+	friend, err := s.Store.GetFriend(c.Request().Context(), &store.FindFriend{
+		RoleID:   &myRoleID,
+		FriendID: &friendUID,
+	})
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": "friend not found"})
+	}
+
+	if err := s.Store.UpdateFriend(c.Request().Context(), &store.UpdateFriend{ID: friend.ID, Group: &group}); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3, "message": err.Error()})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0, "group": group})
+}
+
+// handleFriendIntimacy 增减好友亲密度(2026-09-06 第四十二轮): {friend_uid, delta}, 结果钳制 0~9999
+func (s *APIV1Service) handleFriendIntimacy(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	req := decodeJSONBody(c)
+	friendUIDStr := c.FormValue("friend_uid")
+	if friendUIDStr == "" {
+		if v, ok := req["friend_uid"].(string); ok {
+			friendUIDStr = v
+		}
+	}
+	if friendUIDStr == "" {
+		if v, ok := req["friend_uid"].(float64); ok {
+			friendUIDStr = fmt.Sprintf("%.0f", v)
+		}
+	}
+	deltaStr := c.FormValue("delta")
+	if deltaStr == "" {
+		if v, ok := req["delta"].(float64); ok {
+			deltaStr = fmt.Sprintf("%.0f", v)
+		}
+	}
+	if friendUIDStr == "" || deltaStr == "" {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "friend_uid and delta required"})
+	}
+
+	var friendUID uint64
+	var delta int32
+	if _, err := fmt.Sscanf(friendUIDStr, "%d", &friendUID); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "invalid friend_uid"})
+	}
+	if _, err := fmt.Sscanf(deltaStr, "%d", &delta); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "invalid delta"})
+	}
+
+	myRoleID := s.activeRoleID(c, claims)
+	friend, err := s.Store.GetFriend(c.Request().Context(), &store.FindFriend{
+		RoleID:   &myRoleID,
+		FriendID: &friendUID,
+	})
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": "friend not found"})
+	}
+
+	newIntimacy := friend.Intimacy + delta
+	if newIntimacy < 0 {
+		newIntimacy = 0
+	}
+	if newIntimacy > 9999 {
+		newIntimacy = 9999
+	}
+	if err := s.Store.UpdateFriend(c.Request().Context(), &store.UpdateFriend{ID: friend.ID, Intimacy: &newIntimacy}); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3, "message": err.Error()})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0, "intimacy": newIntimacy})
 }

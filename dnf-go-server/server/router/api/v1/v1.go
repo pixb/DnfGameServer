@@ -148,6 +148,10 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/friend/approve", s.handleFriendRequestApprove)
 	apiGroup.POST("/friend/reject", s.handleFriendRequestReject)
 
+	// 好友分组/亲密度(2026-09-06 第四十二轮)
+	apiGroup.POST("/friend/group", s.handleFriendGroup)
+	apiGroup.POST("/friend/intimacy", s.handleFriendIntimacy)
+
 	// 账号管理路由(2026-09-06 第三十七轮: 禁用/启用账号, 影响 TCP 登录 error=5)
 	apiGroup.POST("/admin/account/disable", s.handleAdminDisableAccount)
 	apiGroup.POST("/admin/account/enable", s.handleAdminEnableAccount)

@@ -230,3 +230,87 @@ func (s *FriendRequestTestSuite) setupFRClient(openid string) {
 		s.NoError(err)
 	}
 }
+
+// TestFriendGroupIntimacy 分组/亲密度联动(2026-09-06 第四十二轮):
+// 申请同意初始化亲密度10+默认分组 → 改分组 → 增/减亲密度(钳制0~9999)
+func (s *FriendRequestTestSuite) TestFriendGroupIntimacy() {
+	uid := time.Now().UnixNano()
+	nameA := fmt.Sprintf("FR_I_%06d", uid%1000000)
+	nameB := fmt.Sprintf("FR_J_%06d", uid%1000000)
+	openidA := fmt.Sprintf("test_fr_i_%d", uid)
+	openidB := fmt.Sprintf("test_fr_j_%d", uid)
+
+	guidA := s.createKnownRole(openidA, nameA)
+	guidB := s.createKnownRole(openidB, nameB)
+	s.Greater(guidA, float64(0))
+	s.Greater(guidB, float64(0))
+
+	// A 申请 B, B 同意
+	s.setupFRClient(openidA)
+	reqResp, err := s.Client.Post("/api/v1/friend/request", map[string]interface{}{
+		"target_name": nameB,
+	})
+	s.NoError(err)
+	s.Equal(float64(0), reqResp["error"])
+	requestID, ok := reqResp["request_id"].(float64)
+	s.True(ok)
+
+	s.setupFRClient(openidB)
+	approveResp, err := s.Client.Post("/api/v1/friend/approve", map[string]interface{}{
+		"request_id": requestID,
+	})
+	s.NoError(err)
+	s.Equal(float64(0), approveResp["error"])
+
+	// B 侧列表: A 的分组=默认分组, 亲密度=10(申请同意初始化)
+	listB, err := s.Client.Get("/api/v1/friend/list")
+	s.NoError(err)
+	friendsB, ok := listB["friends"].([]interface{})
+	s.True(ok)
+	s.Len(friendsB, 1)
+	bFriend := friendsB[0].(map[string]interface{})
+	s.Equal("默认分组", bFriend["group"], "approved friend should be in 默认分组")
+	s.Equal(float64(10), bFriend["intimacy"], "approved friend should start with intimacy 10")
+
+	// B 改 A 的分组
+	groupResp, err := s.Client.Post("/api/v1/friend/group", map[string]interface{}{
+		"friend_uid": guidA,
+		"group":      "战友",
+	})
+	s.NoError(err)
+	s.Equal(float64(0), groupResp["error"])
+	listB2, _ := s.Client.Get("/api/v1/friend/list")
+	bFriend2 := listB2["friends"].([]interface{})[0].(map[string]interface{})
+	s.Equal("战友", bFriend2["group"], "group should be updated")
+
+	// B 增亲密度 50 → 60
+	intimacyResp, err := s.Client.Post("/api/v1/friend/intimacy", map[string]interface{}{
+		"friend_uid": guidA,
+		"delta":      50,
+	})
+	s.NoError(err)
+	s.Equal(float64(0), intimacyResp["error"])
+	s.Equal(float64(60), intimacyResp["intimacy"])
+
+	// 减亲密度 100 → 钳制 0
+	intimacyResp2, err := s.Client.Post("/api/v1/friend/intimacy", map[string]interface{}{
+		"friend_uid": guidA,
+		"delta":      -100,
+	})
+	s.NoError(err)
+	s.Equal(float64(0), intimacyResp2["error"])
+	s.Equal(float64(0), intimacyResp2["intimacy"], "intimacy should be clamped at 0")
+
+	// 非好友修改分组 → error 6(用第三个账号 C 改 A)
+	nameC := fmt.Sprintf("FR_K_%06d", uid%1000000)
+	openidC := fmt.Sprintf("test_fr_k_%d", uid)
+	s.createKnownRole(openidC, nameC)
+	s.setupFRClient(openidC)
+	badGroup, err := s.Client.Post("/api/v1/friend/group", map[string]interface{}{
+		"friend_uid": guidA,
+		"group":      "陌生人",
+	})
+	s.NoError(err)
+	s.Equal(float64(6), badGroup["error"], "non-friend group update should fail")
+	fmt.Printf("friend group/intimacy flow verified (A=%s B=%s)\n", nameA, nameB)
+}

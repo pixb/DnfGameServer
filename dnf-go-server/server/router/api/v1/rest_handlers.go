@@ -197,6 +197,7 @@ func (s *APIV1Service) handleGetFriendList(c echo.Context) error {
 			Job:      friendRole.Job,
 			Online:   false,
 			Intimacy: int32(friend.Intimacy),
+			Group:    friend.Group,
 		})
 	}
 
@@ -250,19 +251,20 @@ func (s *APIV1Service) handleAddFriend(c echo.Context) error {
 	}
 
 	// 2026-09-06 第三十六轮: 双向好友关系(A→B 与 B→A 各一条, 幂等补写)
-	s.addFriendRelation(c, myRoleID, targetRole.ID, targetRole.Name)
+	// 2026-09-06 第四十二轮: 直接加好友初始化亲密度 0 / 默认分组
+	s.addFriendRelation(c, myRoleID, targetRole.ID, targetRole.Name, 0)
 	myRole, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{FindBase: store.FindBase{ID: &myRoleID}})
 	myName := ""
 	if myRole != nil {
 		myName = myRole.Name
 	}
-	s.addFriendRelation(c, targetRole.ID, myRoleID, myName)
+	s.addFriendRelation(c, targetRole.ID, myRoleID, myName, 0)
 
 	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
 }
 
-// addFriendRelation 幂等写入单条好友关系(已存在则跳过)
-func (s *APIV1Service) addFriendRelation(c echo.Context, ownerID, friendID uint64, friendName string) {
+// addFriendRelation 幂等写入单条好友关系(已存在则跳过), 初始化指定亲密度与默认分组
+func (s *APIV1Service) addFriendRelation(c echo.Context, ownerID, friendID uint64, friendName string, intimacy int32) {
 	existing, _ := s.Store.GetFriend(c.Request().Context(), &store.FindFriend{
 		RoleID:   &ownerID,
 		FriendID: &friendID,
@@ -274,7 +276,8 @@ func (s *APIV1Service) addFriendRelation(c echo.Context, ownerID, friendID uint6
 		RoleID:     ownerID,
 		FriendID:   friendID,
 		FriendName: friendName,
-		Intimacy:   0,
+		Intimacy:   intimacy,
+		Group:      "默认分组",
 	})
 }
 
