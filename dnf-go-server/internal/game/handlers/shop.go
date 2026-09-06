@@ -277,7 +277,8 @@ func RegisterAuctionHandler(session *network.Session, msg proto.Message) {
 	}
 }
 
-// BidAuctionHandler 处理竞拍请求(2026-09-07 第五十四轮实化: 校验状态/价格, 记录出价)
+// BidAuctionHandler 处理竞拍请求
+// 2026-09-07 第五十四轮: 校验状态/价格; 第五十六轮: 出价冻结金币 + 被超价退还旧出价者
 func BidAuctionHandler(session *network.Session, msg proto.Message) {
 	req, ok := msg.(*dnfv1.BidAuctionRequest)
 	if !ok {
@@ -302,13 +303,54 @@ func BidAuctionHandler(session *network.Session, msg proto.Message) {
 		_ = session.WriteResponse(10005, 105, resp)
 		return
 	}
+	if auc.SellerID == roleID {
+		resp := &dnfv1.BidAuctionResponse{Error: 9}
+		_ = session.WriteResponse(10005, 105, resp)
+		return
+	}
 	if req.BidPrice <= int32(auc.BidPrice) {
 		resp := &dnfv1.BidAuctionResponse{Error: 4}
 		_ = session.WriteResponse(10005, 105, resp)
 		return
 	}
 
+	// 2026-09-07 第五十六轮: 出价者金币校验(不足 err8)并即时冻结
 	bidPrice := int64(req.BidPrice)
+	bidderCur, err := shopStore.GetRoleCurrency(ctx, roleID)
+	if err != nil {
+		logger.Error("failed to get bidder currency",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+		resp := &dnfv1.BidAuctionResponse{Error: 1}
+		_ = session.WriteResponse(10005, 105, resp)
+		return
+	}
+	if bidderCur.Gold < bidPrice {
+		resp := &dnfv1.BidAuctionResponse{Error: 8}
+		_ = session.WriteResponse(10005, 105, resp)
+		return
+	}
+	bidderCur.Gold -= bidPrice
+	if err := shopStore.UpdateRoleCurrency(ctx, bidderCur); err != nil {
+		logger.Error("failed to freeze bidder gold",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+		resp := &dnfv1.BidAuctionResponse{Error: 1}
+		_ = session.WriteResponse(10005, 105, resp)
+		return
+	}
+
+	// 被超价: 退还旧出价者(bidder)此前冻结的金币
+	if auc.BidderID != 0 && auc.BidderID != roleID {
+		oldCur, err := shopStore.GetRoleCurrency(ctx, auc.BidderID)
+		if err == nil {
+			oldCur.Gold += auc.BidPrice
+			_ = shopStore.UpdateRoleCurrency(ctx, oldCur)
+		}
+	}
+
 	bidCount := auc.BidCount + 1
 	if err := shopStore.UpdateAuctionItem(ctx, &store.UpdateAuctionItem{
 		ID:       auc.ID,
@@ -404,7 +446,20 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
-	sellerIncome := auc.Price * 95 / 100
+	// 2026-09-07 第五十六轮: 竞拍者结算
+	//   - 买断者即当前最高出价者: 已冻结 bid_price, 按起拍价成交, 退还差价 (bid_price - price)
+	//   - 非买断者的最高出价者: 被买断截胡, 退还其冻结的 bid_price
+	if auc.BidderID == roleID {
+		diff := auc.BidPrice - auc.Price
+		if diff > 0 {
+			buyerCur.Gold += diff
+		}
+	} else if auc.BidderID != 0 {
+		if oldCur, err := shopStore.GetRoleCurrency(ctx, auc.BidderID); err == nil {
+			oldCur.Gold += auc.BidPrice
+			_ = shopStore.UpdateRoleCurrency(ctx, oldCur)
+		}
+	}
 	buyerCur.Gold -= auc.Price
 	if err := shopStore.UpdateRoleCurrency(ctx, buyerCur); err != nil {
 		logger.Error("failed to deduct buyer gold",
@@ -416,6 +471,7 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
+	sellerIncome := auc.Price * 95 / 100
 	sellerCur, err := shopStore.GetRoleCurrency(ctx, auc.SellerID)
 	if err == nil {
 		sellerCur.Gold += sellerIncome
