@@ -361,3 +361,31 @@ func (d *DB) SettleExpiredAuctions(ctx context.Context) (int, error) {
 	}
 	return len(expired), nil
 }
+
+// TryBidAuction 原子抢锁出价(2026-09-07 第五十九轮)
+func (d *DB) TryBidAuction(ctx context.Context, auctionID, bidderID uint64, bidderName string, bidPrice int64) (bool, error) {
+	res, err := d.db.ExecContext(ctx,
+		`UPDATE auction_item SET bidder_id = ?, bidder_name = ?, bid_price = ?, bid_count = bid_count + 1, updated_at = ?
+		 WHERE id = ? AND status = ? AND bid_price < ?`,
+		bidderID, bidderName, bidPrice, time.Now().Unix(),
+		auctionID, store.AuctionStatusSelling, bidPrice)
+	if err != nil {
+		return false, fmt.Errorf("failed to try bid auction: %w", err)
+	}
+	n, _ := res.RowsAffected()
+	return n > 0, nil
+}
+
+// TryBuyoutAuction 原子抢锁买断(2026-09-07 第五十九轮): 置 Sold 并落成交买家
+func (d *DB) TryBuyoutAuction(ctx context.Context, auctionID, buyerID uint64, buyerName string, bidPrice int64) (bool, error) {
+	res, err := d.db.ExecContext(ctx,
+		`UPDATE auction_item SET status = ?, bidder_id = ?, bidder_name = ?, bid_price = ?, bid_count = bid_count + 1, updated_at = ?
+		 WHERE id = ? AND status = ?`,
+		store.AuctionStatusSold, buyerID, buyerName, bidPrice, time.Now().Unix(),
+		auctionID, store.AuctionStatusSelling)
+	if err != nil {
+		return false, fmt.Errorf("failed to try buyout auction: %w", err)
+	}
+	n, _ := res.RowsAffected()
+	return n > 0, nil
+}

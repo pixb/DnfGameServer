@@ -458,6 +458,16 @@ func (s *Store) SettleExpiredAuctions(ctx context.Context) (int, error) {
 	return s.driver.SettleExpiredAuctions(ctx)
 }
 
+// TryBidAuction 原子抢锁出价(2026-09-07 第五十九轮)
+func (s *Store) TryBidAuction(ctx context.Context, auctionID, bidderID uint64, bidderName string, bidPrice int64) (bool, error) {
+	return s.driver.TryBidAuction(ctx, auctionID, bidderID, bidderName, bidPrice)
+}
+
+// TryBuyoutAuction 原子抢锁买断(2026-09-07 第五十九轮)
+func (s *Store) TryBuyoutAuction(ctx context.Context, auctionID, buyerID uint64, buyerName string, bidPrice int64) (bool, error) {
+	return s.driver.TryBuyoutAuction(ctx, auctionID, buyerID, buyerName, bidPrice)
+}
+
 // ListAuctionHistory 查询拍卖历史
 func (s *Store) ListAuctionHistory(ctx context.Context, find *FindAuctionHistory) ([]*AuctionHistory, error) {
 	return s.driver.ListAuctionHistory(ctx, find)

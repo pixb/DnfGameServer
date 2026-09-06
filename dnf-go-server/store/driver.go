@@ -157,6 +157,10 @@ type Driver interface {
 	ListAuctionHistory(ctx context.Context, find *FindAuctionHistory) ([]*AuctionHistory, error)
 	// SettleExpiredAuctions 到期结算(2026-09-07 第五十七轮): 过期未售拍卖 → Expired + 退最高出价者冻结金 + 物品退回卖家背包
 	SettleExpiredAuctions(ctx context.Context) (int, error)
+	// TryBidAuction 原子抢锁出价(2026-09-07 第五十九轮): 条件 UPDATE(状态=Selling 且 bid_price<出价) → 影响行数=1 表示抢锁成功
+	TryBidAuction(ctx context.Context, auctionID, bidderID uint64, bidderName string, bidPrice int64) (bool, error)
+	// TryBuyoutAuction 原子抢锁买断(2026-09-07 第五十九轮): 条件 UPDATE(状态=Selling) 置 Sold 并落成交买家 → 影响行数=1 表示抢锁成功
+	TryBuyoutAuction(ctx context.Context, auctionID, buyerID uint64, buyerName string, bidPrice int64) (bool, error)
 
 	// ==================== 系统设置 ====================
 	GetInstanceBasicSetting(ctx context.Context) (*InstanceBasicSetting, error)

@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -183,6 +184,24 @@ func runServe(cmd *cobra.Command, args []string) error {
 	handlers.InitSkillStore(s)
 
 	fmt.Println("Services initialized successfully")
+
+	// 3.7 后台定时结算过期拍卖(2026-09-07 第五十九轮): 每 30s 扫描一次, 高并发下不依赖惰性触发
+	go func() {
+		ticker := time.NewTicker(30 * time.Second)
+		defer ticker.Stop()
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-ticker.C:
+				if n, err := s.SettleExpiredAuctions(ctx); err != nil {
+					fmt.Printf("Warning: auction settle loop error: %v\n", err)
+				} else if n > 0 {
+					fmt.Printf("Auction settle loop: %d auction(s) settled\n", n)
+				}
+			}
+		}
+	}()
 
 	// 4. 创建服务器
 	fmt.Println("Creating server...")

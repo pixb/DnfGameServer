@@ -335,7 +335,7 @@ func BidAuctionHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
-	// 2026-09-07 第五十六轮: 出价者金币校验(不足 err8)并即时冻结
+	// 2026-09-07 第五十六轮: 出价者金币校验(不足 err8)
 	bidPrice := int64(req.BidPrice)
 	bidderCur, err := shopStore.GetRoleCurrency(ctx, roleID)
 	if err != nil {
@@ -352,15 +352,36 @@ func BidAuctionHandler(session *network.Session, msg proto.Message) {
 		_ = session.WriteResponse(10005, 105, resp)
 		return
 	}
-	bidderCur.Gold -= bidPrice
-	if err := shopStore.UpdateRoleCurrency(ctx, bidderCur); err != nil {
-		logger.Error("failed to freeze bidder gold",
+
+	// 2026-09-07 第五十九轮: 原子抢锁出价(状态=Selling 且 bid_price<出价 的条件 UPDATE, 防并发竞态)
+	bidderName := ""
+	if role, err := shopStore.GetRole(ctx, &store.FindRole{FindBase: store.FindBase{ID: &roleID}}); err == nil && role != nil {
+		bidderName = role.Name
+	}
+	locked, err := shopStore.TryBidAuction(ctx, auctionID, roleID, bidderName, bidPrice)
+	if err != nil {
+		logger.Error("failed to try bid auction",
 			logger.ErrorField(err),
 			logger.Int64("session_id", session.ID()),
 		)
 		resp := &dnfv1.BidAuctionResponse{Error: 1}
 		_ = session.WriteResponse(10005, 105, resp)
 		return
+	}
+	if !locked {
+		// 并发下已被超价或状态变化, 返回须高于当前价
+		resp := &dnfv1.BidAuctionResponse{Error: 4}
+		_ = session.WriteResponse(10005, 105, resp)
+		return
+	}
+
+	// 抢锁成功: 冻结新出价者金币(失败仅日志, 竞拍状态已原子更新)
+	bidderCur.Gold -= bidPrice
+	if err := shopStore.UpdateRoleCurrency(ctx, bidderCur); err != nil {
+		logger.Error("failed to freeze bidder gold",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
 	}
 
 	// 被超价: 退还旧出价者(bidder)此前冻结的金币
@@ -370,22 +391,6 @@ func BidAuctionHandler(session *network.Session, msg proto.Message) {
 			oldCur.Gold += auc.BidPrice
 			_ = shopStore.UpdateRoleCurrency(ctx, oldCur)
 		}
-	}
-
-	bidCount := auc.BidCount + 1
-	if err := shopStore.UpdateAuctionItem(ctx, &store.UpdateAuctionItem{
-		ID:       auc.ID,
-		BidderID: &roleID,
-		BidPrice: &bidPrice,
-		BidCount: &bidCount,
-	}); err != nil {
-		logger.Error("failed to update auction bid",
-			logger.ErrorField(err),
-			logger.Int64("session_id", session.ID()),
-		)
-		resp := &dnfv1.BidAuctionResponse{Error: 1}
-		_ = session.WriteResponse(10005, 105, resp)
-		return
 	}
 
 	resp := &dnfv1.BidAuctionResponse{Error: 0}
@@ -480,6 +485,28 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
+	// 2026-09-07 第五十九轮: 原子抢锁买断(状态=Selling 的条件 UPDATE 置 Sold, 防并发双买断)
+	buyerName := ""
+	if role, err := shopStore.GetRole(ctx, &store.FindRole{FindBase: store.FindBase{ID: &roleID}}); err == nil && role != nil {
+		buyerName = role.Name
+	}
+	locked, err := shopStore.TryBuyoutAuction(ctx, auctionID, roleID, buyerName, buyoutPrice)
+	if err != nil {
+		logger.Error("failed to try buyout auction",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+		resp := &dnfv1.BuyoutAuctionResponse{Error: 1}
+		_ = session.WriteResponse(10005, 107, resp)
+		return
+	}
+	if !locked {
+		// 并发下已被买断或状态变化
+		resp := &dnfv1.BuyoutAuctionResponse{Error: 3}
+		_ = session.WriteResponse(10005, 107, resp)
+		return
+	}
+
 	// 2026-09-07 第五十六轮: 竞拍者结算
 	//   - 买断者即当前最高出价者: 已冻结 bid_price, 按一口价成交, 退还差价 (bid_price - buyout_price)
 	//   - 非买断者的最高出价者: 被买断截胡, 退还其冻结的 bid_price
@@ -510,25 +537,6 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 	if err == nil {
 		sellerCur.Gold += sellerIncome
 		_ = shopStore.UpdateRoleCurrency(ctx, sellerCur)
-	}
-
-	sold := store.AuctionStatusSold
-	bidPrice := buyoutPrice
-	bidCount := auc.BidCount + 1
-	if err := shopStore.UpdateAuctionItem(ctx, &store.UpdateAuctionItem{
-		ID:       auc.ID,
-		Status:   &sold,
-		BuyerID:  &roleID,
-		BidPrice: &bidPrice,
-		BidCount: &bidCount,
-	}); err != nil {
-		logger.Error("failed to update auction buyout",
-			logger.ErrorField(err),
-			logger.Int64("session_id", session.ID()),
-		)
-		resp := &dnfv1.BuyoutAuctionResponse{Error: 1}
-		_ = session.WriteResponse(10005, 107, resp)
-		return
 	}
 
 	// 拍卖历史(5% 手续费)
