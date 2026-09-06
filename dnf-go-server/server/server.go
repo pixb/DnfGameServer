@@ -35,8 +35,9 @@ type Server struct {
 	apiV1Service *v1.APIV1Service
 
 	// 生命周期管理
-	wg       sync.WaitGroup
-	listener net.Listener
+	wg          sync.WaitGroup
+	listener    net.Listener
+	cleanupStop func() // 邮件过期清理定时任务停止函数(第二十八轮)
 }
 
 // NewServer 创建服务器实例
@@ -211,6 +212,12 @@ func (s *Server) Start(ctx context.Context) error {
 		}
 	}()
 
+	// 6.5 邮件过期清理定时任务(2026-09-06 第二十八轮): 启动即清一轮, 之后每 5 分钟
+	s.cleanupStop = s.Store.StartMailCleanup(ctx, 5*time.Minute, func(msg string) {
+		s.echoServer.Logger.Info(msg)
+	})
+	s.echoServer.Logger.Info("Mail cleanup scheduler started (interval 5m0s)")
+
 	// 7. 启动TCP服务器
 	s.wg.Add(1)
 	go func() {
@@ -248,6 +255,12 @@ func (s *Server) Shutdown(ctx context.Context) error {
 		if err := s.tcpServer.Stop(); err != nil {
 			s.echoServer.Logger.Error("Error stopping TCP server: ", err)
 		}
+	}
+
+	// 3.5 停止邮件过期清理定时任务(第二十八轮)
+	if s.cleanupStop != nil {
+		s.cleanupStop()
+		s.echoServer.Logger.Info("Mail cleanup scheduler stopped")
 	}
 
 	// 4. 关闭Store
