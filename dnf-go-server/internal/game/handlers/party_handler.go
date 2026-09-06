@@ -155,6 +155,16 @@ func ControlGroupHandler(session *network.Session, msg proto.Message) {
 				u := req.Area
 				setting.Area = &u
 			}
+			// 2026-09-07 第五十一轮: public_type 无 proto 字段(protojson 丢弃),
+			// 文本命令场景从 textExtras 读; 0=公开(合法值, 仅字段存在时更新)
+			if extras, exists := session.GetAttr("textExtras"); exists {
+				if m, ok := extras.(map[string]interface{}); ok {
+					if v, ok := m["publictype"].(float64); ok {
+						u := uint32(v)
+						setting.PublicType = &u
+					}
+				}
+			}
 		}
 	} else if extras, exists := session.GetAttr("textExtras"); exists {
 		if m, ok := extras.(map[string]interface{}); ok {

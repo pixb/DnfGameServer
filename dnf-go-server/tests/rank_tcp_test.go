@@ -538,6 +538,15 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	s.Equal(2, pArea, "area updated")
 	dbM.Close()
 
+	// 2026-09-07 第五十一轮: A 将队伍设为半开放(publictype=1)
+	msgPT1, _ := json.Marshal(map[string]interface{}{"type": 6, "publictype": 1})
+	s.NoError(s.sendTCP(append([]byte("MODIFY_PARTY_SETTING:"), msgPT1...)), "send MODIFY publictype=1")
+	bodyPT1, _ := s.recvTCP()
+	_, _, pbPT1 := parseTCPResponse(bodyPT1)
+	cgPT1 := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbPT1, cgPT1))
+	s.Equal(int32(0), cgPT1.Error, "set publictype=1 should succeed")
+
 	// B 建立连接并绑定, 非队长改设置 → error 1
 	s.bindRole(guidB)
 	s.NoError(s.sendTCP(append([]byte("MODIFY_PARTY_SETTING:"), msgM...)), "send B MODIFY_PARTY_SETTING")
@@ -554,8 +563,27 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	s.NoError(proto.Unmarshal(pbB, cgB))
 	s.Equal(int32(1), cgB.Error, "kick while not in party should fail")
 
-	// 2026-09-07 第四十九轮: JOIN_PARTY:{"type":5,"partyguid":X} → 主动加入成功
+	// 2026-09-07 第五十一轮: 半开放队伍 JOIN → error 1(非公开不可自由加入)
 	msgJ, _ := json.Marshal(map[string]interface{}{"type": 5, "partyguid": float64(partyGuid)})
+	s.NoError(s.sendTCP(append([]byte("JOIN_PARTY:"), msgJ...)), "send JOIN_PARTY while half-open")
+	bodyJH, _ := s.recvTCP()
+	_, _, pbJH := parseTCPResponse(bodyJH)
+	cgJH := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbJH, cgJH))
+	s.Equal(int32(1), cgJH.Error, "join half-open party should fail")
+
+	// A 重连 → 改回公开(publictype=0)
+	s.bindRole(guidA)
+	msgPT0, _ := json.Marshal(map[string]interface{}{"type": 6, "publictype": 0})
+	s.NoError(s.sendTCP(append([]byte("MODIFY_PARTY_SETTING:"), msgPT0...)), "send MODIFY publictype=0")
+	bodyPT0, _ := s.recvTCP()
+	_, _, pbPT0 := parseTCPResponse(bodyPT0)
+	cgPT0 := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbPT0, cgPT0))
+	s.Equal(int32(0), cgPT0.Error, "set publictype=0 should succeed")
+
+	// B 重连 → 公开队伍 JOIN 成功
+	s.bindRole(guidB)
 	s.NoError(s.sendTCP(append([]byte("JOIN_PARTY:"), msgJ...)), "send JOIN_PARTY")
 	bodyJ, _ := s.recvTCP()
 	_, _, pbJ := parseTCPResponse(bodyJ)
@@ -622,7 +650,7 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	s.Equal(0, cnt2, "party should be deleted after disband")
 	db2.Close()
 
-	fmt.Printf("party text commands verified (create/dup/modify/nonleader-modify/kick/join/dup-join/member-leave/disband)\n")
+	fmt.Printf("party text commands verified (create/dup/modify/publictype1/join-fail/nonleader-modify/kick/publictype0/join/dup-join/member-leave/disband)\n")
 }
 
 // bindRole 建立 TCP 连接并 SELECT_CHARACTER 绑定角色

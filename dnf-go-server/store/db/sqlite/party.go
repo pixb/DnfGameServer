@@ -161,6 +161,10 @@ func (d *DB) UpdatePartySetting(ctx context.Context, roleID uint64, setting *sto
 		sets = append(sets, "area = ?")
 		args = append(args, *setting.Area)
 	}
+	if setting.PublicType != nil {
+		sets = append(sets, "public_type = ?")
+		args = append(args, *setting.PublicType)
+	}
 	if len(sets) == 0 {
 		return nil
 	}
@@ -283,6 +287,11 @@ func (d *DB) HalfOpenPartyJoin(ctx context.Context, roleID, partyGuid uint64) er
 	}
 	if party == nil {
 		return fmt.Errorf("party not found")
+	}
+
+	// 2026-09-07 第五十一轮: 仅公开队伍可自由加入(半开放/私有需队长邀请/接受)
+	if party.PublicType != 0 {
+		return fmt.Errorf("party is not public")
 	}
 
 	// 已在队

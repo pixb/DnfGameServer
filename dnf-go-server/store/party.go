@@ -39,6 +39,7 @@ type PartySetting struct {
 	MinLevel     *uint32
 	MaxLevel     *uint32
 	Area         *uint32
+	PublicType   *uint32 // 2026-09-07 第五十一轮: 0=公开 1=半开放 2=私有
 }
 
 // SearchPartyList 搜索队伍列表
