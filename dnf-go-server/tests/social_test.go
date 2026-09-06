@@ -164,6 +164,18 @@ func (s *SocialTestSuite) TestFriendLifecycle() {
 	first := friends[0].(map[string]interface{})
 	s.Equal(nameB, first["name"], "friend name should match")
 
+	// 2026-09-06 第三十六轮: 双向好友 — B 侧列表也应含 A
+	s.setupAuthenticatedClient(openidB)
+	listRespB, err := s.Client.Get("/api/v1/friend/list")
+	s.NoError(err)
+	friendsB, okB := listRespB["friends"].([]interface{})
+	s.True(okB, "B friend list should be present")
+	s.Len(friendsB, 1, "B should see A as friend")
+	s.Equal(nameA, friendsB[0].(map[string]interface{})["name"], "B's friend should be A")
+
+	// 切回 A 登录态
+	s.setupAuthenticatedClient(openidA)
+
 	// 重复加幂等(列表仍 1 条)
 	resp2, err := s.Client.Post("/api/v1/friend/add", map[string]interface{}{
 		"target_name": nameB,
@@ -181,6 +193,11 @@ func (s *SocialTestSuite) TestFriendLifecycle() {
 	s.Equal(float64(0), resp3["error"], "remove friend should succeed")
 	listResp3, _ := s.Client.Get("/api/v1/friend/list")
 	s.Len(listResp3["friends"].([]interface{}), 0, "friend list should be empty after remove")
+
+	// 2026-09-06 第三十六轮: 双向删除 — B 侧也不再有 A
+	s.setupAuthenticatedClient(openidB)
+	listResp4, _ := s.Client.Get("/api/v1/friend/list")
+	s.Len(listResp4["friends"].([]interface{}), 0, "B's friend list should also be empty after A removes")
 }
 
 // TestAddFriendSelf 不能添加自己为好友(error=8)

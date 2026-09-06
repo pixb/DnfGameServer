@@ -249,14 +249,33 @@ func (s *APIV1Service) handleAddFriend(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
 	}
 
-	s.Store.CreateFriend(c.Request().Context(), &store.Friend{
-		RoleID:     myRoleID,
-		FriendID:   targetRole.ID,
-		FriendName: targetRole.Name,
-		Intimacy:   0,
-	})
+	// 2026-09-06 第三十六轮: 双向好友关系(A→B 与 B→A 各一条, 幂等补写)
+	s.addFriendRelation(c, myRoleID, targetRole.ID, targetRole.Name)
+	myRole, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{FindBase: store.FindBase{ID: &myRoleID}})
+	myName := ""
+	if myRole != nil {
+		myName = myRole.Name
+	}
+	s.addFriendRelation(c, targetRole.ID, myRoleID, myName)
 
 	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+// addFriendRelation 幂等写入单条好友关系(已存在则跳过)
+func (s *APIV1Service) addFriendRelation(c echo.Context, ownerID, friendID uint64, friendName string) {
+	existing, _ := s.Store.GetFriend(c.Request().Context(), &store.FindFriend{
+		RoleID:   &ownerID,
+		FriendID: &friendID,
+	})
+	if existing != nil {
+		return
+	}
+	s.Store.CreateFriend(c.Request().Context(), &store.Friend{
+		RoleID:     ownerID,
+		FriendID:   friendID,
+		FriendName: friendName,
+		Intimacy:   0,
+	})
 }
 
 func (s *APIV1Service) handleRemoveFriend(c echo.Context) error {
@@ -281,13 +300,16 @@ func (s *APIV1Service) handleRemoveFriend(c echo.Context) error {
 
 	friendUID, _ := strconv.ParseUint(friendUIDStr, 10, 64)
 	myRoleID := s.activeRoleID(c, claims)
-	friend, _ := s.Store.GetFriend(c.Request().Context(), &store.FindFriend{
-		RoleID:   &myRoleID,
-		FriendID: &friendUID,
-	})
 
-	if friend != nil {
-		s.Store.DeleteFriend(c.Request().Context(), &store.DeleteFriend{ID: friend.ID})
+	// 2026-09-06 第三十六轮: 双向删除(A→B 与 B→A)
+	for _, pair := range [][2]uint64{{myRoleID, friendUID}, {friendUID, myRoleID}} {
+		friend, _ := s.Store.GetFriend(c.Request().Context(), &store.FindFriend{
+			RoleID:   &pair[0],
+			FriendID: &pair[1],
+		})
+		if friend != nil {
+			s.Store.DeleteFriend(c.Request().Context(), &store.DeleteFriend{ID: friend.ID})
+		}
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
