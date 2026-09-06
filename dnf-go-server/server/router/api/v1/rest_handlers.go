@@ -250,6 +250,11 @@ func (s *APIV1Service) handleGetMailList(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
+	// 2026-09-06 第十七轮: 惰性清理全服过期邮件(expire_at>0 且已到期), 过期邮件不再出现在列表
+	if _, err := s.Store.DeleteExpiredMails(c.Request().Context(), time.Now().Unix()); err != nil {
+		// 清理失败不阻断列表
+	}
+
 	// 邮件的 ReceiverID 语义为角色ID(与 send/拍卖结算一致), 按账户的所有角色合并查询
 	roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
 	var mailList []map[string]interface{}
@@ -350,6 +355,11 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 7})
 	}
 
+	// 2026-09-06 第十七轮: 过期邮件不可领取(expire_at > 0 且已到期)
+	if mail.ExpireAt > 0 && mail.ExpireAt < time.Now().Unix() {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "邮件已过期"})
+	}
+
 	isClaimed := true
 	if err := s.Store.UpdateMail(c.Request().Context(), &store.UpdateMail{
 		ID:        mail.ID,
@@ -420,6 +430,24 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 		"error": 0,
 		"gold":  grantedGold,
 		"items": grantedItems,
+	})
+}
+
+// handleMailCleanup 清理全服过期邮件(expire_at > 0 且已到期), 返回删除数量
+// 2026-09-06 第十七轮: 过期邮件清理(配合列表惰性清理与领取拦截)
+func (s *APIV1Service) handleMailCleanup(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	deleted, err := s.Store.DeleteExpiredMails(c.Request().Context(), time.Now().Unix())
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":   0,
+		"deleted": deleted,
 	})
 }
 

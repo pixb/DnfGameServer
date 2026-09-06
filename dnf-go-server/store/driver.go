@@ -134,6 +134,9 @@ type Driver interface {
 	GetMail(ctx context.Context, find *FindMail) (*Mail, error)
 	ListMails(ctx context.Context, find *FindMail) ([]*Mail, error)
 	DeleteMail(ctx context.Context, delete *DeleteMail) error
+	// DeleteExpiredMails 删除所有过期邮件(expire_at > 0 且 < now), 返回删除行数
+	// 2026-09-06 第十七轮: 过期邮件清理(发信可带 expire_at, 0 表示永不过期)
+	DeleteExpiredMails(ctx context.Context, now int64) (int64, error)
 
 	// ==================== 拍卖行相关 ====================
 	CreateAuctionItem(ctx context.Context, create *AuctionItem) (*AuctionItem, error)

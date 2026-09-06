@@ -386,6 +386,12 @@ func (s *Store) DeleteMail(ctx context.Context, delete *DeleteMail) error {
 	return s.driver.DeleteMail(ctx, delete)
 }
 
+// DeleteExpiredMails 删除所有过期邮件(expire_at > 0 且 < now), 返回删除行数
+// 2026-09-06 第十七轮: 过期邮件清理
+func (s *Store) DeleteExpiredMails(ctx context.Context, now int64) (int64, error) {
+	return s.driver.DeleteExpiredMails(ctx, now)
+}
+
 // ==================== 拍卖行相关Store方法 ====================
 
 // CreateAuctionItem 创建拍卖物品

@@ -211,3 +211,14 @@ func (d *DB) DeleteMail(ctx context.Context, delete *store.DeleteMail) error {
 	}
 	return nil
 }
+
+// DeleteExpiredMails 删除所有过期邮件(expire_at > 0 且 < now), 返回删除行数
+// 2026-09-06 第十七轮: 与 mysql 驱动对称
+func (d *DB) DeleteExpiredMails(ctx context.Context, now int64) (int64, error) {
+	result, err := d.db.ExecContext(ctx, `DELETE FROM mail WHERE expire_at > 0 AND expire_at < ?`, now)
+	if err != nil {
+		return 0, fmt.Errorf("failed to delete expired mails: %w", err)
+	}
+	n, _ := result.RowsAffected()
+	return n, nil
+}

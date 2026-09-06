@@ -166,6 +166,7 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.GET("/mail/list", s.handleGetMailList)
 	apiGroup.POST("/mail/send", s.handleSendMail)
 	apiGroup.POST("/mail/claim", s.handleClaimMail)
+	apiGroup.POST("/mail/cleanup", s.handleMailCleanup)
 
 	// 拍卖行路由
 	apiGroup.GET("/auctions/search", s.handleSearchAuction)
