@@ -116,11 +116,32 @@ func RecommendGroupHandler(session *network.Session, msg proto.Message) {
 	session.WriteResponse(10009, 3, resp)
 }
 
-// ControlGroupHandler 控制队伍
+// ControlGroupHandler 控制队伍(2026-09-07 第四十八轮兼容文本命令):
+// protobuf ControlGroupRequest 直读; 文本命令(CREATE_PARTY/LEAVE_PARTY/KICK_OUT_MEMBER)
+// 经 textExtras JSON payload 传 type/targetguid/partyguid(与 protobuf 同构)
 func ControlGroupHandler(session *network.Session, msg proto.Message) {
 	ctx := context.Background()
+
+	action := uint32(0)
+	var targetGuid, partyGuid uint64
 	req, ok := msg.(*dnfv1.ControlGroupRequest)
-	if !ok {
+	if ok {
+		action = req.Type
+		targetGuid = req.Targetguid
+		partyGuid = req.Partyguid
+	} else if extras, exists := session.GetAttr("textExtras"); exists {
+		if m, ok := extras.(map[string]interface{}); ok {
+			if v, ok := m["type"].(float64); ok {
+				action = uint32(v)
+			}
+			if v, ok := m["targetguid"].(float64); ok {
+				targetGuid = uint64(v)
+			}
+			if v, ok := m["partyguid"].(float64); ok {
+				partyGuid = uint64(v)
+			}
+		}
+	} else {
 		// 发送错误响应
 		errorResp := &dnfv1.ControlGroupResponse{
 			Error: 1,
@@ -129,7 +150,7 @@ func ControlGroupHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
-	err := partySvc.ControlGroup(ctx, session.RoleID(), req.Type, req.Targetguid, req.Partyguid)
+	err := partySvc.ControlGroup(ctx, session.RoleID(), action, targetGuid, partyGuid)
 	if err != nil {
 		// 发送错误响应
 		errorResp := &dnfv1.ControlGroupResponse{
@@ -141,7 +162,7 @@ func ControlGroupHandler(session *network.Session, msg proto.Message) {
 
 	resp := &dnfv1.ControlGroupResponse{
 		Error: 0,
-		Type:  req.Type,
+		Type:  action,
 	}
 	session.WriteResponse(10009, 5, resp)
 }

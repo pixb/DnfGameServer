@@ -350,6 +350,15 @@ func (d *DB) createParty(ctx context.Context, roleID uint64) error {
 		return fmt.Errorf("role not found")
 	}
 
+	// 2026-09-07 第四十八轮: 已在队校验(与 sqlite 驱动对齐, 防重复建队)
+	existingParty, err := d.getPartyByRoleID(ctx, roleID)
+	if err != nil {
+		return fmt.Errorf("failed to get party: %w", err)
+	}
+	if existingParty != nil {
+		return fmt.Errorf("already in party")
+	}
+
 	tx, err := d.db.BeginTx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)

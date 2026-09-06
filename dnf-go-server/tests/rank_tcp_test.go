@@ -470,3 +470,100 @@ func (s *RankTCPTestSuite) TestRoleInfoSkills() {
 	s.Equal(float64(100), battle["moveSpeed"], "http battle moveSpeed")
 	fmt.Printf("role info skills verified (tcp=%d, http=%d)\n", len(info.Skills), len(skillsArr))
 }
+
+// TestTCPPartyCommands 队伍控制文本命令兼容(2026-09-07 第四十八轮):
+// ControlGroupHandler 此前仅接受 protobuf 请求, 文本命令(CREATE_PARTY/LEAVE_PARTY/KICK_OUT_MEMBER)
+// 直接走 codec textExtras → handler 拒绝; 本轮支持 textExtras JSON payload(type/targetguid/partyguid)
+func (s *RankTCPTestSuite) TestTCPPartyCommands() {
+	uid := time.Now().UnixNano()
+	guidA := s.createCharacter(fmt.Sprintf("test_party_a_%d", uid))
+	guidB := s.createCharacter(fmt.Sprintf("test_party_b_%d", uid))
+
+	// A 建立连接并绑定
+	s.bindRole(guidA)
+
+	// CREATE_PARTY:{"type":0} → 成功
+	msgA, _ := json.Marshal(map[string]interface{}{"type": 0})
+	s.NoError(s.sendTCP(append([]byte("CREATE_PARTY:"), msgA...)), "send CREATE_PARTY")
+	bodyA, err := s.recvTCP()
+	s.NoError(err)
+	modA, cmdA, pbA := parseTCPResponse(bodyA)
+	s.Equal(uint16(10009), modA, "party response module")
+	s.Equal(uint16(5), cmdA, "control group response cmd")
+	cgA := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbA, cgA), "unmarshal ControlGroupResponse")
+	s.Equal(int32(0), cgA.Error, "create party should succeed")
+
+	// 重复创建 → error 1(已在队)
+	s.NoError(s.sendTCP(append([]byte("CREATE_PARTY:"), msgA...)), "send duplicate CREATE_PARTY")
+	bodyA2, _ := s.recvTCP()
+	_, _, pbA2 := parseTCPResponse(bodyA2)
+	cgA2 := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbA2, cgA2))
+	s.Equal(int32(1), cgA2.Error, "duplicate create should fail")
+
+	// DB 校验: A 为队长的队伍存在
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	var cnt int
+	s.NoError(db.QueryRow("SELECT COUNT(*) FROM t_party WHERE leader_id = ?", uint64(guidA)).Scan(&cnt))
+	s.Equal(1, cnt, "party with leader A should exist")
+	db.Close()
+
+	// B 建立连接并绑定, 踢人但不在队 → error 1
+	s.bindRole(guidB)
+	msgB, _ := json.Marshal(map[string]interface{}{"type": 3, "targetguid": guidA})
+	s.NoError(s.sendTCP(append([]byte("KICK_OUT_MEMBER:"), msgB...)), "send KICK_OUT_MEMBER")
+	bodyB, _ := s.recvTCP()
+	_, _, pbB := parseTCPResponse(bodyB)
+	cgB := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbB, cgB))
+	s.Equal(int32(1), cgB.Error, "kick while not in party should fail")
+
+	// A 重连 → LEAVE_PARTY:{"type":2} → 队长解散成功
+	s.bindRole(guidA)
+	msgL, _ := json.Marshal(map[string]interface{}{"type": 2})
+	s.NoError(s.sendTCP(append([]byte("LEAVE_PARTY:"), msgL...)), "send LEAVE_PARTY")
+	bodyL, _ := s.recvTCP()
+	_, _, pbL := parseTCPResponse(bodyL)
+	cgL := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbL, cgL))
+	s.Equal(int32(0), cgL.Error, "leader leave should disband party")
+
+	// 再次离开 → error 1(队伍已解散)
+	s.NoError(s.sendTCP(append([]byte("LEAVE_PARTY:"), msgL...)), "send duplicate LEAVE_PARTY")
+	bodyL2, _ := s.recvTCP()
+	_, _, pbL2 := parseTCPResponse(bodyL2)
+	cgL2 := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbL2, cgL2))
+	s.Equal(int32(1), cgL2.Error, "leave after disband should fail")
+
+	// DB 校验: 队伍已删除
+	db2, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	var cnt2 int
+	s.NoError(db2.QueryRow("SELECT COUNT(*) FROM t_party WHERE leader_id = ?", uint64(guidA)).Scan(&cnt2))
+	s.Equal(0, cnt2, "party should be deleted after disband")
+	db2.Close()
+
+	fmt.Printf("party text commands verified (create/dup/kick/leave/disband)\n")
+}
+
+// bindRole 建立 TCP 连接并 SELECT_CHARACTER 绑定角色
+func (s *RankTCPTestSuite) bindRole(charGuid float64) {
+	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", s.serverHost, s.serverPort), 10*time.Second)
+	s.NoError(err)
+	if conn == nil {
+		s.T().Skip("TCP connection failed")
+		return
+	}
+	s.socket = conn
+	selectJSON, _ := json.Marshal(map[string]interface{}{"uid": charGuid})
+	selMsg := append([]byte("SELECT_CHARACTER:"), selectJSON...)
+	s.NoError(s.sendTCP(selMsg), "send SELECT_CHARACTER")
+	selResp, err := s.recvTCP()
+	s.NoError(err)
+	selModule, selCmd, _ := parseTCPResponse(selResp)
+	s.Equal(uint16(10000), selModule, "select response module")
+	s.Equal(uint16(7), selCmd, "select response cmd")
+}

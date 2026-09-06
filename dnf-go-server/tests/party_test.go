@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"database/sql"
 	"fmt"
 	"testing"
 
@@ -34,7 +35,7 @@ func (s *PartyTestSuite) TestSearchPartyList() {
 
 // TestCreateParty 测试创建队伍
 func (s *PartyTestSuite) TestCreateParty() {
-	_ = s.loginAndSelectCharacterWithUserAndSlot("pt_create_01", 2)
+	charGuid := s.loginAndSelectCharacterWithUserAndSlot("pt_create_01", 2)
 
 	createResp, err := s.Client.Post("/api/v1/party/create", map[string]interface{}{})
 	s.NoError(err)
@@ -42,6 +43,16 @@ func (s *PartyTestSuite) TestCreateParty() {
 
 	if createResp != nil {
 		s.Equal(float64(0), createResp["error"], "Failed to create party: %+v", createResp)
+	}
+
+	// 2026-09-07 第四十八轮: 建队后 DB 清理, 防重复运行残留
+	// (HTTP 无 leave/disband 接口; createParty 已加"已在队"校验, 残留会致下次失败)
+	db, dbErr := sql.Open("mysql", testDBDSN)
+	s.NoError(dbErr)
+	defer db.Close()
+	if dbErr == nil {
+		db.Exec("DELETE FROM t_party_member WHERE role_id = ?", charGuid)
+		db.Exec("DELETE FROM t_party WHERE leader_id = ?", charGuid)
 	}
 }
 
