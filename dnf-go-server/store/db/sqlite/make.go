@@ -292,6 +292,7 @@ func (d *DB) ProductionRegister(ctx context.Context, roleID uint64, slotIndex in
 }
 
 // ItemCombine 物品合成
+// 2026-09-06 实化: 材料按背包格子校验并扣减, 产物(target_index 作物品模板ID)入背包
 func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materialItems []*dnfv1.MaterialItem, count int32) (*store.ItemCombineResult, error) {
 	tx, err := d.db.BeginTx(ctx, nil)
 	if err != nil {
@@ -299,34 +300,92 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 	}
 	defer tx.Rollback()
 
-	rewards := &dnfv1.PT_CONTENTS_REWARD_INFO{
-		Items:    &dnfv1.PT_ITEMS{},
-		Currency: &dnfv1.PT_CURRENCY_REWARD_INFO{},
+	now := time.Now().Unix()
+
+	// 1. 加载背包并校验材料(grid_index -> count)
+	rows, err := tx.QueryContext(ctx, `
+		SELECT id, grid_index, count FROM bag_item
+		WHERE role_id = ? AND row_status = 'NORMAL'`, roleID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load bag: %w", err)
+	}
+	type bagRow struct {
+		id    uint64
+		grid  int32
+		count int32
+	}
+	bag := map[int32]*bagRow{}
+	for rows.Next() {
+		var b bagRow
+		if err := rows.Scan(&b.id, &b.grid, &b.count); err != nil {
+			rows.Close()
+			return nil, fmt.Errorf("failed to scan bag item: %w", err)
+		}
+		bag[b.grid] = &b
+	}
+	rows.Close()
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("failed to iterate bag: %w", err)
 	}
 
 	removeItems := &dnfv1.PT_REMOVEITEMS{
 		MaterialItems: []*dnfv1.StackableItem{},
 	}
-
-	equip := &dnfv1.EquipmentInfo{
-		Guid: uint64(time.Now().UnixNano()),
-	}
-	rewards.Items.EquipItems = []*dnfv1.EquipmentInfo{equip}
-
 	for _, mat := range materialItems {
+		b, ok := bag[mat.Index]
+		if !ok || b.count < mat.Count {
+			return nil, fmt.Errorf("材料不足: 格子 %d 需要 %d 个", mat.Index, mat.Count)
+		}
+		// 2. 扣减材料(减至 0 删除格子, 否则更新数量)
+		if b.count == mat.Count {
+			if _, err := tx.ExecContext(ctx, `
+				DELETE FROM bag_item WHERE id = ? AND role_id = ?`, b.id, roleID); err != nil {
+				return nil, fmt.Errorf("failed to remove material: %w", err)
+			}
+		} else {
+			if _, err := tx.ExecContext(ctx, `
+				UPDATE bag_item SET count = ?, updated_at = ? WHERE id = ? AND role_id = ?`,
+				b.count-mat.Count, now, b.id, roleID); err != nil {
+				return nil, fmt.Errorf("failed to deduct material: %w", err)
+			}
+		}
 		removeItems.MaterialItems = append(removeItems.MaterialItems, &dnfv1.StackableItem{
 			Index: uint32(mat.Index),
 			Count: uint32(mat.Count),
 		})
 	}
 
-	now := time.Now().Unix()
+	// 3. 产物入包: target_index 作物品模板ID, 新格子 = MAX(grid_index)+1
+	var maxGrid int32
+	_ = tx.QueryRowContext(ctx, `
+		SELECT COALESCE(MAX(grid_index), 0) FROM bag_item WHERE role_id = ?`, roleID).Scan(&maxGrid)
+	newGrid := maxGrid + 1
+	result, err := tx.ExecContext(ctx, `
+		INSERT INTO bag_item (created_at, updated_at, row_status, role_id, item_id, grid_index, count, is_equipped, bind_type, durability, enhance_level, attributes)
+		VALUES (?, ?, 'NORMAL', ?, ?, ?, ?, 0, 0, 0, 0, NULL)`,
+		now, now, roleID, index, newGrid, count)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create product: %w", err)
+	}
+	productID, _ := result.LastInsertId()
+
+	// 4. 合成记录
 	_, err = tx.ExecContext(ctx, `
 		INSERT INTO t_item_combine (role_id, target_index, material_list, count, result_guid, cost_money, create_time)
 		VALUES (?, ?, ?, ?, ?, ?, ?)
-	`, roleID, index, fmt.Sprintf("%v", materialItems), count, equip.Guid, 0, now)
+	`, roleID, index, fmt.Sprintf("%v", materialItems), count, productID, 0, now)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert item combine record: %w", err)
+	}
+
+	equip := &dnfv1.EquipmentInfo{
+		Guid: uint64(productID),
+	}
+	rewards := &dnfv1.PT_CONTENTS_REWARD_INFO{
+		Items: &dnfv1.PT_ITEMS{
+			EquipItems: []*dnfv1.EquipmentInfo{equip},
+		},
+		Currency: &dnfv1.PT_CURRENCY_REWARD_INFO{},
 	}
 
 	err = tx.Commit()
@@ -342,6 +401,7 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 }
 
 // ItemDisjoint 物品分解
+// 2026-09-06 实化: guids 为背包物品ID, 移除对应物品并将分解材料(2013000000 x N*10)入背包
 func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*store.ItemDisjointResult, error) {
 	tx, err := d.db.BeginTx(ctx, nil)
 	if err != nil {
@@ -349,23 +409,59 @@ func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*
 	}
 	defer tx.Rollback()
 
-	rewards := &dnfv1.PT_CONTENTS_REWARD_INFO{
-		Items: &dnfv1.PT_ITEMS{},
+	now := time.Now().Unix()
+
+	// 1. 校验并移除背包物品
+	removed := 0
+	for _, g := range guids {
+		var exist int
+		err := tx.QueryRowContext(ctx, `
+			SELECT COUNT(*) FROM bag_item WHERE id = ? AND role_id = ? AND row_status = 'NORMAL'`, g, roleID).Scan(&exist)
+		if err != nil {
+			return nil, fmt.Errorf("failed to check bag item: %w", err)
+		}
+		if exist == 0 {
+			return nil, fmt.Errorf("背包物品不存在: %d", g)
+		}
+		if _, err := tx.ExecContext(ctx, `
+			DELETE FROM bag_item WHERE id = ? AND role_id = ?`, g, roleID); err != nil {
+			return nil, fmt.Errorf("failed to remove item: %w", err)
+		}
+		removed++
 	}
 
+	// 2. 分解材料入包
+	materialCount := int32(removed) * 10
+	var maxGrid int32
+	_ = tx.QueryRowContext(ctx, `
+		SELECT COALESCE(MAX(grid_index), 0) FROM bag_item WHERE role_id = ?`, roleID).Scan(&maxGrid)
+	if materialCount > 0 {
+		_, err = tx.ExecContext(ctx, `
+			INSERT INTO bag_item (created_at, updated_at, row_status, role_id, item_id, grid_index, count, is_equipped, bind_type, durability, enhance_level, attributes)
+			VALUES (?, ?, 'NORMAL', ?, 2013000000, ?, ?, 0, 0, 0, 0, NULL)`,
+			now, now, roleID, maxGrid+1, materialCount)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create disjoint material: %w", err)
+		}
+	}
+
+	// 3. 分解记录
 	material := &dnfv1.StackableItem{
 		Index: 2013000000,
-		Count: uint32(int32(len(guids)) * 10),
+		Count: uint32(materialCount),
 	}
-	rewards.Items.MaterialItems = []*dnfv1.StackableItem{material}
-
-	now := time.Now().Unix()
 	_, err = tx.ExecContext(ctx, `
 		INSERT INTO t_item_disjoint (role_id, equip_guids, material_list, create_time)
 		VALUES (?, ?, ?, ?)
 	`, roleID, fmt.Sprintf("%v", guids), fmt.Sprintf("%v", material), now)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert item disjoint record: %w", err)
+	}
+
+	rewards := &dnfv1.PT_CONTENTS_REWARD_INFO{
+		Items: &dnfv1.PT_ITEMS{
+			MaterialItems: []*dnfv1.StackableItem{material},
+		},
 	}
 
 	err = tx.Commit()
