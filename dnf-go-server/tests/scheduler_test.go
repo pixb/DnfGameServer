@@ -126,3 +126,17 @@ func (s *MailCleanupSchedulerSuite) TestCleanupIntervalParsing() {
 	s.Equal(150*time.Millisecond, (&profile.Profile{MailCleanupInterval: "150ms"}).MailCleanupIntervalDuration())
 	s.Equal(30*time.Second, (&profile.Profile{MailCleanupInterval: "30s"}).MailCleanupIntervalDuration())
 }
+
+// TestAdminOpenIDListParsing 初始管理员 openid 列表解析(2026-09-06 第四十一轮):
+// 空/单/多/空白去重, 首尾空格清理
+func (s *MailCleanupSchedulerSuite) TestAdminOpenIDListParsing() {
+	s.Empty((&profile.Profile{}).AdminOpenIDList())
+	s.Empty((&profile.Profile{AdminOpenIDs: ""}).AdminOpenIDList())
+	s.Empty((&profile.Profile{AdminOpenIDs: ", ,"}).AdminOpenIDList())
+
+	s.Equal([]string{"admin1"}, (&profile.Profile{AdminOpenIDs: "admin1"}).AdminOpenIDList())
+	s.Equal([]string{"admin1", "admin2", "admin3"},
+		(&profile.Profile{AdminOpenIDs: "admin1,admin2,admin3"}).AdminOpenIDList())
+	s.Equal([]string{"admin1", "admin2"},
+		(&profile.Profile{AdminOpenIDs: " admin1 , admin2 , "}).AdminOpenIDList())
+}

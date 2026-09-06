@@ -92,6 +92,7 @@ func initConfig() error {
 		Port:                viper.GetInt("port"),
 		TCPPort:             viper.GetInt("server.tcp.port"),
 		MailCleanupInterval: viper.GetString("mail_cleanup_interval"),
+		AdminOpenIDs:        viper.GetString("admin_openids"), // 第四十一轮: 初始管理员账号
 	}
 
 	// 从配置文件的根级别读取

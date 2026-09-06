@@ -10,6 +10,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	"errors"
+
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/achievement_service"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/adventure_service"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/handlers"
@@ -19,6 +21,46 @@ import (
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store/db"
 )
+
+// ensureAdminAccounts 确保初始管理员账号存在且 authority=1(2026-09-06 第四十一轮)
+// 不存在则自动创建; 存在则提升为管理员并确保启用(status=1)
+func ensureAdminAccounts(ctx context.Context, s *store.Store, adminOpenIDs []string) error {
+	if len(adminOpenIDs) == 0 {
+		return nil
+	}
+	adminAuthority := int32(1)
+	statusNormal := int32(1)
+	for _, openid := range adminOpenIDs {
+		acct, err := s.GetAccount(ctx, &store.FindAccount{OpenID: &openid})
+		if errors.Is(err, store.ErrNotFound) {
+			if _, cerr := s.CreateAccount(ctx, &store.Account{
+				OpenID:     openid,
+				AccountKey: "",
+				AuthKey:    "",
+				Authority:  adminAuthority,
+				Status:     statusNormal,
+			}); cerr != nil {
+				return fmt.Errorf("failed to create admin account %s: %w", openid, cerr)
+			}
+			fmt.Printf("Admin account created: %s (authority=1)\n", openid)
+			continue
+		}
+		if err != nil {
+			return fmt.Errorf("failed to get admin account %s: %w", openid, err)
+		}
+		if acct == nil || acct.Authority != 1 || acct.Status != 1 {
+			if _, uerr := s.UpdateAccount(ctx, &store.UpdateAccount{
+				ID:        acct.ID,
+				Authority: &adminAuthority,
+				Status:    &statusNormal,
+			}); uerr != nil {
+				return fmt.Errorf("failed to promote admin account %s: %w", openid, uerr)
+			}
+			fmt.Printf("Admin account ensured: %s (authority=1)\n", openid)
+		}
+	}
+	return nil
+}
 
 // serveCmd represents the serve command
 var serveCmd = &cobra.Command{
@@ -41,6 +83,10 @@ func init() {
 	// 2026-09-06 第二十九轮: 邮件过期清理周期可配置
 	serveCmd.Flags().String("mail-cleanup-interval", "5m", "mail expired cleanup interval (Go duration, e.g. 5m/30s)")
 	viper.BindPFlag("mail_cleanup_interval", serveCmd.Flags().Lookup("mail-cleanup-interval"))
+
+	// 2026-09-06 第四十一轮: 初始管理员账号 openid(逗号分隔, 启动时确保存在且 authority=1)
+	serveCmd.Flags().String("admin-openids", "", "initial admin account openids (comma separated)")
+	viper.BindPFlag("admin_openids", serveCmd.Flags().Lookup("admin-openids"))
 }
 
 func runServe(cmd *cobra.Command, args []string) error {
@@ -92,6 +138,11 @@ func runServe(cmd *cobra.Command, args []string) error {
 		} else {
 			fmt.Println("Test data seeded successfully")
 		}
+	}
+
+	// 3.55 确保初始管理员账号存在且为管理员(2026-09-06 第四十一轮)
+	if err := ensureAdminAccounts(ctx, s, prof.AdminOpenIDList()); err != nil {
+		fmt.Printf("Warning: failed to ensure admin accounts: %v\n", err)
 	}
 
 	// 3.6 初始化服务
