@@ -115,3 +115,14 @@ func (s *MailCleanupSchedulerSuite) TestCleanupSkipsUnexpired() {
 	s.NotNil(db)
 	_ = fmt.Sprintf("cleanup test mail_id=%d", mailID)
 }
+
+// TestCleanupIntervalParsing 清理周期可配置解析(2026-09-06 第二十九轮):
+// 空/非法回退默认 5m, 合法 duration 原样解析
+func (s *MailCleanupSchedulerSuite) TestCleanupIntervalParsing() {
+	s.Equal(5*time.Minute, (&profile.Profile{}).MailCleanupIntervalDuration())
+	s.Equal(5*time.Minute, (&profile.Profile{MailCleanupInterval: ""}).MailCleanupIntervalDuration())
+	s.Equal(5*time.Minute, (&profile.Profile{MailCleanupInterval: "bad-value"}).MailCleanupIntervalDuration())
+	s.Equal(5*time.Minute, (&profile.Profile{MailCleanupInterval: "-1m"}).MailCleanupIntervalDuration())
+	s.Equal(150*time.Millisecond, (&profile.Profile{MailCleanupInterval: "150ms"}).MailCleanupIntervalDuration())
+	s.Equal(30*time.Second, (&profile.Profile{MailCleanupInterval: "30s"}).MailCleanupIntervalDuration())
+}

@@ -35,16 +35,18 @@ type Server struct {
 	apiV1Service *v1.APIV1Service
 
 	// 生命周期管理
-	wg          sync.WaitGroup
-	listener    net.Listener
-	cleanupStop func() // 邮件过期清理定时任务停止函数(第二十八轮)
+	wg              sync.WaitGroup
+	listener        net.Listener
+	cleanupStop     func()        // 邮件过期清理定时任务停止函数(第二十八轮)
+	cleanupInterval time.Duration // 邮件过期清理周期(第二十九轮, 来自 Profile 可配置)
 }
 
 // NewServer 创建服务器实例
 func NewServer(ctx context.Context, prof *profile.Profile, s *store.Store, pkSvc *pk_service.PkService) (*Server, error) {
 	server := &Server{
-		Profile: prof,
-		Store:   s,
+		Profile:         prof,
+		Store:           s,
+		cleanupInterval: prof.MailCleanupIntervalDuration(), // 第二十九轮: 邮件清理周期可配置(默认 5m)
 	}
 
 	// 1. 初始化Echo服务器
@@ -212,11 +214,11 @@ func (s *Server) Start(ctx context.Context) error {
 		}
 	}()
 
-	// 6.5 邮件过期清理定时任务(2026-09-06 第二十八轮): 启动即清一轮, 之后每 5 分钟
-	s.cleanupStop = s.Store.StartMailCleanup(ctx, 5*time.Minute, func(msg string) {
+	// 6.5 邮件过期清理定时任务(第二十八轮): 启动即清一轮, 之后按配置周期(第二十九轮, 默认 5 分钟)
+	s.cleanupStop = s.Store.StartMailCleanup(ctx, s.cleanupInterval, func(msg string) {
 		s.echoServer.Logger.Info(msg)
 	})
-	s.echoServer.Logger.Info("Mail cleanup scheduler started (interval 5m0s)")
+	s.echoServer.Logger.Info("Mail cleanup scheduler started (interval " + s.cleanupInterval.String() + ")")
 
 	// 7. 启动TCP服务器
 	s.wg.Add(1)

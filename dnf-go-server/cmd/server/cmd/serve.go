@@ -37,6 +37,10 @@ func init() {
 	// serve command specific flags
 	serveCmd.Flags().IntP("port", "p", 8081, "server port")
 	viper.BindPFlag("port", serveCmd.Flags().Lookup("port"))
+
+	// 2026-09-06 第二十九轮: 邮件过期清理周期可配置
+	serveCmd.Flags().String("mail-cleanup-interval", "5m", "mail expired cleanup interval (Go duration, e.g. 5m/30s)")
+	viper.BindPFlag("mail_cleanup_interval", serveCmd.Flags().Lookup("mail-cleanup-interval"))
 }
 
 func runServe(cmd *cobra.Command, args []string) error {

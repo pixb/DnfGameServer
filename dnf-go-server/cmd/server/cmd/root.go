@@ -86,11 +86,12 @@ func initConfig() error {
 
 	// 创建profile
 	prof = &profile.Profile{
-		Driver:  viper.GetString("driver"),
-		DSN:     viper.GetString("dsn"),
-		Mode:    viper.GetString("mode"),
-		Port:    viper.GetInt("port"),
-		TCPPort: viper.GetInt("server.tcp.port"),
+		Driver:              viper.GetString("driver"),
+		DSN:                 viper.GetString("dsn"),
+		Mode:                viper.GetString("mode"),
+		Port:                viper.GetInt("port"),
+		TCPPort:             viper.GetInt("server.tcp.port"),
+		MailCleanupInterval: viper.GetString("mail_cleanup_interval"),
 	}
 
 	// 从配置文件的根级别读取
