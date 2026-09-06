@@ -35,6 +35,11 @@ func rankTypeFromPayload(session *network.Session) uint32 {
 	return 1
 }
 
+// uint32ToInt32 uint32 转 int32(供响应字段赋值)
+func uint32ToInt32(v uint32) int32 {
+	return int32(v)
+}
+
 // rankPosition 查询角色在等级榜的位置(等级降序+经验降序; 非等级榜暂无数据源返回 0)
 func rankPosition(roleID uint64) (rank, total int) {
 	if rankStore == nil {
@@ -59,8 +64,13 @@ func rankPosition(roleID uint64) (rank, total int) {
 	return 0, len(roles)
 }
 
-func writeRankOK(session *network.Session, respCmd uint16, name string) {
-	if err := session.WriteResponse(10501, respCmd, &dnfv1.Empty{}); err != nil {
+// writeRankResp 发送带数据的排名响应(2026-09-06 第三十轮: RankResponse 携带 rank/total/rank_type)
+func writeRankResp(session *network.Session, respCmd uint16, name string, rankType, rank, total int32) {
+	if err := session.WriteResponse(10501, respCmd, &dnfv1.RankResponse{
+		RankType: rankType,
+		Rank:     rank,
+		Total:    total,
+	}); err != nil {
 		logger.Error("failed to send "+name+" response",
 			logger.ErrorField(err),
 			logger.Int64("session_id", session.ID()),
@@ -87,7 +97,7 @@ func QueryMyRankHandler(session *network.Session, msg proto.Message) {
 		logger.Int("total", total),
 	)
 	_ = req
-	writeRankOK(session, 1, "query my rank")
+	writeRankResp(session, 1, "query my rank", uint32ToInt32(rankTypeFromPayload(session)), int32(rank), int32(total))
 }
 
 // QueryPersonalRankHandler 处理查询个人排名请求 (cmd=2)
@@ -109,7 +119,7 @@ func QueryPersonalRankHandler(session *network.Session, msg proto.Message) {
 		logger.Int("total", total),
 	)
 	_ = req
-	writeRankOK(session, 3, "query personal rank")
+	writeRankResp(session, 3, "query personal rank", uint32ToInt32(rankTypeFromPayload(session)), int32(rank), int32(total))
 }
 
 // QueryFriendRankHandler 处理查询好友排名请求 (cmd=4)
@@ -131,7 +141,7 @@ func QueryFriendRankHandler(session *network.Session, msg proto.Message) {
 		logger.Int("total", total),
 	)
 	_ = req
-	writeRankOK(session, 5, "query friend rank")
+	writeRankResp(session, 5, "query friend rank", uint32ToInt32(rankTypeFromPayload(session)), int32(rank), int32(total))
 }
 
 // QueryMyTeamRankHandler 处理查询我的队伍排名请求 (cmd=6)
@@ -153,5 +163,5 @@ func QueryMyTeamRankHandler(session *network.Session, msg proto.Message) {
 		logger.Int("total", total),
 	)
 	_ = req
-	writeRankOK(session, 7, "query my team rank")
+	writeRankResp(session, 7, "query my team rank", uint32ToInt32(rankTypeFromPayload(session)), int32(rank), int32(total))
 }

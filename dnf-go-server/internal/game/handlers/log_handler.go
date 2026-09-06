@@ -74,13 +74,18 @@ func logPayloadIDs(p map[string]interface{}, key string) []uint64 {
 	return ids
 }
 
-func writeLogOK(session *network.Session, respCmd uint16, name string) {
-	if err := session.WriteResponse(10502, respCmd, &dnfv1.Empty{}); err != nil {
+// writeLogResp 发送带数据的日志响应(2026-09-06 第三十轮: 替代 Empty, 结果可被客户端解析)
+func writeLogResp(session *network.Session, respCmd uint16, name string, msg proto.Message) {
+	if err := session.WriteResponse(10502, respCmd, msg); err != nil {
 		logger.Error("failed to send "+name+" response",
 			logger.ErrorField(err),
 			logger.Int64("session_id", session.ID()),
 		)
 	}
+}
+
+func writeLogOK(session *network.Session, respCmd uint16, name string) {
+	writeLogResp(session, respCmd, name, &dnfv1.Empty{})
 }
 
 // QueryLogHandler 处理查询日志请求 (cmd=0)
@@ -97,11 +102,13 @@ func QueryLogHandler(session *network.Session, msg proto.Message) {
 	if limit <= 0 {
 		limit = 10
 	}
+	count := int32(0)
 	if logStore != nil {
 		logs, err := logStore.ListBehaviorLogs(context.Background(), session.RoleID(), limit)
 		if err != nil {
 			logger.Error("query log failed", logger.ErrorField(err))
 		} else {
+			count = int32(len(logs))
 			logger.Info("query log result",
 				logger.Int64("session_id", session.ID()),
 				logger.Int("count", len(logs)),
@@ -109,7 +116,7 @@ func QueryLogHandler(session *network.Session, msg proto.Message) {
 		}
 	}
 	_ = req
-	writeLogOK(session, 1, "query log")
+	writeLogResp(session, 1, "query log", &dnfv1.LogQueryResponse{Count: count})
 }
 
 // RecordLogHandler 处理记录日志请求 (cmd=2)
@@ -160,10 +167,13 @@ func StatisticLogHandler(session *network.Session, msg proto.Message) {
 	}
 	logger.Info("statistic log request received", logger.Int64("session_id", session.ID()))
 	// 日志聚合统计(按 action 计数)
+	stats := map[string]int64{}
 	if logStore != nil {
-		stats, err := logStore.StatisticBehaviorLogs(context.Background(), session.RoleID())
+		var err error
+		stats, err = logStore.StatisticBehaviorLogs(context.Background(), session.RoleID())
 		if err != nil {
 			logger.Error("statistic log failed", logger.ErrorField(err))
+			stats = map[string]int64{}
 		} else {
 			logger.Info("statistic log result",
 				logger.Int64("session_id", session.ID()),
@@ -175,7 +185,7 @@ func StatisticLogHandler(session *network.Session, msg proto.Message) {
 		}
 	}
 	_ = req
-	writeLogOK(session, 5, "statistic log")
+	writeLogResp(session, 5, "statistic log", &dnfv1.LogStatsResponse{Count: int32(len(stats)), Actions: stats})
 }
 
 // DeleteLogHandler 处理删除日志请求 (cmd=6)
@@ -188,10 +198,13 @@ func DeleteLogHandler(session *network.Session, msg proto.Message) {
 	logger.Info("delete log request received", logger.Int64("session_id", session.ID()))
 	// 按条件删除日志(log_ids 列表)
 	ids := logPayloadIDs(logPayload(session), "log_ids")
+	deleted := int64(0)
 	if logStore != nil {
-		if n, err := logStore.DeleteBehaviorLogs(context.Background(), ids); err != nil {
+		n, err := logStore.DeleteBehaviorLogs(context.Background(), ids)
+		if err != nil {
 			logger.Error("delete log failed", logger.ErrorField(err))
 		} else {
+			deleted = n
 			logger.Info("delete log result",
 				logger.Int64("session_id", session.ID()),
 				logger.Int64("deleted", n),
@@ -199,7 +212,7 @@ func DeleteLogHandler(session *network.Session, msg proto.Message) {
 		}
 	}
 	_ = req
-	writeLogOK(session, 7, "delete log")
+	writeLogResp(session, 7, "delete log", &dnfv1.LogDeleteResponse{Deleted: deleted})
 }
 
 // ExportLogHandler 处理导出日志请求 (cmd=8)
@@ -210,12 +223,14 @@ func ExportLogHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 	logger.Info("export log request received", logger.Int64("session_id", session.ID()))
-	// 导出日志文件: 全量查询并记录行数(响应协议未扩展, 结果经服务端日志可观测)
+	// 导出日志文件: 全量查询并返回条数
+	count := int32(0)
 	if logStore != nil {
 		logs, err := logStore.ListBehaviorLogs(context.Background(), session.RoleID(), 1000)
 		if err != nil {
 			logger.Error("export log failed", logger.ErrorField(err))
 		} else {
+			count = int32(len(logs))
 			logger.Info("export log result",
 				logger.Int64("session_id", session.ID()),
 				logger.Int("exported", len(logs)),
@@ -223,7 +238,7 @@ func ExportLogHandler(session *network.Session, msg proto.Message) {
 		}
 	}
 	_ = req
-	writeLogOK(session, 9, "export log")
+	writeLogResp(session, 9, "export log", &dnfv1.LogQueryResponse{Count: count})
 }
 
 // CleanLogHandler 处理清理日志请求 (cmd=10)
@@ -240,10 +255,13 @@ func CleanLogHandler(session *network.Session, msg proto.Message) {
 	if before == 0 {
 		before = time.Now().Unix()
 	}
+	deleted := int64(0)
 	if logStore != nil {
-		if n, err := logStore.CleanBehaviorLogs(context.Background(), before); err != nil {
+		n, err := logStore.CleanBehaviorLogs(context.Background(), before)
+		if err != nil {
 			logger.Error("clean log failed", logger.ErrorField(err))
 		} else {
+			deleted = n
 			logger.Info("clean log result",
 				logger.Int64("session_id", session.ID()),
 				logger.Int64("deleted", n),
@@ -251,7 +269,7 @@ func CleanLogHandler(session *network.Session, msg proto.Message) {
 		}
 	}
 	_ = req
-	writeLogOK(session, 11, "clean log")
+	writeLogResp(session, 11, "clean log", &dnfv1.LogDeleteResponse{Deleted: deleted})
 }
 
 // MonitorLogHandler 处理监控日志请求 (cmd=12)
@@ -263,12 +281,13 @@ func MonitorLogHandler(session *network.Session, msg proto.Message) {
 	}
 	logger.Info("monitor log request received", logger.Int64("session_id", session.ID()))
 	// 日志异常监控告警: 统计 error 级别日志数
+	errorCount, total := int32(0), int32(0)
 	if logStore != nil {
 		logs, err := logStore.ListBehaviorLogs(context.Background(), session.RoleID(), 10000)
 		if err != nil {
 			logger.Error("monitor log failed", logger.ErrorField(err))
 		} else {
-			errorCount := 0
+			total = int32(len(logs))
 			for _, l := range logs {
 				if l.Level == "error" {
 					errorCount++
@@ -276,13 +295,13 @@ func MonitorLogHandler(session *network.Session, msg proto.Message) {
 			}
 			logger.Info("monitor log result",
 				logger.Int64("session_id", session.ID()),
-				logger.Int("error_count", errorCount),
+				logger.Int("error_count", int(errorCount)),
 				logger.Int("total", len(logs)),
 			)
 		}
 	}
 	_ = req
-	writeLogOK(session, 13, "monitor log")
+	writeLogResp(session, 13, "monitor log", &dnfv1.LogMonitorResponse{ErrorCount: errorCount, Total: total})
 }
 
 // AnalyzeLogHandler 处理分析日志请求 (cmd=14)
@@ -294,10 +313,13 @@ func AnalyzeLogHandler(session *network.Session, msg proto.Message) {
 	}
 	logger.Info("analyze log request received", logger.Int64("session_id", session.ID()))
 	// 日志行为分析: 按 action 分布统计
+	stats := map[string]int64{}
 	if logStore != nil {
-		stats, err := logStore.StatisticBehaviorLogs(context.Background(), session.RoleID())
+		var err error
+		stats, err = logStore.StatisticBehaviorLogs(context.Background(), session.RoleID())
 		if err != nil {
 			logger.Error("analyze log failed", logger.ErrorField(err))
+			stats = map[string]int64{}
 		} else {
 			logger.Info("analyze log result",
 				logger.Int64("session_id", session.ID()),
@@ -309,5 +331,5 @@ func AnalyzeLogHandler(session *network.Session, msg proto.Message) {
 		}
 	}
 	_ = req
-	writeLogOK(session, 15, "analyze log")
+	writeLogResp(session, 15, "analyze log", &dnfv1.LogStatsResponse{Count: int32(len(stats)), Actions: stats})
 }

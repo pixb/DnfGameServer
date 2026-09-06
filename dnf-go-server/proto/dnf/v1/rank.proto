@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+
+// 排名响应(2026-09-06 第三十轮: 响应携带真实数据, 替代 Empty)
+// 供 10501 模块 QUERY_MY_RANK/QUERY_PERSONAL_RANK/QUERY_FRIEND_RANK/QUERY_MY_TEAM_RANK 复用。
+message RankResponse {
+  int32 rank_type = 1; // 榜单类型(1等级/2战力/3副本)
+  int32 rank = 2;      // 当前排名(0 表示未上榜或数据源缺失)
+  int32 total = 3;     // 榜单总人数
+}

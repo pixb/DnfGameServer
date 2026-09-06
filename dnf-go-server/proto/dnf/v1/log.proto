@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package dnf.v1;
+
+option go_package = "gen/dnf/v1";
+
+// 行为日志查询/导出响应(2026-09-06 第三十轮: 响应携带条数, 替代 Empty)
+message LogQueryResponse {
+  int32 count = 1; // 返回日志条数
+}
+
+// 行为日志统计/分析响应(按 action 计数)
+message LogStatsResponse {
+  int32 count = 1;                // 统计的 action 种类数
+  map<string, int64> actions = 2; // action -> 条数
+}
+
+// 行为日志删除/清理响应(返回删除行数)
+message LogDeleteResponse {
+  int64 deleted = 1;
+}
+
+// 行为日志监控响应(error 级别告警统计)
+message LogMonitorResponse {
+  int32 error_count = 1; // error 级别日志数
+  int32 total = 2;       // 扫描日志总数
+}
