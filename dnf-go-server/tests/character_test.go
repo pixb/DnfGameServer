@@ -27,8 +27,8 @@ func (s *CharacterTestSuite) TestCharacterCreate() {
 	token := s.LoginAs(s.openid)
 	s.NotEmpty(token, "Login should return a token")
 
-	// 创建角色，使用唯一名称
-	uniqueName := fmt.Sprintf("TestCharacter_%d", time.Now().UnixNano())
+	// 创建角色，使用唯一名称(16 字符内: 前缀+12 位纳秒后缀)
+	uniqueName := fmt.Sprintf("TC_%012d", time.Now().UnixNano()%1000000000000)
 	resp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
 		"name":     uniqueName,
 		"job":      1,
@@ -50,7 +50,7 @@ func (s *CharacterTestSuite) TestCharacterCreateDuplicateName() {
 	token := s.LoginAs(s.openid)
 	s.NotEmpty(token, "Login should return a token")
 
-	name := fmt.Sprintf("TestCharDup_%d", time.Now().UnixNano())
+	name := fmt.Sprintf("TD_%012d", time.Now().UnixNano()%1000000000000)
 	first, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
 		"name": name,
 		"job":  1,
@@ -71,6 +71,60 @@ func (s *CharacterTestSuite) TestCharacterCreateDuplicateName() {
 	if msg, ok := second["message"].(string); ok {
 		s.Contains(msg, "已存在")
 	}
+}
+
+// TestCharacterCreateInvalidName 角色名长度/字符集校验(2026-09-06 第二十六轮):
+// 超长(>16 字符)与非法字符(空格/标点等)建角应拒绝 error 4, 且不产生新角色
+func (s *CharacterTestSuite) TestCharacterCreateInvalidName() {
+	token := s.LoginAs(s.openid)
+	s.NotEmpty(token, "Login should return a token")
+
+	// 超长名: 17 个字符
+	longResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": "AAAAAAAAAAAAAAAAA",
+		"job":  1,
+	})
+	s.NoError(err)
+	s.NotNil(longResp)
+	if errVal, ok := longResp["error"]; ok {
+		s.Equal(float64(4), errVal)
+	}
+	if msg, ok := longResp["message"].(string); ok {
+		s.Contains(msg, "长度")
+	}
+
+	// 非法字符: 空格与感叹号
+	badResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": "Bad Name!",
+		"job":  1,
+	})
+	s.NoError(err)
+	s.NotNil(badResp)
+	if errVal, ok := badResp["error"]; ok {
+		s.Equal(float64(4), errVal)
+	}
+	if msg, ok := badResp["message"].(string); ok {
+		s.Contains(msg, "仅允许")
+	}
+}
+
+// TestCharacterCreateChineseName 中文角色名合法(2026-09-06 第二十六轮):
+// 中文/下划线/数字组合在 16 字符内应创建成功
+func (s *CharacterTestSuite) TestCharacterCreateChineseName() {
+	token := s.LoginAs(s.openid)
+	s.NotEmpty(token, "Login should return a token")
+
+	chineseName := fmt.Sprintf("测试勇士_%06d", time.Now().UnixNano()%1000000)
+	resp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": chineseName,
+		"job":  1,
+	})
+	s.NoError(err)
+	s.AssertSuccess(resp)
+
+	data, ok := resp["data"].(map[string]interface{})
+	s.True(ok, "Response should contain data")
+	s.Equal(chineseName, data["name"], "Chinese character name should match")
 }
 
 func (s *CharacterTestSuite) TestCharacterList() {

@@ -35,8 +35,8 @@ func (s *QuestTestSuite) setupAuthenticatedClient(openid string) {
 	characters, ok := listResp["characters"].([]interface{})
 	if !ok || len(characters) == 0 {
 		createResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
-			// 2026-09-06 第二十五轮: 完整 UnixNano 命名(不再 %10000), 避免与历史残留角色撞名被全局查重拒绝
-			"name": fmt.Sprintf("QuestHero%d", time.Now().UnixNano()),
+			// 2026-09-06 第二十六轮: 16 字符长度校验生效, 改短名(前缀+12 位纳秒)
+			"name": fmt.Sprintf("QH_%012d", time.Now().UnixNano()%1000000000000),
 			"job":  1,
 		})
 		s.NoError(err)

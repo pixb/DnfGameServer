@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"unicode/utf8"
 
 	"github.com/labstack/echo/v4"
 
@@ -2311,6 +2312,17 @@ func (s *APIV1Service) handleCreateCharacter(c echo.Context) error {
 
 	if name == "" {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 2, "message": "Character name is required"})
+	}
+
+	// 2026-09-06 第二十六轮: 角色名长度/字符集校验
+	// 长度 1~16 字符(rune 计数, 中文算 1 个); 仅允许中文/大小写字母/数字/下划线
+	if n := utf8.RuneCountInString(name); n < 1 || n > 16 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "角色名长度须为 1-16 个字符"})
+	}
+	for _, r := range name {
+		if !(r >= 'a' && r <= 'z' || r >= 'A' && r <= 'Z' || r >= '0' && r <= '9' || r == '_' || r >= '\u4e00' && r <= '\u9fa5') {
+			return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "角色名仅允许中文、字母、数字、下划线"})
+		}
 	}
 
 	// 2026-09-06 第二十五轮: 角色名全局唯一(handler 层查重软约束, 同名任何角色存在即拒绝;
