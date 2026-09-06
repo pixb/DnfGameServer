@@ -77,6 +77,38 @@ func clearRolesForOpenids(openids ...string) error {
 	return nil
 }
 
+// getGold 查询角色当前金币(合成费用扣减断言用)
+func getGold(roleID uint64) int64 {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		return -1
+	}
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	var gold int64
+	if err := db.QueryRow("SELECT gold FROM role_currency WHERE role_id = ?", roleID).Scan(&gold); err != nil {
+		return -1
+	}
+	return gold
+}
+
+// countCombineRecords 统计角色合成记录数(配方生效断言用)
+func countCombineRecords(roleID uint64) int {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		return -1
+	}
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	var n int
+	if err := db.QueryRow("SELECT COUNT(*) FROM t_item_combine WHERE role_id = ?", roleID).Scan(&n); err != nil {
+		return -1
+	}
+	return n
+}
+
 type MakeTestSuite struct {
 	BaseTestSuite
 }
@@ -88,7 +120,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -298,6 +330,96 @@ func (s *MakeTestSuite) TestItemCombine() {
 	if errVal, ok := resp["error"]; ok {
 		s.Equal(float64(0), errVal)
 	}
+}
+
+// TestItemCombineRecipeFee 配方驱动: recipe 1002(材料 2001x3+2002x3, 费用 500)
+// 验证按配方扣金币(1000 -> 500)且写入合成记录
+func (s *MakeTestSuite) TestItemCombineRecipeFee() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_comb_02", 14)
+	s.Require().NoError(setGold(roleID, 1000))
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2001: 3, 2002: 3}))
+
+	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1002,
+		"material_items": []map[string]interface{}{
+			{"index": 2001, "count": 3},
+			{"index": 2002, "count": 3},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	// 配方费用 500 已扣: 1000 -> 500
+	s.Equal(int64(500), getGold(roleID))
+	// 合成记录已写
+	s.Equal(1, countCombineRecords(roleID))
+}
+
+// TestItemCombineWrongMaterials 配方驱动: 材料与配方不符(recipe 1001 需 2001x1+2002x1,
+// 客户端多给 2001x2)应报错且不产生记录
+func (s *MakeTestSuite) TestItemCombineWrongMaterials() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_comb_03", 15)
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2001: 5, 2002: 5}))
+
+	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1001,
+		"material_items": []map[string]interface{}{
+			{"index": 2001, "count": 2},
+			{"index": 2002, "count": 1},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(1), errVal)
+	}
+	s.Equal(0, countCombineRecords(roleID))
+}
+
+// TestItemCombineUnknownRecipe 配方不存在(9999)应报错
+func (s *MakeTestSuite) TestItemCombineUnknownRecipe() {
+	_ = s.loginAndSelectCharacterWithUserAndSlot("mk_comb_03", 15)
+
+	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index":          9999,
+		"material_items": []map[string]interface{}{},
+		"count":          1,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(1), errVal)
+	}
+}
+
+// TestItemCombineNotEnoughMoney 配方驱动: 金币不足(recipe 1002 费用 500, 只有 100)应报错
+func (s *MakeTestSuite) TestItemCombineNotEnoughMoney() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_comb_02", 14)
+	s.Require().NoError(setGold(roleID, 100))
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2001: 3, 2002: 3}))
+
+	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1002,
+		"material_items": []map[string]interface{}{
+			{"index": 2001, "count": 3},
+			{"index": 2002, "count": 3},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(1), errVal)
+	}
+	s.Equal(0, countCombineRecords(roleID))
 }
 
 func (s *MakeTestSuite) TestItemDisjoint() {

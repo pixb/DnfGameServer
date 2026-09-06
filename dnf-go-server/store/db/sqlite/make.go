@@ -2,8 +2,11 @@ package sqlite
 
 import (
 	"context"
+	"database/sql"
+	"encoding/json"
 	"fmt"
 	"math/rand"
+	"sort"
 	"time"
 
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
@@ -293,6 +296,10 @@ func (d *DB) ProductionRegister(ctx context.Context, roleID uint64, slotIndex in
 
 // ItemCombine 物品合成
 // 2026-09-06 实化: 材料按背包格子校验并扣减, 产物(target_index 作物品模板ID)入背包
+// 2026-09-06 第十二轮 配方驱动: index 为配方索引(recipe_index), 按 t_make_recipe 校验材料
+// (材料模板与数量严格一致)、扣金币(cost_money)、产物按 result_index/result_count 入包;
+// materialItems 为客户端指定的背包格子(可为空, 空则按配方模板自动从背包解析)。
+// 注意: sqlite 货币表为 t_role_currency(money 字段), 与 mysql role_currency(gold) 天然不同。
 func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materialItems []*dnfv1.MaterialItem, count int32) (*store.ItemCombineResult, error) {
 	tx, err := d.db.BeginTx(ctx, nil)
 	if err != nil {
@@ -302,42 +309,98 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 
 	now := time.Now().Unix()
 
-	// 1. 加载背包并校验材料(grid_index -> count)
+	// 0. 加载配方(不存在/停用直接报错)
+	recipe, err := loadMakeRecipe(ctx, tx, index)
+	if err != nil {
+		return nil, err
+	}
+
+	// 1. 加载背包(grid_index -> 物品)
 	rows, err := tx.QueryContext(ctx, `
-		SELECT id, grid_index, count FROM bag_item
+		SELECT id, grid_index, item_id, count FROM bag_item
 		WHERE role_id = ? AND row_status = 'NORMAL'`, roleID)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load bag: %w", err)
 	}
 	type bagRow struct {
-		id    uint64
-		grid  int32
-		count int32
+		id     uint64
+		grid   int32
+		itemID int32
+		count  int32
 	}
 	bag := map[int32]*bagRow{}
+	byItem := map[int32][]*bagRow{}
 	for rows.Next() {
 		var b bagRow
-		if err := rows.Scan(&b.id, &b.grid, &b.count); err != nil {
+		if err := rows.Scan(&b.id, &b.grid, &b.itemID, &b.count); err != nil {
 			rows.Close()
 			return nil, fmt.Errorf("failed to scan bag item: %w", err)
 		}
 		bag[b.grid] = &b
+		byItem[b.itemID] = append(byItem[b.itemID], &b)
 	}
 	rows.Close()
 	if err := rows.Err(); err != nil {
 		return nil, fmt.Errorf("failed to iterate bag: %w", err)
 	}
+	for _, list := range byItem {
+		sort.Slice(list, func(i, j int) bool { return list[i].grid < list[j].grid })
+	}
 
+	// 2. 确定扣减计划(grid -> count): 客户端指定格子 或 按配方模板自动解析
+	deduct := map[int32]int32{}
+	if len(materialItems) > 0 {
+		consumed := map[int32]int32{} // 材料模板ID -> 消耗数
+		for _, mat := range materialItems {
+			b, ok := bag[mat.Index]
+			if !ok {
+				return nil, fmt.Errorf("材料不足: 格子 %d 不存在", mat.Index)
+			}
+			if b.count < mat.Count {
+				return nil, fmt.Errorf("材料不足: 格子 %d 需要 %d 个", mat.Index, mat.Count)
+			}
+			consumed[b.itemID] += mat.Count
+			deduct[b.grid] += mat.Count
+		}
+		need := map[int32]int32{}
+		for _, m := range recipe.materials {
+			need[m.Index] = m.Count * count
+		}
+		if len(consumed) != len(need) {
+			return nil, fmt.Errorf("材料与配方不符: 材料种类不一致")
+		}
+		for tpl, n := range need {
+			if consumed[tpl] != n {
+				return nil, fmt.Errorf("材料与配方不符: 模板 %d 需要 %d 个, 实际 %d 个", tpl, n, consumed[tpl])
+			}
+		}
+	} else {
+		for _, m := range recipe.materials {
+			need := m.Count * count
+			for _, b := range byItem[m.Index] {
+				if need <= 0 {
+					break
+				}
+				take := b.count
+				if take > need {
+					take = need
+				}
+				deduct[b.grid] += take
+				need -= take
+			}
+			if need > 0 {
+				return nil, fmt.Errorf("材料不足: 模板 %d 缺 %d 个", m.Index, need)
+			}
+		}
+	}
+
+	// 3. 扣减材料(减至 0 删除格子, 否则更新数量)
 	removeItems := &dnfv1.PT_REMOVEITEMS{
 		MaterialItems: []*dnfv1.StackableItem{},
 	}
-	for _, mat := range materialItems {
-		b, ok := bag[mat.Index]
-		if !ok || b.count < mat.Count {
-			return nil, fmt.Errorf("材料不足: 格子 %d 需要 %d 个", mat.Index, mat.Count)
-		}
-		// 2. 扣减材料(减至 0 删除格子, 否则更新数量)
-		if b.count == mat.Count {
+	for grid, c := range deduct {
+		b := bag[grid]
+		if b.count == c {
 			if _, err := tx.ExecContext(ctx, `
 				DELETE FROM bag_item WHERE id = ? AND role_id = ?`, b.id, roleID); err != nil {
 				return nil, fmt.Errorf("failed to remove material: %w", err)
@@ -345,41 +408,56 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 		} else {
 			if _, err := tx.ExecContext(ctx, `
 				UPDATE bag_item SET count = ?, updated_at = ? WHERE id = ? AND role_id = ?`,
-				b.count-mat.Count, now, b.id, roleID); err != nil {
+				b.count-c, now, b.id, roleID); err != nil {
 				return nil, fmt.Errorf("failed to deduct material: %w", err)
 			}
 		}
 		removeItems.MaterialItems = append(removeItems.MaterialItems, &dnfv1.StackableItem{
-			Index: uint32(mat.Index),
-			Count: uint32(mat.Count),
+			Index: uint32(b.itemID),
+			Count: uint32(c),
 		})
 	}
 
-	// 3. 产物入包: target_index 作物品模板ID, 新格子 = MAX(grid_index)+1
+	// 4. 合成费用(金币): 余额不足报错, 否则扣减
+	fee := recipe.costMoney * count
+	if fee > 0 {
+		var money int64
+		err := tx.QueryRowContext(ctx, "SELECT money FROM t_role_currency WHERE role_id = ?", roleID).Scan(&money)
+		if err != nil || money < int64(fee) {
+			return nil, fmt.Errorf("金币不足: 需要 %d", fee)
+		}
+		if _, err := tx.ExecContext(ctx, "UPDATE t_role_currency SET money = money - ? WHERE role_id = ?", int64(fee), roleID); err != nil {
+			return nil, fmt.Errorf("failed to deduct money: %w", err)
+		}
+	}
+
+	// 5. 产物入包: 按配方 result_index/result_count, 新格子 = MAX(grid_index)+1
 	var maxGrid int32
 	_ = tx.QueryRowContext(ctx, `
 		SELECT COALESCE(MAX(grid_index), 0) FROM bag_item WHERE role_id = ?`, roleID).Scan(&maxGrid)
 	newGrid := maxGrid + 1
+	resultCount := recipe.resultCount * count
 	result, err := tx.ExecContext(ctx, `
 		INSERT INTO bag_item (created_at, updated_at, row_status, role_id, item_id, grid_index, count, is_equipped, bind_type, durability, enhance_level, attributes)
 		VALUES (?, ?, 'NORMAL', ?, ?, ?, ?, 0, 0, 0, 0, NULL)`,
-		now, now, roleID, index, newGrid, count)
+		now, now, roleID, recipe.resultIndex, newGrid, resultCount)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create product: %w", err)
 	}
 	productID, _ := result.LastInsertId()
 
-	// 4. 合成记录
+	// 6. 合成记录
 	_, err = tx.ExecContext(ctx, `
 		INSERT INTO t_item_combine (role_id, target_index, material_list, count, result_guid, cost_money, create_time)
 		VALUES (?, ?, ?, ?, ?, ?, ?)
-	`, roleID, index, fmt.Sprintf("%v", materialItems), count, productID, 0, now)
+	`, roleID, recipe.resultIndex, recipe.materialJSON, count, productID, fee, now)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert item combine record: %w", err)
 	}
 
 	equip := &dnfv1.EquipmentInfo{
-		Guid: uint64(productID),
+		Guid:   uint64(productID),
+		ItemId: uint32(recipe.resultIndex),
 	}
 	rewards := &dnfv1.PT_CONTENTS_REWARD_INFO{
 		Items: &dnfv1.PT_ITEMS{
@@ -568,6 +646,58 @@ func (d *DB) CardCompose(ctx context.Context, roleID uint64, userCardList []*dnf
 // WardrobeSetSlot 衣柜槽位设置
 func (d *DB) WardrobeSetSlot(ctx context.Context, roleID uint64) error {
 	return nil
+}
+
+// ==================== 合成配方 ====================
+
+// recipeMaterial 配方材料项(JSON: [{"index":2001,"count":1}])
+type recipeMaterial struct {
+	Index int32 `json:"index"`
+	Count int32 `json:"count"`
+}
+
+// makeRecipe 合成配方(取自 t_make_recipe)
+type makeRecipe struct {
+	resultIndex  int32
+	resultCount  int32
+	costMoney    int32
+	materials    []recipeMaterial
+	materialJSON string
+}
+
+// loadMakeRecipe 在事务内按 recipe_index 加载配方
+func loadMakeRecipe(ctx context.Context, tx *sql.Tx, recipeIndex int32) (*makeRecipe, error) {
+	var (
+		resultIndex  int32
+		resultCount  int32
+		costMoney    int32
+		materialList string
+		enabled      int
+	)
+	err := tx.QueryRowContext(ctx, `
+		SELECT result_index, result_count, material_list, cost_money, enabled
+		FROM t_make_recipe WHERE recipe_index = ?`, recipeIndex).
+		Scan(&resultIndex, &resultCount, &materialList, &costMoney, &enabled)
+	if err == sql.ErrNoRows {
+		return nil, fmt.Errorf("配方不存在: %d", recipeIndex)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("failed to load recipe: %w", err)
+	}
+	if enabled == 0 {
+		return nil, fmt.Errorf("配方已停用: %d", recipeIndex)
+	}
+	var mats []recipeMaterial
+	if err := json.Unmarshal([]byte(materialList), &mats); err != nil {
+		return nil, fmt.Errorf("failed to parse recipe materials: %w", err)
+	}
+	return &makeRecipe{
+		resultIndex:  resultIndex,
+		resultCount:  resultCount,
+		costMoney:    costMoney,
+		materials:    mats,
+		materialJSON: materialList,
+	}, nil
 }
 
 func getEmblemCost(level int) int {

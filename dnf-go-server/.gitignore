@@ -41,3 +41,6 @@ data/
 *.db-wal
 *.sqlite
 *.sqlite3
+
+# Dev server run logs
+server_run.log*

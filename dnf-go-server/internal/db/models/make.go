@@ -17,7 +17,7 @@ type EmblemUpgrade struct {
 type AvatarCompose struct {
 	ID          uint64    `db:"id"`
 	RoleID      uint64    `db:"role_id"`
-	AvatarGUIDs  string    `db:"avatar_guids"`
+	AvatarGUIDs string    `db:"avatar_guids"`
 	ResultIndex int       `db:"result_index"`
 	ResultGUID  uint64    `db:"result_guid"`
 	CostMoney   int       `db:"cost_money"`
@@ -55,6 +55,18 @@ type ItemDisjoint struct {
 	CreateTime   time.Time `db:"create_time"`
 }
 
+// MakeRecipe 合成配方配置 (对应 t_make_recipe 表)
+// 2026-09-06 第十二轮: ItemCombine 深化为配方驱动(材料列表/产物模板/产物数量/合成费用)
+type MakeRecipe struct {
+	ID           uint64 `db:"id"`
+	RecipeIndex  int    `db:"recipe_index"`
+	ResultIndex  int    `db:"result_index"`
+	ResultCount  int    `db:"result_count"`
+	MaterialList string `db:"material_list"`
+	CostMoney    int    `db:"cost_money"`
+	Enabled      int    `db:"enabled"`
+}
+
 type CardCompose struct {
 	ID          uint64    `db:"id"`
 	RoleID      uint64    `db:"role_id"`
@@ -66,9 +78,9 @@ type CardCompose struct {
 }
 
 type WardrobeSlot struct {
-	ID        uint64    `db:"id"`
-	RoleID    uint64    `db:"role_id"`
-	SlotIndex int       `db:"slot_index"`
+	ID         uint64    `db:"id"`
+	RoleID     uint64    `db:"role_id"`
+	SlotIndex  int       `db:"slot_index"`
 	AvatarGUID uint64    `db:"avatar_guid"`
 	CreateTime time.Time `db:"create_time"`
 	UpdateTime time.Time `db:"update_time"`

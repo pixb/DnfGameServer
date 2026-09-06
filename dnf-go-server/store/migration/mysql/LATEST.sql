@@ -898,6 +898,26 @@ CREATE TABLE IF NOT EXISTS t_item_disjoint (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='物品分解记录表';
 
 -- ============================================
+-- 2.0.8 增量迁移：合成配方配置表 t_make_recipe
+-- 2026-09-06 第十二轮：ItemCombine 深化为配方驱动(材料/产物/费用)。
+-- ============================================
+
+-- 合成配方配置表
+CREATE TABLE IF NOT EXISTS t_make_recipe (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    recipe_index INT UNSIGNED NOT NULL COMMENT '配方索引(合成接口 index 入参)',
+    result_index INT UNSIGNED NOT NULL COMMENT '产物物品模板ID',
+    result_count INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '单次合成产物数量',
+    material_list TEXT NOT NULL COMMENT '材料列表(JSON:[{"index":2001,"count":1}])',
+    cost_money INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '单次合成费用(金币)',
+    enabled TINYINT NOT NULL DEFAULT 1 COMMENT '是否启用(0=停用)',
+    create_time BIGINT NOT NULL DEFAULT (UNIX_TIMESTAMP()) COMMENT '创建时间',
+    UNIQUE KEY uk_make_recipe_index (recipe_index)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='合成配方配置表';
+
+-- ============================================
+-- 2.0.5 增量迁移：补齐制作模块其余记录表
+-- ============================================
 -- 2.0.5 增量迁移：补齐制作模块其余记录表
 -- 2026-09-06：sqlite make.go 已实现 EmblemUpgrade/AvatarCompose/
 -- ProductionRegister/CardCompose(写记录表)，但 MySQL 从未建这 4 张表；

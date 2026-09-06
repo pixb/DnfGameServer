@@ -774,6 +774,26 @@ CREATE TABLE IF NOT EXISTS t_item_disjoint (
 CREATE INDEX IF NOT EXISTS idx_item_disjoint_role ON t_item_disjoint(role_id);
 
 -- ============================================
+-- 2.0.8 增量迁移：合成配方配置表 t_make_recipe
+-- 2026-09-06 第十二轮：与 mysql 2.0.8 对齐；ItemCombine 深化为配方驱动。
+-- ============================================
+
+-- 合成配方配置表
+CREATE TABLE IF NOT EXISTS t_make_recipe (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    recipe_index INTEGER NOT NULL,
+    result_index INTEGER NOT NULL,
+    result_count INTEGER NOT NULL DEFAULT 1,
+    material_list TEXT NOT NULL,
+    cost_money INTEGER NOT NULL DEFAULT 0,
+    enabled INTEGER NOT NULL DEFAULT 1,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+CREATE UNIQUE INDEX IF NOT EXISTS uk_make_recipe_index ON t_make_recipe(recipe_index);
+
+-- ============================================
+-- 2.0.5 增量迁移：补齐制作模块其余记录表
+-- ============================================
 -- 2.0.5 增量迁移：补齐制作模块其余记录表
 -- 2026-09-06：与 mysql 2.0.5 对齐；sqlite LATEST.sql 已有这 4 张表，
 -- 此文件供增量迁移链路保持 mysql/sqlite 对称。
