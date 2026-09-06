@@ -14,8 +14,8 @@ import (
 // CreateAuctionItem 创建拍卖物品
 func (d *DB) CreateAuctionItem(ctx context.Context, create *store.AuctionItem) (*store.AuctionItem, error) {
 	query := `
-      INSERT INTO auction_item (created_at, updated_at, row_status, seller_id, seller_name, item_id, count, price, total_price, duration, status, bidder_id, bidder_name, bid_price, bid_count, attributes, end_time)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO auction_item (created_at, updated_at, row_status, seller_id, seller_name, item_id, count, price, buyout_price, total_price, duration, status, bidder_id, bidder_name, bid_price, bid_count, attributes, end_time)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
    `
 
 	now := time.Now().Unix()
@@ -24,7 +24,7 @@ func (d *DB) CreateAuctionItem(ctx context.Context, create *store.AuctionItem) (
 	result, err := d.db.ExecContext(ctx, query,
 		now, now, store.RowStatusNormal,
 		create.SellerID, create.SellerName, create.ItemID, create.Count,
-		create.Price, create.TotalPrice, create.Duration, create.Status,
+		create.Price, create.BuyoutPrice, create.TotalPrice, create.Duration, create.Status,
 		create.BidderID, create.BidderName, create.BidPrice, create.BidCount,
 		create.Attributes, endTime,
 	)
@@ -141,7 +141,7 @@ func (d *DB) ListAuctionItems(ctx context.Context, find *store.FindAuctionItem) 
 		args = append(args, *find.RowStatus)
 	}
 
-	query := `SELECT id, created_at, updated_at, row_status, seller_id, seller_name, item_id, count, price, total_price, duration, status, bidder_id, bidder_name, bid_price, bid_count, attributes, end_time FROM auction_item`
+	query := `SELECT id, created_at, updated_at, row_status, seller_id, seller_name, item_id, count, price, buyout_price, total_price, duration, status, bidder_id, bidder_name, bid_price, bid_count, attributes, end_time FROM auction_item`
 	if len(where) > 0 {
 		query += " WHERE " + strings.Join(where, " AND ")
 	}
@@ -164,7 +164,7 @@ func (d *DB) ListAuctionItems(ctx context.Context, find *store.FindAuctionItem) 
 		var item store.AuctionItem
 		err := rows.Scan(&item.ID, &item.CreatedAt, &item.UpdatedAt, &item.RowStatus,
 			&item.SellerID, &item.SellerName, &item.ItemID, &item.Count,
-			&item.Price, &item.TotalPrice, &item.Duration, &item.Status,
+			&item.Price, &item.BuyoutPrice, &item.TotalPrice, &item.Duration, &item.Status,
 			&item.BidderID, &item.BidderName, &item.BidPrice, &item.BidCount,
 			&item.Attributes, &item.EndTime)
 		if err != nil {

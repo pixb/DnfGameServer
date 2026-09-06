@@ -14,20 +14,21 @@ const (
 type AuctionItem struct {
 	BaseModel
 
-	SellerID   uint64        // 卖家角色ID
-	SellerName string        // 卖家名称
-	ItemID     int32         // 物品模板ID
-	Count      int32         // 数量
-	Price      int64         // 单价
-	TotalPrice int64         // 总价
-	Duration   int32         // 持续时间(小时)
-	Status     AuctionStatus // 状态
-	BidderID   uint64        // 当前出价者ID
-	BidderName string        // 当前出价者名称
-	BidPrice   int64         // 当前出价
-	BidCount   int32         // 出价次数
-	Attributes string        // 物品属性(JSON)
-	EndTime    int64         // 结束时间
+	SellerID    uint64        // 卖家角色ID
+	SellerName  string        // 卖家名称
+	ItemID      int32         // 物品模板ID
+	Count       int32         // 数量
+	Price       int64         // 单价(起拍价)
+	BuyoutPrice int64         // 一口价(2026-09-07 第五十八轮; 0=未设置, 取 Price)
+	TotalPrice  int64         // 总价
+	Duration    int32         // 持续时间(小时)
+	Status      AuctionStatus // 状态
+	BidderID    uint64        // 当前出价者ID
+	BidderName  string        // 当前出价者名称
+	BidPrice    int64         // 当前出价
+	BidCount    int32         // 出价次数
+	Attributes  string        // 物品属性(JSON)
+	EndTime     int64         // 结束时间
 }
 
 // FindAuctionItem 查询拍卖物品

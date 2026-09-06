@@ -1015,5 +1015,55 @@ func (s *RankTCPTestSuite) TestTCPAuctionFlow() {
 	s.NoError(db.QueryRow("SELECT COUNT(*) FROM bag_item WHERE role_id = ? AND item_id = 10004 AND count = 2", uint64(guidA)).Scan(&bagA10004))
 	s.Equal(1, bagA10004, "item 10004 x2 should return to A bag")
 
-	fmt.Printf("auction TCP flow verified (register/bag-deduct/search/bid/low-bid-fail/buyout/history/duplicate-fail/settle-expired-refund-return)\n")
+	// ==================== 2026-09-07 第五十八轮: 一口价(buyout_price)落库 ====================
+	// A 上架 #5(起拍 500, 一口价 800) → DB 校验 buyout_price=800
+	res5, err := db.Exec("INSERT INTO bag_item (role_id, item_id, grid_index, count) VALUES (?, 10005, 2, 1)", uint64(guidA))
+	s.NoError(err)
+	bagID5, _ := res5.LastInsertId()
+	s.bindRole(guidA)
+	msgR5, _ := json.Marshal(map[string]interface{}{"guid": bagID5, "start_price": 500, "buyout_price": 800, "duration": 24})
+	s.NoError(s.sendTCP(append([]byte("REGISTER_AUCTION_ITEM:"), msgR5...)), "send REGISTER_AUCTION_ITEM #5")
+	bodyR5, _ := s.recvTCP()
+	_, _, pbR5 := parseTCPResponse(bodyR5)
+	regR5 := &dnfv1.RegisterAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbR5, regR5))
+	s.Equal(int32(0), regR5.Error, "register #5 should succeed")
+	var buyoutPriceDB int64
+	s.NoError(db.QueryRow("SELECT buyout_price FROM auction_item WHERE id = ?", uint64(regR5.AuctionId)).Scan(&buyoutPriceDB))
+	s.Equal(int64(800), buyoutPriceDB, "buyout_price should be 800")
+
+	// D 出价 600(冻结) → B 买断(一口价 800) → 退 D 600、B 付 800、A 收 760
+	s.bindRole(guidD)
+	msgD5, _ := json.Marshal(map[string]interface{}{"auction_id": regR5.AuctionId, "bid_price": 600})
+	s.NoError(s.sendTCP(append([]byte("BID_AUCTION:"), msgD5...)), "send D BID on #5")
+	bodyD5, _ := s.recvTCP()
+	_, _, pbD5 := parseTCPResponse(bodyD5)
+	bidD5 := &dnfv1.BidAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbD5, bidD5))
+	s.Equal(int32(0), bidD5.Error, "D bid on #5 should succeed")
+
+	s.bindRole(guidB)
+	msgO5, _ := json.Marshal(map[string]interface{}{"auction_id": regR5.AuctionId})
+	s.NoError(s.sendTCP(append([]byte("BUYOUT_AUCTION:"), msgO5...)), "send BUYOUT_AUCTION #5")
+	bodyO5, _ := s.recvTCP()
+	_, _, pbO5 := parseTCPResponse(bodyO5)
+	buyR5 := &dnfv1.BuyoutAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbO5, buyR5))
+	s.Equal(int32(0), buyR5.Error, "buyout #5 should succeed")
+
+	var goldB5, goldD5, goldA5 int64
+	var finalPrice5 int64
+	s.NoError(db.QueryRow("SELECT gold FROM role_currency WHERE role_id = ?", uint64(guidB)).Scan(&goldB5))
+	s.Equal(int64(98700), goldB5, "B gold should be 99500-800 (buyout price)")
+	s.NoError(db.QueryRow("SELECT gold FROM role_currency WHERE role_id = ?", uint64(guidD)).Scan(&goldD5))
+	s.Equal(int64(100000), goldD5, "D gold should be refunded fully")
+	s.NoError(db.QueryRow("SELECT gold FROM role_currency WHERE role_id = ?", uint64(guidA)).Scan(&goldA5))
+	s.Equal(int64(1235), goldA5, "A gold should be 475+760")
+	s.NoError(db.QueryRow("SELECT final_price FROM auction_history WHERE auction_id = ?", uint64(regR5.AuctionId)).Scan(&finalPrice5))
+	s.Equal(int64(800), finalPrice5, "history final price should be buyout price 800")
+	var bagB5 int
+	s.NoError(db.QueryRow("SELECT COUNT(*) FROM bag_item WHERE role_id = ? AND item_id = 10005 AND count = 1", uint64(guidB)).Scan(&bagB5))
+	s.Equal(1, bagB5, "B bag should have item 10005")
+
+	fmt.Printf("auction TCP flow verified (register/bag-deduct/search/bid/low-bid-fail/buyout/history/duplicate-fail/settle-expired-refund-return/buyout-price)\n")
 }

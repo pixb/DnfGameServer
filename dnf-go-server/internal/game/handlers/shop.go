@@ -241,18 +241,24 @@ func RegisterAuctionHandler(session *network.Session, msg proto.Message) {
 	if startPrice <= 0 {
 		startPrice = 1
 	}
+	// 2026-09-07 第五十八轮: 一口价落库, 未设置(<=起拍价)时默认=起拍价
+	buyoutPrice := int64(req.BuyoutPrice)
+	if buyoutPrice <= startPrice {
+		buyoutPrice = startPrice
+	}
 
 	auction, err := shopStore.CreateAuctionItem(ctx, &store.AuctionItem{
-		SellerID:   roleID,
-		SellerName: sellerName,
-		ItemID:     item.ItemID,
-		Count:      item.Count,
-		Price:      startPrice,
-		TotalPrice: startPrice,
-		Duration:   duration,
-		Status:     store.AuctionStatusSelling,
-		BidPrice:   startPrice,
-		BidCount:   0,
+		SellerID:    roleID,
+		SellerName:  sellerName,
+		ItemID:      item.ItemID,
+		Count:       item.Count,
+		Price:       startPrice,
+		BuyoutPrice: buyoutPrice,
+		TotalPrice:  startPrice,
+		Duration:    duration,
+		Status:      store.AuctionStatusSelling,
+		BidPrice:    startPrice,
+		BidCount:    0,
 	})
 	if err != nil {
 		logger.Error("failed to create auction item",
@@ -451,6 +457,12 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
+	// 2026-09-07 第五十八轮: 一口价成交价(未设置时兼容旧数据取起拍价)
+	buyoutPrice := auc.BuyoutPrice
+	if buyoutPrice <= 0 {
+		buyoutPrice = auc.Price
+	}
+
 	// 2026-09-07 第五十五轮: 金币校验/扣减/卖家入账(先钱后货, 钱不足终止)
 	buyerCur, err := shopStore.GetRoleCurrency(ctx, roleID)
 	if err != nil {
@@ -462,17 +474,17 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 		_ = session.WriteResponse(10005, 107, resp)
 		return
 	}
-	if buyerCur.Gold < auc.Price {
+	if buyerCur.Gold < buyoutPrice {
 		resp := &dnfv1.BuyoutAuctionResponse{Error: 7}
 		_ = session.WriteResponse(10005, 107, resp)
 		return
 	}
 
 	// 2026-09-07 第五十六轮: 竞拍者结算
-	//   - 买断者即当前最高出价者: 已冻结 bid_price, 按起拍价成交, 退还差价 (bid_price - price)
+	//   - 买断者即当前最高出价者: 已冻结 bid_price, 按一口价成交, 退还差价 (bid_price - buyout_price)
 	//   - 非买断者的最高出价者: 被买断截胡, 退还其冻结的 bid_price
 	if auc.BidderID == roleID {
-		diff := auc.BidPrice - auc.Price
+		diff := auc.BidPrice - buyoutPrice
 		if diff > 0 {
 			buyerCur.Gold += diff
 		}
@@ -482,7 +494,7 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 			_ = shopStore.UpdateRoleCurrency(ctx, oldCur)
 		}
 	}
-	buyerCur.Gold -= auc.Price
+	buyerCur.Gold -= buyoutPrice
 	if err := shopStore.UpdateRoleCurrency(ctx, buyerCur); err != nil {
 		logger.Error("failed to deduct buyer gold",
 			logger.ErrorField(err),
@@ -493,7 +505,7 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
-	sellerIncome := auc.Price * 95 / 100
+	sellerIncome := buyoutPrice * 95 / 100
 	sellerCur, err := shopStore.GetRoleCurrency(ctx, auc.SellerID)
 	if err == nil {
 		sellerCur.Gold += sellerIncome
@@ -501,7 +513,7 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 	}
 
 	sold := store.AuctionStatusSold
-	bidPrice := auc.Price
+	bidPrice := buyoutPrice
 	bidCount := auc.BidCount + 1
 	if err := shopStore.UpdateAuctionItem(ctx, &store.UpdateAuctionItem{
 		ID:       auc.ID,
@@ -526,7 +538,7 @@ func BuyoutAuctionHandler(session *network.Session, msg proto.Message) {
 		BuyerID:      roleID,
 		ItemID:       auc.ItemID,
 		Count:        auc.Count,
-		FinalPrice:   auc.Price,
+		FinalPrice:   buyoutPrice,
 		SellerIncome: sellerIncome,
 	}); err != nil {
 		logger.Error("failed to create auction history",

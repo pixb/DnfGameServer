@@ -238,6 +238,7 @@ CREATE TABLE IF NOT EXISTS auction_item (
     item_id INTEGER NOT NULL,
     count INTEGER DEFAULT 1,
     price INTEGER DEFAULT 0,
+    buyout_price INTEGER DEFAULT 0,
     total_price INTEGER DEFAULT 0,
     duration INTEGER DEFAULT 24,
     status INTEGER DEFAULT 0,
