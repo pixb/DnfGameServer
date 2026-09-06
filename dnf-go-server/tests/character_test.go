@@ -127,6 +127,48 @@ func (s *CharacterTestSuite) TestCharacterCreateChineseName() {
 	s.Equal(chineseName, data["name"], "Chinese character name should match")
 }
 
+// TestCharacterCreateInvalidJob 职业取值域校验(2026-09-06 第二十七轮):
+// job 缺失(0)/超域(6)应拒绝 error 5, 合法 job=2 应创建成功
+func (s *CharacterTestSuite) TestCharacterCreateInvalidJob() {
+	token := s.LoginAs(s.openid)
+	s.NotEmpty(token, "Login should return a token")
+
+	// job 缺失(解析为 0)
+	zeroResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": fmt.Sprintf("JZ_%012d", time.Now().UnixNano()%1000000000000),
+	})
+	s.NoError(err)
+	s.NotNil(zeroResp)
+	if errVal, ok := zeroResp["error"]; ok {
+		s.Equal(float64(5), errVal)
+	}
+	if msg, ok := zeroResp["message"].(string); ok {
+		s.Contains(msg, "职业")
+	}
+
+	// job 超域(6)
+	sixResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": fmt.Sprintf("JS_%012d", time.Now().UnixNano()%1000000000000),
+		"job":  6,
+	})
+	s.NoError(err)
+	s.NotNil(sixResp)
+	if errVal, ok := sixResp["error"]; ok {
+		s.Equal(float64(5), errVal)
+	}
+
+	// job=2 合法: 创建成功且回显 job 一致
+	okResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": fmt.Sprintf("JF_%012d", time.Now().UnixNano()%1000000000000),
+		"job":  2,
+	})
+	s.NoError(err)
+	s.AssertSuccess(okResp)
+	data, ok := okResp["data"].(map[string]interface{})
+	s.True(ok, "Response should contain data")
+	s.Equal(float64(2), data["job"], "job should be echoed as 2")
+}
+
 func (s *CharacterTestSuite) TestCharacterList() {
 	// 登录
 	token := s.LoginAs(s.openid)

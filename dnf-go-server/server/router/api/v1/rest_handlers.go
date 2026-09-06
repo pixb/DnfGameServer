@@ -2325,6 +2325,12 @@ func (s *APIV1Service) handleCreateCharacter(c echo.Context) error {
 		}
 	}
 
+	// 2026-09-06 第二十七轮: 职业取值域校验(DNF 经典五职: 1鬼剑士/2格斗家/3神枪手/4魔法师/5圣职者;
+	// job 缺失/非数字按 0 处理一并拒绝, 防异常职业角色入库)
+	if job < 1 || job > 5 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 5, "message": "职业不合法(仅支持 1鬼剑士/2格斗家/3神枪手/4魔法师/5圣职者)"})
+	}
+
 	// 2026-09-06 第二十五轮: 角色名全局唯一(handler 层查重软约束, 同名任何角色存在即拒绝;
 	// DB 无名字唯一约束, 历史重名数据不受影响, 仅阻止新重名产生)
 	if existing, _ := s.Store.GetRoleByName(c.Request().Context(), name); existing != nil {
