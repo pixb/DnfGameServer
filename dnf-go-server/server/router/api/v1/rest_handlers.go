@@ -250,23 +250,29 @@ func (s *APIV1Service) handleGetMailList(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	mails, _ := s.Store.ListMails(c.Request().Context(), &store.FindMail{
-		ReceiverID: &claims.UserID,
-	})
-
+	// 邮件的 ReceiverID 语义为角色ID(与 send/拍卖结算一致), 按账户的所有角色合并查询
+	roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
 	var mailList []map[string]interface{}
-	for _, m := range mails {
-		mailList = append(mailList, map[string]interface{}{
-			"id":          m.ID,
-			"sender_id":   m.SenderID,
-			"sender_name": m.SenderName,
-			"title":       m.Title,
-			"content":     m.Content,
-			"is_read":     m.IsRead,
-			"is_claimed":  m.IsClaimed,
-			"gold":        m.Gold,
-			"created_at":  m.CreatedAt,
+	for _, r := range roles {
+		mails, err := s.Store.ListMails(c.Request().Context(), &store.FindMail{
+			ReceiverID: &r.ID,
 		})
+		if err != nil {
+			continue
+		}
+		for _, m := range mails {
+			mailList = append(mailList, map[string]interface{}{
+				"id":          m.ID,
+				"sender_id":   m.SenderID,
+				"sender_name": m.SenderName,
+				"title":       m.Title,
+				"content":     m.Content,
+				"is_read":     m.IsRead,
+				"is_claimed":  m.IsClaimed,
+				"gold":        m.Gold,
+				"created_at":  m.CreatedAt,
+			})
+		}
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -321,12 +327,22 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 
 	mailID, _ := strconv.ParseUint(c.FormValue("mail_id"), 10, 64)
 
+	// 邮件的 ReceiverID 语义为角色ID, 校验当前账户的角色归属
 	mail, _ := s.Store.GetMail(c.Request().Context(), &store.FindMail{
-		FindBase:   store.FindBase{ID: &mailID},
-		ReceiverID: &claims.UserID,
+		FindBase: store.FindBase{ID: &mailID},
 	})
-
 	if mail == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
+	}
+	roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	owned := false
+	for _, r := range roles {
+		if r.ID == mail.ReceiverID {
+			owned = true
+			break
+		}
+	}
+	if !owned {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
 	}
 
@@ -335,20 +351,61 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 	}
 
 	isClaimed := true
-	s.Store.UpdateMail(c.Request().Context(), &store.UpdateMail{
+	if err := s.Store.UpdateMail(c.Request().Context(), &store.UpdateMail{
 		ID:        mail.ID,
 		IsClaimed: &isClaimed,
-	})
+	}); err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
 
+	// 附件领取: 物品入背包 / 金币入角色货币(ReceiverID 为角色ID)
+	var grantedItems []map[string]interface{}
+	if mail.Attachments != "" && mail.Attachments != "{}" {
+		var att struct {
+			ItemID int32 `json:"item_id"`
+			Count  int32 `json:"count"`
+		}
+		if err := json.Unmarshal([]byte(mail.Attachments), &att); err != nil {
+			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "invalid attachment"})
+		}
+		if att.ItemID > 0 && att.Count > 0 {
+			grid, err := s.nextBagGrid(c.Request().Context(), mail.ReceiverID)
+			if err != nil {
+				return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+			}
+			if _, err := s.Store.CreateBagItem(c.Request().Context(), &store.BagItem{
+				RoleID:    mail.ReceiverID,
+				ItemID:    att.ItemID,
+				GridIndex: grid,
+				Count:     att.Count,
+			}); err != nil {
+				return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+			}
+			grantedItems = append(grantedItems, map[string]interface{}{
+				"itemId": att.ItemID,
+				"count":  att.Count,
+				"grid":   grid,
+			})
+		}
+	}
+
+	grantedGold := int64(0)
 	if mail.Gold > 0 {
-		currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), claims.UserID)
+		currency, err := s.Store.GetRoleCurrency(c.Request().Context(), mail.ReceiverID)
+		if err != nil {
+			currency = &store.RoleCurrency{RoleID: mail.ReceiverID}
+		}
 		currency.Gold += mail.Gold
-		s.Store.UpdateRoleCurrency(c.Request().Context(), currency)
+		if err := s.Store.UpdateRoleCurrency(c.Request().Context(), currency); err != nil {
+			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+		}
+		grantedGold = mail.Gold
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error": 0,
-		"gold":  mail.Gold,
+		"gold":  grantedGold,
+		"items": grantedItems,
 	})
 }
 
