@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"time"
 
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
@@ -166,6 +167,8 @@ func GetRoleInfoHandler(session *network.Session, msg proto.Message) {
 				Level:    rs.Level,
 				MaxLevel: skill.MaxLevel,
 				SpCost:   skill.SP,
+				Cooldown: skill.Cooldown,
+				Attack:   skill.Attack,
 			})
 		}
 	}
@@ -335,6 +338,8 @@ func LearnSkillHandler(session *network.Session, msg proto.Message) {
 		Level:    1,
 		MaxLevel: skill.MaxLevel,
 		SpCost:   skill.SP,
+		Cooldown: skill.Cooldown,
+		Attack:   skill.Attack,
 	})
 }
 
@@ -397,6 +402,72 @@ func UpgradeSkillHandler(session *network.Session, msg proto.Message) {
 		Level:    newLevel,
 		MaxLevel: skill.MaxLevel,
 		SpCost:   skill.SP,
+		Cooldown: skill.Cooldown,
+		Attack:   skill.Attack,
+	})
+}
+
+// CastSkillHandler 处理技能施放请求(2026-09-07 第六十八轮实化, 技能效果接入战斗):
+// 校验 已学 → 冷却校验(条件 UPDATE 原子防并发) → damage = attack × level
+// 错误码: 0=成功 1=通用 2=技能不存在 3=未学习 4=冷却中
+func CastSkillHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.CastSkillRequest)
+	if !ok {
+		return
+	}
+
+	ctx := context.Background()
+	roleID := session.RoleID()
+	now := time.Now().Unix()
+
+	skill, err := skillStore.GetSkill(ctx, &store.FindSkill{SkillID: &req.SkillId})
+	if err != nil || skill == nil {
+		session.WriteResponse(10001, 11, &dnfv1.CastSkillResponse{Error: 2})
+		return
+	}
+
+	rs, err := skillStore.GetRoleSkill(ctx, &store.FindRoleSkill{RoleID: &roleID, SkillID: &req.SkillId})
+	if err != nil || rs == nil || !rs.IsLearned {
+		session.WriteResponse(10001, 11, &dnfv1.CastSkillResponse{Error: 3})
+		return
+	}
+
+	// 冷却校验: last_cast_at + cooldown <= now 才允许
+	cooldownEnd := rs.LastCastAt + int64(skill.Cooldown)
+	if rs.LastCastAt > 0 && cooldownEnd > now {
+		session.WriteResponse(10001, 11, &dnfv1.CastSkillResponse{
+			Error:         4,
+			CooldownUntil: cooldownEnd,
+		})
+		return
+	}
+
+	// 条件 UPDATE 原子抢锁: 仅当 last_cast_at 未变时置为 now, 失败说明并发已施放
+	okCast, err := skillStore.UpdateRoleSkillLastCast(ctx, roleID, req.SkillId, now, rs.LastCastAt)
+	if err != nil {
+		logger.Error("failed to update role skill last cast",
+			logger.ErrorField(err),
+			logger.Int64("role_id", int64(roleID)),
+			logger.Int32("skill_id", req.SkillId),
+		)
+		session.WriteResponse(10001, 11, &dnfv1.CastSkillResponse{Error: 1})
+		return
+	}
+	if !okCast {
+		session.WriteResponse(10001, 11, &dnfv1.CastSkillResponse{Error: 4})
+		return
+	}
+
+	damage := skill.Attack * rs.Level
+	logger.Info("skill cast",
+		logger.Int32("skill_id", req.SkillId),
+		logger.Int32("damage", damage),
+		logger.Int32("level", rs.Level),
+		logger.Int64("role_id", int64(roleID)),
+	)
+	session.WriteResponse(10001, 11, &dnfv1.CastSkillResponse{
+		Error:  0,
+		Damage: damage,
 	})
 }
 

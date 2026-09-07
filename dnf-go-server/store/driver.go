@@ -175,6 +175,9 @@ type Driver interface {
 	ListRoleSkills(ctx context.Context, roleID uint64) ([]*RoleSkill, error)
 	CreateRoleSkill(ctx context.Context, create *CreateRoleSkill) (*RoleSkill, error)
 	UpdateRoleSkill(ctx context.Context, update *UpdateRoleSkill) error
+	// UpdateRoleSkillLastCast 条件更新技能最后施放时间(2026-09-07 第六十八轮):
+	// 仅当 last_cast_at 仍等于 expected 时更新(乐观锁防并发), 返回是否更新成功
+	UpdateRoleSkillLastCast(ctx context.Context, roleID uint64, skillID int32, now, expected int64) (bool, error)
 
 	// ==================== 冒险相关 ====================
 	GetAdventureData(ctx context.Context, find *FindAdventureData) (*AdventureData, error)

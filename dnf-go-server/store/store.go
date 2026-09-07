@@ -507,6 +507,11 @@ func (s *Store) GetRoleSkill(ctx context.Context, find *FindRoleSkill) (*RoleSki
 	return s.driver.GetRoleSkill(ctx, find)
 }
 
+// UpdateRoleSkillLastCast 条件更新技能最后施放时间(2026-09-07 第六十八轮)
+func (s *Store) UpdateRoleSkillLastCast(ctx context.Context, roleID uint64, skillID int32, now, expected int64) (bool, error) {
+	return s.driver.UpdateRoleSkillLastCast(ctx, roleID, skillID, now, expected)
+}
+
 // ListRoleSkills 获取角色技能列表
 func (s *Store) ListRoleSkills(ctx context.Context, roleID uint64) ([]*RoleSkill, error) {
 	return s.driver.ListRoleSkills(ctx, roleID)

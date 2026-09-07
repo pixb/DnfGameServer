@@ -54,6 +54,10 @@ func (c *ProtoCodec) RegisterAllMessages() {
 	c.RegisterMessage(10001, 8, func() proto.Message { return &dnfv1.RecoverFatigueRequest{} })
 	c.RegisterMessage(10001, 9, func() proto.Message { return &dnfv1.RecoverFatigueResponse{} })
 
+	// 技能施放 (cmd=10, 2026-09-07 第六十八轮)
+	c.RegisterMessage(10001, 10, func() proto.Message { return &dnfv1.CastSkillRequest{} })
+	c.RegisterMessage(10001, 11, func() proto.Message { return &dnfv1.CastSkillResponse{} })
+
 	// 角色升级通知 (cmd=100)
 	c.RegisterMessage(10001, 100, func() proto.Message { return &dnfv1.RoleLevelUpNotify{} })
 

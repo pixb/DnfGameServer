@@ -60,7 +60,8 @@ message SkillInfo {
   int32 level = 2;
   int32 max_level = 3;
   int32 sp_cost = 4;
-  int32 cooldown = 5;
+  int32 cooldown = 5;   // 冷却秒数(2026-09-07 第六十八轮: 接入角色信息)
+  int32 attack = 6;     // 每级攻击力加成(2026-09-07 第六十八轮: 技能效果接入战斗)
 }
 
 // 获取角色信息请求
@@ -132,4 +133,16 @@ message RecoverFatigueResponse {
   int32 error = 1;
   int32 current_fatigue = 2;
   int32 max_fatigue = 3;
+}
+
+// 技能施放请求(2026-09-07 第六十八轮: 技能效果接入战斗, 服务端冷却校验)
+message CastSkillRequest {
+  int32 skill_id = 1;
+}
+
+// 技能施放响应
+message CastSkillResponse {
+  int32 error = 1;        // 0=成功 1=通用 2=技能不存在 3=未学习 4=冷却中
+  int32 damage = 2;       // 伤害 = 每级攻击力加成 × 技能等级
+  int64 cooldown_until = 3; // 下次可用时间戳(冷却中返回)
 }

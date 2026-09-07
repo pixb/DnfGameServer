@@ -1129,6 +1129,8 @@ CREATE TABLE IF NOT EXISTS skills (
     sp INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'SP消耗',
     tp INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'TP消耗',
     type INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '类型',
+    attack INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '每级攻击力加成(2.9.0)',
+    cooldown INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '冷却秒数(2.9.0)',
     job_required INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '所需职业',
     level_required INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '所需等级',
     pre_skill_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '前置技能',
@@ -1142,6 +1144,7 @@ CREATE TABLE IF NOT EXISTS role_skills (
     skill_id INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '技能ID',
     level INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '技能等级',
     is_learned TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否已学习',
+    last_cast_at BIGINT NOT NULL DEFAULT 0 COMMENT '技能最后施放时间戳(2.9.0)',
     UNIQUE KEY uk_role_skill (role_id, skill_id),
     INDEX idx_role_id (role_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色技能表';
@@ -1158,3 +1161,13 @@ VALUES
   (1202, '三段斩', '连续斩击三段, 向前突进', 1, 10, 15, 0, 0, 2, 10, 1201, 1),
   (1301, '念气波', '凝聚念气向前发出冲击波', 1, 10, 10, 0, 0, 3, 5, 0, 0),
   (1302, '雷霆背摔', '抓住敌人背摔, 附带雷属性伤害', 1, 10, 15, 0, 0, 3, 10, 1301, 1);
+
+-- 技能战斗数值回填(2.9.0): 每级攻击力加成/冷却秒数
+UPDATE skills SET attack=5,  cooldown=5  WHERE skill_id=1001; -- 冲刺
+UPDATE skills SET attack=0,  cooldown=8  WHERE skill_id=1002; -- 格挡(防御技)
+UPDATE skills SET attack=10, cooldown=10 WHERE skill_id=1101; -- 上挑
+UPDATE skills SET attack=15, cooldown=15 WHERE skill_id=1102; -- 崩山击
+UPDATE skills SET attack=12, cooldown=12 WHERE skill_id=1201; -- 银光落刃
+UPDATE skills SET attack=8,  cooldown=6  WHERE skill_id=1202; -- 三段斩
+UPDATE skills SET attack=10, cooldown=8  WHERE skill_id=1301; -- 念气波
+UPDATE skills SET attack=20, cooldown=20 WHERE skill_id=1302; -- 雷浑背摔

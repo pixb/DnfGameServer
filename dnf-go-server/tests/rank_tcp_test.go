@@ -1110,6 +1110,100 @@ func (s *RankTCPTestSuite) TestTCPPartyRefuseAllNotify() {
 	fmt.Printf("party refuse-all notify verified (B/C each gets 34/1member, requests deleted)\n")
 }
 
+// TestTCPCastSkill 技能施放接入战斗(2026-09-07 第六十八轮):
+// 学 1001(冲刺 attack=5 cooldown=5) → 施放成功 damage=5 → 冷却中拒绝(error=4) →
+// DB 重置 last_cast_at → 施放成功 → 未学技能拒绝(error=3) → GetRoleInfo 技能含 attack/cooldown
+func (s *RankTCPTestSuite) TestTCPCastSkill() {
+	uid := time.Now().UnixNano()
+	openid := fmt.Sprintf("test_castskill_%d", uid)
+	guid := s.createCharacter(openid)
+
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer func() {
+		db.Exec("DELETE FROM role_skills WHERE role_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid = ?)", openid)
+		db.Exec("DELETE FROM role WHERE id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid = ?)", openid)
+		db.Exec("DELETE FROM account WHERE openid = ?", openid)
+		db.Close()
+	}()
+
+	// 学习技能 1001
+	s.bindRole(guid)
+	msgL, _ := json.Marshal(map[string]interface{}{"skill_id": float64(1001)})
+	s.NoError(s.sendTCP(append([]byte("LEARN_SKILL:"), msgL...)), "send LEARN_SKILL 1001")
+	bodyL, _ := s.recvTCP()
+	_, _, pbL := parseTCPResponse(bodyL)
+	ls := &dnfv1.LearnSkillResponse{}
+	s.NoError(proto.Unmarshal(pbL, ls))
+	s.Equal(int32(0), ls.Error, "learn 1001 should succeed")
+	s.Equal(int32(5), ls.Skill.Cooldown, "learned skill should carry cooldown=5")
+	s.Equal(int32(5), ls.Skill.Attack, "learned skill should carry attack=5")
+
+	// 施放成功: damage = attack × level = 5×1 = 5
+	msgC, _ := json.Marshal(map[string]interface{}{"skill_id": float64(1001)})
+	s.NoError(s.sendTCP(append([]byte("CAST_SKILL:"), msgC...)), "send CAST_SKILL 1001")
+	bodyC, _ := s.recvTCP()
+	_, cmdC, pbC := parseTCPResponse(bodyC)
+	s.Equal(uint16(11), cmdC, "cast response cmd should be 11")
+	cs := &dnfv1.CastSkillResponse{}
+	s.NoError(proto.Unmarshal(pbC, cs))
+	s.Equal(int32(0), cs.Error, "first cast should succeed")
+	s.Equal(int32(5), cs.Damage, "damage should be attack(5)×level(1)=5")
+
+	// 冷却中拒绝
+	s.NoError(s.sendTCP(append([]byte("CAST_SKILL:"), msgC...)), "send CAST_SKILL again in cooldown")
+	bodyC2, _ := s.recvTCP()
+	_, _, pbC2 := parseTCPResponse(bodyC2)
+	cs2 := &dnfv1.CastSkillResponse{}
+	s.NoError(proto.Unmarshal(pbC2, cs2))
+	s.Equal(int32(4), cs2.Error, "second cast should be rejected by cooldown")
+	s.True(cs2.CooldownUntil > 0, "cooldown_until should be set when cooling")
+
+	// DB 重置 last_cast_at(模拟冷却结束) → 施放成功
+	_, err = db.Exec("UPDATE role_skills SET last_cast_at = 0 WHERE role_id = ? AND skill_id = 1001", uint64(guid))
+	s.NoError(err)
+	s.NoError(s.sendTCP(append([]byte("CAST_SKILL:"), msgC...)), "send CAST_SKILL after cooldown reset")
+	bodyC3, _ := s.recvTCP()
+	_, _, pbC3 := parseTCPResponse(bodyC3)
+	cs3 := &dnfv1.CastSkillResponse{}
+	s.NoError(proto.Unmarshal(pbC3, cs3))
+	s.Equal(int32(0), cs3.Error, "cast after cooldown reset should succeed")
+	s.Equal(int32(5), cs3.Damage, "damage after reset should be 5")
+
+	// DB 确认 last_cast_at 已落库
+	var lastCast int64
+	s.NoError(db.QueryRow("SELECT last_cast_at FROM role_skills WHERE role_id = ? AND skill_id = 1001", uint64(guid)).Scan(&lastCast))
+	s.True(lastCast > 0, "last_cast_at should be persisted after cast")
+
+	// 未学技能拒绝(1101 未学)
+	msgU, _ := json.Marshal(map[string]interface{}{"skill_id": float64(1101)})
+	s.NoError(s.sendTCP(append([]byte("CAST_SKILL:"), msgU...)), "send CAST_SKILL unlearned 1101")
+	bodyU, _ := s.recvTCP()
+	_, _, pbU := parseTCPResponse(bodyU)
+	cu := &dnfv1.CastSkillResponse{}
+	s.NoError(proto.Unmarshal(pbU, cu))
+	s.Equal(int32(3), cu.Error, "unlearned skill cast should be rejected")
+
+	// GetRoleInfo 技能列表含 attack/cooldown
+	s.NoError(s.sendTCP([]byte("GET_ROLE_INFO:")), "send GET_ROLE_INFO")
+	bodyG, _ := s.recvTCP()
+	_, _, pbG := parseTCPResponse(bodyG)
+	gi := &dnfv1.GetRoleInfoResponse{}
+	s.NoError(proto.Unmarshal(pbG, gi))
+	s.Equal(int32(0), gi.Error)
+	var found bool
+	for _, sk := range gi.Skills {
+		if sk.SkillId == 1001 {
+			found = true
+			s.Equal(int32(5), sk.Cooldown, "role info skill cooldown=5")
+			s.Equal(int32(5), sk.Attack, "role info skill attack=5")
+		}
+	}
+	s.True(found, "role info should contain skill 1001")
+
+	fmt.Printf("cast skill verified (learn→cast damage=5→cooldown reject→reset→cast ok→unlearned reject→role info attack/cooldown)\n")
+}
+
 // bindRole 建立 TCP 连接并 SELECT_CHARACTER 绑定角色
 func (s *RankTCPTestSuite) bindRole(charGuid float64) {
 	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", s.serverHost, s.serverPort), 10*time.Second)

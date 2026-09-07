@@ -18,6 +18,7 @@ var textCommandMeta = map[string]MessageMeta{
 	"LEARN_SKILL":       {Module: 10001, Cmd: 4},
 	"UPGRADE_SKILL":     {Module: 10001, Cmd: 6},
 	"RECOVER_FATIGUE":   {Module: 10001, Cmd: 8},
+	"CAST_SKILL":        {Module: 10001, Cmd: 10}, // 技能施放(2026-09-07 第六十八轮)
 
 	// ==================== 背包模块 (10002) ====================
 	"GET_BAG_INFO":   {Module: 10002, Cmd: 0},
