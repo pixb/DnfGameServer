@@ -1273,6 +1273,82 @@ func (s *RankTCPTestSuite) TestTCPPvpExpReward() {
 	fmt.Printf("pvp exp reward verified (win +50 levelup notify 100/100→40+sp20, lose +10→50)\n")
 }
 
+// TestTCPMovePosition 位置实化(2026-09-07 第七十轮):
+// GET_ROLE_INFO 默认位置(map=1 x=0) → MOVE_POSITION(map=2/dungeon=5/x=300.5/y=200/z=8.5) →
+// 响应 13/0 位置正确 → GET_ROLE_INFO 位置已变 → DB 核对 → 非法参数(map=-1)拒绝
+func (s *RankTCPTestSuite) TestTCPMovePosition() {
+	uid := time.Now().UnixNano()
+	openid := fmt.Sprintf("test_movepos_%d", uid)
+	guid := s.createCharacter(openid)
+
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer func() {
+		db.Exec("DELETE FROM role WHERE id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid = ?)", openid)
+		db.Exec("DELETE FROM account WHERE openid = ?", openid)
+		db.Close()
+	}()
+
+	s.bindRole(guid)
+
+	// 初始默认位置: map=1 x=0 y=0 z=0
+	s.NoError(s.sendTCP([]byte("GET_ROLE_INFO:")), "send GET_ROLE_INFO")
+	bodyG, _ := s.recvTCP()
+	_, _, pbG := parseTCPResponse(bodyG)
+	gi := &dnfv1.GetRoleInfoResponse{}
+	s.NoError(proto.Unmarshal(pbG, gi))
+	s.Equal(int32(0), gi.Error)
+	s.Equal(int32(1), gi.Position.MapId, "default map should be 1")
+	s.Equal(float32(0), gi.Position.X, "default x should be 0")
+
+	// 移动: map=2 dungeon=5 x=300.5 y=200 z=8.5
+	msgM, _ := json.Marshal(map[string]interface{}{"map_id": float64(2), "dungeon_id": float64(5), "x": 300.5, "y": 200.0, "z": 8.5})
+	s.NoError(s.sendTCP(append([]byte("MOVE_POSITION:"), msgM...)), "send MOVE_POSITION")
+	bodyM, _ := s.recvTCP()
+	_, mcmd, pbM := parseTCPResponse(bodyM)
+	s.Equal(uint16(13), mcmd, "move response cmd should be 13")
+	mp := &dnfv1.MovePositionResponse{}
+	s.NoError(proto.Unmarshal(pbM, mp))
+	s.Equal(int32(0), mp.Error, "move should succeed")
+	s.Equal(int32(2), mp.MapId, "moved map should be 2")
+	s.Equal(int32(5), mp.DungeonId, "moved dungeon should be 5")
+	s.Equal(float32(300), mp.X, "x should be int-truncated to 300")
+	s.Equal(float32(200), mp.Y, "y should be 200")
+	s.Equal(float32(8.5), mp.Z, "z should be 8.5")
+
+	// GET_ROLE_INFO 位置已变
+	s.NoError(s.sendTCP([]byte("GET_ROLE_INFO:")), "send GET_ROLE_INFO again")
+	bodyG2, _ := s.recvTCP()
+	_, _, pbG2 := parseTCPResponse(bodyG2)
+	gi2 := &dnfv1.GetRoleInfoResponse{}
+	s.NoError(proto.Unmarshal(pbG2, gi2))
+	s.Equal(int32(2), gi2.Position.MapId, "role info map should be 2")
+	s.Equal(int32(5), gi2.Position.DungeonId, "role info dungeon should be 5")
+	s.Equal(float32(300), gi2.Position.X, "role info x should be 300")
+	s.Equal(float32(8.5), gi2.Position.Z, "role info z should be 8.5")
+
+	// DB 核对
+	var mapID, dungeonID, x, y int
+	var posZ float64
+	s.NoError(db.QueryRow("SELECT map_id, dungeon_id, x, y, pos_z FROM role WHERE id = ?", uint64(guid)).Scan(&mapID, &dungeonID, &x, &y, &posZ))
+	s.Equal(2, mapID)
+	s.Equal(5, dungeonID)
+	s.Equal(300, x)
+	s.Equal(200, y)
+	s.Equal(8.5, posZ)
+
+	// 非法参数: map_id=-1 → error=2
+	msgBad, _ := json.Marshal(map[string]interface{}{"map_id": float64(-1), "dungeon_id": float64(0), "x": 0.0, "y": 0.0, "z": 0.0})
+	s.NoError(s.sendTCP(append([]byte("MOVE_POSITION:"), msgBad...)), "send MOVE_POSITION invalid")
+	bodyBad, _ := s.recvTCP()
+	_, _, pbBad := parseTCPResponse(bodyBad)
+	mb := &dnfv1.MovePositionResponse{}
+	s.NoError(proto.Unmarshal(pbBad, mb))
+	s.Equal(int32(2), mb.Error, "invalid map_id should be rejected")
+
+	fmt.Printf("move position verified (default map=1 → move map=2/x=300/z=8.5 → role info & DB updated → invalid rejected)\n")
+}
+
 // bindRole 建立 TCP 连接并 SELECT_CHARACTER 绑定角色
 func (s *RankTCPTestSuite) bindRole(charGuid float64) {
 	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", s.serverHost, s.serverPort), 10*time.Second)

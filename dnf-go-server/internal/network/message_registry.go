@@ -58,6 +58,10 @@ func (c *ProtoCodec) RegisterAllMessages() {
 	c.RegisterMessage(10001, 10, func() proto.Message { return &dnfv1.CastSkillRequest{} })
 	c.RegisterMessage(10001, 11, func() proto.Message { return &dnfv1.CastSkillResponse{} })
 
+	// 移动位置 (cmd=12, 2026-09-07 第七十轮)
+	c.RegisterMessage(10001, 12, func() proto.Message { return &dnfv1.MovePositionRequest{} })
+	c.RegisterMessage(10001, 13, func() proto.Message { return &dnfv1.MovePositionResponse{} })
+
 	// 角色升级通知 (cmd=100)
 	c.RegisterMessage(10001, 100, func() proto.Message { return &dnfv1.RoleLevelUpNotify{} })
 

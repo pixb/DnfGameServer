@@ -1,0 +1,3 @@
+-- 2026-09-07 第七十轮: 位置实化(地图/副本/坐标落库, 移动命令更新)
+ALTER TABLE role ADD COLUMN dungeon_id INT NOT NULL DEFAULT 0 COMMENT '副本地图ID' AFTER map_id;
+ALTER TABLE role ADD COLUMN pos_z FLOAT NOT NULL DEFAULT 0 COMMENT 'Z坐标' AFTER y;

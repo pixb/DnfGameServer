@@ -21,6 +21,7 @@ func RegisterAllHandlers(dispatcher *network.MessageDispatcher) {
 	dispatcher.RegisterHandler(10001, 6, UpgradeSkillHandler)     // 升级技能
 	dispatcher.RegisterHandler(10001, 8, RecoverFatigueHandler)   // 恢复疲劳值
 	dispatcher.RegisterHandler(10001, 10, CastSkillHandler)       // 技能施放(2026-09-07 第六十八轮)
+	dispatcher.RegisterHandler(10001, 12, MovePositionHandler)    // 移动位置(2026-09-07 第七十轮)
 
 	// ==================== 背包模块 (Module = 10002) ====================
 	dispatcher.RegisterHandler(10002, 0, GetBagHandler)         // 获取背包

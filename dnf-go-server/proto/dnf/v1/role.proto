@@ -146,3 +146,22 @@ message CastSkillResponse {
   int32 damage = 2;       // 伤害 = 每级攻击力加成 × 技能等级
   int64 cooldown_until = 3; // 下次可用时间戳(冷却中返回)
 }
+
+// 移动位置请求(2026-09-07 第七十轮: 位置实化, 落库 role.map_id/dungeon_id/x/y/pos_z)
+message MovePositionRequest {
+  int32 map_id = 1;
+  int32 dungeon_id = 2;
+  float x = 3;
+  float y = 4;
+  float z = 5;
+}
+
+// 移动位置响应
+message MovePositionResponse {
+  int32 error = 1;      // 0=成功 1=通用 2=参数非法
+  int32 map_id = 2;
+  int32 dungeon_id = 3;
+  float x = 4;
+  float y = 5;
+  float z = 6;
+}

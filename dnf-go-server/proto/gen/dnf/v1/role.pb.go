@@ -1229,6 +1229,168 @@ func (x *CastSkillResponse) GetCooldownUntil() int64 {
 	return 0
 }
 
+// 移动位置请求(2026-09-07 第七十轮: 位置实化, 落库 role.map_id/dungeon_id/x/y/pos_z)
+type MovePositionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	MapId         int32                  `protobuf:"varint,1,opt,name=map_id,json=mapId,proto3" json:"map_id,omitempty"`
+	DungeonId     int32                  `protobuf:"varint,2,opt,name=dungeon_id,json=dungeonId,proto3" json:"dungeon_id,omitempty"`
+	X             float32                `protobuf:"fixed32,3,opt,name=x,proto3" json:"x,omitempty"`
+	Y             float32                `protobuf:"fixed32,4,opt,name=y,proto3" json:"y,omitempty"`
+	Z             float32                `protobuf:"fixed32,5,opt,name=z,proto3" json:"z,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MovePositionRequest) Reset() {
+	*x = MovePositionRequest{}
+	mi := &file_dnf_v1_role_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MovePositionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MovePositionRequest) ProtoMessage() {}
+
+func (x *MovePositionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_role_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MovePositionRequest.ProtoReflect.Descriptor instead.
+func (*MovePositionRequest) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_role_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *MovePositionRequest) GetMapId() int32 {
+	if x != nil {
+		return x.MapId
+	}
+	return 0
+}
+
+func (x *MovePositionRequest) GetDungeonId() int32 {
+	if x != nil {
+		return x.DungeonId
+	}
+	return 0
+}
+
+func (x *MovePositionRequest) GetX() float32 {
+	if x != nil {
+		return x.X
+	}
+	return 0
+}
+
+func (x *MovePositionRequest) GetY() float32 {
+	if x != nil {
+		return x.Y
+	}
+	return 0
+}
+
+func (x *MovePositionRequest) GetZ() float32 {
+	if x != nil {
+		return x.Z
+	}
+	return 0
+}
+
+// 移动位置响应
+type MovePositionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Error         int32                  `protobuf:"varint,1,opt,name=error,proto3" json:"error,omitempty"` // 0=成功 1=通用 2=参数非法
+	MapId         int32                  `protobuf:"varint,2,opt,name=map_id,json=mapId,proto3" json:"map_id,omitempty"`
+	DungeonId     int32                  `protobuf:"varint,3,opt,name=dungeon_id,json=dungeonId,proto3" json:"dungeon_id,omitempty"`
+	X             float32                `protobuf:"fixed32,4,opt,name=x,proto3" json:"x,omitempty"`
+	Y             float32                `protobuf:"fixed32,5,opt,name=y,proto3" json:"y,omitempty"`
+	Z             float32                `protobuf:"fixed32,6,opt,name=z,proto3" json:"z,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MovePositionResponse) Reset() {
+	*x = MovePositionResponse{}
+	mi := &file_dnf_v1_role_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MovePositionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MovePositionResponse) ProtoMessage() {}
+
+func (x *MovePositionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_dnf_v1_role_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MovePositionResponse.ProtoReflect.Descriptor instead.
+func (*MovePositionResponse) Descriptor() ([]byte, []int) {
+	return file_dnf_v1_role_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *MovePositionResponse) GetError() int32 {
+	if x != nil {
+		return x.Error
+	}
+	return 0
+}
+
+func (x *MovePositionResponse) GetMapId() int32 {
+	if x != nil {
+		return x.MapId
+	}
+	return 0
+}
+
+func (x *MovePositionResponse) GetDungeonId() int32 {
+	if x != nil {
+		return x.DungeonId
+	}
+	return 0
+}
+
+func (x *MovePositionResponse) GetX() float32 {
+	if x != nil {
+		return x.X
+	}
+	return 0
+}
+
+func (x *MovePositionResponse) GetY() float32 {
+	if x != nil {
+		return x.Y
+	}
+	return 0
+}
+
+func (x *MovePositionResponse) GetZ() float32 {
+	if x != nil {
+		return x.Z
+	}
+	return 0
+}
+
 var File_dnf_v1_role_proto protoreflect.FileDescriptor
 
 const file_dnf_v1_role_proto_rawDesc = "" +
@@ -1323,7 +1485,22 @@ const file_dnf_v1_role_proto_rawDesc = "" +
 	"\x11CastSkillResponse\x12\x14\n" +
 	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x16\n" +
 	"\x06damage\x18\x02 \x01(\x05R\x06damage\x12%\n" +
-	"\x0ecooldown_until\x18\x03 \x01(\x03R\rcooldownUntil*c\n" +
+	"\x0ecooldown_until\x18\x03 \x01(\x03R\rcooldownUntil\"u\n" +
+	"\x13MovePositionRequest\x12\x15\n" +
+	"\x06map_id\x18\x01 \x01(\x05R\x05mapId\x12\x1d\n" +
+	"\n" +
+	"dungeon_id\x18\x02 \x01(\x05R\tdungeonId\x12\f\n" +
+	"\x01x\x18\x03 \x01(\x02R\x01x\x12\f\n" +
+	"\x01y\x18\x04 \x01(\x02R\x01y\x12\f\n" +
+	"\x01z\x18\x05 \x01(\x02R\x01z\"\x8c\x01\n" +
+	"\x14MovePositionResponse\x12\x14\n" +
+	"\x05error\x18\x01 \x01(\x05R\x05error\x12\x15\n" +
+	"\x06map_id\x18\x02 \x01(\x05R\x05mapId\x12\x1d\n" +
+	"\n" +
+	"dungeon_id\x18\x03 \x01(\x05R\tdungeonId\x12\f\n" +
+	"\x01x\x18\x04 \x01(\x02R\x01x\x12\f\n" +
+	"\x01y\x18\x05 \x01(\x02R\x01y\x12\f\n" +
+	"\x01z\x18\x06 \x01(\x02R\x01z*c\n" +
 	"\tRoleState\x12\x1a\n" +
 	"\x16ROLE_STATE_UNSPECIFIED\x10\x00\x12\b\n" +
 	"\x04IDLE\x10\x01\x12\n" +
@@ -1348,7 +1525,7 @@ func file_dnf_v1_role_proto_rawDescGZIP() []byte {
 }
 
 var file_dnf_v1_role_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_dnf_v1_role_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_dnf_v1_role_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_dnf_v1_role_proto_goTypes = []any{
 	(RoleState)(0),                   // 0: dnf.v1.RoleState
 	(*RoleBaseInfo)(nil),             // 1: dnf.v1.RoleBaseInfo
@@ -1368,6 +1545,8 @@ var file_dnf_v1_role_proto_goTypes = []any{
 	(*RecoverFatigueResponse)(nil),   // 15: dnf.v1.RecoverFatigueResponse
 	(*CastSkillRequest)(nil),         // 16: dnf.v1.CastSkillRequest
 	(*CastSkillResponse)(nil),        // 17: dnf.v1.CastSkillResponse
+	(*MovePositionRequest)(nil),      // 18: dnf.v1.MovePositionRequest
+	(*MovePositionResponse)(nil),     // 19: dnf.v1.MovePositionResponse
 }
 var file_dnf_v1_role_proto_depIdxs = []int32{
 	1, // 0: dnf.v1.GetRoleInfoResponse.base_info:type_name -> dnf.v1.RoleBaseInfo
@@ -1395,7 +1574,7 @@ func file_dnf_v1_role_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_dnf_v1_role_proto_rawDesc), len(file_dnf_v1_role_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   17,
+			NumMessages:   19,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -16,8 +16,10 @@ type Role struct {
 	Fatigue    int32
 	MaxFatigue int32
 	MapID      int32
+	DungeonID  int32 // 副本地图ID(2026-09-07 第七十轮)
 	X          int32
 	Y          int32
+	PosZ       float32 // Z坐标(2026-09-07 第七十轮)
 	Channel    int32
 	SP         int32 // 技能点(2026-09-07 第四十四轮: 学习/升级技能消耗)
 }
@@ -80,14 +82,16 @@ type UpdateRole struct {
 	UpdatedAt *int64
 	RowStatus *RowStatus
 
-	Name    *string
-	Level   *int32
-	Exp     *int64
-	Fatigue *int32
-	MapID   *int32
-	X       *int32
-	Y       *int32
-	SP      *int32
+	Name      *string
+	Level     *int32
+	Exp       *int64
+	Fatigue   *int32
+	MapID     *int32
+	DungeonID *int32 // 副本地图ID(2026-09-07 第七十轮)
+	X         *int32
+	Y         *int32
+	PosZ      *float32 // Z坐标(2026-09-07 第七十轮)
+	SP        *int32
 }
 
 // DeleteRole 删除角色

@@ -332,7 +332,7 @@ func (d *DB) ListRoles(ctx context.Context, find *store.FindRole) ([]*store.Role
 		args = append(args, *find.RowStatus)
 	}
 
-	query := `SELECT id, created_at, updated_at, row_status, account_id, role_id, name, job, level, exp, fatigue, max_fatigue, map_id, x, y, channel, sp FROM role`
+	query := `SELECT id, created_at, updated_at, row_status, account_id, role_id, name, job, level, exp, fatigue, max_fatigue, map_id, dungeon_id, x, y, pos_z, channel, sp FROM role`
 	if len(where) > 0 {
 		query += " WHERE " + strings.Join(where, " AND ")
 	}
@@ -351,7 +351,7 @@ func (d *DB) ListRoles(ctx context.Context, find *store.FindRole) ([]*store.Role
 		var r store.Role
 		err := rows.Scan(&r.ID, &r.CreatedAt, &r.UpdatedAt, &r.RowStatus,
 			&r.AccountID, &r.RoleID, &r.Name, &r.Job, &r.Level, &r.Exp,
-			&r.Fatigue, &r.MaxFatigue, &r.MapID, &r.X, &r.Y, &r.Channel, &r.SP)
+			&r.Fatigue, &r.MaxFatigue, &r.MapID, &r.DungeonID, &r.X, &r.Y, &r.PosZ, &r.Channel, &r.SP)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan role: %w", err)
 		}
@@ -369,7 +369,7 @@ func (d *DB) ListRolesByAccount(ctx context.Context, accountID uint64) ([]*store
 // GetRoleByName 根据角色名获取角色
 func (d *DB) GetRoleByName(ctx context.Context, name string) (*store.Role, error) {
 	// 2026-09-06 第二十二轮: 同名角色按最新取(建角无名字唯一约束, 旧实现取到最早角色导致发信/解析歧义)
-	query := `SELECT id, created_at, updated_at, row_status, account_id, role_id, name, job, level, exp, fatigue, max_fatigue, map_id, x, y, channel, sp FROM role WHERE name = ? AND row_status = 'NORMAL' ORDER BY id DESC LIMIT 1`
+	query := `SELECT id, created_at, updated_at, row_status, account_id, role_id, name, job, level, exp, fatigue, max_fatigue, map_id, dungeon_id, x, y, pos_z, channel, sp FROM role WHERE name = ? AND row_status = 'NORMAL' ORDER BY id DESC LIMIT 1`
 	row := d.db.QueryRowContext(ctx, query, name)
 
 	var role store.Role
@@ -377,7 +377,7 @@ func (d *DB) GetRoleByName(ctx context.Context, name string) (*store.Role, error
 	err := row.Scan(
 		&role.ID, &role.CreatedAt, &role.UpdatedAt, &rowStatus,
 		&role.AccountID, &role.RoleID, &role.Name, &role.Job, &role.Level,
-		&role.Exp, &role.Fatigue, &role.MaxFatigue, &role.MapID, &role.X, &role.Y, &role.Channel,
+		&role.Exp, &role.Fatigue, &role.MaxFatigue, &role.MapID, &role.DungeonID, &role.X, &role.Y, &role.PosZ, &role.Channel,
 		&role.SP,
 	)
 	if err == sql.ErrNoRows {
@@ -426,6 +426,10 @@ func (d *DB) UpdateRole(ctx context.Context, update *store.UpdateRole) (*store.R
 		sets = append(sets, "map_id = ?")
 		args = append(args, *update.MapID)
 	}
+	if update.DungeonID != nil {
+		sets = append(sets, "dungeon_id = ?")
+		args = append(args, *update.DungeonID)
+	}
 	if update.X != nil {
 		sets = append(sets, "x = ?")
 		args = append(args, *update.X)
@@ -433,6 +437,10 @@ func (d *DB) UpdateRole(ctx context.Context, update *store.UpdateRole) (*store.R
 	if update.Y != nil {
 		sets = append(sets, "y = ?")
 		args = append(args, *update.Y)
+	}
+	if update.PosZ != nil {
+		sets = append(sets, "pos_z = ?")
+		args = append(args, *update.PosZ)
 	}
 	if update.SP != nil {
 		sets = append(sets, "sp = ?")

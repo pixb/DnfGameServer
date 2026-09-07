@@ -208,14 +208,14 @@ func GetRoleInfoHandler(session *network.Session, msg proto.Message) {
 			Fatigue:    role.Fatigue,
 			MaxFatigue: role.MaxFatigue,
 		},
-		// 位置暂以模拟值填充(无移动/地图状态存储)
+		// 位置从 role 表读取(2026-09-07 第七十轮实化: map_id/dungeon_id/x/y/pos_z 落库)
 		BattleInfo: battle,
 		Position: &dnfv1.RolePosition{
-			MapId:     1,
-			DungeonId: 0,
-			X:         100.0,
-			Y:         100.0,
-			Z:         0.0,
+			MapId:     role.MapID,
+			DungeonId: role.DungeonID,
+			X:         float32(role.X),
+			Y:         float32(role.Y),
+			Z:         role.PosZ,
 		},
 		Skills: skills,
 	}
@@ -468,6 +468,67 @@ func CastSkillHandler(session *network.Session, msg proto.Message) {
 	session.WriteResponse(10001, 11, &dnfv1.CastSkillResponse{
 		Error:  0,
 		Damage: damage,
+	})
+}
+
+// MovePositionHandler 处理移动位置请求(2026-09-07 第七十轮实化):
+// 校验地图/坐标范围 → 落库 role.map_id/dungeon_id/x/y/pos_z → 返回新位置
+// 错误码: 0=成功 1=通用 2=参数非法
+func MovePositionHandler(session *network.Session, msg proto.Message) {
+	req, ok := msg.(*dnfv1.MovePositionRequest)
+	if !ok {
+		return
+	}
+
+	ctx := context.Background()
+	roleID := session.RoleID()
+
+	// 参数校验: 地图/副本非负, 坐标在合理范围(防止异常值/越界)
+	if req.MapId < 0 || req.DungeonId < 0 ||
+		req.X < -999999 || req.X > 999999 ||
+		req.Y < -999999 || req.Y > 999999 ||
+		req.Z < -999999 || req.Z > 999999 {
+		session.WriteResponse(10001, 13, &dnfv1.MovePositionResponse{Error: 2})
+		return
+	}
+
+	mapID := req.MapId
+	dungeonID := req.DungeonId
+	posX := int32(req.X)
+	posY := int32(req.Y)
+	posZ := req.Z
+
+	role, err := skillStore.UpdateRole(ctx, &store.UpdateRole{
+		ID:        roleID,
+		MapID:     &mapID,
+		DungeonID: &dungeonID,
+		X:         &posX,
+		Y:         &posY,
+		PosZ:      &posZ,
+	})
+	if err != nil {
+		logger.Error("failed to update role position",
+			logger.ErrorField(err),
+			logger.Int64("role_id", int64(roleID)),
+		)
+		session.WriteResponse(10001, 13, &dnfv1.MovePositionResponse{Error: 1})
+		return
+	}
+
+	logger.Info("role moved",
+		logger.Int32("map_id", role.MapID),
+		logger.Int32("dungeon_id", role.DungeonID),
+		logger.Int32("x", role.X),
+		logger.Int32("y", role.Y),
+		logger.Int64("role_id", int64(roleID)),
+	)
+	session.WriteResponse(10001, 13, &dnfv1.MovePositionResponse{
+		Error:     0,
+		MapId:     role.MapID,
+		DungeonId: role.DungeonID,
+		X:         float32(role.X),
+		Y:         float32(role.Y),
+		Z:         role.PosZ,
 	})
 }
 
