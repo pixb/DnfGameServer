@@ -71,23 +71,34 @@ func (s *APIV1Service) handleGetBag(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	roleID := claims.UserID
+	// 2026-09-08 第七十五轮: 修复 roleID 语义——背包按选中角色查(claims.UserID 是账户ID)
+	roleID := s.activeRoleID(c, claims)
 	items, _ := s.Store.ListBagItemsByRole(c.Request().Context(), roleID)
 
-	var bagItems []*dnfv1.BagItem
+	// 2026-09-08 第七十五轮: 背包响应带物品名称(模板体系消费, 不破坏 proto JSON 字段)
+	tpls, tplErr := s.Store.ListItemTemplates(c.Request().Context())
+	tplName := map[int32]string{}
+	if tplErr == nil {
+		for _, t := range tpls {
+			tplName[t.ItemID] = t.Name
+		}
+	}
+
+	bagItems := make([]map[string]interface{}, 0, len(items))
 	for _, item := range items {
-		bagItems = append(bagItems, &dnfv1.BagItem{
-			Guid:   item.ID,
-			ItemId: uint32(item.ItemID),
-			Count:  item.Count,
-			Slot:   item.GridIndex,
+		bagItems = append(bagItems, map[string]interface{}{
+			"guid":   item.ID,
+			"itemId": item.ItemID,
+			"name":   tplName[item.ItemID],
+			"count":  item.Count,
+			"slot":   item.GridIndex,
 		})
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error": 0,
-		"bag": &dnfv1.BagInfo{
-			Items: bagItems,
+		"bag": map[string]interface{}{
+			"items": bagItems,
 		},
 	})
 }
@@ -102,15 +113,23 @@ func (s *APIV1Service) handleGetShopList(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	items := []*dnfv1.ShopItem{
-		{Slot: 1, ItemId: 1001, Price: 100, CurrencyType: 1, Stock: 999, Discount: 100},
-		{Slot: 2, ItemId: 1002, Price: 200, CurrencyType: 1, Stock: 999, Discount: 100},
-		{Slot: 3, ItemId: 1003, Price: 500, CurrencyType: 1, Stock: 100, Discount: 90},
+	// 2026-09-08 第七十五轮: 商店物品带名称(模板体系消费)
+	tpls, tplErr := s.Store.ListItemTemplates(c.Request().Context())
+	tplName := map[int32]string{}
+	if tplErr == nil {
+		for _, t := range tpls {
+			tplName[t.ItemID] = t.Name
+		}
+	}
+	shopItems := []map[string]interface{}{
+		{"slot": 1, "itemId": 1001, "name": tplName[1001], "price": 100, "currencyType": 1, "stock": 999, "discount": 100},
+		{"slot": 2, "itemId": 1002, "name": tplName[1002], "price": 200, "currencyType": 1, "stock": 999, "discount": 100},
+		{"slot": 3, "itemId": 1003, "name": tplName[1003], "price": 500, "currencyType": 1, "stock": 100, "discount": 90},
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":       0,
-		"items":       items,
+		"items":       shopItems,
 		"refreshTime": 3600,
 	})
 }

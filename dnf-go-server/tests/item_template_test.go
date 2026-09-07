@@ -77,3 +77,71 @@ func (s *ItemTemplateTestSuite) TestItemTemplateList() {
 	s.True(ok, "模板 20001 应存在")
 	s.Equal(float64(3), box["item_type"])
 }
+
+// TestBagAndShopWithName 背包/商店响应带物品名称(2026-09-08 第七十五轮, 模板体系消费)
+func (s *ItemTemplateTestSuite) TestBagAndShopWithName() {
+	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
+		"openid": "itm_tpl_01",
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if token, ok := resp["authKey"].(string); ok {
+		s.Client.SetToken(token)
+	}
+	listResp, err := s.Client.Get("/api/v1/character/list")
+	s.NoError(err)
+	s.NotNil(listResp)
+	roleID := lastCharGuid(listResp)
+	if roleID == 0 {
+		createResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+			"name": "ItemTplHero",
+			"job":  1,
+			"slot": 2,
+		})
+		s.NoError(err)
+		s.NotNil(createResp)
+		listResp, err = s.Client.Get("/api/v1/character/list")
+		s.NoError(err)
+		s.NotNil(listResp)
+		roleID = lastCharGuid(listResp)
+	}
+	if roleID == 0 {
+		s.T().Fatal("no character")
+	}
+
+	// 背包: seed 2001x1 后 GET /bag, items[0].name 应为 铁矿石
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2001: 1}))
+	resp, err = s.Client.Get("/api/v1/bag")
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	bag, ok := resp["bag"].(map[string]interface{})
+	s.True(ok, "bag 应为对象")
+	bagItems, ok := bag["items"].([]interface{})
+	s.True(ok, "bag.items 应为数组")
+	s.True(len(bagItems) >= 1, "背包应至少 1 件")
+	first, _ := bagItems[0].(map[string]interface{})
+	s.Equal("铁矿石", first["name"], "背包物品应带名称")
+	s.Equal(float64(2001), first["itemId"])
+
+	// 商店: items 带名称(1001 钢铁短剑 / 1002 精钢长剑 / 1003 秘银巨剑)
+	resp, err = s.Client.Get("/api/v1/shop/list")
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	shopItems, ok := resp["items"].([]interface{})
+	s.True(ok, "shop items 应为数组")
+	s.Len(shopItems, 3)
+	shopByName := map[string]bool{}
+	for _, raw := range shopItems {
+		it, _ := raw.(map[string]interface{})
+		shopByName[it["name"].(string)] = true
+	}
+	s.True(shopByName["钢铁短剑"], "商店应含 钢铁短剑")
+	s.True(shopByName["精钢长剑"], "商店应含 精钢长剑")
+	s.True(shopByName["秘银巨剑"], "商店应含 秘银巨剑")
+}
