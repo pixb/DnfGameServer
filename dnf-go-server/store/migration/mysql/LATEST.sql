@@ -1168,3 +1168,11 @@ UPDATE skills SET attack=0,  cooldown=8  WHERE skill_id=1002; -- 鏍兼尅(闃�
 UPDATE skills SET attack=10, cooldown=10 WHERE skill_id=1101; -- 涓婃寫
 UPDATE skills SET attack=15, cooldown=15 WHERE skill_id=1102; -- 宕╁北鍑?UPDATE skills SET attack=12, cooldown=12 WHERE skill_id=1201; -- 閾跺厜钀藉垉
 UPDATE skills SET attack=8,  cooldown=6  WHERE skill_id=1202; -- 涓夋鏂?UPDATE skills SET attack=10, cooldown=8  WHERE skill_id=1301; -- 蹇垫皵娉?UPDATE skills SET attack=20, cooldown=20 WHERE skill_id=1302; -- 闆锋祽鑳屾憯
+
+-- 合成配方深化种子(2.11.0): 批量/升级/随机池/费用配方(与 2.11.0__make_recipe_seed.sql 一致)
+INSERT INTO t_make_recipe (recipe_index, result_index, result_count, material_list, cost_money, enabled, success_rate, result_pool, fail_result_index, fail_result_count) VALUES
+    (1006, 1002, 1, '[{"index":2001,"count":3}]', 100, 1, 100, NULL, NULL, NULL),
+    (1007, 1002, 1, '[{"index":1001,"count":2},{"index":2001,"count":1}]', 50, 1, 100, NULL, NULL, NULL),
+    (1008, 1002, 1, '[{"index":1001,"count":1},{"index":2001,"count":2}]', 0, 1, 100, '[{"result_index":1002,"result_count":1,"weight":60},{"result_index":2001,"result_count":2,"weight":40}]', NULL, NULL),
+    (1009, 1001, 5, '[{"index":2001,"count":10}]', 500, 1, 100, NULL, NULL, NULL)
+ON DUPLICATE KEY UPDATE recipe_index = recipe_index;

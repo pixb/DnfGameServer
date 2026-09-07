@@ -987,3 +987,95 @@ func (s *MakeTestSuite) TestItemCombineBindInheritHighest() {
 	s.Equal(0, bagItemCount(roleID, 2001))
 	s.Equal(0, bagItemCount(roleID, 2002))
 }
+
+// TestMakeRecipeExpand 合成配方配置表深化(2026-09-07 第七十一轮, 新种子 1006-1009):
+// 1006 批量(2001x3+100 金币 -> 1002x1) / 1007 产物升级(1001x2+2001x1+50 -> 1002x1) /
+// 1008 随机池(1001x1+2001x2 -> 60%:1002x1 / 40%:2001x2) / 1009 大额批量(2001x10+500 -> 1001x5)
+func (s *MakeTestSuite) TestMakeRecipeExpand() {
+	// 1006: 批量合成 + 费用扣减
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_exp_01", 20)
+	s.Require().NoError(setGold(roleID, 1000))
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2001: 3}))
+
+	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1006,
+		"material_items": []map[string]interface{}{
+			{"index": 2001, "count": 3},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	s.Equal(0, bagItemCount(roleID, 2001), "材料 2001x3 应扣净")
+	s.Equal(1, bagItemCount(roleID, 1002), "产物 1002x1 应入包")
+	s.Equal(int64(900), getGold(roleID), "费用 100 应扣减(1000->900)")
+
+	// 1007: 产物升级(两材料配方, 费用 50)
+	roleID7 := s.loginAndSelectCharacterWithUserAndSlot("mk_exp_02", 21)
+	s.Require().NoError(setGold(roleID7, 1000))
+	s.Require().NoError(seedBagItems(roleID7, map[int32]int32{1001: 2, 2001: 1}))
+	resp7, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1007,
+		"material_items": []map[string]interface{}{
+			{"index": 1001, "count": 2},
+			{"index": 2001, "count": 1},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp7)
+	if errVal, ok := resp7["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	s.Equal(int64(950), getGold(roleID7), "费用 50 应扣减(1000->950)")
+	s.Equal(0, bagItemCount(roleID7, 1001), "材料 1001x2 应扣净")
+	s.Equal(0, bagItemCount(roleID7, 2001), "材料 2001x1 应扣净")
+	s.Equal(1, bagItemCount(roleID7, 1002), "升级产物 1002x1 应入包")
+
+	// 1009: 大额批量(产物 x5)
+	roleID9 := s.loginAndSelectCharacterWithUserAndSlot("mk_exp_03", 22)
+	s.Require().NoError(setGold(roleID9, 1000))
+	s.Require().NoError(seedBagItems(roleID9, map[int32]int32{2001: 10}))
+	resp9, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1009,
+		"material_items": []map[string]interface{}{
+			{"index": 2001, "count": 10},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp9)
+	if errVal, ok := resp9["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	s.Equal(0, bagItemCount(roleID9, 2001), "材料 2001x10 应扣净")
+	s.Equal(5, bagItemCount(roleID9, 1001), "产物 1001x5 应入包")
+	s.Equal(int64(500), getGold(roleID9), "费用 500 应扣减(1000->500)")
+
+	// 1008: 随机产出池(产物为 1002x1 或 2001x2 之一)
+	roleID8 := s.loginAndSelectCharacterWithUserAndSlot("mk_exp_04", 23)
+	s.Require().NoError(seedBagItems(roleID8, map[int32]int32{1001: 1, 2001: 2}))
+	resp8, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1008,
+		"material_items": []map[string]interface{}{
+			{"index": 1001, "count": 1},
+			{"index": 2001, "count": 2},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp8)
+	if errVal, ok := resp8["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	itemID, _ := resp8["itemId"].(float64)
+	s.True(itemID == 1002 || itemID == 2001, fmt.Sprintf("池配方产物应为 1002 或 2001, got %v", resp8["itemId"]))
+	if itemID == 1002 {
+		s.Equal(1, bagItemCount(roleID8, 1002))
+	} else {
+		s.Equal(2, bagItemCount(roleID8, 2001))
+	}
+}
