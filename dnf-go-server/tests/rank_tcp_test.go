@@ -922,6 +922,18 @@ func (s *RankTCPTestSuite) TestTCPAuctionFlow() {
 	s.Equal(int32(0), regR2.Error, "register #2 should succeed")
 	s.Greater(regR2.AuctionId, int64(0), "auction #2 id positive")
 
+	// 2026-09-07 第六十一轮: 搜索分页(仅 1 件在售 → page=1&page_size=1 返回恰 1 条)
+	s.bindRole(guidA)
+	msgS1, _ := json.Marshal(map[string]interface{}{"page": 1, "page_size": 1})
+	s.NoError(s.sendTCP(append([]byte("AUCTION_SEARCH:"), msgS1...)), "send AUCTION_SEARCH page")
+	bodyS1, _ := s.recvTCP()
+	_, _, pbS1 := parseTCPResponse(bodyS1)
+	searchP := &dnfv1.SearchAuctionResponse{}
+	s.NoError(proto.Unmarshal(pbS1, searchP))
+	s.Equal(int32(0), searchP.Error, "paged search should succeed")
+	s.Equal(1, len(searchP.Items), "paged search should return 1 item")
+	s.Equal(regR2.AuctionId, searchP.Items[0].AuctionId, "paged search first item should be #2")
+
 	s.bindRole(guidC)
 	msgO3, _ := json.Marshal(map[string]interface{}{"auction_id": regR2.AuctionId})
 	s.NoError(s.sendTCP(append([]byte("BUYOUT_AUCTION:"), msgO3...)), "send BUYOUT_AUCTION poor buyer")

@@ -88,6 +88,10 @@ func init() {
 	// 2026-09-06 第四十一轮: 初始管理员账号 openid(逗号分隔, 启动时确保存在且 authority=1)
 	serveCmd.Flags().String("admin-openids", "", "initial admin account openids (comma separated)")
 	viper.BindPFlag("admin_openids", serveCmd.Flags().Lookup("admin-openids"))
+
+	// 2026-09-07 第六十一轮: 拍卖到期结算扫描间隔(秒, 默认 30)
+	serveCmd.Flags().Int("auction-settle-interval", 30, "auction settle loop interval (seconds)")
+	viper.BindPFlag("auction_settle_interval", serveCmd.Flags().Lookup("auction-settle-interval"))
 }
 
 func runServe(cmd *cobra.Command, args []string) error {
@@ -185,9 +189,13 @@ func runServe(cmd *cobra.Command, args []string) error {
 
 	fmt.Println("Services initialized successfully")
 
-	// 3.7 后台定时结算过期拍卖(2026-09-07 第五十九轮): 每 30s 扫描一次, 高并发下不依赖惰性触发
+	// 3.7 后台定时结算过期拍卖(2026-09-07 第五十九轮; 第六十一轮间隔可配置): 默认 30s, --auction-settle-interval 覆盖
+	settleInterval := time.Duration(viper.GetInt("auction_settle_interval")) * time.Second
+	if settleInterval <= 0 {
+		settleInterval = 30 * time.Second
+	}
 	go func() {
-		ticker := time.NewTicker(30 * time.Second)
+		ticker := time.NewTicker(settleInterval)
 		defer ticker.Stop()
 		for {
 			select {

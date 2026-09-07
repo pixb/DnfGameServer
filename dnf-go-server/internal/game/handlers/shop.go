@@ -160,6 +160,21 @@ func SearchAuctionHandler(session *network.Session, msg proto.Message) {
 		maxPrice := int64(req.MaxPrice)
 		find.MaxPrice = &maxPrice
 	}
+	// 2026-09-07 第六十一轮: 应用搜索分页(默认 1/20, 上限 100)
+	page := int(req.Page)
+	if page <= 0 {
+		page = 1
+	}
+	pageSize := int(req.PageSize)
+	if pageSize <= 0 {
+		pageSize = 20
+	}
+	if pageSize > 100 {
+		pageSize = 100
+	}
+	find.Limit = &pageSize
+	offset := (page - 1) * pageSize
+	find.Offset = &offset
 
 	items, err := shopStore.ListAuctionItems(ctx, find)
 	if err != nil {
