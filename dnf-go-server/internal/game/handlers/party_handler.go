@@ -569,6 +569,14 @@ func HalfOpenPartyRefuseHandler(session *network.Session, msg proto.Message) {
 		}
 	}
 
+	// 2026-09-07 第六十七轮: 拒绝全部(targetGuid=0)前先记录申请者列表, 删除后无法再查
+	var applicants []uint64
+	if targetGuid == 0 {
+		if list, err := partySvc.ListPartyRequests(ctx, req.Partyguid); err == nil {
+			applicants = list
+		}
+	}
+
 	err := partySvc.HalfOpenPartyRefuse(ctx, session.RoleID(), req.Partyguid, targetGuid)
 	if err != nil {
 		// 发送错误响应
@@ -588,6 +596,9 @@ func HalfOpenPartyRefuseHandler(session *network.Session, msg proto.Message) {
 	// 2026-09-07 第六十四轮: 拒绝指定申请者后向被拒者推送(extraRoles, 其不在成员列表仍感知被拒)
 	if targetGuid != 0 {
 		broadcastPartyUpdate(session, req.Partyguid, targetGuid)
+	} else if len(applicants) > 0 {
+		// 2026-09-07 第六十七轮: 拒绝全部时向所有申请者推送
+		broadcastPartyUpdate(session, req.Partyguid, applicants...)
 	}
 }
 

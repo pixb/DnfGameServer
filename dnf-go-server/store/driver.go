@@ -263,6 +263,8 @@ type Driver interface {
 	GetPartyByGuid(ctx context.Context, partyGuid uint64) (*PartyInfo, error)
 	// GetPartyByRoleID 按角色ID查当前队伍(2026-09-07 第六十三轮, 离队/踢人/队长转移广播用)
 	GetPartyByRoleID(ctx context.Context, roleID uint64) (*PartyInfo, error)
+	// ListPartyRequests 按队伍ID查申请者角色列表(2026-09-07 第六十七轮, 拒绝全部时推送用)
+	ListPartyRequests(ctx context.Context, partyGuid uint64) ([]uint64, error)
 	WaitinigToUsersLoading(ctx context.Context, roleID uint64) error
 	// TeamRankPosition 我的队伍在全服队伍平均等级榜的位置(2026-09-06 第四十三轮)
 	// 无队伍返回 (0, 0, nil)

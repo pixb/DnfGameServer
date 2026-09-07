@@ -353,6 +353,24 @@ func (d *DB) HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid, targetG
 	return nil
 }
 
+// ListPartyRequests 按队伍ID查申请者角色列表(2026-09-07 第六十七轮, 拒绝全部时推送用)
+func (d *DB) ListPartyRequests(ctx context.Context, partyGuid uint64) ([]uint64, error) {
+	rows, err := d.db.QueryContext(ctx, "SELECT role_id FROM t_party_request WHERE party_id = ?", partyGuid)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list party requests: %w", err)
+	}
+	defer rows.Close()
+	var roles []uint64
+	for rows.Next() {
+		var r uint64
+		if err := rows.Scan(&r); err != nil {
+			return nil, fmt.Errorf("failed to scan party request: %w", err)
+		}
+		roles = append(roles, r)
+	}
+	return roles, nil
+}
+
 func (d *DB) ControlGroupCustom(ctx context.Context, roleID uint64, customData []byte) error {
 	return nil
 }
