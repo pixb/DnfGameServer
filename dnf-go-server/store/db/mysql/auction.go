@@ -176,6 +176,59 @@ func (d *DB) ListAuctionItems(ctx context.Context, find *store.FindAuctionItem) 
 	return items, nil
 }
 
+// CountAuctionItems 统计拍卖物品条数(2026-09-07 第六十五轮, 与 ListAuctionItems 同 where 不含分页)
+func (d *DB) CountAuctionItems(ctx context.Context, find *store.FindAuctionItem) (int, error) {
+	var where []string
+	var args []interface{}
+
+	if find.ID != nil {
+		where = append(where, "id = ?")
+		args = append(args, *find.ID)
+	}
+	if find.SellerID != nil {
+		where = append(where, "seller_id = ?")
+		args = append(args, *find.SellerID)
+	}
+	if find.ItemID != nil {
+		where = append(where, "item_id = ?")
+		args = append(args, *find.ItemID)
+	}
+	if find.Status != nil {
+		where = append(where, "status = ?")
+		args = append(args, *find.Status)
+	}
+	if find.MinPrice != nil {
+		where = append(where, "price >= ?")
+		args = append(args, *find.MinPrice)
+	}
+	if find.MaxPrice != nil {
+		where = append(where, "price <= ?")
+		args = append(args, *find.MaxPrice)
+	}
+	if find.BidderID != nil {
+		where = append(where, "bidder_id = ?")
+		args = append(args, *find.BidderID)
+	}
+	if find.EndTimeBefore != nil {
+		where = append(where, "end_time <= ?")
+		args = append(args, *find.EndTimeBefore)
+	}
+	if find.RowStatus != nil {
+		where = append(where, "row_status = ?")
+		args = append(args, *find.RowStatus)
+	}
+
+	query := `SELECT COUNT(*) FROM auction_item`
+	if len(where) > 0 {
+		query += " WHERE " + strings.Join(where, " AND ")
+	}
+	var total int
+	if err := d.db.QueryRowContext(ctx, query, args...).Scan(&total); err != nil {
+		return 0, fmt.Errorf("failed to count auction items: %w", err)
+	}
+	return total, nil
+}
+
 // ListAuctionItemsBySeller 获取卖家的拍卖物品
 func (d *DB) ListAuctionItemsBySeller(ctx context.Context, sellerID uint64) ([]*store.AuctionItem, error) {
 	return d.ListAuctionItems(ctx, &store.FindAuctionItem{SellerID: &sellerID})

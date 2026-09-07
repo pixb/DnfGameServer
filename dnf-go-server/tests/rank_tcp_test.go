@@ -1251,6 +1251,10 @@ func (s *RankTCPTestSuite) TestTCPAuctionFlow() {
 	s.Equal(int32(0), searchP.Error, "paged search should succeed")
 	s.Equal(1, len(searchP.Items), "paged search should return 1 item")
 	s.Equal(regR2.AuctionId, searchP.Items[0].AuctionId, "paged search first item should be #2")
+	// 2026-09-07 第六十五轮: Total 为独立计数(不含分页), 与 DB 在售数一致(分页仅返回 1 条)
+	var sellingCnt int
+	s.NoError(db.QueryRow("SELECT COUNT(*) FROM auction_item WHERE status = 0").Scan(&sellingCnt))
+	s.Equal(int32(sellingCnt), searchP.Total, "paged search total should equal DB selling count")
 
 	s.bindRole(guidC)
 	msgO3, _ := json.Marshal(map[string]interface{}{"auction_id": regR2.AuctionId})

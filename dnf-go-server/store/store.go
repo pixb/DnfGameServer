@@ -438,6 +438,11 @@ func (s *Store) ListAuctionItems(ctx context.Context, find *FindAuctionItem) ([]
 	return s.driver.ListAuctionItems(ctx, find)
 }
 
+// CountAuctionItems 统计拍卖物品条数(2026-09-07 第六十五轮)
+func (s *Store) CountAuctionItems(ctx context.Context, find *FindAuctionItem) (int, error) {
+	return s.driver.CountAuctionItems(ctx, find)
+}
+
 // UpdateAuctionItem 更新拍卖物品
 func (s *Store) UpdateAuctionItem(ctx context.Context, update *UpdateAuctionItem) error {
 	return s.driver.UpdateAuctionItem(ctx, update)

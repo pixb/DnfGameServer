@@ -149,6 +149,8 @@ type Driver interface {
 	UpdateAuctionItem(ctx context.Context, update *UpdateAuctionItem) error
 	GetAuctionItem(ctx context.Context, find *FindAuctionItem) (*AuctionItem, error)
 	ListAuctionItems(ctx context.Context, find *FindAuctionItem) ([]*AuctionItem, error)
+	// CountAuctionItems 统计拍卖物品条数(2026-09-07 第六十五轮, 搜索分页独立计数)
+	CountAuctionItems(ctx context.Context, find *FindAuctionItem) (int, error)
 	ListAuctionItemsBySeller(ctx context.Context, sellerID uint64) ([]*AuctionItem, error)
 	DeleteAuctionItem(ctx context.Context, delete *DeleteAuctionItem) error
 	CountAuctionItemsBySeller(ctx context.Context, sellerID uint64) (int, error)

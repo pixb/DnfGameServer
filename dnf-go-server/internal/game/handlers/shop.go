@@ -187,6 +187,18 @@ func SearchAuctionHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
+	// 2026-09-07 第六十五轮: Total 改用独立计数查询(不含分页), 供客户端计算总页数
+	total, err := shopStore.CountAuctionItems(ctx, find)
+	if err != nil {
+		logger.Error("failed to count auction items",
+			logger.ErrorField(err),
+			logger.Int64("session_id", session.ID()),
+		)
+		resp := &dnfv1.SearchAuctionResponse{Error: 1}
+		_ = session.WriteResponse(10005, 101, resp)
+		return
+	}
+
 	now := time.Now().Unix()
 	itemList := make([]*dnfv1.AuctionItem, 0, len(items))
 	for _, item := range items {
@@ -207,7 +219,7 @@ func SearchAuctionHandler(session *network.Session, msg proto.Message) {
 
 	resp := &dnfv1.SearchAuctionResponse{
 		Error: 0,
-		Total: int32(len(itemList)),
+		Total: int32(total),
 		Items: itemList,
 	}
 
