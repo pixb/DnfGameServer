@@ -7,6 +7,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/role"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
@@ -43,8 +44,8 @@ func NewPkService(st *store.Store) *PkService {
 // MatchResult 匹配结果
 type MatchResult struct {
 	MatchingGuid uint64
-	IP          string
-	Port        uint32
+	IP           string
+	Port         uint32
 }
 
 // CustomGameRoomResult 自定义游戏房间结果
@@ -176,8 +177,8 @@ func (s *PkService) GetRaidEntranceCount(ctx context.Context, roleID uint64) ([]
 	infos := make([]*dnfv1.RaidEntranceInfo, 0, len(entrances))
 	for _, e := range entrances {
 		infos = append(infos, &dnfv1.RaidEntranceInfo{
-			Raidindex:             e.RaidIndex,
-			Dailycharacter:        e.DailyCharacterCount,
+			Raidindex:            e.RaidIndex,
+			Dailycharacter:       e.DailyCharacterCount,
 			Character:            e.CharacterCount,
 			Account:              e.AccountCount,
 			Dailyrewardcharacter: e.DailyRewardCount,
@@ -391,7 +392,7 @@ func (s *PkService) GetPvpSeasonInfo(ctx context.Context) (*dnfv1.PvpSeasonInfo,
 	if err != nil {
 		if errors.Is(err, store.ErrNotFound) {
 			return &dnfv1.PvpSeasonInfo{
-				SeasonId:  1,
+				SeasonId:   1,
 				SeasonName: "Season 1",
 				StartTime:  time.Now().Add(-30 * 24 * time.Hour).Unix(),
 				EndTime:    time.Now().Add(30 * 24 * time.Hour).Unix(),
@@ -405,7 +406,7 @@ func (s *PkService) GetPvpSeasonInfo(ctx context.Context) (*dnfv1.PvpSeasonInfo,
 	}
 
 	return &dnfv1.PvpSeasonInfo{
-		SeasonId:  season.SeasonID,
+		SeasonId:   season.SeasonID,
 		SeasonName: season.SeasonName,
 		StartTime:  season.StartTime,
 		EndTime:    season.EndTime,
@@ -494,7 +495,7 @@ func (s *PkService) GetPvpMatchTypes(ctx context.Context) ([]*dnfv1.PvpMatchType
 }
 
 // SubmitPvpBattleResult 提交 PK 战斗结果
-func (s *PkService) SubmitPvpBattleResult(ctx context.Context, roleID, matchingGuid, opponentID uint64, win bool, score int32) error {
+func (s *PkService) SubmitPvpBattleResult(ctx context.Context, roleID, matchingGuid, opponentID uint64, win bool, score int32) (*role.LevelUpResult, error) {
 	logger.Info("submit pvp battle result",
 		logger.Uint64("role_id", roleID),
 		logger.Uint64("matching_guid", matchingGuid),
@@ -541,8 +542,27 @@ func (s *PkService) SubmitPvpBattleResult(ctx context.Context, roleID, matchingG
 			stats.LoseCount = 1
 		}
 	default:
-		return err
+		return nil, err
 	}
 
-	return s.store.SubmitPvpBattleResult(ctx, record, stats)
+	if err := s.store.SubmitPvpBattleResult(ctx, record, stats); err != nil {
+		return nil, err
+	}
+
+	// PK 结算奖励经验(2026-09-07 第六十九轮实化): 胜 +50, 败 +10
+	expGain := int64(10)
+	if win {
+		expGain = 50
+	}
+	levelUp, err := role.AddRoleExp(ctx, s.store, roleID, expGain)
+	if err != nil {
+		// 经验发放失败不影响战绩落库, 仅告警
+		logger.Error("failed to award pvp exp",
+			logger.ErrorField(err),
+			logger.Uint64("role_id", roleID),
+			logger.Int64("exp_gain", expGain),
+		)
+		return nil, nil
+	}
+	return levelUp, nil
 }

@@ -708,7 +708,8 @@ func PvpBattleResultHandler(session *network.Session, msg proto.Message) {
 	// 2. 更新玩家统计
 	// 3. 计算积分变化
 
-	err := pkSvc.SubmitPvpBattleResult(context.Background(), session.RoleID(), req.Matchingguid, req.OpponentId, req.Win, req.Score)
+	// PK 结算 + 经验奖励(2026-09-07 第六十九轮实化): 胜 +50/败 +10, 升级时推送 10001/100
+	levelUp, err := pkSvc.SubmitPvpBattleResult(context.Background(), session.RoleID(), req.Matchingguid, req.OpponentId, req.Win, req.Score)
 	if err != nil {
 		resp := &dnfv1.PvpBattleResultResponse{
 			Error:   1,
@@ -721,6 +722,10 @@ func PvpBattleResultHandler(session *network.Session, msg proto.Message) {
 			)
 		}
 		return
+	}
+
+	if levelUp != nil && levelUp.LevelUps > 0 {
+		RoleLevelUpNotify(session, int64(session.RoleID()), levelUp.NewLevel-levelUp.LevelUps, levelUp.NewLevel, levelUp.NewExp)
 	}
 
 	resp := &dnfv1.PvpBattleResultResponse{

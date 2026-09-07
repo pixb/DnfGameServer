@@ -1204,6 +1204,75 @@ func (s *RankTCPTestSuite) TestTCPCastSkill() {
 	fmt.Printf("cast skill verified (learn→cast damage=5→cooldown reject→reset→cast ok→unlearned reject→role info attack/cooldown)\n")
 }
 
+// TestTCPPvpExpReward PK结算奖励经验(2026-09-07 第六十九轮):
+// 设 exp=90(1→2 需 100) → PK 胜场(+50) → 升级: 收到 10001/100 通知(old=1 new=2) +
+// DB level=2 exp=40 sp+20 → 败场(+10) → exp=50 无通知
+func (s *RankTCPTestSuite) TestTCPPvpExpReward() {
+	uid := time.Now().UnixNano()
+	openid := fmt.Sprintf("test_pvpexp_%d", uid)
+	guid := s.createCharacter(openid)
+
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer func() {
+		db.Exec("DELETE FROM t_pvp_record WHERE role_id = ?", uint64(guid))
+		db.Exec("DELETE FROM t_pvp_stats WHERE role_id = ?", uint64(guid))
+		db.Exec("DELETE FROM role WHERE id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid = ?)", openid)
+		db.Exec("DELETE FROM account WHERE openid = ?", openid)
+		db.Close()
+	}()
+
+	// 初始状态 + 设 exp=90 接近升级
+	var initLevel, initSP int32
+	s.NoError(db.QueryRow("SELECT level, sp FROM role WHERE id = ?", uint64(guid)).Scan(&initLevel, &initSP))
+	_, err = db.Exec("UPDATE role SET exp = 90 WHERE id = ?", uint64(guid))
+	s.NoError(err)
+
+	// PK 胜场(+50): exp=140 → 升 2 级, 剩 40
+	s.bindRole(guid)
+	msgW, _ := json.Marshal(map[string]interface{}{"matchingguid": float64(1), "win": true, "score": float64(10), "opponentid": float64(0)})
+	s.NoError(s.sendTCP(append([]byte("PK_BATTLE_RESULT:"), msgW...)), "send PK_BATTLE_RESULT win")
+	// 升级通知先于响应(handler 内先推通知后回响应)
+	bodyN, err := s.recvTCP()
+	s.NoError(err)
+	_, ncmd, npb := parseTCPResponse(bodyN)
+	s.Equal(uint16(100), ncmd, "level up notify cmd should be 100")
+	lu := &dnfv1.RoleLevelUpNotify{}
+	s.NoError(proto.Unmarshal(npb, lu))
+	s.Equal(initLevel, lu.OldLevel, "notify old level")
+	s.Equal(initLevel+1, lu.NewLevel, "notify new level should be +1")
+	s.Equal(int64(40), lu.NewExp, "notify new exp after level up")
+	bodyR, err := s.recvTCP()
+	s.NoError(err)
+	_, rcmd, rpb := parseTCPResponse(bodyR)
+	s.Equal(uint16(36), rcmd, "battle result response cmd should be 36")
+	br := &dnfv1.PvpBattleResultResponse{}
+	s.NoError(proto.Unmarshal(rpb, br))
+	s.Equal(uint32(0), br.Error, "pvp win result should succeed")
+
+	// DB: level+1, exp=40, sp+20
+	var level, exp, sp int32
+	s.NoError(db.QueryRow("SELECT level, exp, sp FROM role WHERE id = ?", uint64(guid)).Scan(&level, &exp, &sp))
+	s.Equal(initLevel+1, level, "role level should be +1 after win exp")
+	s.Equal(int32(40), exp, "role exp should be 40 after level up")
+	s.Equal(initSP+20, sp, "role sp should gain +20 on level up")
+
+	// 败场(+10): exp=50, 无升级通知
+	msgL, _ := json.Marshal(map[string]interface{}{"matchingguid": float64(2), "win": false, "score": float64(1), "opponentid": float64(0)})
+	s.NoError(s.sendTCP(append([]byte("PK_BATTLE_RESULT:"), msgL...)), "send PK_BATTLE_RESULT lose")
+	bodyL, err := s.recvTCP()
+	s.NoError(err)
+	_, lcmd, lpb := parseTCPResponse(bodyL)
+	s.Equal(uint16(36), lcmd, "lose result response cmd should be 36")
+	brL := &dnfv1.PvpBattleResultResponse{}
+	s.NoError(proto.Unmarshal(lpb, brL))
+	s.Equal(uint32(0), brL.Error)
+	s.NoError(db.QueryRow("SELECT exp FROM role WHERE id = ?", uint64(guid)).Scan(&exp))
+	s.Equal(int32(50), exp, "role exp should be 50 after lose (+10)")
+
+	fmt.Printf("pvp exp reward verified (win +50 levelup notify 100/100→40+sp20, lose +10→50)\n")
+}
+
 // bindRole 建立 TCP 连接并 SELECT_CHARACTER 绑定角色
 func (s *RankTCPTestSuite) bindRole(charGuid float64) {
 	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", s.serverHost, s.serverPort), 10*time.Second)

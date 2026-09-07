@@ -454,7 +454,7 @@ func (s *APIV1Service) handlePkBattleResult(c echo.Context) error {
 	}
 
 	if s.pkService() {
-		if err := s.PK.SubmitPvpBattleResult(c.Request().Context(), claims.UserID, matchingGUID, opponentID, win, score); err != nil {
+		if _, err := s.PK.SubmitPvpBattleResult(c.Request().Context(), claims.UserID, matchingGUID, opponentID, win, score); err != nil {
 			return c.JSON(http.StatusOK, map[string]interface{}{"error": 3, "message": err.Error()})
 		}
 	}
