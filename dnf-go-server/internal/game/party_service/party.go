@@ -136,6 +136,11 @@ func (s *PartyService) GetPartyByGuid(ctx context.Context, partyGuid uint64) (*s
 	return s.store.GetPartyByGuid(ctx, partyGuid)
 }
 
+// GetPartyByRoleID 按角色ID查当前队伍(2026-09-07 第六十三轮, 离队/踢人/队长转移广播用)
+func (s *PartyService) GetPartyByRoleID(ctx context.Context, roleID uint64) (*store.PartyInfo, error) {
+	return s.store.GetPartyByRoleID(ctx, roleID)
+}
+
 // WaitinigToUsersLoading 等待用户加载
 func (s *PartyService) WaitinigToUsersLoading(ctx context.Context, roleID uint64) error {
 	return s.store.WaitinigToUsersLoading(ctx, roleID)

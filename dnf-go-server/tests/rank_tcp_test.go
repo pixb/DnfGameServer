@@ -676,6 +676,16 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	s.NoError(s.sendTCP(append([]byte("LEAVE_PARTY:"), msgL...)), "send LEAVE_PARTY")
 	bodyL, _ := s.recvTCP()
 	_, _, pbL := parseTCPResponse(bodyL)
+	// 2026-09-07 第六十三轮: B 离队广播(10009/34)可能与角色重连竞态先行到达新连接, 循环消费
+	for {
+		m, c, p := parseTCPResponse(bodyL)
+		if m == 10009 && c == 34 {
+			bodyL, _ = s.recvTCP()
+			continue
+		}
+		pbL = p
+		break
+	}
 	cgL := &dnfv1.ControlGroupResponse{}
 	s.NoError(proto.Unmarshal(pbL, cgL))
 	s.Equal(int32(0), cgL.Error, "leader leave should disband party")
@@ -787,6 +797,125 @@ func readTCPFrame(conn net.Conn) ([]byte, error) {
 	body := make([]byte, bodyLen)
 	_, err := io.ReadFull(conn, body)
 	return body, err
+}
+
+// TestTCPPartyMemberChangeNotify 队伍成员变更推送(2026-09-07 第六十三轮):
+// A 建队公开 → B JOIN → A 踢 B → B 连接收到 10009/34(成员仅剩 A);
+// B 重入 → B 离队 → A 连接收到 10009/34(成员仅剩 A)
+func (s *RankTCPTestSuite) TestTCPPartyMemberChangeNotify() {
+	uid := time.Now().UnixNano()
+	openidA := fmt.Sprintf("test_party_chg_a_%d", uid)
+	openidB := fmt.Sprintf("test_party_chg_b_%d", uid)
+	guidA := s.createCharacter(openidA)
+	guidB := s.createCharacter(openidB)
+
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer func() {
+		all := []string{openidA, openidB}
+		db.Exec("DELETE FROM t_party_member WHERE party_id IN (SELECT party_id FROM t_party WHERE leader_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?)))", all[0], all[1])
+		db.Exec("DELETE FROM t_party WHERE leader_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", all[0], all[1])
+		db.Exec("DELETE FROM role WHERE id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", all[0], all[1])
+		db.Exec("DELETE FROM account WHERE openid IN (?, ?)", all[0], all[1])
+		db.Close()
+	}()
+
+	// A 建队公开
+	s.bindRole(guidA)
+	connA := s.socket
+	msgC, _ := json.Marshal(map[string]interface{}{"type": 0})
+	s.NoError(s.sendTCP(append([]byte("CREATE_PARTY:"), msgC...)), "send CREATE_PARTY")
+	bodyC, _ := s.recvTCP()
+	_, _, pbC := parseTCPResponse(bodyC)
+	cgC := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbC, cgC))
+	s.Equal(int32(0), cgC.Error, "create party should succeed")
+	var partyGuid uint64
+	s.NoError(db.QueryRow("SELECT party_id FROM t_party WHERE leader_id = ?", uint64(guidA)).Scan(&partyGuid))
+	msgPT, _ := json.Marshal(map[string]interface{}{"type": 6, "publictype": 0})
+	s.NoError(s.sendTCP(append([]byte("MODIFY_PARTY_SETTING:"), msgPT...)), "send MODIFY publictype=0")
+	bodyPT, _ := s.recvTCP()
+	_, _, pbPT := parseTCPResponse(bodyPT)
+	cgPT := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbPT, cgPT))
+	s.Equal(int32(0), cgPT.Error, "set publictype=0 should succeed")
+
+	// B JOIN → A 连接收到 34(成员 A+B)
+	s.bindRole(guidB)
+	connB := s.socket
+	msgJ, _ := json.Marshal(map[string]interface{}{"type": 5, "partyguid": float64(partyGuid)})
+	s.NoError(s.sendTCP(append([]byte("JOIN_PARTY:"), msgJ...)), "send JOIN_PARTY")
+	bodyJ, _ := s.recvTCP()
+	_, _, pbJ := parseTCPResponse(bodyJ)
+	cgJ := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbJ, cgJ))
+	s.Equal(int32(0), cgJ.Error, "join public party should succeed")
+	nbA, err := readTCPFrame(connA)
+	s.NoError(err)
+	_, ncmdA, npbA := parseTCPResponse(nbA)
+	s.Equal(uint16(34), ncmdA, "A should get 34 after B joins")
+	ntA := &dnfv1.PartyUpdateNotify{}
+	s.NoError(proto.Unmarshal(npbA, ntA))
+	s.Equal(2, len(ntA.Info.Members), "A notify should carry 2 members")
+
+	// A 踢 B(新连接) → B 连接收到 34(成员仅剩 A)
+	s.bindRole(guidA)
+	msgK, _ := json.Marshal(map[string]interface{}{"type": 3, "targetguid": guidB})
+	s.NoError(s.sendTCP(append([]byte("KICK_OUT_MEMBER:"), msgK...)), "send KICK_OUT_MEMBER")
+	bodyK, _ := s.recvTCP()
+	_, _, pbK := parseTCPResponse(bodyK)
+	cgK := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbK, cgK))
+	s.Equal(int32(0), cgK.Error, "kick should succeed")
+	nbB, err := readTCPFrame(connB)
+	s.NoError(err, "B should receive kick notify")
+	_, ncmdB, npbB := parseTCPResponse(nbB)
+	s.Equal(uint16(34), ncmdB, "B should get 34 after being kicked")
+	ntB := &dnfv1.PartyUpdateNotify{}
+	s.NoError(proto.Unmarshal(npbB, ntB))
+	s.Equal(1, len(ntB.Info.Members), "B notify should carry 1 member after kick")
+	s.Equal(uint64(guidA), ntB.Info.Members[0].Charguid, "remaining member should be A")
+	// A 旧连接也收到同一推送(消费残留)
+	nbA2, err := readTCPFrame(connA)
+	s.NoError(err)
+	_, _, npbA2 := parseTCPResponse(nbA2)
+	ntA2 := &dnfv1.PartyUpdateNotify{}
+	s.NoError(proto.Unmarshal(npbA2, ntA2))
+	s.Equal(1, len(ntA2.Info.Members), "A old conn should also get kick notify")
+
+	// B 重入 → A 连接收到 34(2 成员)
+	s.bindRole(guidB)
+	s.NoError(s.sendTCP(append([]byte("JOIN_PARTY:"), msgJ...)), "send JOIN_PARTY again")
+	bodyJ2, _ := s.recvTCP()
+	_, _, pbJ2 := parseTCPResponse(bodyJ2)
+	cgJ2 := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbJ2, cgJ2))
+	s.Equal(int32(0), cgJ2.Error, "rejoin should succeed")
+	nbA3, err := readTCPFrame(connA)
+	s.NoError(err)
+	_, _, npbA3 := parseTCPResponse(nbA3)
+	ntA3 := &dnfv1.PartyUpdateNotify{}
+	s.NoError(proto.Unmarshal(npbA3, ntA3))
+	s.Equal(2, len(ntA3.Info.Members), "A notify should carry 2 members after rejoin")
+
+	// B 离队 → A 连接收到 34(成员仅剩 A)
+	msgL, _ := json.Marshal(map[string]interface{}{"type": 2})
+	s.NoError(s.sendTCP(append([]byte("LEAVE_PARTY:"), msgL...)), "send LEAVE_PARTY")
+	bodyL, _ := s.recvTCP()
+	_, _, pbL := parseTCPResponse(bodyL)
+	cgL := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbL, cgL))
+	s.Equal(int32(0), cgL.Error, "leave should succeed")
+	nbA4, err := readTCPFrame(connA)
+	s.NoError(err, "A should receive leave notify")
+	_, ncmdA4, npbA4 := parseTCPResponse(nbA4)
+	s.Equal(uint16(34), ncmdA4, "A should get 34 after B leaves")
+	ntA4 := &dnfv1.PartyUpdateNotify{}
+	s.NoError(proto.Unmarshal(npbA4, ntA4))
+	s.Equal(1, len(ntA4.Info.Members), "A notify should carry 1 member after leave")
+	s.Equal(uint64(guidA), ntA4.Info.Members[0].Charguid, "remaining member should be A")
+
+	fmt.Printf("party member change notify verified (kick→B gets 34/1member, leave→A gets 34/1member)\n")
 }
 
 // bindRole 建立 TCP 连接并 SELECT_CHARACTER 绑定角色

@@ -521,6 +521,11 @@ func (d *DB) GetPartyByGuid(ctx context.Context, partyGuid uint64) (*store.Party
 	return party, nil
 }
 
+// GetPartyByRoleID 按角色ID查当前队伍(2026-09-07 第六十三轮, 离队/踢人/队长转移广播用)
+func (d *DB) GetPartyByRoleID(ctx context.Context, roleID uint64) (*store.PartyInfo, error) {
+	return d.getPartyByRoleID(ctx, roleID)
+}
+
 func (d *DB) getPartyByRoleID(ctx context.Context, roleID uint64) (*store.PartyInfo, error) {
 	query := `
 		SELECT p.party_id, p.leader_id, p.name, p.max_members,

@@ -224,6 +224,15 @@ func ControlGroupHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
+	// 2026-09-07 第六十三轮: 离队(2)/踢人(3)/队长转移(4)操作后需广播,
+	// 但离队/解散后按 roleID 查不到原队伍, 故操作前先记录当前队伍
+	var broadcastGuid uint64
+	if action == 2 || action == 3 || action == 4 {
+		if cur, err := partySvc.GetPartyByRoleID(ctx, session.RoleID()); err == nil && cur != nil {
+			broadcastGuid = cur.PartyGuid
+		}
+	}
+
 	err := partySvc.ControlGroup(ctx, session.RoleID(), action, targetGuid, partyGuid)
 	if err != nil {
 		// 发送错误响应
@@ -243,6 +252,15 @@ func ControlGroupHandler(session *network.Session, msg proto.Message) {
 	// 2026-09-07 第六十二轮: 加入成功后向全队广播最新队伍信息
 	if action == 5 && partyGuid != 0 {
 		broadcastPartyUpdate(session, partyGuid)
+	}
+	// 2026-09-07 第六十三轮: 离队/踢人/队长转移成功后向剩余成员广播最新队伍信息
+	if broadcastGuid != 0 {
+		if action == 3 {
+			// 踢人: 被踢者不在最新成员列表, 需作为额外接收者收到推送以感知被移出
+			broadcastPartyUpdate(session, broadcastGuid, targetGuid)
+		} else {
+			broadcastPartyUpdate(session, broadcastGuid)
+		}
 	}
 }
 
@@ -709,7 +727,8 @@ func TargetUserPartyInfoHandler(session *network.Session, msg proto.Message) {
 }
 
 // broadcastPartyUpdate 队伍成员变化后向全队在线成员广播最新队伍信息(2026-09-07 第六十二轮)
-func broadcastPartyUpdate(trigger *network.Session, partyGuid uint64) {
+// extraRoles: 额外接收者(2026-09-07 第六十三轮, 如被踢者不在最新成员列表但仍需感知)
+func broadcastPartyUpdate(trigger *network.Session, partyGuid uint64, extraRoles ...uint64) {
 	ctx := context.Background()
 	party, err := partySvc.GetPartyByGuid(ctx, partyGuid)
 	if err != nil || party == nil {
@@ -735,12 +754,9 @@ func broadcastPartyUpdate(trigger *network.Session, partyGuid uint64) {
 	if mg == nil {
 		return
 	}
-	for _, m := range party.Members {
-		if m == nil {
-			continue
-		}
+	sendTo := func(roleID uint64) {
 		for _, s := range mg.GetAll() {
-			if s != nil && s.RoleID() == m.Charguid && s.ID() != trigger.ID() {
+			if s != nil && s.RoleID() == roleID && s.ID() != trigger.ID() {
 				if err := s.WriteResponse(10009, 34, notify); err != nil {
 					logger.Error("failed to send party update notify",
 						logger.ErrorField(err),
@@ -748,6 +764,19 @@ func broadcastPartyUpdate(trigger *network.Session, partyGuid uint64) {
 					)
 				}
 			}
+		}
+	}
+	sent := make(map[uint64]bool)
+	for _, m := range party.Members {
+		if m == nil {
+			continue
+		}
+		sent[m.Charguid] = true
+		sendTo(m.Charguid)
+	}
+	for _, r := range extraRoles {
+		if !sent[r] {
+			sendTo(r)
 		}
 	}
 }
