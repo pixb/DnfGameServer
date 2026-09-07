@@ -199,7 +199,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_batch_a", "mk_batch_b", "mk_bind_a", "mk_bind_b", "mk_disj_06", "mk_disj_07"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_batch_a", "mk_batch_b", "mk_bind_a", "mk_bind_b", "mk_disj_06", "mk_disj_07", "mk_exp_01", "mk_exp_02", "mk_exp_03", "mk_exp_04", "mk_name_01", "mk_name_02"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -1078,4 +1078,67 @@ func (s *MakeTestSuite) TestMakeRecipeExpand() {
 	} else {
 		s.Equal(2, bagItemCount(roleID8, 2001))
 	}
+}
+
+// TestItemCombineResponseName 合成响应带物品名称(2026-09-08 第七十四轮, 物品模板体系消费)
+// recipe 1006: 2001x3+100金 -> 1002x1; 响应 items/顶层带 name(itemName)
+func (s *MakeTestSuite) TestItemCombineResponseName() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_name_01", 24)
+	s.Require().NoError(setGold(roleID, 1000))
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2001: 3}))
+
+	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1006,
+		"material_items": []map[string]interface{}{
+			{"index": 2001, "count": 3},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	// 顶层产物名称
+	s.Equal("精钢长剑", resp["itemName"])
+	// items 每项带 name
+	items, ok := resp["items"].([]interface{})
+	s.True(ok)
+	s.Len(items, 1)
+	first, _ := items[0].(map[string]interface{})
+	s.Equal("精钢长剑", first["name"])
+	s.Equal(float64(1002), first["itemId"])
+}
+
+// TestItemDisjointResponseItems 分解响应带产物明细与名称(2026-09-08 第七十四轮)
+// 3001 分解: 2013000000x3(破损剑刃) + 2013000001x2(破损护甲)
+func (s *MakeTestSuite) TestItemDisjointResponseItems() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_name_02", 25)
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{3001: 1}))
+	ids := bagItemIDs(roleID, 1)
+	s.Require().Len(ids, 1)
+
+	resp, err := s.Client.Post("/api/v1/make/item/disjoint", map[string]interface{}{
+		"guids": ids,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	items, ok := resp["items"].([]interface{})
+	s.True(ok, "响应应带 items 产物明细")
+	s.Len(items, 2)
+	byID := map[float64]map[string]interface{}{}
+	for _, raw := range items {
+		it, _ := raw.(map[string]interface{})
+		byID[it["itemId"].(float64)] = it
+	}
+	s.Equal("破损剑刃", byID[2013000000]["name"])
+	s.Equal(float64(3), byID[2013000000]["count"])
+	s.Equal("破损护甲", byID[2013000001]["name"])
+	s.Equal(float64(2), byID[2013000001]["count"])
+	// 产物确实入包
+	s.Equal(3, bagItemCount(roleID, 2013000000))
+	s.Equal(2, bagItemCount(roleID, 2013000001))
 }

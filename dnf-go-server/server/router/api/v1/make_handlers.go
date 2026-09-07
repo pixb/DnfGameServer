@@ -258,6 +258,14 @@ func (s *APIV1Service) handleMakeItemCombine(c echo.Context) error {
 	// 2026-09-06 第十五轮: 响应真实合成结果(成功率/随机产出);
 	// result 为掷点结果(success/fail), guid/itemId 为实际入包产物(失败保底物品也算产物)
 	// 2026-09-06 第十八轮: 批量时 items 逐次列出(每掷点一条), guid/itemId 指向首个产物
+	// 2026-09-08 第七十四轮: 物品模板体系消费——产物响应带名称(按 item_id 查 t_item_template)
+	tpls, tplErr := s.Store.ListItemTemplates(c.Request().Context())
+	tplName := map[int32]string{}
+	if tplErr == nil {
+		for _, t := range tpls {
+			tplName[t.ItemID] = t.Name
+		}
+	}
 	guid := uint64(0)
 	itemID := uint32(0)
 	outcome := "fail"
@@ -269,6 +277,7 @@ func (s *APIV1Service) handleMakeItemCombine(c echo.Context) error {
 		for _, e := range result.Items {
 			items = append(items, map[string]interface{}{
 				"itemId":   e.ItemID,
+				"name":     tplName[e.ItemID],
 				"count":    e.Count,
 				"success":  e.Success,
 				"guid":     e.GUID,
@@ -282,13 +291,14 @@ func (s *APIV1Service) handleMakeItemCombine(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":  0,
-		"index":  index,
-		"count":  count,
-		"guid":   guid,
-		"itemId": itemID,
-		"result": outcome,
-		"items":  items,
+		"error":    0,
+		"index":    index,
+		"count":    count,
+		"guid":     guid,
+		"itemId":   itemID,
+		"itemName": tplName[int32(itemID)],
+		"result":   outcome,
+		"items":    items,
 	})
 }
 
@@ -314,15 +324,35 @@ func (s *APIV1Service) handleMakeItemDisjoint(c echo.Context) error {
 	}
 
 	roleID := s.activeRoleID(c, claims)
-	_, err := s.Store.ItemDisjoint(c.Request().Context(), roleID, guids)
+	result, err := s.Store.ItemDisjoint(c.Request().Context(), roleID, guids)
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
+	// 2026-09-08 第七十四轮: 分解响应带产物明细 + 名称(物品模板体系消费)
+	var items []map[string]interface{}
+	if result != nil && result.Rewards != nil && result.Rewards.Items != nil {
+		tpls, tplErr := s.Store.ListItemTemplates(c.Request().Context())
+		tplName := map[int32]string{}
+		if tplErr == nil {
+			for _, t := range tpls {
+				tplName[t.ItemID] = t.Name
+			}
+		}
+		for _, mi := range result.Rewards.Items.MaterialItems {
+			items = append(items, map[string]interface{}{
+				"itemId": mi.Index,
+				"name":   tplName[int32(mi.Index)],
+				"count":  mi.Count,
+			})
+		}
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":  0,
 		"guids":  guids,
 		"result": "success",
+		"items":  items,
 	})
 }
 
