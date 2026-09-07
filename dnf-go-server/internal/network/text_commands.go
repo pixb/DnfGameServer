@@ -119,18 +119,19 @@ var textCommandMeta = map[string]MessageMeta{
 	"PK_BATTLE_RESULT":                    {Module: 10008, Cmd: 36},
 
 	// ==================== 组队模块 (10009) ====================
-	"SEARCH_PARTY":          {Module: 10009, Cmd: 0},
-	"CREATE_PARTY":          {Module: 10009, Cmd: 4}, // 2026-09-07 第四十八轮: 改 cmd 4 对齐 ControlGroupHandler(原 cmd 2 落 RecommendGroupHandler 导致建队无效)
-	"RECOMMEND_GROUP":       {Module: 10009, Cmd: 2},
-	"JOIN_PARTY":            {Module: 10009, Cmd: 4},
-	"LEAVE_PARTY":           {Module: 10009, Cmd: 4},
-	"MODIFY_PARTY_SETTING":  {Module: 10009, Cmd: 4},
-	"KICK_OUT_MEMBER":       {Module: 10009, Cmd: 4},
-	"START_MULTI_PLAY":      {Module: 10009, Cmd: 6},
-	"LOAD_PARTY_STATUS":     {Module: 10009, Cmd: 12},
-	"HALF_OPEN_PARTY":       {Module: 10009, Cmd: 22},
-	"CONNECT_BATTLE_SERVER": {Module: 10009, Cmd: 18},
-	"CONCURRENT_OPERATION":  {Module: 10009, Cmd: 4},
+	"SEARCH_PARTY":           {Module: 10009, Cmd: 0},
+	"CREATE_PARTY":           {Module: 10009, Cmd: 4}, // 2026-09-07 第四十八轮: 改 cmd 4 对齐 ControlGroupHandler(原 cmd 2 落 RecommendGroupHandler 导致建队无效)
+	"RECOMMEND_GROUP":        {Module: 10009, Cmd: 2},
+	"JOIN_PARTY":             {Module: 10009, Cmd: 4},
+	"LEAVE_PARTY":            {Module: 10009, Cmd: 4},
+	"MODIFY_PARTY_SETTING":   {Module: 10009, Cmd: 4},
+	"KICK_OUT_MEMBER":        {Module: 10009, Cmd: 4},
+	"START_MULTI_PLAY":       {Module: 10009, Cmd: 6},
+	"LOAD_PARTY_STATUS":      {Module: 10009, Cmd: 12},
+	"HALF_OPEN_PARTY":        {Module: 10009, Cmd: 22},
+	"HALF_OPEN_PARTY_REFUSE": {Module: 10009, Cmd: 24}, // 2026-09-07 第六十四轮: 半公开拒绝(targetguid 指定申请者)
+	"CONNECT_BATTLE_SERVER":  {Module: 10009, Cmd: 18},
+	"CONCURRENT_OPERATION":   {Module: 10009, Cmd: 4},
 
 	// ==================== 事件模块 (10500) ====================
 	"QUERY_EVENT_LIST":          {Module: 10500, Cmd: 0},

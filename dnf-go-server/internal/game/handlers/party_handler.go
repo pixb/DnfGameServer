@@ -584,6 +584,11 @@ func HalfOpenPartyRefuseHandler(session *network.Session, msg proto.Message) {
 		TransId: 0,
 	}
 	session.WriteResponse(10009, 16, resp)
+
+	// 2026-09-07 第六十四轮: 拒绝指定申请者后向被拒者推送(extraRoles, 其不在成员列表仍感知被拒)
+	if targetGuid != 0 {
+		broadcastPartyUpdate(session, req.Partyguid, targetGuid)
+	}
 }
 
 // HalfOpenPartyJoinHandler 半公开队伍加入

@@ -918,6 +918,98 @@ func (s *RankTCPTestSuite) TestTCPPartyMemberChangeNotify() {
 	fmt.Printf("party member change notify verified (kick→B gets 34/1member, leave→A gets 34/1member)\n")
 }
 
+// TestTCPPartyRefuseNotify 半开放拒绝推送(2026-09-07 第六十四轮):
+// A 建队半开放 → B JOIN 写申请 → A 拒绝(targetguid=B) → B 连接收到 10009/34(成员不含 B)
+func (s *RankTCPTestSuite) TestTCPPartyRefuseNotify() {
+	uid := time.Now().UnixNano()
+	openidA := fmt.Sprintf("test_party_ref_a_%d", uid)
+	openidB := fmt.Sprintf("test_party_ref_b_%d", uid)
+	guidA := s.createCharacter(openidA)
+	guidB := s.createCharacter(openidB)
+
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer func() {
+		all := []string{openidA, openidB}
+		db.Exec("DELETE FROM t_party_member WHERE party_id IN (SELECT party_id FROM t_party WHERE leader_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?)))", all[0], all[1])
+		db.Exec("DELETE FROM t_party_request WHERE party_id IN (SELECT party_id FROM t_party WHERE leader_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?)))", all[0], all[1])
+		db.Exec("DELETE FROM t_party WHERE leader_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", all[0], all[1])
+		db.Exec("DELETE FROM role WHERE id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", all[0], all[1])
+		db.Exec("DELETE FROM account WHERE openid IN (?, ?)", all[0], all[1])
+		db.Close()
+	}()
+
+	// A 建队并设半开放(publictype=1)
+	s.bindRole(guidA)
+	connA := s.socket
+	msgC, _ := json.Marshal(map[string]interface{}{"type": 0})
+	s.NoError(s.sendTCP(append([]byte("CREATE_PARTY:"), msgC...)), "send CREATE_PARTY")
+	bodyC, _ := s.recvTCP()
+	_, _, pbC := parseTCPResponse(bodyC)
+	cgC := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbC, cgC))
+	s.Equal(int32(0), cgC.Error, "create party should succeed")
+	var partyGuid uint64
+	s.NoError(db.QueryRow("SELECT party_id FROM t_party WHERE leader_id = ?", uint64(guidA)).Scan(&partyGuid))
+	msgPT, _ := json.Marshal(map[string]interface{}{"type": 6, "publictype": 1})
+	s.NoError(s.sendTCP(append([]byte("MODIFY_PARTY_SETTING:"), msgPT...)), "send MODIFY publictype=1")
+	bodyPT, _ := s.recvTCP()
+	_, _, pbPT := parseTCPResponse(bodyPT)
+	cgPT := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbPT, cgPT))
+	s.Equal(int32(0), cgPT.Error, "set publictype=1 should succeed")
+
+	// B JOIN 半开放 → 写申请(不入队)
+	s.bindRole(guidB)
+	connB := s.socket
+	msgJ, _ := json.Marshal(map[string]interface{}{"type": 5, "partyguid": float64(partyGuid)})
+	s.NoError(s.sendTCP(append([]byte("JOIN_PARTY:"), msgJ...)), "send JOIN_PARTY half-open")
+	bodyJ, _ := s.recvTCP()
+	_, _, pbJ := parseTCPResponse(bodyJ)
+	cgJ := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbJ, cgJ))
+	s.Equal(int32(0), cgJ.Error, "half-open join should create request")
+	var reqCnt int
+	s.NoError(db.QueryRow("SELECT COUNT(*) FROM t_party_request WHERE party_id = ? AND role_id = ?", partyGuid, uint64(guidB)).Scan(&reqCnt))
+	s.Equal(1, reqCnt, "B should have a pending request")
+
+	// A 拒绝 B(新连接) → B 连接收到 10009/34, 成员不含 B
+	s.bindRole(guidA)
+	msgR, _ := json.Marshal(map[string]interface{}{"partyguid": float64(partyGuid), "targetguid": guidB})
+	s.NoError(s.sendTCP(append([]byte("HALF_OPEN_PARTY_REFUSE:"), msgR...)), "send HALF_OPEN_PARTY_REFUSE")
+	bodyR, _ := s.recvTCP()
+	refModule, refCmd, refPayload := parseTCPResponse(bodyR)
+	s.Equal(uint16(10009), refModule, "refuse response module")
+	s.Equal(uint16(16), refCmd, "refuse response cmd")
+	refResp := &dnfv1.HalfOpenPartyRefuseResponse{}
+	s.NoError(proto.Unmarshal(refPayload, refResp))
+	s.Equal(int32(0), refResp.Error, "refuse should succeed")
+
+	nbB, err := readTCPFrame(connB)
+	s.NoError(err, "B should receive refuse notify")
+	_, ncmdB, npbB := parseTCPResponse(nbB)
+	s.Equal(uint16(34), ncmdB, "B should get 34 after being refused")
+	ntB := &dnfv1.PartyUpdateNotify{}
+	s.NoError(proto.Unmarshal(npbB, ntB))
+	s.Equal(1, len(ntB.Info.Members), "refuse notify should carry 1 member (A only)")
+	s.Equal(uint64(guidA), ntB.Info.Members[0].Charguid, "remaining member should be A")
+
+	// A 旧连接也收到推送(消费残留)
+	nbA, err := readTCPFrame(connA)
+	s.NoError(err)
+	_, _, npbA := parseTCPResponse(nbA)
+	ntA := &dnfv1.PartyUpdateNotify{}
+	s.NoError(proto.Unmarshal(npbA, ntA))
+	s.Equal(1, len(ntA.Info.Members), "A old conn should also get refuse notify")
+
+	// DB 校验: 申请已删除
+	var reqAfter int
+	s.NoError(db.QueryRow("SELECT COUNT(*) FROM t_party_request WHERE party_id = ? AND role_id = ?", partyGuid, uint64(guidB)).Scan(&reqAfter))
+	s.Equal(0, reqAfter, "request should be deleted after refuse")
+
+	fmt.Printf("party refuse notify verified (refuse→B gets 34/1member, request deleted)\n")
+}
+
 // bindRole 建立 TCP 连接并 SELECT_CHARACTER 绑定角色
 func (s *RankTCPTestSuite) bindRole(charGuid float64) {
 	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", s.serverHost, s.serverPort), 10*time.Second)
