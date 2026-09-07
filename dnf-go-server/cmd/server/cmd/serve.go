@@ -211,6 +211,30 @@ func runServe(cmd *cobra.Command, args []string) error {
 		}
 	}()
 
+	// 3.8 后台清理过期邮件(2026-09-07 第六十六轮): 周期由 --mail-cleanup-interval 控制(默认 5m)
+	// 启动时立即执行一次(清理重启期间积压的过期邮件), 之后按配置周期定时清理
+	mailInterval := prof.MailCleanupIntervalDuration()
+	go func() {
+		run := func() {
+			if n, err := s.DeleteExpiredMails(ctx, time.Now().Unix()); err != nil {
+				fmt.Printf("Warning: mail cleanup loop error: %v\n", err)
+			} else if n > 0 {
+				fmt.Printf("Mail cleanup loop: %d expired mail(s) deleted\n", n)
+			}
+		}
+		run()
+		ticker := time.NewTicker(mailInterval)
+		defer ticker.Stop()
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-ticker.C:
+				run()
+			}
+		}
+	}()
+
 	// 4. 创建服务器
 	fmt.Println("Creating server...")
 	srv, err := server.NewServer(ctx, prof, s, pkSvc)
