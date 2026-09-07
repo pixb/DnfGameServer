@@ -143,6 +143,10 @@ type Driver interface {
 	// DeleteExpiredMails 删除所有过期邮件(expire_at > 0 且 < now), 返回删除行数
 	// 2026-09-06 第十七轮: 过期邮件清理(发信可带 expire_at, 0 表示永不过期)
 	DeleteExpiredMails(ctx context.Context, now int64) (int64, error)
+	// ClaimMail 条件领取附件标记: UPDATE mail SET is_claimed=1 WHERE id=? AND is_claimed=0
+	// 返回是否抢到(影响行数=1); 用于防并发重复领取
+	// 2026-09-07 第七十二轮: 领取先抢锁再入包, 失败回滚
+	ClaimMail(ctx context.Context, id uint64) (bool, error)
 
 	// ==================== 拍卖行相关 ====================
 	CreateAuctionItem(ctx context.Context, create *AuctionItem) (*AuctionItem, error)

@@ -81,7 +81,7 @@ func TestMailClaimTestSuite(t *testing.T) {
 func (s *MailClaimTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积
-	if err := clearRolesForOpenids("ml_claim_01", "ml_claim_02", "ml_claim_03", "ml_claim_04", "ml_claim_05", "ml_claim_06", "ml_claim_07", "ml_claim_08", "ml_send_r1", "ml_send_s1", "ml_send_r2", "ml_send_s2", "ml_send_r3", "ml_send_s3", "ml_send_r4", "ml_send_s4"); err != nil {
+	if err := clearRolesForOpenids("ml_claim_01", "ml_claim_02", "ml_claim_03", "ml_claim_04", "ml_claim_05", "ml_claim_06", "ml_claim_07", "ml_claim_08", "ml_send_r1", "ml_send_s1", "ml_send_r2", "ml_send_s2", "ml_send_r3", "ml_send_s3", "ml_send_r4", "ml_send_s4", "ml_lst_01", "ml_race_01"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -475,4 +475,79 @@ func mailExists(mailID uint64) bool {
 		return false
 	}
 	return true
+}
+
+// TestMailListShowsAttachments 邮件列表返回附件信息与金币
+// (2026-09-07 第七十二轮: handleGetMailList 补 attachments 字段, 客户端可预览附件)
+func (s *MailClaimTestSuite) TestMailListShowsAttachments() {
+	roleID := s.loginAndSelect("ml_lst_01", 8)
+	mailID := insertMail(roleID,
+		`[{"item_id":2001,"count":3,"bind_type":1},{"item_id":2002,"count":5,"bind_type":0}]`, 100)
+	s.Require().NotZero(mailID)
+
+	resp, err := s.Client.Get("/api/v1/mail/list")
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	mails, ok := resp["mails"].([]interface{})
+	s.True(ok)
+	found := false
+	for _, mRaw := range mails {
+		m, ok := mRaw.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		if uint64(m["id"].(float64)) != mailID {
+			continue
+		}
+		found = true
+		s.Equal(`[{"item_id":2001,"count":3,"bind_type":1},{"item_id":2002,"count":5,"bind_type":0}]`, m["attachments"])
+		s.Equal(float64(100), m["gold"])
+		s.Equal(false, m["is_claimed"])
+	}
+	s.True(found, "新插入邮件应在列表中")
+}
+
+// TestClaimConcurrentOnce 并发领取同一邮件: 条件标记抢占(WHERE is_claimed=0)保证
+// 恰好一个成功一个 error 7, 附件只入包一次
+// (2026-09-07 第七十二轮: 领取先抢锁再入包, 防并发重复发放)
+func (s *MailClaimTestSuite) TestClaimConcurrentOnce() {
+	roleID := s.loginAndSelect("ml_race_01", 9)
+	mailID := insertMail(roleID, `{"item_id":2001,"count":1}`, 50)
+	s.Require().NotZero(mailID)
+
+	results := make(chan map[string]interface{}, 2)
+	claim := func() {
+		resp, err := s.Client.Post(fmt.Sprintf("/api/v1/mail/claim?mail_id=%d", mailID), map[string]interface{}{})
+		if err != nil {
+			results <- nil
+			return
+		}
+		results <- resp
+	}
+	go claim()
+	go claim()
+
+	err0, err7 := 0, 0
+	for i := 0; i < 2; i++ {
+		resp := <-results
+		if resp == nil {
+			continue
+		}
+		if errVal, ok := resp["error"]; ok {
+			if errVal == float64(0) {
+				err0++
+			} else if errVal == float64(7) {
+				err7++
+			}
+		}
+	}
+	s.Equal(1, err0, "恰好一个请求领取成功")
+	s.Equal(1, err7, "另一个请求应报已领取")
+	// 附件只入包一次、金币只入账一次、邮件已标记
+	s.Equal(1, bagItemCount(roleID, 2001))
+	s.Equal(int64(50), getGold(roleID))
+	s.True(mailClaimed(mailID))
 }

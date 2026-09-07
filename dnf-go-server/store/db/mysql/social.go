@@ -263,6 +263,21 @@ func (d *DB) UpdateMail(ctx context.Context, update *store.UpdateMail) error {
 	return nil
 }
 
+// ClaimMail 条件领取附件标记(防并发重复领取)
+func (d *DB) ClaimMail(ctx context.Context, id uint64) (bool, error) {
+	res, err := d.db.ExecContext(ctx,
+		"UPDATE mail SET is_claimed = 1, updated_at = ? WHERE id = ? AND is_claimed = 0",
+		time.Now().Unix(), id)
+	if err != nil {
+		return false, fmt.Errorf("failed to claim mail: %w", err)
+	}
+	n, err := res.RowsAffected()
+	if err != nil {
+		return false, fmt.Errorf("failed to read claim result: %w", err)
+	}
+	return n > 0, nil
+}
+
 // DeleteMail 删除邮件
 func (d *DB) DeleteMail(ctx context.Context, delete *store.DeleteMail) error {
 	query := "DELETE FROM mail WHERE id = ?"

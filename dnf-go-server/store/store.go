@@ -410,6 +410,11 @@ func (s *Store) UpdateMail(ctx context.Context, update *UpdateMail) error {
 	return s.driver.UpdateMail(ctx, update)
 }
 
+// ClaimMail 条件领取附件标记(防并发重复领取)
+func (s *Store) ClaimMail(ctx context.Context, id uint64) (bool, error) {
+	return s.driver.ClaimMail(ctx, id)
+}
+
 // DeleteMail 删除邮件
 func (s *Store) DeleteMail(ctx context.Context, delete *DeleteMail) error {
 	return s.driver.DeleteMail(ctx, delete)

@@ -350,6 +350,7 @@ func (s *APIV1Service) handleGetMailList(c echo.Context) error {
 				"is_read":     m.IsRead,
 				"is_claimed":  m.IsClaimed,
 				"gold":        m.Gold,
+				"attachments": m.Attachments,
 				"created_at":  m.CreatedAt,
 			})
 		}
@@ -510,18 +511,30 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
 	}
 
-	isClaimed := true
-	if err := s.Store.UpdateMail(c.Request().Context(), &store.UpdateMail{
-		ID:        mail.ID,
-		IsClaimed: &isClaimed,
-	}); err != nil {
+	// 2026-09-07 第七十二轮: 条件标记抢占(WHERE is_claimed=0)防并发重复领取;
+	// 未抢到 = 已被其他请求领取
+	claimed, err := s.Store.ClaimMail(c.Request().Context(), mail.ID)
+	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+	if !claimed {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 7})
+	}
+
+	// 入包/金币失败时回滚领取标记, 避免"已标记但附件丢失"
+	rollbackClaim := func() {
+		notClaimed := false
+		_ = s.Store.UpdateMail(c.Request().Context(), &store.UpdateMail{
+			ID:        mail.ID,
+			IsClaimed: &notClaimed,
+		})
 	}
 
 	var grantedItems []map[string]interface{}
 	for _, att := range atts {
 		grid, err := s.nextBagGrid(c.Request().Context(), mail.ReceiverID)
 		if err != nil {
+			rollbackClaim()
 			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
 		}
 		if _, err := s.Store.CreateBagItem(c.Request().Context(), &store.BagItem{
@@ -531,6 +544,7 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 			Count:     att.Count,
 			BindType:  att.BindType,
 		}); err != nil {
+			rollbackClaim()
 			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
 		}
 		grantedItems = append(grantedItems, map[string]interface{}{
@@ -549,6 +563,7 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 		}
 		currency.Gold += mail.Gold
 		if err := s.Store.UpdateRoleCurrency(c.Request().Context(), currency); err != nil {
+			rollbackClaim()
 			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
 		}
 		grantedGold = mail.Gold
