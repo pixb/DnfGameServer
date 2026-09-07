@@ -95,6 +95,9 @@ type Driver interface {
 	ListBagItems(ctx context.Context, find *FindBagItem) ([]*BagItem, error)
 	ListBagItemsByRole(ctx context.Context, roleID uint64) ([]*BagItem, error)
 	DeleteBagItem(ctx context.Context, delete *DeleteBagItem) error
+	// ==================== 物品模板(2026-09-08 第七十三轮) ====================
+	GetItemTemplate(ctx context.Context, itemID int32) (*ItemTemplate, error)
+	ListItemTemplates(ctx context.Context) ([]*ItemTemplate, error)
 
 	// ==================== 任务相关 ====================
 	CreateQuest(ctx context.Context, create *Quest) (*Quest, error)

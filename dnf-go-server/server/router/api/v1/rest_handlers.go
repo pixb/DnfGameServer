@@ -34,6 +34,37 @@ func (s *APIV1Service) activeRoleID(c echo.Context, claims *auth.UserClaims) uin
 	return claims.UserID
 }
 
+// handleItemTemplates 获取全部物品模板(名称/类型/等级/默认绑定/售价/描述)
+// 2026-09-08 第七十三轮: 物品模板体系实化——客户端可查询模板元数据
+func (s *APIV1Service) handleItemTemplates(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	templates, err := s.Store.ListItemTemplates(c.Request().Context())
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+	list := make([]map[string]interface{}, 0, len(templates))
+	for _, t := range templates {
+		list = append(list, map[string]interface{}{
+			"item_id":     t.ItemID,
+			"name":        t.Name,
+			"item_type":   t.ItemType,
+			"level":       t.Level,
+			"bind_type":   t.BindType,
+			"sell_price":  t.SellPrice,
+			"description": t.Description,
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":     0,
+		"templates": list,
+	})
+}
+
+// handleGetBag 获取背包物品(库存总数)
 func (s *APIV1Service) handleGetBag(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {

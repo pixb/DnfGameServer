@@ -256,6 +256,18 @@ func (s *Store) DeleteBagItem(ctx context.Context, delete *DeleteBagItem) error 
 	return s.driver.DeleteBagItem(ctx, delete)
 }
 
+// ==================== 物品模板Store方法(2026-09-08 第七十三轮) ====================
+
+// GetItemTemplate 获取物品模板
+func (s *Store) GetItemTemplate(ctx context.Context, itemID int32) (*ItemTemplate, error) {
+	return s.driver.GetItemTemplate(ctx, itemID)
+}
+
+// ListItemTemplates 获取全部物品模板
+func (s *Store) ListItemTemplates(ctx context.Context) ([]*ItemTemplate, error) {
+	return s.driver.ListItemTemplates(ctx)
+}
+
 // ==================== 任务相关Store方法 ====================
 
 // ListQuests 获取任务列表

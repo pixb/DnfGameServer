@@ -170,3 +170,40 @@ func (d *DB) DeleteBagItem(ctx context.Context, delete *store.DeleteBagItem) err
 	}
 	return nil
 }
+
+// ==================== 物品模板(2026-09-08 第七十三轮, sqlite 同构) ====================
+
+// GetItemTemplate 获取物品模板
+func (d *DB) GetItemTemplate(ctx context.Context, itemID int32) (*store.ItemTemplate, error) {
+	row := d.db.QueryRowContext(ctx,
+		`SELECT item_id, name, item_type, level, bind_type, sell_price, description FROM t_item_template WHERE item_id = ?`,
+		itemID)
+	var t store.ItemTemplate
+	if err := row.Scan(&t.ItemID, &t.Name, &t.ItemType, &t.Level, &t.BindType, &t.SellPrice, &t.Description); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, store.ErrNotFound
+		}
+		return nil, fmt.Errorf("failed to scan item template: %w", err)
+	}
+	return &t, nil
+}
+
+// ListItemTemplates 获取全部物品模板
+func (d *DB) ListItemTemplates(ctx context.Context) ([]*store.ItemTemplate, error) {
+	rows, err := d.db.QueryContext(ctx,
+		`SELECT item_id, name, item_type, level, bind_type, sell_price, description FROM t_item_template ORDER BY item_id`)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query item templates: %w", err)
+	}
+	defer rows.Close()
+
+	var list []*store.ItemTemplate
+	for rows.Next() {
+		var t store.ItemTemplate
+		if err := rows.Scan(&t.ItemID, &t.Name, &t.ItemType, &t.Level, &t.BindType, &t.SellPrice, &t.Description); err != nil {
+			return nil, fmt.Errorf("failed to scan item template: %w", err)
+		}
+		list = append(list, &t)
+	}
+	return list, rows.Err()
+}

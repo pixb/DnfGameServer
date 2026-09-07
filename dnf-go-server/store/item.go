@@ -40,3 +40,15 @@ type UpdateBagItem struct {
 
 // DeleteBagItem 删除物品
 type DeleteBagItem DeleteBase
+
+// ItemTemplate 物品模板配置
+// 2026-09-08 第七十三轮: 物品模板体系实化——模板元数据(名称/类型/等级/默认绑定/售价/描述)
+type ItemTemplate struct {
+	ItemID      int32  `json:"item_id"`
+	Name        string `json:"name"`
+	ItemType    int32  `json:"item_type"`
+	Level       int32  `json:"level"`
+	BindType    int32  `json:"bind_type"`
+	SellPrice   int32  `json:"sell_price"`
+	Description string `json:"description"`
+}

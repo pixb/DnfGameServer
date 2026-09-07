@@ -131,6 +131,8 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	// 背包路由
 	apiGroup.GET("/bag", s.handleGetBag)
 	apiGroup.GET("/bag/items", s.handleGetBagItems)
+	// 物品模板路由(2026-09-08 第七十三轮)
+	apiGroup.GET("/item/templates", s.handleItemTemplates)
 
 	// 商店路由
 	apiGroup.GET("/shop/list", s.handleGetShopList)
