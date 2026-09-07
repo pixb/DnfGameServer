@@ -1201,3 +1201,15 @@ INSERT INTO t_item_template (item_id, name, item_type, level, bind_type, sell_pr
     (2013000000, '破损剑刃', 0, 1, 0, 2, '分解产物(保底)'),
     (2013000001, '破损护甲', 0, 1, 0, 3, '分解产物(保底)')
 ON DUPLICATE KEY UPDATE item_id = item_id;
+
+-- 模板物品扩展+配方引用(2.13.0, 与 2.13.0__recipe_more_items.sql 一致)
+INSERT INTO t_item_template (item_id, name, item_type, level, bind_type, sell_price, description) VALUES
+    (2004, '秘银矿石', 0, 10, 0, 50, '高级锻造材料'),
+    (1004, '屠龙巨剑', 1, 20, 0, 2000, '传说武器, 合成配方产物')
+ON DUPLICATE KEY UPDATE item_id = item_id;
+
+INSERT INTO t_make_recipe (recipe_index, result_index, result_count, material_list, cost_money, enabled, success_rate, result_pool, fail_result_index, fail_result_count) VALUES
+    (1010, 1004, 1, '[{"index":2004,"count":3}]', 500, 1, 100, NULL, NULL, NULL),
+    (1011, 2004, 1, '[{"index":3001,"count":1},{"index":2003,"count":2}]', 0, 1, 100, NULL, NULL, NULL),
+    (1012, 1003, 1, '[{"index":1002,"count":2},{"index":2002,"count":3}]', 300, 1, 100, NULL, NULL, NULL)
+ON DUPLICATE KEY UPDATE recipe_index = recipe_index;

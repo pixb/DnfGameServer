@@ -199,7 +199,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_batch_a", "mk_batch_b", "mk_bind_a", "mk_bind_b", "mk_disj_06", "mk_disj_07", "mk_exp_01", "mk_exp_02", "mk_exp_03", "mk_exp_04", "mk_name_01", "mk_name_02"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_batch_a", "mk_batch_b", "mk_bind_a", "mk_bind_b", "mk_disj_06", "mk_disj_07", "mk_exp_01", "mk_exp_02", "mk_exp_03", "mk_exp_04", "mk_name_01", "mk_name_02", "mk_more_01", "mk_more_02", "mk_more_03"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -1078,6 +1078,76 @@ func (s *MakeTestSuite) TestMakeRecipeExpand() {
 	} else {
 		s.Equal(2, bagItemCount(roleID8, 2001))
 	}
+}
+
+// TestMakeRecipeMoreItems 配方引用更多模板物品(2026-09-08 第七十六轮, 新模板 2004/1004 + 配方 1010-1012):
+// 1010 秘银锻造(2004x3+500金 -> 1004屠龙巨剑) / 1011 材料进阶(3001x1+2003x2 -> 2004秘银矿石) /
+// 1012 武器升级链(1002x2+2002x3+300金 -> 1003x1)
+func (s *MakeTestSuite) TestMakeRecipeMoreItems() {
+	// 1010: 秘银锻造(产物带名称)
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_more_01", 26)
+	s.Require().NoError(setGold(roleID, 1000))
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2004: 3}))
+	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1010,
+		"material_items": []map[string]interface{}{
+			{"index": 2004, "count": 3},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	s.Equal("屠龙巨剑", resp["itemName"], "1010 产物应为屠龙巨剑")
+	s.Equal(0, bagItemCount(roleID, 2004), "材料 2004x3 应扣净")
+	s.Equal(1, bagItemCount(roleID, 1004), "产物 1004x1 应入包")
+	s.Equal(int64(500), getGold(roleID), "费用 500 应扣减(1000->500)")
+
+	// 1011: 材料进阶(无费用, 双材料)
+	roleID1 := s.loginAndSelectCharacterWithUserAndSlot("mk_more_02", 27)
+	s.Require().NoError(seedBagItems(roleID1, map[int32]int32{3001: 1, 2003: 2}))
+	resp1, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1011,
+		"material_items": []map[string]interface{}{
+			{"index": 3001, "count": 1},
+			{"index": 2003, "count": 2},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp1)
+	if errVal, ok := resp1["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	s.Equal("秘银矿石", resp1["itemName"], "1011 产物应为秘银矿石")
+	s.Equal(0, bagItemCount(roleID1, 3001), "材料 3001x1 应扣净")
+	s.Equal(0, bagItemCount(roleID1, 2003), "材料 2003x2 应扣净")
+	s.Equal(1, bagItemCount(roleID1, 2004), "产物 2004x1 应入包")
+
+	// 1012: 武器升级链(费用 300)
+	roleID2 := s.loginAndSelectCharacterWithUserAndSlot("mk_more_03", 28)
+	s.Require().NoError(setGold(roleID2, 1000))
+	s.Require().NoError(seedBagItems(roleID2, map[int32]int32{1002: 2, 2002: 3}))
+	resp2, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1012,
+		"material_items": []map[string]interface{}{
+			{"index": 1002, "count": 2},
+			{"index": 2002, "count": 3},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp2)
+	if errVal, ok := resp2["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	s.Equal("秘银巨剑", resp2["itemName"], "1012 产物应为秘银巨剑")
+	s.Equal(0, bagItemCount(roleID2, 1002), "材料 1002x2 应扣净")
+	s.Equal(0, bagItemCount(roleID2, 2002), "材料 2002x3 应扣净")
+	s.Equal(1, bagItemCount(roleID2, 1003), "产物 1003x1 应入包")
+	s.Equal(int64(700), getGold(roleID2), "费用 300 应扣减(1000->700)")
 }
 
 // TestItemCombineResponseName 合成响应带物品名称(2026-09-08 第七十四轮, 物品模板体系消费)
