@@ -157,6 +157,11 @@ func (s *Store) TargetUserPartyInfo(ctx context.Context, roleID, targetGuid uint
 	return s.driver.TargetUserPartyInfo(ctx, roleID, targetGuid)
 }
 
+// GetPartyByGuid 按队伍ID查队伍(2026-09-07 第六十二轮)
+func (s *Store) GetPartyByGuid(ctx context.Context, partyGuid uint64) (*PartyInfo, error) {
+	return s.driver.GetPartyByGuid(ctx, partyGuid)
+}
+
 // WaitinigToUsersLoading 等待用户加载
 func (s *Store) WaitinigToUsersLoading(ctx context.Context, roleID uint64) error {
 	return s.driver.WaitinigToUsersLoading(ctx, roleID)

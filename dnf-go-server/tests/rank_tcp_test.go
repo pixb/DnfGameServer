@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net"
 	"testing"
 	"time"
@@ -596,6 +597,12 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	s.NoError(s.sendTCP(append([]byte("HALF_OPEN_PARTY:"), msgAcc...)), "send HALF_OPEN_PARTY accept")
 	bodyAcc, _ := s.recvTCP()
 	accModule, accCmd, accPayload := parseTCPResponse(bodyAcc)
+	// 2026-09-07 第六十二轮: 队伍成员变化推送(10009/34)可能因 JOIN 广播与角色重连竞态
+	// 先行到达新连接, 循环消费推送帧直到收到本请求响应
+	for accModule == 10009 && accCmd == 34 {
+		bodyAcc, _ = s.recvTCP()
+		accModule, accCmd, accPayload = parseTCPResponse(bodyAcc)
+	}
 	s.Equal(uint16(10009), accModule, "accept response module")
 	s.Equal(uint16(15), accCmd, "accept response cmd")
 	accResp := &dnfv1.HalfOpenPartyAcceptResponse{}
@@ -690,6 +697,96 @@ func (s *RankTCPTestSuite) TestTCPPartyCommands() {
 	db2.Close()
 
 	fmt.Printf("party text commands verified (create/dup/modify/publictype1/join-request/dup-request/nonleader-modify/kick/accept/DB-join/publictype0/join-inparty-fail/member-leave/disband)\n")
+}
+
+// TestTCPPartyUpdateNotify 队伍成员变化在线推送(2026-09-07 第六十二轮):
+// A 建队(公开) → B JOIN → A 的既有连接收到 10009/34 PartyUpdateNotify(成员含 A+B)
+func (s *RankTCPTestSuite) TestTCPPartyUpdateNotify() {
+	uid := time.Now().UnixNano()
+	openidA := fmt.Sprintf("test_party_upd_a_%d", uid)
+	openidB := fmt.Sprintf("test_party_upd_b_%d", uid)
+	guidA := s.createCharacter(openidA)
+	guidB := s.createCharacter(openidB)
+
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer func() {
+		all := []string{openidA, openidB}
+		db.Exec("DELETE FROM t_party_member WHERE party_id IN (SELECT party_id FROM t_party WHERE leader_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?)))", all[0], all[1])
+		db.Exec("DELETE FROM t_party WHERE leader_id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", all[0], all[1])
+		db.Exec("DELETE FROM role WHERE id IN (SELECT r.id FROM role r JOIN account a ON r.account_id=a.id WHERE a.openid IN (?, ?))", all[0], all[1])
+		db.Exec("DELETE FROM account WHERE openid IN (?, ?)", all[0], all[1])
+		db.Close()
+	}()
+
+	// A 建队(连接保持, 后续从该连接读推送)
+	s.bindRole(guidA)
+	connA := s.socket
+	msgC, _ := json.Marshal(map[string]interface{}{"type": 0})
+	s.NoError(s.sendTCP(append([]byte("CREATE_PARTY:"), msgC...)), "send CREATE_PARTY")
+	bodyC, _ := s.recvTCP()
+	_, _, pbC := parseTCPResponse(bodyC)
+	cgC := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbC, cgC))
+	s.Equal(int32(0), cgC.Error, "create party should succeed")
+
+	var partyGuid uint64
+	s.NoError(db.QueryRow("SELECT party_id FROM t_party WHERE leader_id = ?", uint64(guidA)).Scan(&partyGuid))
+	s.Greater(partyGuid, uint64(0), "party guid should be positive")
+
+	// A 设公开(publictype=0) 以便 B 自由加入
+	msgPT, _ := json.Marshal(map[string]interface{}{"type": 6, "publictype": 0})
+	s.NoError(s.sendTCP(append([]byte("MODIFY_PARTY_SETTING:"), msgPT...)), "send MODIFY publictype=0")
+	bodyPT, _ := s.recvTCP()
+	_, _, pbPT := parseTCPResponse(bodyPT)
+	cgPT := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbPT, cgPT))
+	s.Equal(int32(0), cgPT.Error, "set publictype=0 should succeed")
+
+	// B 连接并 JOIN(公开队直接加入)
+	s.bindRole(guidB)
+	msgJ, _ := json.Marshal(map[string]interface{}{"type": 5, "partyguid": float64(partyGuid)})
+	s.NoError(s.sendTCP(append([]byte("JOIN_PARTY:"), msgJ...)), "send JOIN_PARTY")
+	bodyJ, _ := s.recvTCP()
+	_, _, pbJ := parseTCPResponse(bodyJ)
+	cgJ := &dnfv1.ControlGroupResponse{}
+	s.NoError(proto.Unmarshal(pbJ, cgJ))
+	s.Equal(int32(0), cgJ.Error, "join public party should succeed")
+
+	// A 的既有连接收到 10009/34 推送: PartyUpdateNotify, 成员 A+B
+	notifyBody, err := readTCPFrame(connA)
+	s.NoError(err, "A should receive party update notify")
+	notifyModule, notifyCmd, notifyPayload := parseTCPResponse(notifyBody)
+	s.Equal(uint16(10009), notifyModule, "notify module")
+	s.Equal(uint16(34), notifyCmd, "notify cmd")
+	notify := &dnfv1.PartyUpdateNotify{}
+	s.NoError(proto.Unmarshal(notifyPayload, notify), "unmarshal PartyUpdateNotify")
+	s.NotNil(notify.Info, "notify info should not be nil")
+	s.Equal(partyGuid, notify.Info.Partyguid, "notify party guid should match")
+	s.Equal(2, len(notify.Info.Members), "notify should carry 2 members")
+	ids := []uint64{}
+	for _, m := range notify.Info.Members {
+		ids = append(ids, m.Charguid)
+	}
+	s.Contains(ids, uint64(guidA), "members should contain A")
+	s.Contains(ids, uint64(guidB), "members should contain B")
+
+	fmt.Printf("party update notify verified (A-conn received 10009/34 with 2 members)\n")
+}
+
+// readTCPFrame 从指定连接读一帧(2字节大端长度 + 消息体)
+func readTCPFrame(conn net.Conn) ([]byte, error) {
+	lenBuf := make([]byte, 2)
+	if _, err := io.ReadFull(conn, lenBuf); err != nil {
+		return nil, err
+	}
+	bodyLen := binary.BigEndian.Uint16(lenBuf)
+	if bodyLen == 0 {
+		return nil, nil
+	}
+	body := make([]byte, bodyLen)
+	_, err := io.ReadFull(conn, body)
+	return body, err
 }
 
 // bindRole 建立 TCP 连接并 SELECT_CHARACTER 绑定角色

@@ -7,6 +7,7 @@ import (
 
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/party_service"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 )
@@ -238,6 +239,11 @@ func ControlGroupHandler(session *network.Session, msg proto.Message) {
 		Type:  action,
 	}
 	session.WriteResponse(10009, 5, resp)
+
+	// 2026-09-07 第六十二轮: 加入成功后向全队广播最新队伍信息
+	if action == 5 && partyGuid != 0 {
+		broadcastPartyUpdate(session, partyGuid)
+	}
 }
 
 // StartMultiPlayHandler 开始多人游戏
@@ -518,6 +524,9 @@ func HalfOpenPartyAcceptHandler(session *network.Session, msg proto.Message) {
 		TransId: 0,
 	}
 	session.WriteResponse(10009, 15, resp)
+
+	// 2026-09-07 第六十二轮: 接受申请后向全队广播最新队伍信息
+	broadcastPartyUpdate(session, req.Partyguid)
 }
 
 // HalfOpenPartyRefuseHandler 半公开队伍拒绝(2026-09-07 第五十二轮: 文本命令可带 targetguid 指定申请者)
@@ -587,6 +596,9 @@ func HalfOpenPartyJoinHandler(session *network.Session, msg proto.Message) {
 		TransId: 0,
 	}
 	session.WriteResponse(10009, 17, resp)
+
+	// 2026-09-07 第六十二轮: 直接加入成功后向全队广播最新队伍信息
+	broadcastPartyUpdate(session, req.Partyguid)
 }
 
 // PartyDungeonConditionHandler 多人游戏副本条件
@@ -694,4 +706,48 @@ func TargetUserPartyInfoHandler(session *network.Session, msg proto.Message) {
 		TransId: 0,
 	}
 	session.WriteResponse(10009, 20, resp)
+}
+
+// broadcastPartyUpdate 队伍成员变化后向全队在线成员广播最新队伍信息(2026-09-07 第六十二轮)
+func broadcastPartyUpdate(trigger *network.Session, partyGuid uint64) {
+	ctx := context.Background()
+	party, err := partySvc.GetPartyByGuid(ctx, partyGuid)
+	if err != nil || party == nil {
+		return
+	}
+	partyInfo := &dnfv1.PartyInfo{
+		Partyguid:    party.PartyGuid,
+		Leaderguid:   party.LeaderGuid,
+		Name:         party.Name,
+		Maxmembers:   party.MaxMembers,
+		Members:      party.Members,
+		Dungeonindex: party.DungeonIndex,
+		Roomid:       uint32(party.RoomID),
+		Minlevel:     party.MinLevel,
+		Maxlevel:     party.MaxLevel,
+		Area:         party.Area,
+		Subtype:      party.SubType,
+		Stageindex:   party.StageIndex,
+		Publictype:   party.PublicType,
+	}
+	notify := &dnfv1.PartyUpdateNotify{Info: partyInfo}
+	mg := trigger.SessionManager()
+	if mg == nil {
+		return
+	}
+	for _, m := range party.Members {
+		if m == nil {
+			continue
+		}
+		for _, s := range mg.GetAll() {
+			if s != nil && s.RoleID() == m.Charguid && s.ID() != trigger.ID() {
+				if err := s.WriteResponse(10009, 34, notify); err != nil {
+					logger.Error("failed to send party update notify",
+						logger.ErrorField(err),
+						logger.Int64("session_id", s.ID()),
+					)
+				}
+			}
+		}
+	}
 }

@@ -257,6 +257,8 @@ type Driver interface {
 	RequestToReEnterDungeon(ctx context.Context, roleID, charguid uint64) error
 	SuggestMoveParty(ctx context.Context, roleID uint64, area uint32) error
 	TargetUserPartyInfo(ctx context.Context, roleID, targetGuid uint64) (*PartyInfo, error)
+	// GetPartyByGuid 按队伍ID查队伍(2026-09-07 第六十二轮, 成员变化广播用)
+	GetPartyByGuid(ctx context.Context, partyGuid uint64) (*PartyInfo, error)
 	WaitinigToUsersLoading(ctx context.Context, roleID uint64) error
 	// TeamRankPosition 我的队伍在全服队伍平均等级榜的位置(2026-09-06 第四十三轮)
 	// 无队伍返回 (0, 0, nil)

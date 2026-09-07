@@ -131,6 +131,11 @@ func (s *PartyService) TargetUserPartyInfo(ctx context.Context, roleID, targetGu
 	return s.store.TargetUserPartyInfo(ctx, roleID, targetGuid)
 }
 
+// GetPartyByGuid 按队伍ID查队伍(2026-09-07 第六十二轮, 成员变化广播用)
+func (s *PartyService) GetPartyByGuid(ctx context.Context, partyGuid uint64) (*store.PartyInfo, error) {
+	return s.store.GetPartyByGuid(ctx, partyGuid)
+}
+
 // WaitinigToUsersLoading 等待用户加载
 func (s *PartyService) WaitinigToUsersLoading(ctx context.Context, roleID uint64) error {
 	return s.store.WaitinigToUsersLoading(ctx, roleID)

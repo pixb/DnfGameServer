@@ -299,3 +299,8 @@ message CreatePartyRequest {
 message CreatePartyResponse {
   int32 error = 1;
 }
+
+// 队伍成员变化推送(2026-09-07 第六十二轮): 成员加入/退出/接受后向全队在线成员广播最新队伍信息
+message PartyUpdateNotify {
+  PartyInfo info = 1;
+}

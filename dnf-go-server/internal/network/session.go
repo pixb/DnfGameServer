@@ -17,6 +17,7 @@ type Session struct {
 	closed     atomic.Bool
 	roleID     uint64
 	matchingID uint64
+	manager    *SessionManager // 2026-09-07 第六十二轮: 注入会话管理器供广播
 }
 
 // NewSession 创建新会话
@@ -26,6 +27,16 @@ func NewSession(conn net.Conn, id int64) *Session {
 		conn:  conn,
 		attrs: make(map[string]interface{}),
 	}
+}
+
+// SetSessionManager 注入会话管理器(2026-09-07 第六十二轮)
+func (s *Session) SetSessionManager(m *SessionManager) {
+	s.manager = m
+}
+
+// SessionManager 返回会话管理器(2026-09-07 第六十二轮)
+func (s *Session) SessionManager() *SessionManager {
+	return s.manager
 }
 
 // RoleID 返回角色ID

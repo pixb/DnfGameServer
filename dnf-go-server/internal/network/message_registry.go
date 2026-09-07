@@ -343,7 +343,8 @@ func (c *ProtoCodec) RegisterAllMessages() {
 	c.RegisterMessage(10009, 28, func() proto.Message { return &dnfv1.PartyDungeonConditionRequest{} })
 	c.RegisterMessage(10009, 30, func() proto.Message { return &dnfv1.MultiPlayStartDungeonRequest{} })
 	c.RegisterMessage(10009, 32, func() proto.Message { return &dnfv1.TargetUserPartyInfoRequest{} })
-
+	// 队伍成员变化推送 (cmd=34, 2026-09-07 第六十二轮)
+	c.RegisterMessage(10009, 34, func() proto.Message { return &dnfv1.PartyUpdateNotify{} })
 	// ==================== 冒险联盟模块 (Module = 17201) ====================
 	c.RegisterMessage(17201, 0, func() proto.Message { return &dnfv1.AdventureUnionInfoRequest{} })
 	c.RegisterMessage(17201, 1, func() proto.Message { return &dnfv1.AdventureUnionNameChangeRequest{} })

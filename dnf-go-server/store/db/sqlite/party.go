@@ -499,6 +499,20 @@ func (d *DB) getPartyByGuid(ctx context.Context, partyGuid uint64) (*store.Party
 	return party, nil
 }
 
+// GetPartyByGuid 按队伍ID查队伍(2026-09-07 第六十二轮, 成员变化广播用, 含成员列表)
+func (d *DB) GetPartyByGuid(ctx context.Context, partyGuid uint64) (*store.PartyInfo, error) {
+	party, err := d.getPartyByGuid(ctx, partyGuid)
+	if err != nil || party == nil {
+		return party, err
+	}
+	members, err := d.getPartyMembers(ctx, party.PartyGuid)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get party members: %w", err)
+	}
+	party.Members = members
+	return party, nil
+}
+
 func (d *DB) getPartyByRoleID(ctx context.Context, roleID uint64) (*store.PartyInfo, error) {
 	query := `
 		SELECT p.party_id, p.leader_id, p.name, p.max_members,
