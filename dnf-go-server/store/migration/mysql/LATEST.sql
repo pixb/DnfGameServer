@@ -1216,3 +1216,17 @@ ON DUPLICATE KEY UPDATE recipe_index = recipe_index;
 
 -- 分解配置引用更多模板物品(2.14.0, 与 2.14.0__disjoint_more_items.sql 一致)
 UPDATE t_make_disjoint SET material_list = '[{"material_index":2013000000,"material_count":1,"bind_type":0},{"material_index":2013000001,"material_count":1,"bind_type":0}]', enabled = 1 WHERE item_index = 3002;
+
+-- 武器/防具完整升级链(2.15.0, 与 2.15.0__armor_chain.sql 一致)
+INSERT INTO t_item_template (item_id, name, item_type, level, bind_type, sell_price, description) VALUES
+    (1101, '布甲上衣', 2, 1, 0, 80, '基础防具'),
+    (1102, '皮甲上衣', 2, 5, 0, 150, '中级防具'),
+    (1103, '铁甲上衣', 2, 10, 0, 400, '高级防具')
+ON DUPLICATE KEY UPDATE item_id = item_id;
+
+INSERT INTO t_make_recipe (recipe_index, result_index, result_count, material_list, cost_money, enabled, success_rate, result_pool, fail_result_index, fail_result_count) VALUES
+    (1014, 1004, 1, '[{"index":1003,"count":1},{"index":2004,"count":2}]', 600, 1, 100, NULL, NULL, NULL),
+    (1015, 1101, 1, '[{"index":2001,"count":1},{"index":2002,"count":1}]', 0, 1, 100, NULL, NULL, NULL),
+    (1016, 1102, 1, '[{"index":1101,"count":2},{"index":2003,"count":1}]', 100, 1, 100, NULL, NULL, NULL),
+    (1017, 1103, 1, '[{"index":1102,"count":2},{"index":2004,"count":1}]', 300, 1, 100, NULL, NULL, NULL)
+ON DUPLICATE KEY UPDATE recipe_index = recipe_index;
