@@ -620,10 +620,11 @@ func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*
 		}
 		var matIndex, matCount int32
 		var materialList sql.NullString
+		var resultPool sql.NullString
 		var enabled int
 		err = tx.QueryRowContext(ctx, `
-			SELECT material_index, material_count, material_list, enabled FROM t_make_disjoint WHERE item_index = ?`, itemID).
-			Scan(&matIndex, &matCount, &materialList, &enabled)
+			SELECT material_index, material_count, material_list, result_pool, enabled FROM t_make_disjoint WHERE item_index = ?`, itemID).
+			Scan(&matIndex, &matCount, &materialList, &resultPool, &enabled)
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("物品无分解配置: %d", itemID)
 		}
@@ -634,8 +635,19 @@ func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*
 			return nil, fmt.Errorf("分解配置已停用: %d", itemID)
 		}
 		// 2026-09-06 第十六轮: material_list(JSON 多材料+bind_type)非空优先, 空/NULL 回退旧列
+		// 2026-09-08 第八十轮: result_pool(权重随机池)最优先, 按权重选一组产物
 		var outs []disjointOutput
-		if materialList.Valid && materialList.String != "" && materialList.String != "null" {
+		if resultPool.Valid && resultPool.String != "" && resultPool.String != "null" {
+			var pool []disjointPoolOutput
+			if err := json.Unmarshal([]byte(resultPool.String), &pool); err != nil {
+				return nil, fmt.Errorf("failed to parse disjoint result_pool: %w", err)
+			}
+			if len(pool) == 0 {
+				return nil, fmt.Errorf("分解随机池为空: %d", itemID)
+			}
+			picked := pickDisjointOutput(pool)
+			outs = []disjointOutput{{MaterialIndex: picked.MaterialIndex, MaterialCount: picked.MaterialCount, BindType: picked.BindType}}
+		} else if materialList.Valid && materialList.String != "" && materialList.String != "null" {
 			if err := json.Unmarshal([]byte(materialList.String), &outs); err != nil {
 				return nil, fmt.Errorf("failed to parse disjoint outputs: %w", err)
 			}
@@ -894,6 +906,34 @@ type disjointOutput struct {
 	MaterialIndex int32 `json:"material_index"`
 	MaterialCount int32 `json:"material_count"`
 	BindType      int32 `json:"bind_type"`
+}
+
+// disjointPoolOutput 分解随机池条目(t_make_disjoint.result_pool JSON)
+// 2026-09-08 第八十轮: 权重随机产物(仿合成 result_pool)
+type disjointPoolOutput struct {
+	MaterialIndex int32 `json:"material_index"`
+	MaterialCount int32 `json:"material_count"`
+	BindType      int32 `json:"bind_type"`
+	Weight        int32 `json:"weight"`
+}
+
+// pickDisjointOutput 按权重随机选一组分解产物(2026-09-08 第八十轮)
+func pickDisjointOutput(pool []disjointPoolOutput) disjointPoolOutput {
+	total := 0
+	for _, p := range pool {
+		total += int(p.Weight)
+	}
+	if total <= 0 {
+		return pool[0]
+	}
+	r := rand.Intn(total)
+	for _, p := range pool {
+		r -= int(p.Weight)
+		if r < 0 {
+			return p
+		}
+	}
+	return pool[len(pool)-1]
 }
 
 // pickRecipeOutput 按权重随机选一个产出

@@ -199,7 +199,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_batch_a", "mk_batch_b", "mk_bind_a", "mk_bind_b", "mk_disj_06", "mk_disj_07", "mk_exp_01", "mk_exp_02", "mk_exp_03", "mk_exp_04", "mk_name_01", "mk_name_02", "mk_more_01", "mk_more_02", "mk_more_03", "mk_tpl_01", "mk_dj02_01", "mk_dj02_02", "mk_chain_01", "mk_chain_02"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_batch_a", "mk_batch_b", "mk_bind_a", "mk_bind_b", "mk_disj_06", "mk_disj_07", "mk_exp_01", "mk_exp_02", "mk_exp_03", "mk_exp_04", "mk_name_01", "mk_name_02", "mk_more_01", "mk_more_02", "mk_more_03", "mk_tpl_01", "mk_dj02_01", "mk_dj02_02", "mk_chain_01", "mk_chain_02", "mk_pool_01"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -1397,4 +1397,40 @@ func (s *MakeTestSuite) TestMakeArmorChain() {
 	s.Equal(0, bagItemCount(roleID, 2004), "材料 2004x1 应扣净")
 	s.Equal(1, bagItemCount(roleID, 1103), "铁甲 1103x1 应入包")
 	s.Equal(int64(700), getGold(roleID), "费用 300 应扣减(1000->700)")
+}
+
+// TestDisjointRandomPool 分解随机池/权重产物(2026-09-08 第八十轮, 迁移 2.16.0):
+// 3004 精铁盾牌 result_pool: 60% 破损剑刃x2 / 40% 破损护甲x1
+func (s *MakeTestSuite) TestDisjointRandomPool() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_pool_01", 34)
+	seen := map[float64]bool{}
+	for i := 0; i < 8; i++ {
+		s.Require().NoError(seedBagItems(roleID, map[int32]int32{3004: 1}))
+		ids := bagItemIDs(roleID, 1)
+		s.Require().Len(ids, 1)
+
+		resp, err := s.Client.Post("/api/v1/make/item/disjoint", map[string]interface{}{
+			"guids": ids,
+		})
+		s.NoError(err)
+		s.NotNil(resp)
+		if errVal, ok := resp["error"]; ok {
+			s.Equal(float64(0), errVal)
+		}
+		items, ok := resp["items"].([]interface{})
+		s.True(ok, "响应应带 items")
+		s.Len(items, 1, "随机池每次只出一组产物")
+		it, _ := items[0].(map[string]interface{})
+		itemID := it["itemId"].(float64)
+		s.True(itemID == 2013000000 || itemID == 2013000001, "产物应在随机池内")
+		seen[itemID] = true
+		// 产物确实入包: 剑刃x2 或 护甲x1
+		if itemID == 2013000000 {
+			s.Equal(2, bagItemCount(roleID, 2013000000))
+		} else {
+			s.Equal(1, bagItemCount(roleID, 2013000001))
+		}
+	}
+	s.True(seen[2013000000], "8 次分解应至少出现一次破损剑刃")
+	s.True(seen[2013000001], "8 次分解应至少出现一次破损护甲")
 }
