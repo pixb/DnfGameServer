@@ -315,6 +315,32 @@ func (d *DB) ItemCombine(ctx context.Context, roleID uint64, index int32, materi
 		return nil, err
 	}
 
+	// 0.5 模板存在性校验(2026-09-08 第七十七轮): 配方材料/产物/随机池/保底产物均需在 t_item_template, 防脏数据扣材料
+	tpls, tplErr := d.ListItemTemplates(ctx)
+	if tplErr != nil {
+		return nil, fmt.Errorf("failed to load item templates: %w", tplErr)
+	}
+	tplOK := map[int32]bool{}
+	for _, t := range tpls {
+		tplOK[t.ItemID] = true
+	}
+	for _, m := range recipe.materials {
+		if !tplOK[m.Index] {
+			return nil, fmt.Errorf("配方引用未知物品模板: 材料 %d", m.Index)
+		}
+	}
+	if !tplOK[recipe.resultIndex] {
+		return nil, fmt.Errorf("配方引用未知物品模板: 产物 %d", recipe.resultIndex)
+	}
+	for _, o := range recipe.pool {
+		if !tplOK[o.ResultIndex] {
+			return nil, fmt.Errorf("配方引用未知物品模板: 随机产物 %d", o.ResultIndex)
+		}
+	}
+	if recipe.failResultIndex > 0 && !tplOK[recipe.failResultIndex] {
+		return nil, fmt.Errorf("配方引用未知物品模板: 保底产物 %d", recipe.failResultIndex)
+	}
+
 	// 1. 加载背包(grid_index -> 物品)
 	rows, err := tx.QueryContext(ctx, `
 		SELECT id, grid_index, item_id, count, bind_type FROM bag_item

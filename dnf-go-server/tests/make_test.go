@@ -199,7 +199,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_batch_a", "mk_batch_b", "mk_bind_a", "mk_bind_b", "mk_disj_06", "mk_disj_07", "mk_exp_01", "mk_exp_02", "mk_exp_03", "mk_exp_04", "mk_name_01", "mk_name_02", "mk_more_01", "mk_more_02", "mk_more_03"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_batch_a", "mk_batch_b", "mk_bind_a", "mk_bind_b", "mk_disj_06", "mk_disj_07", "mk_exp_01", "mk_exp_02", "mk_exp_03", "mk_exp_04", "mk_name_01", "mk_name_02", "mk_more_01", "mk_more_02", "mk_more_03", "mk_tpl_01"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -1148,6 +1148,33 @@ func (s *MakeTestSuite) TestMakeRecipeMoreItems() {
 	s.Equal(0, bagItemCount(roleID2, 2002), "材料 2002x3 应扣净")
 	s.Equal(1, bagItemCount(roleID2, 1003), "产物 1003x1 应入包")
 	s.Equal(int64(700), getGold(roleID2), "费用 300 应扣减(1000->700)")
+}
+
+// TestCombineRejectsUnknownTemplate 配方引用模板表做存在性校验(2026-09-08 第七十七轮):
+// 自包含直插脏配方(2001x1 -> 999999 未知模板), 合成应报错且材料不扣, 结束后删除
+func (s *MakeTestSuite) TestCombineRejectsUnknownTemplate() {
+	s.Require().NoError(upsertDirtyRecipe(1013))
+	defer func() {
+		s.NoError(dropDirtyRecipe(1013))
+	}()
+
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_tpl_01", 29)
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{2001: 1}))
+	resp, err := s.Client.Post("/api/v1/make/item/combine", map[string]interface{}{
+		"index": 1013,
+		"material_items": []map[string]interface{}{
+			{"index": 2001, "count": 1},
+		},
+		"count": 1,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.NotEqual(float64(0), errVal, "脏配方应报错")
+	}
+	msg, _ := resp["message"].(string)
+	s.Contains(msg, "配方引用未知物品模板", "应提示模板不存在")
+	s.Equal(1, bagItemCount(roleID, 2001), "材料 2001 不应被扣")
 }
 
 // TestItemCombineResponseName 合成响应带物品名称(2026-09-08 第七十四轮, 物品模板体系消费)
