@@ -1241,3 +1241,14 @@ ON DUPLICATE KEY UPDATE item_id = item_id;
 INSERT INTO t_make_disjoint (item_index, material_index, material_count, material_list, result_pool, enabled) VALUES
     (3004, 0, 0, NULL, '[{"material_index":2013000000,"material_count":2,"bind_type":0,"weight":60},{"material_index":2013000001,"material_count":1,"bind_type":0,"weight":40}]', 1)
 ON DUPLICATE KEY UPDATE result_pool = VALUES(result_pool), enabled = 1;
+
+-- 分解固定+随机混产(2.17.0, 与 2.17.0__disjoint_extra_pool.sql 一致)
+ALTER TABLE t_make_disjoint ADD COLUMN extra_pool TEXT NULL;
+
+INSERT INTO t_item_template (item_id, name, item_type, level, bind_type, sell_price, description) VALUES
+    (3005, '精铁头盔', 2, 8, 0, 180, '防具, 分解固定材料+额外随机')
+ON DUPLICATE KEY UPDATE item_id = item_id;
+
+INSERT INTO t_make_disjoint (item_index, material_index, material_count, material_list, extra_pool, enabled) VALUES
+    (3005, 2013000000, 1, '[{"material_index":2013000000,"material_count":1,"bind_type":0}]', '[{"material_index":2013000000,"material_count":1,"bind_type":0,"weight":60},{"material_index":2013000001,"material_count":1,"bind_type":0,"weight":40}]', 1)
+ON DUPLICATE KEY UPDATE extra_pool = VALUES(extra_pool), enabled = 1;

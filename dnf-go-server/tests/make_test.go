@@ -199,7 +199,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_batch_a", "mk_batch_b", "mk_bind_a", "mk_bind_b", "mk_disj_06", "mk_disj_07", "mk_exp_01", "mk_exp_02", "mk_exp_03", "mk_exp_04", "mk_name_01", "mk_name_02", "mk_more_01", "mk_more_02", "mk_more_03", "mk_tpl_01", "mk_dj02_01", "mk_dj02_02", "mk_chain_01", "mk_chain_02", "mk_pool_01"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_batch_a", "mk_batch_b", "mk_bind_a", "mk_bind_b", "mk_disj_06", "mk_disj_07", "mk_exp_01", "mk_exp_02", "mk_exp_03", "mk_exp_04", "mk_name_01", "mk_name_02", "mk_more_01", "mk_more_02", "mk_more_03", "mk_tpl_01", "mk_dj02_01", "mk_dj02_02", "mk_chain_01", "mk_chain_02", "mk_pool_01", "mk_extra_01"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -1433,4 +1433,42 @@ func (s *MakeTestSuite) TestDisjointRandomPool() {
 	}
 	s.True(seen[2013000000], "8 次分解应至少出现一次破损剑刃")
 	s.True(seen[2013000001], "8 次分解应至少出现一次破损护甲")
+}
+
+// TestDisjointExtraPool 分解固定+随机混产(2026-09-08 第八十一轮, 迁移 2.17.0):
+// 3005 精铁头盔 固定 2013000000x1 + extra_pool 必掷(60% 剑刃x1 / 40% 护甲x1)
+func (s *MakeTestSuite) TestDisjointExtraPool() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_extra_01", 35)
+	seenArmor := false
+	seenDouble := false
+	for i := 0; i < 8; i++ {
+		s.Require().NoError(seedBagItems(roleID, map[int32]int32{3005: 1}))
+		ids := bagItemIDs(roleID, 1)
+		s.Require().Len(ids, 1)
+
+		resp, err := s.Client.Post("/api/v1/make/item/disjoint", map[string]interface{}{
+			"guids": ids,
+		})
+		s.NoError(err)
+		s.NotNil(resp)
+		if errVal, ok := resp["error"]; ok {
+			s.Equal(float64(0), errVal)
+		}
+		items, ok := resp["items"].([]interface{})
+		s.True(ok, "响应应带 items")
+		s.True(len(items) >= 1 && len(items) <= 2, "固定+额外应 1-2 件产物(同 ID 合并)")
+		// 固定剑刃必有, 额外可能同为剑刃(合并)或护甲
+		armorCnt := bagItemCount(roleID, 2013000001)
+		s.True(armorCnt == 0 || armorCnt == 1, "护甲 0 或 1")
+		bladeCnt := bagItemCount(roleID, 2013000000)
+		s.True(bladeCnt == 1 || bladeCnt == 2, "剑刃 1(固定) 或 2(固定+额外剑刃)")
+		if armorCnt == 1 {
+			seenArmor = true
+		}
+		if bladeCnt == 2 {
+			seenDouble = true
+		}
+	}
+	s.True(seenArmor, "8 次分解应至少出现一次额外护甲")
+	s.True(seenDouble, "8 次分解应至少出现一次额外剑刃")
 }

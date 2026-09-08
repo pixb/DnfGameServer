@@ -621,10 +621,11 @@ func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*
 		var matIndex, matCount int32
 		var materialList sql.NullString
 		var resultPool sql.NullString
+		var extraPool sql.NullString
 		var enabled int
 		err = tx.QueryRowContext(ctx, `
-			SELECT material_index, material_count, material_list, result_pool, enabled FROM t_make_disjoint WHERE item_index = ?`, itemID).
-			Scan(&matIndex, &matCount, &materialList, &resultPool, &enabled)
+			SELECT material_index, material_count, material_list, result_pool, extra_pool, enabled FROM t_make_disjoint WHERE item_index = ?`, itemID).
+			Scan(&matIndex, &matCount, &materialList, &resultPool, &extraPool, &enabled)
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("物品无分解配置: %d", itemID)
 		}
@@ -653,6 +654,18 @@ func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*
 			}
 		} else {
 			outs = []disjointOutput{{MaterialIndex: matIndex, MaterialCount: matCount}}
+		}
+		// 2026-09-08 第八十一轮: extra_pool(额外奖励池)与固定产物叠加——必掷一次, 权重选一组追加到固定产物后
+		// (同 (模板,绑定) 在后续聚合 map 自动合并)
+		if extraPool.Valid && extraPool.String != "" && extraPool.String != "null" {
+			var pool []disjointPoolOutput
+			if err := json.Unmarshal([]byte(extraPool.String), &pool); err != nil {
+				return nil, fmt.Errorf("failed to parse disjoint extra_pool: %w", err)
+			}
+			if len(pool) > 0 {
+				picked := pickDisjointOutput(pool)
+				outs = append(outs, disjointOutput{MaterialIndex: picked.MaterialIndex, MaterialCount: picked.MaterialCount, BindType: picked.BindType})
+			}
 		}
 		if len(outs) == 0 {
 			return nil, fmt.Errorf("分解配置产出为空: %d", itemID)
