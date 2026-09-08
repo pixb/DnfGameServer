@@ -43,6 +43,54 @@ func dropDirtyRecipe(recipeIndex int32) error {
 	return nil
 }
 
+// upsertDirtyDisjoint 直插脏分解配置(产物引用未知模板), 供分解模板校验测试(2026-09-08 第七十八轮)
+func upsertDirtyDisjoint(itemIndex int32) error {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		return fmt.Errorf("open db: %w", err)
+	}
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	_, err = db.Exec(`INSERT INTO t_make_disjoint (item_index, material_index, material_count, material_list, enabled) VALUES (?, 999999, 1, '[{"material_index":999999,"material_count":1,"bind_type":0}]', 1) ON DUPLICATE KEY UPDATE material_list = VALUES(material_list), enabled = 1`, itemIndex)
+	if err != nil {
+		return fmt.Errorf("upsert dirty disjoint: %w", err)
+	}
+	return nil
+}
+
+// dropDirtyDisjoint 删除测试脏分解配置
+func dropDirtyDisjoint(itemIndex int32) error {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		return fmt.Errorf("open db: %w", err)
+	}
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	_, err = db.Exec(`DELETE FROM t_make_disjoint WHERE item_index = ?`, itemIndex)
+	if err != nil {
+		return fmt.Errorf("drop dirty disjoint: %w", err)
+	}
+	return nil
+}
+
+// upsertLegacyDisjoint 直插旧列分解配置(material_list NULL, 走旧列单材料回退), 供回退测试(2026-09-08 第七十八轮)
+func upsertLegacyDisjoint(itemIndex int32) error {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		return fmt.Errorf("open db: %w", err)
+	}
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	_, err = db.Exec(`INSERT INTO t_make_disjoint (item_index, material_index, material_count, material_list, enabled) VALUES (?, 2013000000, 5, NULL, 1) ON DUPLICATE KEY UPDATE material_list = NULL, material_index = 2013000000, material_count = 5, enabled = 1`, itemIndex)
+	if err != nil {
+		return fmt.Errorf("upsert legacy disjoint: %w", err)
+	}
+	return nil
+}
+
 // setGold 直接更新角色金币(集成测试数据准备,绕过 HTTP 层)
 func setGold(roleID uint64, gold int64) error {
 	db, err := sql.Open("mysql", testDBDSN)

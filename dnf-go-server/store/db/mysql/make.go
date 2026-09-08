@@ -653,6 +653,20 @@ func (d *DB) ItemDisjoint(ctx context.Context, roleID uint64, guids []uint64) (*
 		if len(outs) == 0 {
 			return nil, fmt.Errorf("分解配置产出为空: %d", itemID)
 		}
+		// 2026-09-08 第七十八轮: 分解产物模板存在性校验——产物需在 t_item_template, 防脏配置先删源
+		tpls, tplErr := d.ListItemTemplates(ctx)
+		if tplErr != nil {
+			return nil, fmt.Errorf("failed to load item templates: %w", tplErr)
+		}
+		tplOK := map[int32]bool{}
+		for _, t := range tpls {
+			tplOK[t.ItemID] = true
+		}
+		for _, o := range outs {
+			if o.MaterialIndex > 0 && !tplOK[o.MaterialIndex] {
+				return nil, fmt.Errorf("分解配置引用未知物品模板: 产物 %d", o.MaterialIndex)
+			}
+		}
 		for _, o := range outs {
 			if o.MaterialIndex <= 0 || o.MaterialCount <= 0 {
 				continue

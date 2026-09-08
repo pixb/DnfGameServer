@@ -1213,3 +1213,6 @@ INSERT INTO t_make_recipe (recipe_index, result_index, result_count, material_li
     (1011, 2004, 1, '[{"index":3001,"count":1},{"index":2003,"count":2}]', 0, 1, 100, NULL, NULL, NULL),
     (1012, 1003, 1, '[{"index":1002,"count":2},{"index":2002,"count":3}]', 300, 1, 100, NULL, NULL, NULL)
 ON DUPLICATE KEY UPDATE recipe_index = recipe_index;
+
+-- 分解配置引用更多模板物品(2.14.0, 与 2.14.0__disjoint_more_items.sql 一致)
+UPDATE t_make_disjoint SET material_list = '[{"material_index":2013000000,"material_count":1,"bind_type":0},{"material_index":2013000001,"material_count":1,"bind_type":0}]', enabled = 1 WHERE item_index = 3002;

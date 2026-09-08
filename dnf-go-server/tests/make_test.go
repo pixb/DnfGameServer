@@ -199,7 +199,7 @@ func TestMakeTestSuite(t *testing.T) {
 func (s *MakeTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	// 清理本套件用到的固定 openid 旧角色, 避免角色累积/槽位漂移
-	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_batch_a", "mk_batch_b", "mk_bind_a", "mk_bind_b", "mk_disj_06", "mk_disj_07", "mk_exp_01", "mk_exp_02", "mk_exp_03", "mk_exp_04", "mk_name_01", "mk_name_02", "mk_more_01", "mk_more_02", "mk_more_03", "mk_tpl_01"); err != nil {
+	if err := clearRolesForOpenids("mk_comb_01", "mk_disj_01", "mk_comb_02", "mk_comb_03", "mk_disj_02", "mk_disj_03", "mk_comb_04", "mk_comb_05", "mk_disj_04", "mk_disj_05", "mk_batch_a", "mk_batch_b", "mk_bind_a", "mk_bind_b", "mk_disj_06", "mk_disj_07", "mk_exp_01", "mk_exp_02", "mk_exp_03", "mk_exp_04", "mk_name_01", "mk_name_02", "mk_more_01", "mk_more_02", "mk_more_03", "mk_tpl_01", "mk_dj02_01", "mk_dj02_02"); err != nil {
 		s.T().Logf("clear roles warning: %v", err)
 	}
 }
@@ -665,10 +665,17 @@ func (s *MakeTestSuite) TestItemDisjointMultiMaterial() {
 	s.Equal(1, countDisjointRecords(roleID))
 }
 
-// TestItemDisjointLegacyColumn 兼容回退: 3002 配置 material_list 为 NULL, 走旧列单材料产出
+// TestItemDisjointLegacyColumn 兼容回退(2026-09-08 第七十八轮更新):
+// 自插 material_list 为 NULL 的配置(3003, 旧列 2013000000x5), 走旧列单材料产出
+// (原 3002 样例已被 2.14.0 改配 material_list 多产物, 不再走回退)
 func (s *MakeTestSuite) TestItemDisjointLegacyColumn() {
+	s.Require().NoError(upsertLegacyDisjoint(3003))
+	defer func() {
+		s.NoError(dropDirtyDisjoint(3003))
+	}()
+
 	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_disj_05", 21)
-	s.Require().NoError(seedBagItems(roleID, map[int32]int32{3002: 1}))
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{3003: 1}))
 	ids := bagItemIDs(roleID, 1)
 	s.Require().Len(ids, 1)
 
@@ -684,7 +691,7 @@ func (s *MakeTestSuite) TestItemDisjointLegacyColumn() {
 	// 旧列 2013000000x5 生效, bind_type 默认 0
 	s.Equal(5, bagItemCount(roleID, 2013000000))
 	s.Equal(0, bagItemBindType(roleID, 2013000000))
-	s.Equal(0, bagItemCount(roleID, 3002))
+	s.Equal(0, bagItemCount(roleID, 3003))
 	s.Equal(1, countDisjointRecords(roleID))
 }
 
@@ -1238,4 +1245,62 @@ func (s *MakeTestSuite) TestItemDisjointResponseItems() {
 	// 产物确实入包
 	s.Equal(3, bagItemCount(roleID, 2013000000))
 	s.Equal(2, bagItemCount(roleID, 2013000001))
+}
+
+// TestDisjoint3002Multi 分解配置引用更多模板物品(2026-09-08 第七十八轮, 迁移 2.14.0):
+// 3002 旧式护手 旧列单材料 -> material_list 多产物(2013000000x1 + 2013000001x1)
+func (s *MakeTestSuite) TestDisjoint3002Multi() {
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_dj02_01", 30)
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{3002: 1}))
+	ids := bagItemIDs(roleID, 1)
+	s.Require().Len(ids, 1)
+
+	resp, err := s.Client.Post("/api/v1/make/item/disjoint", map[string]interface{}{
+		"guids": ids,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.Equal(float64(0), errVal)
+	}
+	items, ok := resp["items"].([]interface{})
+	s.True(ok, "响应应带 items 产物明细")
+	s.Len(items, 2, "3002 应分解为两件产物")
+	byID := map[float64]map[string]interface{}{}
+	for _, raw := range items {
+		it, _ := raw.(map[string]interface{})
+		byID[it["itemId"].(float64)] = it
+	}
+	s.Equal("破损剑刃", byID[2013000000]["name"])
+	s.Equal(float64(1), byID[2013000000]["count"])
+	s.Equal("破损护甲", byID[2013000001]["name"])
+	s.Equal(float64(1), byID[2013000001]["count"])
+	s.Equal(1, bagItemCount(roleID, 2013000000))
+	s.Equal(1, bagItemCount(roleID, 2013000001))
+}
+
+// TestDisjointRejectsUnknownTemplate 分解产物模板存在性校验(2026-09-08 第七十八轮):
+// 自包含直插脏分解配置(3003 -> 999999 未知模板), 分解应报错且源物品不删
+func (s *MakeTestSuite) TestDisjointRejectsUnknownTemplate() {
+	s.Require().NoError(upsertDirtyDisjoint(3003))
+	defer func() {
+		s.NoError(dropDirtyDisjoint(3003))
+	}()
+
+	roleID := s.loginAndSelectCharacterWithUserAndSlot("mk_dj02_02", 31)
+	s.Require().NoError(seedBagItems(roleID, map[int32]int32{3003: 1}))
+	ids := bagItemIDs(roleID, 1)
+	s.Require().Len(ids, 1)
+
+	resp, err := s.Client.Post("/api/v1/make/item/disjoint", map[string]interface{}{
+		"guids": ids,
+	})
+	s.NoError(err)
+	s.NotNil(resp)
+	if errVal, ok := resp["error"]; ok {
+		s.NotEqual(float64(0), errVal, "脏分解配置应报错")
+	}
+	msg, _ := resp["message"].(string)
+	s.Contains(msg, "分解配置引用未知物品模板", "应提示模板不存在")
+	s.Equal(1, bagItemCount(roleID, 3003), "源物品 3003 不应被删")
 }
