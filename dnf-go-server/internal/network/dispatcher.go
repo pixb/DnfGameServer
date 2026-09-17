@@ -77,6 +77,11 @@ func (d *MessageDispatcher) Dispatch(session *Session, message interface{}) {
 	meta := packet.Meta
 	msg := packet.Message
 
+	// 文本命令附加字段(测试辅助):注入 session,供 handler 读取
+	if packet.TextExtras != nil {
+		session.SetAttr("textExtras", packet.TextExtras)
+	}
+
 	// 查找处理器
 	key := meta.MessageKey()
 

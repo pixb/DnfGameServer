@@ -31,6 +31,17 @@ type StartMultiPlayResult struct {
 	Detail       []*dnfv1.UserMinimumInfo
 }
 
+// PartySetting 队伍设置修改项(2026-09-07 第五十轮: MODIFY_PARTY_SETTING)
+// 指针字段为 nil 表示不修改
+type PartySetting struct {
+	Name         *string
+	DungeonIndex *uint32
+	MinLevel     *uint32
+	MaxLevel     *uint32
+	Area         *uint32
+	PublicType   *uint32 // 2026-09-07 第五十一轮: 0=公开 1=半开放 2=私有
+}
+
 // SearchPartyList 搜索队伍列表
 func (s *Store) SearchPartyList(ctx context.Context, dungeonIndex, minLevel, maxLevel uint32) ([]*PartyInfo, error) {
 	return s.driver.SearchPartyList(ctx, dungeonIndex, minLevel, maxLevel)
@@ -44,6 +55,11 @@ func (s *Store) RecommendGroup(ctx context.Context, dungeonIndex uint32) ([]*Par
 // ControlGroup 控制队伍
 func (s *Store) ControlGroup(ctx context.Context, roleID uint64, action uint32, targetGuid uint64, partyGuid uint64) error {
 	return s.driver.ControlGroup(ctx, roleID, action, targetGuid, partyGuid)
+}
+
+// UpdatePartySetting 修改队伍设置(2026-09-07 第五十轮)
+func (s *Store) UpdatePartySetting(ctx context.Context, roleID uint64, setting *PartySetting) error {
+	return s.driver.UpdatePartySetting(ctx, roleID, setting)
 }
 
 // StartMultiPlay 开始多人游戏
@@ -86,14 +102,14 @@ func (s *Store) CheckProhibitedWord(ctx context.Context, word string) (bool, err
 	return s.driver.CheckProhibitedWord(ctx, word)
 }
 
-// HalfOpenPartyAccept 半公开队伍接受
-func (s *Store) HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid uint64) error {
-	return s.driver.HalfOpenPartyAccept(ctx, roleID, partyGuid)
+// HalfOpenPartyAccept 半公开队伍接受(2026-09-07 第五十二轮: targetGuid>0 指定申请者, 0=接受全部)
+func (s *Store) HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid, targetGuid uint64) error {
+	return s.driver.HalfOpenPartyAccept(ctx, roleID, partyGuid, targetGuid)
 }
 
-// HalfOpenPartyRefuse 半公开队伍拒绝
-func (s *Store) HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid uint64) error {
-	return s.driver.HalfOpenPartyRefuse(ctx, roleID, partyGuid)
+// HalfOpenPartyRefuse 半公开队伍拒绝(2026-09-07 第五十二轮: targetGuid>0 指定, 0=拒绝全部)
+func (s *Store) HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid, targetGuid uint64) error {
+	return s.driver.HalfOpenPartyRefuse(ctx, roleID, partyGuid, targetGuid)
 }
 
 // ControlGroupCustom 控制队伍自定义
@@ -141,7 +157,27 @@ func (s *Store) TargetUserPartyInfo(ctx context.Context, roleID, targetGuid uint
 	return s.driver.TargetUserPartyInfo(ctx, roleID, targetGuid)
 }
 
+// GetPartyByGuid 按队伍ID查队伍(2026-09-07 第六十二轮)
+func (s *Store) GetPartyByGuid(ctx context.Context, partyGuid uint64) (*PartyInfo, error) {
+	return s.driver.GetPartyByGuid(ctx, partyGuid)
+}
+
+// GetPartyByRoleID 按角色ID查当前队伍(2026-09-07 第六十三轮)
+func (s *Store) GetPartyByRoleID(ctx context.Context, roleID uint64) (*PartyInfo, error) {
+	return s.driver.GetPartyByRoleID(ctx, roleID)
+}
+
+// ListPartyRequests 按队伍ID查申请者角色列表(2026-09-07 第六十七轮)
+func (s *Store) ListPartyRequests(ctx context.Context, partyGuid uint64) ([]uint64, error) {
+	return s.driver.ListPartyRequests(ctx, partyGuid)
+}
+
 // WaitinigToUsersLoading 等待用户加载
 func (s *Store) WaitinigToUsersLoading(ctx context.Context, roleID uint64) error {
 	return s.driver.WaitinigToUsersLoading(ctx, roleID)
+}
+
+// TeamRankPosition 我的队伍在全服队伍平均等级榜的位置(2026-09-06 第四十三轮)
+func (s *Store) TeamRankPosition(ctx context.Context, roleID uint64) (rank, total int, err error) {
+	return s.driver.TeamRankPosition(ctx, roleID)
 }

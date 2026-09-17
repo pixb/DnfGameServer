@@ -238,6 +238,7 @@ CREATE TABLE IF NOT EXISTS auction_item (
     item_id INTEGER NOT NULL,
     count INTEGER DEFAULT 1,
     price INTEGER DEFAULT 0,
+    buyout_price INTEGER DEFAULT 0,
     total_price INTEGER DEFAULT 0,
     duration INTEGER DEFAULT 24,
     status INTEGER DEFAULT 0,
@@ -506,6 +507,17 @@ CREATE TABLE IF NOT EXISTS t_party_member (
 CREATE INDEX IF NOT EXISTS idx_party_member_party ON t_party_member(party_id);
 CREATE INDEX IF NOT EXISTS idx_party_member_role ON t_party_member(role_id);
 
+-- 2.7.0 增量迁移：队伍加入申请记录
+-- 2026-09-07 第五十二轮：半开放队伍(public_type=1)申请/队长接受流程实化
+CREATE TABLE IF NOT EXISTS t_party_request (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    party_id INTEGER NOT NULL,
+    role_id INTEGER NOT NULL,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    UNIQUE (party_id, role_id)
+);
+CREATE INDEX IF NOT EXISTS idx_pr_role ON t_party_request (role_id);
+
 -- 徽章升级记录表
 CREATE TABLE IF NOT EXISTS t_emblem_upgrade (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -628,3 +640,317 @@ CREATE TABLE IF NOT EXISTS t_role_currency (
 );
 
 CREATE INDEX IF NOT EXISTS idx_role_currency_role ON t_role_currency(role_id);
+
+-- ============================================
+
+-- ============================================
+-- 2.0.2 增量迁移：补齐 PK 服务表(t_pvp_*)
+-- 与 mysql 2.0.2 对齐
+-- ============================================
+
+-- PK 记录表
+CREATE TABLE IF NOT EXISTS t_pvp_record (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    match_type INTEGER NOT NULL DEFAULT 0,
+    win INTEGER NOT NULL DEFAULT 0,
+    score INTEGER NOT NULL DEFAULT 0,
+    opponent_id INTEGER NOT NULL DEFAULT 0,
+    battle_time INTEGER NOT NULL DEFAULT 0,
+    row_status TEXT NOT NULL DEFAULT 'NORMAL',
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+CREATE INDEX IF NOT EXISTS idx_pvp_record_role ON t_pvp_record(role_id);
+
+-- PK 统计表
+CREATE TABLE IF NOT EXISTS t_pvp_stats (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL UNIQUE,
+    total_matches INTEGER NOT NULL DEFAULT 0,
+    win_count INTEGER NOT NULL DEFAULT 0,
+    lose_count INTEGER NOT NULL DEFAULT 0,
+    total_score INTEGER NOT NULL DEFAULT 0,
+    max_win_streak INTEGER NOT NULL DEFAULT 0,
+    current_streak INTEGER NOT NULL DEFAULT 0,
+    row_status TEXT NOT NULL DEFAULT 'NORMAL',
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+
+-- PK 赛季表
+CREATE TABLE IF NOT EXISTS t_pvp_season (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    season_id INTEGER NOT NULL UNIQUE,
+    season_name TEXT NOT NULL DEFAULT '',
+    start_time INTEGER NOT NULL DEFAULT 0,
+    end_time INTEGER NOT NULL DEFAULT 0,
+    status INTEGER NOT NULL DEFAULT 0,
+    row_status TEXT NOT NULL DEFAULT 'NORMAL',
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+
+-- PK 奖励表
+CREATE TABLE IF NOT EXISTS t_pvp_reward (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    reward_id INTEGER NOT NULL DEFAULT 0,
+    reward_name TEXT NOT NULL DEFAULT '',
+    count INTEGER NOT NULL DEFAULT 1,
+    claimed INTEGER NOT NULL DEFAULT 0,
+    row_status TEXT NOT NULL DEFAULT 'NORMAL',
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+CREATE INDEX IF NOT EXISTS idx_pvp_reward_role ON t_pvp_reward(role_id);
+
+-- PK 匹配类型表
+CREATE TABLE IF NOT EXISTS t_pvp_match_type (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    match_type INTEGER NOT NULL UNIQUE,
+    type_name TEXT NOT NULL DEFAULT '',
+    min_level INTEGER NOT NULL DEFAULT 1,
+    max_level INTEGER NOT NULL DEFAULT 100,
+    min_players INTEGER NOT NULL DEFAULT 1,
+    max_players INTEGER NOT NULL DEFAULT 4,
+    status INTEGER NOT NULL DEFAULT 1,
+    row_status TEXT NOT NULL DEFAULT 'NORMAL',
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+
+-- ============================================
+-- 2.0.3 增量迁移：补齐 PK 匹配表与副本入场表
+-- 与 mysql 2.0.3 对齐
+-- ============================================
+
+-- PK 匹配表
+CREATE TABLE IF NOT EXISTS t_pvp_matching (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    matching_id INTEGER NOT NULL UNIQUE,
+    role_id INTEGER NOT NULL,
+    match_type INTEGER NOT NULL,
+    status INTEGER NOT NULL DEFAULT 0,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    row_status TEXT NOT NULL DEFAULT 'NORMAL'
+);
+CREATE INDEX IF NOT EXISTS idx_pvp_matching_role ON t_pvp_matching(role_id);
+
+-- 副本入场记录表
+CREATE TABLE IF NOT EXISTS t_raid_entrance (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    raid_index INTEGER NOT NULL,
+    daily_character_count INTEGER NOT NULL DEFAULT 0,
+    character_count INTEGER NOT NULL DEFAULT 0,
+    account_count INTEGER NOT NULL DEFAULT 0,
+    daily_reward_count INTEGER NOT NULL DEFAULT 0,
+    reward_count INTEGER NOT NULL DEFAULT 0,
+    last_enter_time INTEGER NOT NULL DEFAULT 0,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    row_status TEXT NOT NULL DEFAULT 'NORMAL',
+    UNIQUE(role_id, raid_index)
+);
+CREATE INDEX IF NOT EXISTS idx_raid_entrance_role ON t_raid_entrance(role_id);
+
+-- ============================================
+-- 2.0.4 增量迁移：补齐制作模块记录表
+-- 2026-09-06：与 mysql 2.0.4 对齐；sqlite LATEST.sql 已有这两张表，
+-- 此文件供增量迁移链路保持 mysql/sqlite 对称。
+-- ============================================
+
+-- 物品合成记录表
+CREATE TABLE IF NOT EXISTS t_item_combine (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    target_index INTEGER NOT NULL,
+    material_list TEXT NOT NULL,
+    count INTEGER NOT NULL DEFAULT 1,
+    result_guid INTEGER NOT NULL,
+    cost_money INTEGER NOT NULL DEFAULT 0,
+    success INTEGER NOT NULL DEFAULT 1,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+CREATE INDEX IF NOT EXISTS idx_item_combine_role ON t_item_combine(role_id);
+
+-- 物品分解记录表
+CREATE TABLE IF NOT EXISTS t_item_disjoint (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    equip_guids TEXT NOT NULL,
+    material_list TEXT NOT NULL,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+CREATE INDEX IF NOT EXISTS idx_item_disjoint_role ON t_item_disjoint(role_id);
+
+-- ============================================
+-- 2.0.8 增量迁移：合成配方配置表 t_make_recipe
+-- 2026-09-06 第十二轮：与 mysql 2.0.8 对齐；ItemCombine 深化为配方驱动。
+-- ============================================
+
+-- 合成配方配置表
+CREATE TABLE IF NOT EXISTS t_make_recipe (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    recipe_index INTEGER NOT NULL,
+    result_index INTEGER NOT NULL,
+    result_count INTEGER NOT NULL DEFAULT 1,
+    material_list TEXT NOT NULL,
+    cost_money INTEGER NOT NULL DEFAULT 0,
+    success_rate INTEGER NOT NULL DEFAULT 100,
+    result_pool TEXT,
+    fail_result_index INTEGER,
+    fail_result_count INTEGER,
+    enabled INTEGER NOT NULL DEFAULT 1,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+CREATE UNIQUE INDEX IF NOT EXISTS uk_make_recipe_index ON t_make_recipe(recipe_index);
+
+-- ============================================
+-- 2.0.9 增量迁移：分解产出配置表 t_make_disjoint
+-- 2026-09-06 第十三轮：与 mysql 2.0.9 对齐；ItemDisjoint 深化为配置驱动。
+-- ============================================
+
+-- 分解产出配置表
+CREATE TABLE IF NOT EXISTS t_make_disjoint (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    item_index INTEGER NOT NULL,
+    material_index INTEGER NOT NULL,
+    material_count INTEGER NOT NULL DEFAULT 0,
+    material_list TEXT,
+    enabled INTEGER NOT NULL DEFAULT 1,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+CREATE UNIQUE INDEX IF NOT EXISTS uk_make_disjoint_item ON t_make_disjoint(item_index);
+-- ============================================
+-- 2.0.5 增量迁移：补齐制作模块其余记录表
+-- ============================================
+-- 2.0.5 增量迁移：补齐制作模块其余记录表
+-- 2026-09-06：与 mysql 2.0.5 对齐；sqlite LATEST.sql 已有这 4 张表，
+-- 此文件供增量迁移链路保持 mysql/sqlite 对称。
+-- ============================================
+
+-- 徽章升级记录表
+CREATE TABLE IF NOT EXISTS t_emblem_upgrade (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    emblem_index INTEGER NOT NULL,
+    level INTEGER NOT NULL,
+    try_count INTEGER NOT NULL,
+    success_count INTEGER NOT NULL,
+    cost_money INTEGER NOT NULL DEFAULT 0,
+    cost_talisman INTEGER NOT NULL DEFAULT 0,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+CREATE INDEX IF NOT EXISTS idx_emblem_upgrade_role ON t_emblem_upgrade(role_id);
+
+-- 时装合成记录表
+CREATE TABLE IF NOT EXISTS t_avatar_compose (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    avatar_guids TEXT NOT NULL,
+    result_index INTEGER NOT NULL,
+    result_guid INTEGER NOT NULL,
+    cost_money INTEGER NOT NULL DEFAULT 0,
+    success INTEGER NOT NULL DEFAULT 1,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+CREATE INDEX IF NOT EXISTS idx_avatar_compose_role ON t_avatar_compose(role_id);
+
+-- 物品制作记录表
+CREATE TABLE IF NOT EXISTS t_item_production (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    slot_index INTEGER NOT NULL,
+    recipe_index INTEGER NOT NULL,
+    count INTEGER NOT NULL DEFAULT 1,
+    result_index INTEGER NOT NULL,
+    result_count INTEGER NOT NULL DEFAULT 1,
+    cost_money INTEGER NOT NULL DEFAULT 0,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+CREATE INDEX IF NOT EXISTS idx_item_production_role ON t_item_production(role_id);
+
+-- 卡片合成记录表
+CREATE TABLE IF NOT EXISTS t_card_compose (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role_id INTEGER NOT NULL,
+    card_list TEXT NOT NULL,
+    result_index INTEGER NOT NULL,
+    result_count INTEGER NOT NULL DEFAULT 1,
+    cost_money INTEGER NOT NULL DEFAULT 0,
+    create_time INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+);
+CREATE INDEX IF NOT EXISTS idx_card_compose_role ON t_card_compose(role_id);
+
+-- ============================================
+-- 2.0.6 增量迁移：活动模块建表
+-- 2026-09-06：与 mysql 2.0.6 对齐,活动配置/进度落库。
+-- ============================================
+
+-- 活动配置表
+CREATE TABLE IF NOT EXISTS t_event_config (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    row_status TEXT NOT NULL DEFAULT 'NORMAL',
+    event_id INTEGER NOT NULL,
+    title TEXT NOT NULL DEFAULT '',
+    description TEXT,
+    event_type INTEGER NOT NULL DEFAULT 0,
+    status INTEGER NOT NULL DEFAULT 0,
+    start_time INTEGER NOT NULL DEFAULT 0,
+    end_time INTEGER NOT NULL DEFAULT 0,
+    reward_config TEXT,
+    UNIQUE(event_id)
+);
+CREATE INDEX IF NOT EXISTS idx_event_config_status ON t_event_config(status);
+CREATE INDEX IF NOT EXISTS idx_event_config_type ON t_event_config(event_type);
+
+-- 活动进度表
+CREATE TABLE IF NOT EXISTS t_event_progress (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    row_status TEXT NOT NULL DEFAULT 'NORMAL',
+    role_id INTEGER NOT NULL,
+    event_id INTEGER NOT NULL,
+    progress_type INTEGER NOT NULL DEFAULT 0,
+    progress_value INTEGER NOT NULL DEFAULT 0,
+    status INTEGER NOT NULL DEFAULT 0,
+    UNIQUE(role_id, event_id, progress_type)
+);
+CREATE INDEX IF NOT EXISTS idx_event_progress_event ON t_event_progress(event_id);
+
+-- ============================================
+-- 2.0.7 增量迁移：背包扩容容量存储
+-- 2026-09-06：与 mysql 2.0.7 对齐。
+-- ============================================
+
+-- 背包扩容表
+CREATE TABLE IF NOT EXISTS t_bag_expand (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    row_status TEXT NOT NULL DEFAULT 'NORMAL',
+    role_id INTEGER NOT NULL,
+    bag_type INTEGER NOT NULL DEFAULT 1,
+    capacity INTEGER NOT NULL DEFAULT 0,
+    UNIQUE(role_id, bag_type)
+);
+CREATE INDEX IF NOT EXISTS idx_bag_expand_role ON t_bag_expand(role_id);
+
+
+CREATE TABLE IF NOT EXISTS t_behavior_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at INTEGER NOT NULL DEFAULT 0,
+    role_id INTEGER NOT NULL DEFAULT 0,
+    module TEXT NOT NULL DEFAULT '',
+    action TEXT NOT NULL DEFAULT '',
+    level TEXT NOT NULL DEFAULT 'info',
+    content TEXT NOT NULL DEFAULT ''
+);
+CREATE INDEX IF NOT EXISTS idx_behavior_role_created ON t_behavior_log(role_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_behavior_level ON t_behavior_log(level);

@@ -14,8 +14,8 @@ import (
 // CreateAuctionItem 创建拍卖物品
 func (d *DB) CreateAuctionItem(ctx context.Context, create *store.AuctionItem) (*store.AuctionItem, error) {
 	query := `
-      INSERT INTO auction_item (created_at, updated_at, row_status, seller_id, seller_name, item_id, count, price, total_price, duration, status, bidder_id, bidder_name, bid_price, bid_count, attributes, end_time)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO auction_item (created_at, updated_at, row_status, seller_id, seller_name, item_id, count, price, buyout_price, total_price, duration, status, bidder_id, bidder_name, bid_price, bid_count, attributes, end_time)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
    `
 
 	now := time.Now().Unix()
@@ -24,7 +24,7 @@ func (d *DB) CreateAuctionItem(ctx context.Context, create *store.AuctionItem) (
 	result, err := d.db.ExecContext(ctx, query,
 		now, now, store.RowStatusNormal,
 		create.SellerID, create.SellerName, create.ItemID, create.Count,
-		create.Price, create.TotalPrice, create.Duration, create.Status,
+		create.Price, create.BuyoutPrice, create.TotalPrice, create.Duration, create.Status,
 		create.BidderID, create.BidderName, create.BidPrice, create.BidCount,
 		create.Attributes, endTime,
 	)
@@ -141,7 +141,7 @@ func (d *DB) ListAuctionItems(ctx context.Context, find *store.FindAuctionItem) 
 		args = append(args, *find.RowStatus)
 	}
 
-	query := `SELECT id, created_at, updated_at, row_status, seller_id, seller_name, item_id, count, price, total_price, duration, status, bidder_id, bidder_name, bid_price, bid_count, attributes, end_time FROM auction_item`
+	query := `SELECT id, created_at, updated_at, row_status, seller_id, seller_name, item_id, count, price, buyout_price, total_price, duration, status, bidder_id, bidder_name, bid_price, bid_count, attributes, end_time FROM auction_item`
 	if len(where) > 0 {
 		query += " WHERE " + strings.Join(where, " AND ")
 	}
@@ -164,7 +164,7 @@ func (d *DB) ListAuctionItems(ctx context.Context, find *store.FindAuctionItem) 
 		var item store.AuctionItem
 		err := rows.Scan(&item.ID, &item.CreatedAt, &item.UpdatedAt, &item.RowStatus,
 			&item.SellerID, &item.SellerName, &item.ItemID, &item.Count,
-			&item.Price, &item.TotalPrice, &item.Duration, &item.Status,
+			&item.Price, &item.BuyoutPrice, &item.TotalPrice, &item.Duration, &item.Status,
 			&item.BidderID, &item.BidderName, &item.BidPrice, &item.BidCount,
 			&item.Attributes, &item.EndTime)
 		if err != nil {
@@ -174,6 +174,59 @@ func (d *DB) ListAuctionItems(ctx context.Context, find *store.FindAuctionItem) 
 	}
 
 	return items, nil
+}
+
+// CountAuctionItems 统计拍卖物品条数(2026-09-07 第六十五轮, 与 ListAuctionItems 同 where 不含分页)
+func (d *DB) CountAuctionItems(ctx context.Context, find *store.FindAuctionItem) (int, error) {
+	var where []string
+	var args []interface{}
+
+	if find.ID != nil {
+		where = append(where, "id = ?")
+		args = append(args, *find.ID)
+	}
+	if find.SellerID != nil {
+		where = append(where, "seller_id = ?")
+		args = append(args, *find.SellerID)
+	}
+	if find.ItemID != nil {
+		where = append(where, "item_id = ?")
+		args = append(args, *find.ItemID)
+	}
+	if find.Status != nil {
+		where = append(where, "status = ?")
+		args = append(args, *find.Status)
+	}
+	if find.MinPrice != nil {
+		where = append(where, "price >= ?")
+		args = append(args, *find.MinPrice)
+	}
+	if find.MaxPrice != nil {
+		where = append(where, "price <= ?")
+		args = append(args, *find.MaxPrice)
+	}
+	if find.BidderID != nil {
+		where = append(where, "bidder_id = ?")
+		args = append(args, *find.BidderID)
+	}
+	if find.EndTimeBefore != nil {
+		where = append(where, "end_time <= ?")
+		args = append(args, *find.EndTimeBefore)
+	}
+	if find.RowStatus != nil {
+		where = append(where, "row_status = ?")
+		args = append(args, *find.RowStatus)
+	}
+
+	query := `SELECT COUNT(*) FROM auction_item`
+	if len(where) > 0 {
+		query += " WHERE " + strings.Join(where, " AND ")
+	}
+	var total int
+	if err := d.db.QueryRowContext(ctx, query, args...).Scan(&total); err != nil {
+		return 0, fmt.Errorf("failed to count auction items: %w", err)
+	}
+	return total, nil
 }
 
 // ListAuctionItemsBySeller 获取卖家的拍卖物品
@@ -294,4 +347,98 @@ func (d *DB) ListAuctionHistory(ctx context.Context, find *store.FindAuctionHist
 	}
 
 	return history, nil
+}
+
+// SettleExpiredAuctions 到期结算(2026-09-07 第五十七轮):
+// 过期(status=Selling 且 end_time<=now) → 状态 Expired; 有最高出价者 → 退还冻结金; 物品退回卖家背包
+func (d *DB) SettleExpiredAuctions(ctx context.Context) (int, error) {
+	now := time.Now().Unix()
+	rows, err := d.db.QueryContext(ctx,
+		"SELECT id, seller_id, item_id, count, bidder_id, bid_price FROM auction_item WHERE status = ? AND end_time <= ?",
+		store.AuctionStatusSelling, now)
+	if err != nil {
+		return 0, fmt.Errorf("failed to query expired auctions: %w", err)
+	}
+	defer rows.Close()
+
+	type expiredItem struct {
+		id       uint64
+		sellerID uint64
+		itemID   int32
+		count    int32
+		bidderID uint64
+		bidPrice int64
+	}
+	var expired []expiredItem
+	for rows.Next() {
+		var e expiredItem
+		if err := rows.Scan(&e.id, &e.sellerID, &e.itemID, &e.count, &e.bidderID, &e.bidPrice); err != nil {
+			return 0, fmt.Errorf("failed to scan expired auction: %w", err)
+		}
+		expired = append(expired, e)
+	}
+	if len(expired) == 0 {
+		return 0, nil
+	}
+
+	tx, err := d.db.BeginTx(ctx, nil)
+	if err != nil {
+		return 0, fmt.Errorf("failed to begin settle transaction: %w", err)
+	}
+	defer tx.Rollback()
+
+	for _, e := range expired {
+		if _, err := tx.ExecContext(ctx,
+			"UPDATE auction_item SET status = ?, updated_at = ? WHERE id = ?",
+			store.AuctionStatusExpired, now, e.id); err != nil {
+			return 0, fmt.Errorf("failed to expire auction %d: %w", e.id, err)
+		}
+		// 退还最高出价者冻结金
+		if e.bidderID != 0 && e.bidPrice > 0 {
+			if _, err := tx.ExecContext(ctx,
+				"UPDATE role_currency SET gold = gold + ? WHERE role_id = ?", e.bidPrice, e.bidderID); err != nil {
+				return 0, fmt.Errorf("failed to refund bidder %d: %w", e.bidderID, err)
+			}
+		}
+		// 物品退回卖家背包(自动分配空槽)
+		if _, err := tx.ExecContext(ctx,
+			`INSERT INTO bag_item (role_id, item_id, grid_index, count)
+			 SELECT ?, ?, COALESCE(MAX(grid_index), -1) + 1, ? FROM bag_item WHERE role_id = ?`,
+			e.sellerID, e.itemID, e.count, e.sellerID); err != nil {
+			return 0, fmt.Errorf("failed to return item to seller %d: %w", e.sellerID, err)
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		return 0, fmt.Errorf("failed to commit settle transaction: %w", err)
+	}
+	return len(expired), nil
+}
+
+// TryBidAuction 原子抢锁出价(2026-09-07 第五十九轮)
+func (d *DB) TryBidAuction(ctx context.Context, auctionID, bidderID uint64, bidderName string, bidPrice int64) (bool, error) {
+	res, err := d.db.ExecContext(ctx,
+		`UPDATE auction_item SET bidder_id = ?, bidder_name = ?, bid_price = ?, bid_count = bid_count + 1, updated_at = ?
+		 WHERE id = ? AND status = ? AND bid_price < ?`,
+		bidderID, bidderName, bidPrice, time.Now().Unix(),
+		auctionID, store.AuctionStatusSelling, bidPrice)
+	if err != nil {
+		return false, fmt.Errorf("failed to try bid auction: %w", err)
+	}
+	n, _ := res.RowsAffected()
+	return n > 0, nil
+}
+
+// TryBuyoutAuction 原子抢锁买断(2026-09-07 第五十九轮): 置 Sold 并落成交买家
+func (d *DB) TryBuyoutAuction(ctx context.Context, auctionID, buyerID uint64, buyerName string, bidPrice int64) (bool, error) {
+	res, err := d.db.ExecContext(ctx,
+		`UPDATE auction_item SET status = ?, bidder_id = ?, bidder_name = ?, bid_price = ?, bid_count = bid_count + 1, updated_at = ?
+		 WHERE id = ? AND status = ?`,
+		store.AuctionStatusSold, buyerID, buyerName, bidPrice, time.Now().Unix(),
+		auctionID, store.AuctionStatusSelling)
+	if err != nil {
+		return false, fmt.Errorf("failed to try buyout auction: %w", err)
+	}
+	n, _ := res.RowsAffected()
+	return n > 0, nil
 }

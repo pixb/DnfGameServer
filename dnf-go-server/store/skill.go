@@ -12,6 +12,8 @@ type Skill struct {
 	SP            int32
 	TP            int32
 	Type          int32 // 0=主动, 1=被动, 2=BUFF
+	Attack        int32 // 每级攻击力加成(2026-09-07 第六十八轮)
+	Cooldown      int32 // 冷却秒数(2026-09-07 第六十八轮)
 	JobRequired   int32 // 职业要求
 	LevelRequired int32 // 等级要求
 	PreSkillID    int32 // 前置技能
@@ -22,10 +24,11 @@ type Skill struct {
 type RoleSkill struct {
 	BaseModel
 
-	RoleID    uint64
-	SkillID   int32
-	Level     int32
-	IsLearned bool
+	RoleID     uint64
+	SkillID    int32
+	Level      int32
+	IsLearned  bool
+	LastCastAt int64 // 技能最后施放时间戳(2026-09-07 第六十八轮, 冷却校验用)
 }
 
 // FindSkill 查询技能

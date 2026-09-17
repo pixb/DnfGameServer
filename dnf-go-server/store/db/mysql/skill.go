@@ -37,7 +37,7 @@ func (d *DB) GetSkill(ctx context.Context, find *store.FindSkill) (*store.Skill,
 
 	query := fmt.Sprintf(`
 		SELECT id, skill_id, name, description, level, max_level, sp, tp,
-		       type, job_required, level_required, pre_skill_id, pre_skill_level
+		       type, attack, cooldown, job_required, level_required, pre_skill_id, pre_skill_level
 		FROM skills %s LIMIT 1
 	`, where)
 
@@ -45,7 +45,7 @@ func (d *DB) GetSkill(ctx context.Context, find *store.FindSkill) (*store.Skill,
 	err := d.db.QueryRowContext(ctx, query, args...).Scan(
 		&skill.ID, &skill.SkillID, &skill.Name, &skill.Description,
 		&skill.Level, &skill.MaxLevel, &skill.SP, &skill.TP,
-		&skill.Type, &skill.JobRequired, &skill.LevelRequired,
+		&skill.Type, &skill.Attack, &skill.Cooldown, &skill.JobRequired, &skill.LevelRequired,
 		&skill.PreSkillID, &skill.PreSkillLevel,
 	)
 	if err != nil {
@@ -132,7 +132,7 @@ func (d *DB) GetRoleSkill(ctx context.Context, find *store.FindRoleSkill) (*stor
 	}
 
 	query := fmt.Sprintf(`
-		SELECT id, role_id, skill_id, level, is_learned
+		SELECT id, role_id, skill_id, level, is_learned, last_cast_at
 		FROM role_skills %s LIMIT 1
 	`, where)
 
@@ -140,7 +140,7 @@ func (d *DB) GetRoleSkill(ctx context.Context, find *store.FindRoleSkill) (*stor
 	var isLearned int
 	err := d.db.QueryRowContext(ctx, query, args...).Scan(
 		&roleSkill.ID, &roleSkill.RoleID, &roleSkill.SkillID,
-		&roleSkill.Level, &isLearned,
+		&roleSkill.Level, &isLearned, &roleSkill.LastCastAt,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get role skill: %w", err)
@@ -153,7 +153,7 @@ func (d *DB) GetRoleSkill(ctx context.Context, find *store.FindRoleSkill) (*stor
 // ListRoleSkills 获取角色技能列表
 func (d *DB) ListRoleSkills(ctx context.Context, roleID uint64) ([]*store.RoleSkill, error) {
 	query := `
-		SELECT id, role_id, skill_id, level, is_learned
+		SELECT id, role_id, skill_id, level, is_learned, last_cast_at
 		FROM role_skills WHERE role_id = ?
 	`
 
@@ -169,7 +169,7 @@ func (d *DB) ListRoleSkills(ctx context.Context, roleID uint64) ([]*store.RoleSk
 		var isLearned int
 		err := rows.Scan(
 			&roleSkill.ID, &roleSkill.RoleID, &roleSkill.SkillID,
-			&roleSkill.Level, &isLearned,
+			&roleSkill.Level, &isLearned, &roleSkill.LastCastAt,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan role skill: %w", err)
@@ -232,11 +232,23 @@ func (d *DB) UpdateRoleSkill(ctx context.Context, update *store.UpdateRoleSkill)
 
 	args = append(args, update.ID)
 	query := fmt.Sprintf("UPDATE role_skills SET %s WHERE id = ?", strings.Join(sets, ", "))
-
 	_, err := d.db.ExecContext(ctx, query, args...)
 	if err != nil {
 		return fmt.Errorf("failed to update role skill: %w", err)
 	}
 
 	return nil
+}
+
+// UpdateRoleSkillLastCast 条件更新技能最后施放时间(2026-09-07 第六十八轮):
+// 仅当 last_cast_at 仍等于 expected 时更新(乐观锁防并发重复施放), 返回是否更新成功
+func (d *DB) UpdateRoleSkillLastCast(ctx context.Context, roleID uint64, skillID int32, now, expected int64) (bool, error) {
+	result, err := d.db.ExecContext(ctx,
+		"UPDATE role_skills SET last_cast_at = ? WHERE role_id = ? AND skill_id = ? AND last_cast_at = ?",
+		now, roleID, skillID, expected)
+	if err != nil {
+		return false, fmt.Errorf("failed to update role skill last cast: %w", err)
+	}
+	n, _ := result.RowsAffected()
+	return n > 0, nil
 }

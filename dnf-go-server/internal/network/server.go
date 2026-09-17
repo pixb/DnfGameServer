@@ -160,6 +160,7 @@ func (s *TCPServer) handleConnection(conn net.Conn) {
 
 	// 创建会话
 	session := NewSession(conn, s.sessionManager.NextSessionID())
+	session.SetSessionManager(s.sessionManager) // 2026-09-07 第六十二轮: 注入会话管理器供广播
 	s.sessionManager.Add(session)
 
 	// 触发创建事件
@@ -269,6 +270,14 @@ func (s *TCPServer) Stop() error {
 // GetSessionManager 获取会话管理器
 func (s *TCPServer) GetSessionManager() *SessionManager {
 	return s.sessionManager
+}
+
+// Addr 返回服务器监听地址（端口为0时用于获取实际分配端口）
+func (s *TCPServer) Addr() net.Addr {
+	if s.listener == nil {
+		return nil
+	}
+	return s.listener.Addr()
 }
 
 // BinaryCodec 二进制消息编解码器示例

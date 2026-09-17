@@ -144,9 +144,9 @@ func (s *Store) CreateRole(ctx context.Context, create *Role) (*Role, error) {
 	return role, nil
 }
 
-// GetRole 获取角色(带缓存)
+// GetRole 获取角色(带缓存; NoCache=true 时跳过缓存直接读库)
 func (s *Store) GetRole(ctx context.Context, find *FindRole) (*Role, error) {
-	if find.ID != nil {
+	if find.ID != nil && !find.NoCache {
 		if cached, ok := s.roleCache.Get(ctx, fmt.Sprintf("%d", *find.ID)); ok {
 			if role, ok := cached.(*Role); ok {
 				return role, nil
@@ -159,7 +159,9 @@ func (s *Store) GetRole(ctx context.Context, find *FindRole) (*Role, error) {
 		return nil, err
 	}
 
-	s.roleCache.Set(ctx, fmt.Sprintf("%d", role.ID), role)
+	if !find.NoCache {
+		s.roleCache.Set(ctx, fmt.Sprintf("%d", role.ID), role)
+	}
 	return role, nil
 }
 
@@ -186,6 +188,11 @@ func (s *Store) DeleteRole(ctx context.Context, delete *DeleteRole) error {
 // ListRolesByAccount 获取账户的角色列表
 func (s *Store) ListRolesByAccount(ctx context.Context, accountID uint64) ([]*Role, error) {
 	return s.driver.ListRolesByAccount(ctx, accountID)
+}
+
+// ListRoles 查询角色列表(全量,供排行榜等场景排序)
+func (s *Store) ListRoles(ctx context.Context, find *FindRole) ([]*Role, error) {
+	return s.driver.ListRoles(ctx, find)
 }
 
 // GetRoleByName 根据角色名获取角色
@@ -247,6 +254,18 @@ func (s *Store) ListBagItemsByRole(ctx context.Context, roleID uint64) ([]*BagIt
 // DeleteBagItem 删除背包物品
 func (s *Store) DeleteBagItem(ctx context.Context, delete *DeleteBagItem) error {
 	return s.driver.DeleteBagItem(ctx, delete)
+}
+
+// ==================== 物品模板Store方法(2026-09-08 第七十三轮) ====================
+
+// GetItemTemplate 获取物品模板
+func (s *Store) GetItemTemplate(ctx context.Context, itemID int32) (*ItemTemplate, error) {
+	return s.driver.GetItemTemplate(ctx, itemID)
+}
+
+// ListItemTemplates 获取全部物品模板
+func (s *Store) ListItemTemplates(ctx context.Context) ([]*ItemTemplate, error) {
+	return s.driver.ListItemTemplates(ctx)
 }
 
 // ==================== 任务相关Store方法 ====================
@@ -344,6 +363,11 @@ func (s *Store) ListFriends(ctx context.Context, roleID uint64) ([]*Friend, erro
 	return s.driver.ListFriends(ctx, roleID)
 }
 
+// UpdateFriend 更新好友关系(分组/亲密度等)(2026-09-06 第四十二轮)
+func (s *Store) UpdateFriend(ctx context.Context, update *UpdateFriend) error {
+	return s.driver.UpdateFriend(ctx, update)
+}
+
 // GetFriend 获取好友关系
 func (s *Store) GetFriend(ctx context.Context, find *FindFriend) (*Friend, error) {
 	return s.driver.GetFriend(ctx, find)
@@ -352,6 +376,28 @@ func (s *Store) GetFriend(ctx context.Context, find *FindFriend) (*Friend, error
 // DeleteFriend 删除好友
 func (s *Store) DeleteFriend(ctx context.Context, delete *DeleteFriend) error {
 	return s.driver.DeleteFriend(ctx, delete)
+}
+
+// ==================== 好友申请相关Store方法(2026-09-06 第三十九轮) ====================
+
+// CreateFriendRequest 创建好友申请
+func (s *Store) CreateFriendRequest(ctx context.Context, create *FriendRequest) (*FriendRequest, error) {
+	return s.driver.CreateFriendRequest(ctx, create)
+}
+
+// GetFriendRequest 获取好友申请
+func (s *Store) GetFriendRequest(ctx context.Context, find *FindFriendRequest) (*FriendRequest, error) {
+	return s.driver.GetFriendRequest(ctx, find)
+}
+
+// ListFriendRequests 查询好友申请列表
+func (s *Store) ListFriendRequests(ctx context.Context, find *FindFriendRequest) ([]*FriendRequest, error) {
+	return s.driver.ListFriendRequests(ctx, find)
+}
+
+// UpdateFriendRequest 更新好友申请
+func (s *Store) UpdateFriendRequest(ctx context.Context, update *UpdateFriendRequest) error {
+	return s.driver.UpdateFriendRequest(ctx, update)
 }
 
 // ==================== 邮件相关Store方法 ====================
@@ -376,9 +422,20 @@ func (s *Store) UpdateMail(ctx context.Context, update *UpdateMail) error {
 	return s.driver.UpdateMail(ctx, update)
 }
 
+// ClaimMail 条件领取附件标记(防并发重复领取)
+func (s *Store) ClaimMail(ctx context.Context, id uint64) (bool, error) {
+	return s.driver.ClaimMail(ctx, id)
+}
+
 // DeleteMail 删除邮件
 func (s *Store) DeleteMail(ctx context.Context, delete *DeleteMail) error {
 	return s.driver.DeleteMail(ctx, delete)
+}
+
+// DeleteExpiredMails 删除所有过期邮件(expire_at > 0 且 < now), 返回删除行数
+// 2026-09-06 第十七轮: 过期邮件清理
+func (s *Store) DeleteExpiredMails(ctx context.Context, now int64) (int64, error) {
+	return s.driver.DeleteExpiredMails(ctx, now)
 }
 
 // ==================== 拍卖行相关Store方法 ====================
@@ -398,6 +455,11 @@ func (s *Store) ListAuctionItems(ctx context.Context, find *FindAuctionItem) ([]
 	return s.driver.ListAuctionItems(ctx, find)
 }
 
+// CountAuctionItems 统计拍卖物品条数(2026-09-07 第六十五轮)
+func (s *Store) CountAuctionItems(ctx context.Context, find *FindAuctionItem) (int, error) {
+	return s.driver.CountAuctionItems(ctx, find)
+}
+
 // UpdateAuctionItem 更新拍卖物品
 func (s *Store) UpdateAuctionItem(ctx context.Context, update *UpdateAuctionItem) error {
 	return s.driver.UpdateAuctionItem(ctx, update)
@@ -411,6 +473,21 @@ func (s *Store) DeleteAuctionItem(ctx context.Context, delete *DeleteAuctionItem
 // CreateAuctionHistory 创建拍卖历史
 func (s *Store) CreateAuctionHistory(ctx context.Context, create *CreateAuctionHistory) (*AuctionHistory, error) {
 	return s.driver.CreateAuctionHistory(ctx, create)
+}
+
+// SettleExpiredAuctions 到期结算(2026-09-07 第五十七轮)
+func (s *Store) SettleExpiredAuctions(ctx context.Context) (int, error) {
+	return s.driver.SettleExpiredAuctions(ctx)
+}
+
+// TryBidAuction 原子抢锁出价(2026-09-07 第五十九轮)
+func (s *Store) TryBidAuction(ctx context.Context, auctionID, bidderID uint64, bidderName string, bidPrice int64) (bool, error) {
+	return s.driver.TryBidAuction(ctx, auctionID, bidderID, bidderName, bidPrice)
+}
+
+// TryBuyoutAuction 原子抢锁买断(2026-09-07 第五十九轮)
+func (s *Store) TryBuyoutAuction(ctx context.Context, auctionID, buyerID uint64, buyerName string, bidPrice int64) (bool, error) {
+	return s.driver.TryBuyoutAuction(ctx, auctionID, buyerID, buyerName, bidPrice)
 }
 
 // ListAuctionHistory 查询拍卖历史
@@ -445,6 +522,11 @@ func (s *Store) ListSkills(ctx context.Context, find *FindSkill) ([]*Skill, erro
 // GetRoleSkill 获取角色技能
 func (s *Store) GetRoleSkill(ctx context.Context, find *FindRoleSkill) (*RoleSkill, error) {
 	return s.driver.GetRoleSkill(ctx, find)
+}
+
+// UpdateRoleSkillLastCast 条件更新技能最后施放时间(2026-09-07 第六十八轮)
+func (s *Store) UpdateRoleSkillLastCast(ctx context.Context, roleID uint64, skillID int32, now, expected int64) (bool, error) {
+	return s.driver.UpdateRoleSkillLastCast(ctx, roleID, skillID, now, expected)
 }
 
 // ListRoleSkills 获取角色技能列表
@@ -565,3 +647,90 @@ func (s *Store) ListAdventureBookRewards(ctx context.Context, bookID int32) ([]*
 }
 
 // ==================== 制作Store方法 ====================
+
+// ==================== 活动Store方法 ====================
+
+// ListEventConfigs 获取活动配置列表
+func (s *Store) ListEventConfigs(ctx context.Context, find *FindEventConfig) ([]*EventConfig, error) {
+	return s.driver.ListEventConfigs(ctx, find)
+}
+
+// GetEventConfig 获取活动配置
+func (s *Store) GetEventConfig(ctx context.Context, find *FindEventConfig) (*EventConfig, error) {
+	return s.driver.GetEventConfig(ctx, find)
+}
+
+// CreateEventConfig 创建活动配置
+func (s *Store) CreateEventConfig(ctx context.Context, create *EventConfig) (*EventConfig, error) {
+	return s.driver.CreateEventConfig(ctx, create)
+}
+
+// UpdateEventConfig 更新活动配置
+func (s *Store) UpdateEventConfig(ctx context.Context, update *UpdateEventConfig) error {
+	return s.driver.UpdateEventConfig(ctx, update)
+}
+
+// DeleteEventConfig 删除活动配置
+func (s *Store) DeleteEventConfig(ctx context.Context, id uint64) error {
+	return s.driver.DeleteEventConfig(ctx, id)
+}
+
+// GetEventProgress 获取活动进度
+func (s *Store) GetEventProgress(ctx context.Context, find *FindEventProgress) (*EventProgress, error) {
+	return s.driver.GetEventProgress(ctx, find)
+}
+
+// ListEventProgress 获取角色活动进度列表
+func (s *Store) ListEventProgress(ctx context.Context, roleID uint64) ([]*EventProgress, error) {
+	return s.driver.ListEventProgress(ctx, roleID)
+}
+
+// UpsertEventProgress 新增/更新活动进度
+func (s *Store) UpsertEventProgress(ctx context.Context, p *EventProgress) (*EventProgress, error) {
+	return s.driver.UpsertEventProgress(ctx, p)
+}
+
+// UpdateEventProgress 更新活动进度
+func (s *Store) UpdateEventProgress(ctx context.Context, update *UpdateEventProgress) error {
+	return s.driver.UpdateEventProgress(ctx, update)
+}
+
+// ==================== 背包扩容Store方法 ====================
+
+// GetBagExpand 获取背包扩容记录
+func (s *Store) GetBagExpand(ctx context.Context, find *FindBagExpand) (*BagExpand, error) {
+	return s.driver.GetBagExpand(ctx, find)
+}
+
+// UpsertBagExpand 新增/更新背包扩容记录
+func (s *Store) UpsertBagExpand(ctx context.Context, b *BagExpand) (*BagExpand, error) {
+	return s.driver.UpsertBagExpand(ctx, b)
+}
+
+// ==================== 行为日志Store方法 ====================
+// 2026-09-06 第十九轮: rank/log TCP handler 实化
+
+// RecordBehaviorLog 记录行为日志
+func (s *Store) RecordBehaviorLog(ctx context.Context, log *BehaviorLog) error {
+	return s.driver.RecordBehaviorLog(ctx, log)
+}
+
+// ListBehaviorLogs 查询行为日志
+func (s *Store) ListBehaviorLogs(ctx context.Context, roleID uint64, limit int) ([]*BehaviorLog, error) {
+	return s.driver.ListBehaviorLogs(ctx, roleID, limit)
+}
+
+// StatisticBehaviorLogs 按动作统计行为日志数
+func (s *Store) StatisticBehaviorLogs(ctx context.Context, roleID uint64) (map[string]int64, error) {
+	return s.driver.StatisticBehaviorLogs(ctx, roleID)
+}
+
+// DeleteBehaviorLogs 按ID删除行为日志
+func (s *Store) DeleteBehaviorLogs(ctx context.Context, ids []uint64) (int64, error) {
+	return s.driver.DeleteBehaviorLogs(ctx, ids)
+}
+
+// CleanBehaviorLogs 清理指定时间之前的行为日志
+func (s *Store) CleanBehaviorLogs(ctx context.Context, before int64) (int64, error) {
+	return s.driver.CleanBehaviorLogs(ctx, before)
+}

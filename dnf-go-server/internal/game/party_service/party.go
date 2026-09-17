@@ -31,6 +31,11 @@ func (s *PartyService) ControlGroup(ctx context.Context, roleID uint64, action u
 	return s.store.ControlGroup(ctx, roleID, action, targetGuid, partyGuid)
 }
 
+// UpdatePartySetting 修改队伍设置(2026-09-07 第五十轮)
+func (s *PartyService) UpdatePartySetting(ctx context.Context, roleID uint64, setting *store.PartySetting) error {
+	return s.store.UpdatePartySetting(ctx, roleID, setting)
+}
+
 // StartMultiPlay 开始多人游戏
 func (s *PartyService) StartMultiPlay(ctx context.Context, roleID uint64, partyGuid uint64) (*store.StartMultiPlayResult, error) {
 	return s.store.StartMultiPlay(ctx, roleID, partyGuid)
@@ -71,14 +76,14 @@ func (s *PartyService) CheckProhibitedWord(ctx context.Context, word string) (bo
 	return s.store.CheckProhibitedWord(ctx, word)
 }
 
-// HalfOpenPartyAccept 半公开队伍接受
-func (s *PartyService) HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid uint64) error {
-	return s.store.HalfOpenPartyAccept(ctx, roleID, partyGuid)
+// HalfOpenPartyAccept 半公开队伍接受(2026-09-07 第五十二轮: targetGuid>0 指定, 0=全部)
+func (s *PartyService) HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid, targetGuid uint64) error {
+	return s.store.HalfOpenPartyAccept(ctx, roleID, partyGuid, targetGuid)
 }
 
-// HalfOpenPartyRefuse 半公开队伍拒绝
-func (s *PartyService) HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid uint64) error {
-	return s.store.HalfOpenPartyRefuse(ctx, roleID, partyGuid)
+// HalfOpenPartyRefuse 半公开队伍拒绝(2026-09-07 第五十二轮: targetGuid>0 指定, 0=全部)
+func (s *PartyService) HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid, targetGuid uint64) error {
+	return s.store.HalfOpenPartyRefuse(ctx, roleID, partyGuid, targetGuid)
 }
 
 // ControlGroupCustom 控制队伍自定义
@@ -124,6 +129,21 @@ func (s *PartyService) SuggestMoveParty(ctx context.Context, roleID uint64, area
 // TargetUserPartyInfo 目标用户队伍信息
 func (s *PartyService) TargetUserPartyInfo(ctx context.Context, roleID, targetGuid uint64) (*store.PartyInfo, error) {
 	return s.store.TargetUserPartyInfo(ctx, roleID, targetGuid)
+}
+
+// GetPartyByGuid 按队伍ID查队伍(2026-09-07 第六十二轮, 成员变化广播用)
+func (s *PartyService) GetPartyByGuid(ctx context.Context, partyGuid uint64) (*store.PartyInfo, error) {
+	return s.store.GetPartyByGuid(ctx, partyGuid)
+}
+
+// GetPartyByRoleID 按角色ID查当前队伍(2026-09-07 第六十三轮, 离队/踢人/队长转移广播用)
+func (s *PartyService) GetPartyByRoleID(ctx context.Context, roleID uint64) (*store.PartyInfo, error) {
+	return s.store.GetPartyByRoleID(ctx, roleID)
+}
+
+// ListPartyRequests 按队伍ID查申请者角色列表(2026-09-07 第六十七轮)
+func (s *PartyService) ListPartyRequests(ctx context.Context, partyGuid uint64) ([]uint64, error) {
+	return s.store.ListPartyRequests(ctx, partyGuid)
 }
 
 // WaitinigToUsersLoading 等待用户加载

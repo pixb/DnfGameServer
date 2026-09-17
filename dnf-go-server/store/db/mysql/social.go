@@ -154,6 +154,11 @@ func (d *DB) CreateMail(ctx context.Context, create *store.Mail) (*store.Mail, e
    `
 
 	now := time.Now().Unix()
+	// 2026-09-06 第二十一轮: MySQL attachments 为 JSON 列, 空串触发 CHECK 约束失败,
+	// 统一归一化为合法空对象 "{}"(领取时按无附件处理)
+	if create.Attachments == "" {
+		create.Attachments = "{}"
+	}
 	result, err := d.db.ExecContext(ctx, query,
 		now, now, store.RowStatusNormal,
 		create.SenderID, create.SenderName, create.ReceiverID, create.Title, create.Content,
@@ -258,6 +263,21 @@ func (d *DB) UpdateMail(ctx context.Context, update *store.UpdateMail) error {
 	return nil
 }
 
+// ClaimMail 条件领取附件标记(防并发重复领取)
+func (d *DB) ClaimMail(ctx context.Context, id uint64) (bool, error) {
+	res, err := d.db.ExecContext(ctx,
+		"UPDATE mail SET is_claimed = 1, updated_at = ? WHERE id = ? AND is_claimed = 0",
+		time.Now().Unix(), id)
+	if err != nil {
+		return false, fmt.Errorf("failed to claim mail: %w", err)
+	}
+	n, err := res.RowsAffected()
+	if err != nil {
+		return false, fmt.Errorf("failed to read claim result: %w", err)
+	}
+	return n > 0, nil
+}
+
 // DeleteMail 删除邮件
 func (d *DB) DeleteMail(ctx context.Context, delete *store.DeleteMail) error {
 	query := "DELETE FROM mail WHERE id = ?"
@@ -266,4 +286,15 @@ func (d *DB) DeleteMail(ctx context.Context, delete *store.DeleteMail) error {
 		return fmt.Errorf("failed to delete mail: %w", err)
 	}
 	return nil
+}
+
+// DeleteExpiredMails 删除所有过期邮件(expire_at > 0 且 < now), 返回删除行数
+// 2026-09-06 第十七轮: 过期邮件清理(拍卖结算发信带 30 天 expire_at, 0 表示永不过期)
+func (d *DB) DeleteExpiredMails(ctx context.Context, now int64) (int64, error) {
+	result, err := d.db.ExecContext(ctx, `DELETE FROM mail WHERE expire_at > 0 AND expire_at < ?`, now)
+	if err != nil {
+		return 0, fmt.Errorf("failed to delete expired mails: %w", err)
+	}
+	n, _ := result.RowsAffected()
+	return n, nil
 }

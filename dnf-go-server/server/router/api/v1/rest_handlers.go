@@ -6,9 +6,11 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"unicode/utf8"
 
 	"github.com/labstack/echo/v4"
 
+	rolelevel "github.com/pixb/DnfGameServer/dnf-go-server/internal/game/role"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"github.com/pixb/DnfGameServer/dnf-go-server/server/auth"
 	"github.com/pixb/DnfGameServer/dnf-go-server/store"
@@ -23,29 +25,80 @@ func getUserClaims(c echo.Context) *auth.UserClaims {
 	return claims
 }
 
+// activeRoleID 获取账号当前活动角色ID(取账号下第一个角色;无角色时回退账号ID)
+func (s *APIV1Service) activeRoleID(c echo.Context, claims *auth.UserClaims) uint64 {
+	roles, err := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	if err == nil && len(roles) > 0 {
+		return roles[0].ID
+	}
+	return claims.UserID
+}
+
+// handleItemTemplates 获取全部物品模板(名称/类型/等级/默认绑定/售价/描述)
+// 2026-09-08 第七十三轮: 物品模板体系实化——客户端可查询模板元数据
+func (s *APIV1Service) handleItemTemplates(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	templates, err := s.Store.ListItemTemplates(c.Request().Context())
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+	list := make([]map[string]interface{}, 0, len(templates))
+	for _, t := range templates {
+		list = append(list, map[string]interface{}{
+			"item_id":     t.ItemID,
+			"name":        t.Name,
+			"item_type":   t.ItemType,
+			"level":       t.Level,
+			"bind_type":   t.BindType,
+			"sell_price":  t.SellPrice,
+			"description": t.Description,
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":     0,
+		"templates": list,
+	})
+}
+
+// handleGetBag 获取背包物品(库存总数)
 func (s *APIV1Service) handleGetBag(c echo.Context) error {
 	claims := getUserClaims(c)
 	if claims == nil {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	roleID := claims.UserID
+	// 2026-09-08 第七十五轮: 修复 roleID 语义——背包按选中角色查(claims.UserID 是账户ID)
+	roleID := s.activeRoleID(c, claims)
 	items, _ := s.Store.ListBagItemsByRole(c.Request().Context(), roleID)
 
-	var bagItems []*dnfv1.BagItem
+	// 2026-09-08 第七十五轮: 背包响应带物品名称(模板体系消费, 不破坏 proto JSON 字段)
+	tpls, tplErr := s.Store.ListItemTemplates(c.Request().Context())
+	tplName := map[int32]string{}
+	if tplErr == nil {
+		for _, t := range tpls {
+			tplName[t.ItemID] = t.Name
+		}
+	}
+
+	bagItems := make([]map[string]interface{}, 0, len(items))
 	for _, item := range items {
-		bagItems = append(bagItems, &dnfv1.BagItem{
-			Guid:   item.ID,
-			ItemId: uint32(item.ItemID),
-			Count:  item.Count,
-			Slot:   item.GridIndex,
+		bagItems = append(bagItems, map[string]interface{}{
+			"guid":   item.ID,
+			"itemId": item.ItemID,
+			"name":   tplName[item.ItemID],
+			"count":  item.Count,
+			"slot":   item.GridIndex,
 		})
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error": 0,
-		"bag": &dnfv1.BagInfo{
-			Items: bagItems,
+		"bag": map[string]interface{}{
+			"items": bagItems,
 		},
 	})
 }
@@ -60,15 +113,23 @@ func (s *APIV1Service) handleGetShopList(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	items := []*dnfv1.ShopItem{
-		{Slot: 1, ItemId: 1001, Price: 100, CurrencyType: 1, Stock: 999, Discount: 100},
-		{Slot: 2, ItemId: 1002, Price: 200, CurrencyType: 1, Stock: 999, Discount: 100},
-		{Slot: 3, ItemId: 1003, Price: 500, CurrencyType: 1, Stock: 100, Discount: 90},
+	// 2026-09-08 第七十五轮: 商店物品带名称(模板体系消费)
+	tpls, tplErr := s.Store.ListItemTemplates(c.Request().Context())
+	tplName := map[int32]string{}
+	if tplErr == nil {
+		for _, t := range tpls {
+			tplName[t.ItemID] = t.Name
+		}
+	}
+	shopItems := []map[string]interface{}{
+		{"slot": 1, "itemId": 1001, "name": tplName[1001], "price": 100, "currencyType": 1, "stock": 999, "discount": 100},
+		{"slot": 2, "itemId": 1002, "name": tplName[1002], "price": 200, "currencyType": 1, "stock": 999, "discount": 100},
+		{"slot": 3, "itemId": 1003, "name": tplName[1003], "price": 500, "currencyType": 1, "stock": 100, "discount": 90},
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":       0,
-		"items":       items,
+		"items":       shopItems,
 		"refreshTime": 3600,
 	})
 }
@@ -168,9 +229,11 @@ func (s *APIV1Service) handleGetFriendList(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	friends, _ := s.Store.ListFriends(c.Request().Context(), claims.UserID)
+	// 2026-09-06 第三十五轮: friend.role_id 语义为角色ID, 改用 activeRoleID(原 claims.UserID 为账号ID, 外键约束下查不到)
+	friends, _ := s.Store.ListFriends(c.Request().Context(), s.activeRoleID(c, claims))
 
-	var friendInfos []*dnfv1.FriendInfo
+	// 2026-09-06 第三十五轮: 无好友时返回空数组而非 null(JSON 序列化 nil slice 为 null)
+	var friendInfos = []*dnfv1.FriendInfo{}
 	for _, friend := range friends {
 		friendRole, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{
 			FindBase: store.FindBase{ID: &friend.FriendID},
@@ -185,6 +248,7 @@ func (s *APIV1Service) handleGetFriendList(c echo.Context) error {
 			Job:      friendRole.Job,
 			Online:   false,
 			Intimacy: int32(friend.Intimacy),
+			Group:    friend.Group,
 		})
 	}
 
@@ -200,20 +264,72 @@ func (s *APIV1Service) handleAddFriend(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
+	// 2026-09-06 第三十五轮: 支持 JSON body(客户端通用)与 form 双入参
+	req := decodeJSONBody(c)
 	targetName := c.FormValue("target_name")
-	targetRole, err := s.Store.GetRoleByName(c.Request().Context(), targetName)
-	if err != nil {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
+	if targetName == "" {
+		if v, ok := req["target_name"].(string); ok {
+			targetName = v
+		}
+	}
+	if targetName == "" {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "target_name required"})
 	}
 
-	s.Store.CreateFriend(c.Request().Context(), &store.Friend{
-		RoleID:     claims.UserID,
-		FriendID:   targetRole.ID,
-		FriendName: targetRole.Name,
-		Intimacy:   0,
+	targetRole, err := s.Store.GetRoleByName(c.Request().Context(), targetName)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": "target role not found"})
+	}
+
+	// 2026-09-06 第三十五轮: friend.role_id 语义为角色ID(原 claims.UserID 为账号ID 违反外键)
+	myRoleID := s.activeRoleID(c, claims)
+
+	// 不能添加自己为好友(账号下任意角色)
+	myRoles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	for _, r := range myRoles {
+		if r.ID == targetRole.ID {
+			return c.JSON(http.StatusOK, map[string]interface{}{"error": 8, "message": "cannot add self"})
+		}
+	}
+
+	// 已存在则幂等返回成功(不重复插入)
+	existing, _ := s.Store.GetFriend(c.Request().Context(), &store.FindFriend{
+		RoleID:   &myRoleID,
+		FriendID: &targetRole.ID,
 	})
+	if existing != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+	}
+
+	// 2026-09-06 第三十六轮: 双向好友关系(A→B 与 B→A 各一条, 幂等补写)
+	// 2026-09-06 第四十二轮: 直接加好友初始化亲密度 0 / 默认分组
+	s.addFriendRelation(c, myRoleID, targetRole.ID, targetRole.Name, 0)
+	myRole, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{FindBase: store.FindBase{ID: &myRoleID}})
+	myName := ""
+	if myRole != nil {
+		myName = myRole.Name
+	}
+	s.addFriendRelation(c, targetRole.ID, myRoleID, myName, 0)
 
 	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+}
+
+// addFriendRelation 幂等写入单条好友关系(已存在则跳过), 初始化指定亲密度与默认分组
+func (s *APIV1Service) addFriendRelation(c echo.Context, ownerID, friendID uint64, friendName string, intimacy int32) {
+	existing, _ := s.Store.GetFriend(c.Request().Context(), &store.FindFriend{
+		RoleID:   &ownerID,
+		FriendID: &friendID,
+	})
+	if existing != nil {
+		return
+	}
+	s.Store.CreateFriend(c.Request().Context(), &store.Friend{
+		RoleID:     ownerID,
+		FriendID:   friendID,
+		FriendName: friendName,
+		Intimacy:   intimacy,
+		Group:      "默认分组",
+	})
 }
 
 func (s *APIV1Service) handleRemoveFriend(c echo.Context) error {
@@ -222,14 +338,32 @@ func (s *APIV1Service) handleRemoveFriend(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	friendUID, _ := strconv.ParseUint(c.FormValue("friend_uid"), 10, 64)
-	friend, _ := s.Store.GetFriend(c.Request().Context(), &store.FindFriend{
-		RoleID:   &claims.UserID,
-		FriendID: &friendUID,
-	})
+	// 2026-09-06 第三十五轮: 支持 JSON body 与 form 双入参(friend_uid / friendGuid)
+	req := decodeJSONBody(c)
+	friendUIDStr := c.FormValue("friend_uid")
+	if friendUIDStr == "" {
+		if v, ok := req["friend_uid"].(float64); ok {
+			friendUIDStr = strconv.FormatInt(int64(v), 10)
+		} else if v, ok := req["friendGuid"].(float64); ok {
+			friendUIDStr = strconv.FormatInt(int64(v), 10)
+		}
+	}
+	if friendUIDStr == "" {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "friend_uid required"})
+	}
 
-	if friend != nil {
-		s.Store.DeleteFriend(c.Request().Context(), &store.DeleteFriend{ID: friend.ID})
+	friendUID, _ := strconv.ParseUint(friendUIDStr, 10, 64)
+	myRoleID := s.activeRoleID(c, claims)
+
+	// 2026-09-06 第三十六轮: 双向删除(A→B 与 B→A)
+	for _, pair := range [][2]uint64{{myRoleID, friendUID}, {friendUID, myRoleID}} {
+		friend, _ := s.Store.GetFriend(c.Request().Context(), &store.FindFriend{
+			RoleID:   &pair[0],
+			FriendID: &pair[1],
+		})
+		if friend != nil {
+			s.Store.DeleteFriend(c.Request().Context(), &store.DeleteFriend{ID: friend.ID})
+		}
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
@@ -241,29 +375,80 @@ func (s *APIV1Service) handleGetMailList(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	mails, _ := s.Store.ListMails(c.Request().Context(), &store.FindMail{
-		ReceiverID: &claims.UserID,
-	})
+	// 2026-09-06 第十七轮: 惰性清理全服过期邮件(expire_at>0 且已到期), 过期邮件不再出现在列表
+	if _, err := s.Store.DeleteExpiredMails(c.Request().Context(), time.Now().Unix()); err != nil {
+		// 清理失败不阻断列表
+	}
 
+	// 邮件的 ReceiverID 语义为角色ID(与 send/拍卖结算一致), 按账户的所有角色合并查询
+	roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
 	var mailList []map[string]interface{}
-	for _, m := range mails {
-		mailList = append(mailList, map[string]interface{}{
-			"id":          m.ID,
-			"sender_id":   m.SenderID,
-			"sender_name": m.SenderName,
-			"title":       m.Title,
-			"content":     m.Content,
-			"is_read":     m.IsRead,
-			"is_claimed":  m.IsClaimed,
-			"gold":        m.Gold,
-			"created_at":  m.CreatedAt,
+	for _, r := range roles {
+		mails, err := s.Store.ListMails(c.Request().Context(), &store.FindMail{
+			ReceiverID: &r.ID,
 		})
+		if err != nil {
+			continue
+		}
+		for _, m := range mails {
+			mailList = append(mailList, map[string]interface{}{
+				"id":          m.ID,
+				"sender_id":   m.SenderID,
+				"sender_name": m.SenderName,
+				"title":       m.Title,
+				"content":     m.Content,
+				"is_read":     m.IsRead,
+				"is_claimed":  m.IsClaimed,
+				"gold":        m.Gold,
+				"attachments": m.Attachments,
+				"created_at":  m.CreatedAt,
+			})
+		}
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error": 0,
 		"mails": mailList,
 	})
+}
+
+// mailAttachment 邮件附件条目(多物品 JSON 数组 / 旧单对象格式共用)
+type mailAttachment struct {
+	ItemID   int32 `json:"item_id"`
+	Count    int32 `json:"count"`
+	BindType int32 `json:"bind_type"`
+}
+
+// parseMailAttachments 解析并校验邮件附件:
+// - 空 / "{}" / "[]" → 空附件, 无错误;
+// - JSON 数组优先, 解析失败回退旧单对象格式;
+// - 过滤 item_id<=0 或 count<=0 的条目;
+// - bind_type 合法域 0/1/2, 越界返回错误(整封拒绝)。
+// 2026-09-06 第二十二轮: 从 handleClaimMail 抽出, 领取与发信共用
+func parseMailAttachments(raw string) ([]mailAttachment, error) {
+	if raw == "" || raw == "{}" || raw == "[]" {
+		return nil, nil
+	}
+	var atts []mailAttachment
+	if err := json.Unmarshal([]byte(raw), &atts); err != nil {
+		// 兼容旧格式: 单对象 {"item_id":x,"count":y}
+		var single mailAttachment
+		if err2 := json.Unmarshal([]byte(raw), &single); err2 != nil || single.ItemID <= 0 {
+			return nil, fmt.Errorf("附件格式非法")
+		}
+		atts = []mailAttachment{single}
+	}
+	valid := make([]mailAttachment, 0, len(atts))
+	for _, att := range atts {
+		if att.ItemID <= 0 || att.Count <= 0 {
+			continue
+		}
+		if att.BindType < 0 || att.BindType > 2 {
+			return nil, fmt.Errorf("附件绑定类型非法")
+		}
+		valid = append(valid, att)
+	}
+	return valid, nil
 }
 
 func (s *APIV1Service) handleSendMail(c echo.Context) error {
@@ -276,27 +461,54 @@ func (s *APIV1Service) handleSendMail(c echo.Context) error {
 	title := c.FormValue("title")
 	content := c.FormValue("content")
 	gold, _ := strconv.ParseInt(c.FormValue("gold"), 10, 64)
+	// 2026-09-06 第二十一轮: 发信支持自定义过期时间(秒级时间戳, 可选);
+	// 必须晚于当前时间, 缺省 0 = 永不过期(与拍卖结算发信的 30 天语义互补)
+	expireAt, _ := strconv.ParseInt(c.FormValue("expire_at"), 10, 64)
+	if expireAt < 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "过期时间非法"})
+	}
+	if expireAt > 0 && expireAt <= time.Now().Unix() {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "过期时间必须晚于当前时间"})
+	}
+	// 2026-09-06 第二十二轮: 发信可带附件(JSON 数组/单对象, 与领取共用解析与校验), 非法整封拒绝
+	attachmentsParam := c.FormValue("attachments")
+	attachmentsJSON := ""
+	if attachmentsParam != "" {
+		if _, err := parseMailAttachments(attachmentsParam); err != nil {
+			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+		}
+		attachmentsJSON = attachmentsParam
+	}
 
 	targetRole, err := s.Store.GetRoleByName(c.Request().Context(), targetName)
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
 	}
 
+	// 2026-09-06 第二十一轮: 修复发信空指针——claims.UserID 是账户ID, 发件人须取当前选中角色
+	senderRoleID := s.activeRoleID(c, claims)
 	role, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{
-		FindBase: store.FindBase{ID: &claims.UserID},
+		FindBase: store.FindBase{ID: &senderRoleID},
 	})
+	if role == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "请先选择角色"})
+	}
 
-	mail, _ := s.Store.CreateMail(c.Request().Context(), &store.Mail{
-		SenderID:   claims.UserID,
-		SenderName: role.Name,
-		ReceiverID: targetRole.ID,
-		Title:      title,
-		Content:    content,
-		Gold:       gold,
-		IsRead:     false,
-		IsClaimed:  false,
-		ExpireAt:   0,
+	mail, err := s.Store.CreateMail(c.Request().Context(), &store.Mail{
+		SenderID:    senderRoleID,
+		SenderName:  role.Name,
+		ReceiverID:  targetRole.ID,
+		Title:       title,
+		Content:     content,
+		Attachments: attachmentsJSON,
+		Gold:        gold,
+		IsRead:      false,
+		IsClaimed:   false,
+		ExpireAt:    expireAt,
 	})
+	if err != nil || mail == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": fmt.Sprintf("发送邮件失败: %v", err)})
+	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error":  0,
@@ -312,12 +524,22 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 
 	mailID, _ := strconv.ParseUint(c.FormValue("mail_id"), 10, 64)
 
+	// 邮件的 ReceiverID 语义为角色ID, 校验当前账户的角色归属
 	mail, _ := s.Store.GetMail(c.Request().Context(), &store.FindMail{
-		FindBase:   store.FindBase{ID: &mailID},
-		ReceiverID: &claims.UserID,
+		FindBase: store.FindBase{ID: &mailID},
 	})
-
 	if mail == nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
+	}
+	roles, _ := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	owned := false
+	for _, r := range roles {
+		if r.ID == mail.ReceiverID {
+			owned = true
+			break
+		}
+	}
+	if !owned {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
 	}
 
@@ -325,21 +547,100 @@ func (s *APIV1Service) handleClaimMail(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 7})
 	}
 
-	isClaimed := true
-	s.Store.UpdateMail(c.Request().Context(), &store.UpdateMail{
-		ID:        mail.ID,
-		IsClaimed: &isClaimed,
-	})
+	// 2026-09-06 第十七轮: 过期邮件不可领取(expire_at > 0 且已到期)
+	if mail.ExpireAt > 0 && mail.ExpireAt < time.Now().Unix() {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "邮件已过期"})
+	}
 
+	// 附件领取: 物品入背包 / 金币入角色货币(ReceiverID 为角色ID)
+	// 2026-09-06 第十四轮: 支持多物品附件(JSON 数组 [{"item_id":x,"count":y,"bind_type":z}]), 兼容旧单对象格式
+	// 2026-09-06 第二十轮: 先解析校验附件(含 bind_type 合法域 0/1/2)再标记领取, 非法绑定类型整封拒绝
+	// 2026-09-06 第二十二轮: 解析/校验抽公共函数 parseMailAttachments(与发信附件共用)
+	atts, err := parseMailAttachments(mail.Attachments)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
+	// 2026-09-07 第七十二轮: 条件标记抢占(WHERE is_claimed=0)防并发重复领取;
+	// 未抢到 = 已被其他请求领取
+	claimed, err := s.Store.ClaimMail(c.Request().Context(), mail.ID)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+	if !claimed {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 7})
+	}
+
+	// 入包/金币失败时回滚领取标记, 避免"已标记但附件丢失"
+	rollbackClaim := func() {
+		notClaimed := false
+		_ = s.Store.UpdateMail(c.Request().Context(), &store.UpdateMail{
+			ID:        mail.ID,
+			IsClaimed: &notClaimed,
+		})
+	}
+
+	var grantedItems []map[string]interface{}
+	for _, att := range atts {
+		grid, err := s.nextBagGrid(c.Request().Context(), mail.ReceiverID)
+		if err != nil {
+			rollbackClaim()
+			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+		}
+		if _, err := s.Store.CreateBagItem(c.Request().Context(), &store.BagItem{
+			RoleID:    mail.ReceiverID,
+			ItemID:    att.ItemID,
+			GridIndex: grid,
+			Count:     att.Count,
+			BindType:  att.BindType,
+		}); err != nil {
+			rollbackClaim()
+			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+		}
+		grantedItems = append(grantedItems, map[string]interface{}{
+			"itemId":   att.ItemID,
+			"count":    att.Count,
+			"grid":     grid,
+			"bindType": att.BindType,
+		})
+	}
+
+	grantedGold := int64(0)
 	if mail.Gold > 0 {
-		currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), claims.UserID)
+		currency, err := s.Store.GetRoleCurrency(c.Request().Context(), mail.ReceiverID)
+		if err != nil {
+			currency = &store.RoleCurrency{RoleID: mail.ReceiverID}
+		}
 		currency.Gold += mail.Gold
-		s.Store.UpdateRoleCurrency(c.Request().Context(), currency)
+		if err := s.Store.UpdateRoleCurrency(c.Request().Context(), currency); err != nil {
+			rollbackClaim()
+			return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+		}
+		grantedGold = mail.Gold
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"error": 0,
-		"gold":  mail.Gold,
+		"gold":  grantedGold,
+		"items": grantedItems,
+	})
+}
+
+// handleMailCleanup 清理全服过期邮件(expire_at > 0 且已到期), 返回删除数量
+// 2026-09-06 第十七轮: 过期邮件清理(配合列表惰性清理与领取拦截)
+func (s *APIV1Service) handleMailCleanup(c echo.Context) error {
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	deleted, err := s.Store.DeleteExpiredMails(c.Request().Context(), time.Now().Unix())
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":   0,
+		"deleted": deleted,
 	})
 }
 
@@ -449,11 +750,11 @@ func (s *APIV1Service) handleCompleteQuest(c echo.Context) error {
 			expGain := int64(role.Level * 100)
 			goldGain := int32(role.Level * 50)
 
-			newExp := role.Exp + expGain
-			s.Store.UpdateRole(c.Request().Context(), &store.UpdateRole{
-				ID:  role.ID,
-				Exp: &newExp,
-			})
+			// 2026-09-07 第四十五轮: 升级机制(经验→等级+SP派发)
+			lvResult, lvErr := rolelevel.AddRoleExp(c.Request().Context(), s.Store, role.ID, expGain)
+			if lvErr != nil {
+				return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": lvErr.Error()})
+			}
 
 			currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), role.ID)
 			currency.Gold += int64(goldGain)
@@ -463,6 +764,10 @@ func (s *APIV1Service) handleCompleteQuest(c echo.Context) error {
 				"error":    0,
 				"expGain":  expGain,
 				"goldGain": goldGain,
+				"levelUp":  lvResult.LevelUps,
+				"level":    lvResult.NewLevel,
+				"exp":      lvResult.NewExp,
+				"sp":       lvResult.NewSP,
 			})
 		}
 	}
@@ -509,11 +814,11 @@ func (s *APIV1Service) handleGetQuestReward(c echo.Context) error {
 			expGain := int64(role.Level * 100)
 			goldGain := int32(role.Level * 50)
 
-			newExp := role.Exp + expGain
-			s.Store.UpdateRole(c.Request().Context(), &store.UpdateRole{
-				ID:  role.ID,
-				Exp: &newExp,
-			})
+			// 2026-09-07 第四十五轮: 升级机制(经验→等级+SP派发)
+			lvResult, lvErr := rolelevel.AddRoleExp(c.Request().Context(), s.Store, role.ID, expGain)
+			if lvErr != nil {
+				return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": lvErr.Error()})
+			}
 
 			currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), role.ID)
 			currency.Gold += int64(goldGain)
@@ -535,6 +840,10 @@ func (s *APIV1Service) handleGetQuestReward(c echo.Context) error {
 						{"type": "exp", "count": expGain},
 						{"type": "gold", "count": goldGain},
 					},
+					"levelUp": lvResult.LevelUps,
+					"level":   lvResult.NewLevel,
+					"exp":     lvResult.NewExp,
+					"sp":      lvResult.NewSP,
 				},
 			})
 		}
@@ -748,7 +1057,7 @@ func (s *APIV1Service) handleSearchAuction(c echo.Context) error {
 
 	items, _ := s.Store.ListAuctionItems(c.Request().Context(), find)
 
-	var itemList []map[string]interface{}
+	var itemList = make([]map[string]interface{}, 0)
 	now := time.Now().Unix()
 	for _, item := range items {
 		itemList = append(itemList, map[string]interface{}{
@@ -854,11 +1163,16 @@ func (s *APIV1Service) handleBidAuction(c echo.Context) error {
 	if auction.Status != store.AuctionStatusSelling {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 11})
 	}
-	if auction.SellerID == claims.UserID {
+	roleID := s.activeRoleID(c, claims)
+	if auction.SellerID == roleID {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 12})
 	}
+	// 出价必须高于当前最高价(或起拍价),否则拒绝
+	if bidPrice <= auction.BidPrice {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 13, "message": "bid price too low"})
+	}
 
-	currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), claims.UserID)
+	currency, _ := s.Store.GetRoleCurrency(c.Request().Context(), roleID)
 	if currency.Gold < bidPrice {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
 	}
@@ -875,12 +1189,15 @@ func (s *APIV1Service) handleBidAuction(c echo.Context) error {
 	bidCount := auction.BidCount + 1
 	s.Store.UpdateAuctionItem(c.Request().Context(), &store.UpdateAuctionItem{
 		ID:       auction.ID,
-		BidderID: &claims.UserID,
+		BidderID: &roleID,
 		BidPrice: &bidPrice,
 		BidCount: &bidCount,
 	})
 
-	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0})
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":     0,
+		"bidStatus": "success",
+	})
 }
 
 func (s *APIV1Service) handleBuyoutAuction(c echo.Context) error {
@@ -908,7 +1225,7 @@ func (s *APIV1Service) handleBuyoutAuction(c echo.Context) error {
 		}
 	}
 
-	action, err := s.handleBuyoutAuctionInternal(c, auctionID, claims.UserID)
+	action, err := s.handleBuyoutAuctionInternal(c, auctionID, s.activeRoleID(c, claims))
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6, "message": err.Error()})
 	}
@@ -1017,10 +1334,16 @@ func (s *APIV1Service) handleCreateAuction(c echo.Context) error {
 	role, _ := s.Store.GetRole(c.Request().Context(), &store.FindRole{
 		FindBase: store.FindBase{ID: &claims.UserID},
 	})
+	sellerName := ""
+	if role != nil {
+		sellerName = role.Name
+	}
+
+	roleID := s.activeRoleID(c, claims)
 
 	action, _ := s.Store.CreateAuctionItem(c.Request().Context(), &store.AuctionItem{
-		SellerID:   claims.UserID,
-		SellerName: role.Name,
+		SellerID:   roleID,
+		SellerName: sellerName,
 		ItemID:     int32(itemID),
 		Count:      int32(count),
 		Price:      price,
@@ -1092,7 +1415,7 @@ func (s *APIV1Service) handleListAuctions(c echo.Context) error {
 
 	items, _ := s.Store.ListAuctionItems(c.Request().Context(), find)
 
-	var itemList []map[string]interface{}
+	var itemList = make([]map[string]interface{}, 0)
 	now := time.Now().Unix()
 	for _, item := range items {
 		itemList = append(itemList, map[string]interface{}{
@@ -1138,7 +1461,7 @@ func (s *APIV1Service) handleListMyAuctions(c echo.Context) error {
 
 	items, _ := s.Store.ListAuctionItems(c.Request().Context(), find)
 
-	var itemList []map[string]interface{}
+	var itemList = make([]map[string]interface{}, 0)
 	now := time.Now().Unix()
 	for _, item := range items {
 		itemList = append(itemList, map[string]interface{}{
@@ -1182,7 +1505,7 @@ func (s *APIV1Service) handleListMyBids(c echo.Context) error {
 
 	items, _ := s.Store.ListAuctionItems(c.Request().Context(), find)
 
-	var itemList []map[string]interface{}
+	var itemList = make([]map[string]interface{}, 0)
 	now := time.Now().Unix()
 	for _, item := range items {
 		itemList = append(itemList, map[string]interface{}{
@@ -1278,7 +1601,8 @@ func (s *APIV1Service) handleCancelAuction(c echo.Context) error {
 	if action == nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 6})
 	}
-	if action.SellerID != claims.UserID {
+	roleID := s.activeRoleID(c, claims)
+	if action.SellerID != roleID {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 12})
 	}
 	if action.Status != store.AuctionStatusSelling {
@@ -1371,10 +1695,28 @@ func (s *APIV1Service) handleAchievementInfo(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		req = map[string]interface{}{}
+	}
+
+	queryType := int32(1)
+	if v, ok := req["field_1"].(float64); ok {
+		queryType = int32(v)
+	}
+
+	achievements, err := s.Store.GetAchievements(c.Request().Context(), claims.UserID, queryType)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	if achievements == nil {
+		achievements = []*store.AchievementInfo{}
+	}
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":        1,
-		"message":      "Achievement system not implemented yet",
-		"achievements": []map[string]interface{}{},
+		"error":        0,
+		"achievements": achievements,
 	})
 }
 
@@ -1384,14 +1726,60 @@ func (s *APIV1Service) handleAchievementReward(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":   1,
-		"message": "Achievement system not implemented yet",
-	})
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		req = map[string]interface{}{}
+	}
+
+	var achievementID, rewardType uint32
+	if v, ok := req["field_1"].(float64); ok {
+		achievementID = uint32(v)
+	}
+	if v, ok := req["field_2"].(float64); ok {
+		rewardType = uint32(v)
+	}
+
+	result, err := s.Store.ClaimAchievementReward(c.Request().Context(), claims.UserID, achievementID, rewardType)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0, "result": result})
 }
 
 func (s *APIV1Service) handleAchievementList(c echo.Context) error {
-	return s.handleAchievementInfo(c)
+	claims := getUserClaims(c)
+	if claims == nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
+	}
+
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		req = map[string]interface{}{}
+	}
+
+	queryType := int32(1)
+	if v, ok := req["field_1"].(float64); ok {
+		queryType = int32(v)
+	}
+
+	result, err := s.Store.GetAchievementList(c.Request().Context(), claims.UserID, queryType)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 3})
+	}
+
+	if result == nil {
+		result = &store.AchievementListResult{Achievements: []*store.AchievementInfo{}}
+	}
+	if result.Achievements == nil {
+		result.Achievements = []*store.AchievementInfo{}
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"error":        0,
+		"achievements": result.Achievements,
+		"total":        result.Total,
+	})
 }
 
 func (s *APIV1Service) handleAchievementBonusReward(c echo.Context) error {
@@ -1400,10 +1788,34 @@ func (s *APIV1Service) handleAchievementBonusReward(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"error":   1,
-		"message": "Achievement system not implemented yet",
-	})
+	var req map[string]interface{}
+	if err := json.NewDecoder(c.Request().Body).Decode(&req); err != nil {
+		req = map[string]interface{}{}
+	}
+
+	var achievementID, rewardType, rewardIndex, rewardCount uint32
+	if v, ok := req["field_1"].(float64); ok {
+		achievementID = uint32(v)
+	}
+	if v, ok := req["field_2"].(float64); ok {
+		rewardType = uint32(v)
+	}
+	if v, ok := req["field_4"].(float64); ok {
+		rewardIndex = uint32(v)
+	}
+	if v, ok := req["field_5"].(float64); ok {
+		rewardCount = uint32(v)
+	}
+	if rewardCount == 0 {
+		rewardCount = 1
+	}
+
+	result, err := s.Store.ClaimAchievementBonusReward(c.Request().Context(), claims.UserID, achievementID, rewardType, rewardIndex, rewardCount)
+	if err != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{"error": 0, "result": result})
 }
 
 func (s *APIV1Service) handleAdventureUnionInfo(c echo.Context) error {
@@ -2049,6 +2461,29 @@ func (s *APIV1Service) handleCreateCharacter(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]interface{}{"error": 2, "message": "Character name is required"})
 	}
 
+	// 2026-09-06 第二十六轮: 角色名长度/字符集校验
+	// 长度 1~16 字符(rune 计数, 中文算 1 个); 仅允许中文/大小写字母/数字/下划线
+	if n := utf8.RuneCountInString(name); n < 1 || n > 16 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "角色名长度须为 1-16 个字符"})
+	}
+	for _, r := range name {
+		if !(r >= 'a' && r <= 'z' || r >= 'A' && r <= 'Z' || r >= '0' && r <= '9' || r == '_' || r >= '\u4e00' && r <= '\u9fa5') {
+			return c.JSON(http.StatusOK, map[string]interface{}{"error": 4, "message": "角色名仅允许中文、字母、数字、下划线"})
+		}
+	}
+
+	// 2026-09-06 第二十七轮: 职业取值域校验(DNF 经典五职: 1鬼剑士/2格斗家/3神枪手/4魔法师/5圣职者;
+	// job 缺失/非数字按 0 处理一并拒绝, 防异常职业角色入库)
+	if job < 1 || job > 5 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 5, "message": "职业不合法(仅支持 1鬼剑士/2格斗家/3神枪手/4魔法师/5圣职者)"})
+	}
+
+	// 2026-09-06 第二十五轮: 角色名全局唯一(handler 层查重软约束, 同名任何角色存在即拒绝;
+	// DB 无名字唯一约束, 历史重名数据不受影响, 仅阻止新重名产生)
+	if existing, _ := s.Store.GetRoleByName(c.Request().Context(), name); existing != nil {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "角色名已存在"})
+	}
+
 	// 生成角色槽位ID
 	roleID := int32(1)
 	// 检查当前账号的角色数量，为新角色分配槽位
@@ -2207,12 +2642,15 @@ func (s *APIV1Service) handleCreateParty(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"code": 16, "message": "authentication required"})
 	}
 
-	roleID := claims.UserID
-	if roleID == 0 {
-		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1})
+	// 2026-09-07 第四十九轮: claims.UserID 是 account id, 需解析真实角色;
+	// 此前直接用 account id 当 roleID 建队(leader_id 存错对象)
+	roles, err := s.Store.ListRolesByAccount(c.Request().Context(), claims.UserID)
+	if err != nil || len(roles) == 0 {
+		return c.JSON(http.StatusOK, map[string]interface{}{"error": 1, "message": "no role found"})
 	}
+	roleID := roles[0].ID
 
-	err := s.Store.ControlGroup(c.Request().Context(), roleID, 0, 0, 0)
+	err = s.Store.ControlGroup(c.Request().Context(), roleID, 0, 0, 0)
 	if err != nil {
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"error":   1,

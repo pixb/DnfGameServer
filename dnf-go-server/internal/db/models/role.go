@@ -8,14 +8,19 @@ import (
 type Role struct {
 	ID           int64     `gorm:"primaryKey;autoIncrement" json:"id"`
 	AccountID    int64     `gorm:"index;not null" json:"accountId"`
+	UID          int64     `gorm:"type:bigint;index;not null" json:"uid"`          // 玩家UID(全局唯一)
+	RoleID       int       `gorm:"type:int;default:1" json:"roleId"`               // 角色槽位(1-4)
 	CharGUID     int64     `gorm:"type:bigint;uniqueIndex;not null" json:"charGuid"`
 	Name         string    `gorm:"type:varchar(50);not null" json:"name"`
+	DistName     string    `gorm:"type:varchar(100)" json:"distName"`              // 区分名(服务器名#角色名)
 	Level        int       `gorm:"type:int;default:1" json:"level"`
 	Job          int       `gorm:"type:int;default:0" json:"job"`
 	GrowType     int       `gorm:"type:int;default:0" json:"growType"`
 	SecGrowType  int       `gorm:"type:int;default:0" json:"secGrowType"`
 	Exp          int64     `gorm:"type:bigint;default:0" json:"exp"`
 	Gold         int64     `gorm:"type:bigint;default:0" json:"gold"`
+	Fatigue      int       `gorm:"type:int;default:100" json:"fatigue"`            // 疲劳值
+	MaxFatigue   int       `gorm:"type:int;default:156" json:"maxFatigue"`         // 最大疲劳值
 	Hp           int       `gorm:"type:int;default:100" json:"hp"`
 	Mp           int       `gorm:"type:int;default:100" json:"mp"`
 	Strength     int       `gorm:"type:int;default:10" json:"strength"`

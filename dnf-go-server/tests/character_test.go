@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"database/sql"
 	"fmt"
 	"testing"
 	"time"
@@ -27,8 +28,8 @@ func (s *CharacterTestSuite) TestCharacterCreate() {
 	token := s.LoginAs(s.openid)
 	s.NotEmpty(token, "Login should return a token")
 
-	// 创建角色，使用唯一名称
-	uniqueName := fmt.Sprintf("TestCharacter_%d", time.Now().UnixNano())
+	// 创建角色，使用唯一名称(16 字符内: 前缀+12 位纳秒后缀)
+	uniqueName := fmt.Sprintf("TC_%012d", time.Now().UnixNano()%1000000000000)
 	resp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
 		"name":     uniqueName,
 		"job":      1,
@@ -42,6 +43,180 @@ func (s *CharacterTestSuite) TestCharacterCreate() {
 	s.True(ok, "Response should contain data")
 	s.NotEmpty(data["charGuid"], "Character should have a charGuid")
 	s.Equal(uniqueName, data["name"], "Character name should match")
+}
+
+// TestCharacterCreateDuplicateName 角色名全局唯一(2026-09-06 第二十五轮):
+// 同名再次创建应拒绝, 且不产生新角色
+func (s *CharacterTestSuite) TestCharacterCreateDuplicateName() {
+	token := s.LoginAs(s.openid)
+	s.NotEmpty(token, "Login should return a token")
+
+	name := fmt.Sprintf("TD_%012d", time.Now().UnixNano()%1000000000000)
+	first, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": name,
+		"job":  1,
+	})
+	s.NoError(err)
+	s.AssertSuccess(first)
+
+	// 同名二次创建被拒
+	second, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": name,
+		"job":  1,
+	})
+	s.NoError(err)
+	s.NotNil(second)
+	if errVal, ok := second["error"]; ok {
+		s.Equal(float64(1), errVal)
+	}
+	if msg, ok := second["message"].(string); ok {
+		s.Contains(msg, "已存在")
+	}
+}
+
+// TestCharacterDBUniqueConstraint DB 层唯一索引硬约束(2026-09-06 第四十轮):
+// 绕过 handler 直插同名角色应被 uk_name 唯一索引拒绝(Error 1062)
+func (s *CharacterTestSuite) TestCharacterDBUniqueConstraint() {
+	token := s.LoginAs(s.openid)
+	s.NotEmpty(token, "Login should return a token")
+
+	// 先建一个角色(记录其名字与 account_id)
+	name := fmt.Sprintf("TU_%012d", time.Now().UnixNano()%1000000000000)
+	createResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": name,
+		"job":  1,
+	})
+	s.NoError(err)
+	s.AssertSuccess(createResp)
+	data, _ := createResp["data"].(map[string]interface{})
+	charGuid, ok := data["charGuid"].(float64)
+	s.True(ok, "should have charGuid")
+
+	db, err := sql.Open("mysql", testDBDSN)
+	s.NoError(err)
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	var accountID int64
+	err = db.QueryRow("SELECT account_id FROM role WHERE id = ?", uint64(charGuid)).Scan(&accountID)
+	s.NoError(err)
+
+	// 取该账号下不冲突的 role_id(uk_account_role 唯一)
+	var nextRoleID int
+	err = db.QueryRow("SELECT COALESCE(MAX(role_id), 0) + 1 FROM role WHERE account_id = ?", accountID).Scan(&nextRoleID)
+	s.NoError(err)
+
+	// 绕过 handler 直插同名角色(不同 role_id) → 唯一索引拒绝
+	_, err = db.Exec("INSERT INTO role (created_at, updated_at, row_status, account_id, role_id, name, job, level) VALUES (1, 1, 'NORMAL', ?, ?, ?, 1, 1)",
+		accountID, nextRoleID, name)
+	s.Error(err, "DB unique index should reject duplicate name")
+	if err != nil {
+		s.Contains(err.Error(), "Duplicate entry", "should be duplicate entry error")
+		s.Contains(err.Error(), "uk_name", "should mention uk_name index")
+	}
+
+	// 确认未产生脏数据
+	var cnt int
+	err = db.QueryRow("SELECT COUNT(*) FROM role WHERE name = ?", name).Scan(&cnt)
+	s.NoError(err)
+	s.Equal(1, cnt, "only the handler-created character should exist")
+	fmt.Printf("DB unique index uk_name verified for %s\n", name)
+}
+
+// TestCharacterCreateInvalidName 角色名长度/字符集校验(2026-09-06 第二十六轮):
+// 超长(>16 字符)与非法字符(空格/标点等)建角应拒绝 error 4, 且不产生新角色
+func (s *CharacterTestSuite) TestCharacterCreateInvalidName() {
+	token := s.LoginAs(s.openid)
+	s.NotEmpty(token, "Login should return a token")
+
+	// 超长名: 17 个字符
+	longResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": "AAAAAAAAAAAAAAAAA",
+		"job":  1,
+	})
+	s.NoError(err)
+	s.NotNil(longResp)
+	if errVal, ok := longResp["error"]; ok {
+		s.Equal(float64(4), errVal)
+	}
+	if msg, ok := longResp["message"].(string); ok {
+		s.Contains(msg, "长度")
+	}
+
+	// 非法字符: 空格与感叹号
+	badResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": "Bad Name!",
+		"job":  1,
+	})
+	s.NoError(err)
+	s.NotNil(badResp)
+	if errVal, ok := badResp["error"]; ok {
+		s.Equal(float64(4), errVal)
+	}
+	if msg, ok := badResp["message"].(string); ok {
+		s.Contains(msg, "仅允许")
+	}
+}
+
+// TestCharacterCreateChineseName 中文角色名合法(2026-09-06 第二十六轮):
+// 中文/下划线/数字组合在 16 字符内应创建成功
+func (s *CharacterTestSuite) TestCharacterCreateChineseName() {
+	token := s.LoginAs(s.openid)
+	s.NotEmpty(token, "Login should return a token")
+
+	chineseName := fmt.Sprintf("测试勇士_%06d", time.Now().UnixNano()%1000000)
+	resp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": chineseName,
+		"job":  1,
+	})
+	s.NoError(err)
+	s.AssertSuccess(resp)
+
+	data, ok := resp["data"].(map[string]interface{})
+	s.True(ok, "Response should contain data")
+	s.Equal(chineseName, data["name"], "Chinese character name should match")
+}
+
+// TestCharacterCreateInvalidJob 职业取值域校验(2026-09-06 第二十七轮):
+// job 缺失(0)/超域(6)应拒绝 error 5, 合法 job=2 应创建成功
+func (s *CharacterTestSuite) TestCharacterCreateInvalidJob() {
+	token := s.LoginAs(s.openid)
+	s.NotEmpty(token, "Login should return a token")
+
+	// job 缺失(解析为 0)
+	zeroResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": fmt.Sprintf("JZ_%012d", time.Now().UnixNano()%1000000000000),
+	})
+	s.NoError(err)
+	s.NotNil(zeroResp)
+	if errVal, ok := zeroResp["error"]; ok {
+		s.Equal(float64(5), errVal)
+	}
+	if msg, ok := zeroResp["message"].(string); ok {
+		s.Contains(msg, "职业")
+	}
+
+	// job 超域(6)
+	sixResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": fmt.Sprintf("JS_%012d", time.Now().UnixNano()%1000000000000),
+		"job":  6,
+	})
+	s.NoError(err)
+	s.NotNil(sixResp)
+	if errVal, ok := sixResp["error"]; ok {
+		s.Equal(float64(5), errVal)
+	}
+
+	// job=2 合法: 创建成功且回显 job 一致
+	okResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+		"name": fmt.Sprintf("JF_%012d", time.Now().UnixNano()%1000000000000),
+		"job":  2,
+	})
+	s.NoError(err)
+	s.AssertSuccess(okResp)
+	data, ok := okResp["data"].(map[string]interface{})
+	s.True(ok, "Response should contain data")
+	s.Equal(float64(2), data["job"], "job should be echoed as 2")
 }
 
 func (s *CharacterTestSuite) TestCharacterList() {

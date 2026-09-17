@@ -62,7 +62,7 @@ func (s *Service) Login(req *LoginRequest) (*LoginResponse, error) {
 
 		// 保存账号
 		if err := s.DB.Create(&account).Error; err != nil {
-			logger.Error("创建账号失败", logger.String("openid", req.OpenID), logger.Error(err))
+			logger.Error("创建账号失败", logger.String("openid", req.OpenID), logger.ErrorField(err))
 			return &LoginResponse{Error: 2, AuthKey: "", AccountKey: ""}, err
 		}
 
@@ -75,16 +75,16 @@ func (s *Service) Login(req *LoginRequest) (*LoginResponse, error) {
 			Currency4: 0,
 		}
 		if err := s.DB.Create(&accountMoney).Error; err != nil {
-			logger.Error("初始化账号货币失败", logger.Int64("account_id", account.ID), logger.Error(err))
+			logger.Error("初始化账号货币失败", logger.Int64("account_id", account.ID), logger.ErrorField(err))
 		}
 	} else if result.Error != nil {
-		logger.Error("查询账号失败", logger.String("openid", req.OpenID), logger.Error(result.Error))
+		logger.Error("查询账号失败", logger.String("openid", req.OpenID), logger.ErrorField(result.Error))
 		return &LoginResponse{Error: 3, AuthKey: "", AccountKey: ""}, result.Error
 	} else {
 		// 更新最后登录时间
 		account.LastLoginAt = time.Now()
 		if err := s.DB.Save(&account).Error; err != nil {
-			logger.Error("更新登录时间失败", logger.Int64("account_id", account.ID), logger.Error(err))
+			logger.Error("更新登录时间失败", logger.Int64("account_id", account.ID), logger.ErrorField(err))
 		}
 	}
 
@@ -101,7 +101,7 @@ func (s *Service) Login(req *LoginRequest) (*LoginResponse, error) {
 		UserAgent:  "", // 后续可以从请求中获取
 	}
 	if err := s.DB.Create(&auth).Error; err != nil {
-		logger.Error("保存认证信息失败", logger.Int64("account_id", account.ID), logger.Error(err))
+		logger.Error("保存认证信息失败", logger.Int64("account_id", account.ID), logger.ErrorField(err))
 		return &LoginResponse{Error: 4, AuthKey: "", AccountKey: ""}, err
 	}
 

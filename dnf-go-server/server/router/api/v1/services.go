@@ -38,7 +38,7 @@ func (s *APIV1Service) Login(ctx context.Context, req *dnfv1.LoginRequest) (*dnf
 				AccountKey: "",
 				AuthKey:    "",
 				Authority:  0,
-				Status:     0,
+				Status:     1, // 1=正常(2026-09-06 第三十七轮: 与 TCP LoginHandler 语义统一)
 			})
 			if err != nil {
 				return nil, status.Errorf(codes.Internal, "failed to create account: %v", err)
@@ -48,8 +48,8 @@ func (s *APIV1Service) Login(ctx context.Context, req *dnfv1.LoginRequest) (*dnf
 		}
 	}
 
-	// 2. 检查账户状态
-	if account.Status != 0 {
+	// 2. 检查账户状态(2026-09-06 第三十七轮: 语义统一 1=正常/0=禁用)
+	if account.Status == 0 {
 		return nil, status.Errorf(codes.PermissionDenied, "account is banned")
 	}
 

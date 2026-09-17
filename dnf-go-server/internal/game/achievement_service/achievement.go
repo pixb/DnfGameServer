@@ -3,21 +3,21 @@ package achievement_service
 import (
 	"context"
 	"fmt"
-	"time"
 
-	"github.com/pixb/DnfGameServer/dnf-go-server/internal/db"
-	"github.com/pixb/DnfGameServer/dnf-go-server/internal/db/models"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
+	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 )
 
+// AchievementService 成就服务
+// 基于 store 层实现,支持 sqlite/mysql 双驱动
 type AchievementService struct {
-	db *db.DB
+	store *store.Store
 }
 
-func NewAchievementService(db *db.DB) *AchievementService {
+func NewAchievementService(s *store.Store) *AchievementService {
 	return &AchievementService{
-		db: db,
+		store: s,
 	}
 }
 
@@ -43,131 +43,57 @@ type AchievementRewardResult struct {
 	InvenItems          *dnfv1.PT_ITEMS        `json:"invenitems"`
 }
 
+// GetAchievementInfo 获取成就信息
 func (s *AchievementService) GetAchievementInfo(ctx context.Context, roleID uint64, queryType int32) ([]AchievementInfo, error) {
 	logger.Info("get achievement info",
 		logger.Uint64("role_id", roleID),
 		logger.Int32("query_type", queryType),
 	)
 
-	var records []models.AchievementRecord
-	query := s.db.DB.Where("role_id = ?", roleID)
-
-	switch queryType {
-	case 1:
-	case 2:
-		query = query.Where("completed = ?", true)
-	case 3:
-		query = query.Where("completed = ?", false)
-	default:
-		return nil, fmt.Errorf("invalid query type: %d", queryType)
-	}
-
-	if err := query.Find(&records).Error; err != nil {
-		logger.Error("failed to query achievement records",
+	infos, err := s.store.GetAchievements(ctx, roleID, queryType)
+	if err != nil {
+		logger.Error("failed to get achievements",
 			logger.ErrorField(err),
 			logger.Uint64("role_id", roleID),
 		)
 		return nil, err
 	}
 
-	var configs []models.AchievementConfig
-	configMap := make(map[uint32]*models.AchievementConfig)
-	if len(records) > 0 {
-		achievementIDs := make([]uint32, len(records))
-		for i, record := range records {
-			achievementIDs[i] = record.AchievementID
-		}
-
-		if err := s.db.DB.Where("achievement_id IN ?", achievementIDs).Find(&configs).Error; err != nil {
-			logger.Error("failed to query achievement configs",
-				logger.ErrorField(err),
-			)
-			return nil, err
-		}
-
-		for i := range configs {
-			configMap[configs[i].AchievementID] = &configs[i]
-		}
+	achievements := make([]AchievementInfo, len(infos))
+	for i, info := range infos {
+		achievements[i] = convertInfo(info)
 	}
-
-	achievements := make([]AchievementInfo, len(records))
-	for i, record := range records {
-		achievements[i] = AchievementInfo{
-			AchievementID: record.AchievementID,
-			Progress:      record.Progress,
-			Completed:     record.Completed,
-			Rewarded:      record.Rewarded,
-		}
-
-		if config, ok := configMap[record.AchievementID]; ok {
-			achievements[i].Name = config.Name
-			achievements[i].Description = config.Description
-			achievements[i].TargetValue = config.TargetValue
-		}
-	}
-
 	return achievements, nil
 }
 
+// GetAchievementList 获取成就列表
 func (s *AchievementService) GetAchievementList(ctx context.Context, roleID uint64, listType int32) (*AchievementListResult, error) {
 	logger.Info("get achievement list",
 		logger.Uint64("role_id", roleID),
 		logger.Int32("list_type", listType),
 	)
 
-	var records []models.AchievementRecord
-	query := s.db.DB.Where("role_id = ?", roleID)
-
-	if err := query.Find(&records).Error; err != nil {
-		logger.Error("failed to query achievement records",
+	result, err := s.store.GetAchievementList(ctx, roleID, listType)
+	if err != nil {
+		logger.Error("failed to get achievement list",
 			logger.ErrorField(err),
 			logger.Uint64("role_id", roleID),
 		)
 		return nil, err
 	}
 
-	var configs []models.AchievementConfig
-	configMap := make(map[uint32]*models.AchievementConfig)
-	if len(records) > 0 {
-		achievementIDs := make([]uint32, len(records))
-		for i, record := range records {
-			achievementIDs[i] = record.AchievementID
-		}
-
-		if err := s.db.DB.Where("achievement_id IN ?", achievementIDs).Find(&configs).Error; err != nil {
-			logger.Error("failed to query achievement configs",
-				logger.ErrorField(err),
-			)
-			return nil, err
-		}
-
-		for i := range configs {
-			configMap[configs[i].AchievementID] = &configs[i]
-		}
-	}
-
-	achievements := make([]AchievementInfo, len(records))
-	for i, record := range records {
-		achievements[i] = AchievementInfo{
-			AchievementID: record.AchievementID,
-			Progress:      record.Progress,
-			Completed:     record.Completed,
-			Rewarded:      record.Rewarded,
-		}
-
-		if config, ok := configMap[record.AchievementID]; ok {
-			achievements[i].Name = config.Name
-			achievements[i].Description = config.Description
-			achievements[i].TargetValue = config.TargetValue
-		}
+	achievements := make([]AchievementInfo, len(result.Achievements))
+	for i, info := range result.Achievements {
+		achievements[i] = convertInfo(info)
 	}
 
 	return &AchievementListResult{
 		Achievements: achievements,
-		Total:        int32(len(achievements)),
+		Total:        result.Total,
 	}, nil
 }
 
+// ClaimAchievementReward 领取成就奖励
 func (s *AchievementService) ClaimAchievementReward(ctx context.Context, roleID uint64, achievementID uint32, rewardType uint32) (*AchievementRewardResult, error) {
 	logger.Info("claim achievement reward",
 		logger.Uint64("role_id", roleID),
@@ -175,96 +101,25 @@ func (s *AchievementService) ClaimAchievementReward(ctx context.Context, roleID 
 		logger.Uint32("reward_type", rewardType),
 	)
 
-	var record models.AchievementRecord
-	if err := s.db.DB.Where("role_id = ? AND achievement_id = ?", roleID, achievementID).First(&record).Error; err != nil {
-		logger.Error("achievement record not found",
+	result, err := s.store.ClaimAchievementReward(ctx, roleID, achievementID, rewardType)
+	if err != nil {
+		logger.Error("failed to claim achievement reward",
 			logger.ErrorField(err),
 			logger.Uint64("role_id", roleID),
 			logger.Uint32("achievement_id", achievementID),
 		)
-		return nil, fmt.Errorf("achievement not found")
-	}
-
-	if !record.Completed {
-		return nil, fmt.Errorf("achievement not completed")
-	}
-
-	if record.Rewarded {
-		return nil, fmt.Errorf("reward already claimed")
-	}
-
-	var config models.AchievementConfig
-	if err := s.db.DB.Where("achievement_id = ?", achievementID).First(&config).Error; err != nil {
-		logger.Error("achievement config not found",
-			logger.ErrorField(err),
-			logger.Uint32("achievement_id", achievementID),
-		)
-		return nil, fmt.Errorf("achievement config not found")
-	}
-
-	tx := s.db.DB.Begin()
-
-	now := time.Now()
-	record.Rewarded = true
-	record.RewardTime = now
-	if err := tx.Save(&record).Error; err != nil {
-		tx.Rollback()
-		logger.Error("failed to update achievement record",
-			logger.ErrorField(err),
-		)
 		return nil, err
 	}
 
-	reward := &models.AchievementReward{
-		RoleID:        roleID,
-		AchievementID: achievementID,
-		RewardType:    rewardType,
-		RewardIndex:   config.RewardIndex,
-		RewardCount:   config.RewardCount,
-		Claimed:       true,
-		ClaimTime:     now,
-	}
-	if err := tx.Create(reward).Error; err != nil {
-		tx.Rollback()
-		logger.Error("failed to create achievement reward record",
-			logger.ErrorField(err),
-		)
-		return nil, err
-	}
-
-	if err := tx.Commit().Error; err != nil {
-		logger.Error("failed to commit transaction",
-			logger.ErrorField(err),
-		)
-		return nil, err
-	}
-
-	result := &AchievementRewardResult{
-		AdventureUnionLevel: 1,
-		AdventureUnionExp:   1,
-		ConsumeItems: []*dnfv1.StackableItem{
-			{
-				Index:           config.RewardIndex,
-				Count:           config.RewardCount,
-				Bind:            false,
-				AcquisitionTime: uint64(now.Unix()),
-			},
-		},
-		InvenItems: &dnfv1.PT_ITEMS{
-			ConsumeItems: []*dnfv1.StackableItem{
-				{
-					Index:           config.RewardIndex,
-					Count:           config.RewardCount,
-					Bind:            false,
-					AcquisitionTime: uint64(now.Unix()),
-				},
-			},
-		},
-	}
-
-	return result, nil
+	return &AchievementRewardResult{
+		AdventureUnionLevel: result.AdventureUnionLevel,
+		AdventureUnionExp:   result.AdventureUnionExp,
+		ConsumeItems:        result.ConsumeItems,
+		InvenItems:          result.InvenItems,
+	}, nil
 }
 
+// ClaimAchievementBonusReward 领取成就额外奖励
 func (s *AchievementService) ClaimAchievementBonusReward(ctx context.Context, roleID uint64, achievementID uint32, rewardType, rewardIndex, rewardCount uint32) ([]*dnfv1.StackableItem, error) {
 	logger.Info("claim achievement bonus reward",
 		logger.Uint64("role_id", roleID),
@@ -274,87 +129,31 @@ func (s *AchievementService) ClaimAchievementBonusReward(ctx context.Context, ro
 		logger.Uint32("reward_count", rewardCount),
 	)
 
-	var record models.AchievementRecord
-	if err := s.db.DB.Where("role_id = ? AND achievement_id = ?", roleID, achievementID).First(&record).Error; err != nil {
-		logger.Error("achievement record not found",
+	result, err := s.store.ClaimAchievementBonusReward(ctx, roleID, achievementID, rewardType, rewardIndex, rewardCount)
+	if err != nil {
+		logger.Error("failed to claim achievement bonus reward",
 			logger.ErrorField(err),
 			logger.Uint64("role_id", roleID),
 			logger.Uint32("achievement_id", achievementID),
 		)
-		return nil, fmt.Errorf("achievement not found")
-	}
-
-	if !record.Completed {
-		return nil, fmt.Errorf("achievement not completed")
-	}
-
-	var config models.AchievementConfig
-	if err := s.db.DB.Where("achievement_id = ?", achievementID).First(&config).Error; err != nil {
-		logger.Error("achievement config not found",
-			logger.ErrorField(err),
-			logger.Uint32("achievement_id", achievementID),
-		)
-		return nil, fmt.Errorf("achievement config not found")
-	}
-
-	if !config.BonusReward {
-		return nil, fmt.Errorf("achievement does not have bonus reward")
-	}
-
-	var existingReward models.AchievementReward
-	err := s.db.DB.Where("role_id = ? AND achievement_id = ? AND reward_type = ? AND reward_index = ?",
-		roleID, achievementID, rewardType, rewardIndex).First(&existingReward).Error
-	if err == nil && existingReward.Claimed {
-		return nil, fmt.Errorf("bonus reward already claimed")
-	}
-
-	tx := s.db.DB.Begin()
-
-	now := time.Now()
-	if existingReward.ID == 0 {
-		newReward := &models.AchievementReward{
-			RoleID:        roleID,
-			AchievementID: achievementID,
-			RewardType:    rewardType,
-			RewardIndex:   rewardIndex,
-			RewardCount:   rewardCount,
-			Claimed:       true,
-			ClaimTime:     now,
-		}
-		if err := tx.Create(newReward).Error; err != nil {
-			tx.Rollback()
-			logger.Error("failed to create bonus reward record",
-				logger.ErrorField(err),
-			)
-			return nil, err
-		}
-	} else {
-		existingReward.Claimed = true
-		existingReward.ClaimTime = now
-		if err := tx.Save(&existingReward).Error; err != nil {
-			tx.Rollback()
-			logger.Error("failed to update bonus reward record",
-				logger.ErrorField(err),
-			)
-			return nil, err
-		}
-	}
-
-	if err := tx.Commit().Error; err != nil {
-		logger.Error("failed to commit transaction",
-			logger.ErrorField(err),
-		)
 		return nil, err
 	}
 
-	rewards := []*dnfv1.StackableItem{
-		{
-			Index:           rewardIndex,
-			Count:           rewardCount,
-			Bind:            false,
-			AcquisitionTime: uint64(now.Unix()),
-		},
+	if result == nil || result.InvenItems == nil {
+		return nil, fmt.Errorf("no bonus reward returned")
 	}
+	return result.InvenItems.ConsumeItems, nil
+}
 
-	return rewards, nil
+// convertInfo 转换store层成就信息
+func convertInfo(info *store.AchievementInfo) AchievementInfo {
+	return AchievementInfo{
+		AchievementID: info.AchievementID,
+		Name:          info.Name,
+		Description:   info.Description,
+		Progress:      info.Progress,
+		TargetValue:   info.TargetValue,
+		Completed:     info.Completed,
+		Rewarded:      info.Rewarded,
+	}
 }

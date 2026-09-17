@@ -7,7 +7,9 @@ import (
 
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/party_service"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
+	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 )
 
 var partySvc *party_service.PartyService
@@ -116,11 +118,91 @@ func RecommendGroupHandler(session *network.Session, msg proto.Message) {
 	session.WriteResponse(10009, 3, resp)
 }
 
-// ControlGroupHandler 控制队伍
+// ControlGroupHandler 控制队伍(2026-09-07 第四十八轮兼容文本命令):
+// protobuf ControlGroupRequest 直读; 文本命令(CREATE_PARTY/LEAVE_PARTY/KICK_OUT_MEMBER)
+// 经 textExtras JSON payload 传 type/targetguid/partyguid(与 protobuf 同构)
 func ControlGroupHandler(session *network.Session, msg proto.Message) {
 	ctx := context.Background()
+
+	action := uint32(0)
+	var targetGuid, partyGuid uint64
+	var setting *store.PartySetting
 	req, ok := msg.(*dnfv1.ControlGroupRequest)
-	if !ok {
+	if ok {
+		action = req.Type
+		targetGuid = req.Targetguid
+		partyGuid = req.Partyguid
+		// 2026-09-07 第五十轮: MODIFY_PARTY_SETTING(type=6) 设置字段
+		// 注意: 文本命令 payload 与 proto 字段重合时 protojson 已填充 req,
+		// 故 protobuf 分支同样需要构建 setting
+		if action == 6 {
+			setting = &store.PartySetting{}
+			if req.Partyname != "" {
+				setting.Name = &req.Partyname
+			}
+			if req.Dungeonindex != 0 {
+				u := req.Dungeonindex
+				setting.DungeonIndex = &u
+			}
+			if req.Minlevel != 0 {
+				u := req.Minlevel
+				setting.MinLevel = &u
+			}
+			if req.Maxlevel != 0 {
+				u := req.Maxlevel
+				setting.MaxLevel = &u
+			}
+			if req.Area != 0 {
+				u := req.Area
+				setting.Area = &u
+			}
+			// 2026-09-07 第五十一轮: public_type 无 proto 字段(protojson 丢弃),
+			// 文本命令场景从 textExtras 读; 0=公开(合法值, 仅字段存在时更新)
+			if extras, exists := session.GetAttr("textExtras"); exists {
+				if m, ok := extras.(map[string]interface{}); ok {
+					if v, ok := m["publictype"].(float64); ok {
+						u := uint32(v)
+						setting.PublicType = &u
+					}
+				}
+			}
+		}
+	} else if extras, exists := session.GetAttr("textExtras"); exists {
+		if m, ok := extras.(map[string]interface{}); ok {
+			if v, ok := m["type"].(float64); ok {
+				action = uint32(v)
+			}
+			if v, ok := m["targetguid"].(float64); ok {
+				targetGuid = uint64(v)
+			}
+			if v, ok := m["partyguid"].(float64); ok {
+				partyGuid = uint64(v)
+			}
+			// 2026-09-07 第五十轮: MODIFY_PARTY_SETTING(type=6) 设置字段
+			if action == 6 {
+				setting = &store.PartySetting{}
+				if v, ok := m["partyname"].(string); ok {
+					setting.Name = &v
+				}
+				if v, ok := m["dungeonindex"].(float64); ok {
+					u := uint32(v)
+					setting.DungeonIndex = &u
+				}
+				if v, ok := m["minlevel"].(float64); ok {
+					u := uint32(v)
+					setting.MinLevel = &u
+				}
+				if v, ok := m["maxlevel"].(float64); ok {
+					u := uint32(v)
+					setting.MaxLevel = &u
+				}
+				if v, ok := m["area"].(float64); ok {
+					u := uint32(v)
+					setting.Area = &u
+				}
+			}
+		}
+	} else {
 		// 发送错误响应
 		errorResp := &dnfv1.ControlGroupResponse{
 			Error: 1,
@@ -129,7 +211,29 @@ func ControlGroupHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
-	err := partySvc.ControlGroup(ctx, session.RoleID(), req.Type, req.Targetguid, req.Partyguid)
+	// 2026-09-07 第五十轮: MODIFY_PARTY_SETTING 走 UpdatePartySetting(设置字段非 ControlGroup 签名可表达)
+	if action == 6 {
+		err := partySvc.UpdatePartySetting(ctx, session.RoleID(), setting)
+		if err != nil {
+			errorResp := &dnfv1.ControlGroupResponse{Error: 1}
+			session.WriteResponse(10009, 5, errorResp)
+			return
+		}
+		resp := &dnfv1.ControlGroupResponse{Error: 0, Type: action}
+		session.WriteResponse(10009, 5, resp)
+		return
+	}
+
+	// 2026-09-07 第六十三轮: 离队(2)/踢人(3)/队长转移(4)操作后需广播,
+	// 但离队/解散后按 roleID 查不到原队伍, 故操作前先记录当前队伍
+	var broadcastGuid uint64
+	if action == 2 || action == 3 || action == 4 {
+		if cur, err := partySvc.GetPartyByRoleID(ctx, session.RoleID()); err == nil && cur != nil {
+			broadcastGuid = cur.PartyGuid
+		}
+	}
+
+	err := partySvc.ControlGroup(ctx, session.RoleID(), action, targetGuid, partyGuid)
 	if err != nil {
 		// 发送错误响应
 		errorResp := &dnfv1.ControlGroupResponse{
@@ -141,9 +245,23 @@ func ControlGroupHandler(session *network.Session, msg proto.Message) {
 
 	resp := &dnfv1.ControlGroupResponse{
 		Error: 0,
-		Type:  req.Type,
+		Type:  action,
 	}
 	session.WriteResponse(10009, 5, resp)
+
+	// 2026-09-07 第六十二轮: 加入成功后向全队广播最新队伍信息
+	if action == 5 && partyGuid != 0 {
+		broadcastPartyUpdate(session, partyGuid)
+	}
+	// 2026-09-07 第六十三轮: 离队/踢人/队长转移成功后向剩余成员广播最新队伍信息
+	if broadcastGuid != 0 {
+		if action == 3 {
+			// 踢人: 被踢者不在最新成员列表, 需作为额外接收者收到推送以感知被移出
+			broadcastPartyUpdate(session, broadcastGuid, targetGuid)
+		} else {
+			broadcastPartyUpdate(session, broadcastGuid)
+		}
+	}
 }
 
 // StartMultiPlayHandler 开始多人游戏
@@ -387,7 +505,7 @@ func CheckProhibitedWordHandler(session *network.Session, msg proto.Message) {
 	session.WriteResponse(10009, 14, resp)
 }
 
-// HalfOpenPartyAcceptHandler 半公开队伍接受
+// HalfOpenPartyAcceptHandler 半公开队伍接受(2026-09-07 第五十二轮: 文本命令可带 targetguid 指定申请者)
 func HalfOpenPartyAcceptHandler(session *network.Session, msg proto.Message) {
 	ctx := context.Background()
 	req, ok := msg.(*dnfv1.HalfOpenPartyAcceptRequest)
@@ -400,7 +518,16 @@ func HalfOpenPartyAcceptHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
-	err := partySvc.HalfOpenPartyAccept(ctx, session.RoleID(), req.Partyguid)
+	var targetGuid uint64
+	if extras, exists := session.GetAttr("textExtras"); exists {
+		if m, ok := extras.(map[string]interface{}); ok {
+			if v, ok := m["targetguid"].(float64); ok {
+				targetGuid = uint64(v)
+			}
+		}
+	}
+
+	err := partySvc.HalfOpenPartyAccept(ctx, session.RoleID(), req.Partyguid, targetGuid)
 	if err != nil {
 		// 发送错误响应
 		errorResp := &dnfv1.HalfOpenPartyAcceptResponse{
@@ -415,9 +542,12 @@ func HalfOpenPartyAcceptHandler(session *network.Session, msg proto.Message) {
 		TransId: 0,
 	}
 	session.WriteResponse(10009, 15, resp)
+
+	// 2026-09-07 第六十二轮: 接受申请后向全队广播最新队伍信息
+	broadcastPartyUpdate(session, req.Partyguid)
 }
 
-// HalfOpenPartyRefuseHandler 半公开队伍拒绝
+// HalfOpenPartyRefuseHandler 半公开队伍拒绝(2026-09-07 第五十二轮: 文本命令可带 targetguid 指定申请者)
 func HalfOpenPartyRefuseHandler(session *network.Session, msg proto.Message) {
 	ctx := context.Background()
 	req, ok := msg.(*dnfv1.HalfOpenPartyRefuseRequest)
@@ -430,7 +560,24 @@ func HalfOpenPartyRefuseHandler(session *network.Session, msg proto.Message) {
 		return
 	}
 
-	err := partySvc.HalfOpenPartyRefuse(ctx, session.RoleID(), req.Partyguid)
+	var targetGuid uint64
+	if extras, exists := session.GetAttr("textExtras"); exists {
+		if m, ok := extras.(map[string]interface{}); ok {
+			if v, ok := m["targetguid"].(float64); ok {
+				targetGuid = uint64(v)
+			}
+		}
+	}
+
+	// 2026-09-07 第六十七轮: 拒绝全部(targetGuid=0)前先记录申请者列表, 删除后无法再查
+	var applicants []uint64
+	if targetGuid == 0 {
+		if list, err := partySvc.ListPartyRequests(ctx, req.Partyguid); err == nil {
+			applicants = list
+		}
+	}
+
+	err := partySvc.HalfOpenPartyRefuse(ctx, session.RoleID(), req.Partyguid, targetGuid)
 	if err != nil {
 		// 发送错误响应
 		errorResp := &dnfv1.HalfOpenPartyRefuseResponse{
@@ -445,6 +592,14 @@ func HalfOpenPartyRefuseHandler(session *network.Session, msg proto.Message) {
 		TransId: 0,
 	}
 	session.WriteResponse(10009, 16, resp)
+
+	// 2026-09-07 第六十四轮: 拒绝指定申请者后向被拒者推送(extraRoles, 其不在成员列表仍感知被拒)
+	if targetGuid != 0 {
+		broadcastPartyUpdate(session, req.Partyguid, targetGuid)
+	} else if len(applicants) > 0 {
+		// 2026-09-07 第六十七轮: 拒绝全部时向所有申请者推送
+		broadcastPartyUpdate(session, req.Partyguid, applicants...)
+	}
 }
 
 // HalfOpenPartyJoinHandler 半公开队伍加入
@@ -475,6 +630,9 @@ func HalfOpenPartyJoinHandler(session *network.Session, msg proto.Message) {
 		TransId: 0,
 	}
 	session.WriteResponse(10009, 17, resp)
+
+	// 2026-09-07 第六十二轮: 直接加入成功后向全队广播最新队伍信息
+	broadcastPartyUpdate(session, req.Partyguid)
 }
 
 // PartyDungeonConditionHandler 多人游戏副本条件
@@ -582,4 +740,59 @@ func TargetUserPartyInfoHandler(session *network.Session, msg proto.Message) {
 		TransId: 0,
 	}
 	session.WriteResponse(10009, 20, resp)
+}
+
+// broadcastPartyUpdate 队伍成员变化后向全队在线成员广播最新队伍信息(2026-09-07 第六十二轮)
+// extraRoles: 额外接收者(2026-09-07 第六十三轮, 如被踢者不在最新成员列表但仍需感知)
+func broadcastPartyUpdate(trigger *network.Session, partyGuid uint64, extraRoles ...uint64) {
+	ctx := context.Background()
+	party, err := partySvc.GetPartyByGuid(ctx, partyGuid)
+	if err != nil || party == nil {
+		return
+	}
+	partyInfo := &dnfv1.PartyInfo{
+		Partyguid:    party.PartyGuid,
+		Leaderguid:   party.LeaderGuid,
+		Name:         party.Name,
+		Maxmembers:   party.MaxMembers,
+		Members:      party.Members,
+		Dungeonindex: party.DungeonIndex,
+		Roomid:       uint32(party.RoomID),
+		Minlevel:     party.MinLevel,
+		Maxlevel:     party.MaxLevel,
+		Area:         party.Area,
+		Subtype:      party.SubType,
+		Stageindex:   party.StageIndex,
+		Publictype:   party.PublicType,
+	}
+	notify := &dnfv1.PartyUpdateNotify{Info: partyInfo}
+	mg := trigger.SessionManager()
+	if mg == nil {
+		return
+	}
+	sendTo := func(roleID uint64) {
+		for _, s := range mg.GetAll() {
+			if s != nil && s.RoleID() == roleID && s.ID() != trigger.ID() {
+				if err := s.WriteResponse(10009, 34, notify); err != nil {
+					logger.Error("failed to send party update notify",
+						logger.ErrorField(err),
+						logger.Int64("session_id", s.ID()),
+					)
+				}
+			}
+		}
+	}
+	sent := make(map[uint64]bool)
+	for _, m := range party.Members {
+		if m == nil {
+			continue
+		}
+		sent[m.Charguid] = true
+		sendTo(m.Charguid)
+	}
+	for _, r := range extraRoles {
+		if !sent[r] {
+			sendTo(r)
+		}
+	}
 }

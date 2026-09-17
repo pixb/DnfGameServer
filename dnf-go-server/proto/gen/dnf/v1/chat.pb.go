@@ -592,6 +592,7 @@ type FriendInfo struct {
 	Online        bool                   `protobuf:"varint,5,opt,name=online,proto3" json:"online,omitempty"`
 	LastLoginTime int64                  `protobuf:"varint,6,opt,name=last_login_time,json=lastLoginTime,proto3" json:"last_login_time,omitempty"`
 	Intimacy      int32                  `protobuf:"varint,7,opt,name=intimacy,proto3" json:"intimacy,omitempty"` // 亲密度
+	Group         string                 `protobuf:"bytes,8,opt,name=group,proto3" json:"group,omitempty"`       // 好友分组
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -673,6 +674,14 @@ func (x *FriendInfo) GetIntimacy() int32 {
 		return x.Intimacy
 	}
 	return 0
+}
+
+// GetGroup 获取好友分组
+func (x *FriendInfo) GetGroup() string {
+	if x != nil {
+		return x.Group
+	}
+	return ""
 }
 
 // 获取好友列表请求

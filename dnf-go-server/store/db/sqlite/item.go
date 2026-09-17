@@ -2,6 +2,7 @@ package sqlite
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"strings"
 	"time"
@@ -19,10 +20,15 @@ func (d *DB) CreateBagItem(ctx context.Context, create *store.BagItem) (*store.B
    `
 
 	now := time.Now().Unix()
+	// attributes 为空时写 NULL(与 mysql 侧对齐)
+	var attrs interface{}
+	if create.Attributes != "" {
+		attrs = create.Attributes
+	}
 	result, err := d.db.ExecContext(ctx, query,
 		now, now, store.RowStatusNormal,
 		create.RoleID, create.ItemID, create.GridIndex, create.Count,
-		create.IsEquiped, create.BindType, create.Durability, create.EnhanceLevel, create.Attributes,
+		create.IsEquiped, create.BindType, create.Durability, create.EnhanceLevel, attrs,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create bag item: %w", err)
@@ -135,12 +141,15 @@ func (d *DB) ListBagItems(ctx context.Context, find *store.FindBagItem) ([]*stor
 	var items []*store.BagItem
 	for rows.Next() {
 		var item store.BagItem
+		// attributes 可为 NULL(空属性存 NULL),用 NullString 兼容
+		var attrs sql.NullString
 		err := rows.Scan(&item.ID, &item.CreatedAt, &item.UpdatedAt, &item.RowStatus,
 			&item.RoleID, &item.ItemID, &item.GridIndex, &item.Count,
-			&item.IsEquiped, &item.BindType, &item.Durability, &item.EnhanceLevel, &item.Attributes)
+			&item.IsEquiped, &item.BindType, &item.Durability, &item.EnhanceLevel, &attrs)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan bag item: %w", err)
 		}
+		item.Attributes = attrs.String
 		items = append(items, &item)
 	}
 
@@ -160,4 +169,41 @@ func (d *DB) DeleteBagItem(ctx context.Context, delete *store.DeleteBagItem) err
 		return fmt.Errorf("failed to delete bag item: %w", err)
 	}
 	return nil
+}
+
+// ==================== 物品模板(2026-09-08 第七十三轮, sqlite 同构) ====================
+
+// GetItemTemplate 获取物品模板
+func (d *DB) GetItemTemplate(ctx context.Context, itemID int32) (*store.ItemTemplate, error) {
+	row := d.db.QueryRowContext(ctx,
+		`SELECT item_id, name, item_type, level, bind_type, sell_price, description FROM t_item_template WHERE item_id = ?`,
+		itemID)
+	var t store.ItemTemplate
+	if err := row.Scan(&t.ItemID, &t.Name, &t.ItemType, &t.Level, &t.BindType, &t.SellPrice, &t.Description); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, store.ErrNotFound
+		}
+		return nil, fmt.Errorf("failed to scan item template: %w", err)
+	}
+	return &t, nil
+}
+
+// ListItemTemplates 获取全部物品模板
+func (d *DB) ListItemTemplates(ctx context.Context) ([]*store.ItemTemplate, error) {
+	rows, err := d.db.QueryContext(ctx,
+		`SELECT item_id, name, item_type, level, bind_type, sell_price, description FROM t_item_template ORDER BY item_id`)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query item templates: %w", err)
+	}
+	defer rows.Close()
+
+	var list []*store.ItemTemplate
+	for rows.Next() {
+		var t store.ItemTemplate
+		if err := rows.Scan(&t.ItemID, &t.Name, &t.ItemType, &t.Level, &t.BindType, &t.SellPrice, &t.Description); err != nil {
+			return nil, fmt.Errorf("failed to scan item template: %w", err)
+		}
+		list = append(list, &t)
+	}
+	return list, rows.Err()
 }

@@ -2,37 +2,63 @@ package pk_service
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"sync/atomic"
 	"time"
 
-	"github.com/pixb/DnfGameServer/dnf-go-server/internal/db"
-	"github.com/pixb/DnfGameServer/dnf-go-server/internal/db/models"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/role"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
+	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 )
 
 // PkService PK 服务
 type PkService struct {
-	db *db.DB
+	store *store.Store
+
+	matchingSeq uint64
 }
 
+// 战斗服务器占位配置(真实战斗服务器未接入,先回本机地址)
+const (
+	battleServerIP   = "127.0.0.1"
+	battleServerPort = 9500
+)
+
+// 匹配状态
+const (
+	matchingStatusMatching = uint32(0) // 匹配中
+	matchingStatusSuccess  = uint32(1) // 匹配成功
+	matchingStatusCanceled = uint32(2) // 已取消
+	matchingStatusTimeout  = uint32(3) // 已超时
+)
+
 // NewPkService 创建 PK 服务
-func NewPkService(database *db.DB) *PkService {
+func NewPkService(st *store.Store) *PkService {
 	return &PkService{
-		db: database,
+		store: st,
 	}
 }
 
 // MatchResult 匹配结果
 type MatchResult struct {
 	MatchingGuid uint64
-	IP          string
-	Port        uint32
+	IP           string
+	Port         uint32
 }
 
 // CustomGameRoomResult 自定义游戏房间结果
 type CustomGameRoomResult struct {
 	NotifyControlGroup *dnfv1.NotifyControlGroup
+}
+
+// genMatchingID 生成唯一匹配ID。
+// 限制在 48 位(2^53 安全整数范围内),避免 JSON 大数精度丢失:
+// 高24位为 Unix 秒,低24位为自增序列。
+func (s *PkService) genMatchingID() uint64 {
+	seq := atomic.AddUint64(&s.matchingSeq, 1) & 0xFFFFFF
+	return ((uint64(time.Now().Unix()) & 0xFFFFFF) << 24) | seq
 }
 
 // RequestMatch 请求匹配
@@ -43,13 +69,51 @@ func (s *PkService) RequestMatch(ctx context.Context, roleID uint64, matchType, 
 		logger.Uint32("dungeon_index", dungeonIndex),
 	)
 
-	// TODO: 实现实际的匹配逻辑
-	// 1. 验证玩家状态
-	// 2. 查找匹配的对手
-	// 3. 创建匹配记录
-	// 4. 返回匹配结果
+	// 1. 验证匹配类型
+	types, err := s.store.ListPvpMatchTypes(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to load match types: %w", err)
+	}
+	valid := false
+	for _, t := range types {
+		if t.MatchType == matchType {
+			valid = true
+			break
+		}
+	}
+	if !valid {
+		return nil, fmt.Errorf("invalid match type: %d", matchType)
+	}
 
-	return nil, fmt.Errorf("matching not implemented")
+	// 2. 检查是否存在进行中的匹配
+	active, err := s.store.ListPvpMatchingsByRole(ctx, roleID, matchingStatusMatching)
+	if err != nil {
+		return nil, fmt.Errorf("failed to check active matching: %w", err)
+	}
+	if len(active) > 0 {
+		return &MatchResult{
+			MatchingGuid: active[0].MatchingID,
+			IP:           battleServerIP,
+			Port:         battleServerPort,
+		}, nil
+	}
+
+	// 3. 创建匹配记录
+	matchingID := s.genMatchingID()
+	if _, err := s.store.CreatePvpMatching(ctx, &store.PvpMatching{
+		MatchingID: matchingID,
+		RoleID:     roleID,
+		MatchType:  matchType,
+		Status:     matchingStatusMatching,
+	}); err != nil {
+		return nil, fmt.Errorf("failed to create matching: %w", err)
+	}
+
+	return &MatchResult{
+		MatchingGuid: matchingID,
+		IP:           battleServerIP,
+		Port:         battleServerPort,
+	}, nil
 }
 
 // CancelMatch 取消匹配
@@ -59,12 +123,24 @@ func (s *PkService) CancelMatch(ctx context.Context, roleID, matchingGuid uint64
 		logger.Uint64("matching_guid", matchingGuid),
 	)
 
-	// TODO: 实现实际的取消匹配逻辑
-	// 1. 验证匹配ID
-	// 2. 取消匹配
-	// 3. 清理匹配记录
+	// 校验匹配归属:查询该角色的匹配记录
+	active, err := s.store.ListPvpMatchingsByRole(ctx, roleID, matchingStatusMatching)
+	if err != nil {
+		return fmt.Errorf("failed to check active matching: %w", err)
+	}
+	owned := false
+	for _, m := range active {
+		if m.MatchingID == matchingGuid {
+			owned = true
+			break
+		}
+	}
+	if !owned {
+		return fmt.Errorf("matching not found or not owned by role: %d", matchingGuid)
+	}
 
-	return fmt.Errorf("cancel match not implemented")
+	// 更新状态为已取消
+	return s.store.UpdatePvpMatchingStatus(ctx, matchingGuid, matchingStatusCanceled)
 }
 
 // GetGuildDonationRecipes 获取公会捐赠配方
@@ -93,30 +169,25 @@ func (s *PkService) GetRaidEntranceCount(ctx context.Context, roleID uint64) ([]
 		logger.Uint64("role_id", roleID),
 	)
 
-	// TODO: 实现实际的获取副本入场次数逻辑
-	// 1. 查询玩家副本入场记录
-	// 2. 返回入场次数信息
+	entrances, err := s.store.ListRaidEntrances(ctx, roleID)
+	if err != nil {
+		return nil, err
+	}
 
-	return []*dnfv1.RaidEntranceInfo{
-		{
-			Raidindex:             1,
-			Dailycharacter:        1,
-			Character:            3,
-			Account:              12,
-			Dailyrewardcharacter: 1,
-			Rewardcharacter:       3,
-			Rewardaccount:         12,
-		},
-		{
-			Raidindex:             2,
-			Dailycharacter:        1,
-			Character:            1,
-			Account:              4,
-			Dailyrewardcharacter: 1,
-			Rewardcharacter:       1,
-			Rewardaccount:         4,
-		},
-	}, nil
+	infos := make([]*dnfv1.RaidEntranceInfo, 0, len(entrances))
+	for _, e := range entrances {
+		infos = append(infos, &dnfv1.RaidEntranceInfo{
+			Raidindex:            e.RaidIndex,
+			Dailycharacter:       e.DailyCharacterCount,
+			Character:            e.CharacterCount,
+			Account:              e.AccountCount,
+			Dailyrewardcharacter: e.DailyRewardCount,
+			Rewardcharacter:      e.RewardCount,
+			Rewardaccount:        e.RewardCount,
+		})
+	}
+
+	return infos, nil
 }
 
 // ReportLoadingProgress 报告加载进度
@@ -171,8 +242,8 @@ func (s *PkService) GetPvpRecord(ctx context.Context, roleID uint64) ([]*dnfv1.P
 		logger.Uint64("role_id", roleID),
 	)
 
-	var records []models.PvpRecord
-	if err := s.db.DB.Where("role_id = ?", roleID).Order("battle_time DESC").Limit(100).Find(&records).Error; err != nil {
+	records, err := s.store.ListPvpRecords(ctx, roleID, 100)
+	if err != nil {
 		logger.Error("failed to get pvp record",
 			logger.ErrorField(err),
 			logger.Uint64("role_id", roleID),
@@ -189,7 +260,7 @@ func (s *PkService) GetPvpRecord(ctx context.Context, roleID uint64) ([]*dnfv1.P
 			Win:        record.Win,
 			Score:      record.Score,
 			OpponentId: record.OpponentID,
-			BattleTime: record.BattleTime.Unix(),
+			BattleTime: record.BattleTime,
 		})
 	}
 
@@ -204,11 +275,31 @@ func (s *PkService) GetPvpRanking(ctx context.Context, matchType, page, pageSize
 		logger.Uint32("page_size", pageSize),
 	)
 
-	// TODO: 实现实际的获取 PK 排名逻辑
-	// 1. 查询 PK 排行榜
-	// 2. 返回排名列表
+	// 排名不分页,直接取前 pageSize 条
+	limit := int(pageSize)
+	if limit <= 0 {
+		limit = 50
+	}
+	entries, err := s.store.ListPvpRanking(ctx, limit)
+	if err != nil {
+		return nil, err
+	}
 
-	return []*dnfv1.PvpRankingInfo{}, nil
+	infos := make([]*dnfv1.PvpRankingInfo, 0, len(entries))
+	for _, e := range entries {
+		infos = append(infos, &dnfv1.PvpRankingInfo{
+			RoleId:    e.RoleID,
+			Name:      e.Name,
+			Level:     uint32(e.Level),
+			Job:       uint32(e.Job),
+			Score:     uint32(e.Score),
+			Rank:      e.Rank,
+			WinCount:  e.WinCount,
+			LoseCount: e.LoseCount,
+		})
+	}
+
+	return infos, nil
 }
 
 // GetPvpStats 获取 PK 统计
@@ -217,9 +308,9 @@ func (s *PkService) GetPvpStats(ctx context.Context, roleID uint64) (*dnfv1.PvpS
 		logger.Uint64("role_id", roleID),
 	)
 
-	var stats models.PvpStats
-	if err := s.db.DB.Where("role_id = ?", roleID).First(&stats).Error; err != nil {
-		if err.Error() == "record not found" {
+	stats, err := s.store.GetPvpStats(ctx, roleID)
+	if err != nil {
+		if errors.Is(err, store.ErrNotFound) {
 			return &dnfv1.PvpStatsInfo{
 				RoleId:       roleID,
 				TotalMatches: 0,
@@ -268,22 +359,40 @@ func (s *PkService) GetPvpMatchHistory(ctx context.Context, roleID uint64, page,
 		logger.Uint32("page_size", pageSize),
 	)
 
-	// TODO: 实现实际的获取 PK 匹配历史逻辑
-	// 1. 查询玩家匹配历史
-	// 2. 返回历史列表
+	limit := int(pageSize)
+	if limit <= 0 {
+		limit = 50
+	}
+	entries, err := s.store.ListPvpMatchHistory(ctx, roleID, limit)
+	if err != nil {
+		return nil, err
+	}
 
-	return []*dnfv1.PvpMatchHistoryInfo{}, nil
+	infos := make([]*dnfv1.PvpMatchHistoryInfo, 0, len(entries))
+	for _, e := range entries {
+		infos = append(infos, &dnfv1.PvpMatchHistoryInfo{
+			Id:           e.ID,
+			RoleId:       e.RoleID,
+			MatchType:    e.MatchType,
+			Win:          e.Win,
+			Score:        e.Score,
+			OpponentName: e.OpponentName,
+			BattleTime:   e.BattleTime,
+		})
+	}
+
+	return infos, nil
 }
 
 // GetPvpSeasonInfo 获取 PK 赛季信息
 func (s *PkService) GetPvpSeasonInfo(ctx context.Context) (*dnfv1.PvpSeasonInfo, error) {
 	logger.Info("get pvp season info")
 
-	var season models.PvpSeason
-	if err := s.db.DB.Where("status = ?", 1).Order("season_id DESC").First(&season).Error; err != nil {
-		if err.Error() == "record not found" {
+	season, err := s.store.GetActivePvpSeason(ctx)
+	if err != nil {
+		if errors.Is(err, store.ErrNotFound) {
 			return &dnfv1.PvpSeasonInfo{
-				SeasonId:  1,
+				SeasonId:   1,
 				SeasonName: "Season 1",
 				StartTime:  time.Now().Add(-30 * 24 * time.Hour).Unix(),
 				EndTime:    time.Now().Add(30 * 24 * time.Hour).Unix(),
@@ -297,10 +406,10 @@ func (s *PkService) GetPvpSeasonInfo(ctx context.Context) (*dnfv1.PvpSeasonInfo,
 	}
 
 	return &dnfv1.PvpSeasonInfo{
-		SeasonId:  season.SeasonID,
+		SeasonId:   season.SeasonID,
 		SeasonName: season.SeasonName,
-		StartTime:  season.StartTime.Unix(),
-		EndTime:    season.EndTime.Unix(),
+		StartTime:  season.StartTime,
+		EndTime:    season.EndTime,
 		Status:     season.Status,
 	}, nil
 }
@@ -311,8 +420,8 @@ func (s *PkService) GetPvpReward(ctx context.Context, roleID uint64) ([]*dnfv1.P
 		logger.Uint64("role_id", roleID),
 	)
 
-	var rewards []models.PvpReward
-	if err := s.db.DB.Where("role_id = ?", roleID).Find(&rewards).Error; err != nil {
+	rewards, err := s.store.ListPvpRewards(ctx, roleID)
+	if err != nil {
 		logger.Error("failed to get pvp reward",
 			logger.ErrorField(err),
 			logger.Uint64("role_id", roleID),
@@ -339,9 +448,21 @@ func (s *PkService) PvpDailyReset(ctx context.Context, roleID uint64) error {
 		logger.Uint64("role_id", roleID),
 	)
 
-	// TODO: 实现实际的 PK 每日重置逻辑
-	// 1. 重置每日匹配次数
-	// 2. 重置每日奖励
+	// 1. 重置副本每日入场/奖励计数
+	if err := s.store.ResetDailyRaidEntrances(ctx, roleID); err != nil {
+		return err
+	}
+
+	// 2. 取消未完成的匹配(状态置为已取消)
+	active, err := s.store.ListPvpMatchingsByRole(ctx, roleID, matchingStatusMatching)
+	if err != nil {
+		return err
+	}
+	for _, m := range active {
+		if err := s.store.UpdatePvpMatchingStatus(ctx, m.MatchingID, matchingStatusCanceled); err != nil {
+			return err
+		}
+	}
 
 	return nil
 }
@@ -350,8 +471,8 @@ func (s *PkService) PvpDailyReset(ctx context.Context, roleID uint64) error {
 func (s *PkService) GetPvpMatchTypes(ctx context.Context) ([]*dnfv1.PvpMatchTypeInfo, error) {
 	logger.Info("get pvp match types")
 
-	var matchTypes []models.PvpMatchType
-	if err := s.db.DB.Where("status = ?", 1).Find(&matchTypes).Error; err != nil {
+	matchTypes, err := s.store.ListPvpMatchTypes(ctx)
+	if err != nil {
 		logger.Error("failed to get pvp match types",
 			logger.ErrorField(err),
 		)
@@ -374,7 +495,7 @@ func (s *PkService) GetPvpMatchTypes(ctx context.Context) ([]*dnfv1.PvpMatchType
 }
 
 // SubmitPvpBattleResult 提交 PK 战斗结果
-func (s *PkService) SubmitPvpBattleResult(ctx context.Context, roleID, matchingGuid, opponentID uint64, win bool, score int32) error {
+func (s *PkService) SubmitPvpBattleResult(ctx context.Context, roleID, matchingGuid, opponentID uint64, win bool, score int32) (*role.LevelUpResult, error) {
 	logger.Info("submit pvp battle result",
 		logger.Uint64("role_id", roleID),
 		logger.Uint64("matching_guid", matchingGuid),
@@ -383,44 +504,21 @@ func (s *PkService) SubmitPvpBattleResult(ctx context.Context, roleID, matchingG
 		logger.Int32("score", score),
 	)
 
-	tx := s.db.DB.Begin()
-
-	record := &models.PvpRecord{
+	record := &store.PvpRecord{
 		RoleID:     roleID,
 		MatchType:  1,
 		Win:        win,
 		Score:      score,
 		OpponentID: opponentID,
-		BattleTime: time.Now(),
-	}
-	if err := tx.Create(record).Error; err != nil {
-		tx.Rollback()
-		return err
+		BattleTime: time.Now().Unix(),
 	}
 
-	var stats models.PvpStats
-	if err := tx.Where("role_id = ?", roleID).First(&stats).Error; err != nil {
-		if err.Error() == "record not found" {
-			stats = models.PvpStats{
-				RoleID:       roleID,
-				TotalMatches: 1,
-				WinCount:     0,
-				LoseCount:    0,
-				TotalScore:   score,
-				MaxWinStreak: 0,
-				CurrentStreak: 0,
-			}
-			if win {
-				stats.WinCount = 1
-				stats.CurrentStreak = 1
-			} else {
-				stats.LoseCount = 1
-			}
-		} else {
-			tx.Rollback()
-			return err
-		}
-	} else {
+	// 计算最新统计(存在则累加,不存在则新建)
+	stats := &store.PvpStats{RoleID: roleID}
+	existing, err := s.store.GetPvpStats(ctx, roleID)
+	switch {
+	case err == nil:
+		stats = existing
 		stats.TotalMatches++
 		stats.TotalScore += score
 		if win {
@@ -433,12 +531,38 @@ func (s *PkService) SubmitPvpBattleResult(ctx context.Context, roleID, matchingG
 			stats.LoseCount++
 			stats.CurrentStreak = 0
 		}
+	case errors.Is(err, store.ErrNotFound):
+		stats.TotalMatches = 1
+		stats.TotalScore = score
+		if win {
+			stats.WinCount = 1
+			stats.CurrentStreak = 1
+			stats.MaxWinStreak = 1
+		} else {
+			stats.LoseCount = 1
+		}
+	default:
+		return nil, err
 	}
 
-	if err := tx.Save(&stats).Error; err != nil {
-		tx.Rollback()
-		return err
+	if err := s.store.SubmitPvpBattleResult(ctx, record, stats); err != nil {
+		return nil, err
 	}
 
-	return tx.Commit().Error
+	// PK 结算奖励经验(2026-09-07 第六十九轮实化): 胜 +50, 败 +10
+	expGain := int64(10)
+	if win {
+		expGain = 50
+	}
+	levelUp, err := role.AddRoleExp(ctx, s.store, roleID, expGain)
+	if err != nil {
+		// 经验发放失败不影响战绩落库, 仅告警
+		logger.Error("failed to award pvp exp",
+			logger.ErrorField(err),
+			logger.Uint64("role_id", roleID),
+			logger.Int64("exp_gain", expGain),
+		)
+		return nil, nil
+	}
+	return levelUp, nil
 }

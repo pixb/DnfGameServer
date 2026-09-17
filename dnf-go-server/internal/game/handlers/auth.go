@@ -1,11 +1,24 @@
 package handlers
 
 import (
+	"context"
+	"fmt"
+	"time"
+
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/utils/logger"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
+	"github.com/pixb/DnfGameServer/dnf-go-server/store"
 	"google.golang.org/protobuf/proto"
 )
+
+// authStore 认证 Store(由 serve 启动时注入)
+var authStore *store.Store
+
+// InitAuthStore 初始化认证 Store(2026-09-06 第三十二轮: LoginHandler 实化)
+func InitAuthStore(s *store.Store) {
+	authStore = s
+}
 
 // LoginHandler 处理登录请求
 func LoginHandler(session *network.Session, msg proto.Message) {
@@ -21,22 +34,68 @@ func LoginHandler(session *network.Session, msg proto.Message) {
 		logger.Int64("session_id", session.ID()),
 	)
 
-	// TODO: 实现实际的登录逻辑
-	// 1. 验证openid/token
-	// 2. 生成auth_key和account_key
-	// 3. 加载用户信息
-	// 4. 绑定uid到session
+	ctx := context.Background()
+	now := time.Now().Unix()
 
-	// 模拟登录成功
+	// 空 openid 拒绝
+	if req.Openid == "" {
+		session.WriteResponse(10000, 1, &dnfv1.LoginResponse{Error: 1})
+		return
+	}
+
+	// 查询或创建账号(2026-09-06 第三十二轮: 真实落库, 替代 mock)
+	var account *store.Account
+	var err error
+	if authStore == nil {
+		logger.Error("auth store not initialized")
+		session.WriteResponse(10000, 1, &dnfv1.LoginResponse{Error: 3})
+		return
+	}
+	account, err = authStore.GetAccount(ctx, &store.FindAccount{OpenID: &req.Openid})
+	if err == store.ErrNotFound {
+		accountKey := fmt.Sprintf("%d", time.Now().UnixNano())
+		acc, cerr := authStore.CreateAccount(ctx, &store.Account{
+			OpenID:      req.Openid,
+			AccountKey:  accountKey,
+			LastLoginAt: now,
+			LastLoginIP: req.ClientIp,
+			Authority:   0,
+			Status:      1, // 1=正常(2026-09-06 第三十三轮: 与 HTTP auth_service 语义统一)
+		})
+		if cerr != nil {
+			logger.Error("create account failed", logger.String("openid", req.Openid), logger.ErrorField(cerr))
+			session.WriteResponse(10000, 1, &dnfv1.LoginResponse{Error: 2})
+			return
+		}
+		account = acc
+	} else if err != nil {
+		logger.Error("query account failed", logger.String("openid", req.Openid), logger.ErrorField(err))
+		session.WriteResponse(10000, 1, &dnfv1.LoginResponse{Error: 3})
+		return
+	} else {
+		// 封禁检查(Status 语义统一后: 0=禁用, 1=正常, 2026-09-06 第三十三轮)
+		if account.Status == 0 {
+			logger.Info("disabled account login rejected", logger.String("openid", req.Openid))
+			session.WriteResponse(10000, 1, &dnfv1.LoginResponse{Error: 5})
+			return
+		}
+		// 更新最后登录时间
+		authStore.UpdateAccount(ctx, &store.UpdateAccount{ID: account.ID, LastLoginAt: &now})
+	}
+
+	// 生成认证密钥并落库
+	authKey := fmt.Sprintf("%d_%s", time.Now().UnixNano(), account.AccountKey)
+	authStore.UpdateAccount(ctx, &store.UpdateAccount{ID: account.ID, AuthKey: &authKey})
+
 	resp := &dnfv1.LoginResponse{
 		Error:      0,
-		AuthKey:    "mock_auth_key_12345",
-		AccountKey: "mock_account_key_67890",
+		AuthKey:    authKey,
+		AccountKey: account.AccountKey,
 		Encrypt:    true,
-		ServerTime: 1707123456,
-		LocalTime:  "2026-02-06 15:30:00",
-		Authority:  0,
-		Key:        "session_key_mock",
+		ServerTime: uint64(now),
+		LocalTime:  time.Unix(now, 0).Format("2006-01-02 15:04:05"),
+		Authority:  uint32(account.Authority),
+		Key:        "session_key_" + req.Openid,
 		WorldId:    1,
 		Channels: []*dnfv1.ChannelInfo{
 			{
@@ -175,4 +234,6 @@ func SelectCharacterHandler(session *network.Session, msg proto.Message) {
 
 	// 设置当前角色
 	session.SetAttr("current_uid", req.Uid)
+	// 2026-09-06 第三十一轮: 选角即绑定角色ID到会话, 后续 QUERY_MY_RANK 等按真实角色计算
+	session.SetRoleID(uint64(req.Uid))
 }

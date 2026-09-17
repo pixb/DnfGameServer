@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"google.golang.org/grpc"
 
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/pk_service"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/profile"
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"github.com/pixb/DnfGameServer/dnf-go-server/server/auth"
@@ -24,14 +25,16 @@ type APIV1Service struct {
 	Secret  string
 	Profile *profile.Profile
 	Store   *store.Store
+	PK      *pk_service.PkService // 仅 MySQL 驱动下非 nil
 }
 
 // NewAPIV1Service 创建服务实例
-func NewAPIV1Service(secret string, profile *profile.Profile, s *store.Store) *APIV1Service {
+func NewAPIV1Service(secret string, profile *profile.Profile, s *store.Store, pkSvc *pk_service.PkService) *APIV1Service {
 	return &APIV1Service{
 		Secret:  secret,
 		Profile: profile,
 		Store:   s,
+		PK:      pkSvc,
 	}
 }
 
@@ -128,6 +131,8 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	// 背包路由
 	apiGroup.GET("/bag", s.handleGetBag)
 	apiGroup.GET("/bag/items", s.handleGetBagItems)
+	// 物品模板路由(2026-09-08 第七十三轮)
+	apiGroup.GET("/item/templates", s.handleItemTemplates)
 
 	// 商店路由
 	apiGroup.GET("/shop/list", s.handleGetShopList)
@@ -138,6 +143,20 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.GET("/friend/list", s.handleGetFriendList)
 	apiGroup.POST("/friend/add", s.handleAddFriend)
 	apiGroup.POST("/friend/remove", s.handleRemoveFriend)
+
+	// 好友申请路由(2026-09-06 第三十九轮: 申请制)
+	apiGroup.POST("/friend/request", s.handleFriendRequest)
+	apiGroup.GET("/friend/requests", s.handleFriendRequestList)
+	apiGroup.POST("/friend/approve", s.handleFriendRequestApprove)
+	apiGroup.POST("/friend/reject", s.handleFriendRequestReject)
+
+	// 好友分组/亲密度(2026-09-06 第四十二轮)
+	apiGroup.POST("/friend/group", s.handleFriendGroup)
+	apiGroup.POST("/friend/intimacy", s.handleFriendIntimacy)
+
+	// 账号管理路由(2026-09-06 第三十七轮: 禁用/启用账号, 影响 TCP 登录 error=5)
+	apiGroup.POST("/admin/account/disable", s.handleAdminDisableAccount)
+	apiGroup.POST("/admin/account/enable", s.handleAdminEnableAccount)
 
 	// 公会路由
 	apiGroup.GET("/guild/info", s.handleGetGuildInfo)
@@ -152,10 +171,18 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/task/reward", s.handleGetQuestReward)
 	apiGroup.POST("/task/abandon", s.handleAbandonQuest)
 
+	// 任务路由别名(兼容 /quest/* 客户端协议)
+	apiGroup.GET("/quest/list", s.handleGetQuestList)
+	apiGroup.POST("/quest/accept", s.handleAcceptQuest)
+	apiGroup.POST("/quest/complete", s.handleCompleteQuest)
+	apiGroup.POST("/quest/reward", s.handleGetQuestReward)
+	apiGroup.POST("/quest/abandon", s.handleAbandonQuest)
+
 	// 邮件路由
 	apiGroup.GET("/mail/list", s.handleGetMailList)
 	apiGroup.POST("/mail/send", s.handleSendMail)
 	apiGroup.POST("/mail/claim", s.handleClaimMail)
+	apiGroup.POST("/mail/cleanup", s.handleMailCleanup)
 
 	// 拍卖行路由
 	apiGroup.GET("/auctions/search", s.handleSearchAuction)
@@ -206,16 +233,101 @@ func (s *APIV1Service) RegisterGateway(ctx context.Context, echoServer *echo.Ech
 	apiGroup.POST("/adventure/union/collection_reward", s.handleAdventureUnionCollectionReward)
 	apiGroup.POST("/adventure/union/level_reward", s.handleAdventureUnionLevelReward)
 
+	// 进入游戏/城镇路由
+	apiGroup.POST("/game/ping", s.handleGamePing)
+	apiGroup.POST("/game/enter_town", s.handleGameEnterTown)
+	apiGroup.POST("/game/leave_town", s.handleGameLeaveTown)
+	apiGroup.POST("/game/daily_reset", s.handleGameDailyReset)
+	apiGroup.GET("/game/character_info", s.handleGameCharacterInfo)
+	apiGroup.POST("/game/interaction_menu", s.handleGameInteractionMenu)
+	apiGroup.POST("/game/not_transaction_state", s.handleGameNotTransactionState)
+	apiGroup.POST("/game/pvp_record", s.handleGamePvpRecord)
+	apiGroup.POST("/game/adventure_union_subdue", s.handleGameAdventureUnionSubdue)
+	apiGroup.POST("/game/sending_invite_friend_list", s.handleGameSendingInviteFriendList)
+	apiGroup.POST("/game/load_server_simple_data", s.handleGameLoadServerSimpleData)
+	apiGroup.POST("/game/save_server_simple_data", s.handleGameSaveServerSimpleData)
+	apiGroup.POST("/game/enter_channel", s.handleGameEnterChannel)
+	apiGroup.POST("/game/standby", s.handleGameStandby)
+	apiGroup.POST("/game/idip_notices", s.handleGameIdipNotices)
+	apiGroup.POST("/game/black_diamon_info", s.handleGameBlackDiamonInfo)
+	apiGroup.POST("/game/private_store_goods_list", s.handleGamePrivateStoreGoodsList)
+	apiGroup.POST("/game/recommend_guild_list", s.handleGameRecommendGuildList)
+	apiGroup.POST("/game/adventure_union_info_other", s.handleGameAdventureUnionInfoOther)
+	apiGroup.POST("/game/start", s.handleGameStart)
+
+	// PK 路由
+	apiGroup.POST("/pk/multi_play_request_match", s.handlePkMultiPlayRequestMatch)
+	apiGroup.POST("/pk/multi_play_request_match_cancel", s.handlePkMultiPlayRequestMatchCancel)
+	apiGroup.POST("/pk/historic_site_noti", s.handlePkHistoricSiteNoti)
+	apiGroup.POST("/pk/load_guild_donation_info", s.handlePkLoadGuildDonationInfo)
+	apiGroup.POST("/pk/dream_maze_basic_info", s.handlePkDreamMazeBasicInfo)
+	apiGroup.POST("/pk/raid_entrance_count", s.handlePkRaidEntranceCount)
+	apiGroup.POST("/pk/loading_progress", s.handlePkLoadingProgress)
+	apiGroup.POST("/pk/return_to_town", s.handlePkReturnToTown)
+	apiGroup.POST("/pk/custom_game_room_setting", s.handlePkCustomGameRoomSetting)
+	apiGroup.GET("/pk/record", s.handlePkRecord)
+	apiGroup.GET("/pk/ranking", s.handlePkRanking)
+	apiGroup.GET("/pk/stats", s.handlePkStats)
+	apiGroup.GET("/pk/match_history", s.handlePkMatchHistory)
+	apiGroup.GET("/pk/season_info", s.handlePkSeasonInfo)
+	apiGroup.GET("/pk/reward", s.handlePkReward)
+	apiGroup.POST("/pk/daily_reset", s.handlePkDailyReset)
+	apiGroup.GET("/pk/match_types", s.handlePkMatchTypes)
+	apiGroup.POST("/pk/battle_result", s.handlePkBattleResult)
+
+	// 排名路由
+	apiGroup.POST("/rank/personal", s.handleRankPersonal)
+	apiGroup.POST("/rank/my", s.handleRankMy)
+	apiGroup.POST("/rank/friend", s.handleRankFriend)
+	apiGroup.POST("/rank/party", s.handleRankParty)
+	apiGroup.POST("/rank/list", s.handleRankList)
+
+	// 事件路由
+	apiGroup.POST("/event/list", s.handleEventList)
+	apiGroup.POST("/event/detail", s.handleEventDetail)
+	apiGroup.POST("/event/access_time", s.handleEventAccessTime)
+	apiGroup.POST("/event/get_reward", s.handleEventGetReward)
+	apiGroup.POST("/event/update_progress", s.handleEventUpdateProgress)
+	apiGroup.POST("/event/participate", s.handleEventParticipate)
+
 	// 制作路由
-	apiGroup.POST("/make/emblem/upgrade", s.handleEmblemUpgrade)
-	apiGroup.POST("/make/emblem/upgrade_quick", s.handleEmblemUpgradeQuick)
-	apiGroup.POST("/make/avatar/compose", s.handleAvatarCompose)
-	apiGroup.POST("/make/production/info", s.handleProductionInfo)
-	apiGroup.POST("/make/production/register", s.handleProductionRegister)
-	apiGroup.POST("/make/item/combine", s.handleItemCombine)
-	apiGroup.POST("/make/item/disjoint", s.handleItemDisjoint)
-	apiGroup.POST("/make/card/compose", s.handleCardCompose)
-	apiGroup.POST("/make/wardrobe/set_slot", s.handleWardrobeSetSlot)
+	apiGroup.POST("/make/emblem/upgrade", s.handleMakeEmblemUpgrade)
+	apiGroup.POST("/make/emblem/upgrade_quick", s.handleMakeEmblemUpgradeQuick)
+	apiGroup.POST("/make/avatar/compose", s.handleMakeAvatarCompose)
+	apiGroup.GET("/make/production/info", s.handleMakeProductionInfo)
+	apiGroup.POST("/make/production/register", s.handleMakeProductionRegister)
+	apiGroup.POST("/make/item/combine", s.handleMakeItemCombine)
+	apiGroup.POST("/make/item/disjoint", s.handleMakeItemDisjoint)
+	apiGroup.POST("/make/card/compose", s.handleMakeCardCompose)
+	apiGroup.POST("/make/wardrobe/set_slot", s.handleMakeWardrobeSetSlot)
+
+	// 在线商城路由
+	apiGroup.POST("/onlinemall/list", s.handleOnlineMallList)
+	apiGroup.POST("/onlinemall/detail", s.handleOnlineMallDetail)
+	apiGroup.POST("/onlinemall/buy", s.handleOnlineMallBuy)
+	apiGroup.GET("/onlinemall/categories", s.handleOnlineMallCategories)
+	apiGroup.POST("/onlinemall/category_items", s.handleOnlineMallCategoryItems)
+	apiGroup.GET("/onlinemall/recommend", s.handleOnlineMallRecommend)
+	apiGroup.GET("/onlinemall/hot", s.handleOnlineMallHot)
+	apiGroup.POST("/onlinemall/buy_limit", s.handleOnlineMallBuyLimit)
+
+	// 市场路由
+	apiGroup.POST("/market/search", s.handleMarketSearch)
+	apiGroup.POST("/market/publish", s.handleMarketPublish)
+	apiGroup.POST("/market/cancel", s.handleMarketCancel)
+	apiGroup.POST("/market/buy", s.handleMarketBuy)
+	apiGroup.POST("/market/detail", s.handleMarketDetail)
+	apiGroup.POST("/market/my_items", s.handleMarketMyItems)
+
+	// 日志路由
+	apiGroup.POST("/log/record", s.handleLogRecord)
+	apiGroup.POST("/log/query", s.handleLogQuery)
+	apiGroup.POST("/log/statistic", s.handleLogStatistic)
+	apiGroup.POST("/log/delete", s.handleLogDelete)
+	apiGroup.POST("/log/export", s.handleLogExport)
+	apiGroup.POST("/log/clean", s.handleLogClean)
+	apiGroup.POST("/log/monitor", s.handleLogMonitor)
+	apiGroup.POST("/log/analyze", s.handleLogAnalyze)
 
 	// 组队路由
 	apiGroup.POST("/party/search", s.handleSearchPartyList)

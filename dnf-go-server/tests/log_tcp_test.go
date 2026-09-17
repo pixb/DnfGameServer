@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"database/sql"
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
@@ -8,7 +9,9 @@ import (
 	"testing"
 	"time"
 
+	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
 	"github.com/stretchr/testify/suite"
+	"google.golang.org/protobuf/proto"
 )
 
 // LogTCPTestSuite 日志系统TCP测试套件
@@ -25,7 +28,7 @@ type LogTCPTestSuite struct {
 func (s *LogTCPTestSuite) SetupSuite() {
 	s.BaseTestSuite.SetupSuite()
 	s.serverHost = "127.0.0.1"
-	s.serverPort = 9000
+	s.serverPort = tcpTestPort()
 	s.seq = 0
 }
 
@@ -109,10 +112,10 @@ func (s *LogTCPTestSuite) TestTCPRecordLog() {
 	// 步骤2: 构造日志记录请求
 	fmt.Println("\n步骤2: 构造日志记录请求")
 	recordLogRequest := map[string]interface{}{
-		"log_level": "info", // 日志级别
-		"log_message": "测试日志记录", // 日志消息
-		"log_category": "test", // 日志类别
-		"log_time": time.Now().Unix(), // 日志时间
+		"log_level":    "info",            // 日志级别
+		"log_message":  "测试日志记录",          // 日志消息
+		"log_category": "test",            // 日志类别
+		"log_time":     time.Now().Unix(), // 日志时间
 	}
 	fmt.Println("日志记录请求对象创建成功")
 
@@ -136,10 +139,19 @@ func (s *LogTCPTestSuite) TestTCPRecordLog() {
 	s.NotNil(response)
 	fmt.Printf("接收响应成功，数据长度: %d\n", len(response))
 
-	// 步骤6: 验证日志记录响应
+	// 步骤6: 验证日志记录响应(2026-09-06 第三十轮: 断言响应模块/命令)
 	fmt.Println("\n步骤6: 验证日志记录响应")
 	s.NotEmpty(response)
-	fmt.Printf("Record log response: %s\n", string(response))
+	module, cmd, _ := parseTCPResponse(response)
+	s.Equal(uint16(10502), module, "response module should be 10502")
+	s.Equal(uint16(3), cmd, "record log response cmd should be 3")
+	fmt.Printf("Record log response module=%d cmd=%d\n", module, cmd)
+
+	// 步骤7: 校验行为日志落库(2026-09-06 第十九轮: handler 实化后真实写 t_behavior_log)
+	fmt.Println("\n步骤7: 校验行为日志落库")
+	recorded := behaviorLogCountByContent(0, "测试日志记录")
+	fmt.Printf("落库条数: %d\n", recorded)
+	s.True(recorded >= 1, "RECORD_LOG 应写入 t_behavior_log")
 
 	// 关闭连接
 	s.socket.Close()
@@ -163,12 +175,12 @@ func (s *LogTCPTestSuite) TestTCPQueryLog() {
 	// 步骤2: 构造日志查询请求
 	fmt.Println("\n步骤2: 构造日志查询请求")
 	queryLogRequest := map[string]interface{}{
-		"log_level": "info", // 日志级别
-		"log_category": "test", // 日志类别
-		"start_time": time.Now().Add(-24 * time.Hour).Unix(), // 开始时间
-		"end_time": time.Now().Unix(), // 结束时间
-		"page": 1, // 页码
-		"page_size": 10, // 每页大小
+		"log_level":    "info",                                 // 日志级别
+		"log_category": "test",                                 // 日志类别
+		"start_time":   time.Now().Add(-24 * time.Hour).Unix(), // 开始时间
+		"end_time":     time.Now().Unix(),                      // 结束时间
+		"page":         1,                                      // 页码
+		"page_size":    10,                                     // 每页大小
 	}
 	fmt.Println("日志查询请求对象创建成功")
 
@@ -192,10 +204,16 @@ func (s *LogTCPTestSuite) TestTCPQueryLog() {
 	s.NotNil(response)
 	fmt.Printf("接收响应成功，数据长度: %d\n", len(response))
 
-	// 步骤6: 验证日志查询响应
+	// 步骤6: 验证日志查询响应(2026-09-06 第三十轮: 响应携带 LogQueryResponse 数据)
 	fmt.Println("\n步骤6: 验证日志查询响应")
 	s.NotEmpty(response)
-	fmt.Printf("Query log response: %s\n", string(response))
+	module, cmd, payload := parseTCPResponse(response)
+	s.Equal(uint16(10502), module, "response module should be 10502")
+	s.Equal(uint16(1), cmd, "query log response cmd should be 1")
+	qr := &dnfv1.LogQueryResponse{}
+	s.NoError(proto.Unmarshal(payload, qr), "unmarshal LogQueryResponse")
+	s.GreaterOrEqual(qr.Count, int32(0), "count should be present")
+	fmt.Printf("Query log response count=%d\n", qr.Count)
 
 	// 关闭连接
 	s.socket.Close()
@@ -216,12 +234,17 @@ func (s *LogTCPTestSuite) TestTCPStatisticLog() {
 	}
 	fmt.Println("TCP连接建立成功")
 
-	// 步骤2: 构造日志统计请求
+	// 步骤2: 构造日志统计请求(2026-09-06 第三十轮: 先直插 2 条同 action 日志供统计)
 	fmt.Println("\n步骤2: 构造日志统计请求")
+	now := time.Now().Unix()
+	statID1 := insertBehaviorLog(0, "tcp_stat", "info", "统计日志1", now)
+	statID2 := insertBehaviorLog(0, "tcp_stat", "info", "统计日志2", now)
+	s.Require().NotZero(statID1)
+	s.Require().NotZero(statID2)
 	statisticLogRequest := map[string]interface{}{
 		"start_time": time.Now().Add(-24 * time.Hour).Unix(), // 开始时间
-		"end_time": time.Now().Unix(), // 结束时间
-		"group_by": "hour", // 分组方式
+		"end_time":   time.Now().Unix(),                      // 结束时间
+		"group_by":   "hour",                                 // 分组方式
 	}
 	fmt.Println("日志统计请求对象创建成功")
 
@@ -245,10 +268,17 @@ func (s *LogTCPTestSuite) TestTCPStatisticLog() {
 	s.NotNil(response)
 	fmt.Printf("接收响应成功，数据长度: %d\n", len(response))
 
-	// 步骤6: 验证日志统计响应
+	// 步骤6: 验证日志统计响应(2026-09-06 第三十轮: LogStatsResponse 携带 action 统计)
 	fmt.Println("\n步骤6: 验证日志统计响应")
 	s.NotEmpty(response)
-	fmt.Printf("Statistic log response: %s\n", string(response))
+	module, cmd, payload := parseTCPResponse(response)
+	s.Equal(uint16(10502), module, "response module should be 10502")
+	s.Equal(uint16(5), cmd, "statistic log response cmd should be 5")
+	sr := &dnfv1.LogStatsResponse{}
+	s.NoError(proto.Unmarshal(payload, sr), "unmarshal LogStatsResponse")
+	s.GreaterOrEqual(sr.Count, int32(1), "at least one action should be counted")
+	s.GreaterOrEqual(sr.Actions["tcp_stat"], int64(2), "tcp_stat action count should be >= 2")
+	fmt.Printf("Statistic log response count=%d actions=%v\n", sr.Count, sr.Actions)
 
 	// 关闭连接
 	s.socket.Close()
@@ -271,8 +301,14 @@ func (s *LogTCPTestSuite) TestTCPDeleteLog() {
 
 	// 步骤2: 构造日志删除请求
 	fmt.Println("\n步骤2: 构造日志删除请求")
+	// 先直插 2 条待删日志(2026-09-06 第十九轮: 真实落库后按 ID 删除)
+	now := time.Now().Unix()
+	delID1 := insertBehaviorLog(0, "tcp_del", "info", "待删除日志1", now)
+	delID2 := insertBehaviorLog(0, "tcp_del", "info", "待删除日志2", now)
+	s.Require().NotZero(delID1)
+	s.Require().NotZero(delID2)
 	deleteLogRequest := map[string]interface{}{
-		"log_ids": []int{1, 2, 3}, // 日志ID列表
+		"log_ids": []int{int(delID1), int(delID2)}, // 日志ID列表
 	}
 	fmt.Println("日志删除请求对象创建成功")
 
@@ -296,10 +332,20 @@ func (s *LogTCPTestSuite) TestTCPDeleteLog() {
 	s.NotNil(response)
 	fmt.Printf("接收响应成功，数据长度: %d\n", len(response))
 
-	// 步骤6: 验证日志删除响应
+	// 步骤6: 验证日志删除响应(2026-09-06 第三十轮: LogDeleteResponse 携带 deleted 数)
 	fmt.Println("\n步骤6: 验证日志删除响应")
 	s.NotEmpty(response)
-	fmt.Printf("Delete log response: %s\n", string(response))
+	module, cmd, payload := parseTCPResponse(response)
+	s.Equal(uint16(10502), module, "response module should be 10502")
+	s.Equal(uint16(7), cmd, "delete log response cmd should be 7")
+	dr := &dnfv1.LogDeleteResponse{}
+	s.NoError(proto.Unmarshal(payload, dr), "unmarshal LogDeleteResponse")
+	s.Equal(int64(2), dr.Deleted, "deleted count should be 2")
+	fmt.Printf("Delete log response deleted=%d\n", dr.Deleted)
+	// 步骤7: 校验删除落库(2026-09-06 第十九轮)
+	fmt.Println("\n步骤7: 校验删除落库")
+	s.False(behaviorLogExists(delID1), "DELETE_LOG 应删除指定日志")
+	s.False(behaviorLogExists(delID2), "DELETE_LOG 应删除指定日志")
 
 	// 关闭连接
 	s.socket.Close()
@@ -323,10 +369,10 @@ func (s *LogTCPTestSuite) TestTCPExportLog() {
 	// 步骤2: 构造日志导出请求
 	fmt.Println("\n步骤2: 构造日志导出请求")
 	exportLogRequest := map[string]interface{}{
-		"start_time": time.Now().Add(-24 * time.Hour).Unix(), // 开始时间
-		"end_time": time.Now().Unix(), // 结束时间
-		"log_level": "info", // 日志级别
-		"export_format": "csv", // 导出格式
+		"start_time":    time.Now().Add(-24 * time.Hour).Unix(), // 开始时间
+		"end_time":      time.Now().Unix(),                      // 结束时间
+		"log_level":     "info",                                 // 日志级别
+		"export_format": "csv",                                  // 导出格式
 	}
 	fmt.Println("日志导出请求对象创建成功")
 
@@ -350,10 +396,16 @@ func (s *LogTCPTestSuite) TestTCPExportLog() {
 	s.NotNil(response)
 	fmt.Printf("接收响应成功，数据长度: %d\n", len(response))
 
-	// 步骤6: 验证日志导出响应
+	// 步骤6: 验证日志导出响应(2026-09-06 第三十轮: LogQueryResponse 携带导出条数)
 	fmt.Println("\n步骤6: 验证日志导出响应")
 	s.NotEmpty(response)
-	fmt.Printf("Export log response: %s\n", string(response))
+	module, cmd, payload := parseTCPResponse(response)
+	s.Equal(uint16(10502), module, "response module should be 10502")
+	s.Equal(uint16(9), cmd, "export log response cmd should be 9")
+	er := &dnfv1.LogQueryResponse{}
+	s.NoError(proto.Unmarshal(payload, er), "unmarshal LogQueryResponse")
+	s.GreaterOrEqual(er.Count, int32(0), "exported count should be present")
+	fmt.Printf("Export log response count=%d\n", er.Count)
 
 	// 关闭连接
 	s.socket.Close()
@@ -376,9 +428,15 @@ func (s *LogTCPTestSuite) TestTCPCleanLog() {
 
 	// 步骤2: 构造日志清理请求
 	fmt.Println("\n步骤2: 构造日志清理请求")
+	// 直插 1 旧 1 新(2026-09-06 第十九轮: 按 before_time 清理)
+	now := time.Now().Unix()
+	oldID := insertBehaviorLog(0, "tcp_clean", "info", "过期日志待清理", now-100000)
+	newID := insertBehaviorLog(0, "tcp_clean", "info", "新日志保留", now)
+	s.Require().NotZero(oldID)
+	s.Require().NotZero(newID)
 	cleanLogRequest := map[string]interface{}{
-		"before_time": time.Now().Add(-30 * 24 * time.Hour).Unix(), // 清理时间
-		"log_level": "info", // 日志级别
+		"before_time": now,    // 清理时间
+		"log_level":   "info", // 日志级别
 	}
 	fmt.Println("日志清理请求对象创建成功")
 
@@ -402,10 +460,21 @@ func (s *LogTCPTestSuite) TestTCPCleanLog() {
 	s.NotNil(response)
 	fmt.Printf("接收响应成功，数据长度: %d\n", len(response))
 
-	// 步骤6: 验证日志清理响应
+	// 步骤6: 验证日志清理响应(2026-09-06 第三十轮: LogDeleteResponse 携带 deleted 数)
 	fmt.Println("\n步骤6: 验证日志清理响应")
 	s.NotEmpty(response)
-	fmt.Printf("Clean log response: %s\n", string(response))
+	module, cmd, payload := parseTCPResponse(response)
+	s.Equal(uint16(10502), module, "response module should be 10502")
+	s.Equal(uint16(11), cmd, "clean log response cmd should be 11")
+	cr := &dnfv1.LogDeleteResponse{}
+	s.NoError(proto.Unmarshal(payload, cr), "unmarshal LogDeleteResponse")
+	// 全表清理(before 之前), 前序用例日志也会被删, 故断言 >= 1(精确删除由步骤7 验证)
+	s.GreaterOrEqual(cr.Deleted, int64(1), "deleted count should be >= 1")
+	fmt.Printf("Clean log response deleted=%d\n", cr.Deleted)
+	// 步骤7: 校验清理落库(2026-09-06 第十九轮)
+	fmt.Println("\n步骤7: 校验清理落库")
+	s.False(behaviorLogExists(oldID), "CLEAN_LOG 应清理 before_time 之前的日志")
+	s.True(behaviorLogExists(newID), "CLEAN_LOG 不应清理新日志")
 
 	// 关闭连接
 	s.socket.Close()
@@ -429,8 +498,8 @@ func (s *LogTCPTestSuite) TestTCPMonitorLog() {
 	// 步骤2: 构造日志监控请求
 	fmt.Println("\n步骤2: 构造日志监控请求")
 	monitorLogRequest := map[string]interface{}{
-		"monitor_level": "error", // 监控级别
-		"monitor_duration": 3600, // 监控时长（秒）
+		"monitor_level":    "error", // 监控级别
+		"monitor_duration": 3600,    // 监控时长（秒）
 	}
 	fmt.Println("日志监控请求对象创建成功")
 
@@ -454,10 +523,16 @@ func (s *LogTCPTestSuite) TestTCPMonitorLog() {
 	s.NotNil(response)
 	fmt.Printf("接收响应成功，数据长度: %d\n", len(response))
 
-	// 步骤6: 验证日志监控响应
+	// 步骤6: 验证日志监控响应(2026-09-06 第三十轮: LogMonitorResponse 携带统计)
 	fmt.Println("\n步骤6: 验证日志监控响应")
 	s.NotEmpty(response)
-	fmt.Printf("Monitor log response: %s\n", string(response))
+	module, cmd, payload := parseTCPResponse(response)
+	s.Equal(uint16(10502), module, "response module should be 10502")
+	s.Equal(uint16(13), cmd, "monitor log response cmd should be 13")
+	mr := &dnfv1.LogMonitorResponse{}
+	s.NoError(proto.Unmarshal(payload, mr), "unmarshal LogMonitorResponse")
+	s.GreaterOrEqual(mr.Total, int32(0), "total should be present")
+	fmt.Printf("Monitor log response error_count=%d total=%d\n", mr.ErrorCount, mr.Total)
 
 	// 关闭连接
 	s.socket.Close()
@@ -481,10 +556,10 @@ func (s *LogTCPTestSuite) TestTCPAnalyzeLog() {
 	// 步骤2: 构造日志分析请求
 	fmt.Println("\n步骤2: 构造日志分析请求")
 	analyzeLogRequest := map[string]interface{}{
-		"start_time": time.Now().Add(-24 * time.Hour).Unix(), // 开始时间
-		"end_time": time.Now().Unix(), // 结束时间
-		"analysis_type": "trend", // 分析类型
-		"group_by": "hour", // 分组方式
+		"start_time":    time.Now().Add(-24 * time.Hour).Unix(), // 开始时间
+		"end_time":      time.Now().Unix(),                      // 结束时间
+		"analysis_type": "trend",                                // 分析类型
+		"group_by":      "hour",                                 // 分组方式
 	}
 	fmt.Println("日志分析请求对象创建成功")
 
@@ -508,10 +583,16 @@ func (s *LogTCPTestSuite) TestTCPAnalyzeLog() {
 	s.NotNil(response)
 	fmt.Printf("接收响应成功，数据长度: %d\n", len(response))
 
-	// 步骤6: 验证日志分析响应
+	// 步骤6: 验证日志分析响应(2026-09-06 第三十轮: LogStatsResponse 携带分布)
 	fmt.Println("\n步骤6: 验证日志分析响应")
 	s.NotEmpty(response)
-	fmt.Printf("Analyze log response: %s\n", string(response))
+	module, cmd, payload := parseTCPResponse(response)
+	s.Equal(uint16(10502), module, "response module should be 10502")
+	s.Equal(uint16(15), cmd, "analyze log response cmd should be 15")
+	ar := &dnfv1.LogStatsResponse{}
+	s.NoError(proto.Unmarshal(payload, ar), "unmarshal LogStatsResponse")
+	s.GreaterOrEqual(ar.Count, int32(0), "actions count should be present")
+	fmt.Printf("Analyze log response count=%d\n", ar.Count)
 
 	// 关闭连接
 	s.socket.Close()
@@ -521,4 +602,69 @@ func (s *LogTCPTestSuite) TestTCPAnalyzeLog() {
 // TestLogTCPSuite 测试日志系统TCP测试套件
 func TestLogTCPSuite(t *testing.T) {
 	suite.Run(t, new(LogTCPTestSuite))
+}
+
+// parseTCPResponse 解析 TCP 响应帧(2026-09-06 第三十轮):
+// 帧格式 [4字节头(module+cmd)][protobuf body], 返回 module/cmd/payload
+func parseTCPResponse(body []byte) (uint16, uint16, []byte) {
+	if len(body) < 4 {
+		return 0, 0, nil
+	}
+	module := binary.BigEndian.Uint16(body[0:2])
+	cmd := binary.BigEndian.Uint16(body[2:4])
+	return module, cmd, body[4:]
+}
+
+// ==================== 行为日志 DB 辅助(2026-09-06 第十九轮) ====================
+
+// insertBehaviorLog 直插行为日志
+func insertBehaviorLog(roleID uint64, action, level, content string, createdAt int64) uint64 {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		return 0
+	}
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	res, err := db.Exec(`
+		INSERT INTO t_behavior_log (created_at, role_id, module, action, level, content)
+		VALUES (?, ?, 'tcp', ?, ?, ?)`,
+		createdAt, roleID, action, level, content)
+	if err != nil {
+		return 0
+	}
+	id, _ := res.LastInsertId()
+	return uint64(id)
+}
+
+// behaviorLogCountByContent 按内容统计行为日志数
+func behaviorLogCountByContent(roleID uint64, content string) int {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		return 0
+	}
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	var n int
+	if err := db.QueryRow(`SELECT COUNT(*) FROM t_behavior_log WHERE role_id = ? AND content = ?`, roleID, content).Scan(&n); err != nil {
+		return 0
+	}
+	return n
+}
+
+// behaviorLogExists 查询行为日志是否存在
+func behaviorLogExists(id uint64) bool {
+	db, err := sql.Open("mysql", testDBDSN)
+	if err != nil {
+		return false
+	}
+	defer db.Close()
+	db.SetConnMaxLifetime(30 * time.Second)
+
+	var got uint64
+	if err := db.QueryRow(`SELECT id FROM t_behavior_log WHERE id = ?`, id).Scan(&got); err != nil {
+		return false
+	}
+	return true
 }

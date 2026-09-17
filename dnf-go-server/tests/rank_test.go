@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
@@ -143,7 +144,7 @@ func (s *RankTestSuite) TestRankingListDungeon() {
 	}
 }
 
-// loginAndSelectCharacterWithUserAndSlot 辅助函数：使用指定用户和槽位登录并选择角色
+// loginAndSelectCharacterWithUserAndSlot 辅助函数：使用指定用户登录并确保有角色可选
 func (s *RankTestSuite) loginAndSelectCharacterWithUserAndSlot(openid string, slot int) uint64 {
 	resp, err := s.Client.Post("/api/v1/auth/login", map[string]interface{}{
 		"openid": openid,
@@ -162,15 +163,38 @@ func (s *RankTestSuite) loginAndSelectCharacterWithUserAndSlot(openid string, sl
 	s.NoError(err)
 	s.NotNil(listResp)
 
-	if list, ok := listResp["characters"].([]interface{}); ok && len(list) > slot {
-			if char, ok := list[slot].(map[string]interface{}); ok {
-				if guid, ok := char["charGuid"].(float64); ok {
-					// 由于服务器未实现角色选择端点，这里直接返回charGuid
-					// 实际项目中需要实现/api/v1/character/select端点
-					return uint64(guid)
-				}
-			}
+	characters, ok := listResp["characters"].([]interface{})
+	if !ok || len(characters) == 0 {
+		// 无角色时创建(与其余套件一致)
+		createResp, err := s.Client.Post("/api/v1/character/create", map[string]interface{}{
+			"name": fmt.Sprintf("RankHero%02d", slot),
+			"job":  1,
+		})
+		s.NoError(err)
+		s.NotNil(createResp)
+		if createResp == nil || createResp["error"] != float64(0) {
+			s.T().Fatal("Failed to create character")
 		}
+		listResp, err = s.Client.Get("/api/v1/character/list")
+		s.NoError(err)
+		s.NotNil(listResp)
+		characters, ok = listResp["characters"].([]interface{})
+		if !ok || len(characters) == 0 {
+			s.T().Fatal("No characters available after creation")
+		}
+	}
+
+	// 取账号首个角色(单角色账号 list[0] 即目标角色)
+	firstChar, ok := characters[0].(map[string]interface{})
+	if !ok {
+		s.T().Fatal("Failed to parse character")
+	}
+	if guid, ok := firstChar["charGuid"].(float64); ok {
+		return uint64(guid)
+	}
+	if uid, ok := firstChar["uid"].(float64); ok {
+		return uint64(uid)
+	}
 
 	s.T().Fatal("Failed to select character")
 	return 0

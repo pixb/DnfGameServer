@@ -51,18 +51,22 @@ func (s *PlayerService) LoadAllPlayerProfiles() error {
 	s.name2UID = make(map[string]int64)
 	s.roleID2UID = make(map[int]int64)
 
-	// 查询所有角色
+	// 查询所有角色(预加载账号以获取 OpenID)
 	var roles []models.Role
-	if err := s.db.DB.Find(&roles).Error; err != nil {
+	if err := s.db.DB.Preload("Account").Find(&roles).Error; err != nil {
 		return err
 	}
 
 	logger.Info("loading player profiles", logger.Int("count", len(roles)))
 
 	for _, role := range roles {
+		openID := role.Name
+		if role.Account != nil {
+			openID = role.Account.OpenID
+		}
 		profile := &models.PlayerProfile{
-			OpenID:   role.OpenID,
-			RoleID:   role.RoleId,
+			OpenID:   openID,
+			RoleID:   role.RoleID,
 			UID:      role.UID,
 			Name:     role.Name,
 			DistName: role.DistName,
@@ -106,7 +110,7 @@ func (s *PlayerService) GetPlayerByUID(uid int64) (*models.Role, error) {
 
 	// 2. 查询数据库
 	var role models.Role
-	if err := s.db.DB.First(&role, uid).Error; err != nil {
+	if err := s.db.DB.Where("uid = ?", uid).First(&role).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return nil, nil
 		}

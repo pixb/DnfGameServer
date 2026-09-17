@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"sort"
+	"strings"
 	"time"
 
 	dnfv1 "github.com/pixb/DnfGameServer/dnf-go-server/proto/gen/dnf/v1"
@@ -117,9 +119,63 @@ func (d *DB) ControlGroup(ctx context.Context, roleID uint64, action uint32, tar
 		return d.kickFromParty(ctx, roleID, targetGuid)
 	case 4:
 		return d.changePartyLeader(ctx, roleID, targetGuid)
+	case 5: // 2026-09-07 第四十九轮: 主动加入队伍(JOIN_PARTY, partyGuid 为目标队伍)
+		return d.HalfOpenPartyJoin(ctx, roleID, partyGuid)
 	default:
 		return fmt.Errorf("unknown action: %d", action)
 	}
+}
+
+// UpdatePartySetting 修改队伍设置(2026-09-07 第五十轮): 仅队长可改
+func (d *DB) UpdatePartySetting(ctx context.Context, roleID uint64, setting *store.PartySetting) error {
+	party, err := d.getPartyByRoleID(ctx, roleID)
+	if err != nil {
+		return fmt.Errorf("failed to get party: %w", err)
+	}
+	if party == nil {
+		return fmt.Errorf("party not found")
+	}
+	if party.LeaderGuid != roleID {
+		return fmt.Errorf("not party leader")
+	}
+
+	sets := make([]string, 0, 5)
+	args := make([]interface{}, 0, 5)
+	if setting.Name != nil {
+		sets = append(sets, "name = ?")
+		args = append(args, *setting.Name)
+	}
+	if setting.DungeonIndex != nil {
+		sets = append(sets, "dungeon_index = ?")
+		args = append(args, *setting.DungeonIndex)
+	}
+	if setting.MinLevel != nil {
+		sets = append(sets, "min_level = ?")
+		args = append(args, *setting.MinLevel)
+	}
+	if setting.MaxLevel != nil {
+		sets = append(sets, "max_level = ?")
+		args = append(args, *setting.MaxLevel)
+	}
+	if setting.Area != nil {
+		sets = append(sets, "area = ?")
+		args = append(args, *setting.Area)
+	}
+	if setting.PublicType != nil {
+		sets = append(sets, "public_type = ?")
+		args = append(args, *setting.PublicType)
+	}
+	if len(sets) == 0 {
+		return nil
+	}
+
+	args = append(args, party.PartyGuid)
+	query := fmt.Sprintf("UPDATE t_party SET %s, update_time = datetime('now') WHERE party_id = ?", strings.Join(sets, ", "))
+	_, err = d.db.ExecContext(ctx, query, args...)
+	if err != nil {
+		return fmt.Errorf("failed to update party setting: %w", err)
+	}
+	return nil
 }
 
 func (d *DB) StartMultiPlay(ctx context.Context, roleID uint64, partyGuid uint64) (*store.StartMultiPlayResult, error) {
@@ -206,12 +262,113 @@ func (d *DB) CheckProhibitedWord(ctx context.Context, word string) (bool, error)
 	return false, nil
 }
 
-func (d *DB) HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid uint64) error {
-	return d.inviteToParty(ctx, roleID, roleID, partyGuid)
+// HalfOpenPartyAccept 接受申请(2026-09-07 第五十二轮实化):
+// 队长(roleID)接受指定申请者(targetGuid>0)或全部(0); 校验申请存在 → 加入 → 删申请
+func (d *DB) HalfOpenPartyAccept(ctx context.Context, roleID, partyGuid, targetGuid uint64) error {
+	party, err := d.getPartyByGuid(ctx, partyGuid)
+	if err != nil {
+		return fmt.Errorf("failed to get party: %w", err)
+	}
+	if party == nil {
+		return fmt.Errorf("party not found")
+	}
+	if party.LeaderGuid != roleID {
+		return fmt.Errorf("not party leader")
+	}
+
+	var applicants []uint64
+	if targetGuid > 0 {
+		var n int
+		if err := d.db.QueryRowContext(ctx, "SELECT COUNT(*) FROM t_party_request WHERE party_id = ? AND role_id = ?", partyGuid, targetGuid).Scan(&n); err != nil {
+			return fmt.Errorf("failed to query request: %w", err)
+		}
+		if n == 0 {
+			return fmt.Errorf("no request from target")
+		}
+		applicants = []uint64{targetGuid}
+	} else {
+		rows, err := d.db.QueryContext(ctx, "SELECT role_id FROM t_party_request WHERE party_id = ?", partyGuid)
+		if err != nil {
+			return fmt.Errorf("failed to list requests: %w", err)
+		}
+		defer rows.Close()
+		for rows.Next() {
+			var rid uint64
+			if err := rows.Scan(&rid); err != nil {
+				return fmt.Errorf("failed to scan request: %w", err)
+			}
+			applicants = append(applicants, rid)
+		}
+	}
+
+	tx, err := d.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
+	}
+	defer tx.Rollback()
+
+	for _, rid := range applicants {
+		role, err := d.getRoleByID(ctx, rid)
+		if err != nil {
+			return fmt.Errorf("failed to get applicant role: %w", err)
+		}
+		if role == nil {
+			continue
+		}
+		if _, err := tx.ExecContext(ctx,
+			`INSERT INTO t_party_member (party_id, role_id, player_id, team_type, status, join_time) VALUES (?, ?, ?, 0, 0, datetime('now'))`,
+			partyGuid, rid, role.PlayerID); err != nil {
+			return fmt.Errorf("failed to add member: %w", err)
+		}
+		if _, err := tx.ExecContext(ctx, "DELETE FROM t_party_request WHERE party_id = ? AND role_id = ?", partyGuid, rid); err != nil {
+			return fmt.Errorf("failed to delete request: %w", err)
+		}
+	}
+
+	return tx.Commit()
 }
 
-func (d *DB) HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid uint64) error {
+// HalfOpenPartyRefuse 拒绝申请(2026-09-07 第五十二轮实化): 队长删除指定/全部申请
+func (d *DB) HalfOpenPartyRefuse(ctx context.Context, roleID, partyGuid, targetGuid uint64) error {
+	party, err := d.getPartyByGuid(ctx, partyGuid)
+	if err != nil {
+		return fmt.Errorf("failed to get party: %w", err)
+	}
+	if party == nil {
+		return fmt.Errorf("party not found")
+	}
+	if party.LeaderGuid != roleID {
+		return fmt.Errorf("not party leader")
+	}
+
+	if targetGuid > 0 {
+		if _, err := d.db.ExecContext(ctx, "DELETE FROM t_party_request WHERE party_id = ? AND role_id = ?", partyGuid, targetGuid); err != nil {
+			return fmt.Errorf("failed to delete request: %w", err)
+		}
+		return nil
+	}
+	if _, err := d.db.ExecContext(ctx, "DELETE FROM t_party_request WHERE party_id = ?", partyGuid); err != nil {
+		return fmt.Errorf("failed to delete requests: %w", err)
+	}
 	return nil
+}
+
+// ListPartyRequests 按队伍ID查申请者角色列表(2026-09-07 第六十七轮, 拒绝全部时推送用)
+func (d *DB) ListPartyRequests(ctx context.Context, partyGuid uint64) ([]uint64, error) {
+	rows, err := d.db.QueryContext(ctx, "SELECT role_id FROM t_party_request WHERE party_id = ?", partyGuid)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list party requests: %w", err)
+	}
+	defer rows.Close()
+	var roles []uint64
+	for rows.Next() {
+		var r uint64
+		if err := rows.Scan(&r); err != nil {
+			return nil, fmt.Errorf("failed to scan party request: %w", err)
+		}
+		roles = append(roles, r)
+	}
+	return roles, nil
 }
 
 func (d *DB) ControlGroupCustom(ctx context.Context, roleID uint64, customData []byte) error {
@@ -223,7 +380,71 @@ func (d *DB) ControlGroupQueryarea(ctx context.Context, roleID uint64) error {
 }
 
 func (d *DB) HalfOpenPartyJoin(ctx context.Context, roleID, partyGuid uint64) error {
-	return d.inviteToParty(ctx, roleID, roleID, partyGuid)
+	// 2026-09-07 第四十九轮实化: 原实现把 roleID 当 targetGuid 传 inviteToParty,
+	// 而 inviteToParty 按 roleID 查队伍(加入者通常无队)导致必然失败
+	party, err := d.getPartyByGuid(ctx, partyGuid)
+	if err != nil {
+		return fmt.Errorf("failed to get party: %w", err)
+	}
+	if party == nil {
+		return fmt.Errorf("party not found")
+	}
+
+	// 2026-09-07 第五十一轮: 公开(0)自由加入; 第五十二轮: 半开放(1)产生申请待队长接受; 私有(2)拒绝
+	switch party.PublicType {
+	case 1:
+		role, err := d.getRoleByID(ctx, roleID)
+		if err != nil {
+			return fmt.Errorf("failed to get role: %w", err)
+		}
+		if role == nil {
+			return fmt.Errorf("role not found")
+		}
+		if _, err := d.db.ExecContext(ctx,
+			"INSERT OR IGNORE INTO t_party_request (party_id, role_id, create_time) VALUES (?, ?, strftime('%s', 'now'))",
+			partyGuid, roleID); err != nil {
+			return fmt.Errorf("failed to create party request: %w", err)
+		}
+		return nil
+	case 0:
+		// 公开: 走下方直接加入
+	default:
+		return fmt.Errorf("party is not public")
+	}
+
+	// 已在队
+	cur, err := d.getPartyByRoleID(ctx, roleID)
+	if err != nil {
+		return fmt.Errorf("failed to get current party: %w", err)
+	}
+	if cur != nil {
+		return fmt.Errorf("already in party")
+	}
+
+	// 未满
+	memberCount, err := d.getPartyMemberCount(ctx, party.PartyGuid)
+	if err != nil {
+		return fmt.Errorf("failed to get party member count: %w", err)
+	}
+	if memberCount >= int(party.MaxMembers) {
+		return fmt.Errorf("party is full")
+	}
+
+	role, err := d.getRoleByID(ctx, roleID)
+	if err != nil {
+		return fmt.Errorf("failed to get role: %w", err)
+	}
+	if role == nil {
+		return fmt.Errorf("role not found")
+	}
+
+	_, err = d.db.ExecContext(ctx,
+		`INSERT INTO t_party_member (party_id, role_id, player_id, team_type, status, join_time) VALUES (?, ?, ?, 0, 0, datetime('now'))`,
+		party.PartyGuid, roleID, role.PlayerID)
+	if err != nil {
+		return fmt.Errorf("failed to join party: %w", err)
+	}
+	return nil
 }
 
 func (d *DB) PartyDungeonCondition(ctx context.Context, roleID uint64, dungeonIndex uint32) error {
@@ -267,6 +488,52 @@ func (d *DB) TargetUserPartyInfo(ctx context.Context, roleID, targetGuid uint64)
 
 func (d *DB) WaitinigToUsersLoading(ctx context.Context, roleID uint64) error {
 	return nil
+}
+
+// getPartyByGuid 按队伍ID查队伍(2026-09-07 第四十九轮)
+func (d *DB) getPartyByGuid(ctx context.Context, partyGuid uint64) (*store.PartyInfo, error) {
+	query := `
+		SELECT party_id, leader_id, name, max_members,
+		       dungeon_index, room_id, min_level, max_level,
+		       area, subtype, stage_index, public_type
+		FROM t_party
+		WHERE party_id = ? AND status = 0
+	`
+
+	party := &store.PartyInfo{}
+	err := d.db.QueryRowContext(ctx, query, partyGuid).Scan(
+		&party.PartyGuid, &party.LeaderGuid, &party.Name, &party.MaxMembers,
+		&party.DungeonIndex, &party.RoomID, &party.MinLevel, &party.MaxLevel,
+		&party.Area, &party.SubType, &party.StageIndex, &party.PublicType,
+	)
+
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, fmt.Errorf("failed to get party by guid: %w", err)
+	}
+
+	return party, nil
+}
+
+// GetPartyByGuid 按队伍ID查队伍(2026-09-07 第六十二轮, 成员变化广播用, 含成员列表)
+func (d *DB) GetPartyByGuid(ctx context.Context, partyGuid uint64) (*store.PartyInfo, error) {
+	party, err := d.getPartyByGuid(ctx, partyGuid)
+	if err != nil || party == nil {
+		return party, err
+	}
+	members, err := d.getPartyMembers(ctx, party.PartyGuid)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get party members: %w", err)
+	}
+	party.Members = members
+	return party, nil
+}
+
+// GetPartyByRoleID 按角色ID查当前队伍(2026-09-07 第六十三轮, 离队/踢人/队长转移广播用)
+func (d *DB) GetPartyByRoleID(ctx context.Context, roleID uint64) (*store.PartyInfo, error) {
+	return d.getPartyByRoleID(ctx, roleID)
 }
 
 func (d *DB) getPartyByRoleID(ctx context.Context, roleID uint64) (*store.PartyInfo, error) {
@@ -383,7 +650,14 @@ func (d *DB) createParty(ctx context.Context, roleID uint64) error {
 }
 
 func (d *DB) inviteToParty(ctx context.Context, roleID, targetGuid, partyGuid uint64) error {
-	party, err := d.getPartyByRoleID(ctx, roleID)
+	// 2026-09-07 第四十九轮: partyGuid 参数启用(>0 按目标队伍邀请, 否则回退 roleID 所在队伍)
+	var party *store.PartyInfo
+	var err error
+	if partyGuid > 0 {
+		party, err = d.getPartyByGuid(ctx, partyGuid)
+	} else {
+		party, err = d.getPartyByRoleID(ctx, roleID)
+	}
 	if err != nil {
 		return fmt.Errorf("failed to get party: %w", err)
 	}
@@ -569,4 +843,59 @@ type Role struct {
 	Level    uint32
 	Fatigue  uint32
 	World    uint32
+}
+
+// TeamRankPosition 我的队伍在全服队伍平均等级榜的位置(2026-09-06 第四十三轮, sqlite 同构实现)
+func (d *DB) TeamRankPosition(ctx context.Context, roleID uint64) (rank, total int, err error) {
+	party, err := d.getPartyByRoleID(ctx, roleID)
+	if err != nil {
+		return 0, 0, fmt.Errorf("failed to get my party: %w", err)
+	}
+	if party == nil {
+		return 0, 0, nil
+	}
+
+	query := `
+		SELECT p.party_id, AVG(r.level)
+		FROM t_party p
+		INNER JOIN t_party_member pm ON p.party_id = pm.party_id
+		INNER JOIN role r ON pm.role_id = r.id
+		WHERE p.status = 0 AND r.row_status = 'NORMAL'
+		GROUP BY p.party_id
+	`
+	rows, err := d.db.QueryContext(ctx, query)
+	if err != nil {
+		return 0, 0, fmt.Errorf("failed to query team ranks: %w", err)
+	}
+	defer rows.Close()
+
+	type teamRank struct {
+		partyID  uint64
+		avgLevel float64
+	}
+	var teams []teamRank
+	for rows.Next() {
+		var t teamRank
+		if err := rows.Scan(&t.partyID, &t.avgLevel); err != nil {
+			return 0, 0, fmt.Errorf("failed to scan team rank: %w", err)
+		}
+		teams = append(teams, t)
+	}
+	if err := rows.Err(); err != nil {
+		return 0, 0, err
+	}
+
+	sort.SliceStable(teams, func(i, j int) bool {
+		if teams[i].avgLevel != teams[j].avgLevel {
+			return teams[i].avgLevel > teams[j].avgLevel
+		}
+		return teams[i].partyID < teams[j].partyID
+	})
+
+	for i, t := range teams {
+		if t.partyID == party.PartyGuid {
+			return i + 1, len(teams), nil
+		}
+	}
+	return len(teams) + 1, len(teams) + 1, nil
 }

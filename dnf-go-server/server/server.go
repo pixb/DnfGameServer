@@ -14,6 +14,8 @@ import (
 	"github.com/soheilhy/cmux"
 	"google.golang.org/grpc"
 
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/handlers"
+	"github.com/pixb/DnfGameServer/dnf-go-server/internal/game/pk_service"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/network"
 	"github.com/pixb/DnfGameServer/dnf-go-server/internal/profile"
 	v1 "github.com/pixb/DnfGameServer/dnf-go-server/server/router/api/v1"
@@ -33,15 +35,18 @@ type Server struct {
 	apiV1Service *v1.APIV1Service
 
 	// 生命周期管理
-	wg       sync.WaitGroup
-	listener net.Listener
+	wg              sync.WaitGroup
+	listener        net.Listener
+	cleanupStop     func()        // 邮件过期清理定时任务停止函数(第二十八轮)
+	cleanupInterval time.Duration // 邮件过期清理周期(第二十九轮, 来自 Profile 可配置)
 }
 
 // NewServer 创建服务器实例
-func NewServer(ctx context.Context, prof *profile.Profile, s *store.Store) (*Server, error) {
+func NewServer(ctx context.Context, prof *profile.Profile, s *store.Store, pkSvc *pk_service.PkService) (*Server, error) {
 	server := &Server{
-		Profile: prof,
-		Store:   s,
+		Profile:         prof,
+		Store:           s,
+		cleanupInterval: prof.MailCleanupIntervalDuration(), // 第二十九轮: 邮件清理周期可配置(默认 5m)
 	}
 
 	// 1. 初始化Echo服务器
@@ -66,7 +71,7 @@ func NewServer(ctx context.Context, prof *profile.Profile, s *store.Store) (*Ser
 	server.Secret = secret
 
 	// 4. 创建API v1服务
-	server.apiV1Service = v1.NewAPIV1Service(server.Secret, prof, s)
+	server.apiV1Service = v1.NewAPIV1Service(server.Secret, prof, s, pkSvc)
 
 	// 5. 创建gRPC服务器
 	server.grpcServer = grpc.NewServer()
@@ -78,14 +83,26 @@ func NewServer(ctx context.Context, prof *profile.Profile, s *store.Store) (*Ser
 	tcpConfig := network.DefaultServerConfig()
 	// 使用与HTTP/gRPC不同的端口，避免冲突
 	tcpConfig.Port = 9000
+	if prof.TCPPort > 0 {
+		tcpConfig.Port = prof.TCPPort
+	}
+
+	// 创建消息分发器并注册所有游戏消息处理器
+	dispatcher := network.NewMessageDispatcher()
+	handlers.RegisterAllHandlers(dispatcher)
 
 	// 创建一个基本的连接处理器
 	tcpHandler := &BasicTCPHandler{}
 
 	server.tcpServer = network.NewTCPServer(tcpConfig, tcpHandler)
 
-	// 设置默认的二进制编解码器
-	server.tcpServer.SetCodec(&network.BinaryCodec{LengthFieldSize: 2})
+	// 设置Proto编解码器（解码为ProtocolPacket，含module/cmd与protobuf消息）
+	codec := network.NewProtoCodec()
+	codec.RegisterAllMessages()
+	// 设置全局编码器，供Session.WriteResponse使用
+	network.SetEncoderInstance(codec)
+	server.tcpServer.SetCodec(codec)
+	server.tcpServer.SetDispatcher(dispatcher)
 
 	return server, nil
 }
@@ -197,6 +214,12 @@ func (s *Server) Start(ctx context.Context) error {
 		}
 	}()
 
+	// 6.5 邮件过期清理定时任务(第二十八轮): 启动即清一轮, 之后按配置周期(第二十九轮, 默认 5 分钟)
+	s.cleanupStop = s.Store.StartMailCleanup(ctx, s.cleanupInterval, func(msg string) {
+		s.echoServer.Logger.Info(msg)
+	})
+	s.echoServer.Logger.Info("Mail cleanup scheduler started (interval " + s.cleanupInterval.String() + ")")
+
 	// 7. 启动TCP服务器
 	s.wg.Add(1)
 	go func() {
@@ -234,6 +257,12 @@ func (s *Server) Shutdown(ctx context.Context) error {
 		if err := s.tcpServer.Stop(); err != nil {
 			s.echoServer.Logger.Error("Error stopping TCP server: ", err)
 		}
+	}
+
+	// 3.5 停止邮件过期清理定时任务(第二十八轮)
+	if s.cleanupStop != nil {
+		s.cleanupStop()
+		s.echoServer.Logger.Info("Mail cleanup scheduler stopped")
 	}
 
 	// 4. 关闭Store

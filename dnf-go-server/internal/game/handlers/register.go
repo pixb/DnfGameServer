@@ -11,6 +11,8 @@ func RegisterAllHandlers(dispatcher *network.MessageDispatcher) {
 	dispatcher.RegisterHandler(10000, 2, CreateCharacterHandler)  // 创建角色
 	dispatcher.RegisterHandler(10000, 4, GetCharacterListHandler) // 获取角色列表
 	dispatcher.RegisterHandler(10000, 6, SelectCharacterHandler)  // 选择角色
+	dispatcher.RegisterHandler(10000, 8, EnterGameHandler)        // 进入游戏
+	dispatcher.RegisterHandler(10000, 10, LoadPlayerDataHandler)  // 玩家数据加载
 
 	// ==================== 角色模块 (Module = 10001) ====================
 	dispatcher.RegisterHandler(10001, 0, GetRoleInfoHandler)      // 获取角色信息
@@ -18,13 +20,22 @@ func RegisterAllHandlers(dispatcher *network.MessageDispatcher) {
 	dispatcher.RegisterHandler(10001, 4, LearnSkillHandler)       // 学习技能
 	dispatcher.RegisterHandler(10001, 6, UpgradeSkillHandler)     // 升级技能
 	dispatcher.RegisterHandler(10001, 8, RecoverFatigueHandler)   // 恢复疲劳值
+	dispatcher.RegisterHandler(10001, 10, CastSkillHandler)       // 技能施放(2026-09-07 第六十八轮)
+	dispatcher.RegisterHandler(10001, 12, MovePositionHandler)    // 移动位置(2026-09-07 第七十轮)
 
 	// ==================== 背包模块 (Module = 10002) ====================
-	dispatcher.RegisterHandler(10002, 0, GetBagHandler)    // 获取背包
-	dispatcher.RegisterHandler(10002, 2, UseItemHandler)   // 使用物品
-	dispatcher.RegisterHandler(10002, 4, MoveItemHandler)  // 移动物品
-	dispatcher.RegisterHandler(10002, 6, SellItemHandler)  // 出售物品
-	dispatcher.RegisterHandler(10002, 8, EquipItemHandler) // 装备物品
+	dispatcher.RegisterHandler(10002, 0, GetBagHandler)         // 获取背包
+	dispatcher.RegisterHandler(10002, 2, UseItemHandler)        // 使用物品
+	dispatcher.RegisterHandler(10002, 4, MoveItemHandler)       // 移动物品
+	dispatcher.RegisterHandler(10002, 6, SellItemHandler)       // 出售物品
+	dispatcher.RegisterHandler(10002, 8, EquipItemHandler)      // 装备物品
+	dispatcher.RegisterHandler(10002, 10, DropItemHandler)      // 丢弃物品
+	dispatcher.RegisterHandler(10002, 12, ItemComposeHandler)   // 物品合成
+	dispatcher.RegisterHandler(10002, 14, ItemReinforceHandler) // 物品强化
+	dispatcher.RegisterHandler(10002, 16, ItemSortHandler)      // 物品整理
+	dispatcher.RegisterHandler(10002, 18, ItemDecomposeHandler) // 物品分解
+	dispatcher.RegisterHandler(10002, 20, ItemRenameHandler)    // 物品重命名
+	dispatcher.RegisterHandler(10002, 22, BagExpandHandler)     // 背包扩容
 
 	// ==================== 副本模块 (Module = 10003) ====================
 	dispatcher.RegisterHandler(10003, 0, EnterDungeonHandler) // 进入副本
@@ -40,13 +51,18 @@ func RegisterAllHandlers(dispatcher *network.MessageDispatcher) {
 	dispatcher.RegisterHandler(10004, 206, RemoveFriendHandler)  // 删除好友
 
 	// ==================== 商店模块 (Module = 10005) ====================
-	dispatcher.RegisterHandler(10005, 0, GetShopListHandler)       // 获取商店列表
-	dispatcher.RegisterHandler(10005, 2, BuyItemHandler)           // 购买物品
-	dispatcher.RegisterHandler(10005, 4, SellToShopHandler)        // 出售给商店
-	dispatcher.RegisterHandler(10005, 100, SearchAuctionHandler)   // 搜索拍卖行
-	dispatcher.RegisterHandler(10005, 102, RegisterAuctionHandler) // 上架拍卖
-	dispatcher.RegisterHandler(10005, 104, BidAuctionHandler)      // 竞拍
-	dispatcher.RegisterHandler(10005, 106, BuyoutAuctionHandler)   // 一口价购买
+	dispatcher.RegisterHandler(10005, 0, GetShopListHandler)         // 获取商店列表
+	dispatcher.RegisterHandler(10005, 2, BuyItemHandler)             // 购买物品
+	dispatcher.RegisterHandler(10005, 4, SellToShopHandler)          // 出售给商店
+	dispatcher.RegisterHandler(10005, 100, SearchAuctionHandler)     // 搜索拍卖行
+	dispatcher.RegisterHandler(10005, 102, RegisterAuctionHandler)   // 上架拍卖
+	dispatcher.RegisterHandler(10005, 104, BidAuctionHandler)        // 竞拍
+	dispatcher.RegisterHandler(10005, 106, BuyoutAuctionHandler)     // 一口价购买
+	dispatcher.RegisterHandler(10005, 108, QueryShopOrderHandler)    // 查询商城订单
+	dispatcher.RegisterHandler(10005, 110, CancelShopOrderHandler)   // 取消商城订单
+	dispatcher.RegisterHandler(10005, 116, GetAuctionHistoryHandler) // 查询拍卖历史(2026-09-07 第六十轮)
+	dispatcher.RegisterHandler(10005, 112, AuctionEndHandler)        // 拍卖结算
+	dispatcher.RegisterHandler(10005, 114, AuctionFeeHandler)        // 拍卖手续费
 
 	// ==================== 任务模块 (Module = 10006) ====================
 	dispatcher.RegisterHandler(10006, 0, GetQuestListHandler)   // 获取任务列表
@@ -119,4 +135,40 @@ func RegisterAllHandlers(dispatcher *network.MessageDispatcher) {
 	dispatcher.RegisterHandler(10009, 28, PartyDungeonConditionHandler)         // 多人游戏副本条件
 	dispatcher.RegisterHandler(10009, 30, MultiPlayStartDungeonHandler)         // 多人游戏开始副本
 	dispatcher.RegisterHandler(10009, 32, TargetUserPartyInfoHandler)           // 目标用户队伍信息
+
+	// ==================== 成就模块 (Module = 10700) ====================
+	dispatcher.RegisterHandler(10700, 0, AchievementInfoHandler)        // 成就信息
+	dispatcher.RegisterHandler(10701, 0, AchievementRewardHandler)      // 领取成就奖励
+	dispatcher.RegisterHandler(10704, 0, AchievementListHandler)        // 成就列表
+	dispatcher.RegisterHandler(10706, 0, AchievementBonusRewardHandler) // 成就额外奖励
+
+	// ==================== 事件模块 (Module = 10500) ====================
+	dispatcher.RegisterHandler(10500, 0, QueryEventListHandler)           // 查询事件列表
+	dispatcher.RegisterHandler(10500, 2, QueryEventDetailHandler)         // 查询事件详情
+	dispatcher.RegisterHandler(10500, 4, QueryEventStatusHandler)         // 查询事件状态
+	dispatcher.RegisterHandler(10500, 6, QueryEventProgressHandler)       // 查询事件进度
+	dispatcher.RegisterHandler(10500, 8, TriggerEventHandler)             // 触发事件
+	dispatcher.RegisterHandler(10500, 10, HandleEventHandler)             // 处理事件
+	dispatcher.RegisterHandler(10500, 12, ValidateEventCompletionHandler) // 校验活动完成
+	dispatcher.RegisterHandler(10500, 14, CreateEventHandler)             // 创建事件
+	dispatcher.RegisterHandler(10500, 16, DeleteEventHandler)             // 删除事件
+	dispatcher.RegisterHandler(10500, 18, ReceiveEventRewardHandler)      // 领取事件奖励
+	dispatcher.RegisterHandler(10500, 20, DistributeEventRewardHandler)   // 发放事件奖励
+	dispatcher.RegisterHandler(10500, 22, ResetEventHandler)              // 重置事件
+
+	// ==================== 排名模块 (Module = 10501) ====================
+	dispatcher.RegisterHandler(10501, 0, QueryMyRankHandler)       // 查询我的排名
+	dispatcher.RegisterHandler(10501, 2, QueryPersonalRankHandler) // 查询个人排名
+	dispatcher.RegisterHandler(10501, 4, QueryFriendRankHandler)   // 查询好友排名
+	dispatcher.RegisterHandler(10501, 6, QueryMyTeamRankHandler)   // 查询我的队伍排名
+
+	// ==================== 日志模块 (Module = 10502) ====================
+	dispatcher.RegisterHandler(10502, 0, QueryLogHandler)     // 查询日志
+	dispatcher.RegisterHandler(10502, 2, RecordLogHandler)    // 记录日志
+	dispatcher.RegisterHandler(10502, 4, StatisticLogHandler) // 日志统计
+	dispatcher.RegisterHandler(10502, 6, DeleteLogHandler)    // 删除日志
+	dispatcher.RegisterHandler(10502, 8, ExportLogHandler)    // 导出日志
+	dispatcher.RegisterHandler(10502, 10, CleanLogHandler)    // 清理日志
+	dispatcher.RegisterHandler(10502, 12, MonitorLogHandler)  // 监控日志
+	dispatcher.RegisterHandler(10502, 14, AnalyzeLogHandler)  // 分析日志
 }

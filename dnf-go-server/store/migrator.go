@@ -186,9 +186,9 @@ type Migration struct {
 // getAvailableMigrations 获取所有可用迁移
 func (m *Migrator) getAvailableMigrations() ([]Migration, error) {
 	driver := m.profile.GetDriver()
-	basePath := "migration/" + driver + "/"
+	basePath := "migration/" + driver
 
-	// 读取目录
+	// 读取目录（注意：embed.FS 的 ReadDir 不接受尾部斜杠，否则报 file does not exist）
 	entries, err := migrationFS.ReadDir(basePath)
 	if err != nil {
 		// 目录不存在时返回空列表
@@ -214,7 +214,7 @@ func (m *Migrator) getAvailableMigrations() ([]Migration, error) {
 		version := m.parseVersion(name)
 		migrations = append(migrations, Migration{
 			Version:     version,
-			FilePath:    basePath + name,
+			FilePath:    basePath + "/" + name,
 			Description: m.parseDescription(name),
 		})
 	}
@@ -297,7 +297,7 @@ func (m *Migrator) GetLatestSchema() (string, error) {
 
 // GetMigrationFiles 获取所有迁移文件
 func (m *Migrator) GetMigrationFiles() ([]string, error) {
-	pattern := m.getMigrationBasePath() + "*/*.sql"
+	pattern := m.getMigrationBasePath() + "*.sql"
 	files, err := fs.Glob(migrationFS, pattern)
 	if err != nil {
 		return nil, err
@@ -387,5 +387,33 @@ func (s *Store) Seed(ctx context.Context) error {
 		}
 	}
 
+	// 插入默认 PK 匹配类型(仅当表为空时)
+	if err := s.seedPvpMatchTypes(ctx); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// seedPvpMatchTypes 插入默认 PK 匹配类型
+func (s *Store) seedPvpMatchTypes(ctx context.Context) error {
+	types, err := s.ListPvpMatchTypes(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to list pvp match types: %w", err)
+	}
+	if len(types) > 0 {
+		return nil
+	}
+
+	defaults := []*PvpMatchType{
+		{MatchType: 1, TypeName: "1v1 竞技", MinLevel: 1, MaxLevel: 100, MinPlayers: 1, MaxPlayers: 1, Status: 1},
+		{MatchType: 2, TypeName: "2v2 团队", MinLevel: 1, MaxLevel: 100, MinPlayers: 2, MaxPlayers: 2, Status: 1},
+		{MatchType: 3, TypeName: "4v4 混战", MinLevel: 1, MaxLevel: 100, MinPlayers: 4, MaxPlayers: 4, Status: 1},
+	}
+	for _, t := range defaults {
+		if err := s.CreatePvpMatchType(ctx, t); err != nil {
+			return fmt.Errorf("failed to seed pvp match type %d: %w", t.MatchType, err)
+		}
+	}
 	return nil
 }

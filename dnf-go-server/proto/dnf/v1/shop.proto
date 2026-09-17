@@ -173,3 +173,27 @@ message BuyFromPrivateStoreRequest {
 message BuyFromPrivateStoreResponse {
   int32 error = 1;
 }
+
+// 拍卖历史记录(2026-09-07 第六十轮)
+message AuctionHistoryItem {
+  int64 auction_id = 1;
+  uint32 item_id = 2;
+  int32 count = 3;
+  int32 final_price = 4;
+  int32 seller_income = 5;
+  int64 created_at = 6;
+  bool is_seller = 7; // true=本人为卖家视角, false=本人为买家视角
+}
+
+// 查询拍卖历史请求
+message GetAuctionHistoryRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+// 查询拍卖历史响应
+message GetAuctionHistoryResponse {
+  int32 error = 1;
+  repeated AuctionHistoryItem items = 2;
+  int32 total = 3;
+}

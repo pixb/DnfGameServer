@@ -47,11 +47,13 @@ func init() {
 	rootCmd.PersistentFlags().StringP("driver", "d", "mysql", "database driver (mysql, sqlite, postgres)")
 	rootCmd.PersistentFlags().StringP("dsn", "", "", "database DSN")
 	rootCmd.PersistentFlags().StringP("mode", "m", "prod", "server mode (dev, prod)")
+	rootCmd.PersistentFlags().IntP("tcp-port", "", 0, "TCP game server port (default 9000)")
 
 	// 绑定viper
 	viper.BindPFlag("driver", rootCmd.PersistentFlags().Lookup("driver"))
 	viper.BindPFlag("dsn", rootCmd.PersistentFlags().Lookup("dsn"))
 	viper.BindPFlag("mode", rootCmd.PersistentFlags().Lookup("mode"))
+	viper.BindPFlag("server.tcp.port", rootCmd.PersistentFlags().Lookup("tcp-port"))
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -84,10 +86,13 @@ func initConfig() error {
 
 	// 创建profile
 	prof = &profile.Profile{
-		Driver: viper.GetString("driver"),
-		DSN:    viper.GetString("dsn"),
-		Mode:   viper.GetString("mode"),
-		Port:   viper.GetInt("port"),
+		Driver:              viper.GetString("driver"),
+		DSN:                 viper.GetString("dsn"),
+		Mode:                viper.GetString("mode"),
+		Port:                viper.GetInt("port"),
+		TCPPort:             viper.GetInt("server.tcp.port"),
+		MailCleanupInterval: viper.GetString("mail_cleanup_interval"),
+		AdminOpenIDs:        viper.GetString("admin_openids"), // 第四十一轮: 初始管理员账号
 	}
 
 	// 从配置文件的根级别读取
@@ -102,6 +107,9 @@ func initConfig() error {
 	}
 	if prof.Port == 0 {
 		prof.Port = viper.GetInt("port")
+	}
+	if prof.TCPPort == 0 {
+		prof.TCPPort = viper.GetInt("tcp_port")
 	}
 
 	// 如果端口未设置，使用默认值
